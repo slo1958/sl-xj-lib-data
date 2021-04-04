@@ -24,10 +24,31 @@ Protected Module clDataSerie_tests
 		  
 		  fld_folder = fld_folder.Child("test-data")
 		  
-		  fld_file = fld_folder.Child("myfile3_10K.txt")
+		  fld_file = fld_folder.Child("myfile3_10K_tab.txt")
 		  
 		  
 		  Dim ss1 As New clDataSerie(fld_file)
+		  
+		  Dim k2 As Integer = 1
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_005()
+		  Dim k As Variant
+		  
+		  Dim fld_folder As New FolderItem
+		  Dim fld_file_in As FolderItem
+		  Dim fld_file_out As FolderItem
+		  
+		  fld_folder = fld_folder.Child("test-data")
+		  
+		  fld_file_in = fld_folder.Child("myfile3_10K_tab.txt")
+		  fld_file_out =  fld_folder.Child("mytest.txt")
+		  
+		  Dim ss1 As New clDataSerie(fld_file_in)
+		  
+		  ss1.save_as_text(fld_file_out, True)
 		  
 		  Dim k2 As Integer = 1
 		End Sub

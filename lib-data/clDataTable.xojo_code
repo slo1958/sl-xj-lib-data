@@ -249,6 +249,19 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Sub internal_add_row(the_row_data() as variant)
+		  
+		  If the_row_data.Ubound <> columns.Ubound Then
+		    Raise new clDataException("Invalid row in internal_add_row")
+		    
+		  End If
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Sub internal_new_table(the_table_name as string)
 		  columns_map = New Dictionary
 		  table_name = the_table_name
@@ -259,8 +272,61 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub load_from_text(the_source as FolderItem)
+		Sub load_from_text(the_source as FolderItem, the_line_parser as clRowParser_generic, has_header  as Boolean)
+		  //
+		  // Load the serie from a text file, each line is loaded into one element, without further processing
+		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string
+		  //
 		  
+		  Dim got_header As Boolean
+		  Dim text_file  As TextInputStream
+		  Dim return_header As String
+		  
+		  If the_source = Nil Then
+		    Return 
+		    
+		  End If
+		  
+		  text_file = TextInputStream.Open(the_source)
+		  
+		  got_header = Not has_header
+		  
+		  While Not text_file.EOF
+		    Dim tmp_source_line As String = text_file.ReadLine
+		    Dim tmp_items() As String
+		    
+		    tmp_items = the_line_parser.parse_line(tmp_source_line)
+		    
+		    If got_header Then
+		      For i As Integer = 0 To Self.columns.Ubound
+		        If i <= tmp_items.Ubound Then
+		          Self.columns(i).append_element(tmp_items(i))
+		          
+		        Else
+		          Self.columns(i).append_element("")
+		          
+		        End If
+		        
+		      Next
+		      
+		      
+		      Self.row_index.append_element("")
+		      
+		    Else
+		      For i As Integer = 0 To tmp_items.Ubound
+		        Call Self.add_column(tmp_items(i))
+		        
+		      Next
+		      got_header = True
+		      
+		    End If
+		    
+		    
+		  Wend
+		  
+		  text_file.close
+		  
+		  Return  
 		End Sub
 	#tag EndMethod
 

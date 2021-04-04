@@ -133,16 +133,27 @@ Protected Module clDataTable_tests
 		  Dim k As Variant
 		  
 		  Dim fld_folder As New FolderItem
-		  Dim fld_file As FolderItem
+		  Dim fld_file1 As FolderItem
+		  Dim fld_file2 As FolderItem
 		  
 		  fld_folder = fld_folder.Child("test-data")
 		  
-		  fld_file = fld_folder.Child("myfile3_10K.txt")
+		  fld_file1 = fld_folder.Child("myfile3_10K_tab.txt")
+		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
+		  
+		  Dim ttst3 As New clDataTable("x")
+		  
+		  ttst3.load_from_text(fld_file1, New clRowParser_full(Chr(9)), True)
+		  
+		  Dim ttst4 As New clDataTable("x")
+		  
+		  ttst4.load_from_text(fld_file2, New clRowParser_full(","), True)
 		  
 		  
-		  k = myfile3_10K
 		  
 		  Dim k2 As Integer=1
+		  
+		  
 		End Sub
 	#tag EndMethod
 

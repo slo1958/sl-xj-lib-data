@@ -128,6 +128,35 @@ Protected Class clDataSerie
 
 	#tag Method, Flags = &h0
 		Sub save_as_text(the_destination as FolderItem, name_as_header as Boolean)
+		  //
+		  // Load the serie from a text file, each line is loaded into one element, without further processing
+		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string
+		  //
+		  
+		  Dim got_header As Boolean
+		  Dim text_file  As TextOutputStream
+		  Dim return_header As String
+		  
+		  If the_destination = Nil Then
+		    Return
+		    
+		  End If
+		  
+		  text_file = TextOutputStream.Create(the_destination)
+		  
+		  If name_as_header Then
+		    text_file.WriteLine Self.name
+		    
+		  End If
+		  
+		  For i As Integer = 0 To items.Ubound
+		    text_file.WriteLine items(i)
+		    
+		  Next
+		  
+		  text_file.close
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod

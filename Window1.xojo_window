@@ -108,6 +108,37 @@ Begin Window Window1
       Visible         =   True
       Width           =   80
    End
+   Begin PushButton PushButton2
+      AutoDeactivate  =   True
+      Bold            =   False
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "Button"
+      Default         =   False
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   127
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "Verdana"
+      TextSize        =   11.0
+      TextUnit        =   0
+      Top             =   360
+      Underline       =   False
+      Visible         =   True
+      Width           =   80
+   End
 End
 #tag EndWindow
 
@@ -140,19 +171,39 @@ End
 		  
 		  clDataSerie_tests.test_001
 		  clDataSerie_tests.test_004
+		  clDataSerie_tests.test_005
 		  
 		  
 		  
 		  clDataTable_tests.test_001
-		  
 		  clDataTable_tests.test_002
-		  
 		  clDataTable_tests.test_003
-		  
 		  clDataTable_tests.test_004
 		  
 		  
 		  
+		  
+		  
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PushButton2
+	#tag Event
+		Sub Action()
+		  Dim res1(), res2(), res3(), res4() As String
+		  
+		  Dim tmpxl As New clRowParser_full(",")
+		  
+		  res1 =  tmpxl.parse_line("hello,world")
+		  
+		  res2 =  tmpxl.parse_line(",hello,world")
+		  
+		  res3 =  tmpxl.parse_line("""hello"",world")
+		  
+		  res4 =  tmpxl.parse_line("""hel""""lo"",world")
+		  
+		  Dim k As Integer
 		  
 		End Sub
 	#tag EndEvent
