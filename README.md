@@ -9,9 +9,52 @@ The library supports two main classes:
 ###clDataSerie
 A serie is mainly a named one-dimension array. Elements of the array are 'variant'. The main purpose of this class is to store column data for clDataTable. 
 
-###clDataSerieIndex
+###How to create a data serie ?
+You can create a data serie:
+- by creating an empty data serie and adding values
+- by creating a populated data serie
+- by loading a text file
+
+###Creating an empty data serie and adding values
+```xojo
+
+dim my_serie As New clDataSerie("some_values")
+
+my_serie.append_element("abcd")
+my_serie.append_element("efgh")
+...
+
+
+```
+
+###Creating a populated data serie
+You will use the helper function make_variant_array() as follow:
+
+```xojo
+
+dim my_serie As New clDataSerie("some_values", make_variant_array("aaa",123,True))
+
+ 
+```
+
+###Loading a data serie from a file
+Note that one line in the source file creates one element in the data serie. There are no processing of field delimiter, separators, ... 
+
+```xojo
+
+dim fld_file as FolderItem
+...
+
+dim my_serie As New clDataSerie(fld_file)
+
+
+```
+
+###About clDataSerieIndex
 (subclass of clDataSerie)
 This class is only used to maintain the record index stored in tables. The value is automatically set to the next value of a counter. 
+
+The value passed as parameter to methods like append_element(), set_element() are ignored.
 
 
 ###clDataTable
@@ -70,10 +113,12 @@ Dim my_table2 As New clDataTable("mytable1", make_serie_array(my_serie1, my_seri
 ```
 
 
+###Operations on data tables
+tbd
 
 
 ###Virtual data table
-A data table is virtual when it does not have its own set of columns, but uses columns managed by anoter data table. If you assume a data table is a table in a database engine, then a virtual data table is a view on a subset of columns. Adding rows to a view adds row to the physical table. 
+A data table is virtual when it does not have its own set of columns, but uses columns managed by anoter data table. If you assume a data table is a table in a database engine, then a virtual data table is a view on a subset of columns. Adding rows to a view adds rows to the physical table. 
 
 A virtual data table is returned by the data table method select_columns()
 
