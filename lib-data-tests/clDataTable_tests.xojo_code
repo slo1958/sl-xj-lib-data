@@ -135,11 +135,13 @@ Protected Module clDataTable_tests
 		  Dim fld_folder As New FolderItem
 		  Dim fld_file1 As FolderItem
 		  Dim fld_file2 As FolderItem
+		  Dim fld_file3 As FolderItem
 		  
 		  fld_folder = fld_folder.Child("test-data")
 		  
 		  fld_file1 = fld_folder.Child("myfile3_10K_tab.txt")
 		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
+		  fld_file3  = fld_folder.Child("myfile3_10K_output.txt")
 		  
 		  Dim ttst3 As New clDataTable("x")
 		  
@@ -150,8 +152,49 @@ Protected Module clDataTable_tests
 		  ttst4.load_from_text(fld_file2, New clRowParser_full(","), True)
 		  
 		  
+		  ttst4.save_as_text(fld_file3, New clRowParser_full(";"), True)
 		  
 		  Dim k2 As Integer=1
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_005()
+		  System.DebugLog("START test_001")
+		  
+		  Dim rtst As clDataRow
+		  
+		  Dim ttst As New clDataTable("T1")
+		  
+		  rtst = New clDataRow
+		  rtst.set_cell("aaa",1234)
+		  rtst.set_cell("bbb","abcd")
+		  rtst.set_cell("ccc",123.456)
+		  
+		  ttst.append_row(rtst)
+		  
+		  rtst = New clDataRow
+		  rtst.set_cell("aaa",1235)
+		  rtst.set_cell("bbb","abce")
+		  rtst.set_cell("ddd",987.654)
+		  
+		  ttst.append_row(rtst)
+		  
+		  ttst.debug_dump
+		  
+		  
+		  Dim cols() As clDataSerie
+		  
+		  cols = ttst.get_columns("aaa","bbb","ddd")
+		  
+		  cols(1).rename("bB1")
+		  
+		  
+		  
+		  
+		  Dim k As Integer = 1
 		  
 		  
 		End Sub

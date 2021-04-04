@@ -179,6 +179,8 @@ End
 		  clDataTable_tests.test_002
 		  clDataTable_tests.test_003
 		  clDataTable_tests.test_004
+		  clDataTable_tests.test_005
+		  
 		  
 		  
 		  

@@ -22,8 +22,10 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_label as string)
+		Sub Constructor(the_label as string, the_physical_table as clDataTable = nil)
 		  serie_name = the_label
+		  physical_table_link = the_physical_table
+		  
 		End Sub
 	#tag EndMethod
 
@@ -116,6 +118,12 @@ Protected Class clDataSerie
 		    
 		  End If
 		  
+		  If Self.physical_table_link <> Nil Then
+		    Self.physical_table_link.synch_columns
+		    
+		  End If
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -185,6 +193,10 @@ Protected Class clDataSerie
 
 	#tag Property, Flags = &h1
 		Protected items() As Variant
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected physical_table_link As clDataTable
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
