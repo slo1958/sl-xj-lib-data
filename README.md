@@ -6,16 +6,16 @@ The library supports two main classes:
 - clDataSerie
 - clDataTable
 
-###clDataSerie
+### clDataSerie
 A serie is mainly a named one-dimension array. Elements of the array are 'variant'. The main purpose of this class is to store column data for clDataTable. 
 
-###How to create a data serie ?
+### How to create a data serie ?
 You can create a data serie:
 - by creating an empty data serie and adding values
 - by creating a populated data serie
 - by loading a text file
 
-###Creating an empty data serie and adding values
+### Creating an empty data serie and adding values
 ```xojo
 
 dim my_serie As New clDataSerie("some_values")
