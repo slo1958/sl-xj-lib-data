@@ -35,6 +35,16 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub add_columns(the_column_names() as string)
+		  For Each name As String In the_column_names
+		    call add_column(name)
+		    
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub append_row(the_row as clDataRow, create_columns_flag as boolean=True)
 		  
 		  Dim tmp_row_count As Integer = Self.row_count
@@ -86,6 +96,44 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub append_row(the_values() as string)
+		  
+		  For i As Integer = 0 To columns.Ubound
+		    If i <= the_values.Ubound Then
+		      columns(i).append_element(the_values(i))
+		      
+		    Else
+		      columns(i).append_element("")
+		      
+		    End If
+		    
+		  Next
+		  
+		  Self.row_index.append_element("")
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub append_row(the_values() as variant)
+		  
+		  For i As Integer = 0 To columns.Ubound
+		    If i <= the_values.Ubound Then
+		      columns(i).append_element(the_values(i))
+		      
+		    Else
+		      columns(i).append_element("")
+		      
+		    End If
+		    
+		  Next
+		  
+		  Self.row_index.append_element("")
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub append_table(the_table as clDataTable)
 		  
 		  For Each src_tmp_column As clDataSerie In the_table.columns
@@ -94,7 +142,8 @@ Protected Class clDataTable
 		    Dim dst_tmp_column As  clDataSerie
 		    
 		    src_tmp_column = the_table.columns_map.Value(column)
-		    If Self.columns_name.IndexOf(column) >= 0 Then
+		    
+		    if self.columns_map.HasKey(column) then
 		      dst_tmp_column = Self.columns_map.Value(column)
 		      
 		    Else
@@ -122,6 +171,22 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function apply_filter(the_filter_function as filter_row, paramarray function_param as variant) As variant()
+		  Dim return_boolean() As Variant
+		  
+		  Dim column_names() As String
+		  
+		  //For i As Integer=0 To items.Ubound
+		  //return_boolean.Append(the_filter_function.Invoke(i,  items.Ubound, name, items(i), function_param))
+		  
+		  //Next
+		  
+		  Return return_boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function clone() As clDataTable
 		  
 		End Function
@@ -129,7 +194,13 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Function column_names() As string()
-		  return columns_name
+		  Dim ret_str() As String
+		  For Each column As clDataSerie In columns
+		    ret_str.Append(column.name)
+		    
+		  Next
+		  
+		  Return ret_str
 		End Function
 	#tag EndMethod
 
@@ -252,6 +323,35 @@ Protected Class clDataTable
 		End Sub
 	#tag EndMethod
 
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function filter_row(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+	#tag EndDelegateDeclaration
+
+	#tag Method, Flags = &h0
+		Function find_first_matching_row(the_column_name as string, the_column_value as string) As integer
+		  Dim tmp_column As clDataSerie
+		  
+		  If Not columns_map.HasKey(the_column_name) Then
+		    Return -2
+		    
+		  End If
+		  
+		  tmp_column = columns_map.Value(the_column_name)
+		  
+		  For i As Integer = 0 To tmp_column.row_count-1
+		    If tmp_column.get_element(i) = the_column_value Then
+		      Return i
+		      
+		    End If
+		    
+		  Next
+		  
+		  Return -1
+		  
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function get_columns(column_names() as string) As clDataSerie()
 		  Dim ret() As clDataSerie
@@ -289,7 +389,7 @@ Protected Class clDataTable
 		  
 		  Self.columns.Append(tmp_column)
 		  Self.columns_map.Value(tmp_column_name) = tmp_column
-		  Self.column_names.Append(tmp_column_name)
+		  
 		  
 		  
 		End Sub
@@ -378,6 +478,12 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function name() As string
+		  Return table_name
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub rename(the_new_name as string)
 		  If the_new_name.Len = 0 Then
 		    Self.table_name = "noname"
@@ -416,9 +522,8 @@ Protected Class clDataTable
 		  
 		  Dim column_index() As clDataSerie
 		  
-		  For Each column As String In columns_name
-		    Dim src_column As clDataSerie = Self.columns_map.value(column)
-		    column_index.Append(src_column)
+		  For Each column As clDataSerie In columns
+		    column_index.Append(column)
 		    
 		  Next
 		  
@@ -471,7 +576,7 @@ Protected Class clDataTable
 		  res.row_index = Self.row_index
 		  
 		  For Each column As String In column_names
-		    If Self.columns_name.IndexOf(column) >= 0 Then 
+		    If Self.columns_map.HasKey(column) Then
 		      Dim src_column As clDataSerie = Self.columns_map.value(column)
 		      res.internal_add_logical_column(src_column)
 		      
@@ -505,12 +610,6 @@ Protected Class clDataTable
 		    Dim new_name As String = tmp_serie.name
 		    
 		    If old_name <> new_name Then
-		      Dim column_index As Integer = Self.columns_name.IndexOf(old_name)
-		      
-		      If column_index >= 0 Then
-		        Self.columns_name(column_index) = new_name
-		        
-		      End If
 		      
 		      dic_remove.Append(old_name)
 		      dic_add_key.Append(new_name)
@@ -519,6 +618,7 @@ Protected Class clDataTable
 		    End If
 		    
 		  Next
+		  
 		  
 		  For i As Integer = 0 To dic_remove.Ubound
 		    Self.columns_map.Remove(dic_remove(i))
@@ -532,6 +632,7 @@ Protected Class clDataTable
 		  
 		  
 		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -542,10 +643,6 @@ Protected Class clDataTable
 
 	#tag Property, Flags = &h1
 		Protected columns_map As Dictionary
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected columns_name() As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

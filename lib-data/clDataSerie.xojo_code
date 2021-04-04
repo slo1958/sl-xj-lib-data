@@ -8,11 +8,11 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function apply_filter(the_filter_function as filter_column) As variant()
+		Function apply_filter(the_filter_function as filter_column, paramarray function_param as variant) As variant()
 		  Dim return_boolean() As Variant
 		  
 		  For i As Integer=0 To items.Ubound
-		    return_boolean.Append(the_filter_function.Invoke(i, name, items(i)))
+		    return_boolean.Append(the_filter_function.Invoke(i,  items.Ubound, name, items(i), function_param))
 		    
 		  Next
 		  
@@ -97,7 +97,7 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function filter_column(the_row_index as integer, the_column_name as string, the_cell_value as variant) As Boolean
+		Delegate Function filter_column(the_row_index as integer, the_row_count as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0

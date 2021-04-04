@@ -1,7 +1,7 @@
 #tag Module
 Protected Module clDataTable_tests
-	#tag Method, Flags = &h1
-		Protected Sub test_001()
+	#tag Method, Flags = &h0
+		Sub test_001()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
@@ -30,8 +30,8 @@ Protected Module clDataTable_tests
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Sub test_002()
+	#tag Method, Flags = &h0
+		Sub test_002()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
@@ -85,8 +85,8 @@ Protected Module clDataTable_tests
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Sub test_003()
+	#tag Method, Flags = &h0
+		Sub test_003()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
@@ -234,6 +234,34 @@ Protected Module clDataTable_tests
 		  t1.debug_dump
 		  
 		  t2.debug_dump
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_007()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim rtst As clDataRow
+		  
+		  Dim ttst As New clDataTable("T1")
+		  
+		  ttst.add_columns(Array("cc1","cc2","cc3"))
+		  
+		  ttst.append_row(Array("aaa0","bbb0","ccc0"))
+		  ttst.append_row(Array("aaa1","bbb1","ccc1"))
+		  ttst.append_row(Array("aaa2","bbb2","ccc2"))
+		  ttst.append_row(Array("aaa3","bbb3","ccc3"))
+		  
+		  Dim tmp1 As Integer = ttst.find_first_matching_row("cc2","bbb2")
+		  Dim tmp2 As Integer = ttst.find_first_matching_row("cc2","zzz2")
+		  Dim tmp3 As Integer = ttst.find_first_matching_row("zz2","bbb2")
+		  
+		  ttst.debug_dump
+		  
+		  
+		  Dim k As Integer = 1
 		  
 		  
 		End Sub

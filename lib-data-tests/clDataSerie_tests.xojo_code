@@ -1,7 +1,7 @@
 #tag Module
 Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
-		Function filter01(the_row as integer, the_column as string, the_value as variant) As Boolean
+		Function filter01(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
 		  Return True
 		  
 		End Function
@@ -69,19 +69,35 @@ Protected Module clDataSerie_tests
 		  Dim c1 As New clDataSerie("premier") 
 		  Dim c2 As New clDataSerie("second") 
 		  
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
+		  c1.append_element("aaa1")
+		  c1.append_element("bb1")
+		  c1.append_element("cccc1")
+		  c1.append_element("aaa2")
+		  c1.append_element("bb2")
+		  c1.append_element("cccc2")
+		  c1.append_element("aaa3")
+		  c1.append_element("bb3")
+		  c1.append_element("cccc3")
+		  c1.append_element("aaa4")
+		  c1.append_element("bb4")
+		  c1.append_element("cccc4")
 		  
 		  c2.append_element(12)
 		  c2.append_element(345)
 		  c2.append_element(5678)
 		  
 		  Dim f1() As variant
+		  Dim f2() As variant
+		  Dim f3() As Variant
 		  
 		  f1 = c1.apply_filter(AddressOf filter01)
 		  
-		  Dim c3 As New clDataSerie("test", f1)
+		  f2 = c1.apply_filter(AddressOf retain_serie_head, 7)
+		  
+		  f3 = c1.apply_filter(AddressOf retain_serie_tail)
+		  
+		  Dim c3 As New clDataSerie("test001", f1)
+		  Dim c4 As New clDataSerie("test002", f1)
 		  
 		  
 		  c1.debug_dump
@@ -89,6 +105,8 @@ Protected Module clDataSerie_tests
 		  c2.debug_dump
 		  
 		  c3.debug_dump
+		  
+		  c4.debug_dump
 		End Sub
 	#tag EndMethod
 
