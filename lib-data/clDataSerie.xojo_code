@@ -8,6 +8,20 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(the_source_file as FolderItem)
+		  Dim tmp_serie_name As String
+		  
+		  tmp_serie_name = load_from_text(the_source_file, True)
+		  
+		  If tmp_serie_name.Len>0 Then
+		    serie_name = tmp_serie_name
+		    
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_label as string)
 		  serie_name = the_label
 		End Sub
@@ -47,9 +61,43 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub load_from_text(the_source as FolderItem)
+		Function load_from_text(the_source as FolderItem, has_header  as Boolean) As String
+		  //
+		  // Load the serie from a text file, each line is loaded into one element, without further processing
+		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string
+		  //
 		  
-		End Sub
+		  Dim got_header As Boolean
+		  Dim text_file  As TextInputStream
+		  Dim return_header As String
+		  
+		  If the_source = Nil Then
+		    Return "noname"
+		    
+		  End If
+		  
+		  text_file = TextInputStream.Open(the_source)
+		  
+		  got_header = Not has_header
+		  
+		  While Not text_file.EOF
+		    Dim tmp_source_line As String = text_file.ReadLine
+		    
+		    If got_header Then
+		      append_element(tmp_source_line)
+		      
+		    Else
+		      return_header = tmp_source_line
+		      got_header = True
+		      
+		    End If
+		    
+		  Wend
+		  
+		  text_file.close
+		  
+		  Return return_header
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

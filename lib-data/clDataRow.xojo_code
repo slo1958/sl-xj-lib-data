@@ -39,7 +39,7 @@ Implements Xojo.Core.Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function namexxx() As string
+		Function name() As string
 		  Return my_label
 		End Function
 	#tag EndMethod

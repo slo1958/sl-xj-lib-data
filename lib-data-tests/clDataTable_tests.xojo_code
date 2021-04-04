@@ -128,6 +128,24 @@ Protected Module clDataTable_tests
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub test_004()
+		  Dim k As Variant
+		  
+		  Dim fld_folder As New FolderItem
+		  Dim fld_file As FolderItem
+		  
+		  fld_folder = fld_folder.Child("test-data")
+		  
+		  fld_file = fld_folder.Child("myfile3_10K.txt")
+		  
+		  
+		  k = myfile3_10K
+		  
+		  Dim k2 As Integer=1
+		End Sub
+	#tag EndMethod
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

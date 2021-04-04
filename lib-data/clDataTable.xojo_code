@@ -132,10 +132,36 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(the_source_file as FolderItem)
+		  Dim tmp_table_name As String
+		  
+		  If the_source_file = Nil Then
+		    tmp_table_name = "noname"
+		    
+		  Else
+		    tmp_table_name = the_source_file.Name
+		    
+		  End If
+		  
+		  internal_new_table(tmp_table_name)
+		  
+		  If the_source_file = Nil Then
+		    Return
+		    
+		  End If
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_table_name as string)
-		  columns_map = New Dictionary
-		  table_name = the_table_name
-		  row_index = New clDataSerieIndex("index")
+		  Dim tmp_table_name As String
+		  
+		  tmp_table_name = the_table_name
+		  
+		  internal_new_table(tmp_table_name)
 		  
 		  
 		End Sub
@@ -222,6 +248,22 @@ Protected Class clDataTable
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub internal_new_table(the_table_name as string)
+		  columns_map = New Dictionary
+		  table_name = the_table_name
+		  row_index = New clDataSerieIndex("index")
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub load_from_text(the_source as FolderItem)
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function row_count() As integer
 		  If Self.row_index = Nil Then
@@ -233,6 +275,12 @@ Protected Class clDataTable
 		  End If
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub save_as_text(the_destination as FolderItem)
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
