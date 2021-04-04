@@ -2,8 +2,7 @@
 Protected Module clDataTable_tests
 	#tag Method, Flags = &h1
 		Protected Sub test_001()
-		  
-		  System.DebugLog("START test_001")
+		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
 		  
@@ -33,8 +32,7 @@ Protected Module clDataTable_tests
 
 	#tag Method, Flags = &h1
 		Protected Sub test_002()
-		  
-		  System.DebugLog("START test_002")
+		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
 		  
@@ -89,12 +87,11 @@ Protected Module clDataTable_tests
 
 	#tag Method, Flags = &h1
 		Protected Sub test_003()
+		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
-		  
 		  Dim ttst1 As New clDataTable("T1")
 		  
-		  System.DebugLog("START test_003")
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1234)
@@ -130,6 +127,8 @@ Protected Module clDataTable_tests
 
 	#tag Method, Flags = &h0
 		Sub test_004()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
 		  Dim k As Variant
 		  
 		  Dim fld_folder As New FolderItem
@@ -162,7 +161,7 @@ Protected Module clDataTable_tests
 
 	#tag Method, Flags = &h0
 		Sub test_005()
-		  System.DebugLog("START test_001")
+		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
 		  
@@ -195,6 +194,46 @@ Protected Module clDataTable_tests
 		  
 		  
 		  Dim k As Integer = 1
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_006()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim c1 As New clDataSerie("premier")
+		  Dim c2 As New clDataSerie("second")
+		  
+		  c1.append_element("aaa")
+		  c1.append_element("bbb")
+		  c1.append_element("ccc")
+		  
+		  
+		  c2.append_element(12)
+		  c2.append_element(34)
+		  c2.append_element(56)
+		  c2.append_element(78)
+		  
+		  Dim t1 As New clDataTable("mytable1", make_serie_array(c1, c2))
+		  
+		  Dim t2 As New clDataTable("mytable2", make_serie_array(c1, c2), True)
+		  
+		  Dim r1 As clDataRow
+		  r1 = New clDataRow
+		  r1.set_cell("premier","dddd")
+		  r1.set_cell("second",90)
+		  
+		  t1.append_row(r1)
+		  
+		  r1.set_cell("troisieme",True)
+		  t2.append_row(r1)
+		  
+		  
+		  t1.debug_dump
+		  
+		  t2.debug_dump
 		  
 		  
 		End Sub

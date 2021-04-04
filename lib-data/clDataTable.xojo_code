@@ -13,7 +13,8 @@ Protected Class clDataTable
 		    
 		    If link_to_parent = Nil Then
 		      
-		      tmp_column = New clDataSerie(tmp_column_name, Self)
+		      tmp_column = New clDataSerie(tmp_column_name)
+		      tmp_column.link_to_table(Self)
 		      
 		      tmp_column.set_length(row_count)
 		      
@@ -169,6 +170,55 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(the_table_name as string, the_columns() as clDataSerie, auto_clone_columns as boolean = false)
+		  //
+		  // create a table from a set of columns
+		  // columns cannot be part of another table, use select_columns to create a virtual table if you want to retain the relationship
+		  // 
+		  
+		  Dim tmp_columns() As clDataSerie = the_columns
+		  
+		  For i As Integer = 0 To tmp_columns.Ubound
+		    If tmp_columns(i) = Nil Then
+		      Raise New clDataException("Internal error")
+		      
+		    Elseif tmp_columns(i).is_linked_to_table And  auto_clone_columns Then
+		      tmp_columns(i) = tmp_columns(i).clone
+		      
+		    Elseif tmp_columns(i).is_linked_to_table And Not auto_clone_columns Then
+		      Raise New clDataException("Cannot add a linked serie to a new table.")
+		      
+		    Else
+		      
+		    End If
+		    
+		  Next
+		  
+		  internal_new_table(the_table_name)
+		  Dim max_item_count As Integer=0
+		  
+		  For Each c As clDataSerie In tmp_columns
+		    If max_item_count < c.row_count Then
+		      max_item_count = c.row_count
+		      
+		    End If
+		    
+		    internal_add_logical_column(c)
+		    c.link_to_table(Self)
+		    
+		  Next
+		  
+		  For Each c As clDataSerie In columns
+		    c.set_length(max_item_count)
+		    
+		  Next
+		  
+		  row_index.set_length(max_item_count)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub debug_dump()
 		  
 		  Dim tmp_item() As String
@@ -242,10 +292,6 @@ Protected Class clDataTable
 		  Self.column_names.Append(tmp_column_name)
 		  
 		  
-		  Dim tmp() As String
-		  tmp.Append("aaa")
-		  
-		  call get_columns(tmp)
 		End Sub
 	#tag EndMethod
 

@@ -8,6 +8,35 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function apply_filter(the_filter_function as filter_column) As variant()
+		  Dim return_boolean() As Variant
+		  
+		  For i As Integer=0 To items.Ubound
+		    return_boolean.Append(the_filter_function.Invoke(i, name, items(i)))
+		    
+		  Next
+		  
+		  Return return_boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clone() As clDataSerie
+		  Dim tmp As New clDataSerie(Self.name)
+		  
+		  For Each v As variant In Self.items
+		    tmp.append_element(v)
+		    
+		  Next
+		  
+		  Return tmp
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_source_file as FolderItem)
 		  Dim tmp_serie_name As String
 		  
@@ -22,12 +51,54 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_label as string, the_physical_table as clDataTable = nil)
+		Sub Constructor(the_label as string)
 		  serie_name = the_label
-		  physical_table_link = the_physical_table
+		  physical_table_link = Nil
 		  
 		End Sub
 	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(the_label as string, the_values() as variant)
+		  serie_name = the_label
+		  physical_table_link = Nil
+		  
+		  For i As Integer = 0 To the_values.Ubound
+		    items.Append(the_values(i))
+		    
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub debug_dump()
+		  
+		  Dim tmp_item() As String
+		  
+		  System.DebugLog("----START SERIE " + Self.serie_name+" --------")
+		  
+		  
+		  System.DebugLog(Join(tmp_item, ";"))
+		  
+		  For row As Integer = 0 To row_count-1
+		    Redim tmp_item(-1)
+		    
+		    tmp_item.Append(Str(row))
+		    tmp_item.Append(items(row))
+		    
+		    System.DebugLog(Join(tmp_item, ";"))
+		    
+		  Next
+		  
+		  System.DebugLog("----END " + Self.serie_name+" --------")
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function filter_column(the_row_index as integer, the_column_name as string, the_cell_value as variant) As Boolean
+	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
 		Function find_row_index_for_value(the_find_value as Variant) As integer()
@@ -60,6 +131,27 @@ Protected Class clDataSerie
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function is_linked_to_table() As Boolean
+		  Return physical_table_link <> Nil
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub link_to_table(the_table as clDataTable)
+		  
+		  If physical_table_link = Nil Then
+		    physical_table_link = the_table
+		    
+		  Else
+		    Raise New clDataException("Cannot redefine link to table for a serie")
+		    
+		  End If
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
