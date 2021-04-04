@@ -14,6 +14,25 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function find_row_index_for_value(the_find_value as Variant) As integer()
+		  //
+		  // returns row index of rows matching the value
+		  //
+		  Dim ret() As Integer
+		  
+		  For i As Integer = 0 To items.Ubound
+		    If items(i) = the_find_value Then
+		      ret.Append(i)
+		      
+		    End If
+		    
+		  Next
+		  
+		  Return ret
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_element(the_element_index as integer) As Variant
 		  If items.Ubound >= the_element_index Then
 		    Return items(the_element_index)
@@ -28,6 +47,12 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub load_from_text(the_source as FolderItem)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function name() As String
 		  Return serie_name
 		End Function
@@ -38,6 +63,12 @@ Protected Class clDataSerie
 		  Return items.Ubound+1
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub save_as_text(the_destination as FolderItem)
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -89,12 +120,6 @@ Protected Class clDataSerie
 		#tag ViewProperty
 			Name="name"
 			Group="Behavior"
-			Type="String"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="serie_name"
-			Visible=true
-			Group="ID"
 			Type="String"
 		#tag EndViewProperty
 		#tag ViewProperty
