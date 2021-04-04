@@ -265,6 +265,19 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub rename(the_new_name as string)
+		  If the_new_name.Len = 0 Then
+		    Self.table_name = "noname"
+		    
+		  Else
+		    Self.table_name = the_new_name
+		    
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function row_count() As integer
 		  If Self.row_index = Nil Then
 		    Return -1

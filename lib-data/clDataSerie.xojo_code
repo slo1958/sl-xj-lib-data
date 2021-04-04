@@ -107,6 +107,19 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub rename(the_new_name as string)
+		  If the_new_name.Len = 0 Then
+		    Self.serie_name = "noname"
+		    
+		  Else
+		    Self.serie_name = the_new_name
+		    
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function row_count() As integer
 		  Return items.Ubound+1
 		  
@@ -114,7 +127,7 @@ Protected Class clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub save_as_text(the_destination as FolderItem)
+		Sub save_as_text(the_destination as FolderItem, name_as_header as Boolean)
 		  
 		End Sub
 	#tag EndMethod
