@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataSerie
-Implements clDataSupport.itf_string_able
+Implements clDataSupport.itf_string_able, clDataSupport.itf_json_able
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  items.Append(the_item)
@@ -83,20 +83,35 @@ Implements clDataSupport.itf_string_able
 		  System.DebugLog(Join(tmp_item, ";"))
 		  
 		  For row As Integer = 0 To row_count-1
+		    Dim element As variant = get_element(row)
+		    Dim ok_convert As Boolean
 		    Redim tmp_item(-1)
-		    
 		    
 		    tmp_item.Append(Str(row))
 		    
+		    ok_convert = False
+		    
 		    Try
-		      tmp_item.Append(get_element_as_string(row))
+		      tmp_item.Append(element.StringValue)
+		      ok_convert = True
 		      
 		    Catch TypeMismatchException
-		      tmp_item.Append("")
 		      
 		      
 		    End Try
 		    
+		    If Not ok_convert Then
+		      If element IsA clDataSupport.itf_json_able Then
+		        tmp_item.Append(clDataSupport.itf_json_able(element).to_json.ToString)
+		        ok_convert = True
+		      End If
+		      
+		    End If
+		    
+		    If Not ok_convert Then
+		      tmp_item.Append("")
+		      
+		    End If
 		    
 		    System.DebugLog(Join(tmp_item, ";"))
 		    
@@ -150,7 +165,15 @@ Implements clDataSupport.itf_string_able
 		  Dim tmp_v As variant
 		  
 		  tmp_v = get_element(the_element_index)
-		  tmp_d = tmp_v.DoubleValue
+		  
+		  Try 
+		    tmp_d = tmp_v.DoubleValue
+		    
+		  Catch TypeMismatchException
+		    tmp_d = 0
+		    last_error_message = "Cannot convert element "+Str(the_element_index) + " to number."
+		    
+		  End Try
 		  
 		  Return tmp_d
 		End Function
@@ -163,7 +186,14 @@ Implements clDataSupport.itf_string_able
 		  
 		  tmp_v = get_element(the_element_index)
 		  
-		  tmp_s = tmp_v.to_string
+		  Try 
+		    tmp_s = tmp_v.StringValue
+		    
+		  Catch TypeMismatchException
+		    tmp_s = ""
+		    last_error_message = "Cannot convert element "+Str(the_element_index) + " to string."
+		    
+		  End Try
 		  
 		  Return tmp_s
 		End Function
@@ -335,16 +365,55 @@ Implements clDataSupport.itf_string_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function to_json() As JSONItem
+		  // Part of the clDataSupport.itf_json_able interface.
+		  
+		  // Part of the clDataSupport.itf_string_able interface.
+		  
+		  Dim js As New JSONItem
+		  
+		  For row As Integer = 0 To row_count-1
+		    Dim element As variant = get_element(row)
+		    
+		    If element IsA clDataSupport.itf_json_able Then
+		      js.append(clDataSupport.itf_json_able(element).to_json)
+		      
+		    Else
+		      Try
+		        js.Append(element.StringValue)
+		        
+		      Catch TypeMismatchExceptiondim  
+		        js.Append("Cannot convert")
+		        
+		      End Try
+		      
+		    End If
+		    
+		  Next
+		  
+		  Return js
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function to_string() As string
 		  // Part of the clDataSupport.itf_string_able interface.
 		  
-		  return "List :" + serie_name
+		  Dim js As JSONItem = to_json
+		  
+		  Return js.tostring
+		  
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h1
 		Protected items() As Variant
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		last_error_message As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

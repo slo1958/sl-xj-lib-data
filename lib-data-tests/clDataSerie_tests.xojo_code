@@ -161,7 +161,7 @@ Protected Module clDataSerie_tests
 		  Dim c1 As New clDataSerie("premier") 
 		  Dim c2 As New clDataSerie("second") 
 		  Dim c3 As New clDataSerie("parent")
-		  
+		  Dim c4 As New clDataSerie("grand-parent")
 		  
 		  c1.append_element("123.4")
 		  c1.append_element(140.5)
@@ -174,6 +174,8 @@ Protected Module clDataSerie_tests
 		  c3.append_element(c1)
 		  c3.append_element(c2)
 		  
+		  c4.append_element(c3)
+		  
 		  Dim d1 As Double
 		  Dim d2 As Double
 		  
@@ -183,6 +185,8 @@ Protected Module clDataSerie_tests
 		  c2.debug_dump
 		  
 		  c3.debug_dump 
+		  
+		  c4.debug_dump 
 		End Sub
 	#tag EndMethod
 

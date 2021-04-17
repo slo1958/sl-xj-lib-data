@@ -1,30 +1,7 @@
-#tag Module
-Protected Module clDataSupport
+#tag Interface
+Protected Interface itf_json_able
 	#tag Method, Flags = &h0
-		Function make_serie_array(paramarray series as clDataSerie) As clDataSerie()
-		  Dim tmp() As clDataSerie
-		  
-		  For Each c As clDataSerie In series
-		    tmp.Append(c)
-		    
-		  Next
-		  
-		  Return tmp
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function make_variant_array(paramarray items as variant) As variant()
-		  Dim ret() As variant
-		  
-		  For Each item As variant In items
-		    ret.append(item)
-		    
-		  Next
-		  
-		  Return ret
+		Function to_json() As JSONItem
 		  
 		End Function
 	#tag EndMethod
@@ -65,5 +42,5 @@ Protected Module clDataSupport
 			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
-End Module
-#tag EndModule
+End Interface
+#tag EndInterface
