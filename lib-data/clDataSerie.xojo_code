@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataSerie
-Implements clDataSupport.itf_string_able, clDataSupport.itf_json_able
+Implements  clDataSupport.itf_json_able
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  items.Append(the_item)
@@ -370,20 +370,21 @@ Implements clDataSupport.itf_string_able, clDataSupport.itf_json_able
 		  
 		  // Part of the clDataSupport.itf_string_able interface.
 		  
-		  Dim js As New JSONItem
+		  Dim js_list As New JSONItem
+		  Dim js_return As New JSONItem
 		  
 		  For row As Integer = 0 To row_count-1
 		    Dim element As variant = get_element(row)
 		    
 		    If element IsA clDataSupport.itf_json_able Then
-		      js.append(clDataSupport.itf_json_able(element).to_json)
+		      js_list.append(clDataSupport.itf_json_able(element).to_json)
 		      
 		    Else
 		      Try
-		        js.Append(element.StringValue)
+		        js_list.Append(element.StringValue)
 		        
 		      Catch TypeMismatchExceptiondim  
-		        js.Append("Cannot convert")
+		        js_list.Append("Cannot convert")
 		        
 		      End Try
 		      
@@ -391,18 +392,9 @@ Implements clDataSupport.itf_string_able, clDataSupport.itf_json_able
 		    
 		  Next
 		  
-		  Return js
+		  js_return.Value(name) = js_list
 		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function to_string() As string
-		  // Part of the clDataSupport.itf_string_able interface.
-		  
-		  Dim js As JSONItem = to_json
-		  
-		  Return js.tostring
+		  Return js_return
 		  
 		End Function
 	#tag EndMethod
