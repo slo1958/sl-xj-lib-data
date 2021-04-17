@@ -151,11 +151,30 @@ Implements  clDataSupport.itf_json_able
 		    Return items(the_element_index)
 		    
 		  Else
-		    Return ""
+		    Dim v As Variant
+		    Return v
 		    
 		  End If
 		  
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_element_as_data_serie(the_element_index as integer) As clDataSerie
+		  
+		  Dim tmp_v As clDataSerie
+		  
+		  Try 
+		    tmp_v = get_element(the_element_index)
+		    
+		  Catch TypeMismatchException
+		    tmp_v = Nil
+		    last_error_message = "Cannot convert element "+Str(the_element_index) + " to string."
+		    
+		  End Try
+		  
+		  Return tmp_v
 		End Function
 	#tag EndMethod
 

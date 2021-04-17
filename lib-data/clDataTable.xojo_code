@@ -382,6 +382,12 @@ Protected Class clDataTable
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function group_by(fields() as string) As clDataTable
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Sub internal_add_logical_column(the_column as clDataSerie)
 		  Dim tmp_column As clDataSerie = the_column
@@ -642,6 +648,48 @@ Protected Class clDataTable
 		  
 		End Sub
 	#tag EndMethod
+
+
+	#tag Note, Name = Group by
+		
+		option 1
+		
+		creates a data table with n+1 column, where n is the number of fields to group by 
+		
+		
+		the elements in column n+1 are Data serie
+		
+		for each data serie
+		
+		the name of the dataserie is the serialized json from fieldname/fieldvalue from the group by fields
+		the elements of the dataserie are record indexes in the parent dataset where we have matching key fields
+		!! need to retain the source table and source table structure in order to do operations on the other fields
+		
+		
+		option 2
+		creates a data table with n + m columns, where n is the number of fields to group by and m is the number of fields to retain
+		
+		
+		the elements in columns n+1 to n+m are data series
+		the name of the dataseries is tdb 
+		the elements of the dataserie are values from the fields to retain related to the grouping fields
+		
+		
+		
+		
+		option 3
+		creates a data table with n + m columns, where n is the number of fields to group by and m is the number of results 
+		passing four arguments:
+		
+		- fields to group by
+		- fields to count
+		- fields to sum
+		- fields to average
+		
+		
+		
+		 
+	#tag EndNote
 
 
 	#tag Property, Flags = &h1
