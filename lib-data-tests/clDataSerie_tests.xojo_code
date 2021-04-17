@@ -7,8 +7,8 @@ Protected Module clDataSerie_tests
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Sub test_001()
+	#tag Method, Flags = &h0
+		Sub test_001()
 		  Dim test  As clDataSerie
 		  
 		  
@@ -18,7 +18,20 @@ Protected Module clDataSerie_tests
 		  test.append_element("world")
 		  
 		  
-		  system.DebugLog("return " + str(test.row_count))
+		  System.DebugLog("return " + Str(test.row_count))
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_003()
+		  Dim test  As clDataSerie
+		  
+		  
+		  test = New clDataSerie("test", make_variant_array("aaa",123,True))
+		  
+		  Dim k As Integer =1
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -107,6 +120,69 @@ Protected Module clDataSerie_tests
 		  c3.debug_dump
 		  
 		  c4.debug_dump
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_007()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim c1 As New clDataSerie("premier") 
+		  Dim c2 As New clDataSerie("second") 
+		  
+		  c1.append_element("123.4")
+		  c1.append_element(140.5)
+		  
+		  c2.append_element("123.4")
+		  c2.append_element(140.5)
+		  c2.append_element("yoyo")
+		  
+		  Dim d1 As Double
+		  Dim d2 As Double
+		  
+		  d1 = c1.sum_group_by(0)
+		  d2 = c2.sum_group_by(0)
+		  
+		  
+		  c1.debug_dump
+		  
+		  c2.debug_dump
+		  
+		  System.DebugLog(Str(d1))
+		  System.DebugLog(str(d2))
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_008()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim c1 As New clDataSerie("premier") 
+		  Dim c2 As New clDataSerie("second") 
+		  Dim c3 As New clDataSerie("parent")
+		  
+		  
+		  c1.append_element("123.4")
+		  c1.append_element(140.5)
+		  
+		  c2.append_element("123.4")
+		  c2.append_element(140.5)
+		  c2.append_element("yoyo")
+		  
+		  
+		  c3.append_element(c1)
+		  c3.append_element(c2)
+		  
+		  Dim d1 As Double
+		  Dim d2 As Double
+		  
+		  
+		  c1.debug_dump
+		  
+		  c2.debug_dump
+		  
+		  c3.debug_dump 
 		End Sub
 	#tag EndMethod
 

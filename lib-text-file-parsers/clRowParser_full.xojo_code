@@ -166,9 +166,15 @@ Inherits clRowParser_generic
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="always_add_quotes"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="delimiter"
 			Group="Behavior"
 			Type="String"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"

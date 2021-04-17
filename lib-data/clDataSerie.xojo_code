@@ -1,5 +1,6 @@
 #tag Class
 Protected Class clDataSerie
+Implements clDataSupport.itf_string_able
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  items.Append(the_item)
@@ -84,8 +85,18 @@ Protected Class clDataSerie
 		  For row As Integer = 0 To row_count-1
 		    Redim tmp_item(-1)
 		    
+		    
 		    tmp_item.Append(Str(row))
-		    tmp_item.Append(items(row))
+		    
+		    Try
+		      tmp_item.Append(get_element_as_string(row))
+		      
+		    Catch TypeMismatchException
+		      tmp_item.Append("")
+		      
+		      
+		    End Try
+		    
 		    
 		    System.DebugLog(Join(tmp_item, ";"))
 		    
@@ -130,6 +141,31 @@ Protected Class clDataSerie
 		  End If
 		  
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_element_as_number(the_element_index as integer) As double
+		  Dim tmp_d As Double
+		  Dim tmp_v As variant
+		  
+		  tmp_v = get_element(the_element_index)
+		  tmp_d = tmp_v.DoubleValue
+		  
+		  Return tmp_d
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_element_as_string(the_element_index as integer) As string
+		  Dim tmp_s As String
+		  Dim tmp_v As variant
+		  
+		  tmp_v = get_element(the_element_index)
+		  
+		  tmp_s = tmp_v.to_string
+		  
+		  Return tmp_s
 		End Function
 	#tag EndMethod
 
@@ -280,6 +316,30 @@ Protected Class clDataSerie
 		  Wend
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function sum_group_by(the_groups as integer) As double
+		  Dim limit As Integer = row_count
+		  Dim i As Integer
+		  
+		  Dim s As Double
+		  For i = 0 To limit-1
+		    s = s + get_element_as_number(i)
+		    
+		  Next
+		  
+		  return s
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function to_string() As string
+		  // Part of the clDataSupport.itf_string_able interface.
+		  
+		  return "List :" + serie_name
+		End Function
 	#tag EndMethod
 
 

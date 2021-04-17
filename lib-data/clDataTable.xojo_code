@@ -429,6 +429,10 @@ Protected Class clDataTable
 		  Dim text_file  As TextInputStream
 		  Dim return_header As String
 		  
+		  Dim time_start As Double = Microseconds
+		  System.DebugLog "Loading " + the_source.Name
+		  
+		  
 		  If the_source = Nil Then
 		    Return 
 		    
@@ -473,6 +477,9 @@ Protected Class clDataTable
 		  
 		  text_file.close
 		  
+		  Dim time_end As Double = Microseconds
+		  
+		  System.DebugLog "Completed after " + Str((time_end - time_start)/1000000)
 		  Return  
 		End Sub
 	#tag EndMethod
