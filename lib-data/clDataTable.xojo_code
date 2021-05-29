@@ -1,10 +1,52 @@
 #tag Class
 Protected Class clDataTable
 	#tag Method, Flags = &h0
+		Function add_column(the_column as clDataSerie) As clDataSerie
+		  Dim tmp_column As clDataSerie = the_column
+		  
+		  Dim tmp_column_name As String = tmp_column.name
+		  
+		  If Self.get_column(tmp_column_name) <> Nil Then
+		    Return Nil
+		    
+		  Else
+		    
+		    If link_to_parent = Nil Then
+		      tmp_column.link_to_table(Self)
+		      tmp_column.set_length(row_count)
+		      
+		    Elseif allow_local_columns Then
+		      If tmp_column.is_linked_to_table Then
+		        
+		      Else
+		        tmp_column.link_to_table(Self)
+		        
+		      End If
+		      
+		      tmp_column.set_length(row_count)
+		      
+		    Else
+		      tmp_column = link_to_parent.add_column(the_column)
+		      
+		    End If
+		    
+		    If tmp_column <> Nil Then
+		      Self.columns.Append(tmp_column)
+		      
+		    End If
+		    
+		    Return tmp_column
+		    
+		  End If
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function add_column(the_column_name as String) As clDataSerie
 		  Dim tmp_column_name As String = the_column_name
 		  
-		  If columns_map.HasKey(tmp_column_name) Then
+		  If Self.get_column(tmp_column_name) <> Nil Then
 		    Return Nil
 		    
 		  Else
@@ -12,36 +54,43 @@ Protected Class clDataTable
 		    Dim tmp_column As clDataSerie
 		    
 		    If link_to_parent = Nil Then
-		      
 		      tmp_column = New clDataSerie(tmp_column_name)
 		      tmp_column.link_to_table(Self)
-		      
 		      tmp_column.set_length(row_count)
 		      
-		      internal_add_logical_column(tmp_column)
-		      
+		    Elseif allow_local_columns Then
+		      tmp_column = New clDataSerie(tmp_column_name)
+		      tmp_column.link_to_table(Self)
+		      tmp_column.set_length(row_count)
 		      
 		    Else
+		      ' could be nil if the column exists in the parent datatable
 		      tmp_column = link_to_parent.add_column( tmp_column_name)
 		      
-		      internal_add_logical_column(tmp_column)
+		    End If
+		    
+		    If tmp_column <> Nil Then
+		      Self.columns.Append(tmp_column)
 		      
 		    End If
 		    
 		    Return tmp_column
+		    
 		  End If
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub add_columns(the_column_names() as string)
+		Function add_columns(the_column_names() as string) As clDataSerie()
+		  Dim return_array() As clDataSerie
+		  
 		  For Each name As String In the_column_names
-		    call add_column(name)
+		    return_array.append(add_column(name))
 		    
 		  Next
 		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -51,34 +100,27 @@ Protected Class clDataTable
 		  
 		  Dim columns_to_update() As String
 		  
-		  For Each column As String In columns_map.Keys
-		    columns_to_update.Append(column)
+		  For Each column As clDataSerie In columns
+		    columns_to_update.Append(column.name)
 		    
 		  Next
 		  
 		  
+		  
 		  For Each column As String In the_row
-		    Dim tmp_column_exists As Boolean  = columns_map.HasKey(column)
+		    Dim tmp_column As clDataSerie = Self.get_column(column)
 		    
-		    If  tmp_column_exists Or create_columns_flag Then
-		      Dim tmp_column As  clDataSerie
+		    If tmp_column = Nil And create_columns_flag Then
+		      tmp_column = add_column(column)
 		      
-		      If Not tmp_column_exists Then
-		        tmp_column = add_column(column)
-		        
-		      Else
-		        columns_to_update.Remove(columns_to_update.IndexOf(column))
-		        tmp_column = columns_map.Value(column)
-		        
-		      End If
-		      
-		      Dim tmp_item As variant = the_row.get_cell(column)
-		      
-		      tmp_column.append_element(tmp_item)
-		      
+		    End If
+		    
+		    If tmp_column = Nil Then
+		      Raise New clDataException("Adding row with unexpected column " + column)
 		      
 		    Else
-		      Raise New clDataException("Adding row with unexpected column " + column)
+		      Dim tmp_item As variant = the_row.get_cell(column)
+		      tmp_column.append_element(tmp_item)
 		      
 		    End If
 		    
@@ -86,8 +128,8 @@ Protected Class clDataTable
 		  
 		  Self.row_index.append_element("")
 		  
-		  For Each column As String In columns_to_update
-		    clDataSerie(columns_map.Value(column)).set_length(tmp_row_count+1)
+		  For Each column As clDataSerie In Self.columns
+		    column.set_length(tmp_row_count+1)
 		    
 		  Next
 		  
@@ -137,17 +179,12 @@ Protected Class clDataTable
 		Sub append_table(the_table as clDataTable)
 		  
 		  For Each src_tmp_column As clDataSerie In the_table.columns
-		    Dim column As String = src_tmp_column.name
+		    Dim column_name As String = src_tmp_column.name
 		    
-		    Dim dst_tmp_column As  clDataSerie
+		    Dim dst_tmp_column As  clDataSerie = Self.get_column(column_name)
 		    
-		    src_tmp_column = the_table.columns_map.Value(column)
-		    
-		    if self.columns_map.HasKey(column) then
-		      dst_tmp_column = Self.columns_map.Value(column)
-		      
-		    Else
-		      dst_tmp_column = Self.add_column(column)
+		    If dst_tmp_column = Nil Then
+		      dst_tmp_column = Self.add_column(column_name)
 		      
 		    End If
 		    
@@ -159,8 +196,8 @@ Protected Class clDataTable
 		  Next
 		  
 		  Dim new_size As Integer = Self.row_count + the_table.row_count
-		  Self.row_index.set_length(new_size)
 		  
+		  Self.row_index.set_length(new_size)
 		  
 		  For Each tmp_column As clDataSerie In Self.columns
 		    tmp_column.set_length(new_size)
@@ -274,8 +311,7 @@ Protected Class clDataTable
 		      
 		    End If
 		    
-		    internal_add_logical_column(c)
-		    c.link_to_table(Self)
+		    call Self.add_column(c)
 		    
 		  Next
 		  
@@ -297,8 +333,8 @@ Protected Class clDataTable
 		  System.DebugLog("----START " + Self.table_name+" --------")
 		  
 		  tmp_item.Append("index")
-		  For Each column As String In column_names
-		    tmp_item.Append(column)
+		  For Each tmp_column As clDataSerie In columns
+		    tmp_item.Append(tmp_column.name)
 		    
 		  Next
 		  
@@ -308,9 +344,8 @@ Protected Class clDataTable
 		    Redim tmp_item(-1)
 		    
 		    tmp_item.Append(Self.row_index.get_element(row))
-		    For Each column As String In column_names
-		      Dim tmp_column As clDataSerie = clDataSerie(columns_map.Value(column))
-		      
+		    
+		    For Each tmp_column As clDataSerie In columns
 		      tmp_item.Append(tmp_column.get_element(row))
 		      
 		    Next
@@ -331,12 +366,12 @@ Protected Class clDataTable
 		Function find_first_matching_row(the_column_name as string, the_column_value as string) As integer
 		  Dim tmp_column As clDataSerie
 		  
-		  If Not columns_map.HasKey(the_column_name) Then
+		  tmp_column = get_column(the_column_name)
+		  
+		  If tmp_column = Nil Then
 		    Return -2
 		    
 		  End If
-		  
-		  tmp_column = columns_map.Value(the_column_name)
 		  
 		  For i As Integer = 0 To tmp_column.row_count-1
 		    If tmp_column.get_element(i) = the_column_value Then
@@ -353,19 +388,35 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_columns(column_names() as string) As clDataSerie()
-		  Dim ret() As clDataSerie
+		Function get_column(the_column_name as String) As clDataSerie
 		  
-		  For Each column As String In column_names
-		    Dim idx As Integer = Self.column_names.IndexOf(column)
-		    
-		    If idx <0 Then
-		      ret.Append(Nil)
-		      
-		    Else
-		      ret.Append(Self.columns_map.value(column))
+		  For Each column As clDataSerie In Self.columns
+		    If column.name = the_column_name Then
+		      Return column
 		      
 		    End If
+		    
+		  Next
+		  
+		  Return Nil
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_columns(column_names() as string) As clDataSerie()
+		  '
+		  ' Return the selected columns as an array of clDataSerie
+		  '
+		  
+		  Dim ret() As clDataSerie
+		  
+		  
+		  For Each column_name As String In column_names
+		    Dim tmp_column As clDataSerie = Self.get_column(column_name)
+		    
+		    ret.Append(tmp_column)
+		    
 		    
 		  Next
 		  
@@ -376,6 +427,9 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Function get_columns(paramarray column_names as string) As clDataSerie()
+		  '
+		  ' Return the selected columns as an array of clDataSerie
+		  '
 		  
 		  Return get_columns(column_names)
 		  
@@ -383,22 +437,139 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function group_by(fields() as string) As clDataTable
+		Function groupby(grouping_dimensions() as string, aggregate_measures() as string, aggregate_mode() as string) As clDataTable
+		  
+		  Dim input_dimensions() As clDataSerie
+		  Dim input_measures() As clDataSerie
+		  
+		  For Each item As String In grouping_dimensions
+		    If Len(Trim(item)) > 0 Then
+		      input_dimensions.Append(Self.get_column(item))
+		      
+		    End If
+		  Next
+		  
+		  For Each item As String In aggregate_measures
+		    If Len(Trim(item)) > 0 Then
+		      input_measures.Append(Self.get_column(item))
+		      
+		    End If
+		  Next
+		  
+		  
+		  Dim has_grouping As Boolean = input_dimensions.Ubound >=0
+		  Dim has_measures As Boolean = input_measures.Ubound >= 0
+		  
+		  
+		  Dim dct_lookup As New Dictionary
+		  
+		  
+		  Dim output_row_count As New clDataSerie("row_count")
+		  
+		  '
+		  ' Prepare output space for grouped dimensions
+		  '
+		  Dim output_dimensions() As clDataSerie
+		  For idx_dim As Integer = 0 To input_dimensions.Ubound
+		    output_dimensions.Append(New clDataSerie(input_dimensions(idx_dim).name))
+		    
+		  Next
+		  
+		  '
+		  ' Prepare temporary space for aggregated measures
+		  '
+		  Dim temp_measures() As clDataSerie
+		  For idx_mea As Integer = 0 To input_measures.Ubound
+		    temp_measures.Append(New clDataSerie(input_measures(idx_mea).name))
+		    If Not has_grouping Then
+		      temp_measures(idx_mea).append_element(New clDataSerie("x"))
+		      output_row_count.append_element(0)
+		    End If
+		    
+		  Next
+		  
+		  
+		  Dim cnt As Integer = Self.row_count - 1
+		  
+		  
+		  For idx_row As Integer = 0 To cnt
+		    Dim idx_output As Integer = -1
+		    
+		    
+		    If has_grouping Then
+		      Dim tmp_key() As String
+		      
+		      For idx_dim As Integer = 0 To input_dimensions.Ubound
+		        tmp_key.Append(input_dimensions(idx_dim).get_element(idx_row))
+		        
+		      Next
+		      
+		      Dim tmp_key_flat As String = Join(tmp_key,Chr(4))
+		      
+		      
+		      If dct_lookup.HasKey(tmp_key_flat) Then
+		        idx_output = dct_lookup.Value(tmp_key_flat)
+		        
+		      Else
+		        For idx_dim As Integer = 0 To input_dimensions.Ubound
+		          output_dimensions(idx_dim).append_element(tmp_key(idx_dim))
+		          
+		        Next
+		        idx_output = output_dimensions(0).row_count - 1
+		        
+		        output_row_count.append_element(0)
+		        
+		        For idx_mea As Integer = 0 To input_measures.Ubound
+		          temp_measures(idx_mea).append_element(New clDataSerie("x"))
+		          
+		        Next
+		        
+		        dct_lookup.Value(tmp_key_flat) = idx_output
+		        
+		        
+		      End If
+		    Else
+		      idx_output = 0
+		      
+		    End If
+		    
+		    output_row_count.set_element(idx_output, output_row_count.get_element(idx_output)+1)
+		    
+		    For idx_mea As Integer = 0 To input_measures.Ubound
+		      Dim tmp_serie As clDataSerie = temp_measures(idx_mea).get_element_as_data_serie(idx_output)
+		      tmp_serie.append_element(input_measures(idx_mea).get_element(idx_row))
+		      
+		    Next
+		    
+		  Next
+		  
+		  Dim output_series() As clDataSerie
+		  
+		  For idx_dim As Integer = 0 To output_dimensions.Ubound
+		    output_series.Append(output_dimensions(idx_dim))
+		    
+		  Next
+		  
+		  
+		  For idx_mea As Integer = 0 To temp_measures.Ubound
+		    Dim tmp_serie As New clDataSerie("sum_" + input_measures(idx_mea).name)
+		    
+		    For idx_item As Integer = 0 To temp_measures(idx_mea).row_count-1
+		      tmp_serie.append_element(temp_measures(idx_mea).get_element_as_data_serie(idx_item).sum)
+		      
+		    Next
+		    
+		    output_series.Append(tmp_serie)
+		    
+		  Next
+		  
+		  output_series.Append(output_row_count)
+		  
+		  Return New clDataTable("results", output_series)
+		  
+		  
 		  
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub internal_add_logical_column(the_column as clDataSerie)
-		  Dim tmp_column As clDataSerie = the_column
-		  Dim tmp_column_name As String = the_column.name
-		  
-		  Self.columns.Append(tmp_column)
-		  Self.columns_map.Value(tmp_column_name) = tmp_column
-		  
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -416,10 +587,12 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h21
 		Private Sub internal_new_table(the_table_name as string)
-		  columns_map = New Dictionary
+		  
 		  table_name = the_table_name
 		  row_index = New clDataSerieIndex("index")
 		  
+		  
+		  allow_local_columns =  False
 		  
 		End Sub
 	#tag EndMethod
@@ -491,21 +664,39 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As string
-		  Return table_name
-		End Function
+		Sub rename(the_new_name as string)
+		  
+		  Self.name = the_new_name
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub rename(the_new_name as string)
-		  If the_new_name.Len = 0 Then
-		    Self.table_name = "noname"
-		    
-		  Else
-		    Self.table_name = the_new_name
-		    
-		  End If
+		Sub rename_column(the_column_name as string, the_new_name as string)
 		  
+		  For idx As Integer = 0 To columns.Ubound
+		    If columns(idx).name = the_column_name Then
+		      columns(idx).name = the_new_name
+		      
+		    End If
+		    
+		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub rename_columns(the_renaming_dict as Dictionary)
+		  
+		  For idx As Integer = 0 To columns.Ubound
+		    
+		    Dim tmp_column_name As String = columns(idx).name
+		    
+		    If the_renaming_dict.HasKey(tmp_column_name) Then
+		      Dim tmp_new_name As String  = the_renaming_dict.value(tmp_column_name)
+		      Self.rename_column(tmp_column_name , tmp_new_name)
+		      
+		    End If
+		    
+		  Next
 		End Sub
 	#tag EndMethod
 
@@ -586,18 +777,22 @@ Protected Class clDataTable
 		Function select_columns(column_names() as string) As clDataTable
 		  Dim res As New clDataTable("select " + Self.table_name)
 		  
-		  res.row_index = Self.row_index
 		  
-		  For Each column As String In column_names
-		    If Self.columns_map.HasKey(column) Then
-		      Dim src_column As clDataSerie = Self.columns_map.value(column)
-		      res.internal_add_logical_column(src_column)
+		  res.row_index = Self.row_index
+		  '
+		  ' link to parent must be called BEFORE adding logical columns
+		  '
+		  res.link_to_parent = Self
+		  
+		  For Each column_name As String In column_names
+		    Dim tmp_column As clDataSerie = Self.get_column(column_name)
+		    
+		    If tmp_column <> Nil Then
+		      call res.add_column(tmp_column)
 		      
 		    End If
 		    
 		  Next
-		  
-		  res.link_to_parent = Self
 		  
 		  Return res
 		  
@@ -609,44 +804,6 @@ Protected Class clDataTable
 		Function select_columns(paramarray column_names as string) As clDataTable
 		  Return select_columns(column_names)
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub synch_columns()
-		  Dim dic_remove() As String
-		  Dim dic_add_key() As String
-		  Dim dic_add_serie() As clDataSerie
-		  
-		  For Each key As String In Self.columns_map.keys
-		    Dim old_name As String = key
-		    Dim tmp_serie As clDataSerie = clDataSerie(Self.columns_map.value(key))
-		    Dim new_name As String = tmp_serie.name
-		    
-		    If old_name <> new_name Then
-		      
-		      dic_remove.Append(old_name)
-		      dic_add_key.Append(new_name)
-		      dic_add_serie.Append(tmp_serie)
-		      
-		    End If
-		    
-		  Next
-		  
-		  
-		  For i As Integer = 0 To dic_remove.Ubound
-		    Self.columns_map.Remove(dic_remove(i))
-		    
-		  Next
-		  
-		  For i As Integer = 0 To dic_add_key.Ubound
-		    Self.columns_map.Value(dic_add_key(i)) = dic_add_serie(i)
-		    
-		  Next
-		  
-		  
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 
@@ -692,17 +849,52 @@ Protected Class clDataTable
 	#tag EndNote
 
 
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return flag_allow_local_columns
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  flag_allow_local_columns = value
+			End Set
+		#tag EndSetter
+		allow_local_columns As Boolean
+	#tag EndComputedProperty
+
 	#tag Property, Flags = &h1
 		Protected columns() As clDataSerie
 	#tag EndProperty
 
-	#tag Property, Flags = &h1
-		Protected columns_map As Dictionary
+	#tag Property, Flags = &h21
+		Private flag_allow_local_columns As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected link_to_parent As clDataTable
 	#tag EndProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  return table_name
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  If value.Trim.Len = 0 Then
+			    Self.table_name = "noname"
+			    
+			  Else
+			    Self.table_name = value.Trim
+			    
+			  End If
+			  
+			End Set
+		#tag EndSetter
+		name As string
+	#tag EndComputedProperty
 
 	#tag Property, Flags = &h1
 		Protected row_index As clDataSerie

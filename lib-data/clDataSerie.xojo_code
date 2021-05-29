@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataSerie
-Implements  clDataSupport.itf_json_able
+Implements clDataSupport.itf_json_able
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  items.Append(the_item)
@@ -91,14 +91,20 @@ Implements  clDataSupport.itf_json_able
 		    
 		    ok_convert = False
 		    
-		    Try
-		      tmp_item.Append(element.StringValue)
+		    If element IsA clDataSerie Then
+		      tmp_item.Append(clDataSupport.itf_json_able(element).to_json.ToString)
 		      ok_convert = True
 		      
-		    Catch TypeMismatchException
-		      
-		      
-		    End Try
+		    Else
+		      Try
+		        tmp_item.Append(element.StringValue)
+		        ok_convert = True
+		        
+		      Catch TypeMismatchException
+		        
+		        
+		      End Try
+		    End If
 		    
 		    If Not ok_convert Then
 		      If element IsA clDataSupport.itf_json_able Then
@@ -147,7 +153,7 @@ Implements  clDataSupport.itf_json_able
 
 	#tag Method, Flags = &h0
 		Function get_element(the_element_index as integer) As Variant
-		  If items.Ubound >= the_element_index Then
+		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
 		    Return items(the_element_index)
 		    
 		  Else
@@ -280,25 +286,13 @@ Implements  clDataSupport.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As String
-		  Return serie_name
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub rename(the_new_name as string)
-		  If the_new_name.Len = 0 Then
-		    Self.serie_name = "noname"
-		    
-		  Else
-		    Self.serie_name = the_new_name
-		    
-		  End If
+		  '
+		  ' use setter of computed property
+		  '
+		  Self.name = the_new_name
 		  
-		  If Self.physical_table_link <> Nil Then
-		    Self.physical_table_link.synch_columns
-		    
-		  End If
+		  
 		  
 		  
 		End Sub
@@ -318,9 +312,7 @@ Implements  clDataSupport.itf_json_able
 		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string
 		  //
 		  
-		  Dim got_header As Boolean
 		  Dim text_file  As TextOutputStream
-		  Dim return_header As String
 		  
 		  If the_destination = Nil Then
 		    Return
@@ -348,7 +340,7 @@ Implements  clDataSupport.itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub set_element(the_element_index as integer, the_item as Variant)
-		  If items.Ubound <= the_element_index Then
+		  If 0 <= the_element_index And  the_element_index <= items.Ubound Then
 		    items(the_element_index) = the_item
 		    
 		  End If
@@ -368,12 +360,12 @@ Implements  clDataSupport.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function sum_group_by(the_groups as integer) As double
-		  Dim limit As Integer = row_count
+		Function sum() As double
+		  Dim limit As Integer = row_count - 1
 		  Dim i As Integer
 		  
 		  Dim s As Double
-		  For i = 0 To limit-1
+		  For i = 0 To limit
 		    s = s + get_element_as_number(i)
 		    
 		  Next
@@ -427,6 +419,27 @@ Implements  clDataSupport.itf_json_able
 		last_error_message As String
 	#tag EndProperty
 
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return serie_name
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  If value.Trim.Len = 0 Then
+			    Self.serie_name = "noname"
+			    
+			  Else
+			    Self.serie_name = value.Trim
+			    
+			  End If
+			  
+			End Set
+		#tag EndSetter
+		name As string
+	#tag EndComputedProperty
+
 	#tag Property, Flags = &h1
 		Protected physical_table_link As clDataTable
 	#tag EndProperty
@@ -443,6 +456,12 @@ Implements  clDataSupport.itf_json_able
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="last_error_message"
+			Group="Behavior"
+			Type="String"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"

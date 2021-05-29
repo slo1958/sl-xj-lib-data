@@ -8,6 +8,22 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub tests()
+		  
+		  
+		  test_001
+		  test_003
+		  test_004
+		  test_005
+		  test_006
+		  test_007
+		  test_008
+		  test_009
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_001()
 		  Dim test  As clDataSerie
 		  
@@ -27,7 +43,7 @@ Protected Module clDataSerie_tests
 		  Dim test  As clDataSerie
 		  
 		  
-		  test = New clDataSerie("test", make_variant_array("aaa",123,True))
+		  test = New clDataSerie("test", variant_array("aaa",123,True))
 		  
 		  Dim k As Integer =1
 		  
@@ -140,8 +156,8 @@ Protected Module clDataSerie_tests
 		  Dim d1 As Double
 		  Dim d2 As Double
 		  
-		  d1 = c1.sum_group_by(0)
-		  d2 = c2.sum_group_by(0)
+		  d1 = c1.sum
+		  d2 = c2.sum
 		  
 		  
 		  c1.debug_dump
@@ -187,6 +203,16 @@ Protected Module clDataSerie_tests
 		  c3.debug_dump 
 		  
 		  c4.debug_dump 
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_009()
+		  
+		  Dim c1 As New clDataSerieMultiValued(Array("aaaa","bbbb"))
+		  
+		  System.DebugLog(c1.name)
+		  
 		End Sub
 	#tag EndMethod
 

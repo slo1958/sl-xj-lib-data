@@ -82,7 +82,7 @@ Begin Window Window1
       Bold            =   False
       ButtonStyle     =   "0"
       Cancel          =   False
-      Caption         =   "Button"
+      Caption         =   "Tests"
       Default         =   False
       Enabled         =   True
       Height          =   20
@@ -139,6 +139,37 @@ Begin Window Window1
       Visible         =   True
       Width           =   80
    End
+   Begin PushButton PushButton3
+      AutoDeactivate  =   True
+      Bold            =   False
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "Button"
+      Default         =   False
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   500
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "Verdana"
+      TextSize        =   11.0
+      TextUnit        =   0
+      Top             =   360
+      Underline       =   False
+      Visible         =   True
+      Width           =   80
+   End
 End
 #tag EndWindow
 
@@ -169,25 +200,9 @@ End
 		  writemessage "started"
 		  
 		  
-		  clDataSerie_tests.test_001
-		  clDataSerie_tests.test_003
-		  clDataSerie_tests.test_004
-		  clDataSerie_tests.test_005
-		  clDataSerie_tests.test_006
-		  clDataSerie_tests.test_007
-		  clDataSerie_tests.test_008
+		  clDataSerie_tests.tests
 		  
-		  
-		  
-		  
-		  clDataTable_tests.test_001
-		  clDataTable_tests.test_002
-		  clDataTable_tests.test_003
-		  clDataTable_tests.test_004
-		  clDataTable_tests.test_005
-		  clDataTable_tests.test_006
-		  clDataTable_tests.test_007
-		  
+		  clDataTable_tests.tests
 		  
 		  
 		  
@@ -214,6 +229,33 @@ End
 		  res4 =  tmpxl.parse_line("""hel""""lo"",world")
 		  
 		  Dim k As Integer
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PushButton3
+	#tag Event
+		Sub Action()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim d1 As New clDataSerie("Country", variant_array("FR","FR","BE","FR","BE","IT"))
+		  
+		  Dim d2 As New clDataSerie("City",variant_array( "F1","F2","B1","F1","B2","I1"))
+		  Dim d3 As New clDataSerie("Year",variant_array(2000,2000,2000,2000,2000,2000))
+		  Dim m1 As New clDataSerie("Sales", variant_array(100,200,300,400,500,600))
+		  Dim m2 As New clDataSerie("Quantity", variant_array(51, 52,53,54, 55,56))
+		  
+		  Dim tbl0 As New clDataTable("mytable", serie_array(d1,d2,d3,m1,m2))
+		  
+		  
+		  Dim tbl1 As clDataTable = tbl0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
+		  Dim tbl2 As clDataTable = tbl0.groupby(string_array, string_array("Sales"), string_array)
+		  Dim tbl3 As clDataTable = tbl0.groupby(string_array("Country","City"), string_array, string_array(""))
+		  
+		  
+		  
+		  System.DebugLog("Done with "+CurrentMethodName)
+		  
 		  
 		End Sub
 	#tag EndEvent

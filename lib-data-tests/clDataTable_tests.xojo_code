@@ -1,6 +1,21 @@
 #tag Module
 Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
+		Sub tests()
+		  test_001
+		  test_002
+		  test_003
+		  test_004
+		  test_005
+		  test_006
+		  test_007
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_001()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
@@ -22,6 +37,7 @@ Protected Module clDataTable_tests
 		  
 		  ttst.append_row(rtst)
 		  
+		  System.DebugLog("Expecting aaa/bbb/ccc/ddd")
 		  ttst.debug_dump
 		  
 		  Dim k As Integer = 1
@@ -216,9 +232,9 @@ Protected Module clDataTable_tests
 		  c2.append_element(56)
 		  c2.append_element(78)
 		  
-		  Dim t1 As New clDataTable("mytable1", make_serie_array(c1, c2))
+		  Dim t1 As New clDataTable("mytable1", serie_array(c1, c2))
 		  
-		  Dim t2 As New clDataTable("mytable2", make_serie_array(c1, c2), True)
+		  Dim t2 As New clDataTable("mytable2", serie_array(c1, c2), True)
 		  
 		  Dim r1 As clDataRow
 		  r1 = New clDataRow
@@ -247,7 +263,7 @@ Protected Module clDataTable_tests
 		  
 		  Dim ttst As New clDataTable("T1")
 		  
-		  ttst.add_columns(Array("cc1","cc2","cc3"))
+		  call ttst.add_columns(Array("cc1","cc2","cc3"))
 		  
 		  ttst.append_row(Array("aaa0","bbb0","ccc0"))
 		  ttst.append_row(Array("aaa1","bbb1","ccc1"))

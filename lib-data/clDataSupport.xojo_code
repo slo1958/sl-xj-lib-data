@@ -1,7 +1,7 @@
 #tag Module
 Protected Module clDataSupport
 	#tag Method, Flags = &h0
-		Function make_serie_array(paramarray series as clDataSerie) As clDataSerie()
+		Function serie_array(paramarray series as clDataSerie) As clDataSerie()
 		  Dim tmp() As clDataSerie
 		  
 		  For Each c As clDataSerie In series
@@ -16,7 +16,21 @@ Protected Module clDataSupport
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function make_variant_array(paramarray items as variant) As variant()
+		Function string_array(paramarray  items as string) As string()
+		  Dim ret() As String
+		  
+		  For Each item As String In items
+		    ret.append(item)  
+		    
+		  Next
+		  
+		  Return ret
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function variant_array(paramarray  items as variant) As variant()
 		  Dim ret() As variant
 		  
 		  For Each item As variant In items
