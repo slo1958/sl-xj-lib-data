@@ -238,14 +238,14 @@ End
 		Sub Action()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim d1 As New clDataSerie("Country", variant_array("FR","FR","BE","FR","BE","IT"))
 		  
-		  Dim d2 As New clDataSerie("City",variant_array( "F1","F2","B1","F1","B2","I1"))
-		  Dim d3 As New clDataSerie("Year",variant_array(2000,2000,2000,2000,2000,2000))
-		  Dim m1 As New clDataSerie("Sales", variant_array(100,200,300,400,500,600))
-		  Dim m2 As New clDataSerie("Quantity", variant_array(51, 52,53,54, 55,56))
-		  
-		  Dim tbl0 As New clDataTable("mytable", serie_array(d1,d2,d3,m1,m2))
+		  Dim tbl0 As New clDataTable("mytable", serie_array( _
+		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
+		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
+		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
+		  , New clDataSerie("Sales", 100,200,300,400,500,600) _
+		  , New clDataSerie("Quantity", 51, 52,53,54, 55,56) _
+		  ))
 		  
 		  
 		  Dim tbl1 As clDataTable = tbl0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
@@ -253,6 +253,9 @@ End
 		  Dim tbl3 As clDataTable = tbl0.groupby(string_array("Country","City"), string_array, string_array(""))
 		  
 		  
+		  tbl1.debug_dump
+		  tbl2.debug_dump
+		  tbl3.debug_dump
 		  
 		  System.DebugLog("Done with "+CurrentMethodName)
 		  

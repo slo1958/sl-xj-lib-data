@@ -52,9 +52,14 @@ Implements clDataSupport.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_label as string)
+		Sub Constructor(the_label as string, paramarray the_values() as variant)
 		  serie_name = the_label
 		  physical_table_link = Nil
+		  
+		  For i As Integer = 0 To the_values.Ubound
+		    items.Append(the_values(i))
+		    
+		  Next
 		  
 		End Sub
 	#tag EndMethod
