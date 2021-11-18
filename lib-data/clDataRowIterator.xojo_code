@@ -58,6 +58,7 @@ Implements Xojo.Core.Iterator
 			Name="iteration_next_value"
 			Group="Behavior"
 			Type="String"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"

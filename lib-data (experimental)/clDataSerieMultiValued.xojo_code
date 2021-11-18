@@ -112,6 +112,7 @@ Inherits clDataSerie
 			Name="serie_value_separator"
 			Group="Behavior"
 			Type="String"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

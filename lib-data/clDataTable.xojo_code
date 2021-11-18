@@ -212,11 +212,26 @@ Protected Class clDataTable
 		  Dim return_boolean() As Variant
 		  
 		  Dim column_names() As String
+		  dim column_values() as Variant
 		  
-		  //For i As Integer=0 To items.Ubound
-		  //return_boolean.Append(the_filter_function.Invoke(i,  items.Ubound, name, items(i), function_param))
+		  for each column as clDataSerie in self.columns
+		    column_names.Append(column.name)
+		    
+		  next
 		  
-		  //Next
+		  dim row_count as integer = self.row_count
+		  
+		  For i As Integer=0 To row_count-1
+		    redim column_values(-1)
+		    
+		    for each column as clDataSerie in self.columns
+		      column_values.Append(column.get_element(i))
+		      
+		    next
+		    
+		    return_boolean.Append(the_filter_function.Invoke(i,  row_count, column_names, column_values, function_param))
+		    
+		  Next
 		  
 		  Return return_boolean
 		  
@@ -906,6 +921,11 @@ Protected Class clDataTable
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="allow_local_columns"
+			Group="Behavior"
+			Type="Boolean"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
 			Visible=true

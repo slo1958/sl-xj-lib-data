@@ -51,7 +51,8 @@ Inherits clRowParser_generic
 		#tag ViewProperty
 			Name="delimiter"
 			Group="Behavior"
-			Type="Integer"
+			Type="String"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"

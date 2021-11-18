@@ -6,7 +6,7 @@ Protected Module TODO
 		
 	#tag EndNote
 
-	#tag Note, Name = FR-0002 - Definition of group by dataset 
+	#tag Note, Name = FR-0002 - Definition of group by dataset
 		FR-0002 - Definition of group by dataset 
 		 - one column is made of a Dataset from FR-0004
 		 - other columns are made of Dataset from FR-0003

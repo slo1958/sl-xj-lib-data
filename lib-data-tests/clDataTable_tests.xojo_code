@@ -1,6 +1,14 @@
 #tag Module
 Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
+		Function filter_008(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		  dim idx as integer = the_column_names.IndexOf("cc2")
+		  
+		  return the_cell_values(idx) = function_param(0)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub tests()
 		  test_001
 		  test_002
@@ -9,6 +17,7 @@ Protected Module clDataTable_tests
 		  test_005
 		  test_006
 		  test_007
+		  test_008
 		  
 		  
 		  
@@ -276,6 +285,35 @@ Protected Module clDataTable_tests
 		  
 		  ttst.debug_dump
 		  
+		  
+		  Dim k As Integer = 1
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_008()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  
+		  Dim ttst As New clDataTable("T1")
+		  
+		  call ttst.add_columns(Array("cc1","cc2","cc3"))
+		  
+		  ttst.append_row(Array("aaa0","bbb0","ccc0"))
+		  ttst.append_row(Array("aaa1","bbb1","ccc1"))
+		  ttst.append_row(Array("aaa2","bbb0","ccc2"))
+		  ttst.append_row(Array("aaa3","bbb3","ccc3"))
+		  
+		  ' The function is filtering on column cc2. The parameter is the value to look for
+		  
+		  dim tmp1() as variant = ttst.apply_filter(AddressOf filter_008,"bbb0")
+		  
+		  call ttst.add_column(new clDataSerie("is_bbb0", tmp1))
+		  
+		  call ttst.add_column(new clDataSerie("is_bbb3",  ttst.apply_filter(AddressOf filter_008, "bbb3")))
+		  ttst.debug_dump
 		  
 		  Dim k As Integer = 1
 		  
