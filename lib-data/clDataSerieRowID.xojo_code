@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clDataSerieIndex
+Protected Class clDataSerieRowID
 Inherits clDataSerie
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)

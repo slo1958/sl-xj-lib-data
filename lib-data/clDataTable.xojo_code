@@ -318,6 +318,7 @@ Protected Class clDataTable
 		  Next
 		  
 		  internal_new_table(the_table_name)
+		  
 		  Dim max_item_count As Integer=0
 		  
 		  For Each c As clDataSerie In tmp_columns
@@ -604,7 +605,7 @@ Protected Class clDataTable
 		Private Sub internal_new_table(the_table_name as string)
 		  
 		  table_name = the_table_name
-		  row_index = New clDataSerieIndex("index")
+		  row_index = New clDataSerieRowID("row_id")
 		  
 		  
 		  allow_local_columns =  False
