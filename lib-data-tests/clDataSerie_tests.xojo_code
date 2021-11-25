@@ -8,8 +8,16 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function filter02(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		  Return the_value <> "aaa"
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub tests()
 		  
+		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  test_001
 		  test_003
@@ -19,12 +27,15 @@ Protected Module clDataSerie_tests
 		  test_007
 		  test_008
 		  test_009
+		  test_010
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub test_001()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
 		  Dim test  As clDataSerie
 		  
 		  
@@ -40,8 +51,9 @@ Protected Module clDataSerie_tests
 
 	#tag Method, Flags = &h0
 		Sub test_003()
-		  Dim test  As clDataSerie
+		  System.DebugLog("START "+CurrentMethodName)
 		  
+		  Dim test  As clDataSerie
 		  
 		  test = New clDataSerie("test", variant_array("aaa",123,True))
 		  
@@ -53,6 +65,8 @@ Protected Module clDataSerie_tests
 
 	#tag Method, Flags = &h0
 		Sub test_004()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
 		  Dim k As Variant
 		  
 		  Dim fld_folder As New FolderItem
@@ -71,6 +85,8 @@ Protected Module clDataSerie_tests
 
 	#tag Method, Flags = &h0
 		Sub test_005()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
 		  Dim k As Variant
 		  
 		  Dim fld_folder As New FolderItem
@@ -93,6 +109,7 @@ Protected Module clDataSerie_tests
 
 	#tag Method, Flags = &h0
 		Sub test_006()
+		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim c1 As New clDataSerie("premier") 
@@ -208,11 +225,64 @@ Protected Module clDataSerie_tests
 
 	#tag Method, Flags = &h0
 		Sub test_009()
+		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim c1 As New clDataSerieMultiValued(Array("aaaa","bbbb"))
 		  
 		  System.DebugLog(c1.name)
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_010()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim c1 As New clCompressedDataSerie("CompSerie") 
+		  Dim c2 As New clDataSerie("BaseSerie") 
+		  
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  
+		  c1.copy_to(c2)
+		  
+		  
+		  Dim f1() As variant
+		  Dim f2() As variant
+		  Dim f3() As Variant
+		  
+		  f1 = c1.apply_filter(AddressOf filter02)
+		  
+		  f2 = c2.apply_filter(AddressOf filter02)
+		  
+		  Dim c3 As New clDataSerie("test001", f1)
+		  Dim c4 As New clDataSerie("test002", f2)
+		  
+		  
+		  c1.debug_dump
+		  
+		  c2.debug_dump
+		  
+		  c3.debug_dump
+		  
+		  c4.debug_dump
+		  
+		  for i as integer = 0 to c1.upper_bound
+		    System.DebugLog(str(i) + ": " + c1.get_element(i) + "    " + c2.get_element(i))
+		    
+		  next
+		  
+		  System.DebugLog("Done with "+CurrentMethodName)
 		End Sub
 	#tag EndMethod
 

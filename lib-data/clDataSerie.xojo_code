@@ -13,8 +13,8 @@ Implements clDataSupport.itf_json_able
 		Function apply_filter(the_filter_function as filter_column, paramarray function_param as variant) As variant()
 		  Dim return_boolean() As Variant
 		  
-		  For i As Integer=0 To items.Ubound
-		    return_boolean.Append(the_filter_function.Invoke(i,  items.Ubound, name, items(i), function_param))
+		  For row_index As Integer=0 To items.Ubound
+		    return_boolean.Append(the_filter_function.Invoke(row_index,  items.Ubound, name, items(row_index), function_param))
 		    
 		  Next
 		  
@@ -38,10 +38,6 @@ Implements clDataSupport.itf_json_able
 		End Function
 	#tag EndMethod
 
-	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function filter_column(the_row_index as integer, the_row_count as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
-	#tag EndDelegateDeclaration
-
 	#tag Method, Flags = &h0
 		Function get_element(the_element_index as integer) As Variant
 		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
@@ -58,10 +54,10 @@ Implements clDataSupport.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function row_count() As integer
-		  Return items.Ubound+1
+		Sub reset()
+		  redim items(-1)
 		  
-		End Function
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

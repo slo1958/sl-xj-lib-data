@@ -1,8 +1,8 @@
 #tag Class
 Protected Class clDataTable
 	#tag Method, Flags = &h0
-		Function add_column(the_column as clDataSerie) As clDataSerie
-		  Dim tmp_column As clDataSerie = the_column
+		Function add_column(the_column as clAbstractDataSerie) As clAbstractDataSerie
+		  Dim tmp_column As clAbstractDataSerie = the_column
 		  
 		  Dim tmp_column_name As String = tmp_column.name
 		  
@@ -100,7 +100,7 @@ Protected Class clDataTable
 		  
 		  Dim columns_to_update() As String
 		  
-		  For Each column As clDataSerie In columns
+		  For Each column As clAbstractDataSerie In columns
 		    columns_to_update.Append(column.name)
 		    
 		  Next
@@ -108,7 +108,7 @@ Protected Class clDataTable
 		  
 		  
 		  For Each column As String In the_row
-		    Dim tmp_column As clDataSerie = Self.get_column(column)
+		    Dim tmp_column As clAbstractDataSerie = Self.get_column(column)
 		    
 		    If tmp_column = Nil And create_columns_flag Then
 		      tmp_column = add_column(column)
@@ -128,7 +128,7 @@ Protected Class clDataTable
 		  
 		  Self.row_index.append_element("")
 		  
-		  For Each column As clDataSerie In Self.columns
+		  For Each column As clAbstractDataSerie In Self.columns
 		    column.set_length(tmp_row_count+1)
 		    
 		  Next
@@ -178,10 +178,10 @@ Protected Class clDataTable
 	#tag Method, Flags = &h0
 		Sub append_table(the_table as clDataTable)
 		  
-		  For Each src_tmp_column As clDataSerie In the_table.columns
+		  For Each src_tmp_column As clAbstractDataSerie In the_table.columns
 		    Dim column_name As String = src_tmp_column.name
 		    
-		    Dim dst_tmp_column As  clDataSerie = Self.get_column(column_name)
+		    Dim dst_tmp_column As  clAbstractDataSerie = Self.get_column(column_name)
 		    
 		    If dst_tmp_column = Nil Then
 		      dst_tmp_column = Self.add_column(column_name)
@@ -199,7 +199,7 @@ Protected Class clDataTable
 		  
 		  Self.row_index.set_length(new_size)
 		  
-		  For Each tmp_column As clDataSerie In Self.columns
+		  For Each tmp_column As clAbstractDataSerie In Self.columns
 		    tmp_column.set_length(new_size)
 		    
 		  Next
@@ -214,7 +214,7 @@ Protected Class clDataTable
 		  Dim column_names() As String
 		  dim column_values() as Variant
 		  
-		  for each column as clDataSerie in self.columns
+		  for each column as clAbstractDataSerie in self.columns
 		    column_names.Append(column.name)
 		    
 		  next
@@ -224,7 +224,7 @@ Protected Class clDataTable
 		  For i As Integer=0 To row_count-1
 		    redim column_values(-1)
 		    
-		    for each column as clDataSerie in self.columns
+		    for each column as clAbstractDataSerie in self.columns
 		      column_values.Append(column.get_element(i))
 		      
 		    next
@@ -244,10 +244,14 @@ Protected Class clDataTable
 		End Function
 	#tag EndMethod
 
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function column_allocator(column_name as String) As clAbstractDataSerie
+	#tag EndDelegateDeclaration
+
 	#tag Method, Flags = &h0
 		Function column_names() As string()
 		  Dim ret_str() As String
-		  For Each column As clDataSerie In columns
+		  For Each column As clAbstractDataSerie In columns
 		    ret_str.Append(column.name)
 		    
 		  Next
@@ -331,7 +335,7 @@ Protected Class clDataTable
 		    
 		  Next
 		  
-		  For Each c As clDataSerie In columns
+		  For Each c As clAbstractDataSerie In columns
 		    c.set_length(max_item_count)
 		    
 		  Next
@@ -349,7 +353,7 @@ Protected Class clDataTable
 		  System.DebugLog("----START " + Self.table_name+" --------")
 		  
 		  tmp_item.Append("index")
-		  For Each tmp_column As clDataSerie In columns
+		  For Each tmp_column As clAbstractDataSerie In columns
 		    tmp_item.Append(tmp_column.name)
 		    
 		  Next
@@ -361,7 +365,7 @@ Protected Class clDataTable
 		    
 		    tmp_item.Append(Self.row_index.get_element(row))
 		    
-		    For Each tmp_column As clDataSerie In columns
+		    For Each tmp_column As clAbstractDataSerie In columns
 		      tmp_item.Append(tmp_column.get_element(row))
 		      
 		    Next
@@ -380,7 +384,7 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Function find_first_matching_row(the_column_name as string, the_column_value as string) As integer
-		  Dim tmp_column As clDataSerie
+		  Dim tmp_column As clAbstractDataSerie
 		  
 		  tmp_column = get_column(the_column_name)
 		  
@@ -404,9 +408,9 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_column(the_column_name as String) As clDataSerie
+		Function get_column(the_column_name as String) As clAbstractDataSerie
 		  
-		  For Each column As clDataSerie In Self.columns
+		  For Each column As clAbstractDataSerie In Self.columns
 		    If column.name = the_column_name Then
 		      Return column
 		      
@@ -420,16 +424,16 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_columns(column_names() as string) As clDataSerie()
+		Function get_columns(column_names() as string) As clAbstractDataSerie()
 		  '
 		  ' Return the selected columns as an array of clDataSerie
 		  '
 		  
-		  Dim ret() As clDataSerie
+		  Dim ret() As clAbstractDataSerie
 		  
 		  
 		  For Each column_name As String In column_names
-		    Dim tmp_column As clDataSerie = Self.get_column(column_name)
+		    Dim tmp_column As clAbstractDataSerie = Self.get_column(column_name)
 		    
 		    ret.Append(tmp_column)
 		    
@@ -442,7 +446,7 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_columns(paramarray column_names as string) As clDataSerie()
+		Function get_columns(paramarray column_names as string) As clAbstractDataSerie()
 		  '
 		  ' Return the selected columns as an array of clDataSerie
 		  '
@@ -455,8 +459,8 @@ Protected Class clDataTable
 	#tag Method, Flags = &h0
 		Function groupby(grouping_dimensions() as string, aggregate_measures() as string, aggregate_mode() as string) As clDataTable
 		  
-		  Dim input_dimensions() As clDataSerie
-		  Dim input_measures() As clDataSerie
+		  Dim input_dimensions() As clAbstractDataSerie
+		  Dim input_measures() As clAbstractDataSerie
 		  
 		  For Each item As String In grouping_dimensions
 		    If Len(Trim(item)) > 0 Then
@@ -614,7 +618,7 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub load_from_text(the_source as FolderItem, the_line_parser as clRowParser_generic, has_header  as Boolean)
+		Sub load_from_text(the_source as FolderItem, the_line_parser as clRowParser_generic, has_header  as Boolean, allocator as column_allocator = nil)
 		  //
 		  // Load the serie from a text file, each line is loaded into one element, without further processing
 		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string
@@ -660,7 +664,20 @@ Protected Class clDataTable
 		      
 		    Else
 		      For i As Integer = 0 To tmp_items.Ubound
-		        Call Self.add_column(tmp_items(i))
+		        dim column_serie as clAbstractDataSerie
+		        
+		        if allocator = nil then
+		          column_serie = new clDataSerie(tmp_items(i))
+		        else
+		          column_serie = allocator.Invoke(tmp_items(i))
+		          if column_serie = nil then
+		            column_serie = new clDataSerie(tmp_items(i))
+		            
+		          end if
+		          
+		        end if
+		        
+		        Call Self.add_column(column_serie)
 		        
 		      Next
 		      got_header = True
@@ -740,9 +757,9 @@ Protected Class clDataTable
 		  
 		  text_file = TextOutputStream.Create(the_destination)
 		  
-		  Dim column_index() As clDataSerie
+		  Dim column_index() As clAbstractDataSerie
 		  
-		  For Each column As clDataSerie In columns
+		  For Each column As clAbstractDataSerie In columns
 		    column_index.Append(column)
 		    
 		  Next
@@ -752,7 +769,7 @@ Protected Class clDataTable
 		    Dim tmp_work_record As String
 		    Dim tmp_work_area() As String
 		    
-		    For Each column As clDataSerie In column_index
+		    For Each column As clAbstractDataSerie In column_index
 		      tmp_work_area.Append(column.name)
 		      
 		    Next
@@ -768,7 +785,7 @@ Protected Class clDataTable
 		    Dim tmp_work_record As String
 		    Dim tmp_work_area() As String
 		    
-		    For Each column As clDataSerie In column_index
+		    For Each column As clAbstractDataSerie In column_index
 		      tmp_work_area.Append(column.get_element(row_index))
 		      
 		    Next
@@ -801,7 +818,7 @@ Protected Class clDataTable
 		  res.link_to_parent = Self
 		  
 		  For Each column_name As String In column_names
-		    Dim tmp_column As clDataSerie = Self.get_column(column_name)
+		    Dim tmp_column As clAbstractDataSerie = Self.get_column(column_name)
 		    
 		    If tmp_column <> Nil Then
 		      call res.add_column(tmp_column)
@@ -880,7 +897,7 @@ Protected Class clDataTable
 	#tag EndComputedProperty
 
 	#tag Property, Flags = &h1
-		Protected columns() As clDataSerie
+		Protected columns() As clAbstractDataSerie
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

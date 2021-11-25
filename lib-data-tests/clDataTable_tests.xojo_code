@@ -1,6 +1,19 @@
 #tag Module
 Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
+		Function alloc_series(column_name as string) As clAbstractDataSerie
+		  if column_name = "Alpha" then
+		    Return new clCompressedDataSerie(column_name)
+		    
+		  else
+		    return new clDataSerie(column_name)
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function filter_008(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
 		  dim idx as integer = the_column_names.IndexOf("cc2")
 		  
@@ -10,6 +23,8 @@ Protected Module clDataTable_tests
 
 	#tag Method, Flags = &h0
 		Sub tests()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
 		  test_001
 		  test_002
 		  test_003
@@ -175,10 +190,16 @@ Protected Module clDataTable_tests
 		  
 		  ttst4.load_from_text(fld_file2, New clRowParser_full(","), True)
 		  
-		  
 		  ttst4.save_as_text(fld_file3, New clRowParser_full(";"), True)
 		  
-		  Dim k2 As Integer=1
+		  dim ttst5  as new clDataTable("x")
+		  
+		  ttst5.load_from_text(fld_file1, New clRowParser_full(Chr(9)), True, AddressOf alloc_series)
+		  
+		  
+		  System.DebugLog(join(ttst3.column_names,";"))
+		  
+		  System.DebugLog("DONE WITH "+CurrentMethodName)
 		  
 		  
 		End Sub
@@ -209,7 +230,7 @@ Protected Module clDataTable_tests
 		  ttst.debug_dump
 		  
 		  
-		  Dim cols() As clDataSerie
+		  Dim cols() As clAbstractDataSerie
 		  
 		  cols = ttst.get_columns("aaa","bbb","ddd")
 		  

@@ -18,7 +18,7 @@ Implements clDataSupport.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clDataSerie
+		Function clone() As clAbstractDataSerie
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Function
@@ -27,6 +27,8 @@ Implements clDataSupport.itf_json_able
 	#tag Method, Flags = &h0
 		Sub Constructor(the_source_file as FolderItem)
 		  Dim tmp_serie_name As String
+		  
+		  self.reset
 		  
 		  tmp_serie_name = load_from_text(the_source_file, True)
 		  
@@ -40,6 +42,9 @@ Implements clDataSupport.itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub Constructor(the_label as string, paramarray the_values() as variant)
+		  
+		  self.reset
+		  
 		  serie_name = the_label
 		  physical_table_link = Nil
 		  
@@ -53,6 +58,9 @@ Implements clDataSupport.itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub Constructor(the_label as string, the_values() as variant)
+		  
+		  self.reset
+		  
 		  serie_name = the_label
 		  physical_table_link = Nil
 		  
@@ -60,6 +68,16 @@ Implements clDataSupport.itf_json_able
 		    self.append_element(the_values(i))
 		    
 		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub copy_to(target_data_serie as clAbstractDataSerie)
+		  for index as Integer = 0 to self.upper_bound
+		    target_data_serie.append_element(self.get_element(index))
+		    
+		  next
 		  
 		End Sub
 	#tag EndMethod
@@ -284,9 +302,14 @@ Implements clDataSupport.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function row_count() As integer
-		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		Sub reset()
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function row_count() As integer
+		  return self.upper_bound+1
 		End Function
 	#tag EndMethod
 
@@ -405,8 +428,6 @@ Implements clDataSupport.itf_json_able
 		clone
 		
 		get_element
-		
-		row_count
 		
 		set_element
 		
