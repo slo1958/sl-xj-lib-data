@@ -11,30 +11,28 @@ Protected Class clDataTable
 		    
 		  end if
 		  
-		  dim max_row_count as integer = the_column.row_count
-		  
-		  if max_row_count < self.row_count then
-		    max_row_count = self.row_count
-		    
-		  end if
-		  
+		   
 		  
 		  ' physical table and column not yet linked
 		  if not self.is_virtual and not tmp_column.linked then
-		    tmp_column.link_to_table(Self)
-		    max_row_count = self.increase_length(tmp_column.row_count)
+		    dim max_row_count as integer = self.increase_length(tmp_column.row_count)
 		    tmp_column.set_length(max_row_count)
+		    
+		    tmp_column.link_to_table(Self)
 		    Self.columns.Append(tmp_column)
+		    
 		    return tmp_column
 		    
 		  end if
 		  
-		  
+		  ' adding a physical column to a virtual table (when permitted)
 		  if self.is_virtual and not tmp_column.linked and self.allow_local_columns then
-		    tmp_column.link_to_table(Self)
-		    max_row_count = self.increase_length(tmp_column.row_count)
+		    dim max_row_count as integer = self.increase_length(tmp_column.row_count)
 		    tmp_column.set_length(max_row_count)
+		    
+		    tmp_column.link_to_table(Self)
 		    Self.columns.Append(tmp_column)
+		    
 		    return tmp_column
 		    
 		  end if
@@ -47,29 +45,7 @@ Protected Class clDataTable
 		    
 		  end if
 		  
-		  If link_to_parent = Nil Then
-		    
-		  Elseif allow_local_columns Then
-		    If tmp_column.is_linked_to_table Then
-		      
-		    Else
-		      tmp_column.link_to_table(Self)
-		      
-		    End If
-		    
-		    tmp_column.set_length(row_count)
-		    
-		  Else
-		    tmp_column = link_to_parent.add_column(the_column)
-		    
-		  End If
-		  
-		  If tmp_column <> Nil Then
-		    Self.columns.Append(tmp_column)
-		    
-		  End If
-		  
-		  Return tmp_column
+		  Return nil
 		  
 		  
 		  
