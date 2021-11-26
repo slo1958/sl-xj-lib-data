@@ -9,35 +9,69 @@ Protected Class clDataTable
 		  If Self.get_column(tmp_column_name) <> Nil Then
 		    Return Nil
 		    
-		  Else
+		  end if
+		  
+		  dim max_row_count as integer = the_column.row_count
+		  
+		  if max_row_count < self.row_count then
+		    max_row_count = self.row_count
 		    
-		    If link_to_parent = Nil Then
-		      tmp_column.link_to_table(Self)
-		      tmp_column.set_length(row_count)
-		      
-		    Elseif allow_local_columns Then
-		      If tmp_column.is_linked_to_table Then
-		        
-		      Else
-		        tmp_column.link_to_table(Self)
-		        
-		      End If
-		      
-		      tmp_column.set_length(row_count)
+		  end if
+		  
+		  
+		  ' physical table and column not yet linked
+		  if not self.is_virtual and not tmp_column.linked then
+		    tmp_column.link_to_table(Self)
+		    max_row_count = self.increase_length(tmp_column.row_count)
+		    tmp_column.set_length(max_row_count)
+		    Self.columns.Append(tmp_column)
+		    return tmp_column
+		    
+		  end if
+		  
+		  
+		  if self.is_virtual and not tmp_column.linked and self.allow_local_columns then
+		    tmp_column.link_to_table(Self)
+		    max_row_count = self.increase_length(tmp_column.row_count)
+		    tmp_column.set_length(max_row_count)
+		    Self.columns.Append(tmp_column)
+		    return tmp_column
+		    
+		  end if
+		  
+		  ' we add a column from another table to a virtual table
+		  if self.is_virtual and tmp_column.linked then
+		    tmp_column.set_length(row_count)
+		    Self.columns.Append(tmp_column)
+		    return tmp_column
+		    
+		  end if
+		  
+		  If link_to_parent = Nil Then
+		    
+		  Elseif allow_local_columns Then
+		    If tmp_column.is_linked_to_table Then
 		      
 		    Else
-		      tmp_column = link_to_parent.add_column(the_column)
+		      tmp_column.link_to_table(Self)
 		      
 		    End If
 		    
-		    If tmp_column <> Nil Then
-		      Self.columns.Append(tmp_column)
-		      
-		    End If
+		    tmp_column.set_length(row_count)
 		    
-		    Return tmp_column
+		  Else
+		    tmp_column = link_to_parent.add_column(the_column)
 		    
 		  End If
+		  
+		  If tmp_column <> Nil Then
+		    Self.columns.Append(tmp_column)
+		    
+		  End If
+		  
+		  Return tmp_column
+		  
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -49,34 +83,33 @@ Protected Class clDataTable
 		  If Self.get_column(tmp_column_name) <> Nil Then
 		    Return Nil
 		    
+		  end if
+		  
+		  Dim tmp_column As clDataSerie
+		  
+		  If not self.is_virtual then
+		    tmp_column = New clDataSerie(tmp_column_name)
+		    tmp_column.link_to_table(Self)
+		    tmp_column.set_length(row_count)
+		    
+		  Elseif allow_local_columns Then
+		    tmp_column = New clDataSerie(tmp_column_name)
+		    tmp_column.link_to_table(Self)
+		    tmp_column.set_length(row_count)
+		    
 		  Else
-		    
-		    Dim tmp_column As clDataSerie
-		    
-		    If link_to_parent = Nil Then
-		      tmp_column = New clDataSerie(tmp_column_name)
-		      tmp_column.link_to_table(Self)
-		      tmp_column.set_length(row_count)
-		      
-		    Elseif allow_local_columns Then
-		      tmp_column = New clDataSerie(tmp_column_name)
-		      tmp_column.link_to_table(Self)
-		      tmp_column.set_length(row_count)
-		      
-		    Else
-		      ' could be nil if the column exists in the parent datatable
-		      tmp_column = link_to_parent.add_column( tmp_column_name)
-		      
-		    End If
-		    
-		    If tmp_column <> Nil Then
-		      Self.columns.Append(tmp_column)
-		      
-		    End If
-		    
-		    Return tmp_column
+		    ' could be nil if the column exists in the parent datatable
+		    tmp_column = link_to_parent.add_column( tmp_column_name)
 		    
 		  End If
+		  
+		  If tmp_column <> Nil Then
+		    Self.columns.Append(tmp_column)
+		    
+		  End If
+		  
+		  Return tmp_column
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -178,6 +211,8 @@ Protected Class clDataTable
 	#tag Method, Flags = &h0
 		Sub append_table(the_table as clDataTable)
 		  
+		  dim length_before as integer = self.row_count
+		  
 		  For Each src_tmp_column As clAbstractDataSerie In the_table.columns
 		    Dim column_name As String = src_tmp_column.name
 		    
@@ -185,13 +220,11 @@ Protected Class clDataTable
 		    
 		    If dst_tmp_column = Nil Then
 		      dst_tmp_column = Self.add_column(column_name)
+		      dst_tmp_column.set_length(length_before)
 		      
 		    End If
 		    
-		    For row_num As Integer = 0 To src_tmp_column.row_count-1
-		      dst_tmp_column.append_element(src_tmp_column.get_element(row_num))
-		      
-		    Next
+		    dst_tmp_column.append_serie(src_tmp_column)
 		    
 		  Next
 		  
@@ -202,8 +235,10 @@ Protected Class clDataTable
 		  For Each tmp_column As clAbstractDataSerie In Self.columns
 		    tmp_column.set_length(new_size)
 		    
+		    system.DebugLog("size="+str(tmp_column.row_count))
+		    
 		  Next
-		  
+		  dim k as integer =1
 		End Sub
 	#tag EndMethod
 
@@ -241,6 +276,16 @@ Protected Class clDataTable
 	#tag Method, Flags = &h0
 		Function clone() As clDataTable
 		  
+		  dim output_table as new clDataTable(self.name+" copy")
+		  
+		  for each col as clAbstractDataSerie in self.columns
+		    dim new_col as clAbstractDataSerie = col.clone()
+		    
+		    call output_table.add_column(new_col)
+		    
+		  next
+		  
+		  Return output_table
 		End Function
 	#tag EndMethod
 
@@ -313,7 +358,7 @@ Protected Class clDataTable
 		      tmp_columns(i) = tmp_columns(i).clone
 		      
 		    Elseif tmp_columns(i).is_linked_to_table And Not auto_clone_columns Then
-		      Raise New clDataException("Cannot add a linked serie to a new table.")
+		      Raise New clDataException("Cannot add a linked serie to a new table, use select_columns() method instead.")
 		      
 		    Else
 		      
@@ -323,25 +368,11 @@ Protected Class clDataTable
 		  
 		  internal_new_table(the_table_name)
 		  
-		  Dim max_item_count As Integer=0
-		  
 		  For Each c As clDataSerie In tmp_columns
-		    If max_item_count < c.row_count Then
-		      max_item_count = c.row_count
-		      
-		    End If
-		    
+		    ' add column takes care of adjusting the length
 		    call Self.add_column(c)
 		    
 		  Next
-		  
-		  For Each c As clAbstractDataSerie In columns
-		    c.set_length(max_item_count)
-		    
-		  Next
-		  
-		  row_index.set_length(max_item_count)
-		  
 		End Sub
 	#tag EndMethod
 
@@ -351,6 +382,9 @@ Protected Class clDataTable
 		  Dim tmp_item() As String
 		  
 		  System.DebugLog("----START " + Self.table_name+" --------")
+		  
+		  System.DebugLog("#rows : " + str(self.row_count))
+		  System.DebugLog("#columns : " + str(self.columns.Ubound+1))
 		  
 		  tmp_item.Append("index")
 		  For Each tmp_column As clAbstractDataSerie In columns
@@ -592,6 +626,29 @@ Protected Class clDataTable
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function increase_length(the_length as integer) As integer
+		  dim max_row_count as integer
+		  
+		  if self.row_count > the_length then
+		    max_row_count = self.row_count
+		    
+		  else
+		    max_row_count = the_length
+		    
+		  end if
+		  
+		  row_index.set_length(max_row_count)
+		  
+		  for each c as clAbstractDataSerie in self.columns
+		    c.set_length(max_row_count)
+		    
+		  next
+		  
+		  return max_row_count
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Sub internal_add_row(the_row_data() as variant)
 		  
@@ -615,6 +672,12 @@ Protected Class clDataTable
 		  allow_local_columns =  False
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function is_virtual() As Boolean
+		  return link_to_parent <> Nil 
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

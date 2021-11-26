@@ -33,7 +33,7 @@ Protected Module clDataTable_tests
 		  test_006
 		  test_007
 		  test_008
-		  
+		  test_009
 		  
 		  
 		End Sub
@@ -335,6 +335,50 @@ Protected Module clDataTable_tests
 		  
 		  call ttst.add_column(new clDataSerie("is_bbb3",  ttst.apply_filter(AddressOf filter_008, "bbb3")))
 		  ttst.debug_dump
+		  
+		  Dim k As Integer = 1
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_009()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim rtst As clDataRow
+		  
+		  Dim ttst1 As New clDataTable("T1")
+		  Dim ttst2 as New clDataTable("T2")
+		  
+		  for i as integer = 1 to 4
+		    rtst = New clDataRow
+		    rtst.set_cell("aaa",I*1000)
+		    rtst.set_cell("bbb","abcd")
+		    rtst.set_cell("ccc",123.456)
+		    
+		    ttst1.append_row(rtst)
+		    
+		  next
+		  
+		  
+		  for i as integer = 5 to 9
+		    rtst = New clDataRow
+		    rtst.set_cell("aaa",I*1000)
+		    rtst.set_cell("bbb","xyz")
+		    rtst.set_cell("ddd",567.89)
+		    
+		    ttst2.append_row(rtst)
+		    
+		  next
+		  
+		  dim ttst3 as clDataTable = ttst1.clone()
+		  
+		  ttst3.append_table(ttst2)
+		  
+		  
+		  System.DebugLog("Expecting aaa/bbb/ccc/ddd")
+		  ttst3.debug_dump
 		  
 		  Dim k As Integer = 1
 		  

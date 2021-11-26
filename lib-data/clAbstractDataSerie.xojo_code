@@ -9,6 +9,18 @@ Implements clDataSupport.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub append_serie(the_serie as clAbstractDataSerie)
+		  dim tmp_source as clAbstractDataSerie = the_serie
+		  
+		  For row_num As Integer = 0 To tmp_source.row_count-1
+		    self.append_element(tmp_source.get_element(row_num))
+		    
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function apply_filter(the_filter_function as filter_column, paramarray function_param as variant) As variant()
 		  Dim return_boolean() As Variant
 		  
@@ -231,6 +243,12 @@ Implements clDataSupport.itf_json_able
 		Function is_linked_to_table() As Boolean
 		  Return physical_table_link <> Nil
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function linked() As Boolean
+		  return self.physical_table_link <> nil
 		End Function
 	#tag EndMethod
 

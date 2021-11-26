@@ -73,8 +73,15 @@ Implements clDataSupport.itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub set_length(the_length as integer)
+		  
+		  if items.Ubound > the_length then
+		    Raise New clDataException("Column " + self.name + " contains more elements than expected")
+		  end if
+		  
+		  
 		  While items.Ubound < the_length-1
-		    items.Append("")
+		    dim v as variant
+		    items.Append(v)
 		    
 		  Wend
 		  
