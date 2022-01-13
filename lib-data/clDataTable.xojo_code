@@ -2,18 +2,46 @@
 Protected Class clDataTable
 	#tag Method, Flags = &h0
 		Function add_column(the_column as clAbstractDataSerie) As clAbstractDataSerie
+		  '
+		  ' add a column to the data table 
+		  '
+		  ' parameters
+		  '      the_column: data column (child of AbstractDataSerie)
+		  '
+		  ' returns
+		  '     the column passed as parameter
+		  '     nil if the column cannot be added to the table
+		  '
+		  ' If the table (physical or virtual) already has a column with the same name, the new column is not added.
+		  '
+		  ' The column can be added to the current table if
+		  '
+		  ' (option 1) the current data table is a physical table and the column is not linked to another table
+		  '
+		  ' (option 2)  the current data table is a virutal table accepting physical column and the column is not linked to another table
+		  '
+		  ' (option 3) the current table is a virtual table, the column is linked to another table
+		  ' This is the case when we are building a virtual from another table (physical or virtual)
+		  '
+		  ' In all cases, if the column is added to the current table,, the length (number of rows) of the column is adjusted to the length of the table 
+		  '
 		  Dim tmp_column As clAbstractDataSerie = the_column
 		  
 		  Dim tmp_column_name As String = tmp_column.name
 		  
+		  '
+		  ' if the table (physical or virtual) already has a column with the same name, the new column is not added
+		  '
 		  If Self.get_column(tmp_column_name) <> Nil Then
 		    Return Nil
 		    
 		  end if
 		  
-		   
 		  
+		  
+		  '
 		  ' physical table and column not yet linked
+		  '
 		  if not self.is_virtual and not tmp_column.linked then
 		    dim max_row_count as integer = self.increase_length(tmp_column.row_count)
 		    tmp_column.set_length(max_row_count)
@@ -25,7 +53,9 @@ Protected Class clDataTable
 		    
 		  end if
 		  
+		  '
 		  ' adding a physical column to a virtual table (when permitted)
+		  '
 		  if self.is_virtual and not tmp_column.linked and self.allow_local_columns then
 		    dim max_row_count as integer = self.increase_length(tmp_column.row_count)
 		    tmp_column.set_length(max_row_count)
@@ -37,7 +67,9 @@ Protected Class clDataTable
 		    
 		  end if
 		  
+		  '
 		  ' we add a column from another table to a virtual table
+		  '
 		  if self.is_virtual and tmp_column.linked then
 		    tmp_column.set_length(row_count)
 		    Self.columns.Append(tmp_column)
@@ -54,6 +86,27 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Function add_column(the_column_name as String) As clDataSerie
+		  '
+		  ' add a new column to the data table 
+		  '
+		  ' parameters
+		  '      the_column: data column (child of AbstractDataSerie)
+		  '
+		  ' returns
+		  '     the column passed as parameter
+		  '     nil if the column cannot be added to the table
+		  '
+		  ' If the table (physical or virtual) already has a column with the same name, the new column is not added.
+		  '
+		  ' The column can be added to the current table if
+		  '
+		  ' (option 1) the current table is a physical table
+		  '
+		  ' (option 2) the current table is a virtual table accepting local columns
+		  '
+		  ' If the table is a virtual table based on another table, the method attempts to add this column to the other table, then add to the current table if successful
+		  '
+		  
 		  Dim tmp_column_name As String = the_column_name
 		  
 		  If Self.get_column(tmp_column_name) <> Nil Then
@@ -104,6 +157,13 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Sub append_row(the_row as clDataRow, create_columns_flag as boolean=True)
+		  '
+		  ' append a row to the current table
+		  ' 
+		  ' parameters
+		  '      the_row : data row to add to the current table
+		  '     create_columns_flag: if 'True', columns are created as needed, otherwise, fields linked to non-existant columns raise an exception
+		  '
 		  
 		  Dim tmp_row_count As Integer = Self.row_count
 		  
@@ -148,6 +208,13 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Sub append_row(the_values() as string)
+		  '
+		  ' append a row to the current table
+		  ' 
+		  ' parameters
+		  '      the_values : data to add to the current table, field order is assumed to be the field order in the current table
+		  '
+		  
 		  
 		  For i As Integer = 0 To columns.Ubound
 		    If i <= the_values.Ubound Then
@@ -167,7 +234,13 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Sub append_row(the_values() as variant)
-		  
+		  '
+		  ' append a row to the current table
+		  ' 
+		  ' parameters
+		  '      the_values : data to add to the current table, field order is assumed to be the field order in the current table
+		  '
+		  '
 		  For i As Integer = 0 To columns.Ubound
 		    If i <= the_values.Ubound Then
 		      columns(i).append_element(the_values(i))
@@ -186,6 +259,13 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Sub append_table(the_table as clDataTable)
+		  '
+		  ' append rows from a source table to the current table
+		  ' 
+		  ' parameters
+		  '      the_table : data to add to the current table, missing columns are created as needed
+		  '
+		  
 		  
 		  dim length_before as integer = self.row_count
 		  
@@ -220,6 +300,24 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Function apply_filter(the_filter_function as filter_row, paramarray function_param as variant) As variant()
+		  '
+		  ' Create a filter column storing the results of the filter function called for each row
+		  ' 
+		  ' parameters
+		  '    the_filter_function: function to be called for each rows
+		  '    function_param: additional parameters passed to the function as an array
+		  '
+		  ' returns
+		  '  an array of variants set to True or False
+		  '
+		  ' the filter function has the following prototype:
+		  '    row number (integer)
+		  '    row count (integer)
+		  '    column_names: array of strings with column names
+		  '    column_vamues: array of variants with the values of the column for the current row
+		  '   function_parameters: additional function parameters
+		  '
+		  ' 
 		  Dim return_boolean() As Variant
 		  
 		  Dim column_names() As String
@@ -251,7 +349,15 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Function clone() As clDataTable
-		  
+		  ' Create a clone of the current table
+		  '
+		  ' parameters:
+		  ' -
+		  ' returns:
+		  '    a new table, columns are cloned
+		  '
+		  ' This function could be used to materialize a virtual table 
+		  ' 
 		  dim output_table as new clDataTable(self.name+" copy")
 		  
 		  for each col as clAbstractDataSerie in self.columns
@@ -271,6 +377,10 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Function column_names() As string()
+		  '
+		  ' get the the list of column names
+		  '
+		  
 		  Dim ret_str() As String
 		  For Each column As clAbstractDataSerie In columns
 		    ret_str.Append(column.name)
@@ -847,6 +957,16 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Function select_columns(column_names() as string) As clDataTable
+		  '
+		  ' create a virtual table based on the curren table, the table contains  only the columns of which name is passed as parameter
+		  '
+		  ' parameters
+		  '      column_names : list of columns to include in the virtual table
+		  '
+		  ' returns
+		  '      allocate virtual table, linked to the current table (which could be physical or virtual)
+		  '
+		  '
 		  Dim res As New clDataTable("select " + Self.table_name)
 		  
 		  
@@ -874,6 +994,15 @@ Protected Class clDataTable
 
 	#tag Method, Flags = &h0
 		Function select_columns(paramarray column_names as string) As clDataTable
+		  '
+		  ' create a virtual table based on the curren table, the table contains  only the columns of which name is passed as parameter
+		  '
+		  ' parameters
+		  '      column_names : list of columns to include in the virtual table
+		  '
+		  ' returns
+		  '      allocate virtual table, linked to the current table (which could be physical or virtual)
+		  
 		  Return select_columns(column_names)
 		End Function
 	#tag EndMethod
