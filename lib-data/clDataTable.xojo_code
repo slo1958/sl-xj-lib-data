@@ -33,6 +33,7 @@ Protected Class clDataTable
 		  ' if the table (physical or virtual) already has a column with the same name, the new column is not added
 		  '
 		  If Self.get_column(tmp_column_name) <> Nil Then
+		    Raise New clDataException("Column already exists " + tmp_column_name)
 		    Return Nil
 		    
 		  end if
@@ -77,6 +78,8 @@ Protected Class clDataTable
 		    
 		  end if
 		  
+		  Raise New clDataException("Column cannot be added " + tmp_column_name)
+		  
 		  Return nil
 		  
 		  
@@ -110,6 +113,8 @@ Protected Class clDataTable
 		  Dim tmp_column_name As String = the_column_name
 		  
 		  If Self.get_column(tmp_column_name) <> Nil Then
+		    Raise New clDataException("Column already exists " + tmp_column_name)
+		    
 		    Return Nil
 		    
 		  end if
@@ -134,6 +139,9 @@ Protected Class clDataTable
 		  
 		  If tmp_column <> Nil Then
 		    Self.columns.Append(tmp_column)
+		    
+		  else
+		    Raise New clDataException("Column cannot be added " + tmp_column_name)
 		    
 		  End If
 		  
@@ -528,6 +536,28 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_cell(row_number as integer, column as string) As Variant
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_column(the_column_index as integer) As clAbstractDataSerie
+		  if the_column_index < 0 then 
+		    return nil
+		    
+		  elseif the_column_index> self.columns.Ubound then 
+		    return nil
+		    
+		  else
+		    return self.columns(the_column_index)
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_column(the_column_name as String) As clAbstractDataSerie
 		  
 		  For Each column As clAbstractDataSerie In Self.columns
@@ -572,6 +602,38 @@ Protected Class clDataTable
 		  '
 		  
 		  Return get_columns(column_names)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_table_info() As clDataTable
+		  dim tmp as new clDataTable("Info " + self.name)
+		  
+		  dim col_names() as variant
+		  dim col_type() as Variant
+		  
+		  for column_index as integer = 0 to self.columns.Ubound
+		    col_names.Append(self.columns(column_index).name)
+		    
+		    if self.columns(column_index).is_linked_to_table(self) then
+		      col_type.Append("Current table")
+		      
+		    elseif self.columns(column_index).is_linked_to_table() then
+		      
+		      col_type.append("Linked to " + self.columns(column_index).linked_to_table.name)
+		      
+		    else
+		      col_type.Append("not linked")
+		      
+		    end if
+		    
+		  next
+		  
+		  call tmp.add_column(new clDataSerie("name", col_names))
+		  call tmp.add_column(new clDataSerie("type", col_type))
+		  
+		  return tmp
 		  
 		End Function
 	#tag EndMethod

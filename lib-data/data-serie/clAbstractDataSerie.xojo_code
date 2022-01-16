@@ -240,15 +240,28 @@ Implements clDataSupport.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function is_linked_to_table() As Boolean
-		  Return physical_table_link <> Nil
-		  
+		Function is_linked_to_table(the_table as clDataTable = nil) As Boolean
+		  if the_table = nil then
+		    Return physical_table_link <> Nil
+		    
+		  else
+		    return physical_table_link = the_table
+		    
+		  end if
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function linked() As Boolean
 		  return self.physical_table_link <> nil
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function linked_to_table() As clDataTable
+		  
+		  return physical_table_link
+		  
 		End Function
 	#tag EndMethod
 

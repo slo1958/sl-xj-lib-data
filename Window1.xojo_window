@@ -170,6 +170,37 @@ Begin Window Window1
       Visible         =   True
       Width           =   80
    End
+   Begin PushButton PushButton4
+      AutoDeactivate  =   True
+      Bold            =   False
+      ButtonStyle     =   "0"
+      Cancel          =   False
+      Caption         =   "example_001"
+      Default         =   False
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   260
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   360
+      Underline       =   False
+      Visible         =   True
+      Width           =   112
+   End
 End
 #tag EndWindow
 
@@ -260,6 +291,13 @@ End
 		  System.DebugLog("Done with "+CurrentMethodName)
 		  
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PushButton4
+	#tag Event
+		Sub Action()
+		  example_001
 		End Sub
 	#tag EndEvent
 #tag EndEvents
