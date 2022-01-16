@@ -63,7 +63,7 @@ Begin Window Window2
       Enabled         =   True
       EraseBackground =   True
       HasBackColor    =   False
-      Height          =   219
+      Height          =   195
       HelpTag         =   ""
       InitialParent   =   ""
       Left            =   10
@@ -82,17 +82,52 @@ Begin Window Window2
       Visible         =   True
       Width           =   580
    End
+   Begin Label Label1
+      AutoDeactivate  =   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      Height          =   20
+      HelpTag         =   ""
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   10
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Untitled"
+      TextAlign       =   0
+      TextColor       =   &c00000000
+      TextFont        =   "System"
+      TextSize        =   0.0
+      TextUnit        =   0
+      Top             =   368
+      Transparent     =   True
+      Underline       =   False
+      Visible         =   True
+      Width           =   570
+   End
 End
 #tag EndWindow
 
 #tag WindowCode
 	#tag Method, Flags = &h0
-		Sub set_datatable(the_table as clDataTable)
+		Sub set_datatable(the_table as clDataTable, the_message as string = "")
 		  ClDataTableViewer1.Set_datatable(the_table)
 		  ClDataTableViewer2.Set_datatable(the_table.get_table_info)
 		  
 		  self.Title = the_table.name
-		  
+		  Label1.Text = the_message
 		End Sub
 	#tag EndMethod
 

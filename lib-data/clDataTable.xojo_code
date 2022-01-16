@@ -356,7 +356,7 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clDataTable
+		Function clone(preserve_links as Boolean = False) As clDataTable
 		  ' Create a clone of the current table
 		  '
 		  ' parameters:
@@ -368,14 +368,28 @@ Protected Class clDataTable
 		  ' 
 		  dim output_table as new clDataTable(self.name+" copy")
 		  
-		  for each col as clAbstractDataSerie in self.columns
-		    dim new_col as clAbstractDataSerie = col.clone()
+		  for each current_column as clAbstractDataSerie in self.columns
+		    dim used_column as clAbstractDataSerie
 		    
-		    call output_table.add_column(new_col)
+		    if current_column.linked_to_table<>self and preserve_links then
+		      used_column = current_column
+		      
+		    else
+		      dim new_column as clAbstractDataSerie = current_column.clone()
+		      new_column.link_to_table(output_table)
+		      used_column = new_column
+		      
+		    end if
+		    
+		    output_table.columns.Append(used_column)
+		    
+		    dim max_row_count as integer = output_table.increase_length(used_column.row_count)
+		    used_column.set_length(max_row_count)
 		    
 		  next
 		  
 		  Return output_table
+		  
 		End Function
 	#tag EndMethod
 
