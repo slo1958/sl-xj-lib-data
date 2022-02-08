@@ -2,13 +2,14 @@
 Protected Module datatable_examples
 	#tag Method, Flags = &h0
 		Sub example_001()
+		  using lib_data
 		  
 		  dim wnd as  window2
 		  
 		  '
 		  ' Create a table
 		  '
-		  dim sales as new clDataTable("Sales")
+		  dim sales as New lib_data.clDataTable("Sales")
 		  
 		  call sales.add_column(new clDataSerie("country", "France","France"))
 		  call sales.add_column(new clDataSerie("city","Paris","Marseille"))

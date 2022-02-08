@@ -35,6 +35,7 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_001()
 		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
 		  
 		  Dim test  As clDataSerie
 		  
@@ -52,6 +53,7 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_003()
 		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
 		  
 		  Dim test  As clDataSerie
 		  
@@ -66,6 +68,7 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_004()
 		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
 		  
 		  Dim k As Variant
 		  
@@ -86,6 +89,7 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_005()
 		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
 		  
 		  Dim k As Variant
 		  
@@ -111,6 +115,7 @@ Protected Module clDataSerie_tests
 		Sub test_006()
 		  
 		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
 		  
 		  Dim c1 As New clDataSerie("premier") 
 		  Dim c2 As New clDataSerie("second") 
@@ -138,7 +143,7 @@ Protected Module clDataSerie_tests
 		  
 		  f1 = c1.apply_filter(AddressOf filter01)
 		  
-		  f2 = c1.apply_filter(AddressOf retain_serie_head, 7)
+		  f2 = c1.apply_filter(AddressOf lib_data.retain_serie_head, 7)
 		  
 		  f3 = c1.apply_filter(AddressOf retain_serie_tail)
 		  
@@ -159,6 +164,7 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_007()
 		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
 		  
 		  Dim c1 As New clDataSerie("premier") 
 		  Dim c2 As New clDataSerie("second") 
@@ -190,6 +196,7 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_008()
 		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
 		  
 		  Dim c1 As New clDataSerie("premier") 
 		  Dim c2 As New clDataSerie("second") 
@@ -226,6 +233,7 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_009()
 		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
 		  
 		  Dim c1 As New clDataSerieMultiValued(Array("aaaa","bbbb"))
 		  
@@ -237,6 +245,7 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_010()
 		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
 		  
 		  Dim c1 As New clCompressedDataSerie("CompSerie") 
 		  Dim c2 As New clDataSerie("BaseSerie") 

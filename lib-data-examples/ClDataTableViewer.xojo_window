@@ -81,7 +81,7 @@ End
 
 #tag WindowCode
 	#tag Method, Flags = &h0
-		Sub Set_datatable(the_table as clDataTable)
+		Sub Set_datatable(the_table as lib_data.clDataTable)
 		  current_datatable = the_table
 		  
 		  update_display
@@ -100,7 +100,7 @@ End
 		  for column_index as integer = 0 to names.Ubound
 		    Listbox1.Heading(column_index) = names(column_index)
 		    
-		    dim temp_col as clAbstractDataSerie = current_datatable.get_column( column_index)
+		    dim temp_col as lib_data.clAbstractDataSerie = current_datatable.get_column( column_index)
 		    
 		    
 		    
@@ -121,7 +121,7 @@ End
 
 
 	#tag Property, Flags = &h0
-		current_datatable As clDataTable
+		current_datatable As lib_data.clDataTable
 	#tag EndProperty
 
 

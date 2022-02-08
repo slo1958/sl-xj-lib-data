@@ -1,7 +1,9 @@
 #tag Module
 Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
-		Function alloc_series(column_name as string) As clAbstractDataSerie
+		Function alloc_series(column_name as string) As lib_data.clAbstractDataSerie
+		  using lib_data
+		  
 		  if column_name = "Alpha" then
 		    Return new clCompressedDataSerie(column_name)
 		    
@@ -34,7 +36,7 @@ Protected Module clDataTable_tests
 		  test_007
 		  test_008
 		  test_009
-		  
+		  test_010
 		  
 		End Sub
 	#tag EndMethod
@@ -42,6 +44,8 @@ Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
 		Sub test_001()
 		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  using lib_data
 		  
 		  Dim rtst As clDataRow
 		  
@@ -74,9 +78,11 @@ Protected Module clDataTable_tests
 		Sub test_002()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
+		  using lib_data
+		  
 		  Dim rtst As clDataRow
 		  
-		  Dim ttst1 As New clDataTable("T1")
+		  Dim ttst1 As New lib_data.clDataTable("T1")
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1234)
@@ -95,7 +101,7 @@ Protected Module clDataTable_tests
 		  ttst1.debug_dump
 		  
 		  
-		  Dim ttst2 As New clDataTable("T2")
+		  Dim ttst2 As New lib_data.clDataTable("T2")
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",81234)
@@ -129,8 +135,10 @@ Protected Module clDataTable_tests
 		Sub test_003()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
+		  using lib_data
+		  
 		  Dim rtst As clDataRow
-		  Dim ttst1 As New clDataTable("T1")
+		  Dim ttst1 As New lib_data.clDataTable("T1")
 		  
 		  
 		  rtst = New clDataRow
@@ -182,17 +190,17 @@ Protected Module clDataTable_tests
 		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
 		  fld_file3  = fld_folder.Child("myfile3_10K_output.txt")
 		  
-		  Dim ttst3 As New clDataTable("x")
+		  Dim ttst3 As New lib_data.clDataTable("x")
 		  
 		  ttst3.load_from_text(fld_file1, New clRowParser_full(Chr(9)), True)
 		  
-		  Dim ttst4 As New clDataTable("x")
+		  Dim ttst4 As New lib_data.clDataTable("x")
 		  
 		  ttst4.load_from_text(fld_file2, New clRowParser_full(","), True)
 		  
 		  ttst4.save_as_text(fld_file3, New clRowParser_full(";"), True)
 		  
-		  dim ttst5  as new clDataTable("x")
+		  dim ttst5  as New lib_data.clDataTable("x")
 		  
 		  ttst5.load_from_text(fld_file1, New clRowParser_full(Chr(9)), True, AddressOf alloc_series)
 		  
@@ -208,6 +216,9 @@ Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
 		Sub test_005()
 		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  
+		  using lib_data
 		  
 		  Dim rtst As clDataRow
 		  
@@ -249,6 +260,8 @@ Protected Module clDataTable_tests
 		Sub test_006()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
+		  using lib_data
+		  
 		  Dim c1 As New clDataSerie("premier")
 		  Dim c2 As New clDataSerie("second")
 		  
@@ -289,9 +302,7 @@ Protected Module clDataTable_tests
 		Sub test_007()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim rtst As clDataRow
-		  
-		  Dim ttst As New clDataTable("T1")
+		  Dim ttst As New lib_data.clDataTable("T1")
 		  
 		  call ttst.add_columns(Array("cc1","cc2","cc3"))
 		  
@@ -317,6 +328,7 @@ Protected Module clDataTable_tests
 		Sub test_008()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
+		  using lib_data
 		  
 		  Dim ttst As New clDataTable("T1")
 		  
@@ -345,11 +357,12 @@ Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
 		Sub test_009()
 		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
 		  
 		  Dim rtst As clDataRow
 		  
-		  Dim ttst1 As New clDataTable("T1")
-		  Dim ttst2 as New clDataTable("T2")
+		  Dim ttst1 As New lib_data.clDataTable("T1")
+		  Dim ttst2 as New lib_data.clDataTable("T2")
 		  
 		  for i as integer = 1 to 4
 		    rtst = New clDataRow
@@ -382,6 +395,40 @@ Protected Module clDataTable_tests
 		  
 		  Dim k As Integer = 1
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_010()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  dim db as new SQLiteDatabase
+		  
+		  if not db.Connect then
+		    System.DebugLog("Cannot connect.")
+		    return 
+		  end if
+		  
+		  db.SQLExecute("CREATE TABLE MYTABLE1(id integer, name varchar(255), city varchar(255), sales double)")
+		  
+		  dim dr as DatabaseRecord
+		  
+		  for i as integer = 1 to 10
+		    dr = new DatabaseRecord
+		    dr.IntegerColumn("id") = i
+		    dr.Column("name") = "NAME_"+str(i)+"_"+str(i)
+		    dr.Column("city") = "CITY"+str(i)
+		    db.InsertRecord("MYTABLE1",dr)
+		    
+		  next
+		  
+		  dim rst as RecordSet = db.SQLSelect("Select * from MYTABLE1")
+		  
+		  Dim ttst As New lib_data.clDataTable("Mytable",rst)
+		  
+		  
+		  db.Close
 		  
 		End Sub
 	#tag EndMethod

@@ -37,6 +37,7 @@ Begin Window Window2
       HasBackColor    =   False
       Height          =   121
       HelpTag         =   ""
+      Index           =   -2147483648
       InitialParent   =   ""
       Left            =   10
       LockBottom      =   True
@@ -65,6 +66,7 @@ Begin Window Window2
       HasBackColor    =   False
       Height          =   195
       HelpTag         =   ""
+      Index           =   -2147483648
       InitialParent   =   ""
       Left            =   10
       LockBottom      =   True
@@ -122,7 +124,7 @@ End
 
 #tag WindowCode
 	#tag Method, Flags = &h0
-		Sub set_datatable(the_table as clDataTable, the_message as string = "")
+		Sub set_datatable(the_table as lib_data.clDataTable, the_message as string = "")
 		  ClDataTableViewer1.Set_datatable(the_table)
 		  ClDataTableViewer2.Set_datatable(the_table.get_table_info)
 		  

@@ -269,6 +269,8 @@ End
 		Sub Action()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
+		  using lib_data
+		  
 		  
 		  Dim tbl0 As New clDataTable("mytable", serie_array( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
@@ -279,7 +281,7 @@ End
 		  ))
 		  
 		  
-		  Dim tbl1 As clDataTable = tbl0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
+		  Dim tbl1 As  clDataTable = tbl0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
 		  Dim tbl2 As clDataTable = tbl0.groupby(string_array, string_array("Sales"), string_array)
 		  Dim tbl3 As clDataTable = tbl0.groupby(string_array("Country","City"), string_array, string_array(""))
 		  
