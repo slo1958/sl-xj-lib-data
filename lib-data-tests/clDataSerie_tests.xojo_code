@@ -28,6 +28,8 @@ Protected Module clDataSerie_tests
 		  test_008
 		  test_009
 		  test_010
+		  test_011
+		  test_012
 		  
 		End Sub
 	#tag EndMethod
@@ -290,6 +292,73 @@ Protected Module clDataSerie_tests
 		    System.DebugLog(str(i) + ": " + c1.get_element(i) + "    " + c2.get_element(i))
 		    
 		  next
+		  
+		  System.DebugLog("Done with "+CurrentMethodName)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_011()
+		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
+		  
+		  Dim c1 As New clDataSerie("Serie1") 
+		  
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  
+		  
+		  dim v() as string = c1.distinct_string_values()
+		  
+		  Dim c2 As New clDataSerie("DistinctSerie", v) 
+		  
+		  c1.debug_dump
+		  
+		  c2.debug_dump
+		  
+		  System.DebugLog("Done with "+CurrentMethodName)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_012()
+		  
+		  System.DebugLog("START "+CurrentMethodName)
+		  using lib_data
+		  
+		  Dim c1 As New clCompressedDataSerie("Serie1") 
+		  
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  c1.append_element("aaa")
+		  c1.append_element("bb")
+		  c1.append_element("cccc")
+		  
+		  
+		  dim v() as string = c1.distinct_string_values()
+		  
+		  Dim c2 As New clDataSerie("DistinctSerie", v) 
+		  
+		  c1.debug_dump
+		  
+		  c2.debug_dump
 		  
 		  System.DebugLog("Done with "+CurrentMethodName)
 		End Sub

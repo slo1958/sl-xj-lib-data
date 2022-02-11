@@ -84,6 +84,10 @@ Protected Module lib_data
 	#tag EndMethod
 
 
+	#tag Constant, Name = Version, Type = String, Dynamic = False, Default = \"1.01.000", Scope = Public
+	#tag EndConstant
+
+
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="Index"

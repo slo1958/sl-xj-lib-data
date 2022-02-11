@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clAbstractDataSerie
-Implements  lib_data.itf_json_able
+Implements lib_data.itf_json_able
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  Raise New lib_data.clDataException("Unimplemented method " + CurrentMethodName)
@@ -61,6 +61,15 @@ Implements  lib_data.itf_json_able
 		  physical_table_link = Nil
 		  
 		  For i As Integer = 0 To the_values.Ubound
+		    
+		    dim tmp_val as variant = the_values(i)
+		    
+		    if tmp_val.IsArray then
+		      dim tmp_arr() as string = tmp_val
+		      dim tmp_val2 as Variant = tmp_arr(0)
+		      System.DebugLog(tmp_val2)
+		    end if
+		    
 		    self.append_element(the_values(i))
 		    
 		  Next
@@ -70,6 +79,38 @@ Implements  lib_data.itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub Constructor(the_label as string, the_values() as variant)
+		  
+		  self.reset
+		  
+		  serie_name = the_label
+		  physical_table_link = Nil
+		  
+		  For i As Integer = 0 To the_values.Ubound
+		    self.append_element(the_values(i))
+		    
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor111(the_label as string, the_values() as integer)
+		  
+		  self.reset
+		  
+		  serie_name = the_label
+		  physical_table_link = Nil
+		  
+		  For i As Integer = 0 To the_values.Ubound
+		    self.append_element(the_values(i))
+		    
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor111(the_label as string, the_values() as string)
 		  
 		  self.reset
 		  
@@ -150,6 +191,31 @@ Implements  lib_data.itf_json_able
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function distinct_string_values() As string()
+		  Dim limit As Integer = row_count - 1
+		  Dim i As Integer
+		  
+		  dim v_output() as string
+		  
+		  Dim v_item As variant
+		  
+		  For i = 0 To limit
+		    v_item = get_element_as_string(i)
+		    
+		    if v_output.IndexOf(v_item) < 0 then
+		      v_output.Append(v_item)
+		      
+		    end if
+		  Next
+		  
+		  v_output.sort()
+		  
+		  return v_output
+		  
+		End Function
+	#tag EndMethod
+
 	#tag DelegateDeclaration, Flags = &h0
 		Delegate Function filter_column(the_row_index as integer, the_row_count as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
 	#tag EndDelegateDeclaration
@@ -182,9 +248,9 @@ Implements  lib_data.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_data_serie(the_element_index as integer) As clDataSerie
+		Function get_element_as_data_serie(the_element_index as integer) As clAbstractDataSerie
 		  
-		  Dim tmp_v As clDataSerie
+		  Dim tmp_v As clAbstractDataSerie
 		  
 		  Try 
 		    tmp_v = get_element(the_element_index)

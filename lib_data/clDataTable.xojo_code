@@ -450,13 +450,13 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table_name as string, the_columns() as clDataSerie, auto_clone_columns as boolean = false)
+		Sub Constructor(the_table_name as string, the_columns() as clAbstractDataSerie, auto_clone_columns as boolean = false)
 		  //
 		  // create a table from a set of columns
 		  // columns cannot be part of another table, use select_columns to create a virtual table if you want to retain the relationship
 		  // 
 		  
-		  Dim tmp_columns() As clDataSerie = the_columns
+		  Dim tmp_columns() As clAbstractDataSerie = the_columns
 		  
 		  For i As Integer = 0 To tmp_columns.Ubound
 		    If tmp_columns(i) = Nil Then
@@ -476,7 +476,7 @@ Protected Class clDataTable
 		  
 		  internal_new_table(the_table_name)
 		  
-		  For Each c As clDataSerie In tmp_columns
+		  For Each c As clAbstractDataSerie In tmp_columns
 		    ' add column takes care of adjusting the length
 		    call Self.add_column(c)
 		    
@@ -662,6 +662,26 @@ Protected Class clDataTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_columns_info() As clDataTable
+		  dim columns() as clAbstractDataSerie
+		  
+		  dim column_names as new clDataSerie("Name")
+		  
+		  columns.Append(column_names)
+		  
+		  for each column as clAbstractDataSerie in self.columns
+		    column_names.append_element(column.name)
+		    
+		  next
+		  
+		  dim output_table as  new clDataTable(self.name+" columns", columns)
+		  
+		  return output_table
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_table_info() As clDataTable
 		  dim tmp as New lib_data.clDataTable("Info " + self.name)
 		  
@@ -727,6 +747,7 @@ Protected Class clDataTable
 		  ' Prepare output space for grouped dimensions
 		  '
 		  Dim output_dimensions() As clDataSerie
+		  '
 		  For idx_dim As Integer = 0 To input_dimensions.Ubound
 		    output_dimensions.Append(New clDataSerie(input_dimensions(idx_dim).name))
 		    
@@ -736,6 +757,7 @@ Protected Class clDataTable
 		  ' Prepare temporary space for aggregated measures
 		  '
 		  Dim temp_measures() As clDataSerie
+		  '
 		  For idx_mea As Integer = 0 To input_measures.Ubound
 		    temp_measures.Append(New clDataSerie(input_measures(idx_mea).name))
 		    If Not has_grouping Then
@@ -793,7 +815,7 @@ Protected Class clDataTable
 		    output_row_count.set_element(idx_output, output_row_count.get_element(idx_output)+1)
 		    
 		    For idx_mea As Integer = 0 To input_measures.Ubound
-		      Dim tmp_serie As clDataSerie = temp_measures(idx_mea).get_element_as_data_serie(idx_output)
+		      Dim tmp_serie As clAbstractDataSerie = temp_measures(idx_mea).get_element_as_data_serie(idx_output)
 		      tmp_serie.append_element(input_measures(idx_mea).get_element(idx_row))
 		      
 		    Next

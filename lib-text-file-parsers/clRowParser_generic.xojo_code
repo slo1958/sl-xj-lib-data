@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clRowParser_generic
-Implements  lib_data.itf_row_parser
+Implements lib_data.itf_row_parser
 	#tag Method, Flags = &h0
 		Function parse_line(the_line as String) As string()
 		  Dim ret() As String

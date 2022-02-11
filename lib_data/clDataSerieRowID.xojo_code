@@ -51,12 +51,6 @@ Inherits clDataSerie
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="last_error_message"
-			Group="Behavior"
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="last_index"
 			Group="Behavior"
 			Type="Integer"
