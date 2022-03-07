@@ -322,7 +322,7 @@ Protected Class clDataTable
 		  '    row number (integer)
 		  '    row count (integer)
 		  '    column_names: array of strings with column names
-		  '    column_vamues: array of variants with the values of the column for the current row
+		  '    column_values: array of variants with the values of the column for the current row
 		  '   function_parameters: additional function parameters
 		  '
 		  ' 

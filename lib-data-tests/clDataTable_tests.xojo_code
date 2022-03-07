@@ -361,8 +361,10 @@ Protected Module clDataTable_tests
 		  
 		  Dim rtst As clDataRow
 		  
-		  Dim ttst1 As New lib_data.clDataTable("T1")
-		  Dim ttst2 as New lib_data.clDataTable("T2")
+		  Dim ttst1 As New clDataTable("T1")
+		  Dim ttst2 as New clDataTable("T2")
+		  dim ttst3 as clDataTable 
+		  dim ttst4 as clDataTable
 		  
 		  for i as integer = 1 to 4
 		    rtst = New clDataRow
@@ -385,13 +387,15 @@ Protected Module clDataTable_tests
 		    
 		  next
 		  
-		  dim ttst3 as clDataTable = ttst1.clone()
+		  ttst3 = ttst1.clone()
 		  
 		  ttst3.append_table(ttst2)
 		  
+		  ttst4 = ttst3.get_columns_info()
 		  
 		  System.DebugLog("Expecting aaa/bbb/ccc/ddd")
 		  ttst3.debug_dump
+		  ttst4.debug_dump
 		  
 		  Dim k As Integer = 1
 		  

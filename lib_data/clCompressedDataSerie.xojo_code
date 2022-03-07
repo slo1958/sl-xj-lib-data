@@ -68,17 +68,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element(the_element_index as integer) As variant
+		Function internal_get_element(the_element_index as integer) As variant
 		  
 		  dim v as Variant
 		  
-		  If 0 <= the_element_index And  the_element_index <= items_index.Ubound then
-		    dim item_index As Integer = Self.items_index(the_element_index)
-		    
-		    if item_index >=0 then
-		      v = self.items_value_list(item_index)
-		      
-		    end if
+		  dim item_index As Integer = Self.items_index(the_element_index)
+		  
+		  if item_index >=0 then
+		    v = self.items_value_list(item_index)
 		    
 		  end if
 		  
@@ -161,12 +158,6 @@ Inherits clAbstractDataSerie
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="last_error_message"
-			Group="Behavior"
-			Type="String"
-			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"

@@ -320,7 +320,7 @@ Protected Module clDataSerie_tests
 		  
 		  dim v() as string = c1.distinct_string_values()
 		  
-		  Dim c2 As New clDataSerie("DistinctSerie", v) 
+		  Dim c2 As New clDataSerie("DistinctSerie", variant_array(v))
 		  
 		  c1.debug_dump
 		  
@@ -354,7 +354,7 @@ Protected Module clDataSerie_tests
 		  
 		  dim v() as string = c1.distinct_string_values()
 		  
-		  Dim c2 As New clDataSerie("DistinctSerie", v) 
+		  Dim c2 As New clDataSerie("DistinctSerie", variant_array(v))
 		  
 		  c1.debug_dump
 		  

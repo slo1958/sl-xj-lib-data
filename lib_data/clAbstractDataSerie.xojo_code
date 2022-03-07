@@ -24,6 +24,7 @@ Implements lib_data.itf_json_able
 		Function apply_filter(the_filter_function as filter_column, paramarray function_param as variant) As variant()
 		  Dim return_boolean() As Variant
 		  
+		  
 		  Return return_boolean
 		  
 		End Function
@@ -48,6 +49,54 @@ Implements lib_data.itf_json_able
 		    serie_name = tmp_serie_name
 		    
 		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(the_label as string, the_values() as double)
+		  
+		  self.reset
+		  
+		  serie_name = the_label
+		  physical_table_link = Nil
+		  
+		  For i As Integer = 0 To the_values.Ubound
+		    self.append_element(the_values(i))
+		    
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(the_label as string, the_values() as integer)
+		  
+		  self.reset
+		  
+		  serie_name = the_label
+		  physical_table_link = Nil
+		  
+		  For i As Integer = 0 To the_values.Ubound
+		    self.append_element(the_values(i))
+		    
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(the_label as string, the_values() as string)
+		  
+		  self.reset
+		  
+		  serie_name = the_label
+		  physical_table_link = Nil
+		  
+		  For i As Integer = 0 To the_values.Ubound
+		    self.append_element(the_values(i))
+		    
+		  Next
 		  
 		End Sub
 	#tag EndMethod
@@ -79,38 +128,6 @@ Implements lib_data.itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub Constructor(the_label as string, the_values() as variant)
-		  
-		  self.reset
-		  
-		  serie_name = the_label
-		  physical_table_link = Nil
-		  
-		  For i As Integer = 0 To the_values.Ubound
-		    self.append_element(the_values(i))
-		    
-		  Next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor111(the_label as string, the_values() as integer)
-		  
-		  self.reset
-		  
-		  serie_name = the_label
-		  physical_table_link = Nil
-		  
-		  For i As Integer = 0 To the_values.Ubound
-		    self.append_element(the_values(i))
-		    
-		  Next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor111(the_label as string, the_values() as string)
 		  
 		  self.reset
 		  
@@ -241,7 +258,15 @@ Implements lib_data.itf_json_able
 
 	#tag Method, Flags = &h0
 		Function get_element(the_element_index as integer) As Variant
-		  Raise New lib_data.clDataException("Unimplemented method " + CurrentMethodName)
+		  If 0 <= the_element_index And  the_element_index <= self.upper_bound() then
+		    Return internal_get_element(the_element_index)
+		    
+		  Else
+		    Dim v As Variant
+		    Return v
+		    
+		  End If
+		  
 		  
 		  
 		End Function
@@ -302,6 +327,13 @@ Implements lib_data.itf_json_able
 		  End Try
 		  
 		  Return tmp_s
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function internal_get_element(the_element_index as integer) As Variant
+		  Raise New lib_data.clDataException("Unimplemented method " + CurrentMethodName)
+		  
 		End Function
 	#tag EndMethod
 

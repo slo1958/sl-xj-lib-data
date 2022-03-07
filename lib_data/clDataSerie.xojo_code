@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clDataSerie
 Inherits lib_data.clAbstractDataSerie
-Implements  itf_json_able
+Implements itf_json_able
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  items.Append(the_item)
@@ -38,16 +38,9 @@ Implements  itf_json_able
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function get_element(the_element_index as integer) As Variant
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
-		    Return items(the_element_index)
-		    
-		  Else
-		    Dim v As Variant
-		    Return v
-		    
-		  End If
+	#tag Method, Flags = &h1
+		Protected Function internal_get_element(the_element_index as integer) As Variant
+		  Return items(the_element_index)
 		  
 		  
 		End Function
