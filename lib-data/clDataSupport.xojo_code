@@ -1,9 +1,28 @@
-#tag Class
-Protected Class clRowParser_generic
+#tag Module
+Protected Module clDataSupport
 	#tag Method, Flags = &h0
-		Function parse_line(the_line as String) As string()
+		Function serie_array(paramarray series as clDataSerie) As clDataSerie()
+		  Dim tmp() As clDataSerie
+		  
+		  For Each c As clDataSerie In series
+		    tmp.Append(c)
+		    
+		  Next
+		  
+		  Return tmp
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function string_array(paramarray  items as string) As string()
 		  Dim ret() As String
-		  ret.Append(the_line)
+		  
+		  For Each item As String In items
+		    ret.append(item)  
+		    
+		  Next
 		  
 		  Return ret
 		  
@@ -11,17 +30,18 @@ Protected Class clRowParser_generic
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function serialize_line(the_data() as String) As string
-		  Return ""
+		Function variant_array(paramarray  items as variant) As variant()
+		  Dim ret() As variant
+		  
+		  For Each item As variant In items
+		    ret.append(item)
+		    
+		  Next
+		  
+		  Return ret
 		  
 		End Function
 	#tag EndMethod
-
-
-	#tag Note, Name = Untitled
-		
-		
-	#tag EndNote
 
 
 	#tag ViewBehavior
@@ -59,5 +79,5 @@ Protected Class clRowParser_generic
 			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
-End Class
-#tag EndClass
+End Module
+#tag EndModule

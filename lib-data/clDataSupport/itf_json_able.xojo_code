@@ -1,27 +1,10 @@
-#tag Class
-Protected Class clRowParser_generic
+#tag Interface
+Protected Interface itf_json_able
 	#tag Method, Flags = &h0
-		Function parse_line(the_line as String) As string()
-		  Dim ret() As String
-		  ret.Append(the_line)
-		  
-		  Return ret
+		Function to_json() As JSONItem
 		  
 		End Function
 	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function serialize_line(the_data() as String) As string
-		  Return ""
-		  
-		End Function
-	#tag EndMethod
-
-
-	#tag Note, Name = Untitled
-		
-		
-	#tag EndNote
 
 
 	#tag ViewBehavior
@@ -59,5 +42,5 @@ Protected Class clRowParser_generic
 			Type="Integer"
 		#tag EndViewProperty
 	#tag EndViewBehavior
-End Class
-#tag EndClass
+End Interface
+#tag EndInterface

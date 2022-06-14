@@ -30,6 +30,8 @@ Protected Module clDataSerie_tests
 		  test_010
 		  test_011
 		  test_012
+		  test_014
+		  test_015
 		  
 		End Sub
 	#tag EndMethod
@@ -37,7 +39,6 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_001()
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
 		  Dim test  As clDataSerie
 		  
@@ -55,7 +56,6 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_003()
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
 		  Dim test  As clDataSerie
 		  
@@ -70,7 +70,6 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_004()
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
 		  Dim k As Variant
 		  
@@ -91,7 +90,6 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_005()
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
 		  Dim k As Variant
 		  
@@ -117,7 +115,6 @@ Protected Module clDataSerie_tests
 		Sub test_006()
 		  
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
 		  Dim c1 As New clDataSerie("premier") 
 		  Dim c2 As New clDataSerie("second") 
@@ -145,7 +142,7 @@ Protected Module clDataSerie_tests
 		  
 		  f1 = c1.apply_filter(AddressOf filter01)
 		  
-		  f2 = c1.apply_filter(AddressOf lib_data.retain_serie_head, 7)
+		  f2 = c1.apply_filter(AddressOf retain_serie_head, 7)
 		  
 		  f3 = c1.apply_filter(AddressOf retain_serie_tail)
 		  
@@ -166,7 +163,6 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_007()
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
 		  Dim c1 As New clDataSerie("premier") 
 		  Dim c2 As New clDataSerie("second") 
@@ -198,7 +194,6 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_008()
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
 		  Dim c1 As New clDataSerie("premier") 
 		  Dim c2 As New clDataSerie("second") 
@@ -235,7 +230,6 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_009()
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
 		  Dim c1 As New clDataSerieMultiValued(Array("aaaa","bbbb"))
 		  
@@ -247,7 +241,6 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_010()
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
 		  Dim c1 As New clCompressedDataSerie("CompSerie") 
 		  Dim c2 As New clDataSerie("BaseSerie") 
@@ -300,67 +293,86 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub test_011()
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
-		  Dim c1 As New clDataSerie("Serie1") 
-		  
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
+		  Dim test  As clNumberDataSerie
 		  
 		  
-		  dim v() as string = c1.distinct_string_values()
+		  test = New clNumberDataSerie("test")
 		  
-		  Dim c2 As New clDataSerie("DistinctSerie", variant_array(v))
+		  test.append_element(125)
+		  test.append_element(142)
 		  
-		  c1.debug_dump
 		  
-		  c2.debug_dump
-		  
-		  System.DebugLog("Done with "+CurrentMethodName)
+		  System.DebugLog("return " + Str(test.row_count))
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub test_012()
-		  
 		  System.DebugLog("START "+CurrentMethodName)
-		  using lib_data
 		  
-		  Dim c1 As New clCompressedDataSerie("Serie1") 
-		  
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
+		  Dim test  As clNumberDataSerie
 		  
 		  
-		  dim v() as string = c1.distinct_string_values()
+		  test = New clNumberDataSerie("test")
 		  
-		  Dim c2 As New clDataSerie("DistinctSerie", variant_array(v))
+		  test.append_element("125")
+		  test.append_element(142)
 		  
-		  c1.debug_dump
 		  
-		  c2.debug_dump
+		  System.DebugLog("return " + Str(test.row_count))
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_014()
+		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  System.DebugLog("Done with "+CurrentMethodName)
+		  Dim test  As clNumberDataSerie
+		  
+		  
+		  test = New clNumberDataSerie("test")
+		  
+		  test.append_element("abc")
+		  test.append_element(142)
+		  
+		  
+		  System.DebugLog("return " + Str(test.row_count))
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_015()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim test0, test1, test2, test3  As clNumberDataSerie
+		  dim expected, delta as clNumberDataSerie
+		  
+		  test1 = New clNumberDataSerie("test1")
+		  
+		  test1.append_element(124)
+		  test1.append_element(456)
+		  
+		  test2 = new clNumberDataSerie("test2")
+		  test2.append_element(12)
+		  test2.append_element(24)
+		  test2.append_element(10)
+		  
+		  test3 = new clNumberDataSerie("test3")
+		  test3.append_element(100)
+		  test3.append_element(300)
+		  test3.append_element(6)
+		  
+		  test0 = (test1 + test2 - test3 + 1000) * 0.5
+		  
+		  expected = new clNumberDataSerie("expected")
+		  expected.append_element(518)
+		  expected.append_element(590)
+		  expected.append_element(502)
+		  
+		  delta = test0 - expected
+		  
+		  System.DebugLog("return " + Str(test0.row_count))
 		End Sub
 	#tag EndMethod
 

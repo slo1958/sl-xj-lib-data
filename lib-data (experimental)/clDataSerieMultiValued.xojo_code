@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataSerieMultiValued
-Inherits lib_data.clDataSerie
+Inherits clDataSerie
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  
@@ -8,7 +8,7 @@ Inherits lib_data.clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As lib_data.clDataSerie
+		Function clone() As clDataSerie
 		  
 		End Function
 	#tag EndMethod
@@ -37,7 +37,7 @@ Inherits lib_data.clDataSerie
 
 	#tag Method, Flags = &h0
 		Function load_from_text(the_source as FolderItem, has_header  as Boolean) As String
-		  Raise New lib_data.clDataException("Cannot load a multivalued serie")
+		  Raise New clDataException("Cannot load a multivalued serie")
 		End Function
 	#tag EndMethod
 
@@ -50,7 +50,7 @@ Inherits lib_data.clDataSerie
 
 	#tag Method, Flags = &h0
 		Sub rename(the_new_name as string)
-		  Raise New lib_data.clDataException("Cannot rename multivalues serie")
+		  Raise New clDataException("Cannot rename multivalues serie")
 		  
 		End Sub
 	#tag EndMethod
@@ -66,7 +66,7 @@ Inherits lib_data.clDataSerie
 		    
 		    
 		  Else
-		    Raise New lib_data.clDataException("Number of values does not match expected number of values")
+		    Raise New clDataException("Number of values does not match expected number of values")
 		    
 		  End If
 		End Sub

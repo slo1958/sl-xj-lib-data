@@ -1,30 +1,21 @@
 #tag Class
-Protected Class clRowParser_generic
+Protected Class clDataException
+Inherits RuntimeException
 	#tag Method, Flags = &h0
-		Function parse_line(the_line as String) As string()
-		  Dim ret() As String
-		  ret.Append(the_line)
+		Sub Constructor(the_message as string)
+		  Self.Message = the_message
 		  
-		  Return ret
-		  
-		End Function
+		End Sub
 	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function serialize_line(the_data() as String) As string
-		  Return ""
-		  
-		End Function
-	#tag EndMethod
-
-
-	#tag Note, Name = Untitled
-		
-		
-	#tag EndNote
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ErrorNumber"
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
 			Visible=true
@@ -40,10 +31,21 @@ Protected Class clRowParser_generic
 			Type="Integer"
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="Message"
+			Group="Behavior"
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
 			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Reason"
+			Group="Behavior"
+			Type="Text"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"

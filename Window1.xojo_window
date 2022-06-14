@@ -58,7 +58,7 @@ Begin Window Window1
       LockRight       =   False
       LockTop         =   True
       RequiresSelection=   False
-      Scope           =   0
+      Scope           =   "0"
       ScrollbarHorizontal=   False
       ScrollBarVertical=   True
       SelectionType   =   0
@@ -96,7 +96,7 @@ Begin Window Window1
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   1
       TabPanelIndex   =   0
       TabStop         =   True
@@ -127,7 +127,7 @@ Begin Window Window1
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
@@ -158,7 +158,7 @@ Begin Window Window1
       LockLeft        =   True
       LockRight       =   False
       LockTop         =   True
-      Scope           =   0
+      Scope           =   "0"
       TabIndex        =   3
       TabPanelIndex   =   0
       TabStop         =   True
@@ -169,37 +169,6 @@ Begin Window Window1
       Underline       =   False
       Visible         =   True
       Width           =   80
-   End
-   Begin PushButton PushButton4
-      AutoDeactivate  =   True
-      Bold            =   False
-      ButtonStyle     =   "0"
-      Cancel          =   False
-      Caption         =   "example_001"
-      Default         =   False
-      Enabled         =   True
-      Height          =   20
-      HelpTag         =   ""
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   260
-      LockBottom      =   False
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   True
-      Scope           =   0
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextFont        =   "System"
-      TextSize        =   0.0
-      TextUnit        =   0
-      Top             =   360
-      Underline       =   False
-      Visible         =   True
-      Width           =   112
    End
 End
 #tag EndWindow
@@ -269,8 +238,6 @@ End
 		Sub Action()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  using lib_data
-		  
 		  
 		  Dim tbl0 As New clDataTable("mytable", serie_array( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
@@ -281,7 +248,7 @@ End
 		  ))
 		  
 		  
-		  Dim tbl1 As  clDataTable = tbl0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
+		  Dim tbl1 As clDataTable = tbl0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
 		  Dim tbl2 As clDataTable = tbl0.groupby(string_array, string_array("Sales"), string_array)
 		  Dim tbl3 As clDataTable = tbl0.groupby(string_array("Country","City"), string_array, string_array(""))
 		  
@@ -293,13 +260,6 @@ End
 		  System.DebugLog("Done with "+CurrentMethodName)
 		  
 		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events PushButton4
-	#tag Event
-		Sub Action()
-		  example_001
 		End Sub
 	#tag EndEvent
 #tag EndEvents
