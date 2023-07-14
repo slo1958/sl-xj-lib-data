@@ -1,0 +1,93 @@
+#tag Module
+Protected Module datatable_to_list
+	#tag Method, Flags = &h0
+		Sub show_table_in_listbox(thetable as itf_table_reader, thelist as Listbox)
+		  
+		  dim tmp_listbox as Listbox = thelist
+		  dim tmp_tbl as itf_table_reader = thetable
+		  
+		  tmp_listbox.DeleteAllRows
+		  
+		  '
+		  ' update table header
+		  '
+		  tmp_listbox.HasHeading = True
+		  dim columns()  as String = tmp_tbl.column_names
+		  
+		  tmp_listbox.ColumnCount = columns.Ubound + 2
+		  
+		  tmp_listbox.Heading(0)="#"
+		  
+		  for column_index as integer = 0 to columns.Ubound
+		    tmp_listbox.Heading(column_index+1) = columns(column_index)
+		    
+		  next
+		  
+		  '
+		  ' show data
+		  '
+		  dim tmp_last_row as integer = tmp_tbl.row_count
+		  
+		  for row_index as integer = 0 to tmp_last_row - 1
+		    tmp_listbox.AddRow(str(row_index))
+		    
+		  next
+		  
+		  dim column_index as integer
+		  for each column as string in tmp_tbl.column_names()
+		    dim tmp_col as clAbstractDataSerie = tmp_tbl.get_column(column)
+		    
+		    column_index = column_index + 1
+		    for  row_index as integer = 0 to tmp_last_row - 1
+		      dim tmp_val as string = tmp_col.get_element(row_index).StringValue
+		      
+		      tmp_listbox.Cell(row_index, column_index) = tmp_val
+		      
+		    next
+		    
+		  next
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			Type="String"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+		#tag EndViewProperty
+	#tag EndViewBehavior
+End Module
+#tag EndModule

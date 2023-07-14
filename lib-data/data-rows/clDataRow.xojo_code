@@ -1,0 +1,149 @@
+#tag Class
+Protected Class clDataRow
+Implements  Iterable
+	#tag Method, Flags = &h0
+		Sub Constructor(values as Dictionary)
+		  my_storage = New Dictionary
+		  mutable_flag = False
+		  my_label = ""
+		  
+		  for each k as string in values.Keys
+		    my_storage.Value(k) = values.Value(k)
+		    
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(the_row_label as string = "")
+		  my_storage = New Dictionary
+		  mutable_flag = False
+		  my_label = the_row_label
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_cell(the_cell_name as String) As variant
+		  If my_storage.HasKey(the_cell_name) Then
+		    Return  my_storage.Value(the_cell_name) 
+		    
+		  Else
+		    Return ""
+		    
+		  End If
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Iterator() As Iterator
+		  // Part of the Iterable interface.
+		   
+		  
+		  Dim iteration_keys() As String
+		  
+		  For Each s As String In my_storage.Keys
+		    iteration_keys.Append(s)
+		    
+		  Next
+		  
+		  Dim tmp_row_iterator As New clDataRowIterator(iteration_keys)
+		  Return tmp_row_iterator 
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function name() As string
+		  Return my_label
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub set_cell(the_cell_name as string, the_cell_value as Variant)
+		  If my_storage.HasKey(the_cell_name) And Not mutable_flag Then
+		    Raise New clDataException("Cannot update a non mutable element")
+		    
+		  Else
+		    my_storage.Value(the_cell_name) = the_cell_value
+		    
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+
+	#tag Note, Name = Description
+		A dataRow is a dictionary where the keys are the column name and the values are taken from the current record in each dataSerie.
+		
+		This is a conveniant but very slow process.
+		
+		
+		
+	#tag EndNote
+
+	#tag Note, Name = Version
+		0.0.1 - 2023-04-16
+		First version
+		
+		
+	#tag EndNote
+
+
+	#tag Property, Flags = &h1
+		Protected mutable_flag As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected my_label As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected my_storage As Dictionary
+	#tag EndProperty
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+	#tag EndViewBehavior
+End Class
+#tag EndClass
