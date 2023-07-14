@@ -99,6 +99,20 @@ Dim my_table As New clDataTable("mytable1", make_serie_array(my_serie1, my_serie
 
 ```
 
+A shorter way to do it:
+
+```xojo
+
+Dim my_table As New clDataTable("mytable", serie_array( _
+New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
+, New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
+, New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
+, New clDataSerie("Sales", 100,200,300,400,500,600) _
+, New clDataSerie("Quantity", 51, 52,53,54, 55,56) _
+))
+```
+
+
 If you need to create multiple tables from the same data series, remember that a data serie can only belong to one data table. You can tell the constructor to clone data series as required, by setting the parameter auto_clone_columns to true (see creation of mytable_2 below) Note that only my_serie1 will be cloned.
 
 
@@ -242,6 +256,49 @@ Assuming the table table_customer contains sales by customer, together with the 
 ```xojo
 Dim table_country As clDataTable = table_customer.groupby(string_array("Country"), string_array("Sales"), string_array(""))
 ```
+
+### filtering
+
+Let's consider the following example:
+
+```xojo
+Dim table0 As New clDataTable("mytable")
+
+call table0.add_columns(Array("country","city","sales"))
+
+table0.append_row(Array("France","Paris",1100))
+table0.append_row(Array("France","Marseille",1200))
+table0.append_row(Array("Belgique","Bruxelles",1300))
+table0.append_row(Array("USA","NewYork",1400))
+table0.append_row(Array("Belgique","Bruxelles",1500))
+table0.append_row(Array("USA","Chicago",1600))
+
+dim is_france() as variant = table0.apply_filter(AddressOf field_filter,"country","France")
+dim is_belgium() as variant =  table0.apply_filter(AddressOf field_filter, "country","Belgique")
+dim is_europe() as variant
+
+for i as integer = 0 to is_france.Ubound
+  is_europe.Append(is_france(i).integerValue + is_belgium(i).integerValue)
+  
+next
+
+call table0.add_column(new clIntegerDataSerie("is_france"))
+call table0.add_column(new clIntegerDataSerie("is_belgium"))
+call table0.add_column(new clIntegerDataSerie("is_europe"))
+
+call table0.set_column_values("is_france", is_france, false)
+call table0.set_column_values("is_belgium", is_belgium, false)
+call table0.set_column_values("is_europe", is_europe, false)
+
+
+```
+
+The function table.apply_filter() returns an array of variant, one element correspond to one row in the table, it is true if the function passed as second parameter returns 'true' when processing the record.
+
+The function field_filter(fieldname, fieldvalue) returns True if the field fieldname has the value fieldvalue, the function receives the current row to apply the test. 
+This basic function can be used with table.apply_filter()
+
+The resulting arrays are then saved to new columns.
 
 
 ### Virtual data table
