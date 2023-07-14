@@ -293,12 +293,39 @@ call table0.set_column_values("is_europe", is_europe, false)
 
 ```
 
-The function table.apply_filter() returns an array of variant, one element correspond to one row in the table, it is true if the function passed as second parameter returns 'true' when processing the record.
+The function table.apply_filter() returns an array of variant, one element corresponds to one row in the table, the element is true if the filter function passed as parameter returns 'true' when processing the record.
 
-The function field_filter(fieldname, fieldvalue) returns True if the field fieldname has the value fieldvalue, the function receives the current row to apply the test. 
-This basic function can be used with table.apply_filter()
+The filter function field_filter(fieldname, fieldvalue) returns True if the field fieldname has the value fieldvalue, the function receives the current row to apply the test (more details under 'About filter function')
 
-The resulting arrays are then saved to new columns.
+
+The resulting arrays are then saved to new columns using the function 'set_column_value'
+
+
+#### About filter function
+
+A filter function has the following prototype:
+
+```xojo
+Function xyz(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+```
+
+The array function_param receives the additional parameters passed to apply_filter()
+
+For example, the function field_filter() used before has the following implementation:
+
+```xojo
+
+		Function field_filter(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		  dim field_name as string = function_param(0)
+		  dim field_value as variant = function_param(1)
+		  
+		  dim idx as integer = the_column_names.IndexOf(field_name)
+		  
+		  return the_cell_values(idx) = field_value
+		End Function
+
+```
+The parameters the_row_index, the_row_count, the_column_names(), the_cell_values() are populated by apply_filter() when it calls the filter_function().
 
 
 ### Virtual data table
