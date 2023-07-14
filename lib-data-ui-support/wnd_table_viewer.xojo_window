@@ -212,11 +212,22 @@ End
 
 	#tag Method, Flags = &h0
 		Sub show_table(table_name as string)
-		  self.Title = table_name
+		  
+		  if table_name.Trim.Len <1 then
+		    return
+		  end if
+		  
 		  
 		  current_table = table_name
 		  dim tbl as itf_table_reader = table_dict.value(current_table)
 		  
+		  if tbl is nil then
+		    System.DebugLog(CurrentMethodName+" cannot find table " + table_name)
+		    return
+		    
+		  end if
+		  
+		  self.Title = table_name
 		  show_table_in_listbox tbl, lb_data
 		  
 		End Sub
