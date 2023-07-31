@@ -1294,7 +1294,7 @@ Implements itf_table_reader,Iterable
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected row_index As clDataSerie
+		Protected row_index As clDataSerieRowID
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

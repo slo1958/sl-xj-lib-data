@@ -226,7 +226,7 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  While items.Ubound < the_length-1
-		    dim v as double = 0
+		    dim v as double = default_value.DoubleValue
 		    items.Append(v)
 		    
 		  Wend

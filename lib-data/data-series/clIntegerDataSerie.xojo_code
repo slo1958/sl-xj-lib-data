@@ -12,7 +12,7 @@ Inherits clAbstractDataSerie
 		Function clone() As clIntegerDataSerie
 		  Dim tmp As New clIntegerDataSerie(Self.name)
 		  
-		  For Each v As double In Self.items
+		  For Each v As integer In Self.items
 		    tmp.append_element(v)
 		    
 		  Next
@@ -39,7 +39,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_number(the_element_index as integer) As double
+		Function get_element_as_integer(the_element_index as integer) As integer
 		  return self.get_element(the_element_index)
 		  
 		End Function
@@ -225,7 +225,7 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  While items.Ubound < the_length-1
-		    dim v as double = 0
+		    dim v as integer = default_value.IntegerValue
 		    items.Append(v)
 		    
 		  Wend
