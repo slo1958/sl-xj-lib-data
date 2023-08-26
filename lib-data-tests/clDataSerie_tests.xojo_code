@@ -140,11 +140,11 @@ Protected Module clDataSerie_tests
 		  Dim f2() As variant
 		  Dim f3() As Variant
 		  
-		  f1 = c1.apply_filter(AddressOf filter01)
+		  f1 = c1.filter_apply_function(AddressOf filter01)
 		  
-		  f2 = c1.apply_filter(AddressOf retain_serie_head, 7)
+		  f2 = c1.filter_apply_function(AddressOf retain_serie_head, 7)
 		  
-		  f3 = c1.apply_filter(AddressOf retain_serie_tail)
+		  f3 = c1.filter_apply_function(AddressOf retain_serie_tail)
 		  
 		  Dim c3 As New clDataSerie("test001", f1)
 		  Dim c4 As New clDataSerie("test002", f1)
@@ -265,9 +265,9 @@ Protected Module clDataSerie_tests
 		  Dim f2() As variant
 		  Dim f3() As Variant
 		  
-		  f1 = c1.apply_filter(AddressOf filter02)
+		  f1 = c1.filter_apply_function(AddressOf filter02)
 		  
-		  f2 = c2.apply_filter(AddressOf filter02)
+		  f2 = c2.filter_apply_function(AddressOf filter02)
 		  
 		  Dim c3 As New clDataSerie("test001", f1)
 		  Dim c4 As New clDataSerie("test002", f2)
@@ -384,6 +384,7 @@ Protected Module clDataSerie_tests
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"
@@ -391,18 +392,23 @@ Protected Module clDataSerie_tests
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
+			InitialValue=""
 			Type="String"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Top"
@@ -410,6 +416,7 @@ Protected Module clDataSerie_tests
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Module

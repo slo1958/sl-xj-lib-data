@@ -330,11 +330,13 @@ Protected Module clDataTable_tests
 		  
 		  ' The function is filtering on column cc2. The parameter is the value to look for
 		  
-		  dim tmp1() as variant = ttst.apply_filter(AddressOf filter_008,"bbb0")
+		  dim tmp1() as variant = ttst.filter_apply_function(AddressOf filter_008,"bbb0")
 		  
-		  call ttst.add_column(new clDataSerie("is_bbb0", tmp1))
+		  call ttst.add_column(new clBooleanDataSerie("is_bbb0", tmp1))
 		  
-		  call ttst.add_column(new clDataSerie("is_bbb3",  ttst.apply_filter(AddressOf filter_008, "bbb3")))
+		  call ttst.add_column(new clBooleanDataSerie("is_bbb1", clDataSerie(ttst.get_column("cc2")).filter_value_in_list(array("bbb1"))))
+		  
+		  call ttst.add_column(new clBooleanDataSerie("is_bbb3",  ttst.filter_apply_function(AddressOf filter_008, "bbb3")))
 		  ttst.debug_dump
 		  
 		  Dim k As Integer = 1
@@ -477,6 +479,47 @@ Protected Module clDataTable_tests
 		    
 		  next
 		  dim k as integer = 1
+		  
+		  
+		  for each row as clDataRow in table0.filtered_on("yaya")
+		    
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_013()
+		  
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim table0 As New clDataTable("mytable")
+		  
+		  call table0.add_columns(Array("country","city","sales"))
+		  
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("","Marseille",1200))
+		  table0.append_row(Array("Belgique","",1300))
+		  table0.append_row(Array("USA","NewYork",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("USA","Chicago",1600))
+		  
+		  table0.index_visible_when_iterate(True)
+		  
+		  for each row as clDataRow in table0
+		    for each cell as string in row
+		      system.DebugLog("field " + cell + "value " + row.get_cell(cell))
+		      
+		    next
+		    
+		  next
+		  dim k as integer = 1
+		  
+		  
+		  for each row as clDataRow in table0.filtered_on("yaya")
+		    
+		  next
+		  
 		End Sub
 	#tag EndMethod
 

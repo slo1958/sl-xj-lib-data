@@ -10,7 +10,22 @@ Implements clDataSupport.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function apply_filter(the_filter_function as filter_column, paramarray function_param as variant) As variant()
+		Function clone() As clDataSerie
+		  Dim tmp As New clDataSerie(Self.name)
+		  
+		  For Each v As variant In Self.items
+		    tmp.append_element(v)
+		    
+		  Next
+		  
+		  Return tmp
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function filter_apply_function(the_filter_function as filter_column, paramarray function_param as variant) As variant()
 		  Dim return_boolean() As Variant
 		  
 		  For row_index As Integer=0 To items.Ubound
@@ -24,16 +39,17 @@ Implements clDataSupport.itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clDataSerie
-		  Dim tmp As New clDataSerie(Self.name)
+		Function filter_value_in_list(list_of_values() as string) As boolean()
+		  Dim return_boolean() As boolean
+		  dim my_item as variant
 		  
-		  For Each v As variant In Self.items
-		    tmp.append_element(v)
+		  For row_index As Integer=0 To items.Ubound
+		    my_item = items(row_index)
+		    return_boolean.Append(list_of_values.IndexOf(my_item)>=0)
 		    
 		  Next
 		  
-		  Return tmp
-		  
+		  Return return_boolean
 		  
 		End Function
 	#tag EndMethod

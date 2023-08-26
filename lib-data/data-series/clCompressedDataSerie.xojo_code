@@ -24,28 +24,6 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function apply_filter(the_filter_function as filter_column, paramarray function_param as variant) As variant()
-		  Dim return_boolean() As Variant
-		  
-		  For row_index As Integer=0 To items_index.Ubound
-		    dim item_index as integer = items_index(row_index)
-		    dim v as Variant
-		    
-		    if item_index >=0 then
-		      v = self.items_value_list(item_index)
-		      
-		    end if
-		    
-		    return_boolean.Append(the_filter_function.Invoke(row_index, items_index.Ubound, name, v, function_param))
-		    
-		  Next
-		  
-		  Return return_boolean
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function clone() As clCompressedDataSerie
 		  Dim tmp As New clCompressedDataSerie(Self.name)
 		  
@@ -63,6 +41,28 @@ Inherits clAbstractDataSerie
 		  
 		  Return tmp
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function filter_apply_function(the_filter_function as filter_column, paramarray function_param as variant) As variant()
+		  Dim return_boolean() As Variant
+		  
+		  For row_index As Integer=0 To items_index.Ubound
+		    dim item_index as integer = items_index(row_index)
+		    dim v as Variant
+		    
+		    if item_index >=0 then
+		      v = self.items_value_list(item_index)
+		      
+		    end if
+		    
+		    return_boolean.Append(the_filter_function.Invoke(row_index, items_index.Ubound, name, v, function_param))
+		    
+		  Next
+		  
+		  Return return_boolean
 		  
 		End Function
 	#tag EndMethod

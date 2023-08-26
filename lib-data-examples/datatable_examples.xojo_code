@@ -347,11 +347,11 @@ Protected Module datatable_examples
 		  table0.append_row(Array("Belgique","Bruxelles",1500))
 		  table0.append_row(Array("Italy","Rome",1600))
 		  
-		  dim tmp1() as variant = table0.apply_filter(AddressOf field_filter,"country","France")
+		  dim tmp1() as variant = table0.filter_apply_function(AddressOf field_filter,"country","France")
 		  
 		  call table0.add_column(new clDataSerie("is_france", tmp1))
 		  
-		  call table0.add_column(new clDataSerie("is_belgium",  table0.apply_filter(AddressOf field_filter, "country","Belgique")))
+		  call table0.add_column(new clDataSerie("is_belgium",  table0.filter_apply_function(AddressOf field_filter, "country","Belgique")))
 		  
 		  
 		  dim wnd as new wnd_table_viewer
@@ -426,8 +426,8 @@ Protected Module datatable_examples
 		  table0.append_row(Array("Belgique","Bruxelles",1500))
 		  table0.append_row(Array("USA","Chicago",1600))
 		  
-		  dim is_france() as variant = table0.apply_filter(AddressOf field_filter,"country","France")
-		  dim is_belgium() as variant =  table0.apply_filter(AddressOf field_filter, "country","Belgique")
+		  dim is_france() as variant = table0.filter_apply_function(AddressOf field_filter,"country","France")
+		  dim is_belgium() as variant =  table0.filter_apply_function(AddressOf field_filter, "country","Belgique")
 		  dim is_europe() as variant
 		  
 		  for i as integer = 0 to is_france.Ubound

@@ -28,15 +28,6 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function apply_filter(the_filter_function as filter_column, paramarray function_param as variant) As variant()
-		  Dim return_boolean() As Variant
-		  
-		  Return return_boolean
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function clone() As clAbstractDataSerie
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
@@ -155,6 +146,15 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 		  System.DebugLog("----END " + Self.serie_name+" --------")
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function filter_apply_function(the_filter_function as filter_column, paramarray function_param as variant) As variant()
+		  Dim return_boolean() As Variant
+		  
+		  Return return_boolean
+		  
+		End Function
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
@@ -483,7 +483,7 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 		
 		append_element
 		
-		apply_filter
+		filter_apply_function
 		
 		clone
 		

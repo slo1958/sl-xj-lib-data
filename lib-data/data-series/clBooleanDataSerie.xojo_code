@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clDataSerieRowFilter
+Protected Class clBooleanDataSerie
 Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
@@ -9,8 +9,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clDataSerieRowFilter
-		  Dim tmp As New clDataSerieRowFilter(Self.name)
+		Function clone() As clBooleanDataSerie
+		  Dim tmp As New clBooleanDataSerie(Self.name)
 		  
 		  For Each v As boolean In Self.items
 		    tmp.append_element(v)
@@ -21,6 +21,18 @@ Inherits clAbstractDataSerie
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(the_label as string, the_values() as boolean)
+		  super.constructor(the_label)
+		  
+		  For i As Integer = 0 To the_values.Ubound
+		    self.append_element(the_values(i))
+		    
+		  Next
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

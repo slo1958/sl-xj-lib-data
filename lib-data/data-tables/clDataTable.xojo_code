@@ -271,37 +271,6 @@ Implements itf_table_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function apply_filter(the_filter_function as filter_row, paramarray function_param as variant) As variant()
-		  Dim return_boolean() As Variant
-		  
-		  Dim column_names() As String
-		  dim column_values() as Variant
-		  
-		  for each column as clAbstractDataSerie in self.columns
-		    column_names.Append(column.name)
-		    
-		  next
-		  
-		  dim row_count as integer = self.row_count
-		  
-		  For i As Integer=0 To row_count-1
-		    redim column_values(-1)
-		    
-		    for each column as clAbstractDataSerie in self.columns
-		      column_values.Append(column.get_element(i))
-		      
-		    next
-		    
-		    return_boolean.Append(the_filter_function.Invoke(i,  row_count, column_names, column_values, function_param))
-		    
-		  Next
-		  
-		  Return return_boolean
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function clone() As clDataTable
 		  
 		  dim output_table as new clDataTable(self.name+" copy")
@@ -472,6 +441,46 @@ Implements itf_table_reader,Iterable
 		  System.DebugLog("----END " + Self.table_name+" --------")
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function filtered_on(s as string) As clDataTableFilter
+		  
+		  dim retval as new clDataTableFilter(self, s)
+		  
+		  return retval
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function filter_apply_function(the_filter_function as filter_row, paramarray function_param as variant) As variant()
+		  Dim return_boolean() As Variant
+		  
+		  Dim column_names() As String
+		  dim column_values() as Variant
+		  
+		  for each column as clAbstractDataSerie in self.columns
+		    column_names.Append(column.name)
+		    
+		  next
+		  
+		  dim row_count as integer = self.row_count
+		  
+		  For i As Integer=0 To row_count-1
+		    redim column_values(-1)
+		    
+		    for each column as clAbstractDataSerie in self.columns
+		      column_values.Append(column.get_element(i))
+		      
+		    next
+		    
+		    return_boolean.Append(the_filter_function.Invoke(i,  row_count, column_names, column_values, function_param))
+		    
+		  Next
+		  
+		  Return return_boolean
+		  
+		End Function
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0

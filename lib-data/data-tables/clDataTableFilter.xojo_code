@@ -1,84 +1,78 @@
 #tag Class
-Protected Class clDataSerieIterator
-Implements Xojo.Core.Iterator
+Protected Class clDataTableFilter
+Implements Iterable, Iterator
 	#tag Method, Flags = &h0
-		Sub Constructor(the_serie as clAbstractDataSerie)
-		  current_index = -1
-		  temp_serie = the_serie
+		Sub Constructor(filtered_table as clDataTable, filter_field as string)
+		  dim tmp as clBooleanDataSerie
+		  
+		  tmp = clBooleanDataSerie( filtered_table.get_column(filter_field))
+		  
+		  if tmp = nil then
+		    Return
+		    
+		  end if
+		  
+		  self.table_link = filtered_table
+		  self.filter_field_name = filter_field
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Iterator() As Iterator
+		  // Part of the Iterable interface.
+		  
+		  Return self
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function MoveNext() As Boolean
-		  // Part of the Xojo.Core.Iterator interface.
-		  
-		  if temp_serie = nil then
-		    iteration_next_value = ""
-		    return false
-		    
-		  elseif current_index >= temp_serie.upper_bound then
-		    iteration_next_value = ""
-		    return false
-		    
-		  else
-		    current_index = current_index + 1
-		    iteration_next_value = temp_serie.get_element(current_index)
-		    Return True
-		    
-		  end if
-		  
-		  
+		  // Part of the Iterator interface.
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Value() As Auto
-		  // Part of the Xojo.Core.Iterator interface.
+		Function Value() As Variant
+		  // Part of the Iterator interface.
 		  
-		  Return iteration_next_value
+		  
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		current_index As Integer
+		filter_field_name As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		iteration_next_value As Auto
+		filter_row_list As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		temp_serie As clAbstractDataSerie
+		table_link As clDataTable
 	#tag EndProperty
 
 
 	#tag ViewBehavior
-		#tag ViewProperty
-			Name="Index"
-			Visible=true
-			Group="ID"
-			InitialValue="-2147483648"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Left"
-			Visible=true
-			Group="Position"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
 			InitialValue=""
 			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -90,6 +84,14 @@ Implements Xojo.Core.Iterator
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Top"
 			Visible=true
 			Group="Position"
@@ -98,7 +100,7 @@ Implements Xojo.Core.Iterator
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="current_index"
+			Name="filter_field_name"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

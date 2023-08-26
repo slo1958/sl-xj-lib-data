@@ -24,6 +24,22 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function filter_value_in_range(minimum_value as double, maximum_value as double) As variant()
+		  Dim return_boolean() As Variant
+		  dim my_item as double
+		  
+		  For row_index As Integer=0 To items.Ubound
+		    my_item = items(row_index)
+		    return_boolean.Append((minimum_value <= my_item) and (my_item <= maximum_value))
+		    
+		  Next
+		  
+		  Return return_boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_element(the_element_index as integer) As variant
 		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
 		    Return items(the_element_index)
