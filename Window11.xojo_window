@@ -444,7 +444,41 @@ End
 
 
 	#tag Method, Flags = &h0
+		Sub run_exemple(item as clLibDataExample)
+		  
+		  dim tables() as clDataTable = item.run()
+		  
+		  dim wnd as new wnd_table_viewer
+		  
+		  wnd.reset_viewer
+		  
+		  for each table as clDataTable in tables
+		    wnd.add_table(table)
+		    
+		  next
+		  
+		  
+		  wnd.Show
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub show_description(msg() as string)
+		  
+		  
+		  Label1.text = join(msg, chr(13))
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub show_example_description(item as clLibDataExample)
+		  dim msg() as string
+		  
+		  if item <> nil then
+		    msg = item.describe
+		    
+		  end if
 		  
 		  Label1.text = join(msg, chr(13))
 		  
@@ -490,38 +524,38 @@ End
 #tag Events pb_example_001
 	#tag Event
 		Sub Action()
-		  example_001()
+		  run_exemple new clLibDataExample01
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_description describe_001
+		  show_example_description new clLibDataExample01
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  show_description(array(""))
+		  show_example_description(Nil)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events pb_example_002
 	#tag Event
 		Sub Action()
-		  example_002()
+		  run_exemple new clLibDataExample02
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_description describe_002
+		  show_example_description new clLibDataExample02
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  show_description(array(""))
+		  show_example_description(nil)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

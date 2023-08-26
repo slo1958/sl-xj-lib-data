@@ -1,31 +1,6 @@
 #tag Module
 Protected Module datatable_examples
 	#tag Method, Flags = &h0
-		Function describe_001() As string()
-		  dim tmp() as string
-		  
-		  tmp.append("Example_001")
-		  tmp.append("- create an empty datatable")
-		  tmp.append("- add three rows")
-		  
-		  return tmp
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function describe_002() As string()
-		  dim tmp() as string
-		  
-		  tmp.append("Example_002")
-		  tmp.append("- create a small table")
-		  tmp.append("- aggregate using 0, 1 and 2 dimensions")
-		  
-		  return tmp
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function describe_003() As string()
 		  dim tmp() as string
 		  
@@ -134,93 +109,6 @@ Protected Module datatable_examples
 		  return tmp
 		  
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub example_001()
-		  '
-		  ' Example_001 
-		  ' - create an empty datatable
-		  ' - add three rows
-		  '
-		  
-		  System.DebugLog("START "+CurrentMethodName)
-		  
-		  Dim row As clDataRow
-		  
-		  Dim table As New clDataTable("mytable")
-		  
-		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1234)
-		  row.set_cell("bbb","abcd")
-		  row.set_cell("ccc",123.4)
-		  table.append_row(row)
-		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1235)
-		  row.set_cell("bbb","abce")
-		  row.set_cell("ddd",987.654)
-		  table.append_row(row)
-		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1234)
-		  row.set_cell("bbb","abcd")
-		  row.set_cell("ccc",456.1)
-		  row.set_cell("ddd",789.2)
-		  table.append_row(row)
-		  
-		  
-		  dim wnd as new wnd_table_viewer
-		  wnd.add_table(table)
-		  
-		  wnd.Show
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub example_002()
-		  
-		  ' Example_002
-		  ' - create a small table
-		  ' - aggregate using 0, 1 and 2 dimensions
-		  '
-		  
-		  
-		  System.DebugLog("START "+CurrentMethodName)
-		  
-		  
-		  Dim table0 As New clDataTable("mytable", serie_array( _
-		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
-		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
-		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
-		  , New clDataSerie("Sales", 100,200,300,400,500,600) _
-		  , New clDataSerie("Quantity", 51, 52,53,54, 55,56) _
-		  ))
-		  
-		  
-		  Dim table1 As clDataTable = table0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
-		  
-		  
-		  Dim table2 As clDataTable = table0.groupby(string_array, string_array("Sales"), string_array)
-		  table2.rename("Grand total")
-		  
-		  Dim table3 As clDataTable = table0.groupby(string_array("Country","City"), string_array, string_array(""))
-		  
-		  dim wnd as new wnd_table_viewer
-		  
-		  wnd.reset_viewer
-		  
-		  wnd.add_table(table0)
-		  wnd.add_table(table1)
-		  wnd.add_table(table2)
-		  wnd.add_table(table3)
-		  
-		  wnd.Show
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

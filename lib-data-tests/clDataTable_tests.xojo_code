@@ -481,10 +481,6 @@ Protected Module clDataTable_tests
 		  dim k as integer = 1
 		  
 		  
-		  for each row as clDataRow in table0.filtered_on("yaya")
-		    
-		  next
-		  
 		End Sub
 	#tag EndMethod
 
@@ -515,11 +511,7 @@ Protected Module clDataTable_tests
 		  next
 		  dim k as integer = 1
 		  
-		  
-		  for each row as clDataRow in table0.filtered_on("yaya")
-		    
-		  next
-		  
+		   
 		End Sub
 	#tag EndMethod
 
