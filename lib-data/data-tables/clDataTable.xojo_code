@@ -444,6 +444,15 @@ Implements itf_table_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function filtered_on(boolean_field_name as string) As clDataTableFilter
+		  
+		  dim retval as new clDataTableFilter(self, boolean_field_name)
+		  
+		  return retval
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function filter_apply_function(the_filter_function as filter_row, paramarray function_param as variant) As variant()
 		  Dim return_boolean() As Variant
 		  

@@ -373,6 +373,8 @@ Protected Module clDataSerie_tests
 		  delta = test0 - expected
 		  
 		  System.DebugLog("return " + Str(test0.row_count))
+		  
+		  
 		End Sub
 	#tag EndMethod
 

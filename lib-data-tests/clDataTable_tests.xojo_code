@@ -478,9 +478,13 @@ Protected Module clDataTable_tests
 		    next
 		    
 		  next
+		  
 		  dim k as integer = 1
 		  
 		  
+		  for each row as clDataRow in table0.filtered_on("yaya")
+		    
+		  next
 		End Sub
 	#tag EndMethod
 
