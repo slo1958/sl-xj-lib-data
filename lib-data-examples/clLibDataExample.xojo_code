@@ -17,7 +17,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As clDataTable()
+		Function run() As itf_table_reader()
 		  
 		End Function
 	#tag EndMethod

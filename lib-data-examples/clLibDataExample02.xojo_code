@@ -20,12 +20,12 @@ Inherits clLibDataExample
 		Function id() As integer
 		  // Calling the overridden superclass method.
 		  
-		  return 1
+		  return 2
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As clDataTable()
+		Function run() As itf_table_reader()
 		  
 		  ' Example_002
 		  ' - create a small table

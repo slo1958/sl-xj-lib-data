@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clLibDataExample01
+Protected Class clLibDataExample05
 Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
@@ -8,7 +8,7 @@ Inherits clLibDataExample
 		  
 		  
 		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- add three rows")
+		  returnValue.append("- fast append data") 
 		  
 		  return returnValue
 		  
@@ -19,46 +19,37 @@ Inherits clLibDataExample
 		Function id() As integer
 		  // Calling the overridden superclass method.
 		  
-		  return 1
+		  return 5
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_reader()
 		  
-		  ' Example_001 
-		  ' - create an empty datatable
-		  ' - add three rows
+		  ' Example_005
+		  ' - create an empty table
+		  ' - fast append data
 		  '
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim row As clDataRow
 		  
-		  Dim table As New clDataTable("mytable")
+		  Dim table0 As New clDataTable("T1")
 		  
+		  call table0.add_columns(Array("cc1","cc2","cc3"))
 		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1234)
-		  row.set_cell("bbb","abcd")
-		  row.set_cell("ccc",123.4)
-		  table.append_row(row)
+		  table0.append_row(Array("aaa0","bbb0","ccc0"))
+		  table0.append_row(Array("aaa1","bbb1","ccc1"))
+		  table0.append_row(Array("aaa2","bbb2","ccc2"))
+		  table0.append_row(Array("aaa3","bbb3","ccc3"))
 		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1235)
-		  row.set_cell("bbb","abce")
-		  row.set_cell("ddd",987.654)
-		  table.append_row(row)
+		  dim wnd as new wnd_table_viewer
 		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1234)
-		  row.set_cell("bbb","abcd")
-		  row.set_cell("ccc",456.1)
-		  row.set_cell("ddd",789.2)
-		  table.append_row(row)
+		  wnd.reset_viewer
 		  
+		  wnd.add_table(table0) 
+		  wnd.Show
 		  
-		  return array(table)
 		End Function
 	#tag EndMethod
 

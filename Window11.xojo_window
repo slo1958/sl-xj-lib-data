@@ -446,13 +446,13 @@ End
 	#tag Method, Flags = &h0
 		Sub run_exemple(item as clLibDataExample)
 		  
-		  dim tables() as clDataTable = item.run()
+		  dim tables() as itf_table_reader = item.run()
 		  
 		  dim wnd as new wnd_table_viewer
 		  
 		  wnd.reset_viewer
 		  
-		  for each table as clDataTable in tables
+		  for each table as itf_table_reader in tables
 		    wnd.add_table(table)
 		    
 		  next
@@ -562,133 +562,130 @@ End
 #tag Events pb_example_003
 	#tag Event
 		Sub Action()
-		  example_003()
+		  run_exemple new clLibDataExample03
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_description describe_003
+		  show_example_description new clLibDataExample03
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  show_description(array(""))
+		  show_example_description(nil)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events pb_example_004
 	#tag Event
 		Sub Action()
-		  example_004()
+		  run_exemple new clLibDataExample04
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_description describe_004
+		  show_example_description new clLibDataExample04
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  show_description(array(""))
+		  show_example_description(nil)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events pb_example_005
 	#tag Event
 		Sub Action()
-		  example_005()
+		  run_exemple new clLibDataExample05
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_description describe_005
+		  show_example_description new clLibDataExample05
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  show_description(array(""))
+		  show_example_description(nil)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events pb_example_006
 	#tag Event
 		Sub Action()
-		  example_006()
+		  run_exemple new clLibDataExample06
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_description describe_006
+		  show_example_description new clLibDataExample06
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  show_description(array(""))
+		  show_example_description(nil)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events pb_example_007
 	#tag Event
 		Sub Action()
-		  example_007()
-		  
+		  run_exemple new clLibDataExample07
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_description describe_007
+		  show_example_description new clLibDataExample07
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  show_description(array(""))
+		  show_example_description(nil)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events pb_example_008
 	#tag Event
 		Sub Action()
-		  example_008()
-		  
+		  run_exemple new clLibDataExample08
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_description describe_008
+		  show_example_description new clLibDataExample08
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  show_description(array(""))
+		  show_example_description(nil)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events pb_example_009
 	#tag Event
 		Sub Action()
-		  example_009()
-		  
+		  run_exemple new clLibDataExample09
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_description describe_009
+		  show_example_description new clLibDataExample09
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  show_description(array(""))
+		  show_example_description(nil)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

@@ -1,14 +1,14 @@
 #tag Class
-Protected Class clLibDataExample01
+Protected Class clLibDataExample09
 Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  
-		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- add three rows")
+		  returnValue.append("- create a datatable")
+		  returnValue.append("- create a validation table")
+		  returnValue.append("- validate, show results of validation")
 		  
 		  return returnValue
 		  
@@ -19,46 +19,51 @@ Inherits clLibDataExample
 		Function id() As integer
 		  // Calling the overridden superclass method.
 		  
-		  return 1
+		  return 9
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_reader()
 		  
-		  ' Example_001 
-		  ' - create an empty datatable
-		  ' - add three rows
+		  ' Example_009
+		  ' - test basic validation
 		  '
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim row As clDataRow
-		  
-		  Dim table As New clDataTable("mytable")
 		  
 		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1234)
-		  row.set_cell("bbb","abcd")
-		  row.set_cell("ccc",123.4)
-		  table.append_row(row)
+		  Dim table0 As New clDataTable("mytable")
 		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1235)
-		  row.set_cell("bbb","abce")
-		  row.set_cell("ddd",987.654)
-		  table.append_row(row)
+		  call table0.add_columns(Array("country","city","sales"))
 		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1234)
-		  row.set_cell("bbb","abcd")
-		  row.set_cell("ccc",456.1)
-		  row.set_cell("ddd",789.2)
-		  table.append_row(row)
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("","Marseille",1200))
+		  table0.append_row(Array("Belgique","",1300))
+		  table0.append_row(Array("USA","NewYork",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("USA","Chicago",1600))
+		  
+		  dim tableValid as new clDataTableValidation("validation",array( _
+		  new clDataSerieValidation("country",  False, True) _
+		  , new clDataSerieValidation("city", True, true) _
+		  , new clDataSerieValidation("zip", True, True) _
+		  ))
+		  
+		  Dim table1 As  clDataTable = tableValid.validate(table0)
 		  
 		  
-		  return array(table)
+		  'all types not the same, so need to explictely build the returned array
+		  dim ret() as itf_table_reader
+		  ret.append(table0)
+		  ret.append(table1)
+		  ret.append(tableValid)
+		  return ret
+		  
+		  
+		  
+		  
 		End Function
 	#tag EndMethod
 

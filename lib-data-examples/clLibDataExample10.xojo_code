@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clLibDataExample01
+Protected Class clLibDataExample10
 Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
@@ -7,8 +7,9 @@ Inherits clLibDataExample
 		  Dim returnValue() as string = Super.describe()
 		  
 		  
-		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- add three rows")
+		  returnValue.append("- create a datatable")
+		  returnValue.append("- test the 'get_row' method")
+		  
 		  
 		  return returnValue
 		  
@@ -19,46 +20,42 @@ Inherits clLibDataExample
 		Function id() As integer
 		  // Calling the overridden superclass method.
 		  
-		  return 1
+		  return 10
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_reader()
 		  
-		  ' Example_001 
+		  '
+		  ' Example_010
 		  ' - create an empty datatable
-		  ' - add three rows
+		  ' - test the 'get_row' method
 		  '
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim row As clDataRow
+		  Dim table0 As New clDataTable("mytable")
 		  
-		  Dim table As New clDataTable("mytable")
+		  call table0.add_columns(Array("country","city","sales"))
 		  
-		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1234)
-		  row.set_cell("bbb","abcd")
-		  row.set_cell("ccc",123.4)
-		  table.append_row(row)
-		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1235)
-		  row.set_cell("bbb","abce")
-		  row.set_cell("ddd",987.654)
-		  table.append_row(row)
-		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1234)
-		  row.set_cell("bbb","abcd")
-		  row.set_cell("ccc",456.1)
-		  row.set_cell("ddd",789.2)
-		  table.append_row(row)
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("","Marseille",1200))
+		  table0.append_row(Array("Belgique","",1300))
+		  table0.append_row(Array("USA","NewYork",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("USA","Chicago",1600))
 		  
 		  
-		  return array(table)
+		  dim table1 as new clDataTable("res")
+		  
+		  for row_index as integer = 0 to table0.row_count-1
+		    dim tmp_row as clDataRow = table0.get_row(row_index, True)
+		    table1.append_row(tmp_row)
+		  next
+		  
+		  
+		  return array(table0, table1)
 		End Function
 	#tag EndMethod
 

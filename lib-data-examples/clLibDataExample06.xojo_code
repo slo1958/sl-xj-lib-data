@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clLibDataExample01
+Protected Class clLibDataExample06
 Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
@@ -8,7 +8,8 @@ Inherits clLibDataExample
 		  
 		  
 		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- add three rows")
+		  returnValue.append("- fast append data")
+		  returnValue.append("- apply filter function to create a dataserie")
 		  
 		  return returnValue
 		  
@@ -19,46 +20,43 @@ Inherits clLibDataExample
 		Function id() As integer
 		  // Calling the overridden superclass method.
 		  
-		  return 1
+		  return 6
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_reader()
 		  
-		  ' Example_001 
-		  ' - create an empty datatable
-		  ' - add three rows
+		  ' Example_006
+		  ' - create an empty table
+		  ' - fast append data
+		  ' - apply filter function to create a dataserie 
 		  '
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim row As clDataRow
-		  
-		  Dim table As New clDataTable("mytable")
 		  
 		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1234)
-		  row.set_cell("bbb","abcd")
-		  row.set_cell("ccc",123.4)
-		  table.append_row(row)
+		  Dim table0 As New clDataTable("mytable")
 		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1235)
-		  row.set_cell("bbb","abce")
-		  row.set_cell("ddd",987.654)
-		  table.append_row(row)
+		  call table0.add_columns(Array("country","city","sales"))
 		  
-		  row = New clDataRow
-		  row.set_cell("aaa",1234)
-		  row.set_cell("bbb","abcd")
-		  row.set_cell("ccc",456.1)
-		  row.set_cell("ddd",789.2)
-		  table.append_row(row)
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("France","Marseille",1200))
+		  table0.append_row(Array("Belgique","Bruxelles",1300))
+		  table0.append_row(Array("Italy","Milan",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("Italy","Rome",1600))
+		  
+		  dim tmp1() as variant = table0.filter_apply_function(AddressOf field_filter,"country","France")
+		  
+		  call table0.add_column(new clDataSerie("is_france", tmp1))
+		  
+		  call table0.add_column(new clDataSerie("is_belgium",  table0.filter_apply_function(AddressOf field_filter, "country","Belgique")))
+		  
+		  return array(table0)
 		  
 		  
-		  return array(table)
 		End Function
 	#tag EndMethod
 
