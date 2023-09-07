@@ -1,30 +1,60 @@
 #tag Class
-Protected Class clDataTableFilter
-Implements Iterable
+Protected Class clDataTableFilterIterator
+Implements Iterator
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table as clDataTable, the_serie_name as string)
-		  self.tmp_table = the_table
-		  self.tmp_serie_name = the_serie_name
+		Sub Constructor(the_table as clDataTable, the_serie as clBooleanDataSerie)
+		  tmp_table = the_table
+		  tmp_serie = the_serie
+		  last_row_index = -1
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Iterator() As Iterator
-		  // Part of the Iterable interface.
+		Function MoveNext() As Boolean
+		  // Part of the Iterator interface.
 		  
-		  dim tmp_serie as clBooleanDataSerie = clBooleanDataSerie(self.tmp_table.get_column(self.tmp_serie_name))
-		  return new clDataTableFilterIterator(self.tmp_table, tmp_serie)
+		  if last_row_index < tmp_table.row_count then
+		    last_row_index = last_row_index + 1
+		    
+		    value_to_return = tmp_table.get_row(last_row_index, tmp_table.is_index_visible_when_iterate)
+		    
+		    return True
+		    
+		  else
+		    return False
+		    
+		  end if
 		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Value() As Variant
+		  // Part of the Iterator interface.
+		  
+		  
+		  return value_to_return
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		tmp_serie_name As String
+		last_row_index As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		tmp_serie As clBooleanDataSerie
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		tmp_table As clDataTable
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		value_to_return As clDataRow
 	#tag EndProperty
 
 
@@ -70,12 +100,20 @@ Implements Iterable
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="tmp_serie_name"
+			Name="last_row_index"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="tmp_serie"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Integer"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
