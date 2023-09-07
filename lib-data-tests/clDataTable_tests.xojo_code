@@ -37,6 +37,9 @@ Protected Module clDataTable_tests
 		  test_010
 		  test_011
 		  test_012
+		  test_013
+		  test_014
+		  
 		End Sub
 	#tag EndMethod
 
@@ -520,6 +523,50 @@ Protected Module clDataTable_tests
 		  dim k as integer = 1
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_014()
+		  
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim table0 As New clDataTable("mytable")
+		  
+		  call table0.add_columns(Array("country","city","sales"))
+		  
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("","Marseille",1200))
+		  table0.append_row(Array("Belgique","",1300))
+		  table0.append_row(Array("USA","NewYork",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("USA","Chicago",1600))
+		  
+		  dim filterserie as new clBooleanDataSerie("mask")
+		  
+		  for each cell as string in table0.get_column("Country")
+		    filterserie.append_element(cell = "Belgique")
+		    
+		  next
+		  
+		  call table0.add_column(filterserie)
+		  
+		  table0.index_visible_when_iterate(True)
+		  
+		  for each row as clDataRow in table0
+		    for each cell as string in row
+		      system.DebugLog("field " + cell + "value " + row.get_cell(cell))
+		      
+		    next
+		    
+		  next
+		  
+		  dim k as integer = 1
+		  
+		  
+		  for each row as clDataRow in table0.filtered_on("mask")
+		    k = k+1
+		  next
 		End Sub
 	#tag EndMethod
 
