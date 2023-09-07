@@ -14,17 +14,24 @@ Implements Iterator
 		Function MoveNext() As Boolean
 		  // Part of the Iterator interface.
 		  
-		  if last_row_index < tmp_table.row_count then
-		    last_row_index = last_row_index + 1
+		  dim bFoundNext as boolean
+		  
+		  while not bFoundNext
+		    if last_row_index < tmp_table.row_count then
+		      last_row_index = last_row_index + 1
+		      
+		      if tmp_serie.get_element_as_boolean(last_row_index) then
+		        value_to_return = tmp_table.get_row(last_row_index, tmp_table.is_index_visible_when_iterate)
+		        
+		        return True
+		      end if
+		    else
+		      return False
+		      
+		    end if
 		    
-		    value_to_return = tmp_table.get_row(last_row_index, tmp_table.is_index_visible_when_iterate)
-		    
-		    return True
-		    
-		  else
-		    return False
-		    
-		  end if
+		  wend
+		  
 		  
 		  
 		  

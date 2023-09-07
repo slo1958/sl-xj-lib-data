@@ -469,6 +469,10 @@ Protected Module clDataTable_tests
 		  table0.append_row(Array("Belgique","Bruxelles",1500))
 		  table0.append_row(Array("USA","Chicago",1600))
 		  
+		  dim filterserie as new clBooleanDataSerie("mask",(False, False,True, False, True, False)) 
+		  
+		  call table0.add_column(filterserie)
+		  
 		  table0.index_visible_when_iterate(True)
 		  
 		  for each row as clDataRow in table0
@@ -482,8 +486,8 @@ Protected Module clDataTable_tests
 		  dim k as integer = 1
 		  
 		  
-		  for each row as clDataRow in table0.filtered_on("yaya")
-		    
+		  for each row as clDataRow in table0.filtered_on("mask")
+		    k = k+1
 		  next
 		End Sub
 	#tag EndMethod
