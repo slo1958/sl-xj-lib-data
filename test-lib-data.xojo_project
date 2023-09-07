@@ -1,7 +1,7 @@
 Type=Desktop
 RBProjectVersion=2023.01
 MinIDEVersion=20070100
-OrigIDEVersion=00000000
+OrigIDEVersion=20230100
 Class=App;App.xojo_code;&h0000000059DFB7FF;&h0000000000000000;false
 MenuBar=MainMenuBar;MainMenuBar.xojo_menu;&h000000002AAC5FFF;&h0000000000000000;false
 BuildSteps=Build Automation;Build Automation.xojo_code;&h00000000035547FF;&h0000000000000000;false
@@ -62,7 +62,7 @@ Class=clLibDataExample07;lib-data-examples/clLibDataExample07.xojo_code;&h000000
 Class=clLibDataExample06;lib-data-examples/clLibDataExample06.xojo_code;&h000000002A51E7FF;&h0000000073919FFF;false
 Class=clLibDataExample10;lib-data-examples/clLibDataExample10.xojo_code;&h0000000019C8EFFF;&h0000000073919FFF;false
 Class=clLibDataExample09;lib-data-examples/clLibDataExample09.xojo_code;&h0000000005B16FFF;&h0000000073919FFF;false
-Class=clDataTableFilter;../../../../Users/sergelouvet/Desktop/lib-data/data-tables/clDataTableFilter.xojo_code;&h000000001F1B4FFF;&h0000000056943FFF;false
+Class=clDataTableFilter;lib-data/data-tables/clDataTableFilter.xojo_code;&h000000002E8BCFFF;&h0000000056943FFF;false
 DefaultWindow=Window11
 AppMenuBar=MainMenuBar
 MajorVersion=1

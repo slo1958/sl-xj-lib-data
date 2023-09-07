@@ -27,7 +27,7 @@ Implements Iterator
 		    return False
 		    
 		  end if
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -100,7 +100,7 @@ Implements Iterator
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="tmp_pool"
+			Name="last_table_index"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

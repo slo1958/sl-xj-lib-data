@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataRow
-Implements  Iterable
+Implements Iterable
 	#tag Method, Flags = &h0
 		Sub Constructor(values as Dictionary)
 		  my_storage = New Dictionary
@@ -39,7 +39,7 @@ Implements  Iterable
 	#tag Method, Flags = &h0
 		Function Iterator() As Iterator
 		  // Part of the Iterable interface.
-		   
+		  
 		  
 		  Dim iteration_keys() As String
 		  

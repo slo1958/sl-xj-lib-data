@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataRowIterator
-Implements  Iterator
+Implements Iterator
 	#tag Method, Flags = &h0
 		Sub Constructor(the_keys() as string)
 		  iteration_keys = the_keys
@@ -111,7 +111,7 @@ Implements  Iterator
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

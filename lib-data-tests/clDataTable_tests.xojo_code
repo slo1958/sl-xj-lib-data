@@ -515,7 +515,7 @@ Protected Module clDataTable_tests
 		  next
 		  dim k as integer = 1
 		  
-		   
+		  
 		End Sub
 	#tag EndMethod
 

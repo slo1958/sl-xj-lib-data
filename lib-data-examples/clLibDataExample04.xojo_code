@@ -46,7 +46,7 @@ Inherits clLibDataExample
 		  
 		  return array(table0, view1)
 		  
-		   
+		  
 		End Function
 	#tag EndMethod
 
