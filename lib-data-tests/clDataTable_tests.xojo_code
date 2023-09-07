@@ -39,7 +39,7 @@ Protected Module clDataTable_tests
 		  test_012
 		  test_013
 		  test_014
-		  
+		  test_015
 		End Sub
 	#tag EndMethod
 
@@ -533,23 +533,79 @@ Protected Module clDataTable_tests
 		  
 		  Dim table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  call table0.add_columns(Array("country","city","sales","product"))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
+		  table0.append_row(Array("France","Paris",1100,"AA"))
+		  table0.append_row(Array("","Marseille",1200,"AA"))
+		  table0.append_row(Array("Belgique","",1300,"AA"))
+		  table0.append_row(Array("USA","NewYork",1400,"AA"))
+		  table0.append_row(Array("Belgique","Bruxelles",1500,"BB"))
+		  table0.append_row(Array("USA","Chicago",1600,"AA"))
 		  
-		  dim filterserie as new clBooleanDataSerie("mask")
-		  
+		  dim filter_country as new clBooleanDataSerie("mask_country")
 		  for each cell as string in table0.get_column("Country")
-		    filterserie.append_element(cell = "Belgique")
+		    filter_country.append_element(cell = "Belgique")
+		    
+		  next
+		  call table0.add_column(filter_country)
+		  
+		  dim filter_product as new clBooleanDataSerie("mask_product")
+		  for each cell as string in table0.get_column("product")
+		    filter_product.append_element(cell = "BB")
+		    
+		  next
+		  call table0.add_column(not filter_product)
+		  
+		  
+		  table0.index_visible_when_iterate(True)
+		  
+		  for each row as clDataRow in table0
+		    for each cell as string in row
+		      system.DebugLog("field " + cell + "value " + row.get_cell(cell))
+		      
+		    next
 		    
 		  next
 		  
-		  call table0.add_column(filterserie)
+		  dim k as integer = 1
+		  
+		  ' use the name of the boolean serie as parameter to 'filtered_on' 
+		  for each row as clDataRow in table0.filtered_on("mask_country")
+		    k = k+1
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_015()
+		  
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim table0 As New clDataTable("mytable")
+		  
+		  call table0.add_columns(Array("country","city","sales","product"))
+		  
+		  table0.append_row(Array("France","Paris",1100,"AA"))
+		  table0.append_row(Array("","Marseille",1200,"AA"))
+		  table0.append_row(Array("Belgique","",1300,"AA"))
+		  table0.append_row(Array("USA","NewYork",1400,"AA"))
+		  table0.append_row(Array("Belgique","Bruxelles",1500,"BB"))
+		  table0.append_row(Array("USA","Chicago",1600,"AA"))
+		  
+		  dim filter_country as new clBooleanDataSerie("mask_country")
+		  for each cell as string in table0.get_column("Country")
+		    filter_country.append_element(cell = "Belgique")
+		    
+		  next 
+		  
+		  dim filter_product as new clBooleanDataSerie("mask_product")
+		  for each cell as string in table0.get_column("product")
+		    filter_product.append_element(cell = "BB")
+		    
+		  next 
+		  
+		  '
+		  ' The filter series are not added to the table, but we can used them to filter the datatable
 		  
 		  table0.index_visible_when_iterate(True)
 		  
@@ -564,7 +620,9 @@ Protected Module clDataTable_tests
 		  dim k as integer = 1
 		  
 		  
-		  for each row as clDataRow in table0.filtered_on("mask")
+		  ' directly use the  boolean serie as parameter to 'filtered_on'; and, or and not operator are overloaded for clBooleanDataSerie
+		  
+		  for each row as clDataRow in table0.filtered_on(filter_country and filter_product)
 		    k = k+1
 		  next
 		End Sub

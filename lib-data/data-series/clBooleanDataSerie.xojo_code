@@ -58,6 +58,93 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function operator_and(right_serie as clBooleanDataSerie) As clBooleanDataSerie
+		  dim mx1 as integer = self.upper_bound
+		  dim mx2 as integer = right_serie.upper_bound
+		  dim mx0 as integer 
+		  
+		  if mx1 > mx2 then
+		    mx0 = mx1
+		  else
+		    mx0=mx2
+		  end if
+		  
+		  dim res as new clBooleanDataSerie(self.name+" and "+right_serie.name)
+		  for i as integer = 0 to mx0
+		    dim n as Boolean = true
+		    
+		    if i <= mx1 then
+		      n = self.get_element_as_boolean(i)
+		    end if
+		    
+		    if i<= mx2 then
+		      n = n and right_serie.get_element_as_boolean(i)
+		      
+		    end if
+		    
+		    res.append_element(n)
+		    
+		  next
+		  
+		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function operator_not() As clBooleanDataSerie
+		  dim mx0 as integer = self.upper_bound
+		  
+		  dim res as new clBooleanDataSerie("not " + self.name)
+		  
+		  for i as integer = 0 to mx0
+		    res.append_element(not self.get_element_as_boolean(i))
+		    
+		  next
+		  
+		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function operator_or(right_serie as clBooleanDataSerie) As clBooleanDataSerie
+		  dim mx1 as integer = self.upper_bound
+		  dim mx2 as integer = right_serie.upper_bound
+		  dim mx0 as integer 
+		  
+		  if mx1 > mx2 then
+		    mx0 = mx1
+		  else
+		    mx0=mx2
+		  end if
+		  
+		  dim res as new clBooleanDataSerie(self.name+" or "+right_serie.name)
+		  for i as integer = 0 to mx0
+		    dim n as Boolean = False
+		    
+		    if i <= mx1 then
+		      n = self.get_element_as_boolean(i)
+		    end if
+		    
+		    if i<= mx2 then
+		      n = n or right_serie.get_element_as_boolean(i)
+		      
+		    end if
+		    
+		    res.append_element(n)
+		    
+		  next
+		  
+		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub reset()
 		  super.reset()
 		  self.meta_dict.add_meta_data("type","boolean")

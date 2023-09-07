@@ -2,9 +2,17 @@
 Protected Class clDataTableFilter
 Implements Iterable
 	#tag Method, Flags = &h0
+		Sub Constructor(the_table as clDataTable, the_filter_serie as clBooleanDataSerie)
+		  self.tmp_table = the_table
+		  self.tmp_serie = the_filter_serie
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_table as clDataTable, the_serie_name as string)
 		  self.tmp_table = the_table
-		  self.tmp_serie_name = the_serie_name
+		  
+		  self.tmp_serie = clBooleanDataSerie(self.tmp_table.get_column(the_serie_name))
 		End Sub
 	#tag EndMethod
 
@@ -12,15 +20,14 @@ Implements Iterable
 		Function Iterator() As Iterator
 		  // Part of the Iterable interface.
 		  
-		  dim tmp_serie as clBooleanDataSerie = clBooleanDataSerie(self.tmp_table.get_column(self.tmp_serie_name))
-		  return new clDataTableFilterIterator(self.tmp_table, tmp_serie)
+		  return new clDataTableFilterIterator(self.tmp_table, self.tmp_serie)
 		  
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		tmp_serie_name As String
+		tmp_serie As clBooleanDataSerie
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -68,14 +75,6 @@ Implements Iterable
 			InitialValue="0"
 			Type="Integer"
 			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="tmp_serie_name"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
