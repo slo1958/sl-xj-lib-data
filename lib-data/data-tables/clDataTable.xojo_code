@@ -1382,8 +1382,8 @@ Implements itf_table_reader,Iterable
 	#tag EndNote
 
 	#tag Note, Name = Version
-		0.0.1 - 2023-04-16
-		First version
+		0.0.1 - 2023-09-10
+		
 		
 		
 	#tag EndNote
