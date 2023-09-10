@@ -52,8 +52,7 @@ Note that one line in the source file creates one element in the data serie. The
 dim fld_file as FolderItem
 ...
 
-dim my_serie As New clDataSerie(fld_file)
-
+dim my_serie  As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file, new clDataSerie(""), true))
 
 ```
 ### Typed data series
