@@ -422,15 +422,6 @@ next
 
 table0.index_visible_when_iterate(True)
 
-for each row as clDataRow in table0
-  for each cell as string in row
-    system.DebugLog("field " + cell + "value " + row.get_cell(cell))
-    
-  next
-  
-next
- 
-
 ' directly use the  boolean serie as parameter to 'filtered_on'; and, or and not operator are overloaded for clBooleanDataSerie
 
 for each row as clDataRow in table0.filtered_on(filter_country and filter_product)
