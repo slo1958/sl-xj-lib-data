@@ -36,12 +36,6 @@ Inherits clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function load_from_text(the_source as FolderItem, has_header  as Boolean) As String
-		  Raise New clDataException("Cannot load a multivalued serie")
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function name() As String
 		  Return Join(Self.serie_headers, serie_value_separator)
 		  

@@ -35,22 +35,6 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_source_file as FolderItem)
-		  Dim tmp_serie_name As String
-		  
-		  self.reset
-		  
-		  tmp_serie_name = load_from_text(the_source_file, True)
-		  
-		  If tmp_serie_name.Len>0 Then
-		    serie_name = tmp_serie_name
-		    
-		  End If
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(the_label as string, paramarray the_values() as variant)
 		  
 		  self.reset
@@ -290,46 +274,6 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function load_from_text(the_source as FolderItem, has_header  as Boolean) As String
-		  //
-		  // Load the serie from a text file, each line is loaded into one element, without further processing
-		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string
-		  //
-		  
-		  Dim got_header As Boolean
-		  Dim text_file  As TextInputStream
-		  Dim return_header As String
-		  
-		  If the_source = Nil Then
-		    Return "noname"
-		    
-		  End If
-		  
-		  text_file = TextInputStream.Open(the_source)
-		  
-		  got_header = Not has_header
-		  
-		  While Not text_file.EOF
-		    Dim tmp_source_line As String = text_file.ReadLine
-		    
-		    If got_header Then
-		      append_element(tmp_source_line)
-		      
-		    Else
-		      return_header = tmp_source_line
-		      got_header = True
-		      
-		    End If
-		    
-		  Wend
-		  
-		  text_file.close
-		  
-		  Return return_header
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub rename(the_new_name as string)
 		  '
 		  ' use setter of computed property
@@ -353,39 +297,6 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 		Function row_count() As integer
 		  return self.upper_bound+1
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub save_as_text(the_destination as FolderItem, name_as_header as Boolean)
-		  //
-		  // Load the serie from a text file, each line is loaded into one element, without further processing
-		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string
-		  //
-		  
-		  Dim text_file  As TextOutputStream
-		  
-		  If the_destination = Nil Then
-		    Return
-		    
-		  End If
-		  
-		  text_file = TextOutputStream.Create(the_destination)
-		  
-		  If name_as_header Then
-		    text_file.WriteLine Self.name
-		    
-		  End If
-		  
-		  For i As Integer = 0 To self.upper_bound
-		    text_file.WriteLine self.get_element(i)
-		    
-		  Next
-		  
-		  text_file.close
-		  
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

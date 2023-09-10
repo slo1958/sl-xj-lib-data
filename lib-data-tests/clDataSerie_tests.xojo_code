@@ -80,10 +80,11 @@ Protected Module clDataSerie_tests
 		  
 		  fld_file = fld_folder.Child("myfile3_10K_tab.txt")
 		  
-		  
-		  Dim ss1 As New clDataSerie(fld_file)
+		  Dim ss1 As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file, new clDataSerie(""), true))
 		  
 		  Dim k2 As Integer = 1
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -103,9 +104,11 @@ Protected Module clDataSerie_tests
 		  
 		  fld_file_out =  fld_folder.Child("mytest.txt")
 		  
-		  Dim ss1 As New clDataSerie(fld_file_in)
 		  
-		  ss1.save_as_text(fld_file_out, True)
+		  Dim ss1 As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file_in, new clDataSerie(""), true))
+		  
+		  save_DataSerie_to_textfile(fld_file_out, ss1, True)
+		  
 		  
 		  Dim k2 As Integer = 1
 		End Sub

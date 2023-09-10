@@ -323,7 +323,7 @@ Implements itf_table_reader,Iterable
 		  ' - appending from a table with columns A, B, D 
 		  ' the values from A, and B are appended to the existing columns A and B
 		  ' a new column is created to store the values for D 
-		   
+		  
 		  ' Parameters:
 		  ' - the source table
 		  ' - flag allow the creation of missing columns
