@@ -3,6 +3,7 @@ Data handling classes
 
 ## About series and tables
 The library supports three main classes:
+
 - clDataSerie
 - clDataTable
 - clDataPool
@@ -13,6 +14,7 @@ A serie is mainly a named one-dimension array. Elements of the array are 'varian
 
 ### How to create a data serie ?
 You can create a data serie:
+
 - by creating an empty data serie and adding values
 - by creating a populated data serie
 - by loading a text file
@@ -54,12 +56,37 @@ dim my_serie As New clDataSerie(fld_file)
 
 
 ```
+### Typed data series
+The default data series stores values as variant.
 
-## About clDataSerieIndex
+- data series index
+- integer data serie
+- double data serie
+- boolean data serie
+- compressed data serie
+
+#### About data serie index clDataSerieIndex
 (subclass of clDataSerie)
 This class is only used to maintain the record index stored in tables. The value is automatically set to the next value of a counter. 
 
 The value passed as parameter to methods like append_element(), set_element() are ignored.
+
+#### integer data serie clIntegerDataSerie
+Elements of the data serie are integer. A type specific get_element_as_integer() function returns an integer instead of a variant.
+Arithmetic operators (+, _, - ) have been overloaded.
+
+#### double data serie clNumberDataSerie
+Elements of the data serie are double. A type specific get_element_as_number() function returns an integer instead of a variant.
+Arithmetic operators (+, _, - ) have been overloaded.
+
+
+#### boolean data serie clBooleanDataSerie
+Elements of the data serie are boolean. A type specific get_element_as_boolean() function returns an integer instead of a variant.
+Boolean operators (and, or, not ) have been overloaded.
+
+
+#### compressed data serie clCompressedDataSerie
+The data serie stores it value in a string compressed form. Each cell in the column is an integer, an index to an array of values. Use this data serie instead of the standard data serie when a large number of rows contains only a few distinct values, for example a country name in a large address book.
 
 
 ## About clDataTable
@@ -134,7 +161,9 @@ Dim my_table2 As New clDataTable("mytable1", make_serie_array(my_serie1, my_seri
 Note the last parameter for the second call to the constructor: it is telling the constructor to clone the data serie if it belongs to another table. In the example, my_serie1 will be cloned.
 
 
-### Operations on columns
+### Operations on columns (data series)
+
+
 
 This will create a new column, named 'unit_price*quantity':
 

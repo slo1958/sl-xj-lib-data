@@ -3,6 +3,15 @@ Protected Class clDataTable
 Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Function add_column(the_column as clAbstractDataSerie) As clAbstractDataSerie
+		  '
+		  ' Add a data serie as a column to the table
+		  ' 
+		  ' Parameters:
+		  ' - the data serie
+		  '
+		  ' Returns:
+		  ' - the data serie 
+		  '
 		  Dim tmp_column As clAbstractDataSerie = the_column
 		  
 		  Dim tmp_column_name As String = tmp_column.name
@@ -55,6 +64,15 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function add_column(the_column_name as String) As clDataSerie
+		  '
+		  ' Add  an empty column to the table
+		  ' 
+		  ' Parameters:
+		  ' - the name of the column
+		  '
+		  ' Returns:
+		  ' - the new data serie
+		  '
 		  dim v as variant
 		  
 		  return add_column(the_column_name, v)
@@ -63,6 +81,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function add_column(the_column_name as String, default_value as variant) As clDataSerie
+		  '
+		  ' Add  an constant column to the table
+		  ' 
+		  ' Parameters:
+		  ' - the name of the column
+		  ' - the initial value for every cell
+		  '
+		  ' Returns:
+		  ' - the new data serie
+		  '
 		  Dim tmp_column_name As String = the_column_name.trim
 		  
 		  if tmp_column_name.len() = 0 then
@@ -106,6 +134,17 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function add_columns(the_column_names() as string) As clDataSerie()
+		  '
+		  ' Add  a set of  empty columns to the table
+		  ' 
+		  ' Parameters:
+		  ' - the name of the column
+		  '
+		  ' Returns:
+		  ' - an array with the new data series
+		  '
+		  
+		  
 		  Dim return_array() As clDataSerie
 		  dim v as variant 
 		  For Each name As String In the_column_names
@@ -118,6 +157,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub add_meta_data(type as string, message as string)
+		  '
+		  ' Add  meta data to the table
+		  ' 
+		  ' Parameters:
+		  ' - the meta data type
+		  ' - the meta data value
+		  '
+		  ' Returns:
+		  ' (nothing)
+		  '
 		  
 		  meta_dict.add_meta_data(type, message)
 		End Sub
@@ -125,7 +174,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub append_row(the_row as clDataRow, create_columns_flag as boolean=True)
-		  
+		  '
+		  ' Add  a data row to the table
+		  ' 
+		  ' Parameters:
+		  ' - the data row
+		  ' - flag allow the creation of missing columns
+		  '
+		  ' Returns:
+		  ' (nothing)
+		  '
 		  Dim tmp_row_count As Integer = Self.row_count
 		  
 		  Dim columns_to_update() As String
@@ -169,6 +227,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub append_row(the_values as Dictionary)
+		  
+		  ' Add  a data row to the table using the passed dictionary. Does not create new columns.
+		  ' 
+		  ' Parameters:
+		  ' - dictionary with key(field name) / value (field value)
+		  '
+		  ' Returns:
+		  ' (nothing)
+		  '
+		  
 		  if the_values = nil then 
 		    return
 		    
@@ -193,6 +261,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Sub append_row(the_values() as string)
 		  
+		  ' Add  a data row to the table
+		  ' 
+		  ' Parameters:
+		  ' - the data row (values as string), it is assumed the values are ordered according to the current column order in the table
+		  ''
+		  ' Returns:
+		  ' (nothing)
+		  '
 		  For i As Integer = 0 To columns.Ubound
 		    If i <= the_values.Ubound Then
 		      columns(i).append_element(the_values(i))
@@ -212,6 +288,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Sub append_row(the_values() as variant)
 		  
+		  ' Add  a data row to the table
+		  ' 
+		  ' Parameters:
+		  ' - the data row (values as variant), it is assumed the values are ordered according to the current column order in the table
+		  '
+		  ' Returns:
+		  ' (nothing)
+		  '
 		  For i As Integer = 0 To columns.Ubound
 		    If i <= the_values.Ubound Then
 		      columns(i).append_element(the_values(i))
@@ -230,7 +314,23 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub append_rows_from_table(the_table as clDataTable, create_missing_columns as boolean = True)
-		  
+		  '
+		  ' Add  the data row from another table. New columns may be added to the current table
+		  '
+		  ' For example, 
+		  ' - with the current table containing columns A, B, C 
+		  ' - with  the flag create_missing_column set to true, a
+		  ' - appending from a table with columns A, B, D 
+		  ' the values from A, and B are appended to the existing columns A and B
+		  ' a new column is created to store the values for D 
+		   
+		  ' Parameters:
+		  ' - the source table
+		  ' - flag allow the creation of missing columns
+		  '
+		  ' Returns:
+		  ' (nothing)
+		  '
 		  dim length_before as integer = self.row_count
 		  
 		  For Each src_tmp_column As clAbstractDataSerie In the_table.columns
@@ -445,7 +545,10 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function filtered_on(boolean_serie as clBooleanDataSerie) As clDataTableFilter
-		  
+		  '
+		  ' Use a boolean data serie as filter/mask. 
+		  ' The data serie does not need to belong to any data table.
+		  '
 		  dim retval as new clDataTableFilter(self, boolean_serie)
 		  
 		  return retval
@@ -454,7 +557,10 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function filtered_on(boolean_field_name as string) As clDataTableFilter
-		  
+		  '
+		  ' Use a boolean data serie as filter/mask. 
+		  ' The data serie is a column of the data table.
+		  '
 		  dim retval as new clDataTableFilter(self, boolean_field_name)
 		  
 		  return retval
@@ -463,6 +569,12 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function filter_apply_function(the_filter_function as filter_row, paramarray function_param as variant) As variant()
+		  '
+		  ' apply 
+		  '
+		  ' Returns
+		  '  - a boolean array storing the value returned by the filter function
+		  
 		  Dim return_boolean() As Variant
 		  
 		  Dim column_names() As String
