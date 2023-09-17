@@ -373,6 +373,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Function clone() As clDataTable
 		  
+		  ' Duplicate the table and all its columns
+		  ' 
+		  ' Parameters:
+		  ' - None
+		  '
+		  ' Returns:
+		  ' - Nothing
+		  '
 		  dim output_table as new clDataTable(self.name+" copy")
 		  
 		  for each col as clAbstractDataSerie in self.columns
@@ -392,12 +400,30 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function column_count() As integer
+		  
+		  ' Return the number of columns in a table
+		  ' 
+		  ' Parameters:
+		  ' - none
+		  '
+		  ' Returns:
+		  ' - the number of columns as an integer
+		  '
 		  Return columns.Ubound + 1
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function column_names() As string()
+		  '
+		  ' Return the name of all columns
+		  ' 
+		  ' Parameters:
+		  ' - none
+		  '
+		  ' Returns:
+		  ' - a string array with the name of the columns
+		  '
 		  Dim ret_str() As String
 		  For Each column As clAbstractDataSerie In columns
 		    ret_str.Append(column.name)
@@ -436,6 +462,15 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub Constructor(the_table_name as string)
+		  '
+		  ' Creates a datatable
+		  ' 
+		  ' Parameters:
+		  ' - the name of the data table
+		  '
+		  ' Returns:
+		  ' - 
+		  '
 		  meta_dict = new clMetaData
 		  
 		  Dim tmp_table_name As String
@@ -450,11 +485,19 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub Constructor(the_table_name as string, the_columns() as clabstractDataSerie, auto_clone_columns as boolean = false)
-		  //
-		  // create a table from a set of columns
-		  // columns cannot be part of another table, use select_columns to create a virtual table if you want to retain the relationship
-		  // 
-		  
+		  '
+		  ' Creates a new data table from a set of columns. Columns cannot be part of another table. If auto_clone_column is true, a column 
+		  ' that is already used in another table will be cloned. If the parameter is false (default), an exception is generated if the column is already
+		  ' linked to another table
+		  ' 
+		  ' Parameters:
+		  ' - the name of the data table
+		  '- the columns as an array of data series
+		  '- an option to clone a data serie (column) if it is already used in another table
+		  '
+		  ' Returns:
+		  ' -  
+		  '
 		  
 		  meta_dict = new clMetaData
 		  
@@ -488,6 +531,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub Constructor(the_table_name as string, column_names() as string)
+		  '
+		  ' Creates a data table from a list of column names
+		  ' 
+		  ' Parameters:
+		  ' - the name of the table
+		  '-  a string array with the list of names for columns
+		  '
+		  ' Returns:
+		  ' -  
+		  '
 		  meta_dict = new clMetaData
 		  
 		  Dim tmp_table_name As String
@@ -546,8 +599,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Function filtered_on(boolean_serie as clBooleanDataSerie) As clDataTableFilter
 		  '
-		  ' Use a boolean data serie as filter/mask. 
-		  ' The data serie does not need to belong to any data table.
+		  ' Creates a data table filter (iterable) using a column as a mask,  the column (data serie)  is passed as parameter. 
+		  ' The data serie does not need to belong to any data table
+		  ' 
+		  ' Parameters:
+		  ' - a boolean data serie used as mask
+		  '
+		  ' Returns:
+		  ' - a data table filter
 		  '
 		  dim retval as new clDataTableFilter(self, boolean_serie)
 		  
@@ -558,22 +617,34 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Function filtered_on(boolean_field_name as string) As clDataTableFilter
 		  '
-		  ' Use a boolean data serie as filter/mask. 
-		  ' The data serie is a column of the data table.
+		  ' Creates a data table filter (iterable) using a column as a mask, the name fof the column is passed as parameter. The column must be defined
+		  ' in the table
+		  ' 
+		  ' Parameters:
+		  ' - the name of the column
+		  '
+		  ' Returns:
+		  ' - a data table filter
 		  '
 		  dim retval as new clDataTableFilter(self, boolean_field_name)
 		  
 		  return retval
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function filter_apply_function(the_filter_function as filter_row, paramarray function_param as variant) As variant()
 		  '
-		  ' apply 
+		  ' Applies a filter function to each data row of the table, returns a boolean data serie
+		  ' 
+		  ' Parameters:
+		  ' - the address of the filter function
+		  '- the parameters to pass to the function
 		  '
-		  ' Returns
-		  '  - a boolean array storing the value returned by the filter function
+		  ' Returns:
+		  ' - a boolean data serie
+		  '
 		  
 		  Dim return_boolean() As Variant
 		  
@@ -610,6 +681,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function find_first_matching_row(the_column_name as string, the_column_value as string, include_index as Boolean) As clDataRow
+		  '
+		  ' returns the first data row where the value in column matches the constant
+		  ' 
+		  ' Parameters:
+		  ' - the name of the column
+		  '- the value searched as a string
+		  '
+		  ' Returns:
+		  ' - a data row if found or nil
+		  '
 		  dim tmp_row_index as integer = self.find_first_matching_row_index(the_column_name, the_column_value)
 		  
 		  if tmp_row_index <0 then
@@ -626,6 +707,17 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function find_first_matching_row_index(the_column_names() as string, the_column_values() as string) As integer
+		  '
+		  ' returns the index of the data row where the value each columns matches the constants
+		  ' 
+		  ' Parameters:
+		  ' - the name of the columns as an array of string
+		  '- the value searched as a array of string
+		  '
+		  ' Returns:
+		  ' - the index of the first matching data row as an integer, set to -1 if not found
+		  '
+		  
 		  Dim tmp_columns() As clAbstractDataSerie
 		  
 		  for each name as string in the_column_names
@@ -671,6 +763,17 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function find_first_matching_row_index(the_column_name as string, the_column_value as string) As integer
+		  '
+		  ' returns the index of the data row where the value in column matches the constant
+		  ' 
+		  ' Parameters:
+		  ' - the name of the column
+		  '- the value searched as a string
+		  '
+		  ' Returns:
+		  ' - the index of the first matching data row as an integer, set to -1 if not found
+		  '
+		  
 		  Dim tmp_column As clAbstractDataSerie
 		  
 		  tmp_column = get_column(the_column_name)
@@ -691,11 +794,21 @@ Implements itf_table_reader,Iterable
 		  Return -1
 		  
 		  
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function get_column(the_column_name as String) As clAbstractDataSerie
+		  '
+		  ' returns a column
+		  ' 
+		  ' Parameters:
+		  ' - the name of the column
+		  '
+		  ' Returns:
+		  ' - the column matching the name or nil
+		  '
 		  
 		  For Each column As clAbstractDataSerie In Self.columns
 		    If column.name = the_column_name Then
@@ -713,9 +826,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Function get_columns(column_names() as string) As clAbstractDataSerie()
 		  '
-		  ' Return the selected columns as an array of clDataSerie
+		  ' returns selected columns
+		  ' 
+		  ' Parameters:
+		  ' - the name of the columns as an array of string
 		  '
-		  
+		  ' Returns:
+		  ' - the columns matching the name or nil, as an array
+		  '
 		  Dim ret() As clAbstractDataSerie
 		  
 		  
@@ -734,8 +852,14 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function get_columns(paramarray column_names as string) As clAbstractDataSerie()
+		  
+		  ' returns selected columns
+		  ' 
+		  ' Parameters:
+		  ' - the name of the columns as string parameters
 		  '
-		  ' Return the selected columns as an array of clDataSerie
+		  ' Returns:
+		  ' - the columns matching the name or nil, as an array
 		  '
 		  
 		  Return get_columns(column_names)
@@ -745,6 +869,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function get_element(the_column_name as String, the_element_index as integer) As variant
+		  '
+		  ' returns a specific cell based on column name and row number
+		  ' 
+		  ' Parameters:
+		  ' - the name of the columns 
+		  ' - the row index
+		  '
+		  ' Returns:
+		  ' - the value of the matching cell or nil
+		  '
 		  dim tmp_col as clAbstractDataSerie = self.get_column(the_column_name)
 		  
 		  
@@ -761,7 +895,15 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function get_row(the_row_index as integer, include_index as Boolean) As clDataRow
-		  
+		  '
+		  ' returns a specific data row
+		  ' 
+		  ' Parameters:
+		  ' - the  index of the data row
+		  '
+		  ' Returns:
+		  ' - a data row with the value of the cell in each column at the specified index
+		  '
 		  dim tmp_row as new clDataRow
 		  
 		  if not include_index then
@@ -788,6 +930,17 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function groupby(grouping_dimensions() as string, aggregate_measures() as string, aggregate_mode() as string) As clDataTable
+		  '
+		  ' returns a new data table with the results of the aggregation
+		  ' 
+		  ' Parameters:
+		  ' - the list of columns to group by as an array of string
+		  ' - the list of columns to aggregated as an array of string
+		  ' - the list of type aggregation (current version: ignored, always do 'sum')
+		  '
+		  ' Returns:
+		  ' - aggregated data table
+		  '
 		  
 		  Dim input_dimensions() As clAbstractDataSerie
 		  Dim input_measures() As clAbstractDataSerie
@@ -947,6 +1100,17 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function increase_length(the_length as integer) As integer
+		  '
+		  '  increases the length of each data serie in the table. If the current length is greater than the parameter, the maximum current length is used
+		  ' In normal case, all columns have the same length.
+		  ' 
+		  ' Parameters:
+		  ' - the new length
+		  '
+		  ' Returns:
+		  ' - (nothing)
+		  '
+		  
 		  dim max_row_count as integer
 		  
 		  if self.row_count > the_length then
