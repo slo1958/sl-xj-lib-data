@@ -980,7 +980,7 @@ End
 		  dim nbr_cols as integer = tf_cols.Text.ToInteger
 		  
 		  if nbr_rows < 1 then nbr_rows = 1
-		  nbr_rows = nbr_rows * 1000
+		  nbr_rows = nbr_rows * 10000
 		  
 		  if nbr_cols < 1 then nbr_cols = 1
 		  
