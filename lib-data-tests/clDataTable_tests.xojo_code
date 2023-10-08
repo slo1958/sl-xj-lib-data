@@ -33,7 +33,7 @@ Protected Module clDataTable_tests
 		  
 		  dim col_ok as boolean = True
 		  for col as integer = 0 to expected.column_count-1
-		     
+		    
 		    col_ok = col_ok and check_serie(label + " " + expected.column_name(col), expected.get_column_by_index(col), calculated.get_column_by_index(col))
 		    
 		  next
@@ -62,7 +62,7 @@ Protected Module clDataTable_tests
 		  test_001
 		  test_002
 		  test_003
-		   
+		  
 		  test_005
 		  test_006
 		  test_007
@@ -202,7 +202,7 @@ Protected Module clDataTable_tests
 		  
 		  Dim my_col As clDataSerie
 		  Dim my_table3 As clDataTable = my_table1.select_columns(Array("aaa","zccc")) // zccc does not exist, not included in my_table3
-		   
+		  
 		  
 		  my_col = my_table3.add_column("xyz") 
 		  
@@ -304,7 +304,7 @@ Protected Module clDataTable_tests
 		  check_table("mytable1", expected_t1, t1)
 		  
 		  check_table("mytable2", expected_t2, t2)
-		   
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -331,7 +331,7 @@ Protected Module clDataTable_tests
 		  check_value("tmp1", 2, tmp1)
 		  check_value("tmp2", -1, tmp2) // value not found
 		  check_value("tmp3", -2, tmp3) // column not found
-		   
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -458,7 +458,6 @@ Protected Module clDataTable_tests
 		  call mytable.add_column(new clDataSerie("name"))
 		  call mytable.add_column(new clNumberDataSerie("quantity"))
 		  call mytable.add_column(new clNumberDataSerie("unit_price"))
-		  
 		  
 		  temp_row = New clDataRow
 		  temp_row.set_cell("name","alpha")

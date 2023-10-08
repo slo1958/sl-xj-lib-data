@@ -8,6 +8,8 @@ The library supports three main classes:
 - clDataTable
 - clDataPool
 
+Note: the methods used to read and write data to files will be moved out of the core library.
+
 
 ## About clDataSerie
 A serie is mainly a named one-dimension array. Elements of the array are 'variant'. The main purpose of this class is to store column data for clDataTable. 
@@ -34,7 +36,8 @@ my_serie.append_element("efgh")
 
 
 ### Creating a populated data serie
-You will use the helper function make_variant_array() as follow:
+
+Depending on your version of Xojp, you may need use the helper function make\_variant_array() as follow:
 
 ```xojo
 
@@ -42,6 +45,15 @@ dim my_serie As New clDataSerie("some_values", make_variant_array("aaa",123,True
 
  
 ```
+In recent version of Xojo, you can directly write:
+
+```xojo
+
+dim my_serie As New clDataSerie("some_values", "aaa",123,True)
+
+ 
+```
+
 
 ### Loading a data serie from a file
 Note that one line in the source file creates one element in the data serie. There are no processing of field delimiter, separators, ... 
@@ -85,7 +97,7 @@ Boolean operators (and, or, not ) have been overloaded.
 
 
 #### compressed data serie clCompressedDataSerie
-The data serie stores it value in a string compressed form. Each cell in the column is an integer, an index to an array of values. Use this data serie instead of the standard data serie when a large number of rows contains only a few distinct values, for example a country name in a large address book.
+The data serie stores it value in a string compressed form. Each cell in the column is an integer, an index to an array of values. Use this data serie instead of the standard data serie when a large number of rows contains only a few distinct values, for example a country name in a large invoice dataset.
 
 
 ## About clDataTable
@@ -94,6 +106,7 @@ A data table is a collection of data series.
 
 ### How to create a data table ?
 You can create a data table in any of the following ways:
+
 - create an empty table, add columns then add rows one by one
 - create a table from a set of data series
 - load from a text file
@@ -139,7 +152,7 @@ New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 ```
 
 
-If you need to create multiple tables from the same data series, remember that a data serie can only belong to one data table. You can tell the constructor to clone data series as required, by setting the parameter auto_clone_columns to true (see creation of mytable_2 below) Note that only my_serie1 will be cloned.
+If you need to create multiple tables from the same data series, remember that a data serie can only belong to one data table. You can tell the constructor to clone data series as required, by setting the parameter auto\_clone\_columns to true (see creation of mytable_2 below) Note that only my_serie1 will be cloned.
 
 
 ```xojo
