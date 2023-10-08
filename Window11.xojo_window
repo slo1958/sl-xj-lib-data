@@ -432,6 +432,194 @@ Begin Window Window11
       Visible         =   True
       Width           =   445
    End
+   Begin PushButton PushButton1
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Test Inserts"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   141
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   14
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   360
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   99
+   End
+   Begin TextField tf_rows
+      AllowAutoDeactivate=   True
+      AllowFocusRing  =   True
+      AllowSpellChecking=   False
+      AllowTabs       =   False
+      BackgroundColor =   &cFFFFFF00
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Format          =   ""
+      HasBorder       =   True
+      Height          =   22
+      Hint            =   ""
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   252
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MaximumCharactersAllowed=   0
+      Password        =   False
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   15
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      TextColor       =   &c00000000
+      Tooltip         =   ""
+      Top             =   358
+      Transparent     =   False
+      Underline       =   False
+      ValidationMask  =   "####"
+      Visible         =   True
+      Width           =   80
+   End
+   Begin Label Label2
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   344
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   16
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "x 10K rows"
+      TextAlignment   =   0
+      TextColor       =   &c00000000
+      Tooltip         =   ""
+      Top             =   360
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
+   Begin TextField tf_cols
+      AllowAutoDeactivate=   True
+      AllowFocusRing  =   True
+      AllowSpellChecking=   False
+      AllowTabs       =   False
+      BackgroundColor =   &cFFFFFF00
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Format          =   ""
+      HasBorder       =   True
+      Height          =   22
+      Hint            =   ""
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   456
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MaximumCharactersAllowed=   0
+      Password        =   False
+      ReadOnly        =   False
+      Scope           =   0
+      TabIndex        =   17
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   ""
+      TextAlignment   =   0
+      TextColor       =   &c00000000
+      Tooltip         =   ""
+      Top             =   358
+      Transparent     =   False
+      Underline       =   False
+      ValidationMask  =   "##"
+      Visible         =   True
+      Width           =   80
+   End
+   Begin Label Label3
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   548
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   18
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Columns"
+      TextAlignment   =   0
+      TextColor       =   &c00000000
+      Tooltip         =   ""
+      Top             =   360
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   100
+   End
 End
 #tag EndWindow
 
@@ -483,6 +671,93 @@ End
 		  Label1.text = join(msg, chr(13))
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function test_inserts(nbr_columns as integer, nbr_rows as integer) As double()
+		  dim nbr_int_cols as integer
+		  dim nbr_str_cols as integer
+		  
+		  dim int_values() as integer
+		  dim str_values() as string
+		  
+		  nbr_int_cols = nbr_columns / 2
+		  nbr_str_cols = nbr_columns - nbr_int_cols
+		  
+		  for i as integer = 0 to nbr_int_cols-1
+		    int_values.Add(i*123)
+		    
+		  next
+		  
+		  
+		  
+		  dim tmp_str as string = "AZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBN"
+		  
+		  
+		  for i as integer = 0 to nbr_str_cols-1
+		    str_values.Add(left(tmp_str, len(tmp_str) - i - i ))
+		    
+		    
+		  next
+		  
+		  dim tstart as Double  = System.Microseconds
+		  
+		  // create the structure
+		  
+		  
+		  dim int_col_list() as clIntegerDataSerie
+		  dim str_col_list() as clDataSerie
+		  
+		  dim col_list() as clAbstractDataSerie
+		  
+		  for i as integer = 0 to nbr_int_cols-1
+		    dim tmp as new clIntegerDataSerie("intcol" + str(i))
+		    col_list.Add(tmp)
+		    int_col_list.Add(tmp)
+		  next
+		  
+		  
+		  for i as integer = 0 to nbr_str_cols-1
+		    dim tmp as new clDataSerie("strcol" + str(i))
+		    col_list.Add(tmp)
+		    str_col_list.Add(tmp)
+		    
+		  next
+		  
+		  dim tbl as new clDataTable("MYTABLE", col_list)
+		  
+		  dim tcreate as double = System.Microseconds
+		  
+		  
+		  // load data
+		  
+		  for row as integer = 0 to nbr_rows
+		    
+		    for i as integer = 0 to nbr_int_cols-1
+		      int_col_list(i).append_element(int_values(i))
+		      
+		    next
+		    
+		    
+		    for i as integer = 0 to nbr_str_cols-1
+		      str_col_list(i).append_element(str_values(i))
+		    next
+		    
+		  next
+		   
+		  dim tload as double = System.Microseconds
+		  
+		  dim ret() as double
+		  ret.Add tstart
+		  ret.Add tcreate
+		  ret.Add tload
+		  
+		  return ret
+		  
+		  
+		  
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -686,6 +961,39 @@ End
 	#tag Event
 		Sub MouseExit()
 		  show_example_description(nil)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events PushButton1
+	#tag Event
+		Sub Action()
+		  
+		  writemessage "Starting insert tests"
+		  
+		  dim ret() as double
+		  
+		  dim time_to_create as string
+		  dim time_to_load as String
+		  
+		  
+		  dim nbr_rows as integer = tf_rows.Text.ToInteger
+		  dim nbr_cols as integer = tf_cols.Text.ToInteger
+		  
+		  if nbr_rows < 1 then nbr_rows = 1
+		  nbr_rows = nbr_rows * 1000
+		  
+		  if nbr_cols < 1 then nbr_cols = 1
+		  
+		  
+		  writemessage "Preparing " + str(nbr_rows) + " rows and " + str(nbr_cols) + " columns."
+		  ret = test_inserts(nbr_cols, nbr_rows)
+		  
+		  time_to_create = "Time to create " + format(ret(1)  - ret(0),"0.0") + " microseconds"
+		  
+		  time_to_load = "Time to load " + format(ret(2)  - ret(1),"0.0") + " microseconds"
+		  
+		  writemessage time_to_create
+		  writemessage time_to_load
 		End Sub
 	#tag EndEvent
 #tag EndEvents
