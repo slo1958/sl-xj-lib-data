@@ -66,6 +66,7 @@ Class=clLibDataExample10;lib-data-examples/clLibDataExample10.xojo_code;&h000000
 Class=clLibDataExample09;lib-data-examples/clLibDataExample09.xojo_code;&h0000000005B16FFF;&h0000000073919FFF;false
 Class=clDataTableFilter;lib-data/data-tables/clDataTableFilter.xojo_code;&h000000002E8BCFFF;&h0000000056943FFF;false
 Class=clDataTableFilterIterator;lib-data/data-tables/clDataTableFilterIterator.xojo_code;&h000000005968FFFF;&h0000000056943FFF;false
+Module=support_tests;lib-data-tests/support_tests.xojo_code;&h0000000017396FFF;&h000000007AF38FFF;false
 DefaultWindow=Window11
 AppMenuBar=MainMenuBar
 MajorVersion=1

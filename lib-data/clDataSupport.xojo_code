@@ -1,10 +1,10 @@
 #tag Module
 Protected Module clDataSupport
 	#tag Method, Flags = &h0
-		Function serie_array(paramarray series as clDataSerie) As clDataSerie()
-		  Dim tmp() As clDataSerie
+		Function serie_array(paramarray series as clAbstractDataSerie) As clAbstractDataSerie()
+		  Dim tmp() As clAbstractDataSerie
 		  
-		  For Each c As clDataSerie In series
+		  For Each c As clAbstractDataSerie In series
 		    tmp.Append(c)
 		    
 		  Next

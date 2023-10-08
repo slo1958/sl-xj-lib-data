@@ -13,7 +13,7 @@ Protected Module clDataPool_tests
 	#tag Method, Flags = &h0
 		Sub test_001()
 		  
-		  dim dtp as new clDataPool
+		  dim my_data_pool as new clDataPool
 		  
 		  dim rtst As clDataRow
 		  
@@ -30,7 +30,7 @@ Protected Module clDataPool_tests
 		    
 		  next
 		  
-		  dtp.set_table( table, "table_1")
+		  my_data_pool.set_table( table, "table_1")
 		  
 		  
 		  table =  New clDataTable("T2")
@@ -44,16 +44,16 @@ Protected Module clDataPool_tests
 		    
 		  next
 		  
-		  dtp.set_table(table)
+		  my_data_pool.set_table(table)
 		  
 		  
-		  dtp.set_table(dtp.get_table("table_1").clone(), "res")
+		  my_data_pool.set_table(my_data_pool.get_table("table_1").clone(), "res")
 		  
-		  dtp.get_table("res").append_rows_from_table(dtp.get_table("T2"))
+		  my_data_pool.get_table("res").append_rows_from_table(my_data_pool.get_table("T2"))
 		  
 		  
 		  System.DebugLog("Expecting aaa/bbb/ccc/ddd")
-		  dtp.get_table("res").debug_dump
+		  my_data_pool.get_table("res").debug_dump
 		  
 		  
 		  Dim k As Integer = 1
@@ -67,7 +67,7 @@ Protected Module clDataPool_tests
 		  ' Test simplified interface to tables in data pool
 		  '
 		  '
-		  dim dtp as new clDataPool
+		  dim my_data_pool as new clDataPool
 		  
 		  dim rtst As clDataRow
 		  
@@ -84,7 +84,7 @@ Protected Module clDataPool_tests
 		    
 		  next
 		  
-		  dtp.table("table_1") = table
+		  my_data_pool.table("table_1") = table
 		  
 		  
 		  table =  New clDataTable("T2")
@@ -98,16 +98,16 @@ Protected Module clDataPool_tests
 		    
 		  next
 		  
-		  dtp.table = table
+		  my_data_pool.table = table
 		  
 		  
-		  dtp.table("res") = dtp.table("table_1").clone()
+		  my_data_pool.table("res") = my_data_pool.table("table_1").clone()
 		  
-		  dtp.table("res").append_rows_from_table(dtp.table("T2"))
+		  my_data_pool.table("res").append_rows_from_table(my_data_pool.table("T2"))
 		  
 		  
 		  System.DebugLog("Expecting aaa/bbb/ccc/ddd")
-		  dtp.table("res").debug_dump
+		  my_data_pool.table("res").debug_dump
 		  
 		  
 		  Dim k As Integer = 1

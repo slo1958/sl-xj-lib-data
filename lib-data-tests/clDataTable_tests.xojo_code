@@ -14,6 +14,40 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub check_table(label as string, expected as clDataTable, calculated as clDataTable)
+		  dim tmp as Boolean = check_table(label, expected, calculated)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function check_table(label as string, expected as clDataTable, calculated as clDataTable) As Boolean
+		  dim cnt1 as integer  
+		  dim cnt2 as integer 
+		  
+		  cnt1 = expected.column_count
+		  cnt2 = calculated.column_count
+		  
+		  if not check_value("column count", cnt1, cnt2) then return False
+		  
+		  dim col_ok as boolean = True
+		  for col as integer = 0 to expected.column_count-1
+		     
+		    col_ok = col_ok and check_serie(label + " " + expected.column_name(col), expected.get_column_by_index(col), calculated.get_column_by_index(col))
+		    
+		  next
+		  
+		  if not col_ok then return False
+		  
+		  // compare values
+		  
+		  return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function filter_008(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
 		  dim idx as integer = the_column_names.IndexOf("cc2")
 		  
@@ -28,7 +62,7 @@ Protected Module clDataTable_tests
 		  test_001
 		  test_002
 		  test_003
-		  test_004
+		   
 		  test_005
 		  test_006
 		  test_007
@@ -44,31 +78,45 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub tests_io()
+		  
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  test_io_004
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_001()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
 		  
-		  Dim ttst As New clDataTable("T1")
+		  Dim my_table As New clDataTable("T1")
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1234)
 		  rtst.set_cell("bbb","abcd")
 		  rtst.set_cell("ccc",123.456)
 		  
-		  ttst.append_row(rtst)
+		  my_table.append_row(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1235)
 		  rtst.set_cell("bbb","abce")
 		  rtst.set_cell("ddd",987.654)
 		  
-		  ttst.append_row(rtst)
+		  my_table.append_row(rtst)
 		  
-		  System.DebugLog("Expecting aaa/bbb/ccc/ddd")
-		  ttst.debug_dump
+		  dim col1 as new clDataSerie("aaa", 1234, 1235)
+		  dim col2 as new clDataSerie("bbb", "abcd", "abce")
+		  dim col3 as new clDataSerie("ccc", 123.456, nil)
+		  dim col4 as new clDataSerie("ddd", nil, 987.654)
 		  
-		  Dim k As Integer = 1
+		  
+		  dim texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
+		  
+		  check_table("T1", texpected, my_table)
 		  
 		  
 		End Sub
@@ -80,50 +128,49 @@ Protected Module clDataTable_tests
 		  
 		  Dim rtst As clDataRow
 		  
-		  Dim ttst1 As New clDataTable("T1")
+		  Dim my_table1 As New clDataTable("T1")
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1234)
 		  rtst.set_cell("bbb","abcd")
 		  rtst.set_cell("ccc",123.456)
 		  
-		  ttst1.append_row(rtst)
+		  my_table1.append_row(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1235)
 		  rtst.set_cell("bbb","abce")
 		  rtst.set_cell("ddd",987.654)
 		  
-		  ttst1.append_row(rtst)
+		  my_table1.append_row(rtst)
 		  
-		  ttst1.debug_dump
-		  
-		  
-		  Dim ttst2 As New clDataTable("T2")
+		  Dim my_table2 As New clDataTable("T2")
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",81234)
 		  rtst.set_cell("bbb","zabcd")
 		  rtst.set_cell("zccc",8123.456)
 		  
-		  ttst2.append_row(rtst)
+		  my_table2.append_row(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",81235)
 		  rtst.set_cell("bbb","zabce")
 		  rtst.set_cell("zddd",8987.654)
 		  
-		  ttst2.append_row(rtst)
+		  my_table2.append_row(rtst)
 		  
-		  ttst2.debug_dump
+		  my_table1.append_rows_from_table(my_table2)
 		  
-		  ttst1.append_rows_from_table(ttst2)
-		  ttst1.debug_dump
+		  Dim my_table3 As clDataTable = my_table1.select_columns(Array("aaa","zccc"))
 		  
-		  Dim ttst3 As clDataTable = ttst1.select_columns(Array("aaa","zccc"))
-		  ttst3.debug_dump
 		  
-		  Dim k As Integer = 1
+		  dim col1 as new clDataSerie("aaa", 1234, 1235, 81234, 81235)
+		  dim col2 as new clDataSerie("zccc", nil, nil, 8123.456, nil)
+		  dim texpected as new clDataTable("select T1", serie_array(col1, col2))
+		  
+		  check_table("T1", my_table3, texpected)
+		  
 		  
 		  
 		End Sub
@@ -134,7 +181,7 @@ Protected Module clDataTable_tests
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
-		  Dim ttst1 As New clDataTable("T1")
+		  Dim my_table1 As New clDataTable("T1")
 		  
 		  
 		  rtst = New clDataRow
@@ -142,69 +189,27 @@ Protected Module clDataTable_tests
 		  rtst.set_cell("bbb","abcd")
 		  rtst.set_cell("ccc",123.456)
 		  
-		  ttst1.append_row(rtst)
+		  my_table1.append_row(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1235)
 		  rtst.set_cell("bbb","abce")
 		  rtst.set_cell("ddd",987.654)
 		  
-		  ttst1.append_row(rtst)
-		  
-		  ttst1.debug_dump
-		  
-		  Dim k As Integer = 1
+		  my_table1.append_row(rtst) 
 		  
 		  Dim my_col As clDataSerie
-		  Dim ttst3 As clDataTable = ttst1.select_columns(Array("aaa","zccc"))
-		  ttst3.debug_dump
+		  Dim my_table3 As clDataTable = my_table1.select_columns(Array("aaa","zccc")) // zccc does not exist, not included in my_table3
+		   
 		  
-		  my_col = ttst3.add_column("xyz")
+		  my_col = my_table3.add_column("xyz") 
 		  
-		  ttst3.debug_dump
+		  dim col1 as new clDataSerie("aaa", 1234, 1235)
+		  dim col2 as new clDataSerie("xyz", nil, nil) 
 		  
+		  dim texpected as new clDataTable("select T1", serie_array(col1, col2))
 		  
-		  ttst1.debug_dump
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub test_004()
-		  System.DebugLog("START "+CurrentMethodName)
-		  
-		  Dim k As Variant
-		  
-		  Dim fld_folder As New FolderItem
-		  Dim fld_file1 As FolderItem
-		  Dim fld_file2 As FolderItem
-		  Dim fld_file3 As FolderItem
-		  
-		  fld_folder = fld_folder.Child("test-data")
-		  
-		  fld_file1 = fld_folder.Child("myfile3_10K_tab.txt")
-		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
-		  fld_file3  = fld_folder.Child("myfile3_10K_output.txt")
-		  
-		  Dim ttst3 As New clDataTable("x")
-		  
-		  ttst3.load_from_text(fld_file1, New clRowParser_full(Chr(9)), True)
-		  
-		  Dim ttst4 As New clDataTable("x")
-		  
-		  ttst4.load_from_text(fld_file2, New clRowParser_full(","), True)
-		  
-		  ttst4.save_as_text(fld_file3, New clRowParser_full(";"), True)
-		  
-		  dim ttst5  as new clDataTable("x")
-		  
-		  ttst5.load_from_text(fld_file1, New clRowParser_full(Chr(9)), True, AddressOf alloc_series)
-		  
-		  
-		  System.DebugLog(join(ttst3.column_names,";"))
-		  
-		  System.DebugLog("DONE WITH "+CurrentMethodName)
-		  
+		  check_table("T1", texpected, my_table3)
 		  
 		End Sub
 	#tag EndMethod
@@ -215,35 +220,37 @@ Protected Module clDataTable_tests
 		  
 		  Dim rtst As clDataRow
 		  
-		  Dim ttst As New clDataTable("T1")
+		  Dim my_table As New clDataTable("T1")
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1234)
 		  rtst.set_cell("bbb","abcd")
 		  rtst.set_cell("ccc",123.456)
 		  
-		  ttst.append_row(rtst)
+		  my_table.append_row(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1235)
 		  rtst.set_cell("bbb","abce")
 		  rtst.set_cell("ddd",987.654)
 		  
-		  ttst.append_row(rtst)
-		  
-		  ttst.debug_dump
-		  
+		  my_table.append_row(rtst)
 		  
 		  Dim cols() As clAbstractDataSerie
 		  
-		  cols = ttst.get_columns("aaa","bbb","ddd")
+		  cols = my_table.get_columns("aaa","bbb","ddd")
 		  
 		  cols(1).rename("bB1")
 		  
+		  dim col1 as new clDataSerie("aaa", 1234, 1235)
+		  dim col2 as new clDataSerie("bB1", "abcd", "abce")
+		  dim col3 as new clDataSerie("ccc", 123.456, nil)
+		  dim col4 as new clDataSerie("ddd", nil, 987.654)
 		  
 		  
+		  dim texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
 		  
-		  Dim k As Integer = 1
+		  check_table("T1", texpected, my_table)
 		  
 		  
 		End Sub
@@ -281,10 +288,21 @@ Protected Module clDataTable_tests
 		  t2.append_row(r1)
 		  
 		  
-		  t1.debug_dump
+		  dim col1 as new clDataSerie("premier","aaa","bbb","ccc",nil,"dddd")
+		  dim col2 as new clDataSerie("second",12,34,56,78,90)
 		  
-		  t2.debug_dump
+		  dim expected_t1 as new clDataTable("mytable1", serie_array(col1, col2))
 		  
+		  dim col3 as new clDataSerie("premier","aaa","bbb","ccc",nil,"dddd")
+		  dim col4 as new clDataSerie("second",12,34,56,78,90)
+		  dim col5 as new clDataSerie("troisieme",nil,nil,nil,nil,True)
+		  
+		  dim expected_t2 as new clDataTable("mytable2", serie_array(col3, col4, col5))
+		  
+		  check_table("mytable1", expected_t1, t1)
+		  
+		  check_table("mytable2", expected_t2, t2)
+		   
 		  
 		End Sub
 	#tag EndMethod
@@ -295,24 +313,23 @@ Protected Module clDataTable_tests
 		  
 		  Dim rtst As clDataRow
 		  
-		  Dim ttst As New clDataTable("T1")
+		  Dim my_table As New clDataTable("T1")
 		  
-		  call ttst.add_columns(Array("cc1","cc2","cc3"))
+		  call my_table.add_columns(Array("cc1","cc2","cc3"))
 		  
-		  ttst.append_row(Array("aaa0","bbb0","ccc0"))
-		  ttst.append_row(Array("aaa1","bbb1","ccc1"))
-		  ttst.append_row(Array("aaa2","bbb2","ccc2"))
-		  ttst.append_row(Array("aaa3","bbb3","ccc3"))
+		  my_table.append_row(Array("aaa0","bbb0","ccc0"))
+		  my_table.append_row(Array("aaa1","bbb1","ccc1"))
+		  my_table.append_row(Array("aaa2","bbb2","ccc2"))
+		  my_table.append_row(Array("aaa3","bbb3","ccc3"))
 		  
-		  Dim tmp1 As Integer = ttst.find_first_matching_row_index("cc2","bbb2")
-		  Dim tmp2 As Integer = ttst.find_first_matching_row_index("cc2","zzz2")
-		  Dim tmp3 As Integer = ttst.find_first_matching_row_index("zz2","bbb2")
+		  Dim tmp1 As Integer = my_table.find_first_matching_row_index("cc2","bbb2")
+		  Dim tmp2 As Integer = my_table.find_first_matching_row_index("cc2","zzz2")
+		  Dim tmp3 As Integer = my_table.find_first_matching_row_index("zz2","bbb2")
 		  
-		  ttst.debug_dump
-		  
-		  
-		  Dim k As Integer = 1
-		  
+		  check_value("tmp1", 2, tmp1)
+		  check_value("tmp2", -1, tmp2) // value not found
+		  check_value("tmp3", -2, tmp3) // column not found
+		   
 		  
 		End Sub
 	#tag EndMethod
@@ -322,26 +339,38 @@ Protected Module clDataTable_tests
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  
-		  Dim ttst As New clDataTable("T1")
+		  Dim my_table As New clDataTable("T1")
 		  
-		  call ttst.add_columns(Array("cc1","cc2","cc3"))
+		  call my_table.add_columns(Array("cc1","cc2","cc3"))
 		  
-		  ttst.append_row(Array("aaa0","bbb0","ccc0"))
-		  ttst.append_row(Array("aaa1","bbb1","ccc1"))
-		  ttst.append_row(Array("aaa2","bbb0","ccc2"))
-		  ttst.append_row(Array("aaa3","bbb3","ccc3"))
+		  my_table.append_row(Array("aaa0","bbb0","ccc0"))
+		  my_table.append_row(Array("aaa1","bbb1","ccc1"))
+		  my_table.append_row(Array("aaa2","bbb0","ccc2"))
+		  my_table.append_row(Array("aaa3","bbb3","ccc3"))
 		  
 		  ' The function is filtering on column cc2. The parameter is the value to look for
 		  
-		  dim tmp1() as variant = ttst.filter_apply_function(AddressOf filter_008,"bbb0")
+		  dim tmp1() as variant = my_table.filter_apply_function(AddressOf filter_008,"bbb0")
 		  
-		  call ttst.add_column(new clBooleanDataSerie("is_bbb0", tmp1))
+		  call my_table.add_column(new clBooleanDataSerie("is_bbb0", tmp1))
 		  
-		  call ttst.add_column(new clBooleanDataSerie("is_bbb1", clDataSerie(ttst.get_column("cc2")).filter_value_in_list(array("bbb1"))))
+		  call my_table.add_column(new clBooleanDataSerie("is_bbb1", clDataSerie(my_table.get_column("cc2")).filter_value_in_list(array("bbb1"))))
 		  
-		  call ttst.add_column(new clBooleanDataSerie("is_bbb3",  ttst.filter_apply_function(AddressOf filter_008, "bbb3")))
-		  ttst.debug_dump
+		  call my_table.add_column(new clBooleanDataSerie("is_bbb3",  my_table.filter_apply_function(AddressOf filter_008, "bbb3")))
 		  
+		  
+		  dim col1 as new clDataSerie("cc1", "aaa0","aaa1","aaa2","aaa3")
+		  dim col2 as new clDataSerie("cc2", "bbb0","bbb1","bbb0","bbb3")
+		  dim col3 as new clDataSerie("cc3", "ccc0","ccc1","ccc2","ccc3")
+		  
+		  dim col4 as new clDataSerie("is_bbb0", True, False, True, False)
+		  
+		  dim col5 as new clDataSerie("is_bbb1", False, True, False, False)
+		  dim col6 as new clDataSerie("is_bbb3", False, False, False, True)
+		  
+		  dim expected as new clDataTable("T1", serie_array(col1, col2, col3, col4, col5, col6))
+		  
+		  check_table("t1", expected, my_table)
 		  Dim k As Integer = 1
 		  
 		  
@@ -354,8 +383,8 @@ Protected Module clDataTable_tests
 		  
 		  Dim rtst As clDataRow
 		  
-		  Dim ttst1 As New clDataTable("T1")
-		  Dim ttst2 as New clDataTable("T2")
+		  Dim my_table1 As New clDataTable("T1")
+		  Dim my_table2 as New clDataTable("T2")
 		  
 		  for i as integer = 1 to 4
 		    rtst = New clDataRow
@@ -363,7 +392,7 @@ Protected Module clDataTable_tests
 		    rtst.set_cell("bbb","abcd")
 		    rtst.set_cell("ccc",123.456)
 		    
-		    ttst1.append_row(rtst)
+		    my_table1.append_row(rtst)
 		    
 		  next
 		  
@@ -374,23 +403,42 @@ Protected Module clDataTable_tests
 		    rtst.set_cell("bbb","xyz")
 		    rtst.set_cell("ddd",567.89)
 		    
-		    ttst2.append_row(rtst)
+		    my_table2.append_row(rtst)
 		    
 		  next
 		  
-		  dim ttst3 as clDataTable = ttst1.clone()
-		  dim ttst4 as clDataTable = ttst1.clone()
+		  dim my_table3 as clDataTable = my_table1.clone()
+		  dim my_table4 as clDataTable = my_table1.clone()
 		  
-		  ttst3.append_rows_from_table(ttst2, true)
-		  ttst4.append_rows_from_table(ttst2, false)
+		  my_table3.append_rows_from_table(my_table2, true)
+		  my_table4.append_rows_from_table(my_table2, false)
+		  
+		  dim col1 as new clDataSerie("aaa", 1000, 2000, 3000, 4000)
+		  dim col2 as new clDataSerie("bbb","abcd","abcd","abcd","abcd")
+		  dim col3 as new clDataSerie("ccc", 123.456, 123.456, 123.456, 123.456)
+		  
+		  dim expected_t1 as new clDataTable("T1", serie_array(col1, col2, col3))
+		  
+		  dim col4 as new clDataSerie("aaa", 5000, 6000, 7000, 8000, 9000)
+		  dim col5 as new clDataSerie("bbb","xyz","xyz","xyz","xyz", "xyz")
+		  dim col6 as new clDataSerie("ddd", 567.89, 567.89, 567.89, 567.89, 567.89)
+		  
+		  dim expected_t2 as new clDataTable("T2", serie_array(col4, col5, col6))
 		  
 		  
-		  System.DebugLog("Expecting aaa/bbb/ccc/ddd")
-		  ttst3.debug_dump
+		  dim col7 as new clDataSerie("aaa", 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000)
+		  dim col8 as new clDataSerie("bbb","abcd","abcd","abcd","abcd","xyz","xyz","xyz","xyz", "xyz")
+		  dim col9 as new clDataSerie("ccc", 123.456, 123.456, 123.456, 123.456, nil, nil, nil, nil, nil)
+		  dim col0 as new clDataSerie("ddd", nil, nil, nil, nil, 567.89, 567.89, 567.89, 567.89, 567.89)
+		  dim expected_t3 as new clDataTable("T3", serie_array(col7, col8, col9, col0))
 		  
+		  dim expected_t4 as new clDataTable("T4", serie_array(col7, col8, col9), True)
 		  
-		  System.DebugLog("Expecting aaa/bbb/ccc (ignoring ddd)")
-		  ttst4.debug_dump
+		  check_table("T1", expected_t1, my_table1)
+		  check_table("T2", expected_t2, my_table2)
+		  check_table("T3", expected_t3, my_table3)
+		  check_table("T4", expected_t4, my_table4)
+		  
 		  
 		  Dim k As Integer = 1
 		  
@@ -424,7 +472,14 @@ Protected Module clDataTable_tests
 		  
 		  call mytable.add_column(clNumberDataSerie(mytable.get_column("unit_price")) * clNumberDataSerie(mytable.get_column("quantity")))
 		  
-		  mytable.debug_dump
+		  dim col1 as new clDataSerie("name", "alpha","alpha")
+		  dim col2 as new clNumberDataSerie("quantity", 50, 20)
+		  dim col3 as new clNumberDataSerie("unit_price", 6, 8)
+		  dim col4 as new clNumberDataSerie("unit_price*quantity", 300, 160)
+		  
+		  dim expected_t1 as new clDataTable("T1", serie_array(col1, col2, col3, col4))
+		  
+		  check_table("T1", expected_t1, mytable)
 		  
 		  
 		  
@@ -447,11 +502,13 @@ Protected Module clDataTable_tests
 		  table0.append_row(Array("Belgique","Bruxelles",1500))
 		  table0.append_row(Array("USA","Chicago",1600))
 		  
+		  dim tmp_row as clDataRow = table0.get_row(2, False)
 		  
-		  for row_index as integer = 0 to table0.row_count-1
-		    dim tmp_row as clDataRow = table0.get_row(row_index, False)
-		    
-		  next
+		  check_value("row 2, country", "Belgique", tmp_row.get_cell("country"))
+		  check_value("row 2, city", "", tmp_row.get_cell("city"))
+		  check_value("row 2, sales", 1300, tmp_row.get_cell("sales"))
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -476,22 +533,21 @@ Protected Module clDataTable_tests
 		  
 		  call table0.add_column(filterserie)
 		  
-		  table0.index_visible_when_iterate(True)
+		  dim tmp_row as clDataRow = table0.get_row(3, False)
 		  
-		  for each row as clDataRow in table0
-		    for each cell as string in row
-		      system.DebugLog("field " + cell + "value " + row.get_cell(cell))
-		      
-		    next
-		    
-		  next
+		  check_value("row 3, country", "USA", tmp_row.get_cell("country"))
+		  check_value("row 3, city", "NewYork", tmp_row.get_cell("city"))
+		  check_value("row 3, sales", 1400, tmp_row.get_cell("sales"))
+		  check_value("row 3, mask", False, tmp_row.get_cell("mask"))
 		  
-		  dim k as integer = 1
-		  
+		  dim k as integer = 0
 		  
 		  for each row as clDataRow in table0.filtered_on("mask")
 		    k = k+1
 		  next
+		  
+		  check_value("filtered row count", 2, k)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -505,22 +561,34 @@ Protected Module clDataTable_tests
 		  call table0.add_columns(Array("country","city","sales"))
 		  
 		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
 		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
 		  
 		  table0.index_visible_when_iterate(True)
 		  
+		  dim row_index as integer = 0 // required for validation
+		  
 		  for each row as clDataRow in table0
-		    for each cell as string in row
-		      system.DebugLog("field " + cell + "value " + row.get_cell(cell))
-		      
-		    next
 		    
+		    if row_index = 0 then
+		      check_value("row 0, index",  0, row.get_cell("row_index"))
+		      check_value("row 0, country",  "France", row.get_cell("country"))
+		      check_value("row 0, city",  "Paris", row.get_cell("city"))
+		      check_value("row 0, sales",  1100, row.get_cell("sales"))
+		      
+		      
+		    elseif row_index = 1 then
+		      check_value("row 1, index",  1, row.get_cell("row_index"))
+		      check_value("row 1, country",  "USA", row.get_cell("country"))
+		      check_value("row 1, city",  "NewYork", row.get_cell("city"))
+		      check_value("row 1, sales",  1400, row.get_cell("sales"))
+		      
+		      
+		    else
+		      
+		    end if
+		    
+		    row_index = row_index + 1
 		  next
-		  dim k as integer = 1
 		  
 		  
 		End Sub
@@ -561,7 +629,7 @@ Protected Module clDataTable_tests
 		  
 		  for each row as clDataRow in table0
 		    for each cell as string in row
-		      system.DebugLog("field " + cell + "value " + row.get_cell(cell))
+		      //system.DebugLog("field " + cell + "value " + row.get_cell(cell))
 		      
 		    next
 		    
@@ -611,7 +679,7 @@ Protected Module clDataTable_tests
 		  
 		  for each row as clDataRow in table0
 		    for each cell as string in row
-		      system.DebugLog("field " + cell + "value " + row.get_cell(cell))
+		      //system.DebugLog("field " + cell + "value " + row.get_cell(cell))
 		      
 		    next
 		    
@@ -619,12 +687,51 @@ Protected Module clDataTable_tests
 		  
 		  dim k as integer = 1
 		  
-		  
 		  ' directly use the  boolean serie as parameter to 'filtered_on'; and, or and not operator are overloaded for clBooleanDataSerie
 		  
 		  for each row as clDataRow in table0.filtered_on(filter_country and filter_product)
 		    k = k+1
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_io_004()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim k As Variant
+		  
+		  Dim fld_folder As New FolderItem
+		  Dim fld_file1 As FolderItem
+		  Dim fld_file2 As FolderItem
+		  Dim fld_file3 As FolderItem
+		  
+		  fld_folder = fld_folder.Child("test-data")
+		  
+		  fld_file1 = fld_folder.Child("myfile3_10K_tab.txt")
+		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
+		  fld_file3  = fld_folder.Child("myfile3_10K_output.txt")
+		  
+		  Dim my_table3 As New clDataTable("x")
+		  
+		  my_table3.load_from_text(fld_file1, New clRowParser_full(Chr(9)), True)
+		  
+		  Dim my_table4 As New clDataTable("x")
+		  
+		  my_table4.load_from_text(fld_file2, New clRowParser_full(","), True)
+		  
+		  my_table4.save_as_text(fld_file3, New clRowParser_full(";"), True)
+		  
+		  dim my_table5  as new clDataTable("x")
+		  
+		  my_table5.load_from_text(fld_file1, New clRowParser_full(Chr(9)), True, AddressOf alloc_series)
+		  
+		  
+		  System.DebugLog(join(my_table3.column_names,";"))
+		  
+		  System.DebugLog("DONE WITH "+CurrentMethodName)
+		  
+		  
 		End Sub
 	#tag EndMethod
 

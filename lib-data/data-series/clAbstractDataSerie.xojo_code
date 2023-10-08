@@ -383,6 +383,35 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function unique() As variant()
+		  dim dct as new Dictionary
+		  dim results() as variant
+		  
+		  for row as integer = 0 to upper_bound
+		    dim tmp as variant = self.get_element(row)
+		    dim v as integer
+		    
+		    if dct.HasKey(tmp) then
+		      dct.value(tmp)  = dct.Value(tmp) + 1
+		      
+		    else
+		      dct.value(tmp) = 1
+		      results.Add(tmp)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return results
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function upper_bound() As integer
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  

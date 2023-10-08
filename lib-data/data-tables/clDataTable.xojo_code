@@ -363,8 +363,6 @@ Implements itf_table_reader,Iterable
 		  For Each tmp_column As clAbstractDataSerie In Self.columns
 		    tmp_column.set_length(new_size)
 		    
-		    system.DebugLog("size="+str(tmp_column.row_count))
-		    
 		  Next
 		  dim k as integer =1
 		End Sub
@@ -410,6 +408,18 @@ Implements itf_table_reader,Iterable
 		  ' - the number of columns as an integer
 		  '
 		  Return columns.Ubound + 1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function column_name(index as integer) As String
+		  try
+		    return columns(index).name
+		    
+		  catch
+		    return ""
+		    
+		  end try
 		End Function
 	#tag EndMethod
 
@@ -863,6 +873,32 @@ Implements itf_table_reader,Iterable
 		  '
 		  
 		  Return get_columns(column_names)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_column_by_index(column_index as integer) As clAbstractDataSerie
+		  '
+		  ' returns a column
+		  ' 
+		  ' Parameters:
+		  ' - the index of the column
+		  '
+		  ' Returns:
+		  ' - the column at specified index
+		  '
+		  
+		  try
+		    return self.columns(column_index)
+		    
+		  catch
+		    return nil
+		    
+		  end try
+		  
+		  
+		  Return Nil
 		  
 		End Function
 	#tag EndMethod
