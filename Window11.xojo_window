@@ -8,7 +8,7 @@ Begin Window Window11
    FullScreen      =   False
    FullScreenButton=   False
    HasBackColor    =   False
-   Height          =   400
+   Height          =   452
    ImplicitInstance=   True
    LiveResize      =   "True"
    MacProcID       =   0
@@ -103,7 +103,7 @@ Begin Window Window11
       TextFont        =   "Verdana"
       TextSize        =   11.0
       TextUnit        =   0
-      Top             =   360
+      Top             =   412
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -458,7 +458,7 @@ Begin Window Window11
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   360
+      Top             =   412
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -500,7 +500,7 @@ Begin Window Window11
       TextAlignment   =   0
       TextColor       =   &c00000000
       Tooltip         =   ""
-      Top             =   358
+      Top             =   410
       Transparent     =   False
       Underline       =   False
       ValidationMask  =   "####"
@@ -536,7 +536,7 @@ Begin Window Window11
       TextAlignment   =   0
       TextColor       =   &c00000000
       Tooltip         =   ""
-      Top             =   360
+      Top             =   412
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -578,7 +578,7 @@ Begin Window Window11
       TextAlignment   =   0
       TextColor       =   &c00000000
       Tooltip         =   ""
-      Top             =   358
+      Top             =   410
       Transparent     =   False
       Underline       =   False
       ValidationMask  =   "##"
@@ -614,11 +614,43 @@ Begin Window Window11
       TextAlignment   =   0
       TextColor       =   &c00000000
       Tooltip         =   ""
-      Top             =   360
+      Top             =   412
       Transparent     =   False
       Underline       =   False
       Visible         =   True
       Width           =   100
+   End
+   Begin PushButton pb_example_011
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Run example 011"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "Verdana"
+      FontSize        =   11.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   477
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   20
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   325
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   131
    End
 End
 #tag EndWindow
@@ -744,7 +776,7 @@ End
 		    next
 		    
 		  next
-		   
+		  
 		  dim tload as double = System.Microseconds
 		  
 		  dim ret() as double
@@ -994,6 +1026,24 @@ End
 		  
 		  writemessage time_to_create
 		  writemessage time_to_load
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events pb_example_011
+	#tag Event
+		Sub Action()
+		  run_exemple new clLibDataExample11
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseEnter()
+		  
+		  show_example_description new clLibDataExample11
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  show_example_description(nil)
 		End Sub
 	#tag EndEvent
 #tag EndEvents

@@ -74,6 +74,8 @@ Protected Module clDataTable_tests
 		  test_013
 		  test_014
 		  test_015
+		  test_017
+		  
 		End Sub
 	#tag EndMethod
 
@@ -692,6 +694,38 @@ Protected Module clDataTable_tests
 		  for each row as clDataRow in table0.filtered_on(filter_country and filter_product)
 		    k = k+1
 		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_017()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim table0 As New clDataTable("mytable")
+		  
+		  call table0.add_columns(Array("country","city","sales"))
+		  
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("","Marseille",1200))
+		  table0.append_row(Array("Belgique","",1300))
+		  table0.append_row(Array("France","Paris",2100))
+		  table0.append_row(Array("","Marseille",2200))
+		  table0.append_row(Array("Belgique","",2300))
+		  table0.append_row(Array("USA","NewYork",2400))
+		  table0.append_row(Array("Belgique","Bruxelles",2500))
+		  table0.append_row(Array("USA","Chicago",2600))
+		  table0.append_row(Array("USA","NewYork",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("USA","Chicago",1600))
+		  
+		  
+		  Dim table1 As clDataTable = table0.unique(array("country", "city"))
+		  
+		  dim col1 as new clDataSerie("country", "France", "", "Belgique","Belgique","USA","USA")
+		  
+		  dim col2 as new clDataSerie("city", "Paris", "Marseille", "","Bruxelles","NewYork","Chicago")
+		  
+		  check_table("unique", new clDataTable("mytable", serie_array(col1, col2)), table1)
 		End Sub
 	#tag EndMethod
 

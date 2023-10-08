@@ -1529,6 +1529,21 @@ Implements itf_table_reader,Iterable
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function unique(column_names() as string) As clDataTable
+		  
+		  dim selected_columns() as clAbstractDataSerie = self.get_columns(column_names)
+		  
+		  dim grp as new clGrouper(selected_columns)
+		  
+		  dim res() as clAbstractDataSerie = grp.flatten()
+		  
+		  return new clDataTable("unique", res)
+		  
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Description
 		Defines a data table
