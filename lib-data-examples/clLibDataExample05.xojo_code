@@ -43,12 +43,8 @@ Inherits clLibDataExample
 		  table0.append_row(Array("aaa2","bbb2","ccc2"))
 		  table0.append_row(Array("aaa3","bbb3","ccc3"))
 		  
-		  dim wnd as new wnd_table_viewer
+		  return array(table0)
 		  
-		  wnd.reset_viewer
-		  
-		  wnd.add_table(table0) 
-		  wnd.Show
 		  
 		End Function
 	#tag EndMethod
