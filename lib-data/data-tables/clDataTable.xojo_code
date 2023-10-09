@@ -513,6 +513,8 @@ Implements itf_table_reader,Iterable
 		  
 		  Dim tmp_columns() As clAbstractDataSerie = the_columns
 		  
+		  if the_columns = nil then return
+		  
 		  For i As Integer = 0 To tmp_columns.Ubound
 		    If tmp_columns(i) = Nil Then
 		      Raise New clDataException("Internal error")

@@ -2,24 +2,30 @@
 Protected Class clGrouper
 	#tag Method, Flags = &h0
 		Sub Constructor(selected_columns() as clAbstractDataSerie)
-		   
+		  dim usefull_columns(-1) as clAbstractDataSerie
+		  
 		  redim col_names(-1)
 		  
 		  for i as integer = 0 to selected_columns.LastIndex
-		    col_names.Add(selected_columns(i).name)
+		    if selected_columns(i) <> nil then
+		      col_names.Add(selected_columns(i).name)
+		      usefull_columns.add(selected_columns(i))
+		    end if
 		    
 		  next
 		  
+		  if col_names.LastIndex < 0 then return
+		  
 		  top_dictionary = new Dictionary
 		  
-		  for row as integer = 0 to selected_columns(0).row_count-1
+		  for row as integer = 0 to usefull_columns(0).row_count-1
 		    
 		    dim work_dict as Dictionary = top_dictionary
 		    
 		    dim next_dict as Dictionary = nil
 		    
-		    for column_index as integer = 0 to selected_columns.LastIndex
-		      dim tmp_value as variant = selected_columns(column_index).get_element(row)
+		    for column_index as integer = 0 to usefull_columns.LastIndex
+		      dim tmp_value as variant = usefull_columns(column_index).get_element(row)
 		      
 		      if work_dict.HasKey(tmp_value) then
 		        next_dict = work_dict.value(tmp_value)
@@ -149,14 +155,6 @@ Protected Class clGrouper
 			Visible=true
 			Group="Position"
 			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="top_dictionary"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clAbstractDataSerie
-Implements Xojo.Core.Iterable,  itf_json_able
+Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Sub add_meta_data(type as string, message as string)
 		  
@@ -284,6 +284,19 @@ Implements Xojo.Core.Iterable,  itf_json_able
 		  
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function rename(the_new_name as string) As clAbstractDataSerie
+		  '
+		  ' use setter of computed property
+		  '
+		  Self.name = the_new_name
+		  
+		  return self
+		  
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

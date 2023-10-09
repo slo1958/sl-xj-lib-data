@@ -83,6 +83,7 @@ The default data series stores values as variant.
 - double data serie
 - boolean data serie
 - compressed data serie
+- string data serie
 
 #### About data serie index clDataSerieIndex
 (subclass of clDataSerie)
@@ -107,6 +108,8 @@ Boolean operators (and, or, not ) have been overloaded.
 #### compressed data serie clCompressedDataSerie
 The data serie stores it value in a string compressed form. Each cell in the column is an integer, an index to an array of values. Use this data serie instead of the standard data serie when a large number of rows contains only a few distinct values, for example a country name in a large invoice dataset.
 
+### string data serie clStringDataSerie
+Elements of the data serie are string. The data serie exposes basic string handling functions (left, right, mid, text_before, text_after, trim,…)
 
 ## About clDataTable
 A data table is a collection of data series. 
@@ -462,6 +465,48 @@ my_virtual_table = my_table.select_columns(array("customer","product"))
 
 
 ```
+
+### An example for string handling
+
+We have a dataset with two columns:
+
+- source: which contains country-city
+- sales: which contains sales for the source
+
+We want to get:
+
+- split source column into country and city columns
+- get total sales per country
+- get unique pairs of country / city
+
+
+Creation of the test dataset
+
+```xojo
+
+dim col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
+dim col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
+
+dim table1 as new clDataTable("source table", serie_array(col_source, col_sales))
+
+```
+
+Creation of a new table, with split columns
+
+```xojo
+dim table2 as new clDataTable("prepared", serie_array( _
+col_source, _
+col_source.text_before("-").rename("country"), _
+col_source.text_after("-").rename("city"), _
+col_sales),_
+ true)
+```
+Getting the total sales per country
+
+```xojo
+Dim table4 As clDataTable = table2.groupby(string_array("country"), string_array("sales"), string_array(""))
+```
+
 
 
 ## About validation
