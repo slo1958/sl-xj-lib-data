@@ -1,6 +1,14 @@
 # sl-xj-lib-data
 Data handling classes
 
+- About series and tables
+- Description of source tree
+
+
+About Xojo version: tested with Xojo 2023 on Mac.
+
+
+
 ## About series and tables
 The library supports three main classes:
 
@@ -507,7 +515,72 @@ Todo
 ```
 
 
+## Description of source tree
 
-## About Xojo
+The repo contains the following folders:
 
-Compiled with Xojo 2023 on Mac.
+- lib-data
+- lib-data (experimental)
+- lib-data-examples
+- lib-data-io (next version)
+- lib-data-tests
+- lib-data-ui-support
+- lib-text-file-parsers
+- test-data
+
+
+### folder lib-data
+This is the core library. It provides support for data series, data tables and data pool. It is all you need in most cases.
+
+
+## folder lib-data (experimental)
+This folder contains experimental components.  
+
+Subfolders:
+
+- data-helpers
+- data-pool
+- data-rows
+- data-series
+- data-tables
+- data-validation
+
+### subfolder data-helpers
+Contains helper classes and methods
+
+### subfolder  data-pool
+Handling of data pool
+
+###  subfolder  data-rows
+Handling of data row. Remember using data rows when iterating over a data table is convenient but slow.
+
+### subfolder  data-series
+Handling of data series
+
+### subfolder  data-tables
+Handling of data tables
+
+### subfolder  data-validation
+Experimental components to support data validation
+
+## folder lib-data-examples
+Examples used in the main test program. 
+
+## folder lib-data-io (next version)
+IO support for data series and data tables will move here in a future version.
+
+
+## folder lib-data-tests
+The folder contains the test cases for data series and data tables
+
+## folder lib-data-ui-support
+This folder contains ‘data table’ aware components.
+
+## folder lib-text-file-parsers
+Likely to disappear. For now, this folder should also be included in the project if you need to read/write text files.
+
+
+## folder test-data
+Test files used by some test cases
+
+

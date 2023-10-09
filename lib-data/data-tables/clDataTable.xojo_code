@@ -1267,7 +1267,7 @@ Implements itf_table_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub load_from_text(the_source as FolderItem, the_line_parser as clRowParser_generic, has_header  as Boolean, allocator as column_allocator = nil)
+		Sub load_from_text(the_source as FolderItem, the_line_parser as itf_row_parser, has_header as Boolean, allocator as column_allocator = nil)
 		  //
 		  // Load the serie from a text file, each line is loaded into one element, without further processing
 		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string

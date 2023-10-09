@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clAbstractDataSerie
-Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
+Implements Xojo.Core.Iterable,  itf_json_able
 	#tag Method, Flags = &h0
 		Sub add_meta_data(type as string, message as string)
 		  
@@ -96,7 +96,7 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 		    ok_convert = False
 		    
 		    If element IsA clDataSerie Then
-		      tmp_item.Append(clDataSupport.itf_json_able(element).to_json.ToString)
+		      tmp_item.Append(itf_json_able(element).to_json.ToString)
 		      ok_convert = True
 		      
 		    Else
@@ -111,8 +111,8 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 		    End If
 		    
 		    If Not ok_convert Then
-		      If element IsA clDataSupport.itf_json_able Then
-		        tmp_item.Append(clDataSupport.itf_json_able(element).to_json.ToString)
+		      If element IsA itf_json_able Then
+		        tmp_item.Append(itf_json_able(element).to_json.ToString)
 		        ok_convert = True
 		      End If
 		      
@@ -349,9 +349,9 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 
 	#tag Method, Flags = &h0
 		Function to_json() As JSONItem
-		  // Part of the clDataSupport.itf_json_able interface.
+		  // Part of the itf_json_able interface.
 		  
-		  // Part of the clDataSupport.itf_string_able interface.
+		  // Part of the itf_string_able interface.
 		  
 		  Dim js_list As New JSONItem
 		  Dim js_return As New JSONItem
@@ -359,8 +359,8 @@ Implements clDataSupport.itf_json_able,Xojo.Core.Iterable
 		  For row As Integer = 0 To row_count-1
 		    Dim element As variant = get_element(row)
 		    
-		    If element IsA clDataSupport.itf_json_able Then
-		      js_list.append(clDataSupport.itf_json_able(element).to_json)
+		    If element IsA itf_json_able Then
+		      js_list.append(itf_json_able(element).to_json)
 		      
 		    Else
 		      Try

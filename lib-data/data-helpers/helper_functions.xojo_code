@@ -1,5 +1,5 @@
 #tag Module
-Protected Module clDataSupport
+Protected Module helper_functions
 	#tag Method, Flags = &h0
 		Function serie_array(paramarray series as clAbstractDataSerie) As clAbstractDataSerie()
 		  Dim tmp() As clAbstractDataSerie
@@ -46,22 +46,6 @@ Protected Module clDataSupport
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="Index"
-			Visible=true
-			Group="ID"
-			InitialValue="-2147483648"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Left"
-			Visible=true
-			Group="Position"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
@@ -70,11 +54,27 @@ Protected Module clDataSupport
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Super"
 			Visible=true
 			Group="ID"
 			InitialValue=""
 			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty

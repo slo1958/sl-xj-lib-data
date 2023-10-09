@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clDataSerie
 Inherits clAbstractDataSerie
-Implements clDataSupport.itf_json_able
+Implements itf_json_able
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  items.Append(the_item)
