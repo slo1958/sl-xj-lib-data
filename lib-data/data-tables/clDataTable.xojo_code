@@ -156,6 +156,13 @@ Implements itf_table_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub add_error(source_fct as string, error_msg as string)
+		  System.DebugLog(source_fct + " " + error_msg)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub add_meta_data(type as string, message as string)
 		  '
 		  ' Add  meta data to the table
@@ -348,7 +355,7 @@ Implements itf_table_reader,Iterable
 		      dst_tmp_column.append_serie(src_tmp_column)
 		      
 		    else
-		      System.DebugLog("Ignoring column " + column_name)
+		      add_error("append_row_from_table","Ignoring column " + column_name)
 		      
 		    End If
 		    
@@ -364,7 +371,8 @@ Implements itf_table_reader,Iterable
 		    tmp_column.set_length(new_size)
 		    
 		  Next
-		  dim k as integer =1
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -991,7 +999,7 @@ Implements itf_table_reader,Iterable
 		        input_dimensions.Append(tmp_serie)
 		        
 		      else
-		        System.DebugLog("GroupBy: cannot find column " + item)
+		        add_error("GroupBy","cannot find column " + item)
 		        any_error = True
 		      end if
 		      
@@ -1005,7 +1013,7 @@ Implements itf_table_reader,Iterable
 		        input_measures.Append(tmp_serie)
 		        
 		      else
-		        System.DebugLog("GroupBy: cannot find column " + item)
+		        add_error("GroupBy","cannot find column " + item)
 		        any_error = True
 		      End If
 		    end if
@@ -1507,6 +1515,9 @@ Implements itf_table_reader,Iterable
 		    
 		    If tmp_column <> Nil Then
 		      call res.add_column(tmp_column)
+		      
+		    else
+		      add_error("select_column","cannot find column " + column_name)
 		      
 		    End If
 		    
