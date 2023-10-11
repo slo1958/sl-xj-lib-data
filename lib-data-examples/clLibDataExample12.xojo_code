@@ -45,13 +45,13 @@ Inherits clLibDataExample
 		  // we split the "source" field to extract country and city
 		  
 		  dim table2 as new clDataTable("prepared", serie_array( _
-		      col_source, _
+		  col_source, _
 		  col_source.text_before("-").rename("country"), _
 		  col_source.text_after("-").rename("city"), _
 		  col_sales),_
-		   true)
+		  true)
 		  
-		   
+		  
 		  dim col_city  as clStringDataSerie = clStringDataSerie(table2.get_column("city"))
 		  
 		  call table2.add_column(col_city.Uppercase.rename("City UC"))
@@ -59,7 +59,7 @@ Inherits clLibDataExample
 		  Dim table3 As clDataTable = table2.unique(array("country", "city"))
 		  
 		  
-		  Dim table4 As clDataTable = table2.groupby(string_array("country"), string_array("sales"), string_array(""))
+		  dim table4 as clDataTable  = table2.groupby(array("country"), array("Sales"), array(""))
 		  
 		  dim ret() as itf_table_reader
 		  ret.Add(table1)

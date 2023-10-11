@@ -982,20 +982,39 @@ Implements itf_table_reader,Iterable
 		  
 		  Dim input_dimensions() As clAbstractDataSerie
 		  Dim input_measures() As clAbstractDataSerie
+		  dim any_error as Boolean = false
 		  
 		  For Each item As String In grouping_dimensions
 		    If Len(Trim(item)) > 0 Then
-		      input_dimensions.Append(Self.get_column(item))
+		      dim tmp_serie as clAbstractDataSerie = self.get_column(item)
+		      if tmp_serie <> nil then
+		        input_dimensions.Append(tmp_serie)
+		        
+		      else
+		        System.DebugLog("GroupBy: cannot find column " + item)
+		        any_error = True
+		      end if
 		      
 		    End If
 		  Next
 		  
 		  For Each item As String In aggregate_measures
 		    If Len(Trim(item)) > 0 Then
-		      input_measures.Append(Self.get_column(item))
-		      
-		    End If
+		      dim tmp_serie as clAbstractDataSerie = self.get_column(item)
+		      if tmp_serie <> nil then
+		        input_measures.Append(tmp_serie)
+		        
+		      else
+		        System.DebugLog("GroupBy: cannot find column " + item)
+		        any_error = True
+		      End If
+		    end if
 		  Next
+		  
+		  if any_error then
+		    return nil
+		    
+		  end if
 		  
 		  
 		  Dim has_grouping As Boolean = input_dimensions.Ubound >=0
