@@ -82,16 +82,16 @@ Protected Class clGrouper
 		  dim tmp_label() as string
 		  dim tmp_value() as variant
 		  
-		  '
-		  ' Pre-allocate work array
-		  '
+		  //  
+		  //  Pre-allocate work array
+		  //  
 		  
 		  redim tmp_label(col_names.Count)
 		  redim tmp_value(col_names.Count)
 		  
-		  '
-		  ' Prepare output space for grouped dimensions
-		  '
+		  //  
+		  //  Prepare output space for grouped dimensions
+		  //  
 		  Dim output_dimensions() As clAbstractDataSerie
 		  
 		  for each name as string in col_names

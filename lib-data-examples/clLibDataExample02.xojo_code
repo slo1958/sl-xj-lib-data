@@ -27,10 +27,10 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function run() As itf_table_reader()
 		  
-		  ' Example_002
-		  ' - create a small table
-		  ' - aggregate using 0, 1 and 2 dimensions
-		  '
+		  //  Example_002
+		  //  - create a small table
+		  //  - aggregate using 0, 1 and 2 dimensions
+		  //  
 		  
 		  
 		  System.DebugLog("START "+CurrentMethodName)

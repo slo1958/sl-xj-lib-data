@@ -8,9 +8,9 @@ Protected Module datatable_to_list
 		  
 		  tmp_listbox.DeleteAllRows
 		  
-		  '
-		  ' update table header
-		  '
+		  //  
+		  //  update table header
+		  //  
 		  tmp_listbox.HasHeading = True
 		  dim columns()  as String = tmp_tbl.column_names
 		  
@@ -23,9 +23,9 @@ Protected Module datatable_to_list
 		    
 		  next
 		  
-		  '
-		  ' show data
-		  '
+		  //  
+		  //  show data
+		  //  
 		  dim tmp_last_row as integer = tmp_tbl.row_count
 		  
 		  for row_index as integer = 0 to tmp_last_row - 1

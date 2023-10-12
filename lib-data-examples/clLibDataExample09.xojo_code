@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clLibDataExample09
 Inherits clLibDataExample
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
@@ -27,9 +27,9 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function run() As itf_table_reader()
 		  
-		  ' Example_009
-		  ' - test basic validation
-		  '
+		  //  Example_009
+		  //  - test basic validation
+		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
@@ -54,7 +54,7 @@ Inherits clLibDataExample
 		  Dim table1 As  clDataTable = tableValid.validate(table0)
 		  
 		  
-		  'all types not the same, so need to explictely build the returned array
+		  //  all types not the same, so need to explictely build the returned array
 		  dim ret() as itf_table_reader
 		  ret.append(table0)
 		  ret.append(table1)

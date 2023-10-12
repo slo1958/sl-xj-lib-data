@@ -31,6 +31,12 @@ Protected Interface itf_table_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function is_persistant() As boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function name() As String
 		  
 		End Function
@@ -41,6 +47,17 @@ Protected Interface itf_table_reader
 		  
 		End Function
 	#tag EndMethod
+
+
+	#tag Note, Name = Description
+		Interface to scan a table.
+		Implemented on clDataTable
+		
+		Can also be used to present another structure as a table
+		
+		
+		The source is persistant if we can query it at will. 
+	#tag EndNote
 
 
 	#tag ViewBehavior

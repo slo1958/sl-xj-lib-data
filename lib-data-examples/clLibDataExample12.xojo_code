@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clLibDataExample12
 Inherits clLibDataExample
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  
@@ -28,10 +28,10 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function run() As itf_table_reader()
 		  
-		  ' Example_012
-		  ' - test string handling
-		  ' - test basic 'unique'
-		  '
+		  //  Example_012
+		  //  - test string handling
+		  //  - test basic 'unique'
+		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  

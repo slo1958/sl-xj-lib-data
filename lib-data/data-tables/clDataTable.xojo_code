@@ -3,15 +3,15 @@ Protected Class clDataTable
 Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Function add_column(the_column as clAbstractDataSerie) As clAbstractDataSerie
-		  '
-		  ' Add a data serie as a column to the table
-		  ' 
-		  ' Parameters:
-		  ' - the data serie
-		  '
-		  ' Returns:
-		  ' - the data serie 
-		  '
+		  //  
+		  //  Add a data serie as a column to the table
+		  //  
+		  //  Parameters:
+		  //  - the data serie
+		  //  
+		  //  Returns:
+		  //  - the data serie 
+		  //  
 		  Dim tmp_column As clAbstractDataSerie = the_column
 		  
 		  Dim tmp_column_name As String = tmp_column.name
@@ -23,7 +23,7 @@ Implements itf_table_reader,Iterable
 		  
 		  
 		  
-		  ' physical table and column not yet linked
+		  //  physical table and column not yet linked
 		  if not self.is_virtual and not tmp_column.linked then
 		    dim max_row_count as integer = self.increase_length(tmp_column.row_count)
 		    tmp_column.set_length(max_row_count)
@@ -35,7 +35,7 @@ Implements itf_table_reader,Iterable
 		    
 		  end if
 		  
-		  ' adding a physical column to a virtual table (when permitted)
+		  //  adding a physical column to a virtual table (when permitted)
 		  if self.is_virtual and not tmp_column.linked and self.allow_local_columns then
 		    dim max_row_count as integer = self.increase_length(tmp_column.row_count)
 		    tmp_column.set_length(max_row_count)
@@ -47,7 +47,7 @@ Implements itf_table_reader,Iterable
 		    
 		  end if
 		  
-		  ' we add a column from another table to a virtual table
+		  //  we add a column from another table to a virtual table
 		  if self.is_virtual and tmp_column.linked then
 		    tmp_column.set_length(row_count)
 		    Self.columns.Append(tmp_column)
@@ -64,15 +64,15 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function add_column(the_column_name as String) As clDataSerie
-		  '
-		  ' Add  an empty column to the table
-		  ' 
-		  ' Parameters:
-		  ' - the name of the column
-		  '
-		  ' Returns:
-		  ' - the new data serie
-		  '
+		  //  
+		  //  Add  an empty column to the table
+		  //  
+		  //  Parameters:
+		  //  - the name of the column
+		  //  
+		  //  Returns:
+		  //  - the new data serie
+		  //  
 		  dim v as variant
 		  
 		  return add_column(the_column_name, v)
@@ -81,16 +81,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function add_column(the_column_name as String, default_value as variant) As clDataSerie
-		  '
-		  ' Add  an constant column to the table
-		  ' 
-		  ' Parameters:
-		  ' - the name of the column
-		  ' - the initial value for every cell
-		  '
-		  ' Returns:
-		  ' - the new data serie
-		  '
+		  //  
+		  //  Add  an constant column to the table
+		  //  
+		  //  Parameters:
+		  //  - the name of the column
+		  //  - the initial value for every cell
+		  //  
+		  //  Returns:
+		  //  - the new data serie
+		  //  
 		  Dim tmp_column_name As String = the_column_name.trim
 		  
 		  if tmp_column_name.len() = 0 then
@@ -116,7 +116,7 @@ Implements itf_table_reader,Iterable
 		    tmp_column.set_length(row_count, default_value)
 		    
 		  Else
-		    ' could be nil if the column exists in the parent datatable
+		    //  could be nil if the column exists in the parent datatable
 		    tmp_column = link_to_parent.add_column( tmp_column_name)
 		    
 		  End If
@@ -134,15 +134,15 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function add_columns(the_column_names() as string) As clDataSerie()
-		  '
-		  ' Add  a set of  empty columns to the table
-		  ' 
-		  ' Parameters:
-		  ' - the name of the column
-		  '
-		  ' Returns:
-		  ' - an array with the new data series
-		  '
+		  //  
+		  //  Add  a set of  empty columns to the table
+		  //  
+		  //  Parameters:
+		  //  - the name of the column
+		  //  
+		  //  Returns:
+		  //  - an array with the new data series
+		  //  
 		  
 		  
 		  Dim return_array() As clDataSerie
@@ -164,16 +164,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub add_meta_data(type as string, message as string)
-		  '
-		  ' Add  meta data to the table
-		  ' 
-		  ' Parameters:
-		  ' - the meta data type
-		  ' - the meta data value
-		  '
-		  ' Returns:
-		  ' (nothing)
-		  '
+		  //  
+		  //  Add  meta data to the table
+		  //  
+		  //  Parameters:
+		  //  - the meta data type
+		  //  - the meta data value
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
 		  
 		  meta_dict.add_meta_data(type, message)
 		End Sub
@@ -181,16 +181,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub append_row(the_row as clDataRow, create_columns_flag as boolean=True)
-		  '
-		  ' Add  a data row to the table
-		  ' 
-		  ' Parameters:
-		  ' - the data row
-		  ' - flag allow the creation of missing columns
-		  '
-		  ' Returns:
-		  ' (nothing)
-		  '
+		  //  
+		  //  Add  a data row to the table
+		  //  
+		  //  Parameters:
+		  //  - the data row
+		  //  - flag allow the creation of missing columns
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
 		  Dim tmp_row_count As Integer = Self.row_count
 		  
 		  Dim columns_to_update() As String
@@ -235,14 +235,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Sub append_row(the_values as Dictionary)
 		  
-		  ' Add  a data row to the table using the passed dictionary. Does not create new columns.
-		  ' 
-		  ' Parameters:
-		  ' - dictionary with key(field name) / value (field value)
-		  '
-		  ' Returns:
-		  ' (nothing)
-		  '
+		  //  Add  a data row to the table using the passed dictionary. Does not create new columns.
+		  //  
+		  //  Parameters:
+		  //  - dictionary with key(field name) / value (field value)
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
 		  
 		  if the_values = nil then 
 		    return
@@ -268,14 +268,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Sub append_row(the_values() as string)
 		  
-		  ' Add  a data row to the table
-		  ' 
-		  ' Parameters:
-		  ' - the data row (values as string), it is assumed the values are ordered according to the current column order in the table
-		  ''
-		  ' Returns:
-		  ' (nothing)
-		  '
+		  //  Add  a data row to the table
+		  //  
+		  //  Parameters:
+		  //  - the data row (values as string), it is assumed the values are ordered according to the current column order in the table
+		  //  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
 		  For i As Integer = 0 To columns.Ubound
 		    If i <= the_values.Ubound Then
 		      columns(i).append_element(the_values(i))
@@ -295,14 +295,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Sub append_row(the_values() as variant)
 		  
-		  ' Add  a data row to the table
-		  ' 
-		  ' Parameters:
-		  ' - the data row (values as variant), it is assumed the values are ordered according to the current column order in the table
-		  '
-		  ' Returns:
-		  ' (nothing)
-		  '
+		  //  Add  a data row to the table
+		  //  
+		  //  Parameters:
+		  //  - the data row (values as variant), it is assumed the values are ordered according to the current column order in the table
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
 		  For i As Integer = 0 To columns.Ubound
 		    If i <= the_values.Ubound Then
 		      columns(i).append_element(the_values(i))
@@ -321,23 +321,23 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub append_rows_from_table(the_table as clDataTable, create_missing_columns as boolean = True)
-		  '
-		  ' Add  the data row from another table. New columns may be added to the current table
-		  '
-		  ' For example, 
-		  ' - with the current table containing columns A, B, C 
-		  ' - with  the flag create_missing_column set to true, a
-		  ' - appending from a table with columns A, B, D 
-		  ' the values from A, and B are appended to the existing columns A and B
-		  ' a new column is created to store the values for D 
+		  //  
+		  //  Add  the data row from another table. New columns may be added to the current table
+		  //  
+		  //  For example, 
+		  //  - with the current table containing columns A, B, C 
+		  //  - with  the flag create_missing_column set to true, a
+		  //  - appending from a table with columns A, B, D 
+		  //  the values from A, and B are appended to the existing columns A and B
+		  //  a new column is created to store the values for D 
 		  
-		  ' Parameters:
-		  ' - the source table
-		  ' - flag allow the creation of missing columns
-		  '
-		  ' Returns:
-		  ' (nothing)
-		  '
+		  //  Parameters:
+		  //  - the source table
+		  //  - flag allow the creation of missing columns
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
 		  dim length_before as integer = self.row_count
 		  
 		  For Each src_tmp_column As clAbstractDataSerie In the_table.columns
@@ -379,14 +379,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Function clone() As clDataTable
 		  
-		  ' Duplicate the table and all its columns
-		  ' 
-		  ' Parameters:
-		  ' - None
-		  '
-		  ' Returns:
-		  ' - Nothing
-		  '
+		  //  Duplicate the table and all its columns
+		  //  
+		  //  Parameters:
+		  //  - None
+		  //  
+		  //  Returns:
+		  //  - Nothing
+		  //  
 		  dim output_table as new clDataTable(self.name+" copy")
 		  
 		  for each col as clAbstractDataSerie in self.columns
@@ -407,14 +407,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Function column_count() As integer
 		  
-		  ' Return the number of columns in a table
-		  ' 
-		  ' Parameters:
-		  ' - none
-		  '
-		  ' Returns:
-		  ' - the number of columns as an integer
-		  '
+		  //  Return the number of columns in a table
+		  //  
+		  //  Parameters:
+		  //  - none
+		  //  
+		  //  Returns:
+		  //  - the number of columns as an integer
+		  //  
 		  Return columns.Ubound + 1
 		End Function
 	#tag EndMethod
@@ -433,15 +433,15 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function column_names() As string()
-		  '
-		  ' Return the name of all columns
-		  ' 
-		  ' Parameters:
-		  ' - none
-		  '
-		  ' Returns:
-		  ' - a string array with the name of the columns
-		  '
+		  //  
+		  //  Return the name of all columns
+		  //  
+		  //  Parameters:
+		  //  - none
+		  //  
+		  //  Returns:
+		  //  - a string array with the name of the columns
+		  //  
 		  Dim ret_str() As String
 		  For Each column As clAbstractDataSerie In columns
 		    ret_str.Append(column.name)
@@ -479,16 +479,78 @@ Implements itf_table_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(source_table as itf_table_reader, materialize as boolean = False)
+		  //
+		  //  Creates a datatable from a table reader
+		  //  
+		  //  Parameters:
+		  //  - the table reader
+		  //
+		  //  Returns:
+		  //  - 
+		  //
+		  
+		  meta_dict = new clMetaData
+		  
+		  self.allow_local_columns = False
+		  
+		  Dim tmp_table_name As String = source_table.name.Trim
+		  
+		  add_meta_data("source", tmp_table_name)
+		  
+		  internal_new_table("from " + tmp_table_name)
+		  
+		  if source_table.is_persistant and not materialize then
+		    // 
+		    // we create a virtual table
+		    //
+		    self.link_to_source = source_table
+		    
+		    For Each column_name As String In source_table.column_names
+		      Dim tmp_column As clAbstractDataSerie = source_table.get_column(column_name)
+		      
+		      If tmp_column <> Nil Then
+		        call self.add_column(tmp_column)
+		        
+		        
+		      else
+		        add_error("select_column","cannot find column " + column_name)
+		        
+		      End If
+		      
+		    next
+		  else
+		    
+		    For Each column_name As String In source_table.column_names
+		      Dim tmp_column As clAbstractDataSerie = source_table.get_column(column_name)
+		      
+		      If tmp_column <> Nil Then
+		        call self.add_column(tmp_column.clone)
+		        
+		      else
+		        add_error("select_column","cannot find column " + column_name)
+		        
+		      End If
+		      
+		    next
+		    
+		    
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_table_name as string)
-		  '
-		  ' Creates a datatable
-		  ' 
-		  ' Parameters:
-		  ' - the name of the data table
-		  '
-		  ' Returns:
-		  ' - 
-		  '
+		  //
+		  //  Creates a datatable
+		  //  
+		  //  Parameters:
+		  //  - the name of the data table
+		  //
+		  //  Returns:
+		  //  - 
+		  //
 		  meta_dict = new clMetaData
 		  
 		  Dim tmp_table_name As String
@@ -503,19 +565,19 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub Constructor(the_table_name as string, the_columns() as clabstractDataSerie, auto_clone_columns as boolean = false)
-		  '
-		  ' Creates a new data table from a set of columns. Columns cannot be part of another table. If auto_clone_column is true, a column 
-		  ' that is already used in another table will be cloned. If the parameter is false (default), an exception is generated if the column is already
-		  ' linked to another table
-		  ' 
-		  ' Parameters:
-		  ' - the name of the data table
-		  '- the columns as an array of data series
-		  '- an option to clone a data serie (column) if it is already used in another table
-		  '
-		  ' Returns:
-		  ' -  
-		  '
+		  //
+		  // Creates a new data table from a set of columns. Columns cannot be part of another table. If auto_clone_column is true, a column 
+		  //  that is already used in another table will be cloned. If the parameter is false (default), an exception is generated if the column is already
+		  //  linked to another table
+		  //  
+		  //  Parameters:
+		  //  - the name of the data table
+		  // - the columns as an array of data series
+		  // - an option to clone a data serie (column) if it is already used in another table
+		  //
+		  //  Returns:
+		  //  -  
+		  //
 		  
 		  meta_dict = new clMetaData
 		  
@@ -542,7 +604,7 @@ Implements itf_table_reader,Iterable
 		  internal_new_table(the_table_name)
 		  
 		  For Each c As clAbstractDataSerie In tmp_columns
-		    ' add column takes care of adjusting the length
+		    //  add column takes care of adjusting the length
 		    call Self.add_column(c)
 		    
 		  Next
@@ -551,16 +613,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub Constructor(the_table_name as string, column_names() as string)
-		  '
-		  ' Creates a data table from a list of column names
-		  ' 
-		  ' Parameters:
-		  ' - the name of the table
-		  '-  a string array with the list of names for columns
-		  '
-		  ' Returns:
-		  ' -  
-		  '
+		  //  
+		  //  Creates a data table from a list of column names
+		  //  
+		  //  Parameters:
+		  //  - the name of the table
+		  //  -  a string array with the list of names for columns
+		  //  
+		  //  Returns:
+		  //  -  
+		  //  
 		  meta_dict = new clMetaData
 		  
 		  Dim tmp_table_name As String
@@ -618,16 +680,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function filtered_on(boolean_serie as clBooleanDataSerie) As clDataTableFilter
-		  '
-		  ' Creates a data table filter (iterable) using a column as a mask,  the column (data serie)  is passed as parameter. 
-		  ' The data serie does not need to belong to any data table
-		  ' 
-		  ' Parameters:
-		  ' - a boolean data serie used as mask
-		  '
-		  ' Returns:
-		  ' - a data table filter
-		  '
+		  //  
+		  //  Creates a data table filter (iterable) using a column as a mask,  the column (data serie)  is passed as parameter. 
+		  //  The data serie does not need to belong to any data table
+		  //  
+		  //  Parameters:
+		  //  - a boolean data serie used as mask
+		  //  
+		  //  Returns:
+		  //  - a data table filter
+		  //  
 		  dim retval as new clDataTableFilter(self, boolean_serie)
 		  
 		  return retval
@@ -636,16 +698,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function filtered_on(boolean_field_name as string) As clDataTableFilter
-		  '
-		  ' Creates a data table filter (iterable) using a column as a mask, the name fof the column is passed as parameter. The column must be defined
-		  ' in the table
-		  ' 
-		  ' Parameters:
-		  ' - the name of the column
-		  '
-		  ' Returns:
-		  ' - a data table filter
-		  '
+		  //  
+		  //  Creates a data table filter (iterable) using a column as a mask, the name fof the column is passed as parameter. The column must be defined
+		  //  in the table
+		  //  
+		  //  Parameters:
+		  //  - the name of the column
+		  //  
+		  //  Returns:
+		  //  - a data table filter
+		  //  
 		  dim retval as new clDataTableFilter(self, boolean_field_name)
 		  
 		  return retval
@@ -655,16 +717,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function filter_apply_function(the_filter_function as filter_row, paramarray function_param as variant) As variant()
-		  '
-		  ' Applies a filter function to each data row of the table, returns a boolean data serie
-		  ' 
-		  ' Parameters:
-		  ' - the address of the filter function
-		  '- the parameters to pass to the function
-		  '
-		  ' Returns:
-		  ' - a boolean data serie
-		  '
+		  //  
+		  //  Applies a filter function to each data row of the table, returns a boolean data serie
+		  //  
+		  //  Parameters:
+		  //  - the address of the filter function
+		  //  - the parameters to pass to the function
+		  //  
+		  //  Returns:
+		  //  - a boolean data serie
+		  //  
 		  
 		  Dim return_boolean() As Variant
 		  
@@ -701,16 +763,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function find_first_matching_row(the_column_name as string, the_column_value as string, include_index as Boolean) As clDataRow
-		  '
-		  ' returns the first data row where the value in column matches the constant
-		  ' 
-		  ' Parameters:
-		  ' - the name of the column
-		  '- the value searched as a string
-		  '
-		  ' Returns:
-		  ' - a data row if found or nil
-		  '
+		  //  
+		  //  returns the first data row where the value in column matches the constant
+		  //  
+		  //  Parameters:
+		  //  - the name of the column
+		  //  - the value searched as a string
+		  //  
+		  //  Returns:
+		  //  - a data row if found or nil
+		  //  
 		  dim tmp_row_index as integer = self.find_first_matching_row_index(the_column_name, the_column_value)
 		  
 		  if tmp_row_index <0 then
@@ -727,16 +789,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function find_first_matching_row_index(the_column_names() as string, the_column_values() as string) As integer
-		  '
-		  ' returns the index of the data row where the value each columns matches the constants
-		  ' 
-		  ' Parameters:
-		  ' - the name of the columns as an array of string
-		  '- the value searched as a array of string
-		  '
-		  ' Returns:
-		  ' - the index of the first matching data row as an integer, set to -1 if not found
-		  '
+		  //  
+		  //  returns the index of the data row where the value each columns matches the constants
+		  //  
+		  //  Parameters:
+		  //  - the name of the columns as an array of string
+		  //  - the value searched as a array of string
+		  //  
+		  //  Returns:
+		  //  - the index of the first matching data row as an integer, set to -1 if not found
+		  //  
 		  
 		  Dim tmp_columns() As clAbstractDataSerie
 		  
@@ -783,16 +845,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function find_first_matching_row_index(the_column_name as string, the_column_value as string) As integer
-		  '
-		  ' returns the index of the data row where the value in column matches the constant
-		  ' 
-		  ' Parameters:
-		  ' - the name of the column
-		  '- the value searched as a string
-		  '
-		  ' Returns:
-		  ' - the index of the first matching data row as an integer, set to -1 if not found
-		  '
+		  //  
+		  //  returns the index of the data row where the value in column matches the constant
+		  //  
+		  //  Parameters:
+		  //  - the name of the column
+		  //  - the value searched as a string
+		  //  
+		  //  Returns:
+		  //  - the index of the first matching data row as an integer, set to -1 if not found
+		  //  
 		  
 		  Dim tmp_column As clAbstractDataSerie
 		  
@@ -820,15 +882,15 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function get_column(the_column_name as String) As clAbstractDataSerie
-		  '
-		  ' returns a column
-		  ' 
-		  ' Parameters:
-		  ' - the name of the column
-		  '
-		  ' Returns:
-		  ' - the column matching the name or nil
-		  '
+		  //  
+		  //  returns a column
+		  //  
+		  //  Parameters:
+		  //  - the name of the column
+		  //  
+		  //  Returns:
+		  //  - the column matching the name or nil
+		  //  
 		  
 		  For Each column As clAbstractDataSerie In Self.columns
 		    If column.name = the_column_name Then
@@ -845,15 +907,15 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function get_columns(column_names() as string) As clAbstractDataSerie()
-		  '
-		  ' returns selected columns
-		  ' 
-		  ' Parameters:
-		  ' - the name of the columns as an array of string
-		  '
-		  ' Returns:
-		  ' - the columns matching the name or nil, as an array
-		  '
+		  //  
+		  //  returns selected columns
+		  //  
+		  //  Parameters:
+		  //  - the name of the columns as an array of string
+		  //  
+		  //  Returns:
+		  //  - the columns matching the name or nil, as an array
+		  //  
 		  Dim ret() As clAbstractDataSerie
 		  
 		  
@@ -873,14 +935,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Function get_columns(paramarray column_names as string) As clAbstractDataSerie()
 		  
-		  ' returns selected columns
-		  ' 
-		  ' Parameters:
-		  ' - the name of the columns as string parameters
-		  '
-		  ' Returns:
-		  ' - the columns matching the name or nil, as an array
-		  '
+		  //  returns selected columns
+		  //  
+		  //  Parameters:
+		  //  - the name of the columns as string parameters
+		  //  
+		  //  Returns:
+		  //  - the columns matching the name or nil, as an array
+		  //  
 		  
 		  Return get_columns(column_names)
 		  
@@ -889,15 +951,15 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function get_column_by_index(column_index as integer) As clAbstractDataSerie
-		  '
-		  ' returns a column
-		  ' 
-		  ' Parameters:
-		  ' - the index of the column
-		  '
-		  ' Returns:
-		  ' - the column at specified index
-		  '
+		  //  
+		  //  returns a column
+		  //  
+		  //  Parameters:
+		  //  - the index of the column
+		  //  
+		  //  Returns:
+		  //  - the column at specified index
+		  //  
 		  
 		  try
 		    return self.columns(column_index)
@@ -915,16 +977,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function get_element(the_column_name as String, the_element_index as integer) As variant
-		  '
-		  ' returns a specific cell based on column name and row number
-		  ' 
-		  ' Parameters:
-		  ' - the name of the columns 
-		  ' - the row index
-		  '
-		  ' Returns:
-		  ' - the value of the matching cell or nil
-		  '
+		  //  
+		  //  returns a specific cell based on column name and row number
+		  //  
+		  //  Parameters:
+		  //  - the name of the columns 
+		  //  - the row index
+		  //  
+		  //  Returns:
+		  //  - the value of the matching cell or nil
+		  //  
 		  dim tmp_col as clAbstractDataSerie = self.get_column(the_column_name)
 		  
 		  
@@ -941,15 +1003,15 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function get_row(the_row_index as integer, include_index as Boolean) As clDataRow
-		  '
-		  ' returns a specific data row
-		  ' 
-		  ' Parameters:
-		  ' - the  index of the data row
-		  '
-		  ' Returns:
-		  ' - a data row with the value of the cell in each column at the specified index
-		  '
+		  //  
+		  //  returns a specific data row
+		  //  
+		  //  Parameters:
+		  //  - the  index of the data row
+		  //  
+		  //  Returns:
+		  //  - a data row with the value of the cell in each column at the specified index
+		  //  
 		  dim tmp_row as new clDataRow
 		  
 		  if not include_index then
@@ -976,17 +1038,17 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function groupby(grouping_dimensions() as string, aggregate_measures() as string, aggregate_mode() as string) As clDataTable
-		  '
-		  ' returns a new data table with the results of the aggregation
-		  ' 
-		  ' Parameters:
-		  ' - the list of columns to group by as an array of string
-		  ' - the list of columns to aggregated as an array of string
-		  ' - the list of type aggregation (current version: ignored, always do 'sum')
-		  '
-		  ' Returns:
-		  ' - aggregated data table
-		  '
+		  //  
+		  //  returns a new data table with the results of the aggregation
+		  //  
+		  //  Parameters:
+		  //  - the list of columns to group by as an array of string
+		  //  - the list of columns to aggregated as an array of string
+		  //  - the list of type aggregation (current version: ignored, always do 'sum')
+		  //  
+		  //  Returns:
+		  //  - aggregated data table
+		  //  
 		  
 		  Dim input_dimensions() As clAbstractDataSerie
 		  Dim input_measures() As clAbstractDataSerie
@@ -1034,18 +1096,18 @@ Implements itf_table_reader,Iterable
 		  
 		  Dim output_row_count As New clDataSerie("row_count")
 		  
-		  '
-		  ' Prepare output space for grouped dimensions
-		  '
+		  //  
+		  //  Prepare output space for grouped dimensions
+		  //  
 		  Dim output_dimensions() As clDataSerie
 		  For idx_dim As Integer = 0 To input_dimensions.Ubound
 		    output_dimensions.Append(New clDataSerie(input_dimensions(idx_dim).name))
 		    
 		  Next
 		  
-		  '
-		  ' Prepare temporary space for aggregated measures
-		  '
+		  //  
+		  //  Prepare temporary space for aggregated measures
+		  //  
 		  Dim temp_measures() As clDataSerie
 		  For idx_mea As Integer = 0 To input_measures.Ubound
 		    temp_measures.Append(New clDataSerie(input_measures(idx_mea).name))
@@ -1133,9 +1195,9 @@ Implements itf_table_reader,Iterable
 		  
 		  output_series.Append(output_row_count)
 		  
-		  ' 
-		  ' output table name
-		  '
+		  //  
+		  //  output table name
+		  //  
 		  dim tmp_name as string = self.name.trim
 		  if tmp_name.len = 0 then
 		    tmp_name = "results"
@@ -1165,16 +1227,16 @@ Implements itf_table_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Function increase_length(the_length as integer) As integer
-		  '
-		  '  increases the length of each data serie in the table. If the current length is greater than the parameter, the maximum current length is used
-		  ' In normal case, all columns have the same length.
-		  ' 
-		  ' Parameters:
-		  ' - the new length
-		  '
-		  ' Returns:
-		  ' - (nothing)
-		  '
+		  //  
+		  //   increases the length of each data serie in the table. If the current length is greater than the parameter, the maximum current length is used
+		  //  In normal case, all columns have the same length.
+		  //  
+		  //  Parameters:
+		  //  - the new length
+		  //  
+		  //  Returns:
+		  //  - (nothing)
+		  //  
 		  
 		  dim max_row_count as integer
 		  
@@ -1225,7 +1287,14 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h21
 		Private Sub internal_new_table(the_table_name as string)
 		  
-		  table_name = the_table_name
+		  if the_table_name.trim.Length = 0 then 
+		    table_name = "Unnamed"
+		    
+		  else
+		    table_name = the_table_name.Trim
+		    
+		  end if
+		  
 		  row_index = New clDataSerieRowID("row_id")
 		  
 		  
@@ -1237,6 +1306,12 @@ Implements itf_table_reader,Iterable
 	#tag Method, Flags = &h0
 		Function is_index_visible_when_iterate() As Boolean
 		  return self.index_explicit_when_iterate 
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function is_persistant() As boolean
+		  return not is_virtual
 		End Function
 	#tag EndMethod
 
@@ -1299,7 +1374,7 @@ Implements itf_table_reader,Iterable
 		Sub load_from_text(the_source as FolderItem, the_line_parser as itf_row_parser, has_header as Boolean, allocator as column_allocator = nil)
 		  //
 		  // Load the serie from a text file, each line is loaded into one element, without further processing
-		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string
+		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
 		  //
 		  
 		  Dim got_header As Boolean
@@ -1503,11 +1578,11 @@ Implements itf_table_reader,Iterable
 		Function select_columns(column_names() as string) As clDataTable
 		  Dim res As New clDataTable("select " + Self.table_name)
 		  
-		  
+		  res.add_meta_data("source", self.table_name)
 		  res.row_index = Self.row_index
-		  '
-		  ' link to parent must be called BEFORE adding logical columns
-		  '
+		  //  
+		  //  link to parent must be called BEFORE adding logical columns
+		  //  
 		  res.link_to_parent = Self
 		  
 		  For Each column_name As String In column_names
@@ -1582,7 +1657,7 @@ Implements itf_table_reader,Iterable
 		
 		A dataTable is a collection of dataSeries.
 		
-		Only one dataTable can 'own' a dataSerie, but the series can be shared by multiple tables.
+		Only one dataTable can 'own'  a dataSerie, but the series can be shared by multiple tables.
 		
 		
 	#tag EndNote
@@ -1636,7 +1711,7 @@ Implements itf_table_reader,Iterable
 	#tag EndNote
 
 
-	#tag ComputedProperty, Flags = &h0
+	#tag ComputedProperty, Flags = &h1
 		#tag Getter
 			Get
 			  Return flag_allow_local_columns
@@ -1647,7 +1722,7 @@ Implements itf_table_reader,Iterable
 			  flag_allow_local_columns = value
 			End Set
 		#tag EndSetter
-		allow_local_columns As Boolean
+		Protected allow_local_columns As Boolean
 	#tag EndComputedProperty
 
 	#tag Property, Flags = &h1
@@ -1666,8 +1741,12 @@ Implements itf_table_reader,Iterable
 		Protected link_to_parent As clDataTable
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		meta_dict As clMetaData
+	#tag Property, Flags = &h1
+		Protected link_to_source As itf_table_reader
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected meta_dict As clMetaData
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

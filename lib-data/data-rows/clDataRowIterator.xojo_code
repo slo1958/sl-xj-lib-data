@@ -32,7 +32,7 @@ Implements Iterator
 	#tag Method, Flags = &h0
 		Function Value() As Variant
 		  // Part of the Iterator interface.
-		  ' return name of next field
+		  //  return name of next field
 		  Return iteration_next_key
 		  
 		End Function

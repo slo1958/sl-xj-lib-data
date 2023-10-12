@@ -28,11 +28,11 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function run() As itf_table_reader()
 		  
-		  ' Example_008
-		  ' - create an empty table
-		  ' - fast append data
-		  ' - apply filter function to create a dataserie 
-		  '
+		  //  Example_008
+		  //  - create an empty table
+		  //  - fast append data
+		  //  - apply filter function to create a dataserie 
+		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  

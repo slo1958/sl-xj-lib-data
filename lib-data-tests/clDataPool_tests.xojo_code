@@ -63,10 +63,10 @@ Protected Module clDataPool_tests
 
 	#tag Method, Flags = &h0
 		Sub test_002()
-		  '
-		  ' Test simplified interface to tables in data pool
-		  '
-		  '
+		  //  
+		  //  Test simplified interface to tables in data pool
+		  //  
+		  //  
 		  dim my_data_pool as new clDataPool
 		  
 		  dim rtst As clDataRow

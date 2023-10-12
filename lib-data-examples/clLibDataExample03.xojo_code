@@ -24,9 +24,9 @@ Inherits clLibDataExample
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_reader()
-		  '
-		  ' Example 003
-		  '
+		  //  
+		  //  Example 003
+		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  

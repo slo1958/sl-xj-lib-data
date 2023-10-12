@@ -350,7 +350,7 @@ Protected Module clDataTable_tests
 		  my_table.append_row(Array("aaa2","bbb0","ccc2"))
 		  my_table.append_row(Array("aaa3","bbb3","ccc3"))
 		  
-		  ' The function is filtering on column cc2. The parameter is the value to look for
+		  //  The function is filtering on column cc2. The parameter is the value to look for
 		  
 		  dim tmp1() as variant = my_table.filter_apply_function(AddressOf filter_008,"bbb0")
 		  
@@ -638,7 +638,7 @@ Protected Module clDataTable_tests
 		  
 		  dim k as integer = 1
 		  
-		  ' use the name of the boolean serie as parameter to 'filtered_on' 
+		  //  use the name of the boolean serie as parameter to 'filtered_on'
 		  for each row as clDataRow in table0.filtered_on("mask_country")
 		    k = k+1
 		  next
@@ -673,8 +673,8 @@ Protected Module clDataTable_tests
 		    
 		  next 
 		  
-		  '
-		  ' The filter series are not added to the table, but we can used them to filter the datatable
+		  //  
+		  //  The filter series are not added to the table, but we can used them to filter the datatable
 		  
 		  table0.index_visible_when_iterate(True)
 		  
@@ -688,7 +688,7 @@ Protected Module clDataTable_tests
 		  
 		  dim k as integer = 1
 		  
-		  ' directly use the  boolean serie as parameter to 'filtered_on'; and, or and not operator are overloaded for clBooleanDataSerie
+		  //  directly use the  boolean serie as parameter to 'filtered_on'; and, or and not operator are overloaded for clBooleanDataSerie
 		  
 		  for each row as clDataRow in table0.filtered_on(filter_country and filter_product)
 		    k = k+1

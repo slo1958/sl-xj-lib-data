@@ -105,6 +105,7 @@ Implements itf_table_reader
 		  // Part of the itf_table_reader interface.
 		  
 		  
+		  Return get_columns(column_names)
 		  
 		End Function
 	#tag EndMethod
@@ -115,6 +116,14 @@ Implements itf_table_reader
 		  
 		  Return get_columns(column_names)
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function is_persistant() As boolean
+		  // Part of the itf_table_reader interface.
+		  
+		  return False
 		End Function
 	#tag EndMethod
 

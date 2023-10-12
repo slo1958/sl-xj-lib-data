@@ -53,9 +53,9 @@ Protected Class clDataSerieValidation
 		    
 		  end if
 		  
-		  '
-		  ' no more tests
-		  '
+		  //  
+		  //  no more tests
+		  //  
 		  if not allow_null then
 		    dim row_index as integer = 0
 		    

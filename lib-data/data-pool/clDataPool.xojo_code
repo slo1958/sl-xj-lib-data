@@ -71,7 +71,7 @@ Implements Iterable
 		    
 		  end if
 		  
-		  ' write datatable as text file
+		  //  write datatable as text file
 		  
 		  writelog("Saving %0 as file %1 in folder %2", name, filename, folder_path)
 		  

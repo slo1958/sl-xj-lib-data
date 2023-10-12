@@ -4,7 +4,7 @@ Protected Module DataSerie_IO
 		Function append_textfile_to_DataSerie(the_source as FolderItem, theDataSerie as clAbstractDataSerie, has_header as Boolean) As clAbstractDataSerie
 		  //
 		  // Load the serie from a text file, each line is loaded into one element, without further processing
-		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string
+		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
 		  //
 		  
 		  Dim got_header As Boolean
@@ -15,6 +15,7 @@ Protected Module DataSerie_IO
 		    Return nil
 		    
 		  End If
+		  
 		  
 		  text_file = TextInputStream.Open(the_source)
 		  
@@ -48,7 +49,7 @@ Protected Module DataSerie_IO
 		Sub save_DataSerie_to_textfile(the_destination as FolderItem, theDataSerie as clAbstractDataSerie, name_as_header as boolean)
 		  //
 		  // Load the serie from a text file, each line is loaded into one element, without further processing
-		  // The method returns the header if the 'has_header' flag is set to true, otherwise it returns an empty string
+		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
 		  //
 		  
 		  Dim text_file  As TextOutputStream

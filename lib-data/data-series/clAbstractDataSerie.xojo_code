@@ -247,6 +247,12 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub is_()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function is_linked_to_table() As Boolean
 		  Return physical_table_link <> Nil
 		  
@@ -275,9 +281,9 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub rename(the_new_name as string)
-		  '
-		  ' use setter of computed property
-		  '
+		  //  
+		  //  use setter of computed property
+		  //  
 		  Self.name = the_new_name
 		  
 		  
@@ -288,9 +294,9 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function rename(the_new_name as string) As clAbstractDataSerie
-		  '
-		  ' use setter of computed property
-		  '
+		  //  
+		  //  use setter of computed property
+		  //  
 		  Self.name = the_new_name
 		  
 		  return self

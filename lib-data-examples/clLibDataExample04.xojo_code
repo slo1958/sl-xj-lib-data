@@ -24,10 +24,10 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function run() As itf_table_reader()
 		  
-		  ' Example_004
-		  ' - create a small table
-		  ' - create a view on the table
-		  '
+		  //  Example_004
+		  //  - create a small table
+		  //  - create a view on the table
+		  //  
 		  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
