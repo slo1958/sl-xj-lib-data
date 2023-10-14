@@ -1,5 +1,5 @@
 #tag Interface
-Protected Interface itf_table_reader
+Protected Interface itf_table_row_reader
 	#tag Method, Flags = &h0
 		Function column_count() As integer
 		  
@@ -13,51 +13,34 @@ Protected Interface itf_table_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_column(the_column_name as String) As clAbstractDataSerie
+		Function current_row_number() As integer
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_columns(column_names() as string) As clAbstractDataSerie()
+		Function end_of_table() As boolean
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_columns(paramarray column_names as string) As clAbstractDataSerie()
+		Function name() As string
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function is_persistant() As boolean
+		Function next_row() As variant()
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As String
+		Function next_row_as_string() As string()
 		  
 		End Function
 	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function row_count() As integer
-		  
-		End Function
-	#tag EndMethod
-
-
-	#tag Note, Name = Description
-		Interface to scan a table.
-		Implemented on clDataTable
-		
-		Can also be used to present another structure as a table
-		
-		
-		The source is persistant if we can query it at will. 
-	#tag EndNote
 
 
 	#tag ViewBehavior

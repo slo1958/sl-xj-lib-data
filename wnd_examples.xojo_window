@@ -418,13 +418,13 @@ End
 	#tag Method, Flags = &h0
 		Sub run_exemple(item as clLibDataExample)
 		  
-		  dim tables() as itf_table_reader = item.run()
+		  dim tables() as itf_table_column_reader = item.run()
 		  
 		  dim wnd as new wnd_table_viewer
 		  
 		  wnd.reset_viewer
 		  
-		  for each table as itf_table_reader in tables
+		  for each table as itf_table_column_reader in tables
 		    wnd.add_table(table)
 		    
 		  next

@@ -1,10 +1,10 @@
 #tag Module
 Protected Module datatable_to_list
 	#tag Method, Flags = &h0
-		Sub show_table_in_listbox(thetable as itf_table_reader, thelist as Listbox)
+		Sub show_table_in_listbox(thetable as itf_table_column_reader, thelist as Listbox)
 		  
 		  dim tmp_listbox as Listbox = thelist
-		  dim tmp_tbl as itf_table_reader = thetable
+		  dim tmp_tbl as itf_table_column_reader = thetable
 		  
 		  tmp_listbox.DeleteAllRows
 		  

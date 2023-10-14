@@ -24,7 +24,7 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_reader()
+		Function run() As itf_table_column_reader()
 		  
 		  //  Example_005
 		  //  - create an empty table

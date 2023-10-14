@@ -1,12 +1,5 @@
 #tag Module
 Protected Module DataTable_IO
-	#tag Method, Flags = &h0
-		Sub append_textfile_to_DataTable()
-		  
-		End Sub
-	#tag EndMethod
-
-
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="Name"

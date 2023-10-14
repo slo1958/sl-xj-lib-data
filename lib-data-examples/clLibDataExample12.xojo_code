@@ -26,7 +26,7 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_reader()
+		Function run() As itf_table_column_reader()
 		  
 		  //  Example_012
 		  //  - test string handling
@@ -61,7 +61,7 @@ Inherits clLibDataExample
 		  
 		  dim table4 as clDataTable  = table2.groupby(array("country"), array("Sales"), array(""))
 		  
-		  dim ret() as itf_table_reader
+		  dim ret() as itf_table_column_reader
 		  ret.Add(table1)
 		  ret.Add(table2)
 		  ret.Add(table3)

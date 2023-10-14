@@ -173,6 +173,38 @@ Begin Window main_window
       Visible         =   True
       Width           =   107
    End
+   Begin PushButton pb_run_all_tests1
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Run IO tests"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "Verdana"
+      FontSize        =   11.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   380
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   80
+   End
 End
 #tag EndWindow
 
@@ -245,6 +277,29 @@ End
 	#tag Event
 		Sub Action()
 		  run_perf
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events pb_run_all_tests1
+	#tag Event
+		Sub Action()
+		  writemessage "started"
+		  
+		  
+		  clDataSerie_tests.tests_io
+		  writemessage "data series tests done"
+		  
+		  clDataTable_tests.tests_io
+		  writemessage "data table tests io done"
+		  
+		  'clDataPool_tests.tests
+		  'writemessage "data pool tests done"
+		  
+		  
+		  
+		  writemessage "all tests done"
+		  
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

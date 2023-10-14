@@ -745,19 +745,13 @@ Protected Module clDataTable_tests
 		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
 		  fld_file3  = fld_folder.Child("myfile3_10K_output.txt")
 		  
-		  Dim my_table3 As New clDataTable("x")
+		  Dim my_table3 As New clDataTable(new clTextReader(fld_file1, New clRowParser_full(Chr(9)),True))
 		  
-		  my_table3.load_from_text(fld_file1, New clRowParser_full(Chr(9)), True)
-		  
-		  Dim my_table4 As New clDataTable("x")
-		  
-		  my_table4.load_from_text(fld_file2, New clRowParser_full(","), True)
+		  Dim my_table4 As New clDataTable(new clTextReader(fld_file2, New clRowParser_full(","), True))
 		  
 		  my_table4.save_as_text(fld_file3, New clRowParser_full(";"), True)
 		  
-		  dim my_table5  as new clDataTable("x")
-		  
-		  my_table5.load_from_text(fld_file1, New clRowParser_full(Chr(9)), True, AddressOf alloc_series)
+		  dim my_table5  as new clDataTable(new clTextReader(fld_file1, New clRowParser_full(Chr(9)), True), AddressOf alloc_series)
 		  
 		  
 		  System.DebugLog(join(my_table3.column_names,";"))

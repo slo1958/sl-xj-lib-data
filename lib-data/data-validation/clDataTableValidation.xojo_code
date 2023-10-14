@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataTableValidation
-Implements itf_table_reader
+Implements itf_table_column_reader
 	#tag Method, Flags = &h0
 		Sub add_message(field_name as string, row_index as integer, message as string)
 		  dim r as new Dictionary
@@ -19,7 +19,7 @@ Implements itf_table_reader
 
 	#tag Method, Flags = &h0
 		Function column_count() As integer
-		  // Part of the itf_table_reader interface.
+		  // Part of the itf_table_column_reader interface.
 		  
 		  return 3
 		  
@@ -28,7 +28,7 @@ Implements itf_table_reader
 
 	#tag Method, Flags = &h0
 		Function column_names() As string()
-		  // Part of the itf_table_reader interface.
+		  // Part of the itf_table_column_reader interface.
 		  dim tmp() as string
 		  
 		  tmp.Append(field_name_input_column)
@@ -68,7 +68,7 @@ Implements itf_table_reader
 
 	#tag Method, Flags = &h0
 		Function get_column(the_column_name as String) As clAbstractDataSerie
-		  // Part of the itf_table_reader interface.
+		  // Part of the itf_table_column_reader interface.
 		  
 		  dim output as new clDataSerie(the_column_name)
 		  
@@ -102,7 +102,7 @@ Implements itf_table_reader
 
 	#tag Method, Flags = &h0
 		Function get_columns(column_names() as string) As clAbstractDataSerie()
-		  // Part of the itf_table_reader interface.
+		  // Part of the itf_table_column_reader interface.
 		  
 		  
 		  Return get_columns(column_names)
@@ -112,7 +112,7 @@ Implements itf_table_reader
 
 	#tag Method, Flags = &h0
 		Function get_columns(paramarray column_names as string) As clAbstractDataSerie()
-		  // Part of the itf_table_reader interface.
+		  // Part of the itf_table_column_reader interface.
 		  
 		  Return get_columns(column_names)
 		  
@@ -121,7 +121,7 @@ Implements itf_table_reader
 
 	#tag Method, Flags = &h0
 		Function is_persistant() As boolean
-		  // Part of the itf_table_reader interface.
+		  // Part of the itf_table_column_reader interface.
 		  
 		  return False
 		End Function
@@ -135,7 +135,7 @@ Implements itf_table_reader
 
 	#tag Method, Flags = &h0
 		Function row_count() As integer
-		  // Part of the itf_table_reader interface.
+		  // Part of the itf_table_column_reader interface.
 		  
 		  return valid_columns.Ubound+1
 		  

@@ -27,7 +27,7 @@ You can create a data serie:
 
 - by creating an empty data serie and adding values
 - by creating a populated data serie
-- by loading a text file
+- by loading a text file as a row source
 
 ### Creating an empty data serie and adding values
 
@@ -254,9 +254,7 @@ Create a folder item pointing to the file, then create the data table. The flag 
 
 my_file  = data_folder.Child("myfile3_10K_comma.txt")
 
-Dim my_table As New clDataTable("x")
-
-my_table.load_from_text(my_file, New clRowParser_full(Chr(9)), True)
+Dim my_table As New clDataTable(new clTextReader(my_file, New clRowParser_full(Chr(9)),True))
 
 ```
 Note that you can override the default allocation of clDataSerie by providing a column allocator, a method receiving a column name and returning a subclass of clAbstractDataSerie.

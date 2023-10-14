@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataTable
-Implements itf_table_reader,Iterable
+Implements itf_table_column_reader,Iterable
 	#tag Method, Flags = &h0
 		Function add_column(the_column as clAbstractDataSerie) As clAbstractDataSerie
 		  //  
@@ -453,35 +453,9 @@ Implements itf_table_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_source_file as FolderItem)
-		  meta_dict = new clMetaData
-		  
-		  Dim tmp_table_name As String
-		  
-		  If the_source_file = Nil Then
-		    tmp_table_name = "noname"
-		    
-		  Else
-		    tmp_table_name = the_source_file.Name
-		    
-		  End If
-		  
-		  internal_new_table(tmp_table_name)
-		  
-		  If the_source_file = Nil Then
-		    Return
-		    
-		  End If
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(source_table as itf_table_reader, materialize as boolean = False)
+		Sub Constructor(table_source as itf_table_column_reader, materialize as boolean = False)
 		  //
-		  //  Creates a datatable from a table reader
+		  //  Creates a datatable from a table column reader
 		  //  
 		  //  Parameters:
 		  //  - the table reader
@@ -494,20 +468,20 @@ Implements itf_table_reader,Iterable
 		  
 		  self.allow_local_columns = False
 		  
-		  Dim tmp_table_name As String = source_table.name.Trim
+		  Dim tmp_table_name As String = table_source.name.Trim
 		  
 		  add_meta_data("source", tmp_table_name)
 		  
 		  internal_new_table("from " + tmp_table_name)
 		  
-		  if source_table.is_persistant and not materialize then
+		  if table_source.is_persistant and not materialize then
 		    // 
 		    // we create a virtual table
 		    //
-		    self.link_to_source = source_table
+		    self.link_to_source = table_source
 		    
-		    For Each column_name As String In source_table.column_names
-		      Dim tmp_column As clAbstractDataSerie = source_table.get_column(column_name)
+		    For Each column_name As String In table_source.column_names
+		      Dim tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
 		      
 		      If tmp_column <> Nil Then
 		        call self.add_column(tmp_column)
@@ -521,8 +495,8 @@ Implements itf_table_reader,Iterable
 		    next
 		  else
 		    
-		    For Each column_name As String In source_table.column_names
-		      Dim tmp_column As clAbstractDataSerie = source_table.get_column(column_name)
+		    For Each column_name As String In table_source.column_names
+		      Dim tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
 		      
 		      If tmp_column <> Nil Then
 		        call self.add_column(tmp_column.clone)
@@ -536,6 +510,57 @@ Implements itf_table_reader,Iterable
 		    
 		    
 		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(table_source as itf_table_row_reader, allocator as column_allocator = nil)
+		  //
+		  //  Creates a datatable from a table row reader
+		  //  
+		  //  Parameters:
+		  //  - the table reader
+		  //
+		  //  Returns:
+		  //  - 
+		  //
+		  
+		  meta_dict = new clMetaData
+		  
+		  self.allow_local_columns = False
+		  
+		  Dim tmp_table_name As String = table_source.name.Trim
+		  
+		  add_meta_data("source", tmp_table_name)
+		  
+		  internal_new_table("from " + tmp_table_name)
+		  
+		  dim columns() as clAbstractDataSerie
+		  
+		  dim tmp_columns() as string = table_source.column_names
+		  
+		  for i as integer = 0 to tmp_columns.LastIndex
+		    if allocator = nil then
+		      columns.Add(new clDataSerie(tmp_columns(i)))
+		      
+		    else
+		      columns.Add(allocator.Invoke(tmp_columns(i)))
+		      
+		    end if
+		    
+		  next
+		  
+		  while not table_source.end_of_table
+		    dim tmp_row() as String = table_source.next_row_as_string
+		    
+		    for i as integer=0 to tmp_columns.LastIndex
+		      columns(i).append_element(tmp_row(i))
+		      
+		    next
+		    
+		  wend
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -1371,86 +1396,6 @@ Implements itf_table_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub load_from_text(the_source as FolderItem, the_line_parser as itf_row_parser, has_header as Boolean, allocator as column_allocator = nil)
-		  //
-		  // Load the serie from a text file, each line is loaded into one element, without further processing
-		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
-		  //
-		  
-		  Dim got_header As Boolean
-		  Dim text_file  As TextInputStream
-		  Dim return_header As String
-		  
-		  Dim time_start As Double = Microseconds
-		  System.DebugLog "Loading " + the_source.Name
-		  
-		  
-		  If the_source = Nil Then
-		    Return 
-		    
-		  End If
-		  
-		  text_file = TextInputStream.Open(the_source)
-		  
-		  got_header = Not has_header
-		  
-		  While Not text_file.EOF
-		    Dim tmp_source_line As String = text_file.ReadLine
-		    Dim tmp_items() As String
-		    
-		    tmp_items = the_line_parser.parse_line(tmp_source_line)
-		    
-		    If got_header Then
-		      For i As Integer = 0 To Self.columns.Ubound
-		        If i <= tmp_items.Ubound Then
-		          Self.columns(i).append_element(tmp_items(i))
-		          
-		        Else
-		          Self.columns(i).append_element("")
-		          
-		        End If
-		        
-		      Next
-		      
-		      
-		      Self.row_index.append_element("")
-		      
-		    Else
-		      For i As Integer = 0 To tmp_items.Ubound
-		        dim column_serie as clAbstractDataSerie
-		        
-		        if allocator = nil then
-		          column_serie = new clDataSerie(tmp_items(i))
-		          
-		        else
-		          column_serie = allocator.Invoke(tmp_items(i))
-		          if column_serie = nil then
-		            column_serie = new clDataSerie(tmp_items(i))
-		            
-		          end if
-		          
-		        end if
-		        
-		        Call Self.add_column(column_serie)
-		        
-		      Next
-		      got_header = True
-		      
-		    End If
-		    
-		    
-		  Wend
-		  
-		  text_file.close
-		  
-		  Dim time_end As Double = Microseconds
-		  
-		  System.DebugLog "Completed after " + Str((time_end - time_start)/1000000)
-		  Return  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function name() As string
 		  Return self.table_name
 		End Function
@@ -1742,7 +1687,7 @@ Implements itf_table_reader,Iterable
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected link_to_source As itf_table_reader
+		Protected link_to_source As itf_table_column_reader
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -1759,14 +1704,6 @@ Implements itf_table_reader,Iterable
 
 
 	#tag ViewBehavior
-		#tag ViewProperty
-			Name="allow_local_columns"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Boolean"
-			EditorType=""
-		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
 			Visible=true
