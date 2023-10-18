@@ -26,13 +26,12 @@ Inherits clLibDataExample
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
-		  
+		  //
 		  //  Example_009
 		  //  - test basic validation
 		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
-		  
 		  
 		  Dim table0 As New clDataTable("mytable")
 		  
@@ -51,7 +50,9 @@ Inherits clLibDataExample
 		  , new clDataSerieValidation("zip", True, True) _
 		  ))
 		  
-		  Dim table1 As  clDataTable = tableValid.validate(table0)
+		  tableValid.validate(table0)
+		  
+		  Dim table1 As  clDataTable = tableValid.get_results()
 		  
 		  
 		  //  all types not the same, so need to explictely build the returned array

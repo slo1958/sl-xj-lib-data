@@ -180,6 +180,12 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function all_columns() As clAbstractDataSerie()
+		  return columns
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub append_row(the_row as clDataRow, create_columns_flag as boolean=True)
 		  //  
 		  //  Add  a data row to the table
@@ -320,7 +326,7 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub append_rows_from_table(the_table as clDataTable, create_missing_columns as boolean = True)
+		Sub append_rows_from_table(the_table as itf_table_column_reader, create_missing_columns as boolean = True)
 		  //  
 		  //  Add  the data row from another table. New columns may be added to the current table
 		  //  
@@ -340,7 +346,7 @@ Implements itf_table_column_reader,Iterable
 		  //  
 		  dim length_before as integer = self.row_count
 		  
-		  For Each src_tmp_column As clAbstractDataSerie In the_table.columns
+		  For Each src_tmp_column As clAbstractDataSerie In the_table.all_columns
 		    Dim column_name As String = src_tmp_column.name
 		    
 		    Dim dst_tmp_column As  clAbstractDataSerie = Self.get_column(column_name)

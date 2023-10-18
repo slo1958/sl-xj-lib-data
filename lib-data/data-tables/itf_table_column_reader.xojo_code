@@ -1,6 +1,12 @@
 #tag Interface
 Protected Interface itf_table_column_reader
 	#tag Method, Flags = &h0
+		Function all_columns() As clAbstractDataSerie()
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function column_count() As integer
 		  
 		End Function

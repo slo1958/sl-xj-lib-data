@@ -18,6 +18,19 @@ Implements itf_table_column_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function all_columns() As clAbstractDataSerie()
+		  
+		  if results_table = nil then 
+		    return nil
+		    
+		  end if
+		  
+		  Return results_table.all_columns
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function column_count() As integer
 		  // Part of the itf_table_column_reader interface.
 		  
@@ -101,6 +114,12 @@ Implements itf_table_column_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_results() As clDataTable
+		  Return results_table
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function is_persistant() As boolean
 		  // Part of the itf_table_column_reader interface.
 		  
@@ -124,7 +143,7 @@ Implements itf_table_column_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function validate(table as clDataTable) As clDataTable
+		Sub validate(table as clDataTable)
 		  
 		  self.results_table = new clDataTable("error_report", array(field_name_output_column ,  row_index_output_column, message_output_column))
 		  
@@ -164,10 +183,8 @@ Implements itf_table_column_reader
 		    
 		  end if
 		  
-		  
-		  
-		  return self.results_table
-		End Function
+		  //return self.results_table
+		End Sub
 	#tag EndMethod
 
 
