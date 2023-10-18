@@ -143,12 +143,6 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub remove_all_elements()
-		  items.RemoveAll
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub reset()
 		  super.reset()
 		  self.meta_dict.add_meta_data("type","integer")

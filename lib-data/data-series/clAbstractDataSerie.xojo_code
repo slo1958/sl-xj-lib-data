@@ -157,7 +157,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub copy_to(target_data_serie as clAbstractDataSerie)
-		  target_data_serie.remove_all_elements
+		  target_data_serie.reset()
+		  target_data_serie.add_meta_data("source", self.name)
 		  
 		  for index as Integer = 0 to self.upper_bound
 		    target_data_serie.append_element(self.get_element(index))
@@ -360,13 +361,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    Raise New clDataException("Cannot redefine link to table for a serie")
 		    
 		  End If
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub remove_all_elements()
-		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
