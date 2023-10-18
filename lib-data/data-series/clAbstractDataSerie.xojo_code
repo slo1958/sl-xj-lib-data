@@ -28,6 +28,16 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub append_to(target_data_serie as clAbstractDataSerie)
+		  for index as Integer = 0 to self.upper_bound
+		    target_data_serie.append_element(self.get_element(index))
+		    
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function clipped_by_range(low_value as variant, high_value as variant) As clAbstractDataSerie
 		  
 		  dim new_col as clAbstractDataSerie = self.clone()
@@ -147,6 +157,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub copy_to(target_data_serie as clAbstractDataSerie)
+		  target_data_serie.remove_all_elements
+		  
 		  for index as Integer = 0 to self.upper_bound
 		    target_data_serie.append_element(self.get_element(index))
 		    
@@ -326,12 +338,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub is_()
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function is_linked_to_table() As Boolean
 		  Return physical_table_link <> Nil
 		  
@@ -354,6 +360,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    Raise New clDataException("Cannot redefine link to table for a serie")
 		    
 		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub remove_all_elements()
+		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -521,11 +534,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 		
 		append_element
 		
+		clone 
+		
 		filter_apply_function
 		
-		clone
-		
 		get_element
+		
+		remove_all_elements
 		
 		set_element
 		
@@ -539,8 +554,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		last_error_message As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		meta_dict As clMetaData
+	#tag Property, Flags = &h1
+		Protected meta_dict As clMetaData
 	#tag EndProperty
 
 	#tag ComputedProperty, Flags = &h0

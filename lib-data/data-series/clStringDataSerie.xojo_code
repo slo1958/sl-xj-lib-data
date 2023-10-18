@@ -143,6 +143,12 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub remove_all_elements()
+		  items.RemoveAll
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub reset()
 		  super.reset()
 		  self.meta_dict.add_meta_data("type","integer")
@@ -198,7 +204,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function text_after(search_str as string) As clStringDataSerie
 		  dim res as clStringDataSerie
-		   
+		  
 		  res = new clStringDataSerie(me.name+ " text after  " + search_str)
 		  
 		  
