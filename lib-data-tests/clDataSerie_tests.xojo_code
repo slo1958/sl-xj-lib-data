@@ -259,7 +259,7 @@ Protected Module clDataSerie_tests
 		  
 		  Dim c1 As New clDataSerieMultiValued(Array("aaaa","bbbb")) 
 		  
-		  check_value("name", "aaaa bbbb", c1.name)
+		  check_value("name", "aaaa" + Chr(9) + "bbbb", c1.name)
 		  
 		  
 		  
