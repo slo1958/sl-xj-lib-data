@@ -6,20 +6,40 @@ Protected Module datatable_to_list
 		  dim tmp_listbox as Listbox = thelist
 		  dim tmp_tbl as itf_table_column_reader = thetable
 		  
+		  dim column_names()  as String = tmp_tbl.column_names
+		  
+		  // find number columns
+		  
+		  dim tmp_formatted as new Dictionary
+		  
+		  
+		  for each column as string in column_names
+		    
+		    if tmp_tbl.get_column(column) isa clNumberDataSerie then
+		      tmp_formatted.value(column) ="###,###.###"
+		      
+		    elseif tmp_tbl.get_column(column) isa clIntegerDataSerie then
+		      tmp_formatted.value(column) ="###,###"
+		      
+		    else
+		      
+		    end if
+		    
+		  next
+		  
 		  tmp_listbox.DeleteAllRows
 		  
 		  //  
 		  //  update table header
 		  //  
 		  tmp_listbox.HasHeading = True
-		  dim columns()  as String = tmp_tbl.column_names
 		  
-		  tmp_listbox.ColumnCount = columns.Ubound + 2
+		  tmp_listbox.ColumnCount = column_names.Ubound + 2
 		  
 		  tmp_listbox.Heading(0)="#"
 		  
-		  for column_index as integer = 0 to columns.Ubound
-		    tmp_listbox.Heading(column_index+1) = columns(column_index)
+		  for column_index as integer = 0 to column_names.Ubound
+		    tmp_listbox.Heading(column_index+1) = column_names(column_index)
 		    
 		  next
 		  
@@ -33,13 +53,22 @@ Protected Module datatable_to_list
 		    
 		  next
 		  
-		  dim column_index as integer
-		  for each column as string in tmp_tbl.column_names()
+		  dim column_index as integer=0
+		  
+		  for each column as string in column_names
 		    dim tmp_col as clAbstractDataSerie = tmp_tbl.get_column(column)
 		    
 		    column_index = column_index + 1
+		    
 		    for  row_index as integer = 0 to tmp_last_row - 1
-		      dim tmp_val as string = tmp_col.get_element(row_index).StringValue
+		      dim tmp_val as string
+		      if tmp_formatted.HasKey(column) then
+		        tmp_val = format( tmp_col.get_element(row_index), tmp_formatted.value(column))
+		        
+		      else
+		        tmp_val = tmp_col.get_element(row_index).StringValue
+		        
+		      end if
 		      
 		      tmp_listbox.Cell(row_index, column_index) = tmp_val
 		      

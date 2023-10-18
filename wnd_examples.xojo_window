@@ -411,6 +411,38 @@ Begin Window wnd_examples
       Visible         =   True
       Width           =   131
    End
+   Begin PushButton pb_example_014
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Run example 014"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "Verdana"
+      FontSize        =   11.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   176
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   12
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   133
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   131
+   End
 End
 #tag EndWindow
 
@@ -647,6 +679,24 @@ End
 		Sub MouseEnter()
 		  
 		  show_example_description new clLibDataExample12
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  show_example_description(nil)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events pb_example_014
+	#tag Event
+		Sub Action()
+		  run_exemple new clLibDataExample14
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseEnter()
+		  
+		  show_example_description new clLibDataExample14
 		End Sub
 	#tag EndEvent
 	#tag Event

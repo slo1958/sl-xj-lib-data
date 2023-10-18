@@ -9,6 +9,48 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function clipped_by_range(low_value as variant, high_value as variant) As clNumberDataSerie
+		  
+		  dim new_col as clNumberDataSerie = self.clone()
+		  
+		  new_col.rename("clip " + self.name)
+		  
+		  call new_col.clip_range(low_value, high_value)
+		  
+		  return new_col
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_range(low_value as variant, high_value as variant) As integer
+		  dim last_index as integer = self.row_count
+		  dim count_changes as integer = 0
+		  
+		  dim low_value_dbl as double = low_value
+		  dim high_value_dbl as double = high_value
+		  
+		  for index as integer = 0 to last_index
+		    dim tmp as double = self.get_element(index)
+		    
+		    if low_value_dbl > tmp then
+		      self.set_element(index, low_value_dbl)
+		      count_changes = count_changes + 1
+		      
+		    elseif  tmp > high_value_dbl then
+		      self.set_element(index, high_value_dbl)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function clone() As clNumberDataSerie
 		  Dim tmp As New clNumberDataSerie(Self.name)
 		  

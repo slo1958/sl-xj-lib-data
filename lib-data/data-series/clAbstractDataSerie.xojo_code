@@ -28,6 +28,21 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function clipped_by_range(low_value as variant, high_value as variant) As clAbstractDataSerie
+		  
+		  dim new_col as clAbstractDataSerie = self.clone()
+		  
+		  new_col.rename("clip " + self.name)
+		  
+		  call new_col.clip_range(low_value, high_value)
+		  
+		  return new_col
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function clip_high(high_value as variant) As integer
 		  dim last_index as integer = self.row_count
 		  dim count_changes as integer = 0

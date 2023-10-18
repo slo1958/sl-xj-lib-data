@@ -729,6 +729,40 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_018()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  
+		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
+		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  dim col_sales as new clNumberDataSerie("sales", 1100.0, 1200.0, 1400.0, 1600.0, 900)
+		  
+		  Dim table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
+		  
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("","Marseille",1200))
+		  table0.append_row(Array("Belgique","",1300))
+		  table0.append_row(Array("France","Paris",2100))
+		  table0.append_row(Array("","Marseille",2200))
+		  table0.append_row(Array("Belgique","",2300))
+		  table0.append_row(Array("USA","NewYork",2400))
+		  table0.append_row(Array("Belgique","Bruxelles",2500))
+		  table0.append_row(Array("USA","Chicago",2600))
+		  table0.append_row(Array("USA","NewYork",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("USA","Chicago",1600))
+		  
+		  call table0.add_column(col_sales *2 )
+		  
+		  dim nb as integer = table0.clip_range("sales",1000, 2000)
+		  
+		  call table0.add_column(col_sales.clipped_by_range(1000, 1500) * 2)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_io_004()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
