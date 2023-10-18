@@ -1618,8 +1618,10 @@ Implements itf_table_column_reader,Iterable
 		Sub rename_column(the_column_name as string, the_new_name as string)
 		  
 		  For idx As Integer = 0 To columns.Ubound
+		    
 		    If columns(idx).name = the_column_name Then
-		      columns(idx).name = the_new_name
+		      columns(idx).rename(the_new_name)
+		      Return
 		      
 		    End If
 		    
@@ -1636,7 +1638,9 @@ Implements itf_table_column_reader,Iterable
 		    
 		    If the_renaming_dict.HasKey(tmp_column_name) Then
 		      Dim tmp_new_name As String  = the_renaming_dict.value(tmp_column_name)
-		      Self.rename_column(tmp_column_name , tmp_new_name)
+		      
+		      columns(idx).rename(tmp_new_name)
+		      
 		      
 		    End If
 		    

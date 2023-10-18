@@ -101,25 +101,6 @@ Implements itf_table_column_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_columns(column_names() as string) As clAbstractDataSerie()
-		  // Part of the itf_table_column_reader interface.
-		  
-		  
-		  Return get_columns(column_names)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function get_columns(paramarray column_names as string) As clAbstractDataSerie()
-		  // Part of the itf_table_column_reader interface.
-		  
-		  Return get_columns(column_names)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function is_persistant() As boolean
 		  // Part of the itf_table_column_reader interface.
 		  
