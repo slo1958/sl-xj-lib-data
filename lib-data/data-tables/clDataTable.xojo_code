@@ -377,6 +377,173 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function clip_high(column as clAbstractDataSerie, high_value_column as clAbstractDataSerie) As integer
+		  
+		  if column = nil then return 0
+		  if high_value_column = nil then return 0
+		  
+		  dim last_index as integer = column.row_count
+		  dim count_changes as integer = 0
+		  
+		  for index as integer = 0 to last_index
+		    dim tmp as variant = column.get_element(index)
+		    dim high_value as Variant = high_value_column.get_element(index)
+		    
+		    if  tmp > high_value then
+		      column.set_element(index, high_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_high(column_name as string, high_value_column_name as String) As integer
+		  
+		  dim column as clAbstractDataSerie = self.get_column(column_name)
+		  dim high_column as clAbstractDataSerie = self.get_column(high_value_column_name)
+		  
+		  if column = nil then return 0
+		  if high_column = nil then return 0
+		  
+		  return self.clip_high(column, high_column)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_high(column_name as string, high_value as variant) As integer
+		  
+		  dim column as clAbstractDataSerie = self.get_column(column_name)
+		  
+		  if column = nil then return 0
+		  
+		  return column.clip_high(high_value)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_low(column as clAbstractDataSerie, low_value_column as clAbstractDataSerie) As integer
+		  
+		  if column = nil then return 0
+		  if low_value_column = nil then return 0
+		  
+		  dim last_index as integer = column.row_count
+		  dim count_changes as integer = 0
+		  
+		  for index as integer = 0 to last_index
+		    dim tmp as variant = column.get_element(index)
+		    dim low_value as Variant = low_value_column.get_element(index)
+		    
+		    if  tmp < low_value then
+		      column.set_element(index, low_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_low(column_name as string, low_value_column_name as String) As integer
+		  
+		  dim column as clAbstractDataSerie = self.get_column(column_name)
+		  dim low_column as clAbstractDataSerie = self.get_column(low_value_column_name)
+		  
+		  if column = nil then return 0
+		  if low_column = nil then return 0
+		  
+		  return self.clip_low(column, low_column)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_low(column_name as string, low_value as Variant) As integer
+		  
+		  dim column as clAbstractDataSerie = self.get_column(column_name)
+		  
+		  if column = nil then return 0
+		  
+		  return column.clip_low(low_value)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_range(column as clAbstractDataSerie, low_value_column as clAbstractDataSerie, high_value_column as clAbstractDataSerie) As integer
+		  
+		  if column = nil then return 0
+		  if low_value_column = nil then return 0
+		  if high_value_column = nil then return 0
+		  
+		  dim last_index as integer = column.row_count
+		  dim count_changes as integer = 0
+		   
+		  
+		  for index as integer = 0 to last_index
+		    dim tmp as variant = column.get_element(index)
+		    dim low_value as Variant = low_value_column.get_element(index)
+		    dim high_value as Variant = high_value_column.get_element(index)
+		    
+		    
+		    if low_value > tmp then
+		      column.set_element(index, low_value)
+		      count_changes = count_changes + 1
+		      
+		    elseif  tmp > high_value then
+		      column.set_element(index, high_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_range(column_name as string, low_value_column_name as string, high_value_column_name as String) As integer
+		  
+		  dim column as clAbstractDataSerie = self.get_column(column_name)
+		  dim high_column as clAbstractDataSerie = self.get_column(high_value_column_name)
+		  dim low_column as clAbstractDataSerie = self.get_column(low_value_column_name)
+		  
+		  if column = nil then return 0
+		  if high_column = nil then return 0
+		  if low_column = nil then return 0
+		  
+		  return self.clip_range(column, low_column, high_column)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_range(column_name as string, low_value as variant, high_value as variant) As integer
+		  
+		  dim column as clAbstractDataSerie = self.get_column(column_name)
+		  
+		  if column = nil then return 0
+		  
+		  return column.clip_range(low_value, high_value)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function clone() As clDataTable
 		  
 		  //  Duplicate the table and all its columns

@@ -28,6 +28,70 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function clip_high(high_value as variant) As integer
+		  dim last_index as integer = self.row_count
+		  dim count_changes as integer = 0
+		  
+		  for index as integer = 0 to last_index
+		    dim tmp as variant = self.get_element(index)
+		    
+		    if  tmp > high_value then
+		      self.set_element(index, high_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_low(low_value as Variant) As integer
+		  dim last_index as integer = self.row_count
+		  dim count_changes as integer = 0
+		  
+		  for index as integer = 0 to last_index
+		    dim tmp as variant = self.get_element(index)
+		    
+		    if low_value > tmp then
+		      self.set_element(index, low_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clip_range(low_value as variant, high_value as variant) As integer
+		  dim last_index as integer = self.row_count
+		  dim count_changes as integer = 0
+		  
+		  for index as integer = 0 to last_index
+		    dim tmp as variant = self.get_element(index)
+		    
+		    if low_value > tmp then
+		      self.set_element(index, low_value)
+		      count_changes = count_changes + 1
+		      
+		    elseif  tmp > high_value then
+		      self.set_element(index, high_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function clone() As clAbstractDataSerie
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  

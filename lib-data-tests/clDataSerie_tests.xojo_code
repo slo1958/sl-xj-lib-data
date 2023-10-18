@@ -448,7 +448,7 @@ Protected Module clDataSerie_tests
 		  check_value("uniq2", 5, uniq2.Count)
 		  check_value("uniq3", 5, uniq3.Count)
 		  
-		   
+		  
 		End Sub
 	#tag EndMethod
 
