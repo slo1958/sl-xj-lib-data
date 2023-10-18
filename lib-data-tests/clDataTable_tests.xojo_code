@@ -162,7 +162,7 @@ Protected Module clDataTable_tests
 		  
 		  my_table2.append_row(rtst)
 		  
-		  my_table1.append_rows_from_table(my_table2)
+		  my_table1.append_from_column_source(my_table2)
 		  
 		  Dim my_table3 As clDataTable = my_table1.select_columns(Array("aaa","zccc"))
 		  
@@ -412,8 +412,8 @@ Protected Module clDataTable_tests
 		  dim my_table3 as clDataTable = my_table1.clone()
 		  dim my_table4 as clDataTable = my_table1.clone()
 		  
-		  my_table3.append_rows_from_table(my_table2, true)
-		  my_table4.append_rows_from_table(my_table2, false)
+		  my_table3.append_from_column_source(my_table2, true)
+		  my_table4.append_from_column_source(my_table2, false)
 		  
 		  dim col1 as new clDataSerie("aaa", 1000, 2000, 3000, 4000)
 		  dim col2 as new clDataSerie("bbb","abcd","abcd","abcd","abcd")

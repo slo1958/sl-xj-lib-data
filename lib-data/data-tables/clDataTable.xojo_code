@@ -180,9 +180,162 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub adjust_length()
+		  //  
+		  //   adjust  the length of each data serie in the table, to match the longest data serie
+		  //  to use after directly inserting in columns 
+		  //  In normal case, all columns have the same length.
+		  //  
+		  //  Parameters:
+		  // 
+		  //  
+		  //  Returns:
+		  //  - (nothing)
+		  //  
+		  
+		  dim max_row_count as integer=-1
+		  
+		  
+		  for each c as clAbstractDataSerie in self.columns
+		    if max_row_count < c.row_count then max_row_count = c.row_count
+		    
+		  next
+		  
+		  row_index.set_length(max_row_count)
+		  
+		  for each c as clAbstractDataSerie in self.columns
+		    c.set_length(max_row_count)
+		    
+		  next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function all_columns() As clAbstractDataSerie()
 		  return columns
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub append_from_column_source(the_source as itf_table_column_reader, create_missing_columns as boolean = True)
+		  //  
+		  //  Add  the data row from column source. New columns may be added to the current table
+		  //  
+		  //  For example, 
+		  //  - with the current table containing columns A, B, C 
+		  //  - with  the flag create_missing_column set to true
+		  //  - appending from a table with columns A, B, D 
+		  //  the values from A, and B are appended to the existing columns A and B
+		  //  a new column is created to store the values for D 
+		  
+		  //  Parameters:
+		  //  - the source , providing data column by column
+		  //  - flag allow the creation of missing columns
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  dim length_before as integer = self.row_count
+		  
+		  For Each src_tmp_column As clAbstractDataSerie In the_source.all_columns
+		    Dim column_name As String = src_tmp_column.name
+		    
+		    Dim dst_tmp_column As  clAbstractDataSerie = Self.get_column(column_name)
+		    
+		    If dst_tmp_column <> Nil Then
+		      dst_tmp_column.append_serie(src_tmp_column)
+		      
+		    elseif create_missing_columns then
+		      dst_tmp_column = Self.add_column(column_name)
+		      dst_tmp_column.set_length(length_before)
+		      
+		      dst_tmp_column.append_serie(src_tmp_column)
+		      
+		    else
+		      add_error("append_row_from_table","Ignoring column " + column_name)
+		      
+		    End If
+		    
+		    
+		    
+		  Next
+		  
+		  Dim new_size As Integer = Self.row_count + the_source.row_count
+		  
+		  Self.row_index.set_length(new_size)
+		  
+		  For Each tmp_column As clAbstractDataSerie In Self.columns
+		    tmp_column.set_length(new_size)
+		    
+		  Next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub append_from_row_source(the_source as itf_table_row_reader, create_missing_columns as boolean = True)
+		  //  
+		  //  Add  the data row from column source. New columns may be added to the current table
+		  //  
+		  //  For example, 
+		  //  - with the current table containing columns A, B, C 
+		  //  - with  the flag create_missing_column set to true
+		  //  - appending from a table with columns A, B, D 
+		  //  the values from A, and B are appended to the existing columns A and B
+		  //  a new column is created to store the values for D 
+		  
+		  //  Parameters:
+		  //  - the source , providing data column by column
+		  //  - flag allow the creation of missing columns
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  dim length_before as integer = self.row_count
+		  
+		  dim tmp_columns() as clAbstractDataSerie
+		  
+		  for each column_name as string in the_source.column_names
+		    dim tmp_col as clAbstractDataSerie = self.get_column(column_name)
+		    
+		    if tmp_col = nil then
+		      if create_missing_columns then
+		        tmp_col = new clDataSerie(column_name)
+		        tmp_col.set_length(length_before)
+		        call self.add_column(tmp_col)
+		        
+		      else
+		        add_error("append_row_from_table","Ignoring column " + column_name)
+		        
+		      end if 
+		    end if
+		    
+		    tmp_columns.add(tmp_col)
+		    
+		  next
+		  
+		  
+		  while not the_source.end_of_table
+		    dim tmp_row() as variant
+		    
+		    tmp_row  = the_source.next_row
+		    
+		    for i as integer=0 to tmp_columns.LastIndex
+		      tmp_columns(i).append_element(tmp_row(i))
+		      
+		    next
+		    
+		  wend
+		   
+		  // make sure all columns have the same length
+		  self.adjust_length
+		  
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -321,63 +474,6 @@ Implements itf_table_column_reader,Iterable
 		  Next
 		  
 		  Self.row_index.append_element("")
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub append_rows_from_table(the_table as itf_table_column_reader, create_missing_columns as boolean = True)
-		  //  
-		  //  Add  the data row from another table. New columns may be added to the current table
-		  //  
-		  //  For example, 
-		  //  - with the current table containing columns A, B, C 
-		  //  - with  the flag create_missing_column set to true
-		  //  - appending from a table with columns A, B, D 
-		  //  the values from A, and B are appended to the existing columns A and B
-		  //  a new column is created to store the values for D 
-		  
-		  //  Parameters:
-		  //  - the source table
-		  //  - flag allow the creation of missing columns
-		  //  
-		  //  Returns:
-		  //  (nothing)
-		  //  
-		  dim length_before as integer = self.row_count
-		  
-		  For Each src_tmp_column As clAbstractDataSerie In the_table.all_columns
-		    Dim column_name As String = src_tmp_column.name
-		    
-		    Dim dst_tmp_column As  clAbstractDataSerie = Self.get_column(column_name)
-		    
-		    If dst_tmp_column <> Nil Then
-		      dst_tmp_column.append_serie(src_tmp_column)
-		      
-		    elseif create_missing_columns then
-		      dst_tmp_column = Self.add_column(column_name)
-		      dst_tmp_column.set_length(length_before)
-		      
-		      dst_tmp_column.append_serie(src_tmp_column)
-		      
-		    else
-		      add_error("append_row_from_table","Ignoring column " + column_name)
-		      
-		    End If
-		    
-		    
-		    
-		  Next
-		  
-		  Dim new_size As Integer = Self.row_count + the_table.row_count
-		  
-		  Self.row_index.set_length(new_size)
-		  
-		  For Each tmp_column As clAbstractDataSerie In Self.columns
-		    tmp_column.set_length(new_size)
-		    
-		  Next
-		  
 		  
 		End Sub
 	#tag EndMethod

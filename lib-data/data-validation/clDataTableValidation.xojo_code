@@ -19,14 +19,25 @@ Implements itf_table_column_reader
 
 	#tag Method, Flags = &h0
 		Function all_columns() As clAbstractDataSerie()
+		  // Part of the itf_table_column_reader interface.
 		  
-		  if results_table = nil then 
-		    return nil
+		  dim cols() as clAbstractDataSerie
+		  
+		  dim col_name as new clDataSerie( field_name_input_column )
+		  dim col_input as new clDataSerie( field_nullable_input_column )
+		  dim col_mandatory as new clDataSerie(field_mandatory_input_column )
+		  dim col_type as new clDataSerie(field_type_input_column)
+		  
+		  
+		  for each column as clDataSerieValidation in valid_columns
+		    col_name.append_element(column.name)
+		    col_input.append_element(column.is_nullable)
+		    col_mandatory.append_element(column.is_required)
+		    col_type.append_element("generic")
 		    
-		  end if
+		  next
 		  
-		  Return results_table.all_columns
-		  
+		  Return cols
 		End Function
 	#tag EndMethod
 
@@ -34,14 +45,15 @@ Implements itf_table_column_reader
 		Function column_count() As integer
 		  // Part of the itf_table_column_reader interface.
 		  
-		  return 3
+		  return 4
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function column_names() As string()
-		  // Part of the itf_table_column_reader interface.
+		  // Part of the itf_table_column_reader interface
+		  
 		  dim tmp() as string
 		  
 		  tmp.Append(field_name_input_column)
@@ -160,7 +172,7 @@ Implements itf_table_column_reader
 		      dim tmp_table as new clDataTable("temp", tmp)
 		      dim tmp_column as clAbstractDataSerie = tmp_table.add_column(field_name_output_column, column.name)
 		      
-		      self.results_table.append_rows_from_table(tmp_table)
+		      self.results_table.append_from_column_source(tmp_table)
 		      
 		      tmp_data_columns.RemoveAt(tmp_data_columns.IndexOf(column.name))
 		      

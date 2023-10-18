@@ -1,13 +1,15 @@
 #tag Class
 Protected Class clLibDataExample03
 Inherits clLibDataExample
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
 		  returnValue.append("- create two datatables")
-		  returnValue.append("- concatentate the tables")
+		  returnValue.append("- append table-2 to table-1 using table-2 as a column source (a table is also a column source)")
+		  returnValue.append("- append table-2 to table-1 using a row source (clTableRowReader) on table-2.")
 		  
 		  return returnValue
 		  
@@ -31,23 +33,28 @@ Inherits clLibDataExample
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  
-		  Dim table1 As New clDataTable("mytable1", serie_array( _
+		  Dim table1 As New clDataTable("table-1", serie_array( _
 		  New clDataSerie("aaa",  123, 456, 789) _
 		  , New clDataSerie("bbb",  "abc", "def","ghi") _
 		  , New clDataSerie("ccc",  123.4,234.5,345.6) _
 		  ))
 		  
-		  Dim table2 As New clDataTable("mytable2", serie_array( _
+		  Dim table2 As New clDataTable("table-2", serie_array( _
 		  New clDataSerie("aaa",  123, 456, 789) _
 		  , New clDataSerie("bbb",  "abc", "def","ghi") _
 		  , New clDataSerie("zzz",  987.6,876.5, 765.4) _
 		  ))
 		  
 		  dim table3 as clDataTable = table1.clone
+		  table3.append_from_column_source(table2)
+		  table3.rename("Using column source")
 		  
-		  table3.append_rows_from_table(table2)
+		  dim table4 as clDataTable = table1.clone
+		  table4.append_from_row_source(new clDataTableRowReader(table2))
+		  table4.rename("Using row source")
 		  
-		  return array (table1, table2, table3)
+		  return array (table1, table2, table3, table4)
+		  
 		  
 		End Function
 	#tag EndMethod

@@ -59,6 +59,7 @@ Implements itf_table_row_reader
 		    
 		  next
 		  
+		  current_row = current_row + 1
 		  return row_value
 		End Function
 	#tag EndMethod
@@ -111,14 +112,6 @@ Implements itf_table_row_reader
 			Visible=true
 			Group="Position"
 			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="table"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

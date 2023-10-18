@@ -269,9 +269,9 @@ Assuming mytable1 contains 'name' and 'first-name', mytable2 contains 'name' and
 
 ```xojo
 
-mytable1.append_rows_from_table(mytable2, true)
+mytable1.append_from_column_source(mytable2, true)
 
-mytable1.append_rows_from_table(mytable3, false)
+mytable1.append_from_column_source(mytable3, false)
 
 ```
 
