@@ -104,6 +104,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_element_as_string(the_element_index as integer) As string
+		  // Calling the overridden superclass method.
+		  
+		  return format(self.get_element(the_element_index), format_str)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function operator_add(right_serie as clNumberDataSerie) As clNumberDataSerie
 		  dim mx1 as integer = self.upper_bound
 		  dim mx2 as integer = right_serie.upper_bound
@@ -275,6 +284,12 @@ Inherits clAbstractDataSerie
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub set_format(the_format as String)
+		  format_str = the_format
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub set_length(the_length as integer, default_value as variant)
 		  
@@ -299,6 +314,10 @@ Inherits clAbstractDataSerie
 		End Function
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h1
+		Protected format_str As string = "###,##0.00"
+	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected items() As double

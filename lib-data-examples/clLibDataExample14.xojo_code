@@ -8,9 +8,10 @@ Inherits clLibDataExample
 		  Dim returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a datatable")
-		  returnValue.Add("- apply clip_range on a column")
-		  returnValue.Add("- created a new column using clipped_by_range and multiply results by 2")
-		  returnValue.Add("- sales * 2 is calculated BFEORE sales is clipped")
+		  returnValue.Add("- calculate sales * 2  BFEORE sales is clipped")
+		  returnValue.Add("- apply clip_range 1000..2000 on the sales column")
+		  returnValue.Add("- created a new column using clipped_by_range 1100..1500 and multiply results by 2")
+		  
 		  
 		  return returnValue
 		  
@@ -36,7 +37,7 @@ Inherits clLibDataExample
 		  
 		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
 		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
-		  dim col_sales as new clNumberDataSerie("sales", 1100.0, 1200.0, 1400.0, 1600.0, 900.0)
+		  dim col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
 		  Dim table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
 		  
@@ -46,20 +47,14 @@ Inherits clLibDataExample
 		  table0.append_row(Array("France","Paris",2100))
 		  table0.append_row(Array("","Marseille",2200))
 		  table0.append_row(Array("Belgique","",2300))
-		  table0.append_row(Array("USA","NewYork",2400))
-		  table0.append_row(Array("Belgique","Bruxelles",2500))
-		  table0.append_row(Array("USA","Chicago",2600))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
 		  
 		  call table0.add_column(col_sales *2 )
 		  
 		  dim nb as integer = table0.clip_range("sales",1000, 2000)
 		  
-		  call table0.add_column(col_sales.clipped_by_range(1000, 1500) * 2)
+		  call table0.add_column(col_sales.clipped_by_range(1100, 1500) * 2)
 		  
-		   dim ret() as itf_table_column_reader
+		  dim ret() as itf_table_column_reader
 		  ret.add(table0)
 		  
 		  return ret

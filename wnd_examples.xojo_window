@@ -463,6 +463,8 @@ End
 		  
 		  
 		  wnd.Show
+		  wnd.show_comments(item.describe)
+		  
 		End Sub
 	#tag EndMethod
 

@@ -735,7 +735,7 @@ Protected Module clDataTable_tests
 		  
 		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
 		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
-		  dim col_sales as new clNumberDataSerie("sales", 1100.0, 1200.0, 1400.0, 1600.0, 900)
+		  dim col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
 		  Dim table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
 		  
@@ -745,20 +745,21 @@ Protected Module clDataTable_tests
 		  table0.append_row(Array("France","Paris",2100))
 		  table0.append_row(Array("","Marseille",2200))
 		  table0.append_row(Array("Belgique","",2300))
-		  table0.append_row(Array("USA","NewYork",2400))
-		  table0.append_row(Array("Belgique","Bruxelles",2500))
-		  table0.append_row(Array("USA","Chicago",2600))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
 		  
 		  call table0.add_column(col_sales *2 )
 		  
 		  dim nb as integer = table0.clip_range("sales",1000, 2000)
 		  
-		  call table0.add_column(col_sales.clipped_by_range(1000, 1500) * 2)
+		  call table0.add_column(col_sales.clipped_by_range(1100, 1500) * 2)
 		  
+		  // create expected table
+		  dim col1 as clDataSerie = col_country.clone()
+		  dim col2 as clDataSerie = col_city.clone()
+		  dim col3 as new clNumberDataSerie("sales", 1000.0, 1200.0, 1400.0, 1600.0, 2000.0)
+		  dim col4 as new clNumberDataSerie("sales*2", 1800.0, 2400.0, 2800.0, 3200.0, 5800.0)
+		  dim col5 as new clNumberDataSerie("clip sales*2", 2200.0, 2400.0, 2800.0, 3000.0, 3000.0)
 		  
+		  check_table("clipping fct", new clDataTable("mytable", serie_array(col1, col2, col3, col4, col5)), table0)
 		End Sub
 	#tag EndMethod
 

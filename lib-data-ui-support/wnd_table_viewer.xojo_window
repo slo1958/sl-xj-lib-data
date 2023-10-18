@@ -129,6 +129,41 @@ Begin Window wnd_table_viewer
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
+   Begin Label lbl_comments
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   243
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   True
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   2
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Untitled"
+      TextAlignment   =   0
+      TextColor       =   &c00000000
+      Tooltip         =   ""
+      Top             =   416
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   False
+      Width           =   337
+   End
 End
 #tag EndWindow
 
@@ -207,6 +242,22 @@ End
 		  
 		  table_dict = new Dictionary
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub show_comments(comments() as string)
+		  lbl_comments.Text = String.FromArray(comments, chr(13))
+		  
+		  lbl_comments.Height = comments.Count * 20
+		  
+		  dim tmp_h as integer = lb_data.Height - lbl_comments.Height -10
+		  
+		  lb_data.Height = tmp_h
+		  
+		  lbl_comments.top = lb_data.top + lb_data.Height + 10
+		  
+		  lbl_comments.Visible = true
 		End Sub
 	#tag EndMethod
 

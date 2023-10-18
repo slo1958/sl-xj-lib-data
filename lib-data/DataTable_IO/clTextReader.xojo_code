@@ -133,16 +133,9 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function next_row() As variant()
-		  return nil
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function next_row_as_string() As string()
 		  // Part of the itf_table_row_reader interface.
 		  
-		  Dim tmp_items() As string
+		  Dim tmp_items() As variant
 		  
 		  if LoadedColumnNames.LastIndex <0 then
 		    load_column_headers
@@ -170,7 +163,11 @@ Implements itf_table_row_reader
 		    tmp_items.Add(tmp_source_line.Trim)
 		    
 		  else
-		    tmp_items = RowParser.parse_line(tmp_source_line)
+		    dim tmp_str_items() as string =  RowParser.parse_line(tmp_source_line)
+		    for each item as string in tmp_str_items
+		      tmp_items.add(item)
+		      
+		    next
 		    
 		  end if
 		  

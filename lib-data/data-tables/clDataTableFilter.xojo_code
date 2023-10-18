@@ -9,10 +9,10 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table as clDataTable, the_serie_name as string)
+		Sub Constructor(the_table as clDataTable, the_filter_serie_name as string)
 		  self.tmp_table = the_table
 		  
-		  self.tmp_serie = clBooleanDataSerie(self.tmp_table.get_column(the_serie_name))
+		  self.tmp_serie = clBooleanDataSerie(self.tmp_table.get_column(the_filter_serie_name))
 		End Sub
 	#tag EndMethod
 

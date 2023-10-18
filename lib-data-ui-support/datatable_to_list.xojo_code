@@ -8,25 +8,6 @@ Protected Module datatable_to_list
 		  
 		  dim column_names()  as String = tmp_tbl.column_names
 		  
-		  // find number columns
-		  
-		  dim tmp_formatted as new Dictionary
-		  
-		  
-		  for each column as string in column_names
-		    
-		    if tmp_tbl.get_column(column) isa clNumberDataSerie then
-		      tmp_formatted.value(column) ="###,###.###"
-		      
-		    elseif tmp_tbl.get_column(column) isa clIntegerDataSerie then
-		      tmp_formatted.value(column) ="###,###"
-		      
-		    else
-		      
-		    end if
-		    
-		  next
-		  
 		  tmp_listbox.DeleteAllRows
 		  
 		  //  
@@ -61,16 +42,7 @@ Protected Module datatable_to_list
 		    column_index = column_index + 1
 		    
 		    for  row_index as integer = 0 to tmp_last_row - 1
-		      dim tmp_val as string
-		      if tmp_formatted.HasKey(column) then
-		        tmp_val = format( tmp_col.get_element(row_index), tmp_formatted.value(column))
-		        
-		      else
-		        tmp_val = tmp_col.get_element(row_index).StringValue
-		        
-		      end if
-		      
-		      tmp_listbox.Cell(row_index, column_index) = tmp_val
+		      tmp_listbox.Cell(row_index, column_index) =  tmp_col.get_element_as_string(row_index)
 		      
 		    next
 		    

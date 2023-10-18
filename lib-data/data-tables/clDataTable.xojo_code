@@ -326,7 +326,7 @@ Implements itf_table_column_reader,Iterable
 		  //  
 		  //  For example, 
 		  //  - with the current table containing columns A, B, C 
-		  //  - with  the flag create_missing_column set to true, a
+		  //  - with  the flag create_missing_column set to true
 		  //  - appending from a table with columns A, B, D 
 		  //  the values from A, and B are appended to the existing columns A and B
 		  //  a new column is created to store the values for D 
@@ -489,7 +489,7 @@ Implements itf_table_column_reader,Iterable
 		  
 		  dim last_index as integer = column.row_count
 		  dim count_changes as integer = 0
-		   
+		  
 		  
 		  for index as integer = 0 to last_index
 		    dim tmp as variant = column.get_element(index)
@@ -719,7 +719,9 @@ Implements itf_table_column_reader,Iterable
 		  next
 		  
 		  while not table_source.end_of_table
-		    dim tmp_row() as String = table_source.next_row_as_string
+		    dim tmp_row() as variant
+		    
+		    tmp_row  = table_source.next_row
 		    
 		    for i as integer=0 to tmp_columns.LastIndex
 		      columns(i).append_element(tmp_row(i))
@@ -1168,6 +1170,27 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_element(the_column_index as integer, the_element_index as integer) As variant
+		  //  
+		  //  returns a specific cell based on column name and row number
+		  //  
+		  //  Parameters:
+		  //  - the index of the column 
+		  //  - the row index
+		  //  
+		  //  Returns:
+		  //  - the value of the matching cell or nil
+		  //  
+		  dim tmp_col as clAbstractDataSerie = self.get_column_by_index(the_column_index)
+		  
+		  if tmp_col = nil then return nil
+		  
+		  return tmp_col.get_element(the_element_index)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_element(the_column_name as String, the_element_index as integer) As variant
 		  //  
 		  //  returns a specific cell based on column name and row number
@@ -1181,6 +1204,7 @@ Implements itf_table_column_reader,Iterable
 		  //  
 		  dim tmp_col as clAbstractDataSerie = self.get_column(the_column_name)
 		  
+		  if tmp_col = nil then return nil
 		  
 		  return tmp_col.get_element(the_element_index)
 		  
@@ -1224,6 +1248,13 @@ Implements itf_table_column_reader,Iterable
 		  next
 		  
 		  return tmp_row
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_row_reader() As clDataTableRowReader
+		  return new clDataTableRowReader(self)
 		  
 		End Function
 	#tag EndMethod

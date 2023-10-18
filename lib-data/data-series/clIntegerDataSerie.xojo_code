@@ -1,6 +1,7 @@
 #tag Class
 Protected Class clIntegerDataSerie
 Inherits clAbstractDataSerie
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  
@@ -115,6 +116,15 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function get_element_as_integer(the_element_index as integer) As integer
 		  return self.get_element(the_element_index)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_element_as_string(the_element_index as integer) As string
+		  // Calling the overridden superclass method.
+		  
+		  return format(self.get_element(the_element_index), format_str)
 		  
 		End Function
 	#tag EndMethod
@@ -314,6 +324,10 @@ Inherits clAbstractDataSerie
 		End Function
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h1
+		Protected format_str As string = "###,##0"
+	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected items() As integer
