@@ -323,10 +323,14 @@ Implements itf_table_column_reader,Iterable
 		    
 		    tmp_row  = the_source.next_row
 		    
-		    for i as integer=0 to tmp_columns.LastIndex
-		      tmp_columns(i).append_element(tmp_row(i))
+		    if tmp_row <> nil then 
 		      
-		    next
+		      for i as integer=0 to tmp_columns.LastIndex
+		        tmp_columns(i).append_element(tmp_row(i))
+		        
+		      next
+		      
+		    end if
 		    
 		  wend
 		  
@@ -733,7 +737,7 @@ Implements itf_table_column_reader,Iterable
 		  //  - 
 		  //
 		  
-		  meta_dict = new clMetaData
+		  meta_dict = new clMetaData 
 		  
 		  self.allow_local_columns = False
 		  
@@ -754,7 +758,6 @@ Implements itf_table_column_reader,Iterable
 		      
 		      If tmp_column <> Nil Then
 		        call self.add_column(tmp_column)
-		        
 		        
 		      else
 		        add_error("select_column","cannot find column " + column_name)
@@ -779,6 +782,8 @@ Implements itf_table_column_reader,Iterable
 		    
 		    
 		  end if
+		  
+		   self.adjust_length()
 		  
 		End Sub
 	#tag EndMethod
@@ -820,18 +825,25 @@ Implements itf_table_column_reader,Iterable
 		    
 		  next
 		  
+		   
 		  while not table_source.end_of_table
 		    dim tmp_row() as variant
 		    
 		    tmp_row  = table_source.next_row
 		    
-		    for i as integer=0 to tmp_columns.LastIndex
-		      columns(i).append_element(tmp_row(i))
+		    if tmp_row <> nil then
 		      
-		    next
+		      for i as integer=0 to tmp_columns.LastIndex
+		        columns(i).append_element(tmp_row(i))
+		        
+		      next 
+		      
+		    end if
 		    
 		  wend
 		  
+		  
+		  self.adjust_length()
 		  
 		End Sub
 	#tag EndMethod

@@ -135,29 +135,37 @@ Implements itf_table_row_reader
 		Function next_row() As variant()
 		  // Part of the itf_table_row_reader interface.
 		  
-		  Dim tmp_items() As variant
-		  
 		  if LoadedColumnNames.LastIndex <0 then
 		    load_column_headers
 		    
 		  end if
 		  
 		  if LoadedColumnNames.LastIndex <0 then
-		    return tmp_items
+		    return nil
 		    
 		  end if
 		  
 		  if TextStream = nil then
-		    return tmp_items
+		    return nil
 		    
 		  end if
 		  
 		  if TextStream.EndOfFile then
-		    Return tmp_items
+		    Return nil
 		    
 		  end if
 		  
-		  dim tmp_source_line as string = TextStream.ReadLine
+		  dim tmp_source_line as string
+		  do
+		    tmp_source_line = TextStream.ReadLine.Trim()
+		    
+		  loop until TextStream.EndOfFile or tmp_source_line.Length > 0 
+		  
+		  if tmp_source_line.Length = 0 then return nil
+		  
+		  
+		  Dim tmp_items() As variant
+		  
 		  
 		  if RowParser = nil then
 		    tmp_items.Add(tmp_source_line.Trim)

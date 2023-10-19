@@ -80,6 +80,9 @@ Protected Module clDataSerie_tests
 
 	#tag Method, Flags = &h0
 		Sub tests_io()
+		  
+		  System.DebugLog("START "+CurrentMethodName)
+		  
 		  test_io_004
 		  test_io_005
 		End Sub

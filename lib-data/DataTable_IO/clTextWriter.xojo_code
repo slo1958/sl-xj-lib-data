@@ -20,7 +20,7 @@ Implements itf_table_row_writer
 		  
 		  
 		  if not self.DestinationFile.IsFolder and self.DestinationFile.IsWriteable then
-		    TextStream = TextOutputStream.Open(self.DestinationFile)
+		    TextStream = TextOutputStream.Create(self.DestinationFile)
 		    self.header_written = not has_header
 		    
 		  else

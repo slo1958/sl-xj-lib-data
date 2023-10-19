@@ -784,12 +784,12 @@ Protected Module clDataTable_tests
 		  
 		  my_table4.save(new clTextWriter(fld_file3,New clRowParser_full(";"), True))
 		  
-		  //my_table4.save_as_text(fld_file3, New clRowParser_full(";"), True)
+		  dim my_table5 as new clDataTable(new clTextReader(fld_file3, new clRowParser_full(";"), True))
 		  
-		  dim my_table5  as new clDataTable(new clTextReader(fld_file1, New clRowParser_full(Chr(9)), True), AddressOf alloc_series)
+		  check_table("T4/T5", my_table4, my_table5) 
 		  
+		  dim my_table6  as new clDataTable(new clTextReader(fld_file1, New clRowParser_full(Chr(9)), True), AddressOf alloc_series)
 		  
-		  System.DebugLog(join(my_table3.column_names,";"))
 		  
 		  System.DebugLog("DONE WITH "+CurrentMethodName)
 		  
