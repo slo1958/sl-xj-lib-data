@@ -79,6 +79,7 @@ Class=clLibDataExample12;lib-data-examples/clLibDataExample12.xojo_code;&h000000
 Class=clLibDataExample14;lib-data-examples/clLibDataExample14.xojo_code;&h0000000020A9A7FF;&h0000000073919FFF;false
 Class=clTextReader;lib-data/DataTable_IO/clTextReader.xojo_code;&h000000000DED37FF;&h000000000B32C7FF;false
 Class=clDataTableRowReader;lib-data/data-tables/clDataTableRowReader.xojo_code;&h0000000045B67FFF;&h0000000056943FFF;false
+Class=clTextWriter;lib-data/DataTable_IO/clTextWriter.xojo_code;&h00000000182A07FF;&h000000000B32C7FF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1

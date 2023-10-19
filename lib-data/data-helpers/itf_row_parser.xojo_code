@@ -7,7 +7,7 @@ Interface itf_row_parser
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function serialize_line(the_data() as String) As string
+		Function serialize_line(the_data() as variant) As string
 		  
 		End Function
 	#tag EndMethod

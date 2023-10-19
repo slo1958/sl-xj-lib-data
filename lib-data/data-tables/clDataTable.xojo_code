@@ -329,7 +329,7 @@ Implements itf_table_column_reader,Iterable
 		    next
 		    
 		  wend
-		   
+		  
 		  // make sure all columns have the same length
 		  self.adjust_length
 		  
@@ -805,7 +805,7 @@ Implements itf_table_column_reader,Iterable
 		  
 		  internal_new_table("from " + tmp_table_name)
 		  
-		  dim columns() as clAbstractDataSerie
+		  // dim columns() as clAbstractDataSerie
 		  
 		  dim tmp_columns() as string = table_source.column_names
 		  
@@ -1764,61 +1764,18 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub save_as_text(the_destination as FolderItem,the_line_parser as clRowParser_generic, with_header  as Boolean)
-		  Dim text_file  As TextOutputStream 
+		Sub save(write_to as itf_table_row_writer)
+		  dim col() as string = self.column_names
 		  
-		  If the_destination = Nil Then
-		    Return 
-		    
-		  End If
+		  write_to.define_meta_data(name, col)
 		  
-		  text_file = TextOutputStream.Create(the_destination)
+		  for each row as clDataRow in self
+		    
+		    write_to.add_row(row.get_cells(col))
+		    
+		  next
 		  
-		  Dim column_index() As clAbstractDataSerie
-		  
-		  For Each column As clAbstractDataSerie In columns
-		    column_index.Append(column)
-		    
-		  Next
-		  
-		  
-		  If with_header Then
-		    Dim tmp_work_record As String
-		    Dim tmp_work_area() As String
-		    
-		    For Each column As clAbstractDataSerie In column_index
-		      tmp_work_area.Append(column.name)
-		      
-		    Next
-		    
-		    tmp_work_record = the_line_parser.serialize_line(tmp_work_area)
-		    System.DebugLog(tmp_work_record)
-		    
-		    text_file.WriteLine(tmp_work_record)
-		    
-		  End 
-		  
-		  For row_index As Integer = 0 To Self.row_index.row_count-1
-		    Dim tmp_work_record As String
-		    Dim tmp_work_area() As String
-		    
-		    For Each column As clAbstractDataSerie In column_index
-		      tmp_work_area.Append(column.get_element(row_index))
-		      
-		    Next
-		    
-		    tmp_work_record = the_line_parser.serialize_line(tmp_work_area)
-		    System.DebugLog(tmp_work_record)
-		    
-		    text_file.WriteLine(tmp_work_record)
-		    
-		    
-		    
-		  Next
-		  
-		  
-		  
-		  text_file.Close
+		  write_to.done
 		  
 		End Sub
 	#tag EndMethod

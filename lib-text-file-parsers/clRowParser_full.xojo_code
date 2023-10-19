@@ -126,28 +126,30 @@ Inherits clRowParser_generic
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function serialize_line(the_data() as String) As string
+		Function serialize_line(the_data() as variant) As string
 		  Const kDbl_Quote = """"
 		  
-		  Dim res As String
-		  
-		  Dim tmp_data() As String
-		  
-		  tmp_data = the_data
-		  
-		  For i As Integer = 0 To tmp_data.Ubound
-		    If tmp_data(i).InStr(kDbl_Quote) >0 Or tmp_data(i).InStr(delimiter)>0 Then
-		      tmp_data(i) = tmp_data(i).ReplaceAll(kDbl_Quote, kDbl_Quote+kDbl_Quote)
-		      tmp_data(i) = kDbl_Quote + tmp_data(i) + kDbl_Quote
+		  Dim res As String = ""
+		   
+		  For i As Integer = 0 To the_data.Ubound
+		    dim item as string = the_data(i)
+		    If item.InStr(kDbl_Quote) >0 Or item.InStr(delimiter)>0 Then
+		      item = item.ReplaceAll(kDbl_Quote, kDbl_Quote+kDbl_Quote)
+		      item = kDbl_Quote + item + kDbl_Quote
 		      
 		    Elseif always_add_quotes Then
-		      tmp_data(i) = kDbl_Quote + tmp_data(i) + kDbl_Quote
+		      item = kDbl_Quote + item + kDbl_Quote
 		      
 		    End If
 		    
+		    if res.Length > 0 then
+		      res = res + delimiter
+		    end if
+		    
+		    res = res+item
+		    
 		  Next
 		  
-		  res = Join(tmp_data, delimiter)
 		  
 		  Return res
 		  

@@ -767,8 +767,6 @@ Protected Module clDataTable_tests
 		Sub test_io_004()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim k As Variant
-		  
 		  Dim fld_folder As New FolderItem
 		  Dim fld_file1 As FolderItem
 		  Dim fld_file2 As FolderItem
@@ -784,7 +782,9 @@ Protected Module clDataTable_tests
 		  
 		  Dim my_table4 As New clDataTable(new clTextReader(fld_file2, New clRowParser_full(","), True))
 		  
-		  my_table4.save_as_text(fld_file3, New clRowParser_full(";"), True)
+		  my_table4.save(new clTextWriter(fld_file3,New clRowParser_full(";"), True))
+		  
+		  //my_table4.save_as_text(fld_file3, New clRowParser_full(";"), True)
 		  
 		  dim my_table5  as new clDataTable(new clTextReader(fld_file1, New clRowParser_full(Chr(9)), True), AddressOf alloc_series)
 		  

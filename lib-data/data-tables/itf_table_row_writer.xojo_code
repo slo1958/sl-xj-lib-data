@@ -1,47 +1,45 @@
-#tag Class
-Protected Class clRowParser_generic
-Implements itf_row_parser
+#tag Interface
+Protected Interface itf_table_row_writer
 	#tag Method, Flags = &h0
-		Function parse_line(the_line as String) As string()
-		  Dim ret() As String
-		  ret.Append(the_line)
+		Sub add_row(row_data() as variant)
 		  
-		  Return ret
-		  
-		End Function
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function serialize_line(the_data() as variant) As string
-		  Return ""
+		Sub define_meta_data(name as string, columns() as string)
 		  
-		End Function
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub define_meta_data(name as string, columns() as string, column_type() as string)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub done()
+		  
+		End Sub
 	#tag EndMethod
 
 
 	#tag ViewBehavior
-		#tag ViewProperty
-			Name="Index"
-			Visible=true
-			Group="ID"
-			InitialValue="-2147483648"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Left"
-			Visible=true
-			Group="Position"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
 			InitialValue=""
 			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -53,6 +51,14 @@ Implements itf_row_parser
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Top"
 			Visible=true
 			Group="Position"
@@ -61,5 +67,5 @@ Implements itf_row_parser
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
-End Class
-#tag EndClass
+End Interface
+#tag EndInterface

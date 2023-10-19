@@ -1,6 +1,7 @@
 #tag Class
 Protected Class clRowParser_simple_delimited
 Inherits clRowParser_generic
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub Constructor(the_delimiter as string)
 		  If the_delimiter.Len <> 1 Then
@@ -26,14 +27,17 @@ Inherits clRowParser_generic
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function serialize_line(the_data() as String) As string
+		Function serialize_line(the_data() as variant) As string
 		  Dim res As String
 		  
-		  Dim tmp_data() As String
+		  if the_data.Count < 1 then return ""
 		  
-		  tmp_data = the_data
+		  res = the_data(0)
 		  
-		  res = Join(tmp_data, delimiter)
+		  for i as integer = 1 to the_data.LastIndex
+		    res = res + delimiter + the_data(i)
+		    
+		  next
 		  
 		  Return res
 		  
