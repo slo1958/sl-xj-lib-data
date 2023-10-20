@@ -72,6 +72,7 @@ Protected Module clDataSerie_tests
 		  test_015
 		  test_016
 		  test_017
+		  test_018
 		  
 		  System.DebugLog("Done with "+CurrentMethodName)
 		  
@@ -508,6 +509,33 @@ Protected Module clDataSerie_tests
 		  check_value("nbr1", 4, nbr1)
 		  check_value("nbr2", 4, nbr2) 
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_018()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  Dim c1 As New clDateDataSerie("premier") 
+		  Dim c2 As New clDateDataSerie("second") 
+		  
+		  c1.append_element("2023-06-01")
+		  c1.append_element("2022-08-12")
+		  
+		  c2.append_element("2021-06-01")
+		  c2.append_element("2020-08-01")
+		  
+		  dim c3 as clIntegerDataSerie = c1 - c2
+		  
+		  dim c4 as clIntegerDataSerie = c1 - DateTime.FromString("2020-01-01")
+		  
+		  dim c5 as clStringDataSerie = c1.ToString()
+		  
+		  dim c6 as clStringDataSerie = c1.ToString(DateTime.FormatStyles.Medium)
+		  
+		  dim c7 as clStringDataSerie = c1.ToString("yyyy-MM")
+		  
+		  dim k as integer 
 		End Sub
 	#tag EndMethod
 
