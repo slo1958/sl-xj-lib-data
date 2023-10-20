@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clLibDataExample15
+Protected Class cllibdataexample_16
 Inherits clLibDataExample
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
@@ -8,9 +8,10 @@ Inherits clLibDataExample
 		  Dim returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a datatable with dates")
-		  returnValue.Add("- subtract col1 - col2")
-		  returnValue.Add("- apply different formatting") 
-		  
+		  returnValue.Add("- compare payment date with deadline")
+		  returnValue.Add("- flag late payment")
+		  returnValue.Add("- calculate late payment pernalty")
+		   
 		  return returnValue
 		  
 		End Function
@@ -18,7 +19,7 @@ Inherits clLibDataExample
 
 	#tag Method, Flags = &h0
 		Function id() As integer
-		  return 15
+		  return 16
 		  
 		End Function
 	#tag EndMethod
@@ -26,34 +27,42 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
 		  
-		  //  Example_015
+		  //  Example_016
 		  //  - test date 
 		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim c1 As New clDateDataSerie("ExpiryDate") 
-		  Dim c2 As New clDateDataSerie("CurrentDate") 
+		  // Build the table, to simulate loading from an external data source
+		  dim col_country as new clDataSerie("Customer", "C001", "", "C002", "C003", "C004","C005")
+		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  dim col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  dim col_penalty as new clNumberDataSerie("%up", 0.12, 0.12, 0.12 , 0.12, 0.12)
+		  dim col_expiry as new clDateDataSerie("InvoiceDate", "2023-03-05","2023-03-07","2023-03-12","2023-03-19","2023-04-03")
+		  dim col_pay as new clDateDataSerie("PaymentDate", "2023-03-08","2023-03-27","2023-03-20","2023-04-05","2023-05-12")
 		  
-		  c1.append_element("2023-06-01")
-		  c1.append_element("2022-08-12")
+		  col_penalty.set_format("#%")
 		  
-		  c2.append_element("2021-06-01")
-		  c2.append_element("2020-08-01")
+		  dim table0 as new clDataTable("mytable", serie_array(col_country, col_city, col_sales, col_expiry, col_pay, col_penalty))
 		  
-		  dim c3 as clIntegerDataSerie = c1 - c2
+		  // 
+		  // Start calculation
+		  //
+		  // number of days vs expiry date
+		  dim delay as clIntegerDataSerie = col_pay - col_expiry
 		  
-		  dim c4 as clIntegerDataSerie = c1 - DateTime.FromString("2020-01-01")
+		  // flag if number of days > 15 days
+		  dim flagged as clIntegerDataSerie = new clIntegerDataSerie("late-payment",delay.filter_value_in_range(15,9999))
 		  
-		  dim c5 as clStringDataSerie = c1.ToString()
+		  // calculate penalty and give a better name
+		  dim total_penaty as clNumberDataSerie = col_sales * col_penalty * flagged.ToDouble()
+		  total_penaty.rename("penalty")
 		  
-		  dim c6 as clStringDataSerie = c1.ToString(DateTime.FormatStyles.Medium)
-		  
-		  dim c7 as clStringDataSerie = c1.ToString("yyyy-MM")
-		  
-		  dim table0 as new clDataTable("output", serie_array(c1, c2, c3, c4, c5, c6, c7))
+		  // update table
+		  call table0.add_columns(serie_array(delay, flagged, total_penaty))
 		  
 		  dim ret() as itf_table_column_reader
+		  
 		  ret.add(table0)
 		  
 		  return ret

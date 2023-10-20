@@ -1,16 +1,15 @@
 #tag Class
-Protected Class clLibDataExample14
+Protected Class cllibdataexample_10
 Inherits clLibDataExample
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
-		  
+		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.Add("- create a datatable")
-		  returnValue.Add("- calculate sales * 2  BFEORE sales is clipped")
-		  returnValue.Add("- apply clip_range 1000..2000 on the sales column")
-		  returnValue.Add("- created a new column using clipped_by_range 1100..1500 and multiply results by 2")
+		  
+		  returnValue.append("- create a datatable")
+		  returnValue.append("- test the 'get_row' method")
 		  
 		  
 		  return returnValue
@@ -20,45 +19,43 @@ Inherits clLibDataExample
 
 	#tag Method, Flags = &h0
 		Function id() As integer
-		  return 14
+		  // Calling the overridden superclass method.
 		  
+		  return 10
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
-		  
-		  //  Example_014
-		  //  - test clip and clipped
+		  //  
+		  //  Example_010
+		  //  - create an empty datatable
+		  //  - test the 'get_row/' method
 		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
+		  Dim table0 As New clDataTable("mytable")
 		  
-		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
-		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
-		  dim col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
-		  
-		  Dim table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
+		  call table0.add_columns(Array("country","city","sales"))
 		  
 		  table0.append_row(Array("France","Paris",1100))
 		  table0.append_row(Array("","Marseille",1200))
 		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("France","Paris",2100))
-		  table0.append_row(Array("","Marseille",2200))
-		  table0.append_row(Array("Belgique","",2300))
+		  table0.append_row(Array("USA","NewYork",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("USA","Chicago",1600))
 		  
-		  call table0.add_column(col_sales *2 )
 		  
-		  dim nb as integer = table0.clip_range("sales",1000, 2000)
+		  dim table1 as new clDataTable("res")
 		  
-		  call table0.add_column(col_sales.clipped_by_range(1100, 1500) * 2)
+		  for row_index as integer = 0 to table0.row_count-1
+		    dim tmp_row as clDataRow = table0.get_row(row_index, True)
+		    table1.append_row(tmp_row)
+		  next
 		  
-		  dim ret() as itf_table_column_reader
-		  ret.add(table0)
 		  
-		  return ret
-		  
+		  return array(table0, table1)
 		End Function
 	#tag EndMethod
 

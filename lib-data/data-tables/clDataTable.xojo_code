@@ -133,7 +133,31 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function add_columns(the_column_names() as string) As clDataSerie()
+		Function add_columns(the_columns() as clAbstractDataSerie) As clAbstractDataSerie()
+		  //  
+		  //  Add  a set of  empty columns to the table
+		  //  
+		  //  Parameters:
+		  //  - the list  of  columns
+		  //  
+		  //  Returns:
+		  //  - an array with the new data series
+		  //  
+		  
+		  Dim return_array() As clAbstractDataSerie
+		  
+		  for each col as clAbstractDataSerie in the_columns
+		    return_array.add( self.add_column(col))
+		    
+		  next
+		  
+		  return return_array
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function add_columns(the_column_names() as string) As clAbstractDataSerie()
 		  //  
 		  //  Add  a set of  empty columns to the table
 		  //  
@@ -145,13 +169,14 @@ Implements itf_table_column_reader,Iterable
 		  //  
 		  
 		  
-		  Dim return_array() As clDataSerie
+		  Dim return_array() As clAbstractDataSerie
 		  dim v as variant 
 		  For Each name As String In the_column_names
 		    return_array.append(add_column(name, v))
 		    
 		  Next
 		  
+		  return return_array
 		End Function
 	#tag EndMethod
 
@@ -783,7 +808,7 @@ Implements itf_table_column_reader,Iterable
 		    
 		  end if
 		  
-		   self.adjust_length()
+		  self.adjust_length()
 		  
 		End Sub
 	#tag EndMethod
@@ -825,7 +850,7 @@ Implements itf_table_column_reader,Iterable
 		    
 		  next
 		  
-		   
+		  
 		  while not table_source.end_of_table
 		    dim tmp_row() as variant
 		    

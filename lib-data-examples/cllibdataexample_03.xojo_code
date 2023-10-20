@@ -1,14 +1,15 @@
 #tag Class
-Protected Class clLibDataExample05
+Protected Class cllibdataexample_03
 Inherits clLibDataExample
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  
-		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- fast append data") 
+		  returnValue.append("- create two datatables")
+		  returnValue.append("- append table-2 to table-1 using table-2 as a column source (a table is also a column source)")
+		  returnValue.append("- append table-2 to table-1 using a row source (clTableRowReader) on table-2.")
 		  
 		  return returnValue
 		  
@@ -19,31 +20,40 @@ Inherits clLibDataExample
 		Function id() As integer
 		  // Calling the overridden superclass method.
 		  
-		  return 5
+		  return 3
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
-		  
-		  //  Example_005
-		  //  - create an empty table
-		  //  - fast append data
+		  //  
+		  //  Example 003
 		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  
-		  Dim table0 As New clDataTable("T1")
+		  Dim table1 As New clDataTable("table-1", serie_array( _
+		  New clDataSerie("aaa",  123, 456, 789) _
+		  , New clDataSerie("bbb",  "abc", "def","ghi") _
+		  , New clDataSerie("ccc",  123.4,234.5,345.6) _
+		  ))
 		  
-		  call table0.add_columns(Array("cc1","cc2","cc3"))
+		  Dim table2 As New clDataTable("table-2", serie_array( _
+		  New clDataSerie("aaa",  123, 456, 789) _
+		  , New clDataSerie("bbb",  "abc", "def","ghi") _
+		  , New clDataSerie("zzz",  987.6,876.5, 765.4) _
+		  ))
 		  
-		  table0.append_row(Array("aaa0","bbb0","ccc0"))
-		  table0.append_row(Array("aaa1","bbb1","ccc1"))
-		  table0.append_row(Array("aaa2","bbb2","ccc2"))
-		  table0.append_row(Array("aaa3","bbb3","ccc3"))
+		  dim table3 as clDataTable = table1.clone
+		  table3.append_from_column_source(table2)
+		  table3.rename("Using column source")
 		  
-		  return array(table0)
+		  dim table4 as clDataTable = table1.clone
+		  table4.append_from_row_source(new clDataTableRowReader(table2))
+		  table4.rename("Using row source")
+		  
+		  return array (table1, table2, table3, table4)
 		  
 		  
 		End Function

@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clLibDataExample01
+Protected Class cllibdataexample_01
 Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()

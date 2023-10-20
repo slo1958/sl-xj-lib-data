@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clLibDataExample03
+Protected Class cllibdataexample_06
 Inherits clLibDataExample
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
@@ -7,9 +7,10 @@ Inherits clLibDataExample
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.append("- create two datatables")
-		  returnValue.append("- append table-2 to table-1 using table-2 as a column source (a table is also a column source)")
-		  returnValue.append("- append table-2 to table-1 using a row source (clTableRowReader) on table-2.")
+		  
+		  returnValue.append("- create an empty datatable")
+		  returnValue.append("- fast append data")
+		  returnValue.append("- apply filter function to create a dataserie")
 		  
 		  return returnValue
 		  
@@ -20,40 +21,41 @@ Inherits clLibDataExample
 		Function id() As integer
 		  // Calling the overridden superclass method.
 		  
-		  return 3
+		  return 6
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
-		  //  
-		  //  Example 003
+		  
+		  //  Example_006
+		  //  - create an empty table
+		  //  - fast append data
+		  //  - apply filter function to create a dataserie 
 		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  
-		  Dim table1 As New clDataTable("table-1", serie_array( _
-		  New clDataSerie("aaa",  123, 456, 789) _
-		  , New clDataSerie("bbb",  "abc", "def","ghi") _
-		  , New clDataSerie("ccc",  123.4,234.5,345.6) _
-		  ))
 		  
-		  Dim table2 As New clDataTable("table-2", serie_array( _
-		  New clDataSerie("aaa",  123, 456, 789) _
-		  , New clDataSerie("bbb",  "abc", "def","ghi") _
-		  , New clDataSerie("zzz",  987.6,876.5, 765.4) _
-		  ))
+		  Dim table0 As New clDataTable("mytable")
 		  
-		  dim table3 as clDataTable = table1.clone
-		  table3.append_from_column_source(table2)
-		  table3.rename("Using column source")
+		  call table0.add_columns(Array("country","city","sales"))
 		  
-		  dim table4 as clDataTable = table1.clone
-		  table4.append_from_row_source(new clDataTableRowReader(table2))
-		  table4.rename("Using row source")
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("France","Marseille",1200))
+		  table0.append_row(Array("Belgique","Bruxelles",1300))
+		  table0.append_row(Array("Italy","Milan",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("Italy","Rome",1600))
 		  
-		  return array (table1, table2, table3, table4)
+		  dim tmp1() as variant = table0.filter_apply_function(AddressOf field_filter,"country","France")
+		  
+		  call table0.add_column(new clDataSerie("is_france", tmp1))
+		  
+		  call table0.add_column(new clDataSerie("is_belgium",  table0.filter_apply_function(AddressOf field_filter, "country","Belgique")))
+		  
+		  return array(table0)
 		  
 		  
 		End Function

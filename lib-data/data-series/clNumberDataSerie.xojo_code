@@ -284,8 +284,8 @@ Inherits clAbstractDataSerie
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Sub set_format(the_format as String)
+	#tag Method, Flags = &h0
+		Sub set_format(the_format as String)
 		  format_str = the_format
 		End Sub
 	#tag EndMethod

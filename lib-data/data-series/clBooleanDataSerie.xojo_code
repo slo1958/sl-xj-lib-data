@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clBooleanDataSerie
 Inherits clAbstractDataSerie
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  
@@ -54,6 +54,13 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function get_element_as_boolean(the_element_index as integer) As boolean
 		  return self.get_element(the_element_index)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_element_as_integer(the_element_index as integer) As integer
+		  return if(self.get_element(the_element_index),1,0)
 		  
 		End Function
 	#tag EndMethod

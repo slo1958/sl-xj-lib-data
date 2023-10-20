@@ -26,6 +26,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h21
 		Private Function diff_to_days(d1 as DateTime, d2 as DateTime) As integer
+		  if d1 = nil or d2 = nil then return 0
+		  
 		  return round((d1.SecondsFrom1970 - d2.SecondsFrom1970) / (24 * 60 * 60))
 		  
 		End Function
@@ -113,7 +115,10 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function get_element_as_string(the_element_index as integer) As string
 		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
-		    Return items(the_element_index).SQLDate
+		    dim tmp as DateTime = items(the_element_index)
+		    if tmp = nil then return ""
+		    
+		    Return tmp.SQLDate
 		    
 		  Else
 		    Return ""
@@ -127,7 +132,10 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function get_element_as_string(the_element_index As integer, dateStyle As DateTime.FormatStyles) As String
 		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
-		    Return items(the_element_index).ToString(datestyle, DateTime.FormatStyles.None)
+		    dim tmp as DateTime = items(the_element_index)
+		    if tmp = nil then return ""
+		    
+		    Return tmp.ToString(datestyle, DateTime.FormatStyles.None)
 		    
 		  Else
 		    Return ""
@@ -141,7 +149,10 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function get_element_as_string(the_element_index as integer, format as string) As string
 		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
-		    Return items(the_element_index).ToString(format)
+		    dim tmp as DateTime = items(the_element_index)
+		    if tmp = nil then return ""
+		    
+		    Return tmp.ToString(format)
 		    
 		  Else
 		    Return ""

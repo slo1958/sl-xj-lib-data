@@ -1,15 +1,17 @@
 #tag Class
-Protected Class clLibDataExample09
+Protected Class cllibdataexample_12
 Inherits clLibDataExample
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
-		  // Calling the overridden superclass method.
+		  
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.append("- create a datatable")
-		  returnValue.append("- create a validation table")
-		  returnValue.append("- validate, show results of validation")
+		  returnValue.Add("- create a datatable")
+		  returnValue.Add("- Text string handling")
+		  returnValue.Add("- split the text field into country and city")
+		  returnValue.add("- get total sales per country")
+		  returnValue.Add("- get list of unique country/city pairs")
 		  
 		  return returnValue
 		  
@@ -18,52 +20,54 @@ Inherits clLibDataExample
 
 	#tag Method, Flags = &h0
 		Function id() As integer
-		  // Calling the overridden superclass method.
+		  return 12
 		  
-		  return 9
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
-		  //
-		  //  Example_009
-		  //  - test basic validation
+		  
+		  //  Example_012
+		  //  - test string handling
+		  //  - test basic 'unique'
 		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  dim col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
+		  dim col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
-		  
-		  dim tableValid as new clDataTableValidation("validation",array( _
-		  new clDataSerieValidation("country",  False, True) _
-		  , new clDataSerieValidation("city", True, true) _
-		  , new clDataSerieValidation("zip", True, True) _
-		  ))
-		  
-		  tableValid.validate(table0)
-		  
-		  Dim table1 As  clDataTable = tableValid.get_results()
+		  dim table1 as new clDataTable("source table", serie_array(col_source, col_sales))
 		  
 		  
-		  //  all types not the same, so need to explictely build the returned array
+		  // we split the "source" field to extract country and city
+		  
+		  dim table2 as new clDataTable("prepared", serie_array( _
+		  col_source, _
+		  col_source.text_before("-").rename("country"), _
+		  col_source.text_after("-").rename("city"), _
+		  col_sales),_
+		  true)
+		  
+		  
+		  dim col_city  as clStringDataSerie = clStringDataSerie(table2.get_column("city"))
+		  
+		  call table2.add_column(col_city.Uppercase.rename("City UC"))
+		  
+		  Dim table3 As clDataTable = table2.unique(array("country", "city"))
+		  
+		  
+		  dim table4 as clDataTable  = table2.groupby(array("country"), array("Sales"), array(""))
+		  
 		  dim ret() as itf_table_column_reader
-		  ret.append(table0)
-		  ret.append(table1)
-		  ret.append(tableValid)
+		  ret.Add(table1)
+		  ret.Add(table2)
+		  ret.Add(table3)
+		  ret.add(table4)
+		  
 		  return ret
-		  
-		  
-		  
 		  
 		End Function
 	#tag EndMethod

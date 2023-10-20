@@ -475,6 +475,38 @@ Begin Window wnd_examples
       Visible         =   True
       Width           =   131
    End
+   Begin PushButton pb_example_016
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Run example 016"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "Verdana"
+      FontSize        =   11.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   176
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   14
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   201
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   131
+   End
 End
 #tag EndWindow
 
@@ -520,14 +552,14 @@ End
 #tag Events pb_example_001
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample01
+		  run_exemple new cllibdataexample_01
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample01
+		  show_example_description new cllibdataexample_01
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -539,14 +571,14 @@ End
 #tag Events pb_example_002
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample02
+		  run_exemple new cllibdataexample_02
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample02
+		  show_example_description new cllibdataexample_02
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -558,14 +590,14 @@ End
 #tag Events pb_example_003
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample03
+		  run_exemple new cllibdataexample_03
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample03
+		  show_example_description new cllibdataexample_03
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -577,14 +609,14 @@ End
 #tag Events pb_example_004
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample04
+		  run_exemple new cllibdataexample_04
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample04
+		  show_example_description new cllibdataexample_04
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -596,14 +628,14 @@ End
 #tag Events pb_example_005
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample05
+		  run_exemple new cllibdataexample_05
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample05
+		  show_example_description new cllibdataexample_05
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -615,14 +647,14 @@ End
 #tag Events pb_example_006
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample06
+		  run_exemple new cllibdataexample_06
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample06
+		  show_example_description new cllibdataexample_06
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -634,13 +666,13 @@ End
 #tag Events pb_example_007
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample07
+		  run_exemple new cllibdataexample_07
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample07
+		  show_example_description new cllibdataexample_07
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -652,13 +684,13 @@ End
 #tag Events pb_example_008
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample08
+		  run_exemple new cllibdataexample_08
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample08
+		  show_example_description new cllibdataexample_08
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -670,13 +702,13 @@ End
 #tag Events pb_example_009
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample09
+		  run_exemple new cllibdataexample_09
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample09
+		  show_example_description new cllibdataexample_09
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -688,13 +720,13 @@ End
 #tag Events pb_example_011
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample11
+		  run_exemple new cllibdataexample_11
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample11
+		  show_example_description new cllibdataexample_11
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -706,13 +738,13 @@ End
 #tag Events pb_example_012
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample12
+		  run_exemple new cllibdataexample_12
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample12
+		  show_example_description new cllibdataexample_12
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -724,13 +756,13 @@ End
 #tag Events pb_example_014
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample14
+		  run_exemple new cllibdataexample_14
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample14
+		  show_example_description new cllibdataexample_14
 		End Sub
 	#tag EndEvent
 	#tag Event
@@ -742,13 +774,31 @@ End
 #tag Events pb_example_015
 	#tag Event
 		Sub Action()
-		  run_exemple new clLibDataExample15
+		  run_exemple new cllibdataexample_15
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseEnter()
 		  
-		  show_example_description new clLibDataExample15
+		  show_example_description new cllibdataexample_15
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  show_example_description(nil)
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events pb_example_016
+	#tag Event
+		Sub Action()
+		  run_exemple new cllibdataexample_16
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseEnter()
+		  
+		  show_example_description new cllibdataexample_16
 		End Sub
 	#tag EndEvent
 	#tag Event

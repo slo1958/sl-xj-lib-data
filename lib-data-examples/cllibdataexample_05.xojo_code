@@ -1,15 +1,17 @@
 #tag Class
-Protected Class clLibDataExample04
+Protected Class cllibdataexample_05
 Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.append("- create a  datatable")
-		  returnValue.append("- create a view on the table")
 		  
-		  return returnValue 
+		  returnValue.append("- create an empty datatable")
+		  returnValue.append("- fast append data") 
+		  
+		  return returnValue
+		  
 		End Function
 	#tag EndMethod
 
@@ -17,34 +19,31 @@ Inherits clLibDataExample
 		Function id() As integer
 		  // Calling the overridden superclass method.
 		  
-		  return 4
+		  return 5
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
 		  
-		  //  Example_004
-		  //  - create a small table
-		  //  - create a view on the table
+		  //  Example_005
+		  //  - create an empty table
+		  //  - fast append data
 		  //  
-		  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  
-		  Dim table0 As New clDataTable("mytable", serie_array( _
-		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
-		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
-		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
-		  , New clDataSerie("Sales", 100,200,300,400,500,600) _
-		  , New clDataSerie("Quantity", 51, 52,53,54, 55,56) _
-		  ))
+		  Dim table0 As New clDataTable("T1")
 		  
+		  call table0.add_columns(Array("cc1","cc2","cc3"))
 		  
-		  Dim view1 As clDataTable = table0.select_columns(array("Country", "City", "Sales"))
+		  table0.append_row(Array("aaa0","bbb0","ccc0"))
+		  table0.append_row(Array("aaa1","bbb1","ccc1"))
+		  table0.append_row(Array("aaa2","bbb2","ccc2"))
+		  table0.append_row(Array("aaa3","bbb3","ccc3"))
 		  
-		  return array(table0, view1)
+		  return array(table0)
 		  
 		  
 		End Function
