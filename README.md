@@ -248,13 +248,13 @@ mytable.append_row(temp_row)
 
 ### Load a data table from file
 
-Create a folder item pointing to the file, then create the data table. The flag causes the method to use the values in the first row as field names.
+Create a folder item pointing to the file, then create the data table. The flag causes the method to use the values in the first row as field names. By default, the reader assumes utf-8 encoded, tab separated file. We need to alter the default settings for a coma-separated file.
 
 ```xojo
 
-my_file  = data_folder.Child("myfile3_10K_comma.txt")
+my_file  = data_folder.Child("myfile3_10K_comma.txt”)
 
-Dim my_table As New clDataTable(new clTextReader(my_file, New clRowParser_full(Chr(9)),True))
+Dim my_table As New clDataTable(new clTextReader(my_file, True, new clTextFileConfig(“,”)))
 
 ```
 Note that you can override the default allocation of clDataSerie by providing a column allocator, a method receiving a column name and returning a subclass of clAbstractDataSerie.
