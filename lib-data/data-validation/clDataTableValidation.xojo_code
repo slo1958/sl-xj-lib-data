@@ -51,22 +51,6 @@ Implements itf_table_column_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function column_names() As string()
-		  // Part of the itf_table_column_reader interface
-		  
-		  dim tmp() as string
-		  
-		  tmp.Append(field_name_input_column)
-		  tmp.Append(field_type_input_column)
-		  tmp.Append(field_nullable_input_column)
-		  tmp.Append(field_mandatory_input_column)
-		  
-		  return tmp
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub constructor(validation_name as string, columns() as clDataSerieValidation, allow_extra_columns as boolean = False)
 		  redim valid_columns(-1)
 		  
@@ -89,6 +73,22 @@ Implements itf_table_column_reader
 		  
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumnNames() As string()
+		  // Part of the itf_table_column_reader interface
+		  
+		  dim tmp() as string
+		  
+		  tmp.Append(field_name_input_column)
+		  tmp.Append(field_type_input_column)
+		  tmp.Append(field_nullable_input_column)
+		  tmp.Append(field_mandatory_input_column)
+		  
+		  return tmp
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -159,11 +159,11 @@ Implements itf_table_column_reader
 		  
 		  self.results_table = new clDataTable("error_report", array(field_name_output_column ,  row_index_output_column, message_output_column))
 		  
-		  dim tmp_data_columns() as string = table.column_names
+		  dim tmp_data_columns() as string = table.GetColumnNames
 		  
 		  for each column as clDataSerieValidation in valid_columns
 		    
-		    if  table.column_names.IndexOf(column.name) >= 0 then
+		    if  table.GetColumnNames.IndexOf(column.name) >= 0 then
 		      dim tmp() as clAbstractDataSerie = column.validate(table.get_column(column.name))
 		      
 		      tmp(0).rename(row_index_output_column)

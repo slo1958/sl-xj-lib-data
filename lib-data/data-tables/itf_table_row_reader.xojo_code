@@ -7,12 +7,6 @@ Protected Interface itf_table_row_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function column_names() As string()
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function current_row_number() As integer
 		  
 		End Function
@@ -20,6 +14,12 @@ Protected Interface itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function end_of_table() As boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumnNames() As string()
 		  
 		End Function
 	#tag EndMethod

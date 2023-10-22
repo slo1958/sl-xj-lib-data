@@ -13,7 +13,7 @@ Protected Interface itf_table_column_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function column_names() As string()
+		Function GetColumnNames() As string()
 		  
 		End Function
 	#tag EndMethod

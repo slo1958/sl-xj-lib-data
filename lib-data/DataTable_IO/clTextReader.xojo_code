@@ -2,64 +2,61 @@
 Class clTextReader
 Implements itf_table_row_reader
 	#tag Method, Flags = &h0
+		Sub Close()
+		  if self.textstream = nil then 
+		    Return
+		    
+		  end if
+		  
+		  self.textstream.Close
+		  
+		  self.textstream = nil
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function column_count() As integer
 		  // Part of the itf_table_row_reader interface.
-		  
-		  if LoadedColumnNames.LastIndex <0 then
-		    load_column_headers
-		    
-		  end if
-		  
-		  if LoadedColumnNames.LastIndex <0 then
-		    return -1
-		    
-		  else
-		    Return LoadedColumnNames.Count
-		    
-		  end if
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function column_names() As string()
-		  // Part of the itf_table_row_reader interface.
-		  
-		  if LoadedColumnNames.LastIndex <0 then
-		    load_column_headers
-		    
-		  end if
-		  
-		  if LoadedColumnNames.LastIndex <0 then
-		    dim tmp() as string
-		    return tmp 
-		    
-		  else
-		    Return LoadedColumnNames
-		    
-		  end if
+		  return mheader.Count
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_source_file as FolderItem, the_line_parser as itf_row_parser, has_header as Boolean)
-		  SourceFile = the_source_file
-		  RowParser = the_line_parser
+		Sub Constructor(fld as FolderItem, has_header as Boolean, config as clTextFileConfig)
 		  
-		  CurrentRow = -1
-		  LoadedColumnNames.RemoveAll
+		  dim tmp_config as clTextFileConfig = config
 		  
-		  if SourceFile.Exists and not SourceFile.IsFolder then
-		    TextStream = TextInputStream.Open(SourceFile)
-		    
-		  else
-		    TextStream = nil
+		  if tmp_config = nil then tmp_config = new clTextFileConfig
+		  
+		  self.mDataFile = fld
+		  
+		  if not fld.Exists or fld.IsFolder then
+		    self.textstream = nil
+		    Return
 		    
 		  end if
 		  
+		  self.textstream  = TextInputStream.Open(self.mDataFile)
+		  self.textstream.Encoding = tmp_config.enc
+		  self.set_separator(tmp_config.field_separator)
+		  self.set_encoding(tmp_config.enc)
 		  
+		  if has_header then
+		    dim tmp() as variant = self.next_row
+		    self.mheader.RemoveAll
+		    
+		    for each v as variant in tmp
+		      self.mheader.add(v)
+		      
+		    next
+		    
+		  end if
+		  
+		  self.line_count = 0
 		End Sub
 	#tag EndMethod
 
@@ -67,65 +64,78 @@ Implements itf_table_row_reader
 		Function current_row_number() As integer
 		  // Part of the itf_table_row_reader interface.
 		  
-		  Return CurrentRow
+		  Return line_count
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Datafile() As FolderItem
+		  return self.mDataFile
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function EndOfFile() As Boolean
+		  if textstream = nil then
+		    return True
+		    
+		  end if
 		  
+		  if  textstream.EndOfFile  then
+		    textstream.close
+		    textstream = nil
+		    return True
+		    
+		  else
+		    return false
+		    
+		  end if
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function end_of_table() As boolean
 		  // Part of the itf_table_row_reader interface.
-		  
-		  if TextStream = nil then
-		    return True
-		    
-		  end if
-		  
-		  Return TextStream.EndOfFile
+		  return EndOfFile
 		  
 		  
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Sub load_column_headers()
-		  
-		  if LoadedColumnNames.LastIndex >= 0 then
-		    return
-		    
-		  end if
-		  
-		  
-		  Dim tmp_source_line As String = TextStream.ReadLine
-		  Dim tmp_items() As String
-		  
-		  if RowParser = nil then
-		    tmp_items.Add(tmp_source_line.Trim)
+	#tag Method, Flags = &h0
+		Function GetColumnName(field_index as integer) As String
+		  if field_index > mheader.LastIndex then
+		    return ""
 		    
 		  else
-		    tmp_items = RowParser.parse_line(tmp_source_line)
+		    return mheader(field_index)
 		    
 		  end if
 		  
-		  redim LoadedColumnNames(-1)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumnNames() As string()
+		  // Part of the itf_table_row_reader interface.
 		  
-		  for each tmp_item as variant in tmp_items
-		    LoadedColumnNames.Add(tmp_item)
+		  dim tmp() as string
+		  for each s as string in mheader
+		    tmp.add(s)
 		    
 		  next
 		  
-		End Sub
+		  return tmp
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function name() As string
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the itf_table_row_reader interface
 		  
-		  if SourceFile = nil then
-		    return ""
-		  end if
+		  if self.mDataFile = nil then return ""
 		  
-		  return SourceFile.Name
+		  return self.mDataFile.Name
 		  
 		  
 		End Function
@@ -135,73 +145,133 @@ Implements itf_table_row_reader
 		Function next_row() As variant()
 		  // Part of the itf_table_row_reader interface.
 		  
-		  if LoadedColumnNames.LastIndex <0 then
-		    load_column_headers
+		  const kDoubleQuote = """"
+		  
+		  dim cellArray() as variant
+		  
+		  dim lineBuffer as string
+		  dim charBuffer as string
+		  
+		  if textstream = nil then
+		    return cellArray
 		    
 		  end if
 		  
-		  if LoadedColumnNames.LastIndex <0 then
-		    return nil
+		  if  textstream.EndOfFile then
+		    return cellArray
 		    
 		  end if
 		  
-		  if TextStream = nil then
-		    return nil
+		  
+		  lineBuffer = textstream.ReadLine()
+		  
+		  // since a single CR in a quoted string is handled as a line break by TextInputStream, we may have to read more
+		  // lines from the file
+		  
+		  dim cellBuffer as string
+		  dim bDone as Boolean = False
+		  dim gotQuote as Boolean = False
+		  
+		  while not bDone
 		    
-		  end if
-		  
-		  if TextStream.EndOfFile then
-		    Return nil
+		    dim lenBuffer as integer = lineBuffer.Length 
 		    
-		  end if
-		  
-		  dim tmp_source_line as string
-		  do
-		    tmp_source_line = TextStream.ReadLine.Trim()
-		    
-		  loop until TextStream.EndOfFile or tmp_source_line.Length > 0 
-		  
-		  if tmp_source_line.Length = 0 then return nil
-		  
-		  
-		  Dim tmp_items() As variant
-		  
-		  
-		  if RowParser = nil then
-		    tmp_items.Add(tmp_source_line.Trim)
-		    
-		  else
-		    dim tmp_str_items() as string =  RowParser.parse_line(tmp_source_line)
-		    for each item as string in tmp_str_items
-		      tmp_items.add(item)
+		    for index as integer = 1 to lenBuffer
+		      
+		      charBuffer = lineBuffer.mid(index, 1)
+		      
+		      if gotQuote then
+		        
+		        if charBuffer = kDoubleQuote then 
+		          
+		          if index < lenBuffer and lineBuffer.mid(index+1,1) = kDoubleQuote then
+		            cellBuffer = cellBuffer+ kDoubleQuote
+		            index = index +1
+		            
+		          else
+		            gotquote = False
+		            // will be pushed either by field_separator or end of line
+		            
+		          end if
+		        else
+		          cellBuffer = cellBuffer + charBuffer
+		          
+		        end if
+		      else
+		        if charBuffer = kDoubleQuote then
+		          gotQuote = True
+		          
+		        elseif charBuffer = field_separator Then
+		          cellArray.add(cellBuffer)
+		          cellBuffer = ""
+		          
+		        else
+		          cellBuffer = cellBuffer + charBuffer
+		          
+		        end if
+		      end if
 		      
 		    next
 		    
-		  end if
+		    
+		    if gotQuote and not textstream.EndOfFile then
+		      lineBuffer = textstream.ReadLine(Encodings.UTF8)
+		      
+		    else
+		      cellArray.add(cellBuffer)
+		      bdone = true
+		      
+		    end if
+		    
+		  wend 
 		  
-		  return tmp_items
+		  self.line_count = self.line_count +1
+		  
+		  return cellArray
+		  
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub set_encoding(enc as TextEncoding)
+		  encoding = enc
+		End Sub
+	#tag EndMethod
 
-	#tag Property, Flags = &h0
-		CurrentRow As Integer
+	#tag Method, Flags = &h21
+		Private Sub set_separator(prm_sep as string)
+		  field_separator = prm_sep
+		  
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h1
+		Protected encoding As TextEncoding
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		LoadedColumnNames() As String
+	#tag Property, Flags = &h1
+		Protected field_separator As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		RowParser As itf_row_parser
+	#tag Property, Flags = &h1
+		Protected line_count As Integer
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		SourceFile As folderitem
+	#tag Property, Flags = &h1
+		Protected mDataFile As FolderItem
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		TextStream As TextInputStream
+	#tag Property, Flags = &h1
+		Protected mheader() As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected quote_char As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected textstream As TextInputStream
 	#tag EndProperty
 
 
@@ -243,14 +313,6 @@ Implements itf_table_row_reader
 			Visible=true
 			Group="Position"
 			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="CurrentRow"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

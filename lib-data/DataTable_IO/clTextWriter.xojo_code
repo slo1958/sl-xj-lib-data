@@ -4,29 +4,65 @@ Implements itf_table_row_writer
 	#tag Method, Flags = &h0
 		Sub add_row(row_data() as variant)
 		  // Part of the itf_table_row_writer interface.
-		  dim tmp as string = RowParser.serialize_line(row_data)
+		  const kDoubleQuote = """"
 		  
-		  if TextStream = nil then return
+		  if textstream = nil then return
 		  
-		  TextStream.WriteLine(tmp)
+		  dim tmpStr() as string
+		  
+		  for each field as string in row_data
+		    dim reqQuotes as Boolean = False
+		    
+		    reqQuotes = reqQuotes or (field.IndexOf(field_separator)>0)
+		    
+		    reqQuotes = reqQuotes or ( field.IndexOf(chr(13))>0) 
+		    
+		    if field.IndexOf(kDoubleQuote)>0 then
+		      field = field.ReplaceAll(kDoubleQuote, kDoubleQuote+kDoubleQuote)
+		      reqQuotes = True
+		      
+		    end if
+		    
+		    if reqQuotes then
+		      tmpStr.Add kDoubleQuote + field + kDoubleQuote
+		      
+		    else
+		      tmpStr.Add field
+		    end if
+		    
+		  next
+		  
+		  textstream.WriteLine(join(tmpStr, field_separator))
+		  
+		  line_count = line_count + 1
+		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_destination_file as FolderItem, the_line_parser as itf_row_parser, has_header as Boolean)
+		Sub Constructor(the_destination_file as FolderItem, has_header as Boolean, config as clTextFileConfig)
 		  self.DestinationFile = the_destination_file
-		  self.RowParser = the_line_parser
 		  
 		  
 		  if not self.DestinationFile.IsFolder and self.DestinationFile.IsWriteable then
-		    TextStream = TextOutputStream.Create(self.DestinationFile)
-		    self.header_written = not has_header
+		    self.TextStream = TextOutputStream.Create(self.DestinationFile)
 		    
 		  else
-		    TextStream = nil
+		    self.TextStream =  nil
 		    
-		  end if
+		  end if 
+		  
+		  dim tmp_config as clTextFileConfig = config
+		  
+		  if tmp_config = nil then tmp_config = new clTextFileConfig
+		  
+		  self.field_separator = tmp_config.field_separator
+		  self.encoding = tmp_config.enc
+		  self.quote_char = tmp_config.quote_char
+		  
+		  
+		  self.header_written = not has_header
 		  
 		  
 		End Sub
@@ -75,31 +111,39 @@ Implements itf_table_row_writer
 		    
 		  next
 		  
-		  dim tmp_line as string = RowParser.serialize_line(tmp)
-		  
-		  if TextStream = nil then return
-		  
-		  TextStream.WriteLine(tmp_line)
+		  self.add_row(tmp)
 		  
 		  header_written = True
 		End Sub
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
-		DestinationFile As folderitem
+	#tag Property, Flags = &h1
+		Protected DestinationFile As folderitem
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		header_written As Boolean
+	#tag Property, Flags = &h1
+		Protected encoding As TextEncoding
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		RowParser As itf_row_parser
+	#tag Property, Flags = &h1
+		Protected field_separator As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		TextStream As TextOutputStream
+	#tag Property, Flags = &h1
+		Protected header_written As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected line_count As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected quote_char As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected TextStream As TextOutputStream
 	#tag EndProperty
 
 
@@ -142,6 +186,14 @@ Implements itf_table_row_writer
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="header_written"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

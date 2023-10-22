@@ -10,13 +10,6 @@ Implements itf_table_row_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function column_names() As string()
-		  // Part of the itf_table_row_reader interface.
-		  return table.column_names
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(source_table as clDataTable)
 		  table = source_table
 		  current_row = 0
@@ -38,6 +31,13 @@ Implements itf_table_row_reader
 		  
 		  return current_row >=  table.row_count
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumnNames() As string()
+		  // Part of the itf_table_row_reader interface.
+		  return table.GetColumnNames
 		End Function
 	#tag EndMethod
 

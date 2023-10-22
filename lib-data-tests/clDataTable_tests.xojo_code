@@ -84,7 +84,7 @@ Protected Module clDataTable_tests
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  test_io_004
+		  test_io_001
 		End Sub
 	#tag EndMethod
 
@@ -764,7 +764,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_004()
+		Sub test_io_001()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim fld_folder As New FolderItem
@@ -778,18 +778,17 @@ Protected Module clDataTable_tests
 		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
 		  fld_file3  = fld_folder.Child("myfile3_10K_output.txt")
 		  
-		  Dim my_table3 As New clDataTable(new clTextReader(fld_file1, New clRowParser_full(Chr(9)),True))
+		  Dim my_table3 As New clDataTable(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
-		  Dim my_table4 As New clDataTable(new clTextReader(fld_file2, New clRowParser_full(","), True))
+		  Dim my_table4 As New clDataTable(new clTextReader(fld_file2, True, New clTextFileConfig(",")))
 		  
-		  my_table4.save(new clTextWriter(fld_file3,New clRowParser_full(";"), True))
+		  my_table4.save(new clTextWriter(fld_file3, True, new clTextFileConfig(";")))
 		  
-		  dim my_table5 as new clDataTable(new clTextReader(fld_file3, new clRowParser_full(";"), True))
+		  dim my_table5 as new clDataTable(new clTextReader(fld_file3, True, new clTextFileConfig(";")))
 		  
 		  check_table("T4/T5", my_table4, my_table5) 
 		  
-		  dim my_table6  as new clDataTable(new clTextReader(fld_file1, New clRowParser_full(Chr(9)), True), AddressOf alloc_series)
-		  
+		  dim my_table6  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series)
 		  
 		  System.DebugLog("DONE WITH "+CurrentMethodName)
 		  

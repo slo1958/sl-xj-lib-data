@@ -84,7 +84,7 @@ Protected Module clDataSerie_tests
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  test_io_004
+		  test_io_001
 		  test_io_005
 		End Sub
 	#tag EndMethod
@@ -540,7 +540,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_004()
+		Sub test_io_001()
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  Dim k As Variant

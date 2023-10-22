@@ -323,7 +323,7 @@ Implements itf_table_column_reader,Iterable
 		  
 		  dim tmp_columns() as clAbstractDataSerie
 		  
-		  for each column_name as string in the_source.column_names
+		  for each column_name as string in the_source.GetColumnNames
 		    dim tmp_col as clAbstractDataSerie = self.get_column(column_name)
 		    
 		    if tmp_col = nil then
@@ -730,27 +730,6 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function column_names() As string()
-		  //  
-		  //  Return the name of all columns
-		  //  
-		  //  Parameters:
-		  //  - none
-		  //  
-		  //  Returns:
-		  //  - a string array with the name of the columns
-		  //  
-		  Dim ret_str() As String
-		  For Each column As clAbstractDataSerie In columns
-		    ret_str.Append(column.name)
-		    
-		  Next
-		  
-		  Return ret_str
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(table_source as itf_table_column_reader, materialize as boolean = False)
 		  //
 		  //  Creates a datatable from a table column reader
@@ -778,7 +757,7 @@ Implements itf_table_column_reader,Iterable
 		    //
 		    self.link_to_source = table_source
 		    
-		    For Each column_name As String In table_source.column_names
+		    For Each column_name As String In table_source.GetColumnNames
 		      Dim tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
 		      
 		      If tmp_column <> Nil Then
@@ -792,7 +771,7 @@ Implements itf_table_column_reader,Iterable
 		    next
 		  else
 		    
-		    For Each column_name As String In table_source.column_names
+		    For Each column_name As String In table_source.GetColumnNames
 		      Dim tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
 		      
 		      If tmp_column <> Nil Then
@@ -837,7 +816,7 @@ Implements itf_table_column_reader,Iterable
 		  
 		  // dim columns() as clAbstractDataSerie
 		  
-		  dim tmp_columns() as string = table_source.column_names
+		  dim tmp_columns() as string = table_source.GetColumnNames
 		  
 		  for i as integer = 0 to tmp_columns.LastIndex
 		    if allocator = nil then
@@ -1210,6 +1189,27 @@ Implements itf_table_column_reader,Iterable
 		  
 		  
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumnNames() As string()
+		  //  
+		  //  Return the name of all columns
+		  //  
+		  //  Parameters:
+		  //  - none
+		  //  
+		  //  Returns:
+		  //  - a string array with the name of the columns
+		  //  
+		  Dim ret_str() As String
+		  For Each column As clAbstractDataSerie In columns
+		    ret_str.Append(column.name)
+		    
+		  Next
+		  
+		  Return ret_str
 		End Function
 	#tag EndMethod
 
@@ -1802,7 +1802,7 @@ Implements itf_table_column_reader,Iterable
 
 	#tag Method, Flags = &h0
 		Sub save(write_to as itf_table_row_writer)
-		  dim col() as string = self.column_names
+		  dim col() as string = self.GetColumnNames
 		  
 		  write_to.define_meta_data(name, col)
 		  
