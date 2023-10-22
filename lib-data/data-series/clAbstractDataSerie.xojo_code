@@ -267,6 +267,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_default_value() As variant
+		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_element(the_element_index as integer) As Variant
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
@@ -346,26 +354,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function linked() As Boolean
-		  return self.physical_table_link <> nil
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub link_to_table(the_table as clDataTable)
-		  
-		  If physical_table_link = Nil Then
-		    physical_table_link = the_table
-		    
-		  Else
-		    Raise New clDataException("Cannot redefine link to table for a serie")
-		    
-		  End If
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub rename(the_new_name as string)
 		  //  
 		  //  use setter of computed property
@@ -405,6 +393,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub set_default_value(v as Variant)
+		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub set_element(the_element_index as integer, the_item as Variant)
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
@@ -413,7 +409,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub set_length(the_length as integer)
-		  dim v as variant
+		  dim v as variant = self.get_default_value
 		  
 		  self.set_length(the_length, v)
 		  
@@ -423,6 +419,20 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Sub set_length(the_length as integer, default_value as variant)
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub set_link_to_table(the_table as clDataTable)
+		  
+		  If physical_table_link = Nil Then
+		    physical_table_link = the_table
+		    
+		  Else
+		    Raise New clDataException("Cannot redefine link to table for a serie")
+		    
+		  End If
 		  
 		End Sub
 	#tag EndMethod

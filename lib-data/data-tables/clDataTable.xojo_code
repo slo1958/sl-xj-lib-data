@@ -24,11 +24,11 @@ Implements itf_table_column_reader,Iterable
 		  
 		  
 		  //  physical table and column not yet linked
-		  if not self.is_virtual and not tmp_column.linked then
+		  if not self.is_virtual and not tmp_column.is_linked_to_table then
 		    dim max_row_count as integer = self.increase_length(tmp_column.row_count)
 		    tmp_column.set_length(max_row_count)
 		    
-		    tmp_column.link_to_table(Self)
+		    tmp_column.set_link_to_table(Self)
 		    Self.columns.Append(tmp_column)
 		    
 		    return tmp_column
@@ -36,11 +36,11 @@ Implements itf_table_column_reader,Iterable
 		  end if
 		  
 		  //  adding a physical column to a virtual table (when permitted)
-		  if self.is_virtual and not tmp_column.linked and self.allow_local_columns then
+		  if self.is_virtual and not tmp_column.is_linked_to_table and self.allow_local_columns then
 		    dim max_row_count as integer = self.increase_length(tmp_column.row_count)
 		    tmp_column.set_length(max_row_count)
 		    
-		    tmp_column.link_to_table(Self)
+		    tmp_column.set_link_to_table(Self)
 		    Self.columns.Append(tmp_column)
 		    
 		    return tmp_column
@@ -48,7 +48,7 @@ Implements itf_table_column_reader,Iterable
 		  end if
 		  
 		  //  we add a column from another table to a virtual table
-		  if self.is_virtual and tmp_column.linked then
+		  if self.is_virtual and tmp_column.is_linked_to_table then
 		    tmp_column.set_length(row_count)
 		    Self.columns.Append(tmp_column)
 		    return tmp_column
@@ -107,12 +107,12 @@ Implements itf_table_column_reader,Iterable
 		  
 		  If not self.is_virtual then
 		    tmp_column = New clDataSerie(tmp_column_name)
-		    tmp_column.link_to_table(Self)
+		    tmp_column.set_link_to_table(Self)
 		    tmp_column.set_length(row_count, default_value)
 		    
 		  Elseif allow_local_columns Then
 		    tmp_column = New clDataSerie(tmp_column_name)
-		    tmp_column.link_to_table(Self)
+		    tmp_column.set_link_to_table(Self)
 		    tmp_column.set_length(row_count, default_value)
 		    
 		  Else
@@ -1456,7 +1456,7 @@ Implements itf_table_column_reader,Iterable
 		  Dim dct_lookup As New Dictionary
 		  
 		  
-		  Dim output_row_count As New clDataSerie("row_count")
+		  Dim output_row_count As New clIntegerDataSerie("row_count")
 		  
 		  //  
 		  //  Prepare output space for grouped dimensions
@@ -1535,7 +1535,7 @@ Implements itf_table_column_reader,Iterable
 		    
 		  Next
 		  
-		  Dim output_series() As clDataSerie
+		  Dim output_series() As clAbstractDataSerie
 		  
 		  For idx_dim As Integer = 0 To output_dimensions.Ubound
 		    output_series.Append(output_dimensions(idx_dim))
@@ -1544,7 +1544,7 @@ Implements itf_table_column_reader,Iterable
 		  
 		  
 		  For idx_mea As Integer = 0 To temp_measures.Ubound
-		    Dim tmp_serie As New clDataSerie("sum_" + input_measures(idx_mea).name)
+		    Dim tmp_serie As New clNumberDataSerie("sum_" + input_measures(idx_mea).name)
 		    
 		    For idx_item As Integer = 0 To temp_measures(idx_mea).row_count-1
 		      tmp_serie.append_element(temp_measures(idx_mea).get_element_as_data_serie(idx_item).sum)

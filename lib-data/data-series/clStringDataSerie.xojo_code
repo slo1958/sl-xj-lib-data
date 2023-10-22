@@ -41,6 +41,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_default_value() As variant
+		  return default_value
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_element(the_element_index as integer) As variant
 		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
 		    Return items(the_element_index)
@@ -165,6 +172,13 @@ Inherits clAbstractDataSerie
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub set_default_value(v as variant)
+		  default_value = v
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -298,6 +312,10 @@ Inherits clAbstractDataSerie
 		End Function
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h1
+		Protected default_value As Variant
+	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected items() As string
