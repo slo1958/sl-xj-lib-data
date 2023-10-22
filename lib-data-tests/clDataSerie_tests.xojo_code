@@ -17,7 +17,7 @@ Protected Module clDataSerie_tests
 		  dim cell_ok as Boolean = True
 		  
 		  for row as integer = 0 to expected.row_count-1
-		    cell_ok = cell_ok and check_value(label + " row " + str(row), expected.get_element(row), calculated.get_element(row))
+		    cell_ok = cell_ok and check_value( label + " row " + str(row), expected.get_element(row), calculated.get_element(row))
 		    
 		  next
 		  

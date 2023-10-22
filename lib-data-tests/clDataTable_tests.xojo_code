@@ -34,7 +34,7 @@ Protected Module clDataTable_tests
 		  dim col_ok as boolean = True
 		  for col as integer = 0 to expected.column_count-1
 		    
-		    col_ok = col_ok and check_serie(label + " " + expected.column_name(col), expected.get_column_by_index(col), calculated.get_column_by_index(col))
+		    col_ok = col_ok and check_serie(label + " field [" + expected.column_name(col)+"]", expected.get_column_by_index(col), calculated.get_column_by_index(col))
 		    
 		  next
 		  
@@ -84,7 +84,9 @@ Protected Module clDataTable_tests
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  test_io_001
+		  //test_io_001
+		  
+		  test_io_002
 		End Sub
 	#tag EndMethod
 
@@ -790,6 +792,62 @@ Protected Module clDataTable_tests
 		  
 		  dim my_table6  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series)
 		  
+		  System.DebugLog("DONE WITH "+CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_io_002()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  
+		  dim db as new SQLiteDatabase
+		  
+		  Try
+		    db.Connect
+		    
+		  Catch error As DatabaseException
+		    System.DebugLog("DB Connection Error: " + error.Message)
+		    
+		  End Try
+		   
+		  
+		  db.ExecuteSQL("create table test1(ID INTEGER NOT NULL, aaa varchar(20), bbb integer, ccc float, PRIMARY KEY(ID))")
+		  
+		  dim dbrow as  DatabaseRow
+		  
+		  dbrow = new DatabaseRow
+		  dbrow.Column("aaa")="Belgium"
+		  dbrow.Column("bbb")= 32
+		  dbrow.Column("ccc") = 10.3
+		  db.AddRow("test1", dbrow)
+		  
+		  dbrow = new DatabaseRow
+		  dbrow.Column("aaa")="France"
+		  dbrow.Column("bbb")= 3
+		  dbrow.Column("ccc") = 14.6
+		  db.AddRow("test1", dbrow)
+		  
+		  dbrow = new DatabaseRow
+		  dbrow.Column("aaa")="Italy"
+		  dbrow.Column("bbb")= 39
+		  dbrow.Column("ccc") = 12.7
+		  db.AddRow("test1", dbrow)
+		  
+		  //db.CommitTransaction
+		  
+		  dim my_table1 as new clDataTable(new clDBReader(db.SelectSql("select * from test1")))
+		  
+		  my_table1.rename("test2")
+		  
+		  my_table1.save(new clDBWriter(db))
+		  
+		  dim my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
+		  
+		  check_table("Test1/Test2", my_table1, my_table2)
+		   
 		  System.DebugLog("DONE WITH "+CurrentMethodName)
 		  
 		  

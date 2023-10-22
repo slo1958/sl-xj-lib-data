@@ -13,7 +13,7 @@ Implements Iterator
 		Function MoveNext() As Boolean
 		  // Part of the Iterator interface.
 		  
-		  if last_row_index < tmp_table.row_count then
+		  if last_row_index < tmp_table.row_count - 1 then
 		    last_row_index = last_row_index + 1
 		    
 		    value_to_return = tmp_table.get_row(last_row_index, tmp_table.is_index_visible_when_iterate)

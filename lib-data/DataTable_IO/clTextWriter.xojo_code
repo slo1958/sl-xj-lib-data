@@ -188,14 +188,6 @@ Implements itf_table_row_writer
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
-		#tag ViewProperty
-			Name="header_written"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Boolean"
-			EditorType=""
-		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
 #tag EndClass

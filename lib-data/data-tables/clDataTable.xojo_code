@@ -747,6 +747,11 @@ Implements itf_table_column_reader,Iterable
 		  
 		  Dim tmp_table_name As String = table_source.name.Trim
 		  
+		  if tmp_table_name.Length = 0 then
+		    tmp_table_name = "Noname"
+		    
+		  end if 
+		  
 		  add_meta_data("source", tmp_table_name)
 		  
 		  internal_new_table("from " + tmp_table_name)
@@ -809,6 +814,11 @@ Implements itf_table_column_reader,Iterable
 		  self.allow_local_columns = False
 		  
 		  Dim tmp_table_name As String = table_source.name.Trim
+		  
+		  if tmp_table_name.Length = 0 then
+		    tmp_table_name = "Noname"
+		    
+		  end if 
 		  
 		  add_meta_data("source", tmp_table_name)
 		  
