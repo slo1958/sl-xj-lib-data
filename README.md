@@ -565,10 +565,9 @@ The repo contains the following folders:
 - lib-data
 - lib-data (experimental)
 - lib-data-examples
-- lib-data-io (next version)
+- lib-data-io
 - lib-data-tests
 - lib-data-ui-support
-- lib-text-file-parsers
 - test-data
 
 
@@ -609,7 +608,7 @@ Experimental components to support data validation
 ## folder lib-data-examples
 Examples used in the main test program. 
 
-## folder lib-data-io (next version)
+## folder lib-data-io
 IO support for data series and data tables will move here in a future version.
 
 
@@ -618,9 +617,6 @@ The folder contains the test cases for data series and data tables
 
 ## folder lib-data-ui-support
 This folder contains ‘data table’ aware components.
-
-## folder lib-text-file-parsers
-Likely to disappear. For now, this folder should also be included in the project if you need to read/write text files.
 
 
 ## folder test-data
