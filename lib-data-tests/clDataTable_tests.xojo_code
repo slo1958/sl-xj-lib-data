@@ -812,43 +812,96 @@ Protected Module clDataTable_tests
 		    System.DebugLog("DB Connection Error: " + error.Message)
 		    
 		  End Try
-		   
-		  
-		  db.ExecuteSQL("create table test1(ID INTEGER NOT NULL, aaa varchar(20), bbb integer, ccc float, PRIMARY KEY(ID))")
 		  
 		  dim dbrow as  DatabaseRow
 		  
+		  //test1
+		  db.ExecuteSQL("create table test1(ID INTEGER NOT NULL, aaa varchar(20), bbb integer, ccc float, PRIMARY KEY(ID))")
+		  
 		  dbrow = new DatabaseRow
-		  dbrow.Column("aaa")="Belgium"
+		  dbrow.Column("aaa")="Belgium1"
 		  dbrow.Column("bbb")= 32
 		  dbrow.Column("ccc") = 10.3
 		  db.AddRow("test1", dbrow)
 		  
 		  dbrow = new DatabaseRow
-		  dbrow.Column("aaa")="France"
+		  dbrow.Column("aaa")="France1"
 		  dbrow.Column("bbb")= 3
 		  dbrow.Column("ccc") = 14.6
 		  db.AddRow("test1", dbrow)
 		  
 		  dbrow = new DatabaseRow
-		  dbrow.Column("aaa")="Italy"
+		  dbrow.Column("aaa")="Italy1"
 		  dbrow.Column("bbb")= 39
 		  dbrow.Column("ccc") = 12.7
 		  db.AddRow("test1", dbrow)
 		  
 		  //db.CommitTransaction
 		  
+		  
+		  
+		  //test3
+		  db.ExecuteSQL("create table test3(ID INTEGER NOT NULL, aaa varchar(20), bbb integer, ddd float, PRIMARY KEY(ID))")
+		  
+		  
+		  dbrow = new DatabaseRow
+		  dbrow.Column("aaa")="Belgium1"
+		  dbrow.Column("bbb")= 32
+		  dbrow.Column("ddd") = 10.3
+		  db.AddRow("test3", dbrow)
+		  
+		  dbrow = new DatabaseRow
+		  dbrow.Column("aaa")="France1"
+		  dbrow.Column("bbb")= 3
+		  dbrow.Column("ddd") = 14.6
+		  db.AddRow("test3", dbrow)
+		  
+		  dbrow = new DatabaseRow
+		  dbrow.Column("aaa")="Italy1"
+		  dbrow.Column("bbb")= 39
+		  dbrow.Column("ddd") = 12.7
+		  db.AddRow("test3", dbrow)
+		  
+		  
 		  dim my_table1 as new clDataTable(new clDBReader(db.SelectSql("select * from test1")))
-		  
 		  my_table1.rename("test2")
-		  
-		  my_table1.save(new clDBWriter(db))
+		  my_table1.save(new clDBWriter(new clSqliteDBAccess(db)))
 		  
 		  dim my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
 		  
 		  check_table("Test1/Test2", my_table1, my_table2)
-		   
-		  System.DebugLog("DONE WITH "+CurrentMethodName)
+		  
+		  
+		  
+		  dim my_table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3")))
+		  my_table3.rename("test4")
+		  my_table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  
+		  dim my_table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
+		  
+		  check_table("Test3/Test4", my_table3, my_table4)
+		  
+		  
+		  dim my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
+		  
+		  dim my_table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
+		  
+		  // create expected ds
+		  dim my_table7 as clDataTable = my_table5.clone
+		  my_table7.append_from_column_source(my_table6)
+		  
+		  
+		  // add rows from test3 to test2
+		  my_table6.rename("test2")
+		  my_table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  
+		  
+		  dim my_table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
+		  
+		  
+		  check_table("Test7/Test8", my_table7, my_table8)
+		  
+		  
 		  
 		  
 		End Sub
