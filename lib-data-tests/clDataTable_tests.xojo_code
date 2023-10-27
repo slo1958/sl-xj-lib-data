@@ -1,7 +1,7 @@
 #tag Module
 Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
-		Function alloc_series(column_name as string) As clAbstractDataSerie
+		Function alloc_series(column_name as string, column_type_info as string) As clAbstractDataSerie
 		  if column_name = "Alpha" then
 		    Return new clCompressedDataSerie(column_name)
 		    

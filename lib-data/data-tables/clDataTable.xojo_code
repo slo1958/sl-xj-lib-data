@@ -699,7 +699,7 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function column_allocator(column_name as String) As clAbstractDataSerie
+		Delegate Function column_allocator(column_name as String, column_type_info as string) As clAbstractDataSerie
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
@@ -826,19 +826,21 @@ Implements itf_table_column_reader,Iterable
 		  
 		  // dim columns() as clAbstractDataSerie
 		  
-		  dim tmp_columns() as string = table_source.GetColumnNames
+		  dim tmp_column_names() as string = table_source.GetColumnNames
+		  dim tmp_column_types as Dictionary = table_source.GetColumnTypes
 		  
-		  for i as integer = 0 to tmp_columns.LastIndex
-		    if allocator = nil then
-		      columns.Add(new clDataSerie(tmp_columns(i)))
+		  for each tmp_column_name as string in tmp_column_names
+		    
+		    if allocator = nil or tmp_column_types = nil then
+		      columns.Add(new clDataSerie(tmp_column_name))
 		      
 		    else
-		      columns.Add(allocator.Invoke(tmp_columns(i)))
+		      columns.Add(allocator.Invoke(tmp_column_name, tmp_column_types.value(tmp_column_name)))
 		      
 		    end if
 		    
 		  next
-		  
+		   
 		  
 		  while not table_source.end_of_table
 		    dim tmp_row() as variant
@@ -847,7 +849,7 @@ Implements itf_table_column_reader,Iterable
 		    
 		    if tmp_row <> nil then
 		      
-		      for i as integer=0 to tmp_columns.LastIndex
+		      for i as integer=0 to tmp_column_names.LastIndex
 		        columns(i).append_element(tmp_row(i))
 		        
 		      next 

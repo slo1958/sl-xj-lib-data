@@ -42,6 +42,12 @@ Implements itf_table_row_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetColumnTypes() As dictionary
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function name() As string
 		  // Part of the itf_table_row_reader interface.
 		  return table.name
