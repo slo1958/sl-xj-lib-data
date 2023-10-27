@@ -12,82 +12,30 @@ Implements itf_table_row_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(rs as RowSet)
-		  self.rs = rs
+		Sub Constructor(dbAccess as clDatabaseAccess, source_name as string)
+		  self.dbAccess = dbAccess
+		  self.db = dbAccess.get_db
+		  
+		   
+		  if source_name.IndexOf("select of ") <= 0 then 
+		    self.source_sql = "select * from " + source_name
+		    
+		  else
+		    self.source_sql = source_name
+		    
+		  end if
+		  
+		  self.rs = db.SelectSQL(self.source_sql)
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Function conv_db_type(db_type as integer) As String
-		  
-		  select  case db_type
-		  case 0
-		    return "NULL"
-		    
-		  case 1
-		    return "BYTE"
-		    
-		  case 2
-		    return "SMALLINT"
-		    
-		  case 3
-		    return "INT"
-		    
-		  case 4
-		    return  "FIXCHAR"
-		    
-		  case 5 
-		    return "VARCHAR"
-		    
-		  case 6
-		    return "FLOAT"
-		    
-		  case 7
-		    return "DOUBLE"
-		    
-		  case 8
-		    return "SQLDATE"
-		    
-		  case 9
-		    return "SQLTIME"
-		    
-		  case 10
-		    return "TIMESTAMP"
-		    
-		  case 11
-		    return "CURRENCY"
-		    
-		  case 12
-		    return "BOOLEAN"
-		    
-		  case 13
-		    return  "DECIMAL"
-		    
-		  case 14
-		    return "BINARY"
-		    
-		  case 15
-		    return "BLOP"
-		    
-		  case 16
-		    return "OBJECT"
-		    
-		  case 17
-		    return "MACPICT"
-		    
-		  case 18
-		    return "STRING"
-		    
-		  case 19
-		    return "INT64"
-		    
-		  case else
-		    return "UNKNOWN"
-		    
-		  end Select
-		  
-		  
-		End Function
+	#tag Method, Flags = &h0
+		Sub Constructor(rs as RowSet)
+		  self.rs = rs
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -140,7 +88,7 @@ Implements itf_table_row_reader
 		  for i as integer = 0 to rs.LastColumnIndex
 		    dim tmp_name as string = rs.ColumnAt(i).name
 		    
-		    tmp.value(tmp_name) = conv_db_type(rs.ColumnAt(i).Type)
+		    tmp.value(tmp_name) = clDatabaseAccess.conv_db_type(rs.ColumnAt(i).Type)
 		    
 		  next
 		  
@@ -181,11 +129,23 @@ Implements itf_table_row_reader
 
 
 	#tag Property, Flags = &h1
+		Protected db As Database
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected dbAccess As clDatabaseAccess
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected line_count As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected rs As rowset
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected source_sql As String
 	#tag EndProperty
 
 

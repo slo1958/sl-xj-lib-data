@@ -840,7 +840,7 @@ Implements itf_table_column_reader,Iterable
 		    end if
 		    
 		  next
-		   
+		  
 		  
 		  while not table_source.end_of_table
 		    dim tmp_row() as variant
@@ -932,6 +932,73 @@ Implements itf_table_column_reader,Iterable
 		    call Self.add_column(c)
 		    
 		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(table_name as string, table_source as itf_table_row_reader, allocator as column_allocator = nil)
+		  //
+		  //  Creates a datatable from a table row reader
+		  //  
+		  //  Parameters:
+		  //  - the table reader
+		  //
+		  //  Returns:
+		  //  - 
+		  //
+		  
+		  meta_dict = new clMetaData
+		  
+		  self.allow_local_columns = False
+		  
+		  Dim tmp_table_name As String = table_name.Trim
+		  
+		  if tmp_table_name.Length = 0 then
+		    tmp_table_name = "Noname"
+		    
+		  end if 
+		  
+		  add_meta_data("source", tmp_table_name)
+		  
+		  internal_new_table(tmp_table_name)
+		  
+		  // dim columns() as clAbstractDataSerie
+		  
+		  dim tmp_column_names() as string = table_source.GetColumnNames
+		  dim tmp_column_types as Dictionary = table_source.GetColumnTypes
+		  
+		  for each tmp_column_name as string in tmp_column_names
+		    
+		    if allocator = nil or tmp_column_types = nil then
+		      columns.Add(new clDataSerie(tmp_column_name))
+		      
+		    else
+		      columns.Add(allocator.Invoke(tmp_column_name, tmp_column_types.value(tmp_column_name)))
+		      
+		    end if
+		    
+		  next
+		  
+		  
+		  while not table_source.end_of_table
+		    dim tmp_row() as variant
+		    
+		    tmp_row  = table_source.next_row
+		    
+		    if tmp_row <> nil then
+		      
+		      for i as integer=0 to tmp_column_names.LastIndex
+		        columns(i).append_element(tmp_row(i))
+		        
+		      next 
+		      
+		    end if
+		    
+		  wend
+		  
+		  
+		  self.adjust_length()
+		  
 		End Sub
 	#tag EndMethod
 
