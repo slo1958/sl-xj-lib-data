@@ -1304,11 +1304,39 @@ Implements itf_table_column_reader,Iterable
 		  //  - the column matching the name or nil
 		  //  
 		  
+		  return self.get_column(the_column_name, false)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_column(the_column_name as String, include_alias as boolean) As clAbstractDataSerie
+		  //  
+		  //  returns a column
+		  //  
+		  //  Parameters:
+		  //  - the name of the column
+		  //  
+		  //  Returns:
+		  //  - the column matching the name or nil
+		  //  
+		  
 		  For Each column As clAbstractDataSerie In Self.columns
 		    If column.name = the_column_name Then
 		      Return column
 		      
 		    End If
+		    
+		  Next
+		  
+		  if not include_alias then return nil
+		  
+		  For Each column As clAbstractDataSerie In Self.columns
+		    if column.has_alias(the_column_name) then
+		      return column
+		      
+		    end if
 		    
 		  Next
 		  
@@ -1383,6 +1411,32 @@ Implements itf_table_column_reader,Iterable
 		  
 		  
 		  Return Nil
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_column_name(column_index as integer) As string
+		  //  
+		  //  returns a column
+		  //  
+		  //  Parameters:
+		  //  - the index of the column
+		  //  
+		  //  Returns:
+		  //  - the name if the column at specified index
+		  //  
+		  
+		  try
+		    return self.columns(column_index).name
+		    
+		  catch
+		    return ""
+		    
+		  end try
+		  
+		  
+		  Return ""
 		  
 		End Function
 	#tag EndMethod

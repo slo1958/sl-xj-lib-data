@@ -25,6 +25,12 @@ Protected Interface itf_table_column_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_column_by_index(column_index as integer) As clAbstractDataSerie
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function is_persistant() As boolean
 		  
 		End Function

@@ -6,7 +6,9 @@ Protected Module datatable_to_list
 		  dim tmp_listbox as Listbox = thelist
 		  dim tmp_tbl as itf_table_column_reader = thetable
 		  
-		  dim column_names()  as String = tmp_tbl.GetColumnNames
+		  //dim column_names()  as String = tmp_tbl.GetColumnNames
+		  
+		  dim nbr_columns as integer = tmp_tbl.column_count
 		  
 		  tmp_listbox.DeleteAllRows
 		  
@@ -15,12 +17,12 @@ Protected Module datatable_to_list
 		  //  
 		  tmp_listbox.HasHeading = True
 		  
-		  tmp_listbox.ColumnCount = column_names.Ubound + 2
+		  tmp_listbox.ColumnCount = nbr_columns + 1
 		  
 		  tmp_listbox.Heading(0)="#"
 		  
-		  for column_index as integer = 0 to column_names.Ubound
-		    tmp_listbox.Heading(column_index+1) = column_names(column_index)
+		  for column_index as integer = 0 to  nbr_columns-1
+		    tmp_listbox.Heading(column_index+1) = tmp_tbl.get_column_by_index(column_index).display_title
 		    
 		  next
 		  
@@ -33,16 +35,14 @@ Protected Module datatable_to_list
 		    tmp_listbox.AddRow(str(row_index))
 		    
 		  next
+		   
 		  
-		  dim column_index as integer=0
-		  
-		  for each column as string in column_names
-		    dim tmp_col as clAbstractDataSerie = tmp_tbl.get_column(column)
-		    
-		    column_index = column_index + 1
+		  for column_index as integer = 0 to  nbr_columns-1
+		    dim tmp_col as clAbstractDataSerie = tmp_tbl.get_column_by_index(column_index)
 		    
 		    for  row_index as integer = 0 to tmp_last_row - 1
-		      tmp_listbox.Cell(row_index, column_index) =  tmp_col.get_element_as_string(row_index)
+		      
+		      tmp_listbox.Cell(row_index, column_index+1) =  tmp_col.get_element_as_string(row_index)
 		      
 		    next
 		    

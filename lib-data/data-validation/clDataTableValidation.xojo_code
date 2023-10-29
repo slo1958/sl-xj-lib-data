@@ -126,6 +126,54 @@ Implements itf_table_column_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_column_by_index(column_index as integer) As clAbstractDataSerie
+		  
+		  dim output as clDataSerie
+		  
+		  try
+		    output = new clDataSerie(self.get_column_name(column_index))
+		    
+		  catch
+		    return nil
+		    
+		  end try
+		  
+		  
+		  for each column as clDataSerieValidation in valid_columns
+		    
+		    select case column_index
+		    case  0 
+		      output.append_element(column.name)
+		      
+		    case 1 
+		      output.append_element(column.is_nullable)
+		      
+		    case  2 
+		      output.append_element(column.is_required)
+		      
+		    case 3
+		      output.append_element("generic")
+		      
+		    case else
+		      
+		    end Select
+		    
+		  next
+		  
+		  return output
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_column_name(column_index as integer) As string
+		  dim tmp() as string = self.GetColumnNames()
+		  
+		  return tmp(column_index)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_results() As clDataTable
 		  Return results_table
 		End Function

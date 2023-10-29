@@ -86,6 +86,7 @@ Class=clDBReader;lib-data/DataTable_IO/clDBReader.xojo_code;&h000000007F37AFFF;&
 Class=clDBWriter;lib-data/DataTable_IO/clDBWriter.xojo_code;&h00000000530E17FF;&h000000000B32C7FF;false
 Class=clDBAppendWriter;lib-data/DataTable_IO/clDBAppendWriter.xojo_code;&h000000000FFADFFF;&h000000000B32C7FF;false
 Class=cllibdataexample_17;lib-data-examples/cllibdataexample_17.xojo_code;&h000000007A45BFFF;&h0000000073919FFF;false
+Class=cllibdataexample_18;lib-data-examples/cllibdataexample_18.xojo_code;&h000000004672D7FF;&h0000000073919FFF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1

@@ -2,6 +2,32 @@
 Protected Class clAbstractDataSerie
 Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
+		Sub Add_alias(alias as string)
+		  
+		  if alias = name then
+		    self.add_error_message("Alias " + alias + " already used as name.")
+		    return 
+		    
+		  end if
+		  
+		  
+		  if aliases.IndexOf(alias) < 0 then
+		    aliases.Add(alias)
+		    Return
+		  end if
+		  
+		  self.add_error_message("Alias " + alias + " already defined.")
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub add_error_message(msg as string)
+		  self.last_error_message = msg
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub add_meta_data(type as string, message as string)
 		  
 		  meta_dict.add_meta_data(type, message)
@@ -33,6 +59,12 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    target_data_serie.append_element(self.get_element(index))
 		    
 		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub clear_aliases()
 		  
 		End Sub
 	#tag EndMethod
@@ -292,7 +324,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_v = Nil
-		    last_error_message = "Cannot convert element "+Str(the_element_index) + " to string."
+		    self.add_error_message("Cannot convert element "+Str(the_element_index) + " to string.")
 		    
 		  End Try
 		  
@@ -312,7 +344,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_d = 0
-		    last_error_message = "Cannot convert element "+Str(the_element_index) + " to number."
+		    self.add_error_message( "Cannot convert element "+Str(the_element_index) + " to number.")
 		    
 		  End Try
 		  
@@ -332,7 +364,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_s = ""
-		    last_error_message = "Cannot convert element "+Str(the_element_index) + " to string."
+		    self.add_error_message( "Cannot convert element "+Str(the_element_index) + " to string.")
 		    
 		  End Try
 		  
@@ -341,8 +373,20 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_last_error_message() As string
+		  return self.last_error_message
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_meta_data() As clMetaData
 		  Return self.meta_dict
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function has_alias(alias as string) As Boolean
+		  return aliases.IndexOf(alias) >= 0
 		End Function
 	#tag EndMethod
 
@@ -555,7 +599,34 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 
 	#tag Property, Flags = &h0
-		last_error_message As String
+		aliases() As String
+	#tag EndProperty
+
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  if self.serie_title.len() = 0 then
+			    Return serie_name
+			    
+			  else
+			    return serie_title
+			    
+			  end if
+			  
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  Self.serie_title = value.Trim
+			  
+			  
+			End Set
+		#tag EndSetter
+		display_title As string
+	#tag EndComputedProperty
+
+	#tag Property, Flags = &h1
+		Protected last_error_message As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -589,6 +660,10 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Property, Flags = &h1
 		Protected serie_name As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected serie_title As string
 	#tag EndProperty
 
 
