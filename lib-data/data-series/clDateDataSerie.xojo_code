@@ -227,8 +227,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset()
-		  super.reset()
+		Sub reset_elements()
+		  
 		  self.meta_dict.add_meta_data("type","date")
 		  
 		  redim items(-1)

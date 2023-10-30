@@ -3,6 +3,15 @@ Protected Class clAbstractDataSerie
 Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Sub Add_alias(alias as string)
+		  //  
+		  //  Add an alias to a column. Record an error if the alias is matching the name of the column or if the name is already defined.
+		  //  
+		  //  Parameters
+		  //  - alias (string) the new alias
+		  //  
+		  //  Returns:
+		  //  
+		  
 		  
 		  if alias = name then
 		    self.add_error_message("Alias " + alias + " already used as name.")
@@ -23,12 +32,31 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub add_error_message(msg as string)
+		  //  
+		  //  Add an error message
+		  //  
+		  //  Parameters
+		  //  - error message (string) 
+		  //  
+		  //  Returns:
+		  //  
+		  
+		  
 		  self.last_error_message = msg
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub add_meta_data(type as string, message as string)
+		  //  
+		  //  Add meta data
+		  //  
+		  //  Parameters
+		  // - type (string) the key for the meta data
+		  //  - message (string) the associated message
+		  //  
+		  //  Returns:
+		  //  
 		  
 		  meta_dict.add_meta_data(type, message)
 		End Sub
@@ -36,6 +64,16 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
+		  //  
+		  //  Add an element to the data serie
+		  //  Implemented in type specific subclass
+		  //  
+		  //  Parameters
+		  //  - the_item (variant) the value to add to the data serie
+		  //  
+		  //  Returns:
+		  //  
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
@@ -43,6 +81,15 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub append_serie(the_serie as clAbstractDataSerie)
+		  //  
+		  //  Add all elements of a data serie to the current data serie
+		  //
+		  //  Parameters
+		  //  - the_serie (data serie) 
+		  //  
+		  //  Returns:
+		  //  
+		  
 		  dim tmp_source as clAbstractDataSerie = the_serie
 		  
 		  For row_num As Integer = 0 To tmp_source.row_count-1
@@ -55,6 +102,16 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub append_to(target_data_serie as clAbstractDataSerie)
+		  //  
+		  //  Add all elements of the current data serie to  another data serie
+		  //
+		  //  Parameters
+		  //  - target_data_serie (data serie) to which elements are added
+		  //  
+		  //  Returns:
+		  //  
+		  
+		  
 		  for index as Integer = 0 to self.upper_bound
 		    target_data_serie.append_element(self.get_element(index))
 		    
@@ -65,12 +122,30 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub clear_aliases()
+		  //  
+		  //  Remove all aliases
+		  //
+		  //  Parameters
+		  //  
+		  //  
+		  //  Returns:
+		  //  
 		  
+		  self.aliases.RemoveAll
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function clipped_by_range(low_value as variant, high_value as variant) As clAbstractDataSerie
+		  //  
+		  //  Create a new data_serie containing elements of the current data serie clipped to range
+		  //
+		  //  Parameters
+		  //  - low_value (variant) lower bound
+		  // - high_value (variant) upper bound
+		  //  
+		  //  Returns:
+		  //  - the new data serie
 		  
 		  dim new_col as clAbstractDataSerie = self.clone()
 		  
@@ -86,6 +161,18 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function clip_high(high_value as variant) As integer
+		  //  
+		  //  Clip the values of the current data serie against a high_value:
+		  //.    if higher than high_value, element is replaced by high_value
+		  //
+		  //  Parameters
+		  // - high_value (variant) upper bound
+		  //  
+		  //  Returns:
+		  //  - the number of values changed
+		  //
+		  
+		  
 		  dim last_index as integer = self.row_count
 		  dim count_changes as integer = 0
 		  
@@ -106,6 +193,18 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function clip_low(low_value as Variant) As integer
+		  //  
+		  //  Clip the values of the current data serie against a low_value:
+		  //.    if lower than low_value, element is replaced by low_value
+		  //
+		  //  Parameters
+		  //  - low_value (variant) lower bound
+		  //  
+		  //  Returns:
+		  //  - the number of values changed
+		  //
+		  
+		  
 		  dim last_index as integer = self.row_count
 		  dim count_changes as integer = 0
 		  
@@ -126,6 +225,19 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function clip_range(low_value as variant, high_value as variant) As integer
+		  //  
+		  //  Clip the values of the current data serie to a range: 
+		  //.    if lower than low_value, element is replaced by low_value
+		  //.    if higher than high_value, element is replaced by high_value
+		  //
+		  //  Parameters
+		  //  - low_value (variant) lower bound
+		  // - high_value (variant) upper bound
+		  //  
+		  //  Returns:
+		  //  - the number of values changed
+		  //
+		  
 		  dim last_index as integer = self.row_count
 		  dim count_changes as integer = 0
 		  
@@ -150,6 +262,18 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function clone() As clAbstractDataSerie
+		  //  
+		  //  Clone the current data serie (only implemented at typed subclasses)
+		  //
+		  //
+		  //  Parameters
+		  //  - 
+		  //  
+		  //  Returns:
+		  //  - the new data serie
+		  //
+		  
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Function
@@ -189,6 +313,20 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub copy_to(target_data_serie as clAbstractDataSerie)
+		  //  
+		  //  Copy the elements of the current data serie to another data serie, the other data serie is cleared before copy
+		  //.    if lower than low_value, element is replaced by low_value
+		  //
+		  //
+		  //  Parameters
+		  //  - the_target_data_serie: destination
+		  //  
+		  //  Returns:
+		  //  
+		  //
+		  
+		  
+		  
 		  target_data_serie.reset()
 		  target_data_serie.add_meta_data("source", self.name)
 		  
@@ -300,6 +438,17 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function get_default_value() As variant
+		  //  
+		  //  Return the default value defined for the data serie (only implemented at type specific subclasses)
+		  //
+		  //
+		  //  Parameters
+		  //  
+		  //  Returns:
+		  //  - the defined default value (variant)
+		  //
+		  
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		  
@@ -308,6 +457,17 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function get_element(the_element_index as integer) As Variant
+		  //  
+		  //  Returns the element at index (only implemented in type specific subclasses)
+		  //
+		  //  Parameters
+		  //  - the_element_index (integer) index of the element to be returned
+		  //  
+		  //  Returns:
+		  //  - the selected element (variant)
+		  //
+		  
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		  
@@ -334,6 +494,17 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function get_element_as_number(the_element_index as integer) As double
+		  //  
+		  //  Returns the element at index as a double
+		  //
+		  //  Parameters
+		  //  - the_element_index (integer) index of the element to be returned
+		  //  
+		  //  Returns:
+		  //  - the selected element (double)
+		  //
+		  
+		  
 		  Dim tmp_d As Double
 		  Dim tmp_v As variant
 		  
@@ -354,6 +525,16 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function get_element_as_string(the_element_index as integer) As string
+		  //  
+		  //  Returns the element at index as a string
+		  //
+		  //  Parameters
+		  //  - the_element_index (integer) index of the element to be returned
+		  //  
+		  //  Returns:
+		  //  - the selected element (string)
+		  //
+		  
 		  Dim tmp_s As String
 		  Dim tmp_v As variant
 		  
@@ -380,18 +561,47 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function get_meta_data() As clMetaData
+		  //  
+		  //  Returns the meta data dictionary of the current data serie
+		  //
+		  //  Parameters
+		  //  
+		  //  Returns:
+		  //  - the meta data dictionary  (dictionary)
+		  //
+		  
 		  Return self.meta_dict
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function has_alias(alias as string) As Boolean
+		  //  
+		  //  Check if the current data serie has the specified the alias
+		  //
+		  //  Parameters
+		  //  - alias (string) to be checked
+		  //  
+		  //  Returns:
+		  //  - True if the current data serie has the alias passed as parameter
+		  //
+		  
+		  
 		  return aliases.IndexOf(alias) >= 0
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function is_linked_to_table() As Boolean
+		  //  
+		  //  Checks if the current data serie is linked to a table
+		  //
+		  //  Parameters
+		  //  
+		  //  Returns:
+		  //  - True if the current data serie is linked to a table
+		  //
+		  
 		  Return physical_table_link <> Nil
 		  
 		End Function
@@ -425,6 +635,47 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub reset()
+		  //  
+		  //  Reset the data serie. Type specific subclasses will clear all values.
+		  //
+		  //  Parameters
+		  //  
+		  //  Returns:
+		  //
+		  
+		  self.reset_meta_data
+		  self.reset_elements
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub reset_elements()
+		  //  
+		  //  Clear the list of values (implemented at type specific subclasses)
+		  //
+		  //  Parameters
+		  //  - the_element_index (integer) index of the element to be returned
+		  //  
+		  //  Returns:
+		  //  - the selected element (double)
+		  //
+		  
+		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub reset_meta_data()
+		  //  
+		  //  Resets the meta data
+		  //
+		  //  Parameters
+		  //  
+		  //  Returns:
+		  //
+		  
 		  self.meta_dict = new clMetaData
 		  
 		End Sub

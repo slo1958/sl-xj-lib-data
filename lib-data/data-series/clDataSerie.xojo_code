@@ -78,8 +78,8 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset()
-		  super.reset
+		Sub reset_elements()
+		  
 		  self.meta_dict.add_meta_data("type","general")
 		  
 		  redim items(-1)

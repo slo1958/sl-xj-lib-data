@@ -88,8 +88,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset()
-		  super.reset()
+		Sub reset_elements()
 		  
 		  items_value_dict = new Dictionary
 		  

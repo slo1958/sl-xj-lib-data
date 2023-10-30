@@ -255,6 +255,9 @@ End
 		  clDataTable_tests.tests
 		  writemessage "data table tests done"
 		  
+		  clDataTable_tests.test_examples
+		  writemessage "test run example (no validaton)"
+		  
 		  clDataPool_tests.tests
 		  writemessage "data pool tests done"
 		  

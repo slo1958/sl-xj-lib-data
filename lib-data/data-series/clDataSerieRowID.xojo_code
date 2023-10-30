@@ -1,6 +1,7 @@
 #tag Class
 Protected Class clDataSerieRowID
 Inherits clDataSerie
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  Self.last_index  = Self.last_index  +1
@@ -19,13 +20,7 @@ Inherits clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset()
-		  // Calling the overridden superclass method.
-		  // Note that this may need modifications if there are multiple  choices.
-		  // Possible calls:
-		  // reset() -- From clDataSerie
-		  // reset() -- From clAbstractDataSerie
-		  Super.reset()
+		Sub reset_elements()
 		  
 		  self.meta_dict = new clMetaData
 		  self.meta_dict.add_meta_data("type","index")

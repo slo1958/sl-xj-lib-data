@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clStringDataSerie
 Inherits clAbstractDataSerie
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  
@@ -150,9 +150,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset()
-		  super.reset()
-		  self.meta_dict.add_meta_data("type","integer")
+		Sub reset_elements()
+		  
+		  self.meta_dict.add_meta_data("type","string")
 		  
 		  redim items(-1)
 		  

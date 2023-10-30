@@ -6,7 +6,6 @@ Protected Module datatable_to_list
 		  dim tmp_listbox as Listbox = thelist
 		  dim tmp_tbl as itf_table_column_reader = thetable
 		  
-		  //dim column_names()  as String = tmp_tbl.GetColumnNames
 		  
 		  dim nbr_columns as integer = tmp_tbl.column_count
 		  
