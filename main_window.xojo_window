@@ -173,7 +173,7 @@ Begin Window main_window
       Visible         =   True
       Width           =   107
    End
-   Begin PushButton pb_run_all_tests1
+   Begin PushButton pb_run_all_io_tests
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -283,7 +283,7 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events pb_run_all_tests1
+#tag Events pb_run_all_io_tests
 	#tag Event
 		Sub Action()
 		  writemessage "started"

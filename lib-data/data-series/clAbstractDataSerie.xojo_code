@@ -493,6 +493,38 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_element_as_integer(the_element_index as integer) As integer
+		  //  
+		  //  Returns the element at index as a double
+		  //
+		  //  Parameters
+		  //  - the_element_index (integer) index of the element to be returned
+		  //  
+		  //  Returns:
+		  //  - the selected element (integer)
+		  //
+		  
+		  // Note: this generic method is overloaded when the serie is natively using integer
+		  
+		  Dim tmp_d As integer
+		  Dim tmp_v As variant
+		  
+		  tmp_v = get_element(the_element_index)
+		  
+		  Try 
+		    tmp_d = tmp_v.IntegerValue
+		    
+		  Catch TypeMismatchException
+		    tmp_d = 0
+		    self.add_error_message( "Cannot convert element "+Str(the_element_index) + " to integer.")
+		    
+		  End Try
+		  
+		  Return tmp_d
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_element_as_number(the_element_index as integer) As double
 		  //  
 		  //  Returns the element at index as a double
@@ -503,6 +535,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Returns:
 		  //  - the selected element (double)
 		  //
+		  
+		  // Note: this generic method is overloaded when the serie is natively using double
 		  
 		  
 		  Dim tmp_d As Double
@@ -534,6 +568,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Returns:
 		  //  - the selected element (string)
 		  //
+		  
+		  // Note: this generic method is overloaded when the serie is natively using string
 		  
 		  Dim tmp_s As String
 		  Dim tmp_v As variant
@@ -829,6 +865,33 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 
+	#tag Note, Name = License
+		MIT License
+		
+		sl-xj-lib-data Data Handling Library
+		Copyright (c) 2021-2023 slo1958
+		
+		Permission is hereby granted, free of charge, to any person obtaining a copy
+		of this software and associated documentation files (the "Software"), to deal
+		in the Software without restriction, including without limitation the rights
+		to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+		copies of the Software, and to permit persons to whom the Software is
+		furnished to do so, subject to the following conditions:
+		
+		The above copyright notice and this permission notice shall be included in all
+		copies or substantial portions of the Software.
+		
+		THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+		IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+		FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+		AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+		LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+		OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+		SOFTWARE.
+		
+		
+	#tag EndNote
+
 	#tag Note, Name = Methods to be defined in child class
 		
 		append_element
@@ -928,14 +991,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="last_error_message"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="Left"
 			Visible=true
 			Group="Position"
@@ -966,6 +1021,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 			InitialValue="0"
 			Type="Integer"
 			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="display_title"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="string"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
