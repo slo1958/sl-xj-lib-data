@@ -733,9 +733,12 @@ Implements itf_table_column_reader,Iterable
 		Sub Constructor(table_source as itf_table_column_reader, materialize as boolean = False)
 		  //
 		  //  Creates a datatable from a table column reader
+		  //  The function creates a virtual table if the 'materalize' flag is False and the source table is 'persistant', for example another data_table
+		  //  The function clones the columnw otherwise
 		  //  
 		  //  Parameters:
 		  //  - the table reader
+		  //  - materialize flag
 		  //
 		  //  Returns:
 		  //  - 

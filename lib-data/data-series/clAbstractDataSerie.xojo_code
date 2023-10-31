@@ -865,6 +865,26 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 
+	#tag Note, Name = Description
+		Defines an abstract data serie, provides common functions but it has no storage
+		Used as base class for all DataSerie
+		
+		The following child classes are defined:
+		
+		- clDataSerie: stores elements as variant
+		- clCompressedDataSerie: stores elements as variant, but internally elements are stored as an integer, an index in a value dictionary.
+		- clNumberDataSerie: stores elements as double
+		- clIntegerDataSerie: stores elements as integer
+		-clBooleanDataSerie: stores elements as Boolean
+		- clDateDataSerie: stores elements as timestamp
+		- clDataSerieRowID: used to assign a unique row id to each row, starting at 0. Used by clDataTable to handle the row index
+		
+		
+		Only one dataTable can 'own'  a dataSerie, but the series can be shared by multiple tables.
+		
+		
+	#tag EndNote
+
 	#tag Note, Name = License
 		MIT License
 		

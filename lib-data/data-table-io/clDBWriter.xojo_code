@@ -18,7 +18,7 @@ Implements itf_table_row_writer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(dbAccess as clDatabaseAccess)
+		Sub Constructor(dbAccess as clAbstractDatabaseAccess)
 		  self.table_created = False
 		  self.dbAccess = dbAccess
 		  self.db = dbAccess.get_db
@@ -84,7 +84,7 @@ Implements itf_table_row_writer
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected dbAccess As clDatabaseAccess
+		Protected dbAccess As clAbstractDatabaseAccess
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

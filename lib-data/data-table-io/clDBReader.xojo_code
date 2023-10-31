@@ -12,11 +12,11 @@ Implements itf_table_row_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(dbAccess as clDatabaseAccess, source_name as string)
+		Sub Constructor(dbAccess as clAbstractDatabaseAccess, source_name as string)
 		  self.dbAccess = dbAccess
 		  self.db = dbAccess.get_db
 		  
-		   
+		  
 		  if source_name.IndexOf("select of ") <= 0 then 
 		    self.source_sql = "select * from " + source_name
 		    
@@ -88,7 +88,7 @@ Implements itf_table_row_reader
 		  for i as integer = 0 to rs.LastColumnIndex
 		    dim tmp_name as string = rs.ColumnAt(i).name
 		    
-		    tmp.value(tmp_name) = clDatabaseAccess.conv_db_type(rs.ColumnAt(i).Type)
+		    tmp.value(tmp_name) = clAbstractDatabaseAccess.conv_db_type(rs.ColumnAt(i).Type)
 		    
 		  next
 		  
@@ -133,7 +133,7 @@ Implements itf_table_row_reader
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected dbAccess As clDatabaseAccess
+		Protected dbAccess As clAbstractDatabaseAccess
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
