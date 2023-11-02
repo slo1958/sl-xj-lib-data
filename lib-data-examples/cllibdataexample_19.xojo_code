@@ -1,5 +1,5 @@
 #tag Class
-Protected Class cllibdataexample_18
+Protected Class cllibdataexample_19
 Inherits clLibDataExample
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
@@ -8,8 +8,8 @@ Inherits clLibDataExample
 		  Dim returnValue() as string = Super.describe()
 		  
 		  returnValue.append("- create a  datatable")
+		  returnValue.append("- create a view on the table")
 		  returnValue.Append("- define display titles")
-		  returnValue.append("- create a table with the structure of the first table")
 		  
 		  return returnValue 
 		End Function
@@ -19,31 +19,46 @@ Inherits clLibDataExample
 		Function id() As integer
 		  // Calling the overridden superclass method.
 		  
-		  return 18
+		  return 19
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
 		  
+		  
+		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  dim dct as Dictionary
+		  Dim table0 As New clDataTable("mytable without display title", serie_array( _
+		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
+		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
+		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
+		  , New clDataSerie("Sales", 100,200,300,400,500,600) _
+		  , New clDataSerie("Quantity", 51, 52,53,54, 55,56) _
+		  ))
 		  
-		  dct = new Dictionary
-		  dct.value("Country") = array("France", "", "Belgique", "France", "USA")
-		  dct.Value("City") = array("Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
-		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  Dim table1 As New clDataTable("mytable with display titles", serie_array( _
+		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
+		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
+		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
+		  , New clDataSerie("Sales", 100,200,300,400,500,600) _
+		  , New clDataSerie("Quantity", 51, 52,53,54, 55,56) _
+		  ))
 		  
-		  Dim table0 As New clDataTable("mytable", dct ,AddressOf alloc_series_019)
 		  
-		  table0.get_column("City").display_title = "Ville"
-		  table0.get_column("Country").display_title = "Pays"
-		  table0.get_column("Sales").display_title="Ventes" 
+		  table1.get_column("City").display_title = "Ville"
+		  table1.get_column("Country").display_title = "Pays"
+		  table1.get_column("Year").display_title = "Année"
+		  table1.get_column("Sales").display_title="Ventes"
+		  table1.get_column("Quantity").display_title="Volume"
 		  
-		  dim struc0 as clDataTable = table0.get_structure_as_table
 		  
-		  return array(table0, struc0)
+		  Dim view0 As clDataTable = table0.select_columns(array("Country", "City", "Sales"))
+		  
+		  Dim view1 As clDataTable = table1.select_columns(array("Country", "City", "Sales"))
+		  
+		  return array(table0, table1, view0, view1)
 		  
 		  
 		End Function

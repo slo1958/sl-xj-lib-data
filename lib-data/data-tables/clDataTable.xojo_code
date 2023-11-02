@@ -939,6 +939,52 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(the_table_name as string, the_columns as Dictionary, allocator as column_allocator = nil)
+		  //
+		  // Creates a new data table from a set of columns. Columns are passed as a dictionary with column name as key and an array of values as value
+		  //  
+		  //  Parameters:
+		  //  - the name of the data table
+		  // - the columns as a dictionary
+		  // - an option to clone a data serie (column) if it is already used in another table
+		  //
+		  //  Returns:
+		  //  -  
+		  //
+		  
+		  meta_dict = new clMetaData
+		  
+		  if the_columns = nil then return
+		  
+		  dim tmp_columns() as clAbstractDataSerie
+		  
+		  for each tmp_column_name as string in the_columns.Keys
+		    dim v() as variant = self.make_variant_array(the_columns.value(tmp_column_name))
+		    
+		    if allocator = nil then
+		      tmp_columns.Add(new clDataSerie(tmp_column_name, v))
+		      
+		    else
+		      dim tmp_column as clAbstractDataSerie = allocator.Invoke(tmp_column_name,"")
+		      tmp_column.append_elements(v)
+		      
+		      tmp_columns.Add(tmp_column)
+		      
+		    end if
+		  next
+		  
+		  internal_new_table(the_table_name)
+		  
+		  For Each c As clAbstractDataSerie In tmp_columns
+		    //  add column takes care of adjusting the length
+		    call Self.add_column(c)
+		    
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(table_name as string, table_source as itf_table_row_reader, allocator as column_allocator = nil)
 		  //
 		  //  Creates a datatable from a table row reader
@@ -1535,6 +1581,30 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_structure_as_table() As clDataTable
+		  
+		  dim col_name() as string
+		  dim col_type() as string
+		  dim col_title() as String
+		  
+		  for i as integer = 0 to columns.LastIndex
+		    col_name.Add(columns(i).name)
+		    col_type.add(columns(i).get_type)
+		    col_title.add(columns(i).display_title)
+		    
+		  next
+		  
+		  dim dct as new Dictionary
+		  dct.Value("name") = col_name
+		  dct.Value("type") = col_type
+		  dct.Value("title") = col_title
+		  
+		  return new clDataTable("structure of " + self.name, dct)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function groupby(grouping_dimensions() as string, aggregate_measures() as string, aggregate_mode() as string) As clDataTable
 		  //  
 		  //  returns a new data table with the results of the aggregation
@@ -1865,6 +1935,57 @@ Implements itf_table_column_reader,Iterable
 		  return internal_join(table_to_join, tmp_key1, tmp_key2)
 		  
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function make_variant_array(v as Variant) As variant()
+		  dim res() as variant
+		  
+		  if not v.IsArray then return res
+		  
+		  Select case v.ArrayElementType 
+		    
+		  case variant.TypeBoolean 
+		    dim s() as Boolean = v
+		    
+		    for each a as boolean in s
+		      res.add(a)
+		      
+		    next
+		    
+		  case Variant.TypeInteger
+		    dim s() as integer = v
+		    
+		    for each a as integer in s
+		      res.add(a)
+		      
+		    next
+		    
+		    
+		  case Variant.TypeDouble
+		    dim s() as double = v
+		    
+		    for each a as double in s
+		      res.add(a)
+		      
+		    next
+		    
+		    
+		  case Variant.TypeString
+		    dim s() as string = v
+		    
+		    for each a as string in s
+		      res.add(a)
+		      
+		    next
+		    
+		  end Select
+		  
+		  
+		  return res
+		  
+		   
 		End Function
 	#tag EndMethod
 

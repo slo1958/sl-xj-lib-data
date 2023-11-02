@@ -80,6 +80,26 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub append_elements(the_items() as Variant)
+		  //  
+		  //  Add elements to the data serie
+		  //  
+		  //  Parameters
+		  //  - the_items (array of variant) the values to add to the data serie
+		  //  
+		  //  Returns:
+		  //  
+		  
+		  for each item as variant in the_items
+		    self.append_element(item)
+		    
+		  next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub append_serie(the_serie as clAbstractDataSerie)
 		  //  
 		  //  Add all elements of a data serie to the current data serie
@@ -607,6 +627,20 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //
 		  
 		  Return self.meta_dict
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_type() As string
+		  
+		  Var t As Introspection.TypeInfo
+		  t = Introspection.GetType(self)
+		  
+		  return  t.Name
+		  
+		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		  
+		  
 		End Function
 	#tag EndMethod
 

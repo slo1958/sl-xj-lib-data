@@ -1,7 +1,20 @@
 #tag Module
 Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
-		Function alloc_series(column_name as string, column_type_info as string) As clAbstractDataSerie
+		Function alloc_series_019(column_name as string, column_type_info as string) As clAbstractDataSerie
+		  if column_name = "Sales" then
+		    Return new clNumberDataSerie(column_name)
+		    
+		  else
+		    return new clDataSerie(column_name)
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function alloc_series_io1(column_name as string, column_type_info as string) As clAbstractDataSerie
 		  if column_name = "Alpha" then
 		    Return new clCompressedDataSerie(column_name)
 		    
@@ -75,6 +88,9 @@ Protected Module clDataTable_tests
 		  test_014
 		  test_015
 		  test_017
+		  test_018
+		  test_019
+		  test_020
 		  
 		End Sub
 	#tag EndMethod
@@ -744,13 +760,6 @@ Protected Module clDataTable_tests
 		  
 		  Dim table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("France","Paris",2100))
-		  table0.append_row(Array("","Marseille",2200))
-		  table0.append_row(Array("Belgique","",2300))
-		  
 		  call table0.add_column(col_sales *2 )
 		  
 		  dim nb as integer = table0.clip_range("sales",1000, 2000)
@@ -769,26 +778,94 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_examples()
-		  dim ex() as clLibDataExample
+		Sub test_019()
+		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  ex.Add(new cllibdataexample_01)
-		  ex.Add(new cllibdataexample_02)
-		  ex.Add(new cllibdataexample_03)
-		  ex.Add(new cllibdataexample_04)
-		  ex.Add(new cllibdataexample_05)
-		  ex.Add(new cllibdataexample_06)
-		  ex.Add(new cllibdataexample_07)
-		  ex.Add(new cllibdataexample_08)
-		  ex.Add(new cllibdataexample_09)
-		  ex.Add(new cllibdataexample_10)
-		  ex.Add(new cllibdataexample_11)
-		  ex.Add(new cllibdataexample_12)
-		  ex.Add(new cllibdataexample_14)
-		  ex.Add(new cllibdataexample_15)
-		  ex.Add(new cllibdataexample_16)
-		  ex.Add(new cllibdataexample_17)
-		  ex.Add(new cllibdataexample_18)
+		  dim dct as Dictionary
+		  
+		  dct = new Dictionary
+		  dct.value("Country") = array("France", "", "Belgique", "France", "USA")
+		  dct.Value("City") = array("Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  
+		  Dim table0 As New clDataTable("mytable", dct)  
+		  
+		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
+		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  dim col_sales as new clNumberDataSerie("Sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  
+		  Dim table_expected As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
+		  
+		  check_table("use dict for creation", table_expected, table0)
+		  
+		  table0.get_column("City").display_title = "Ville"
+		  table0.get_column("Country").display_title = "Pays"
+		  table0.get_column("Sales").display_title="Ventes" 
+		  
+		  dim struc0 as clDataTable = table0.get_structure_as_table
+		  
+		   dct = new Dictionary
+		  dct.value("name") = array("Country", "City", "Sales")
+		  dct.Value("type") = array("clDataSerie","clDataSerie","clDataSerie")
+		  dct.Value("title") = array("Pays","Ville","Ventes")
+		  
+		  dim struc_expected as new clDataTable("exp_struct", dct)
+		  
+		  check_table("structure", struc_expected, struc0)
+		  
+		  dim k as integer =1
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_020()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  dim dct as Dictionary
+		  
+		  dct = new Dictionary
+		  dct.value("Country") = array("France", "", "Belgique", "France", "USA")
+		  dct.Value("City") = array("Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  
+		  Dim table0 As New clDataTable("mytable", dct ,AddressOf alloc_series_019)
+		  
+		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
+		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  dim col_sales as new clNumberDataSerie("Sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  
+		  Dim table_expected As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
+		  
+		  check_table("use dict for creation", table_expected, table0)
+		  
+		  table0.get_column("City").display_title = "Ville"
+		  table0.get_column("Country").display_title = "Pays"
+		  table0.get_column("Sales").display_title="Ventes" 
+		  
+		  dim struc0 as clDataTable = table0.get_structure_as_table
+		  
+		   dct = new Dictionary
+		  dct.value("name") = array("Country", "City", "Sales")
+		  dct.Value("type") = array("clDataSerie","clDataSerie","clNumberDataSerie")
+		  dct.Value("title") = array("Pays","Ville","Ventes")
+		  
+		  dim struc_expected as new clDataTable("exp_struct", dct)
+		  
+		  check_table("structure", struc_expected, struc0)
+		  
+		  dim k as integer =1
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_examples()
+		  dim ex() as clLibDataExample = clLibDataExample.get_all_examples
 		  
 		  for each example as clLibDataExample in ex
 		    call example.run
@@ -823,7 +900,7 @@ Protected Module clDataTable_tests
 		  
 		  check_table("T4/T5", my_table4, my_table5) 
 		  
-		  dim my_table6  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series)
+		  dim my_table6  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series_io1)
 		  
 		  System.DebugLog("DONE WITH "+CurrentMethodName)
 		  

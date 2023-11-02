@@ -80,6 +80,7 @@ Class=clDateDataSerie;lib-data/data-series/clDateDataSerie.xojo_code;&h000000007
 Class=cllibdataexample_16;lib-data-examples/cllibdataexample_16.xojo_code;&h00000000465DE7FF;&h0000000073919FFF;false
 Class=cllibdataexample_17;lib-data-examples/cllibdataexample_17.xojo_code;&h000000007A45BFFF;&h0000000073919FFF;false
 Class=cllibdataexample_18;lib-data-examples/cllibdataexample_18.xojo_code;&h000000004672D7FF;&h0000000073919FFF;false
+Class=cllibdataexample_19;lib-data-examples/cllibdataexample_19.xojo_code;&h000000005231FFFF;&h0000000073919FFF;false
 Folder=data-table-io;lib-data/data-table-io;&h000000001E6037FF;&h0000000020C837FF;false
 Class=clDBReader;lib-data/data-table-io/clDBReader.xojo_code;&h000000007F37AFFF;&h000000001E6037FF;false
 Class=clDBWriter;lib-data/data-table-io/clDBWriter.xojo_code;&h00000000530E17FF;&h000000001E6037FF;false

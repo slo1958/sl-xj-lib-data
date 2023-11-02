@@ -11,6 +11,34 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Shared Function get_all_examples() As clLibDataExample()
+		  dim ex() as clLibDataExample
+		  
+		  ex.Add(new cllibdataexample_01)
+		  ex.Add(new cllibdataexample_02)
+		  ex.Add(new cllibdataexample_03)
+		  ex.Add(new cllibdataexample_04)
+		  ex.Add(new cllibdataexample_05)
+		  ex.Add(new cllibdataexample_06)
+		  ex.Add(new cllibdataexample_07)
+		  ex.Add(new cllibdataexample_08)
+		  ex.Add(new cllibdataexample_09)
+		  ex.Add(new cllibdataexample_10)
+		  ex.Add(new cllibdataexample_11)
+		  ex.Add(new cllibdataexample_12)
+		  ex.Add(new cllibdataexample_14)
+		  ex.Add(new cllibdataexample_15)
+		  ex.Add(new cllibdataexample_16)
+		  ex.Add(new cllibdataexample_17)
+		  ex.Add(new cllibdataexample_18)
+		  ex.Add(new cllibdataexample_19)
+		  
+		  return ex
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function id() As integer
 		  return -1
 		End Function
