@@ -1,5 +1,5 @@
 #tag Class
-Protected Class cllibdataexample_06
+Protected Class clLibDataExample_002
 Inherits clLibDataExample
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
@@ -7,10 +7,8 @@ Inherits clLibDataExample
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  
-		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- fast append data")
-		  returnValue.append("- apply filter function to create a dataserie")
+		  returnValue.append("- create a small table")
+		  returnValue.append("- aggregate using 0, 1 and 2 dimensions")
 		  
 		  return returnValue
 		  
@@ -18,46 +16,35 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function id() As integer
-		  // Calling the overridden superclass method.
-		  
-		  return 6
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
 		  
-		  //  Example_006
-		  //  - create an empty table
-		  //  - fast append data
-		  //  - apply filter function to create a dataserie 
+		  //  Example_002
+		  //  - create a small table
+		  //  - aggregate using 0, 1 and 2 dimensions
 		  //  
+		  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  
-		  
-		  Dim table0 As New clDataTable("mytable")
-		  
-		  call table0.add_columns(Array("country","city","sales"))
-		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("France","Marseille",1200))
-		  table0.append_row(Array("Belgique","Bruxelles",1300))
-		  table0.append_row(Array("Italy","Milan",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("Italy","Rome",1600))
-		  
-		  dim tmp1() as variant = table0.filter_apply_function(AddressOf field_filter,"country","France")
-		  
-		  call table0.add_column(new clDataSerie("is_france", tmp1))
-		  
-		  call table0.add_column(new clDataSerie("is_belgium",  table0.filter_apply_function(AddressOf field_filter, "country","Belgique")))
-		  
-		  return array(table0)
+		  Dim table0 As New clDataTable("mytable", serie_array( _
+		  New clDataSerie("City",  "Paris","Lyon","Namur","Paris","Charleroi","Milan") _
+		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
+		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
+		  , New clDataSerie("Sales", 100,200,300,400,500,600) _
+		  , New clDataSerie("Quantity", 51, 52,53,54, 55,56) _
+		  ))
 		  
 		  
+		  Dim table1 As clDataTable = table0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
+		  
+		  
+		  Dim table2 As clDataTable = table0.groupby(string_array, string_array("Sales"), string_array)
+		  table2.rename("Grand total")
+		  
+		  Dim table3 As clDataTable = table0.groupby(string_array("Country","City"), string_array, string_array(""))
+		  
+		  return array(table0, table1, table2, table3)
 		End Function
 	#tag EndMethod
 

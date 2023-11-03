@@ -1,7 +1,7 @@
 #tag Class
-Protected Class cllibdataexample_16
+Protected Class clLibDataExample_016
 Inherits clLibDataExample
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  
@@ -11,15 +11,8 @@ Inherits clLibDataExample
 		  returnValue.Add("- compare payment date with deadline")
 		  returnValue.Add("- flag late payment")
 		  returnValue.Add("- calculate late payment pernalty")
-		   
-		  return returnValue
 		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function id() As integer
-		  return 16
+		  return returnValue
 		  
 		End Function
 	#tag EndMethod

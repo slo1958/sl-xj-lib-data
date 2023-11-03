@@ -1,5 +1,5 @@
 #tag Class
-Protected Class cllibdataexample_18
+Protected Class clLibDataExample_006
 Inherits clLibDataExample
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
@@ -7,43 +7,47 @@ Inherits clLibDataExample
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.append("- create a  datatable")
-		  returnValue.Append("- define display titles")
-		  returnValue.append("- create a table with the structure of the first table")
 		  
-		  return returnValue 
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function id() As integer
-		  // Calling the overridden superclass method.
+		  returnValue.append("- create an empty datatable")
+		  returnValue.append("- fast append data")
+		  returnValue.append("- apply filter function to create a dataserie")
 		  
-		  return 18
+		  return returnValue
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
 		  
+		  //  Example_006
+		  //  - create an empty table
+		  //  - fast append data
+		  //  - apply filter function to create a dataserie 
+		  //  
+		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  dim dct as Dictionary
 		  
-		  dct = new Dictionary
-		  dct.value("Country") = array("France", "", "Belgique", "France", "USA")
-		  dct.Value("City") = array("Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
-		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  Dim table0 As New clDataTable("mytable", dct ,AddressOf alloc_series_019)
+		  Dim table0 As New clDataTable("mytable")
 		  
-		  table0.get_column("City").display_title = "Ville"
-		  table0.get_column("Country").display_title = "Pays"
-		  table0.get_column("Sales").display_title="Ventes" 
+		  call table0.add_columns(Array("country","city","sales"))
 		  
-		  dim struc0 as clDataTable = table0.get_structure_as_table
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("France","Marseille",1200))
+		  table0.append_row(Array("Belgique","Bruxelles",1300))
+		  table0.append_row(Array("Italy","Milan",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("Italy","Rome",1600))
 		  
-		  return array(table0, struc0)
+		  dim tmp1() as variant = table0.filter_apply_function(AddressOf field_filter,"country","France")
+		  
+		  call table0.add_column(new clDataSerie("is_france", tmp1))
+		  
+		  call table0.add_column(new clDataSerie("is_belgium",  table0.filter_apply_function(AddressOf field_filter, "country","Belgique")))
+		  
+		  return array(table0)
 		  
 		  
 		End Function

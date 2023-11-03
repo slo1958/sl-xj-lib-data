@@ -1,6 +1,57 @@
 #tag Module
 Protected Module helper_functions
 	#tag Method, Flags = &h0
+		Function make_variant_array(v as Variant) As variant()
+		  dim res() as variant
+		  
+		  if not v.IsArray then return res
+		  
+		  Select case v.ArrayElementType 
+		    
+		  case variant.TypeBoolean 
+		    dim s() as Boolean = v
+		    
+		    for each a as boolean in s
+		      res.add(a)
+		      
+		    next
+		    
+		  case Variant.TypeInteger, Variant.TypeInt32, Variant.TypeInt64
+		    dim s() as integer = v
+		    
+		    for each a as integer in s
+		      res.add(a)
+		      
+		    next
+		    
+		    
+		  case Variant.TypeDouble, variant.TypeSingle
+		    dim s() as double = v
+		    
+		    for each a as double in s
+		      res.add(a)
+		      
+		    next
+		    
+		    
+		  case Variant.TypeString
+		    dim s() as string = v
+		    
+		    for each a as string in s
+		      res.add(a)
+		      
+		    next
+		    
+		  end Select
+		  
+		  
+		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function serie_array(paramarray series as clAbstractDataSerie) As clAbstractDataSerie()
 		  Dim tmp() As clAbstractDataSerie
 		  

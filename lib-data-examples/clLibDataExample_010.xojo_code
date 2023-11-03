@@ -1,57 +1,53 @@
 #tag Class
-Protected Class cllibdataexample_07
+Protected Class clLibDataExample_010
 Inherits clLibDataExample
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- fast append data")
-		  returnValue.append("- create a dataserie  by applying a simple operation between columns")
 		  
-		  return returnValue 
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function id() As integer
-		  // Calling the overridden superclass method.
+		  returnValue.append("- create a datatable")
+		  returnValue.append("- test the 'get_row' method")
 		  
-		  return 7
+		  
+		  return returnValue
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
-		  
-		  //  Example_007
-		  //  - create an empty table
-		  //  - fast append data
-		  //  - create a dataserie  by applying a simple operation between columns
 		  //  
-		  
+		  //  Example_010
+		  //  - create an empty datatable
+		  //  - test the 'get_row/' method
+		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  
 		  Dim table0 As New clDataTable("mytable")
 		  
+		  call table0.add_columns(Array("country","city","sales"))
 		  
-		  call table0.add_column(new clDataSerie("name"))
-		  call table0.add_column(new clNumberDataSerie("quantity"))
-		  call table0.add_column(new clNumberDataSerie("unit_price"))
-		  
-		  table0.append_row(Array("alpha",50, 6.5))
-		  table0.append_row(Array("beta", 20, 18))
-		  table0.append_row(Array("gamma", 10, 50))
-		  
-		  
-		  dim sr as clAbstractDataSerie = table0.add_column(clNumberDataSerie(table0.get_column("unit_price")) * clNumberDataSerie(table0.get_column("quantity")))
-		  
-		  return Array(table0)
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("","Marseille",1200))
+		  table0.append_row(Array("Belgique","",1300))
+		  table0.append_row(Array("USA","NewYork",1400))
+		  table0.append_row(Array("Belgique","Bruxelles",1500))
+		  table0.append_row(Array("USA","Chicago",1600))
 		  
 		  
+		  dim table1 as new clDataTable("res")
+		  
+		  for row_index as integer = 0 to table0.row_count-1
+		    dim tmp_row as clDataRow = table0.get_row(row_index, True)
+		    table1.append_row(tmp_row)
+		  next
+		  
+		  
+		  return array(table0, table1)
 		End Function
 	#tag EndMethod
 

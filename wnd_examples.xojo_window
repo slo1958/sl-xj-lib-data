@@ -108,6 +108,7 @@ Begin Window wnd_examples
       Underline       =   False
       Visible         =   True
       Width           =   300
+      _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
    Begin PushButton pb_run
@@ -153,7 +154,7 @@ End
 		  listbox1.RemoveAllRows
 		  
 		  for each example as clLibDataExample in ex
-		    listbox1.AddRow("Example " + str(example.id))
+		    listbox1.AddRow(example.name)
 		    Listbox1.RowTagAt(listbox1.LastAddedRowIndex) = example
 		    
 		  next
@@ -219,7 +220,7 @@ End
 		  
 		  show_example_description tmp
 		  
-		   
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents

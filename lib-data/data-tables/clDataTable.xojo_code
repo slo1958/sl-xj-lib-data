@@ -959,7 +959,7 @@ Implements itf_table_column_reader,Iterable
 		  dim tmp_columns() as clAbstractDataSerie
 		  
 		  for each tmp_column_name as string in the_columns.Keys
-		    dim v() as variant = self.make_variant_array(the_columns.value(tmp_column_name))
+		    dim v() as variant = make_variant_array(the_columns.value(tmp_column_name))
 		    
 		    if allocator = nil then
 		      tmp_columns.Add(new clDataSerie(tmp_column_name, v))
@@ -1581,6 +1581,55 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_statistics_as_table() As clDataTable
+		  
+		  dim col_name() as string
+		  dim col_ubound() as integer
+		  dim col_count() as integer
+		  dim col_count_nz() as double
+		  dim col_sum() as Double
+		  dim col_average() as Double
+		  dim col_average_nz() as Double
+		  dim col_stdev() as Double
+		  dim col_stdev_nz() as Double
+		  
+		  
+		  for i as integer = 0 to columns.LastIndex
+		    col_name.Add(columns(i).name)
+		    
+		    col_ubound.Add(columns(i).upper_bound)
+		    
+		    col_count.Add(columns(i).count)
+		    col_count_nz.Add(columns(i).count_non_zero)
+		    
+		    col_sum.add(columns(i).sum)
+		    col_average.Add(columns(i).average)
+		    col_average_nz.Add(columns(i).average_non_zero)
+		    
+		    col_stdev.Add(columns(i).standard_deviation)
+		    col_stdev_nz.Add(columns(i).standard_deviation_non_zero)
+		    
+		  next
+		  
+		  dim series() as clAbstractDataSerie
+		  series.Add(new clDataSerie(statistics_name_column, col_name))
+		  series.add(new clIntegerDataSerie(statistics_ubound_column, col_ubound))
+		  series.Add(new clIntegerDataSerie(statistics_count_column, col_count))
+		  series.Add(new clIntegerDataSerie(statistics_count_nz_column, col_count_nz))
+		  
+		  series.Add(new clNumberDataSerie(statistics_sum_column, col_sum))
+		  series.Add(new clNumberDataSerie(statistics_average_column, col_average))
+		  series.Add(new clNumberDataSerie(statistics_average_nz_column, col_average_nz))
+		  
+		  series.Add(new clNumberDataSerie(statistics_std_dev_column, col_stdev))
+		  series.Add(new clNumberDataSerie(statistics_std_dev_nz_column, col_stdev_nz))
+		  
+		  return new clDataTable(self.statistics_name_prefix + self.name, series)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_structure_as_table() As clDataTable
 		  
 		  dim col_name() as string
@@ -1595,11 +1644,11 @@ Implements itf_table_column_reader,Iterable
 		  next
 		  
 		  dim dct as new Dictionary
-		  dct.Value("name") = col_name
-		  dct.Value("type") = col_type
-		  dct.Value("title") = col_title
+		  dct.Value(structure_name_column) = col_name
+		  dct.Value(structure_type_column) = col_type
+		  dct.Value(structure_title_column) = col_title
 		  
-		  return new clDataTable("structure of " + self.name, dct)
+		  return new clDataTable(self.structure_name_prefix + self.name, dct)
 		  
 		End Function
 	#tag EndMethod
@@ -1855,6 +1904,9 @@ Implements itf_table_column_reader,Iterable
 	#tag Method, Flags = &h21
 		Private Sub internal_new_table(the_table_name as string)
 		  
+		  self.statistics_name_prefix = "statistics of "
+		  self.structure_name_prefix = "structure of "
+		  
 		  if the_table_name.trim.Length = 0 then 
 		    table_name = "Unnamed"
 		    
@@ -1935,57 +1987,6 @@ Implements itf_table_column_reader,Iterable
 		  return internal_join(table_to_join, tmp_key1, tmp_key2)
 		  
 		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Shared Function make_variant_array(v as Variant) As variant()
-		  dim res() as variant
-		  
-		  if not v.IsArray then return res
-		  
-		  Select case v.ArrayElementType 
-		    
-		  case variant.TypeBoolean 
-		    dim s() as Boolean = v
-		    
-		    for each a as boolean in s
-		      res.add(a)
-		      
-		    next
-		    
-		  case Variant.TypeInteger
-		    dim s() as integer = v
-		    
-		    for each a as integer in s
-		      res.add(a)
-		      
-		    next
-		    
-		    
-		  case Variant.TypeDouble
-		    dim s() as double = v
-		    
-		    for each a as double in s
-		      res.add(a)
-		      
-		    next
-		    
-		    
-		  case Variant.TypeString
-		    dim s() as string = v
-		    
-		    for each a as string in s
-		      res.add(a)
-		      
-		    next
-		    
-		  end Select
-		  
-		  
-		  return res
-		  
-		   
 		End Function
 	#tag EndMethod
 
@@ -2280,9 +2281,54 @@ Implements itf_table_column_reader,Iterable
 		Protected row_index As clDataSerieRowID
 	#tag EndProperty
 
+	#tag Property, Flags = &h21
+		Private statistics_name_prefix As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private structure_name_prefix As String
+	#tag EndProperty
+
 	#tag Property, Flags = &h1
 		Protected table_name As String
 	#tag EndProperty
+
+
+	#tag Constant, Name = statistics_average_column, Type = String, Dynamic = False, Default = \"average", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = statistics_average_nz_column, Type = String, Dynamic = False, Default = \"average_nz", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = statistics_count_column, Type = String, Dynamic = False, Default = \"count", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = statistics_count_nz_column, Type = String, Dynamic = False, Default = \"count_nz", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = statistics_name_column, Type = String, Dynamic = False, Default = \"name", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = statistics_std_dev_column, Type = String, Dynamic = False, Default = \"std_dev", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = statistics_std_dev_nz_column, Type = String, Dynamic = False, Default = \"std_dev_nz", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = statistics_sum_column, Type = String, Dynamic = False, Default = \"sum", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = statistics_ubound_column, Type = String, Dynamic = False, Default = \"ubound", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = structure_name_column, Type = String, Dynamic = False, Default = \"name", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = structure_title_column, Type = String, Dynamic = False, Default = \"title", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = structure_type_column, Type = String, Dynamic = False, Default = \"type", Scope = Public
+	#tag EndConstant
 
 
 	#tag ViewBehavior

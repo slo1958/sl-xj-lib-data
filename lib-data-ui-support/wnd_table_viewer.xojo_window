@@ -146,7 +146,7 @@ Begin Window wnd_table_viewer
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   False
       Multiline       =   True
       Scope           =   0

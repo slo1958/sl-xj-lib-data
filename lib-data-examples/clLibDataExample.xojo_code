@@ -14,25 +14,26 @@ Protected Class clLibDataExample
 		Shared Function get_all_examples() As clLibDataExample()
 		  dim ex() as clLibDataExample
 		  
-		  ex.Add(new cllibdataexample_01)
-		  ex.Add(new cllibdataexample_02)
-		  ex.Add(new cllibdataexample_03)
-		  ex.Add(new cllibdataexample_04)
-		  ex.Add(new cllibdataexample_05)
-		  ex.Add(new cllibdataexample_06)
-		  ex.Add(new cllibdataexample_07)
-		  ex.Add(new cllibdataexample_08)
-		  ex.Add(new cllibdataexample_09)
-		  ex.Add(new cllibdataexample_10)
-		  ex.Add(new cllibdataexample_11)
-		  ex.Add(new cllibdataexample_12)
-		  ex.Add(new cllibdataexample_14)
-		  ex.Add(new cllibdataexample_15)
-		  ex.Add(new cllibdataexample_16)
-		  ex.Add(new cllibdataexample_17)
-		  ex.Add(new cllibdataexample_18)
-		  ex.Add(new cllibdataexample_19)
-		  
+		  ex.Add(new clLibDataExample_001)
+		  ex.Add(new clLibDataExample_002)
+		  ex.Add(new clLibDataExample_003)
+		  ex.Add(new clLibDataExample_004)
+		  ex.Add(new clLibDataExample_005)
+		  ex.Add(new clLibDataExample_006)
+		  ex.Add(new clLibDataExample_007)
+		  ex.Add(new clLibDataExample_008)
+		  ex.Add(new clLibDataExample_009)
+		  ex.Add(new clLibDataExample_010)
+		  ex.Add(new clLibDataExample_011)
+		  ex.Add(new clLibDataExample_012)
+		  ex.Add(new clLibDataExample_014)
+		  ex.Add(new clLibDataExample_015)
+		  ex.Add(new clLibDataExample_016)
+		  ex.Add(new clLibDataExample_017)
+		  ex.Add(new clLibDataExample_018)
+		  ex.Add(new clLibDataExample_019)
+		  ex.Add(new clLibDataExample_020)
+		  ex.Add(new clLibDataExample_021)
 		  return ex
 		  
 		End Function
@@ -40,7 +41,22 @@ Protected Class clLibDataExample
 
 	#tag Method, Flags = &h0
 		Function id() As integer
-		  return -1
+		   
+		  Var t As Introspection.TypeInfo
+		  t = Introspection.GetType(self)
+		  
+		  return  val(t.Name.Right(3)) 
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function name() As string
+		  
+		  Var t As Introspection.TypeInfo
+		  t = Introspection.GetType(self)
+		  
+		  return  t.name
+		  
 		End Function
 	#tag EndMethod
 

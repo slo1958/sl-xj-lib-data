@@ -1,5 +1,5 @@
 #tag Class
-Protected Class cllibdataexample_15
+Protected Class clLibDataExample_014
 Inherits clLibDataExample
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
@@ -7,9 +7,11 @@ Inherits clLibDataExample
 		  
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.Add("- create a datatable with dates")
-		  returnValue.Add("- subtract col1 - col2")
-		  returnValue.Add("- apply different formatting") 
+		  returnValue.Add("- create a datatable")
+		  returnValue.Add("- calculate sales * 2  BFEORE sales is clipped")
+		  returnValue.Add("- apply clip_range 1000..2000 on the sales column")
+		  returnValue.Add("- created a new column using clipped_by_range 1100..1500 and multiply results by 2")
+		  
 		  
 		  return returnValue
 		  
@@ -17,41 +19,33 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function id() As integer
-		  return 15
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
 		  
-		  //  Example_015
-		  //  - test date 
+		  //  Example_014
+		  //  - test clip and clipped
 		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim c1 As New clDateDataSerie("ExpiryDate") 
-		  Dim c2 As New clDateDataSerie("CurrentDate") 
 		  
-		  c1.append_element("2023-06-01")
-		  c1.append_element("2022-08-12")
+		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
+		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  dim col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  c2.append_element("2021-06-01")
-		  c2.append_element("2020-08-01")
+		  Dim table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
 		  
-		  dim c3 as clIntegerDataSerie = c1 - c2
+		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("","Marseille",1200))
+		  table0.append_row(Array("Belgique","",1300))
+		  table0.append_row(Array("France","Paris",2100))
+		  table0.append_row(Array("","Marseille",2200))
+		  table0.append_row(Array("Belgique","",2300))
 		  
-		  dim c4 as clIntegerDataSerie = c1 - DateTime.FromString("2020-01-01")
+		  call table0.add_column(col_sales *2 )
 		  
-		  dim c5 as clStringDataSerie = c1.ToString()
+		  dim nb as integer = table0.clip_range("sales",1000, 2000)
 		  
-		  dim c6 as clStringDataSerie = c1.ToString(DateTime.FormatStyles.Medium)
-		  
-		  dim c7 as clStringDataSerie = c1.ToString("yyyy-MM")
-		  
-		  dim table0 as new clDataTable("output", serie_array(c1, c2, c3, c4, c5, c6, c7))
+		  call table0.add_column(col_sales.clipped_by_range(1100, 1500) * 2)
 		  
 		  dim ret() as itf_table_column_reader
 		  ret.add(table0)

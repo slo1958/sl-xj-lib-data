@@ -1,5 +1,5 @@
 #tag Class
-Protected Class cllibdataexample_14
+Protected Class clLibDataExample_012
 Inherits clLibDataExample
 	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
@@ -8,10 +8,10 @@ Inherits clLibDataExample
 		  Dim returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a datatable")
-		  returnValue.Add("- calculate sales * 2  BFEORE sales is clipped")
-		  returnValue.Add("- apply clip_range 1000..2000 on the sales column")
-		  returnValue.Add("- created a new column using clipped_by_range 1100..1500 and multiply results by 2")
-		  
+		  returnValue.Add("- Text string handling")
+		  returnValue.Add("- split the text field into country and city")
+		  returnValue.add("- get total sales per country")
+		  returnValue.Add("- get list of unique country/city pairs")
 		  
 		  return returnValue
 		  
@@ -19,43 +19,46 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function id() As integer
-		  return 14
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
 		  
-		  //  Example_014
-		  //  - test clip and clipped
+		  //  Example_012
+		  //  - test string handling
+		  //  - test basic 'unique'
 		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
 		  
-		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
-		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
-		  dim col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  dim col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
+		  dim col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
 		  
-		  Dim table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
+		  dim table1 as new clDataTable("source table", serie_array(col_source, col_sales))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("France","Paris",2100))
-		  table0.append_row(Array("","Marseille",2200))
-		  table0.append_row(Array("Belgique","",2300))
 		  
-		  call table0.add_column(col_sales *2 )
+		  // we split the "source" field to extract country and city
 		  
-		  dim nb as integer = table0.clip_range("sales",1000, 2000)
+		  dim table2 as new clDataTable("prepared", serie_array( _
+		  col_source, _
+		  col_source.text_before("-").rename("country"), _
+		  col_source.text_after("-").rename("city"), _
+		  col_sales),_
+		  true)
 		  
-		  call table0.add_column(col_sales.clipped_by_range(1100, 1500) * 2)
+		  
+		  dim col_city  as clStringDataSerie = clStringDataSerie(table2.get_column("city"))
+		  
+		  call table2.add_column(col_city.Uppercase.rename("City UC"))
+		  
+		  Dim table3 As clDataTable = table2.unique(array("country", "city"))
+		  
+		  
+		  dim table4 as clDataTable  = table2.groupby(array("country"), array("Sales"), array(""))
 		  
 		  dim ret() as itf_table_column_reader
-		  ret.add(table0)
+		  ret.Add(table1)
+		  ret.Add(table2)
+		  ret.Add(table3)
+		  ret.add(table4)
 		  
 		  return ret
 		  

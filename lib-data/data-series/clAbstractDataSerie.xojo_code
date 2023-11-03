@@ -141,6 +141,58 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function average() As double
+		  Dim limit As Integer = row_count - 1
+		  Dim i As Integer
+		  
+		  Dim s As Double
+		  dim n as integer
+		  
+		  For i = 0 To limit
+		    if self.element_is_defined(i) then
+		      dim tmp as Double = get_element_as_number(i)
+		      s = s + tmp
+		      n = n + 1
+		      
+		    end if
+		    
+		  Next
+		  
+		  if n < 1 then return 0
+		  
+		  return s / n
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function average_non_zero() As double
+		  Dim limit As Integer = row_count - 1
+		  Dim i As Integer
+		  
+		  Dim s As Double
+		  dim n as integer
+		  
+		  For i = 0 To limit
+		    if self.element_is_defined(i) then
+		      dim tmp as Double = get_element_as_number(i)
+		      
+		      if tmp <> 0 then
+		        s = s + tmp
+		        n = n + 1
+		      end if
+		      
+		    end if
+		    
+		  Next
+		  
+		  if n < 1 then return 0
+		  
+		  return s / n 
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub clear_aliases()
 		  //  
 		  //  Remove all aliases
@@ -307,6 +359,21 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  serie_name = the_label
 		  physical_table_link = Nil
 		  
+		  if the_values.LastIndex < 0 then return
+		  
+		  if the_values(0).IsArray and the_values.LastIndex = 0 then
+		    dim tmp() as variant = make_variant_array(the_values(0))
+		    
+		    For i As Integer = 0 To tmp.Ubound
+		      self.append_element(tmp(i))
+		      
+		    Next
+		    
+		    return
+		    
+		  end if
+		  
+		  
 		  For i As Integer = 0 To the_values.Ubound
 		    self.append_element(the_values(i))
 		    
@@ -356,6 +423,46 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  next
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function count() As double
+		  Dim limit As Integer = row_count - 1
+		  Dim i As Integer
+		  
+		  dim n as integer
+		  
+		  For i = 0 To limit
+		    if self.element_is_defined(i) then
+		      n = n + 1
+		      
+		    end if
+		    
+		  Next
+		  
+		  return n
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function count_non_zero() As double
+		  Dim limit As Integer = row_count - 1
+		  Dim i As Integer
+		  
+		  dim n as integer
+		  
+		  For i = 0 To limit
+		    if self.element_is_defined(i) and self.get_element_as_number(i) <> 0 then
+		      n = n + 1
+		      
+		    end if
+		    
+		  Next
+		  
+		  return n
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -412,6 +519,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  System.DebugLog("----END " + Self.serie_name+" --------")
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function element_is_defined(the_element_index as integer) As Boolean
+		  return self.get_element(the_element_index) <> nil
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -636,11 +750,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  Var t As Introspection.TypeInfo
 		  t = Introspection.GetType(self)
 		  
-		  return  t.Name
-		  
-		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
-		  
-		  
+		  return  t.Name 
 		End Function
 	#tag EndMethod
 
@@ -752,6 +862,41 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function round_values(nb_decimal as integer = 0) As integer
+		  //  
+		  //  Round the values of the current data serie against a high_value:
+		  //.    
+		  //
+		  //  Parameters
+		  // - number of digits after decimal mark
+		  //  
+		  //  Returns:
+		  //  - the number of values updated
+		  //
+		  
+		  
+		  dim last_index as integer = self.row_count
+		  dim count_changes as integer = 0
+		  
+		  dim corr as double = 10 ^ max(nb_decimal,0)
+		  
+		  for index as integer = 0 to last_index
+		    dim current_value as variant = self.get_element(index)
+		    dim new_value as double = round(current_value * corr) / corr
+		    
+		    if current_value <> new_value then
+		      self.set_element(index, new_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function row_count() As integer
 		  return self.upper_bound+1
 		End Function
@@ -809,6 +954,73 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function standard_deviation() As double
+		  Dim limit As Integer = row_count - 1
+		  Dim i As Integer
+		  
+		  Dim s1 As Double
+		  dim s2 as double
+		  
+		  dim tmp as Double
+		  
+		  dim n as integer
+		  
+		  For i = 0 To limit
+		    if self.element_is_defined(i) then
+		      tmp = get_element_as_number(i)
+		      s1 = s1 + tmp
+		      s2 = s2 + tmp * tmp
+		      
+		      n = n + 1
+		      
+		    end if
+		    
+		  Next
+		  
+		  if n < 2 then return 0
+		  
+		  dim m as double = s1/n
+		  
+		  return Sqrt((n * m * m - 2 * m *s1 + s2)  / (n-1))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function standard_deviation_non_zero() As double
+		  Dim limit As Integer = row_count - 1
+		  Dim i As Integer
+		  
+		  Dim s1 As Double
+		  dim s2 as double
+		  
+		  dim tmp as Double
+		  
+		  dim n as integer
+		  
+		  For i = 0 To limit
+		    if self.element_is_defined(i) then
+		      tmp = get_element_as_number(i)
+		      if tmp <> 0 then
+		        s1 = s1 + tmp
+		        s2 = s2 + tmp * tmp
+		        
+		        n = n + 1
+		        
+		      end if
+		      
+		    end if
+		    
+		  Next
+		  
+		  if n < 2 then return 0
+		  
+		  dim m as double = s1/n
+		  
+		  return Sqrt(( n * m * m - 2 * m * s1 + s2)  / (n-1))
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

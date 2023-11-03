@@ -1,16 +1,15 @@
 #tag Class
-Protected Class cllibdataexample_10
+Protected Class clLibDataExample_015
 Inherits clLibDataExample
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
-		  // Calling the overridden superclass method.
+		  
 		  Dim returnValue() as string = Super.describe()
 		  
-		  
-		  returnValue.append("- create a datatable")
-		  returnValue.append("- test the 'get_row' method")
-		  
+		  returnValue.Add("- create a datatable with dates")
+		  returnValue.Add("- subtract col1 - col2")
+		  returnValue.Add("- apply different formatting") 
 		  
 		  return returnValue
 		  
@@ -18,44 +17,40 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function id() As integer
-		  // Calling the overridden superclass method.
-		  
-		  return 10
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function run() As itf_table_column_reader()
-		  //  
-		  //  Example_010
-		  //  - create an empty datatable
-		  //  - test the 'get_row/' method
+		  
+		  //  Example_015
+		  //  - test date 
 		  //  
 		  
 		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  Dim table0 As New clDataTable("mytable")
+		  Dim c1 As New clDateDataSerie("ExpiryDate") 
+		  Dim c2 As New clDateDataSerie("CurrentDate") 
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  c1.append_element("2023-06-01")
+		  c1.append_element("2022-08-12")
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
+		  c2.append_element("2021-06-01")
+		  c2.append_element("2020-08-01")
 		  
+		  dim c3 as clIntegerDataSerie = c1 - c2
 		  
-		  dim table1 as new clDataTable("res")
+		  dim c4 as clIntegerDataSerie = c1 - DateTime.FromString("2020-01-01")
 		  
-		  for row_index as integer = 0 to table0.row_count-1
-		    dim tmp_row as clDataRow = table0.get_row(row_index, True)
-		    table1.append_row(tmp_row)
-		  next
+		  dim c5 as clStringDataSerie = c1.ToString()
 		  
+		  dim c6 as clStringDataSerie = c1.ToString(DateTime.FormatStyles.Medium)
 		  
-		  return array(table0, table1)
+		  dim c7 as clStringDataSerie = c1.ToString("yyyy-MM")
+		  
+		  dim table0 as new clDataTable("output", serie_array(c1, c2, c3, c4, c5, c6, c7))
+		  
+		  dim ret() as itf_table_column_reader
+		  ret.add(table0)
+		  
+		  return ret
+		  
 		End Function
 	#tag EndMethod
 

@@ -91,6 +91,7 @@ Protected Module clDataTable_tests
 		  test_018
 		  test_019
 		  test_020
+		  test_021
 		  
 		End Sub
 	#tag EndMethod
@@ -804,7 +805,7 @@ Protected Module clDataTable_tests
 		  
 		  dim struc0 as clDataTable = table0.get_structure_as_table
 		  
-		   dct = new Dictionary
+		  dct = new Dictionary
 		  dct.value("name") = array("Country", "City", "Sales")
 		  dct.Value("type") = array("clDataSerie","clDataSerie","clDataSerie")
 		  dct.Value("title") = array("Pays","Ville","Ventes")
@@ -847,7 +848,7 @@ Protected Module clDataTable_tests
 		  
 		  dim struc0 as clDataTable = table0.get_structure_as_table
 		  
-		   dct = new Dictionary
+		  dct = new Dictionary
 		  dct.value("name") = array("Country", "City", "Sales")
 		  dct.Value("type") = array("clDataSerie","clDataSerie","clNumberDataSerie")
 		  dct.Value("title") = array("Pays","Ville","Ventes")
@@ -860,6 +861,59 @@ Protected Module clDataTable_tests
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_021()
+		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  dim c1 as new clDataSerie("DataSerie")
+		  dim c2 as new clNumberDataSerie("NumberDataSerie")
+		  dim c3 as new clStringDataSerie("StringDataSerie")
+		  dim c4 as new clIntegerDataSerie("IntegerDataSerie")
+		  
+		  dim series() as clAbstractDataSerie = serie_array(c1, c2, c3, c4)
+		  
+		  for each cc as clAbstractDataSerie in series
+		    cc.append_element("aaa")
+		    cc.append_element(100)
+		    cc.append_element(119)
+		    cc.append_element(120)
+		    cc.append_element(nil)
+		    cc.append_element(0)
+		    
+		  next
+		  
+		  dim ret_tables() as clDataTable 
+		  
+		  dim data_table as new clDataTable("data", series)
+		  dim stat_table as clDataTable = data_table.get_statistics_as_table
+		  
+		  call stat_table.get_column(clDataTable.statistics_average_column).round_values(2)
+		  
+		  
+		  //
+		  // Expected table
+		  
+		  series.RemoveAll
+		  
+		  series.Add(new clDataSerie(clDataTable.statistics_name_column, array("DataSerie", "NumberDataSerie", "StringDataSerie", "IntegerDataSerie")))
+		  
+		  series.add(new clIntegerDataSerie(clDataTable.statistics_ubound_column, array(5,5,5,5)))
+		  series.Add(new clIntegerDataSerie(clDataTable.statistics_count_column, array(5,6,6,6)))
+		  series.Add(new clIntegerDataSerie(clDataTable.statistics_count_nz_column, array(3,3,3,3)))
+		  
+		  series.Add(new clNumberDataSerie(clDataTable.statistics_sum_column, array(339.0,339.0,339.0,339.0)))
+		  series.Add(new clNumberDataSerie(clDataTable.statistics_average_column, array(67.8, 56.5, 56.5, 56.5)))
+		  series.Add(new clNumberDataSerie(clDataTable.statistics_average_nz_column, array(113, 113, 113, 113)))
+		  
+		  series.Add(new clNumberDataSerie(clDataTable.statistics_std_dev_column, array(62.4035, 62.3, 62.3, 62.3)))
+		  series.Add(new clNumberDataSerie(clDataTable.statistics_std_dev_nz_column, array(11.27, 11.27, 11.27)))
+		  
+		  dim table_expected as clDataTable = new clDataTable("expected", series)
+		  
+		  check_table("statistics", table_expected, stat_table)
 		End Sub
 	#tag EndMethod
 
