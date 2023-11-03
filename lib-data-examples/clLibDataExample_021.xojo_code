@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clLibDataExample_021
 Inherits clLibDataExample
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
@@ -16,8 +16,9 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_column_reader()
-		  System.DebugLog("START "+CurrentMethodName)
+		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  dim c1 as new clDataSerie("DataSerie")
 		  dim c2 as new clNumberDataSerie("NumberDataSerie")
@@ -42,7 +43,7 @@ Inherits clLibDataExample
 		  dim stat_table as clDataTable = data_table.get_statistics_as_table
 		  dim struc_table as clDataTable = data_table.get_structure_as_table
 		  
-		  dim tmp as variant = stat_table.get_column(clDataTable.statistics_average_column).round_values(2)
+		  call stat_table.get_column(clDataTable.statistics_average_column).round_values(2)
 		  
 		  ret_tables.Add(data_table)
 		  ret_tables.add(stat_table)

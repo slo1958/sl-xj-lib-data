@@ -1,18 +1,30 @@
 #tag Module
 Protected Module clDataPool_tests
 	#tag Method, Flags = &h0
-		Sub tests()
+		Sub tests(log as itf_logmessage_writer)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  dim logwriter as  itf_logmessage_writer = log 
 		  
-		  test_001
-		  test_002
+		  if log = nil then
+		    logwriter = new clWriteToSystemLog
+		  end if
+		  
+		  
+		  logwriter.start_exec(CurrentMethodName)
+		  
+		  test_001(logwriter)
+		  test_002(logwriter)
+		  
+		  logwriter.end_exec(CurrentMethodName)
+		  
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_001()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_001(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  dim my_data_pool as new clDataPool
 		  
@@ -74,24 +86,27 @@ Protected Module clDataPool_tests
 		  col4 = new clDataSerie("ddd",v,v,v,v,567.89,567.89,567.89,567.89,567.89)
 		  dim expected_res as new clDataTable("res", serie_array(col1, col2, col3, col4))
 		  
-		  check_table("T1", expected_t1, my_data_pool.get_table("table_1"))
-		  check_table("T2", expected_t2, my_data_pool.get_table("T2"))
-		  check_table("res", expected_res, my_data_pool.get_table("res"))
+		  call check_table(log,"T1", expected_t1, my_data_pool.get_table("table_1"))
+		  call check_table(log,"T2", expected_t2, my_data_pool.get_table("T2"))
+		  call check_table(log,"res", expected_res, my_data_pool.get_table("res"))
 		  
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_002()
+		Sub test_002(log as itf_logmessage_writer)
 		  //  
 		  //  Test simplified interface to tables in data pool
 		  //  
 		  //  
 		  
-		  System.DebugLog("START "+CurrentMethodName)
-		   
+		  
+		  log.start_exec(CurrentMethodName)
+		  
 		  dim my_data_pool as new clDataPool
 		  
 		  dim rtst As clDataRow
@@ -152,9 +167,13 @@ Protected Module clDataPool_tests
 		  col4 = new clDataSerie("ddd",v,v,v,v,567.89,567.89,567.89,567.89)
 		  dim expected_res as new clDataTable("res", serie_array(col1, col2, col3, col4))
 		  
-		  check_table("T1", expected_t1, my_data_pool.table("table_1"))
-		  check_table("T2", expected_t2, my_data_pool.table("T2"))
-		  check_table("res", expected_res, my_data_pool.table("res"))
+		  call check_table(log,"T1", expected_t1, my_data_pool.table("table_1"))
+		  call check_table(log,"T2", expected_t2, my_data_pool.table("T2"))
+		  call check_table(log,"res", expected_res, my_data_pool.table("res"))
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  
 		End Sub
 	#tag EndMethod

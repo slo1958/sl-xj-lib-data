@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clLibDataExample_019
 Inherits clLibDataExample
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
@@ -16,11 +16,12 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_column_reader()
+		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
 		  
 		  
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim table0 As New clDataTable("mytable without display title", serie_array( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _

@@ -27,35 +27,23 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub check_table(label as string, expected as clDataTable, calculated as clDataTable)
-		  dim tmp as Boolean = check_table(label, expected, calculated)
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function check_table(label as string, expected as clDataTable, calculated as clDataTable) As Boolean
+		Function check_table(log as itf_logmessage_writer, label as string, expected as clDataTable, calculated as clDataTable) As Boolean
 		  dim cnt1 as integer  
 		  dim cnt2 as integer 
 		  
 		  cnt1 = expected.column_count
 		  cnt2 = calculated.column_count
 		  
-		  if not check_value("column count", cnt1, cnt2) then return False
+		  if not check_value(log,"column count", cnt1, cnt2) then return False
 		  
 		  dim col_ok as boolean = True
 		  for col as integer = 0 to expected.column_count-1
 		    
-		    col_ok = col_ok and check_serie(label + " field [" + expected.column_name(col)+"]", expected.get_column_by_index(col), calculated.get_column_by_index(col))
+		    col_ok = col_ok and check_serie(log, label + " field [" + expected.column_name(col)+"]", expected.get_column_by_index(col), calculated.get_column_by_index(col))
 		    
 		  next
 		  
-		  if not col_ok then return False
-		  
-		  // compare values
-		  
-		  return True
+		  Return col_ok
 		  
 		End Function
 	#tag EndMethod
@@ -69,50 +57,67 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub tests(log as itf_logmessage_writer)
 		  
-		  test_001
-		  test_002
-		  test_003
+		  dim logwriter as  itf_logmessage_writer = log 
 		  
-		  test_005
-		  test_006
-		  test_007
-		  test_008
-		  test_009
-		  test_010
-		  test_011
-		  test_012
-		  test_013
-		  test_014
-		  test_015
-		  test_017
-		  test_018
-		  test_019
-		  test_020
-		  test_021
+		  if log = nil then
+		    logwriter = new clWriteToSystemLog
+		  end if
 		  
+		  logwriter.start_exec(CurrentMethodName)
+		  
+		  test_001(logwriter)
+		  test_002(logwriter)
+		  test_003(logwriter)
+		  
+		  test_005(logwriter)
+		  test_006(logwriter)
+		  test_007(logwriter)
+		  test_008(logwriter)
+		  test_009(logwriter)
+		  test_010(logwriter)
+		  test_011(logwriter)
+		  test_012(logwriter)
+		  test_013(logwriter)
+		  test_014(logwriter)
+		  test_015(logwriter)
+		  test_017(logwriter)
+		  test_018(logwriter)
+		  test_019(logwriter)
+		  test_020(logwriter)
+		  test_021(logwriter)
+		  
+		  logwriter.end_exec(CurrentMethodName)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests_io()
+		Sub tests_io(log as itf_logmessage_writer)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  dim logwriter as  itf_logmessage_writer = log 
+		  
+		  if log = nil then
+		    logwriter = new clWriteToSystemLog
+		  end if
+		  
+		  
+		  logwriter.start_exec(CurrentMethodName)
 		  
 		  //test_io_001
 		  
-		  test_io_002
+		  test_io_002(logwriter)
 		  
-		  test_io_003
+		  test_io_003(logwriter)
 		  
+		  logwriter.end_exec(CurrentMethodName)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_001()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_001(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
 		  
@@ -140,15 +145,17 @@ Protected Module clDataTable_tests
 		  
 		  dim texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
 		  
-		  check_table("T1", texpected, my_table)
+		  call check_table(log, "T1", texpected, my_table)
 		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_002()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_002(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim rtst As clDataRow
 		  
@@ -193,16 +200,19 @@ Protected Module clDataTable_tests
 		  dim col2 as new clDataSerie("zccc", nil, nil, 8123.456, nil)
 		  dim texpected as new clDataTable("select T1", serie_array(col1, col2))
 		  
-		  check_table("T1", my_table3, texpected)
+		  call check_table(log, "T1", my_table3, texpected)
 		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_003()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_003(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim rtst As clDataRow
 		  Dim my_table1 As New clDataTable("T1")
@@ -233,14 +243,19 @@ Protected Module clDataTable_tests
 		  
 		  dim texpected as new clDataTable("select T1", serie_array(col1, col2))
 		  
-		  check_table("T1", texpected, my_table3)
+		  call check_table(log,"T1", texpected, my_table3)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_005()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_005(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim rtst As clDataRow
 		  
@@ -274,15 +289,21 @@ Protected Module clDataTable_tests
 		  
 		  dim texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
 		  
-		  check_table("T1", texpected, my_table)
+		  call check_table(log,"T1", texpected, my_table)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_006()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_006(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim c1 As New clDataSerie("premier")
 		  Dim c2 As New clDataSerie("second")
@@ -323,19 +344,22 @@ Protected Module clDataTable_tests
 		  
 		  dim expected_t2 as new clDataTable("mytable2", serie_array(col3, col4, col5))
 		  
-		  check_table("mytable1", expected_t1, t1)
+		  call check_table(log,"mytable1", expected_t1, t1)
 		  
-		  check_table("mytable2", expected_t2, t2)
+		  call check_table(log,"mytable2", expected_t2, t2)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_007()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_007(log as itf_logmessage_writer)
 		  
-		  Dim rtst As clDataRow
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim my_table As New clDataTable("T1")
 		  
@@ -350,17 +374,19 @@ Protected Module clDataTable_tests
 		  Dim tmp2 As Integer = my_table.find_first_matching_row_index("cc2","zzz2")
 		  Dim tmp3 As Integer = my_table.find_first_matching_row_index("zz2","bbb2")
 		  
-		  check_value("tmp1", 2, tmp1)
-		  check_value("tmp2", -1, tmp2) // value not found
-		  check_value("tmp3", -2, tmp3) // column not found
+		  call check_value(log, "tmp1", 2, tmp1)
+		  call check_value(log, "tmp2", -1, tmp2) // value not found
+		  call check_value(log, "tmp3", -2, tmp3) // column not found
 		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_008()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_008(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  
 		  Dim my_table As New clDataTable("T1")
@@ -394,16 +420,20 @@ Protected Module clDataTable_tests
 		  
 		  dim expected as new clDataTable("T1", serie_array(col1, col2, col3, col4, col5, col6))
 		  
-		  check_table("t1", expected, my_table)
-		  Dim k As Integer = 1
+		  call check_table(log,"t1", expected, my_table)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_009()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_009(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim rtst As clDataRow
 		  
@@ -458,21 +488,22 @@ Protected Module clDataTable_tests
 		  
 		  dim expected_t4 as new clDataTable("T4", serie_array(col7, col8, col9), True)
 		  
-		  check_table("T1", expected_t1, my_table1)
-		  check_table("T2", expected_t2, my_table2)
-		  check_table("T3", expected_t3, my_table3)
-		  check_table("T4", expected_t4, my_table4)
+		  call check_table(log,"T1", expected_t1, my_table1)
+		  call check_table(log,"T2", expected_t2, my_table2)
+		  call check_table(log,"T3", expected_t3, my_table3)
+		  call check_table(log,"T4", expected_t4, my_table4)
 		  
 		  
-		  Dim k As Integer = 1
-		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_010()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_010(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim temp_row As clDataRow
 		  Dim mytable As New clDataTable("T1")
@@ -502,17 +533,20 @@ Protected Module clDataTable_tests
 		  
 		  dim expected_t1 as new clDataTable("T1", serie_array(col1, col2, col3, col4))
 		  
-		  check_table("T1", expected_t1, mytable)
+		  call check_table(log,"T1", expected_t1, mytable)
 		  
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_011()
+		Sub test_011(log as itf_logmessage_writer)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim table0 As New clDataTable("mytable")
 		  
@@ -527,19 +561,19 @@ Protected Module clDataTable_tests
 		  
 		  dim tmp_row as clDataRow = table0.get_row(2, False)
 		  
-		  check_value("row 2, country", "Belgique", tmp_row.get_cell("country"))
-		  check_value("row 2, city", "", tmp_row.get_cell("city"))
-		  check_value("row 2, sales", 1300, tmp_row.get_cell("sales"))
+		  call check_value(log,"row 2, country", "Belgique", tmp_row.get_cell("country"))
+		  call check_value(log, "row 2, city", "", tmp_row.get_cell("city"))
+		  call check_value(log,"row 2, sales", 1300, tmp_row.get_cell("sales"))
 		  
-		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_012()
+		Sub test_012(log as itf_logmessage_writer)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim table0 As New clDataTable("mytable")
 		  
@@ -558,10 +592,10 @@ Protected Module clDataTable_tests
 		  
 		  dim tmp_row as clDataRow = table0.get_row(3, False)
 		  
-		  check_value("row 3, country", "USA", tmp_row.get_cell("country"))
-		  check_value("row 3, city", "NewYork", tmp_row.get_cell("city"))
-		  check_value("row 3, sales", 1400, tmp_row.get_cell("sales"))
-		  check_value("row 3, mask", False, tmp_row.get_cell("mask"))
+		  call check_value(log,"row 3, country", "USA", tmp_row.get_cell("country"))
+		  call check_value(log, "row 3, city", "NewYork", tmp_row.get_cell("city"))
+		  call check_value(log,"row 3, sales", 1400, tmp_row.get_cell("sales"))
+		  call check_value(log, "row 3, mask", False, tmp_row.get_cell("mask"))
 		  
 		  dim k as integer = 0
 		  
@@ -569,15 +603,18 @@ Protected Module clDataTable_tests
 		    k = k+1
 		  next
 		  
-		  check_value("filtered row count", 2, k)
+		  call check_value(log, "filtered row count", 2, k)
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_013()
+		Sub test_013(log as itf_logmessage_writer)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim table0 As New clDataTable("mytable")
 		  
@@ -593,20 +630,18 @@ Protected Module clDataTable_tests
 		  for each row as clDataRow in table0
 		    
 		    if row_index = 0 then
-		      check_value("row 0, index",  0, row.get_cell("row_index"))
-		      check_value("row 0, country",  "France", row.get_cell("country"))
-		      check_value("row 0, city",  "Paris", row.get_cell("city"))
-		      check_value("row 0, sales",  1100, row.get_cell("sales"))
+		      call check_value(log,"row 0, index",  0, row.get_cell("row_index"))
+		      call check_value(log, "row 0, country",  "France", row.get_cell("country"))
+		      call check_value(log,"row 0, city",  "Paris", row.get_cell("city"))
+		      call check_value(log, "row 0, sales",  1100, row.get_cell("sales"))
+		      
+		    elseif row_index  = 1 then
+		      call check_value(log, "row 1, index",  1, row.get_cell("row_index"))
+		      call check_value(log, "row 1, country",  "USA", row.get_cell("country"))
+		      call check_value(log, "row 1, city",  "NewYork", row.get_cell("city"))
+		      call check_value(log, "row 1, sales",  1400, row.get_cell("sales"))
 		      
 		      
-		    elseif row_index = 1 then
-		      check_value("row 1, index",  1, row.get_cell("row_index"))
-		      check_value("row 1, country",  "USA", row.get_cell("country"))
-		      check_value("row 1, city",  "NewYork", row.get_cell("city"))
-		      check_value("row 1, sales",  1400, row.get_cell("sales"))
-		      
-		      
-		    else
 		      
 		    end if
 		    
@@ -614,13 +649,16 @@ Protected Module clDataTable_tests
 		  next
 		  
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_014()
+		Sub test_014(log as itf_logmessage_writer)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim table0 As New clDataTable("mytable")
 		  
@@ -664,13 +702,18 @@ Protected Module clDataTable_tests
 		  for each row as clDataRow in table0.filtered_on("mask_country")
 		    k = k+1
 		  next
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_015()
+		Sub test_015(log as itf_logmessage_writer)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim table0 As New clDataTable("mytable")
 		  
@@ -715,12 +758,17 @@ Protected Module clDataTable_tests
 		  for each row as clDataRow in table0.filtered_on(filter_country and filter_product)
 		    k = k+1
 		  next
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_017()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_017(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim table0 As New clDataTable("mytable")
 		  
@@ -746,13 +794,18 @@ Protected Module clDataTable_tests
 		  
 		  dim col2 as new clDataSerie("city", "Paris", "Marseille", "","Bruxelles","NewYork","Chicago")
 		  
-		  check_table("unique", new clDataTable("mytable", serie_array(col1, col2)), table1)
+		  call check_table(log,"unique", new clDataTable("mytable", serie_array(col1, col2)), table1)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_018()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_018(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  
 		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
@@ -774,13 +827,19 @@ Protected Module clDataTable_tests
 		  dim col4 as new clNumberDataSerie("sales*2", 1800.0, 2400.0, 2800.0, 3200.0, 5800.0)
 		  dim col5 as new clNumberDataSerie("clip sales*2", 2200.0, 2400.0, 2800.0, 3000.0, 3000.0)
 		  
-		  check_table("clipping fct", new clDataTable("mytable", serie_array(col1, col2, col3, col4, col5)), table0)
+		  call check_table(log,"clipping fct", new clDataTable("mytable", serie_array(col1, col2, col3, col4, col5)), table0)
+		  
+		  call check_value(log, "nb clipped", 3, nb)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_019()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_019(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  dim dct as Dictionary
 		  
@@ -797,7 +856,7 @@ Protected Module clDataTable_tests
 		  
 		  Dim table_expected As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
 		  
-		  check_table("use dict for creation", table_expected, table0)
+		  call check_table(log,"use dict for creation", table_expected, table0)
 		  
 		  table0.get_column("City").display_title = "Ville"
 		  table0.get_column("Country").display_title = "Pays"
@@ -812,9 +871,11 @@ Protected Module clDataTable_tests
 		  
 		  dim struc_expected as new clDataTable("exp_struct", dct)
 		  
-		  check_table("structure", struc_expected, struc0)
+		  call check_table(log,"structure", struc_expected, struc0)
 		  
-		  dim k as integer =1
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  
 		  
 		  
@@ -822,8 +883,9 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_020()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_020(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  dim dct as Dictionary
 		  
@@ -840,7 +902,7 @@ Protected Module clDataTable_tests
 		  
 		  Dim table_expected As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
 		  
-		  check_table("use dict for creation", table_expected, table0)
+		  call check_table(log,"use dict for creation", table_expected, table0)
 		  
 		  table0.get_column("City").display_title = "Ville"
 		  table0.get_column("Country").display_title = "Pays"
@@ -855,9 +917,11 @@ Protected Module clDataTable_tests
 		  
 		  dim struc_expected as new clDataTable("exp_struct", dct)
 		  
-		  check_table("structure", struc_expected, struc0)
+		  call check_table(log,"structure", struc_expected, struc0)
 		  
-		  dim k as integer =1
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  
 		  
 		  
@@ -865,8 +929,9 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_021()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_021(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  dim c1 as new clDataSerie("DataSerie")
 		  dim c2 as new clNumberDataSerie("NumberDataSerie")
@@ -885,7 +950,7 @@ Protected Module clDataTable_tests
 		    
 		  next
 		  
-		  dim ret_tables() as clDataTable 
+		  
 		  
 		  dim data_table as new clDataTable("data", series)
 		  dim stat_table as clDataTable = data_table.get_statistics_as_table
@@ -913,16 +978,30 @@ Protected Module clDataTable_tests
 		  
 		  dim table_expected as clDataTable = new clDataTable("expected", series)
 		  
-		  check_table("statistics", table_expected, stat_table)
+		  call check_table(log,"statistics", table_expected, stat_table)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_examples()
+		Sub test_examples(log as itf_logmessage_writer)
+		  
+		  dim logwriter as  itf_logmessage_writer = log 
+		  
+		  if log = nil then
+		    logwriter = new clWriteToSystemLog
+		  end if
+		  
+		  
 		  dim ex() as clLibDataExample = clLibDataExample.get_all_examples
 		  
 		  for each example as clLibDataExample in ex
-		    call example.run
+		    call example.run(logwriter)
 		    
 		  next
 		  
@@ -930,8 +1009,9 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_001()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_io_001(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim fld_folder As New FolderItem
 		  Dim fld_file1 As FolderItem
@@ -952,20 +1032,22 @@ Protected Module clDataTable_tests
 		  
 		  dim my_table5 as new clDataTable(new clTextReader(fld_file3, True, new clTextFileConfig(";")))
 		  
-		  check_table("T4/T5", my_table4, my_table5) 
+		  call check_table(log,"T4/T5", my_table4, my_table5) 
 		  
 		  dim my_table6  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series_io1)
 		  
-		  System.DebugLog("DONE WITH "+CurrentMethodName)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_002()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_io_002(log as itf_logmessage_writer)
 		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  dim db as new SQLiteDatabase
 		  
@@ -1033,7 +1115,7 @@ Protected Module clDataTable_tests
 		  
 		  dim my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
 		  
-		  check_table("Test1/Test2", my_table1, my_table2)
+		  call check_table(log,"Test1/Test2", my_table1, my_table2)
 		  
 		  
 		  
@@ -1043,7 +1125,7 @@ Protected Module clDataTable_tests
 		  
 		  dim my_table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
 		  
-		  check_table("Test3/Test4", my_table3, my_table4)
+		  call check_table(log,"Test3/Test4", my_table3, my_table4)
 		  
 		  
 		  dim my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
@@ -1063,8 +1145,10 @@ Protected Module clDataTable_tests
 		  dim my_table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
 		  
 		  
-		  check_table("Test7/Test8", my_table7, my_table8)
+		  call check_table(log,"Test7/Test8", my_table7, my_table8)
 		  
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  
 		  
@@ -1072,9 +1156,9 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_003()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_io_003(log as itf_logmessage_writer)
 		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  dim db as new SQLiteDatabase
 		  
@@ -1142,7 +1226,7 @@ Protected Module clDataTable_tests
 		  
 		  dim my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
 		  
-		  check_table("Test1/Test2", my_table1, my_table2)
+		  call check_table(log,"Test1/Test2", my_table1, my_table2)
 		  
 		  
 		  dim my_table3 as new clDataTable("test4", new clDBReader(new clSqliteDBAccess(db),"test3"))
@@ -1151,7 +1235,7 @@ Protected Module clDataTable_tests
 		  
 		  dim my_table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
 		  
-		  check_table("Test3/Test4", my_table3, my_table4)
+		  call check_table(log,"Test3/Test4", my_table3, my_table4)
 		  
 		  
 		  dim my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
@@ -1170,10 +1254,9 @@ Protected Module clDataTable_tests
 		  
 		  dim my_table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
 		  
+		  call check_table(log,"Test7/Test8", my_table7, my_table8)
 		  
-		  check_table("Test7/Test8", my_table7, my_table8)
-		  
-		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  
 		End Sub

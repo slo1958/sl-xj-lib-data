@@ -17,13 +17,14 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_column_reader()
+		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
 		  
 		  //  Example_015
 		  //  - test date 
 		  //  
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim c1 As New clDateDataSerie("ExpiryDate") 
 		  Dim c2 As New clDateDataSerie("CurrentDate") 

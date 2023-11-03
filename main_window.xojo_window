@@ -1,5 +1,5 @@
 #tag Window
-Begin Window main_window
+Begin Window main_window Implements support_tests.itf_logmessage_writer
    BackColor       =   &cFFFFFF00
    Backdrop        =   0
    CloseButton     =   True
@@ -51,10 +51,10 @@ Begin Window main_window
       InitialValue    =   ""
       Italic          =   False
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       RequiresSelection=   False
       Scope           =   0
@@ -73,7 +73,7 @@ Begin Window main_window
       Underline       =   False
       UseFocusRing    =   True
       Visible         =   True
-      Width           =   445
+      Width           =   588
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
@@ -91,11 +91,11 @@ Begin Window main_window
       InitialParent   =   ""
       Italic          =   False
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0
@@ -124,11 +124,11 @@ Begin Window main_window
       InitialParent   =   ""
       Italic          =   False
       Left            =   134
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   0
       TabIndex        =   2
@@ -156,11 +156,11 @@ Begin Window main_window
       InitialParent   =   ""
       Italic          =   False
       Left            =   272
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   0
       TabIndex        =   3
@@ -188,11 +188,11 @@ Begin Window main_window
       InitialParent   =   ""
       Italic          =   False
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   0
       TabIndex        =   4
@@ -205,6 +205,39 @@ Begin Window main_window
       Visible         =   True
       Width           =   80
    End
+   Begin CheckBox CheckBox1
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "log here"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Scope           =   0
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   284
+      Transparent     =   False
+      Underline       =   False
+      Value           =   False
+      Visible         =   True
+      VisualState     =   0
+      Width           =   100
+   End
 End
 #tag EndWindow
 
@@ -215,6 +248,12 @@ End
 		End Sub
 	#tag EndEvent
 
+
+	#tag Method, Flags = &h0
+		Sub end_exec(method as string)
+		  write_message("Done with " + method)
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub run_exemple()
@@ -231,11 +270,25 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub start_exec(method as string)
+		  write_message("Starting " + method)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub writemessage(Paramarray vprint as string)
 		  Dim tmp As String
 		  tmp = join(vprint, " ")
 		  Listbox1.AddRow tmp
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub write_message(msg as string)
+		  // Part of the support_tests.itf_logmessage_writer interface.
+		  writemessage(msg)
 		  
 		End Sub
 	#tag EndMethod
@@ -249,16 +302,26 @@ End
 		  writemessage "started"
 		  
 		  
-		  clDataSerie_tests.tests
+		  dim logwriter as  itf_logmessage_writer = nil
+		  
+		  if CheckBox1.value then
+		    logwriter = self
+		    
+		  end if
+		  
+		  
+		  
+		  
+		  clDataSerie_tests.tests(logwriter)
 		  writemessage "data series tests done"
 		  
-		  clDataTable_tests.tests
+		  clDataTable_tests.tests(logwriter)
 		  writemessage "data table tests done"
 		  
-		  clDataTable_tests.test_examples
+		  clDataTable_tests.test_examples(logwriter)
 		  writemessage "test run example (no validaton)"
 		  
-		  clDataPool_tests.tests
+		  clDataPool_tests.tests(logwriter)
 		  writemessage "data pool tests done"
 		  
 		  
@@ -288,11 +351,19 @@ End
 		Sub Action()
 		  writemessage "started"
 		  
+		  dim logwriter as  itf_logmessage_writer = nil
 		  
-		  clDataSerie_tests.tests_io
+		  if CheckBox1.value then
+		    logwriter = self
+		    
+		  end if
+		  
+		  
+		  
+		  clDataSerie_tests.tests_io(logwriter)
 		  writemessage "data series tests done"
 		  
-		  clDataTable_tests.tests_io
+		  clDataTable_tests.tests_io(logwriter)
 		  writemessage "data table tests io done"
 		  
 		  'clDataPool_tests.tests

@@ -18,13 +18,14 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_column_reader()
+		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
 		  
 		  //  Example_016
 		  //  - test date 
 		  //  
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  // Build the table, to simulate loading from an external data source
 		  dim col_country as new clDataSerie("Customer", "C001", "", "C002", "C003", "C004","C005")

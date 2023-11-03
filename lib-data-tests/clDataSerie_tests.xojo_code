@@ -1,14 +1,14 @@
 #tag Module
 Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
-		Function check_serie(label as string, expected as clAbstractDataSerie, calculated as clAbstractDataSerie) As Boolean
+		Function check_serie(log as support_tests.itf_logmessage_writer, label as string, expected as clAbstractDataSerie, calculated as clAbstractDataSerie) As Boolean
 		  
-		  if not  check_value(label + " name", expected.name, calculated.name) then
+		  if not  check_value(log,label + " name", expected.name, calculated.name) then
 		    return False
 		    
 		  end if
 		  
-		  if not check_value(label + " row count", expected.row_count, calculated.row_count) then
+		  if not check_value(log, label + " row count", expected.row_count, calculated.row_count) then
 		    Return False
 		    
 		  end if
@@ -17,7 +17,7 @@ Protected Module clDataSerie_tests
 		  dim cell_ok as Boolean = True
 		  
 		  for row as integer = 0 to expected.row_count-1
-		    cell_ok = cell_ok and check_value( label + " row " + str(row), expected.get_element(row), calculated.get_element(row))
+		    cell_ok = cell_ok and check_value(log,  label + " row " + str(row), expected.get_element(row), calculated.get_element(row))
 		    
 		  next
 		  
@@ -53,45 +53,61 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests()
+		Sub tests(log as itf_logmessage_writer)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  dim logwriter as  itf_logmessage_writer = log 
 		  
-		  test_001
-		  test_003
+		  if log = nil then
+		    logwriter = new clWriteToSystemLog
+		  end if
+		  
+		  logwriter.start_exec(CurrentMethodName)
+		  
+		  test_001(logwriter)
+		  test_003(logwriter)
 		  
 		  
-		  test_006
-		  test_007
-		  test_008
-		  test_009
-		  test_010
-		  test_011
-		  test_012
-		  test_014
-		  test_015
-		  test_016
-		  test_017
-		  test_018
+		  test_006(logwriter)
+		  test_007(logwriter)
+		  test_008(logwriter)
+		  test_009(logwriter)
+		  test_010(logwriter)
+		  test_011(logwriter)
+		  test_012(logwriter)
+		  test_014(logwriter)
+		  test_015(logwriter)
+		  test_016(logwriter)
+		  test_017(logwriter)
+		  test_018(logwriter)
 		  
-		  System.DebugLog("Done with "+CurrentMethodName)
+		  logwriter.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests_io()
+		Sub tests_io(log as itf_logmessage_writer)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  dim logwriter as  itf_logmessage_writer = log 
 		  
-		  test_io_001
-		  test_io_005
+		  if log = nil then
+		    logwriter = new clWriteToSystemLog
+		  end if
+		  
+		  
+		  logwriter.start_exec(CurrentMethodName)
+		  
+		  test_io_001(logwriter)
+		  test_io_005(logwriter)
+		  
+		  logwriter.end_exec(CurrentMethodName)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_001()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_001(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim test  As clDataSerie
 		  
@@ -101,15 +117,18 @@ Protected Module clDataSerie_tests
 		  test.append_element("hello")
 		  test.append_element("world")
 		  
-		  check_value("row count", test.row_count, 2)
+		  call check_value(log,"row count", test.row_count, 2)
 		  
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_003()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_003(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim test  As clDataSerie
 		  
@@ -127,18 +146,21 @@ Protected Module clDataSerie_tests
 		  end if
 		  
 		  for row as integer =0 to test.row_count-1
-		    check_value("row " + str(row), expected(row), test.get_element(row))
+		    call check_value(log,"row " + str(row), expected(row), test.get_element(row))
 		    
 		  next
 		  
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_006()
+		Sub test_006(log as itf_logmessage_writer)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim src As New clDataSerie("premier") 
 		  
@@ -186,13 +208,15 @@ Protected Module clDataSerie_tests
 		    
 		  next
 		  
-		  check_value("cnt1", 12, cnt1)
-		  check_value("cnt2", 7, cnt2)
-		  check_value("cnt3", 10, cnt3)
+		  call check_value(log,"cnt1", 12, cnt1)
+		  call check_value(log, "cnt2", 7, cnt2)
+		  call check_value(log,"cnt3", 10, cnt3)
 		  
-		  check_value("cnt4", 12, cnt4)
-		  check_value("cnt5", 7, cnt5)
-		  check_value("cnt6", 10, cnt6)
+		  call check_value(log,"cnt4", 12, cnt4)
+		  call check_value(log, "cnt5", 7, cnt5)
+		  call check_value(log, "cnt6", 10, cnt6)
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  
 		  
@@ -200,8 +224,9 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_007()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_007(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim c1 As New clDataSerie("premier") 
 		  Dim c2 As New clDataSerie("second") 
@@ -219,15 +244,18 @@ Protected Module clDataSerie_tests
 		  d1 = c1.sum
 		  d2 = c2.sum
 		  
-		  check_value("d1", 263.9, d1)
-		  check_value("d2", 263.9, d2)
+		  call check_value(log,"d1", 263.9, d1)
+		  call check_value(log,"d2", 263.9, d2)
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_008()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_008(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim c1 As New clDataSerie("premier") 
 		  Dim c2 As New clDataSerie("second") 
@@ -250,29 +278,35 @@ Protected Module clDataSerie_tests
 		  Dim d3 As Double = c3.sum
 		  Dim d4 As Double = c4.sum
 		  
-		  check_value("upper bound for c3", 1, c3.upper_bound)
-		  check_value("upper bound for c4", 0, c4.upper_bound)
+		  call check_value(log,"upper bound for c3", 1, c3.upper_bound)
+		  call check_value(log, "upper bound for c4", 0, c4.upper_bound)
 		  
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_009()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_009(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim c1 As New clDataSerieMultiValued(Array("aaaa","bbbb")) 
 		  
-		  check_value("name", "aaaa" + Chr(9) + "bbbb", c1.name)
+		  call check_value(log,"name", "aaaa" + Chr(9) + "bbbb", c1.name)
 		  
 		  
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_010()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_010(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim c1 As New clCompressedDataSerie("CompSerie") 
 		  Dim c2 As New clDataSerie("BaseSerie") 
@@ -317,17 +351,21 @@ Protected Module clDataSerie_tests
 		    
 		  next
 		  
-		  check_value("nbf1", 11, nbf1)
-		  check_value("nbf2", 11, nbf2)
-		  check_value("nbr1", 11, nbr1)
-		  check_value("nbr2", 11, nbr2) 
+		  call check_value(log,"nbf1", 11, nbf1)
+		  call check_value(log, "nbf2", 11, nbf2)
+		  call check_value(log,"nbr1", 11, nbr1)
+		  call check_value(log, "nbr2", 11, nbr2) 
+		  
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_011()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_011(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim test  As clNumberDataSerie
 		  
@@ -337,13 +375,17 @@ Protected Module clDataSerie_tests
 		  test.append_element(125)
 		  test.append_element(142)
 		  
-		  check_value("row count", test.row_count, 2) 
+		  call check_value(log,"row count", test.row_count, 2) 
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_012()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_012(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim test  As clNumberDataSerie
 		  
@@ -353,13 +395,17 @@ Protected Module clDataSerie_tests
 		  test.append_element("125")
 		  test.append_element(142)
 		  
-		  check_value("row count", test.row_count, 2) 
+		  call check_value(log,"row count", test.row_count, 2) 
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_014()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_014(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim test  As clNumberDataSerie
 		  
@@ -369,15 +415,18 @@ Protected Module clDataSerie_tests
 		  test.append_element("abc")
 		  test.append_element(142)
 		  
-		  check_value("row count", test.row_count, 2)
+		  call check_value(log,"row count", test.row_count, 2)
 		  
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_015()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_015(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim test0, test1, test2, test3  As clNumberDataSerie
 		  dim expected, delta as clNumberDataSerie
@@ -406,7 +455,9 @@ Protected Module clDataSerie_tests
 		  
 		  delta = test0 - expected
 		  
-		  check_value("sum of diff", 0, delta.sum)
+		  call check_value(log,"sum of diff", 0, delta.sum)
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  
 		  
@@ -414,8 +465,9 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_016()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_016(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  
 		  Dim c1 As New clDataSerie("premier") 
@@ -448,17 +500,19 @@ Protected Module clDataSerie_tests
 		  dim uniq2() as Variant = c2.unique
 		  dim uniq3() as variant = c3.unique
 		  
-		  check_value("uniq1", 5, uniq1.Count)
-		  check_value("uniq2", 5, uniq2.Count)
-		  check_value("uniq3", 5, uniq3.Count)
+		  call check_value(log, "uniq1", 5, uniq1.Count)
+		  call check_value(log, "uniq2", 5, uniq2.Count)
+		  call check_value(log, "uniq3", 5, uniq3.Count)
 		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_017()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_017(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim c1 As New clCompressedDataSerie("CompSerie") 
 		  Dim c2 As New clDataSerie("BaseSerie") 
@@ -504,17 +558,20 @@ Protected Module clDataSerie_tests
 		    
 		  next
 		  
-		  check_value("nbf1", 4, nbf1)
-		  check_value("nbf2", 4, nbf2)
-		  check_value("nbr1", 4, nbr1)
-		  check_value("nbr2", 4, nbr2) 
+		  call check_value(log,"nbf1", 4, nbf1)
+		  call check_value(log, "nbf2", 4, nbf2)
+		  call check_value(log,"nbr1", 4, nbr1)
+		  call check_value(log, "nbr2", 4, nbr2) 
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_018()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_018(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim c1 As New clDateDataSerie("premier") 
 		  Dim c2 As New clDateDataSerie("second") 
@@ -535,13 +592,16 @@ Protected Module clDataSerie_tests
 		  
 		  dim c7 as clStringDataSerie = c1.ToString("yyyy-MM")
 		  
-		  dim k as integer 
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_001()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_io_001(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim k As Variant
 		  
@@ -557,12 +617,16 @@ Protected Module clDataSerie_tests
 		  Dim k2 As Integer = 1
 		  
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_005()
-		  System.DebugLog("START "+CurrentMethodName)
+		Sub test_io_005(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
 		  
 		  Dim k As Variant
 		  
@@ -582,7 +646,9 @@ Protected Module clDataSerie_tests
 		  save_DataSerie_to_textfile(fld_file_out, ss1, True)
 		  
 		  
-		  Dim k2 As Integer = 1
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		End Sub
 	#tag EndMethod
 

@@ -18,14 +18,15 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_column_reader()
+		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
 		  //  
 		  //  Example_010
 		  //  - create an empty datatable
 		  //  - test the 'get_row/' method
 		  //  
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  Dim table0 As New clDataTable("mytable")
 		  

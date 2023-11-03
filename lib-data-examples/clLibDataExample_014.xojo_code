@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clLibDataExample_014
 Inherits clLibDataExample
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  
@@ -19,13 +19,14 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_column_reader()
+		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
 		  
 		  //  Example_014
 		  //  - test clip and clipped
 		  //  
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  
 		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
@@ -43,7 +44,7 @@ Inherits clLibDataExample
 		  
 		  call table0.add_column(col_sales *2 )
 		  
-		  dim nb as integer = table0.clip_range("sales",1000, 2000)
+		  call table0.clip_range("sales",1000, 2000)
 		  
 		  call table0.add_column(col_sales.clipped_by_range(1100, 1500) * 2)
 		  

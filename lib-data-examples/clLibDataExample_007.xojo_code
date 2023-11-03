@@ -15,7 +15,7 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_column_reader()
+		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
 		  
 		  //  Example_007
 		  //  - create an empty table
@@ -24,7 +24,8 @@ Inherits clLibDataExample
 		  //  
 		  
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  
 		  Dim table0 As New clDataTable("mytable")

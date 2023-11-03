@@ -218,7 +218,7 @@ Implements itf_table_column_reader
 		      tmp(1).rename(message_output_column )
 		      
 		      dim tmp_table as new clDataTable("temp", tmp)
-		      dim tmp_column as clAbstractDataSerie = tmp_table.add_column(field_name_output_column, column.name)
+		      call tmp_table.add_column(field_name_output_column, column.name)
 		      
 		      self.results_table.append_from_column_source(tmp_table)
 		      

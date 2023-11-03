@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clLibDataExample_017
 Inherits clLibDataExample
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  
@@ -19,15 +19,17 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_column_reader()
+		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
 		  
 		  //  Example_016
 		  //  - test date 
 		  //  
 		  
-		  System.DebugLog("START "+CurrentMethodName)
 		  
-		  System.DebugLog("START "+CurrentMethodName)
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  
 		  dim db as new SQLiteDatabase
@@ -96,7 +98,7 @@ Inherits clLibDataExample
 		  
 		  dim my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
 		  
-		  check_table("Test1/Test2", my_table1, my_table2)
+		  call check_table(log,"Test1/Test2", my_table1, my_table2)
 		  
 		  
 		  
@@ -106,7 +108,7 @@ Inherits clLibDataExample
 		  
 		  dim my_table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
 		  
-		  check_table("Test3/Test4", my_table3, my_table4)
+		  call check_table(log,"Test3/Test4", my_table3, my_table4)
 		  
 		  
 		  dim my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
@@ -125,7 +127,7 @@ Inherits clLibDataExample
 		  
 		  dim my_table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
 		  
-		  check_table("Test7/Test8", my_table7, my_table8)
+		  call check_table(log,"Test7/Test8", my_table7, my_table8)
 		  
 		  my_table2.rename("test2:after save/load test1")
 		  my_table4.rename("test4:after save/load test3")

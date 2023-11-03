@@ -1,5 +1,6 @@
 #tag Class
 Protected Class clLibDataExample
+Implements support_tests.itf_logmessage_writer
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  dim tmp() as string
@@ -8,6 +9,12 @@ Protected Class clLibDataExample
 		  
 		  return tmp
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub end_exec(method as string)
+		  write_message("Done with " + method)
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -41,7 +48,7 @@ Protected Class clLibDataExample
 
 	#tag Method, Flags = &h0
 		Function id() As integer
-		   
+		  
 		  Var t As Introspection.TypeInfo
 		  t = Introspection.GetType(self)
 		  
@@ -61,9 +68,24 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run() As itf_table_column_reader()
+		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub start_exec(method as string)
+		  write_message("Starting " + method)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub write_message(msg as string)
+		  // Part of the support_tests.itf_logmessage_writer interface.
+		  
+		  System.DebugLog(msg)
+		  
+		End Sub
 	#tag EndMethod
 
 

@@ -82,7 +82,6 @@ Protected Module clDataTableFilterFunctions
 		    Return the_row > the_row_count - tmp
 		    
 		  Else
-		    Dim tmp As Integer = 10
 		    Return  the_row > the_row_count - 10
 		    
 		  End If

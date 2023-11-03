@@ -166,9 +166,10 @@ End
 	#tag Method, Flags = &h0
 		Sub run_exemple(item as clLibDataExample)
 		  
+		  
 		  if item = nil then return
 		  
-		  dim tables() as itf_table_column_reader = item.run()
+		  dim tables() as itf_table_column_reader = item.run(item)
 		  
 		  dim wnd as new wnd_table_viewer
 		  

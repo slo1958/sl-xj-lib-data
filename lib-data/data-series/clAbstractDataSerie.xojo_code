@@ -957,7 +957,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function standard_deviation() As double
+		Function standard_deviation(is_population as boolean = False) As double
 		  Dim limit As Integer = row_count - 1
 		  Dim i As Integer
 		  
@@ -984,12 +984,19 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  dim m as double = s1/n
 		  
-		  return Sqrt((n * m * m - 2 * m *s1 + s2)  / (n-1))
+		  if is_population then
+		    return Sqrt((n * m * m - 2 * m *s1 + s2)  / (n))
+		    
+		  else
+		    return Sqrt((n * m * m - 2 * m *s1 + s2)  / (n-1))
+		    
+		  end if
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function standard_deviation_non_zero() As double
+		Function standard_deviation_non_zero(is_population as boolean = False) As double
 		  Dim limit As Integer = row_count - 1
 		  Dim i As Integer
 		  
@@ -1019,7 +1026,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  dim m as double = s1/n
 		  
-		  return Sqrt(( n * m * m - 2 * m * s1 + s2)  / (n-1))
+		  if is_population then
+		    return Sqrt((n * m * m - 2 * m *s1 + s2)  / (n))
+		    
+		  else
+		    return Sqrt((n * m * m - 2 * m *s1 + s2)  / (n-1))
+		    
+		  end if
+		  
 		End Function
 	#tag EndMethod
 
@@ -1081,7 +1095,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  for row as integer = 0 to upper_bound
 		    dim tmp as variant = self.get_element(row)
-		    dim v as integer
 		    
 		    if dct.HasKey(tmp) then
 		      dct.value(tmp)  = dct.Value(tmp) + 1
