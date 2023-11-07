@@ -82,8 +82,8 @@ The default data series stores values as variant.
 - integer data serie
 - double data serie
 - boolean data serie
-- compressed data serie
 - string data serie
+- compressed data serie
 
 #### About data serie index clDataSerieIndex
 (subclass of clDataSerie)
@@ -96,20 +96,20 @@ Elements of the data serie are integer. A type specific get_element_as_integer()
 Arithmetic operators (+, _, - ) have been overloaded.
 
 #### double data serie clNumberDataSerie
-Elements of the data serie are double. A type specific get_element_as_number() function returns an integer instead of a variant.
+Elements of the data serie are double. A type specific get_element_as_number() function returns zero double instead of a variant.
 Arithmetic operators (+, _, - ) have been overloaded.
 
 
 #### boolean data serie clBooleanDataSerie
-Elements of the data serie are boolean. A type specific get_element_as_boolean() function returns an integer instead of a variant.
+Elements of the data serie are boolean. A type specific get_element_as_boolean() function returns a boolean instead of a variant.
 Boolean operators (and, or, not ) have been overloaded.
 
 
+#### string data serie clStringDataSerie
+Elements of the data serie are string. The data serie exposes basic string handling functions (left, right, mid, text_before, text_after, trim,…)
+
 #### compressed data serie clCompressedDataSerie
 The data serie stores it value in a string compressed form. Each cell in the column is an integer, an index to an array of values. Use this data serie instead of the standard data serie when a large number of rows contains only a few distinct values, for example a country name in a large invoice dataset.
-
-### string data serie clStringDataSerie
-Elements of the data serie are string. The data serie exposes basic string handling functions (left, right, mid, text_before, text_after, trim,…)
 
 ## About clDataTable
 A data table is a collection of data series. 
@@ -275,7 +275,7 @@ mytable1.append_from_column_source(mytable3, false)
 
 ```
 
-After those two calls: mytable1 contains all the rows from the three tables. The first import also adds the column 'birthyear' since the flag 'create_missing_columns' is set to true. 
+After those two calls: mytable1 contains all the rows from the three tables. The first import also adds the column 'birthyear' since the flag 'create\_missing_columns' is set to true. 
 
 
 #### iterate a table row by row
@@ -578,7 +578,7 @@ This is the core library. It provides support for data series, data tables and d
 ## folder lib-data (experimental)
 This folder contains experimental components.  
 
-Subfolders:
+Subfolders of lib-data:
 
 - data-helpers
 - data-pool
@@ -606,10 +606,10 @@ Handling of data tables
 Experimental components to support data validation
 
 ## folder lib-data-examples
-Examples used in the main test program. 
+Examples used in the main test program. Each example can be launched from the example window. A generic window designed to display the content of an array of data table is used to show the results.
 
 ## folder lib-data-io
-IO support for data series and data tables will move here in a future version.
+All IO support for data series and data tables will utimately move here in future versions.
 
 
 ## folder lib-data-tests
