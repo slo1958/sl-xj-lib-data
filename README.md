@@ -96,7 +96,7 @@ Elements of the data serie are integer. A type specific get_element_as_integer()
 Arithmetic operators (+, _, - ) have been overloaded.
 
 #### double data serie clNumberDataSerie
-Elements of the data serie are double. A type specific get_element_as_number() function returns zero double instead of a variant.
+Elements of the data serie are double. A type specific get_element_as_number() function returns a double instead of a variant.
 Arithmetic operators (+, _, - ) have been overloaded.
 
 
