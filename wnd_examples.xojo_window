@@ -207,21 +207,58 @@ End
 #tag Events Listbox1
 	#tag Event
 		Sub Change()
-		  dim tmp as clLibDataExample
-		  
 		  dim idx as integer = me.SelectedRowIndex
 		  
-		  try
-		    tmp = clLibDataExample(me.RowTagAt(idx))
+		  dim tmp as clLibDataExample
+		  
+		  
+		  if idx >= 0 then
+		    try
+		      tmp = clLibDataExample(me.RowTagAt(idx))
+		      
+		    catch
+		      tmp = nil
+		      
+		    end try
 		    
-		  catch
+		  else
 		    tmp = nil
 		    
-		  end try
+		  end if
 		  
 		  show_example_description tmp
 		  
 		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseMove(X As Integer, Y As Integer)
+		  
+		  dim idx as integer = me.RowFromXY(x,y)
+		  
+		  dim tmp as clLibDataExample
+		  
+		  if idx >= 0 then
+		    try
+		      tmp = clLibDataExample(me.RowTagAt(idx))
+		      
+		    catch
+		      tmp = nil
+		      
+		    end try
+		    
+		  else
+		    tmp = nil
+		    
+		  end if
+		  
+		  show_example_description tmp
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  show_example_description nil
 		End Sub
 	#tag EndEvent
 #tag EndEvents
