@@ -1,31 +1,30 @@
-#tag Window
-Begin Window wnd_table_viewer
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow wnd_table_viewer
    Backdrop        =   0
-   CloseButton     =   True
+   BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   Frame           =   0
+   DefaultLocation =   0
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackgroundColor=   False
+   HasCloseButton  =   True
+   HasFullScreenButton=   False
+   HasMaximizeButton=   True
+   HasMinimizeButton=   True
    Height          =   400
    ImplicitInstance=   True
-   LiveResize      =   "True"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   True
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   0
    MenuBarVisible  =   True
-   MinHeight       =   64
-   MinimizeButton  =   True
-   MinWidth        =   64
-   Placement       =   0
+   MinimumHeight   =   64
+   MinimumWidth    =   64
    Resizeable      =   True
    Title           =   "Untitled"
+   Type            =   0
    Visible         =   True
    Width           =   600
-   Begin Listbox lb_list
+   Begin DesktopListBox lb_list
       AutoDeactivate  =   True
       AutoHideScrollbars=   True
       Bold            =   False
@@ -33,14 +32,11 @@ Begin Window wnd_table_viewer
       ColumnCount     =   1
       ColumnsResizable=   False
       ColumnWidths    =   ""
-      DataField       =   ""
-      DataSource      =   ""
       DefaultRowHeight=   -1
       Enabled         =   True
       EnableDrag      =   False
       EnableDragReorder=   False
-      GridLinesHorizontal=   0
-      GridLinesVertical=   0
+      GridLineStyle   =   0
       HasHeading      =   False
       HeadingIndex    =   -1
       Height          =   383
@@ -77,7 +73,7 @@ Begin Window wnd_table_viewer
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
-   Begin Listbox lb_data
+   Begin DesktopListBox lb_data
       AutoDeactivate  =   True
       AutoHideScrollbars=   True
       Bold            =   False
@@ -85,17 +81,14 @@ Begin Window wnd_table_viewer
       ColumnCount     =   1
       ColumnsResizable=   False
       ColumnWidths    =   ""
-      DataField       =   ""
-      DataSource      =   ""
       DefaultRowHeight=   -1
       Enabled         =   True
       EnableDrag      =   False
       EnableDragReorder=   False
-      GridLinesHorizontal=   0
-      GridLinesVertical=   0
+      GridLineStyle   =   0
       HasHeading      =   False
       HeadingIndex    =   -1
-      Height          =   383
+      Height          =   355
       HelpTag         =   ""
       Hierarchical    =   False
       Index           =   -2147483648
@@ -120,7 +113,7 @@ Begin Window wnd_table_viewer
       TextFont        =   "System"
       TextSize        =   0.0
       TextUnit        =   0
-      Top             =   8
+      Top             =   36
       Transparent     =   False
       Underline       =   False
       UseFocusRing    =   True
@@ -129,11 +122,9 @@ Begin Window wnd_table_viewer
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
-   Begin Label lbl_comments
+   Begin DesktopLabel lbl_comments
       AllowAutoDeactivate=   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -164,12 +155,44 @@ Begin Window wnd_table_viewer
       Visible         =   False
       Width           =   337
    End
+   Begin DesktopLabel Label1
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   243
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Text            =   "Untitled"
+      TextAlignment   =   0
+      TextColor       =   &c000000
+      Tooltip         =   ""
+      Top             =   8
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   337
+   End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  reset_viewer
 		End Sub
 	#tag EndEvent
@@ -220,7 +243,7 @@ End
 		  
 		  tmp.sort()
 		  
-		  lb_list.DeleteAllRows
+		  lb_list.RemoveAllRows
 		  
 		  for each v as string in tmp
 		    lb_list.AddRow(v)
@@ -236,9 +259,9 @@ End
 
 	#tag Method, Flags = &h0
 		Sub reset_viewer()
-		  lb_list.DeleteAllRows
+		  lb_list.RemoveAllRows
 		  
-		  lb_data.DeleteAllRows
+		  lb_data.RemoveAllRows
 		  
 		  table_dict = new Dictionary
 		  
@@ -302,12 +325,46 @@ End
 
 #tag Events lb_list
 	#tag Event
-		Sub Change()
-		  dim tmp_table as string = me.Text
+		Sub SelectionChanged()
+		  dim tmp_table as string = me.SelectedRowValue
 		  
 		  show_table tmp_table
 		  
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events lb_data
+	#tag Event
+		Sub SelectionChanged()
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseMove(x As Integer, y As Integer)
+		  dim col_no as integer = me.ColumnFromXY(x,y)
+		  
+		  if col_no < 0 then 
+		    label1.Text = ""
+		    return
+		    
+		  end if
+		  
+		  dim col as clAbstractDataSerie = clAbstractDataSerie(me.ColumnTagAt(col_no))
+		  
+		  if col = nil then
+		    label1.Text = ""
+		    return
+		    
+		  end if
+		  
+		  Label1.Text  =  col.full_name(true)
+		  
+		End Sub
+	#tag EndEvent
+	#tag Event
+		Sub MouseExit()
+		  label1.Text = ""
 		End Sub
 	#tag EndEvent
 #tag EndEvents

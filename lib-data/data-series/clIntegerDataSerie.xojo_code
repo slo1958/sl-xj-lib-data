@@ -60,6 +60,8 @@ Inherits clAbstractDataSerie
 		    
 		  Next
 		  
+		  tmp.add_meta_data("source","clone from " + self.full_name)
+		  
 		  Return tmp
 		  
 		  

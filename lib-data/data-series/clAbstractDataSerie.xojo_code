@@ -352,6 +352,41 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function clone_structure() As clAbstractDataSerie
+		  //  
+		  //  Clone the current data serie (only implemented at typed subclasses)
+		  //
+		  //
+		  //  Parameters
+		  //  - 
+		  //  
+		  //  Returns:
+		  //  - the new data serie
+		  //
+		  
+		  
+		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(the_label as string, the_values() as variant)
+		  
+		  self.reset
+		  
+		  serie_name = the_label
+		  physical_table_link = Nil
+		  
+		  For i As Integer = 0 To the_values.Ubound
+		    self.append_element(the_values(i))
+		    
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_label as string, paramarray the_values() as variant)
 		  
 		  self.reset
@@ -373,22 +408,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  end if
 		  
-		  
-		  For i As Integer = 0 To the_values.Ubound
-		    self.append_element(the_values(i))
-		    
-		  Next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(the_label as string, the_values() as variant)
-		  
-		  self.reset
-		  
-		  serie_name = the_label
-		  physical_table_link = Nil
 		  
 		  For i As Integer = 0 To the_values.Ubound
 		    self.append_element(the_values(i))
@@ -557,6 +576,22 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  Next
 		  
 		  Return ret
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function full_name(add_brackets as boolean = False) As string
+		  if self.physical_table_link = nil then
+		    return self.name
+		    
+		  elseif add_brackets then
+		    return "[" + self.physical_table_link.name + "]" + "." + "[" + self.name + "]"  
+		    
+		  else
+		    return self.physical_table_link.name + "." + self.name
+		    
+		  end if
+		  
 		End Function
 	#tag EndMethod
 

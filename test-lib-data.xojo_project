@@ -1,6 +1,6 @@
 Type=Desktop
 RBProjectVersion=2023.02
-MinIDEVersion=20070100
+MinIDEVersion=20210300
 OrigIDEVersion=20230100
 Class=App;App.xojo_code;&h0000000059DFB7FF;&h0000000000000000;false
 MenuBar=MainMenuBar;MainMenuBar.xojo_menu;&h000000002AAC5FFF;&h0000000000000000;false
@@ -25,7 +25,7 @@ Folder=lib-data (experimental);lib-data (experimental);&h00000000012C6FFF;&h0000
 Class=clDataSerieMultiValued;lib-data (experimental)/clDataSerieMultiValued.xojo_code;&h00000000376797FF;&h00000000012C6FFF;false
 Folder=lib-data-ui-support;lib-data-ui-support;&h000000006C2547FF;&h0000000000000000;false
 Module=datatable_to_list;lib-data-ui-support/datatable_to_list.xojo_code;&h000000004C2B5FFF;&h000000006C2547FF;false
-Window=wnd_table_viewer;lib-data-ui-support/wnd_table_viewer.xojo_window;&h0000000048371FFF;&h000000006C2547FF;false
+DesktopWindow=wnd_table_viewer;lib-data-ui-support/wnd_table_viewer.xojo_window;&h0000000048371FFF;&h000000006C2547FF;false
 Class=clIntegerDataSerie;lib-data/data-series/clIntegerDataSerie.xojo_code;&h00000000443A37FF;&h00000000054067FF;false
 Class=clDataSerieValidation;lib-data/data-validation/clDataSerieValidation.xojo_code;&h000000002B320FFF;&h0000000005669FFF;false
 Class=clDataSerieIterator;lib-data/data-series/clDataSerieIterator.xojo_code;&h0000000037CC37FF;&h00000000054067FF;false
