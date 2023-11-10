@@ -7,8 +7,8 @@ Inherits clLibDataExample
 		  Dim returnValue() as string = Super.describe()
 		  
 		  
-		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- add three rows")
+		  returnValue.Add("- create an empty datatable")
+		  returnValue.Add("- add three rows")
 		  
 		  return returnValue
 		  

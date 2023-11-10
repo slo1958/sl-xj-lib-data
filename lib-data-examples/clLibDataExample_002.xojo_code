@@ -7,8 +7,8 @@ Inherits clLibDataExample
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.append("- create a small table")
-		  returnValue.append("- aggregate using 0, 1 and 2 dimensions")
+		  returnValue.Add("- create a small table")
+		  returnValue.Add("- aggregate using 0, 1 and 2 dimensions")
 		  
 		  return returnValue
 		  

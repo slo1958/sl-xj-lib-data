@@ -6,9 +6,9 @@ Inherits clLibDataExample
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- fast append data")
-		  returnValue.append("- create a dataserie  by applying a simple operation between columns")
+		  returnValue.Add("- create an empty datatable")
+		  returnValue.Add("- fast append data")
+		  returnValue.Add("- create a dataserie  by applying a simple operation between columns")
 		  
 		  return returnValue 
 		End Function

@@ -8,9 +8,9 @@ Inherits clLibDataExample
 		  Dim returnValue() as string = Super.describe()
 		  
 		  
-		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- fast append data")
-		  returnValue.append("- apply filter function to create a dataserie")
+		  returnValue.Add("- create an empty datatable")
+		  returnValue.Add("- fast append data")
+		  returnValue.Add("- apply filter function to create a dataserie")
 		  
 		  return returnValue
 		  

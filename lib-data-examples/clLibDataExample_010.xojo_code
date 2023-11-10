@@ -8,8 +8,8 @@ Inherits clLibDataExample
 		  Dim returnValue() as string = Super.describe()
 		  
 		  
-		  returnValue.append("- create a datatable")
-		  returnValue.append("- test the 'get_row' method")
+		  returnValue.Add("- create a datatable")
+		  returnValue.Add("- test the 'get_row' method")
 		  
 		  
 		  return returnValue

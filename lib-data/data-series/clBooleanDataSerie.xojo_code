@@ -250,6 +250,20 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ToString() As clStringDataSerie
+		  dim res as new clStringDataSerie(self.name+" as string")
+		  
+		  for i as integer = 0 to self.upper_bound
+		    res.append_element(self.get_element_as_string(i))
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function upper_bound() As integer
 		  Return items.Ubound
 		  

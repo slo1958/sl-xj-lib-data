@@ -1,15 +1,15 @@
 #tag Class
 Protected Class clLibDataExample_019
 Inherits clLibDataExample
-	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.append("- create a  datatable")
-		  returnValue.append("- create a view on the table")
-		  returnValue.Append("- define display titles")
+		  returnValue.Add("- create a  datatable")
+		  returnValue.Add("- create a view on the table")
+		  returnValue.Add("- define display titles")
 		  
 		  return returnValue 
 		End Function

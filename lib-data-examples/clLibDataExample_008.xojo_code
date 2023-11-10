@@ -1,16 +1,17 @@
 #tag Class
 Protected Class clLibDataExample_008
 Inherits clLibDataExample
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
 		  
-		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- fast append data")
-		  returnValue.append("- apply filter functions to create two dataseries")
-		  returnValue.append("- operation on dataseries to create a new dataserie")
+		  returnValue.Add("- create an empty datatable")
+		  returnValue.Add("- fast append data")
+		  returnValue.Add("- apply filter functions to create two dataseries")
+		  returnValue.Add("- operation on dataseries to create a new dataserie")
 		  
 		  return returnValue
 		  

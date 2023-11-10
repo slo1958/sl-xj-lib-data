@@ -17,6 +17,7 @@ Implements itf_table_column_reader,Iterable
 		  Dim tmp_column_name As String = tmp_column.name
 		  
 		  If Self.get_column(tmp_column_name) <> Nil Then
+		    System.DebugLog("column " + tmp_column_name + " already defined in table.")
 		    Return Nil
 		    
 		  end if
@@ -99,6 +100,7 @@ Implements itf_table_column_reader,Iterable
 		  end if
 		  
 		  If Self.get_column(tmp_column_name) <> Nil Then
+		    System.DebugLog("column " + tmp_column_name + " already defined in table.")
 		    Return Nil
 		    
 		  end if

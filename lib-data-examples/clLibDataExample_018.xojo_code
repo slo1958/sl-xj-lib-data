@@ -7,9 +7,9 @@ Inherits clLibDataExample
 		  // Calling the overridden superclass method.
 		  Dim returnValue() as string = Super.describe()
 		  
-		  returnValue.append("- create a  datatable")
-		  returnValue.Append("- define display titles")
-		  returnValue.append("- create a table with the structure of the first table")
+		  returnValue.Add("- create a  datatable")
+		  returnValue.Add("- define display titles")
+		  returnValue.Add("- create a table with the structure of the first table")
 		  
 		  return returnValue 
 		End Function

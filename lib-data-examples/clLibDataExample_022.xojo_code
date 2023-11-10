@@ -8,10 +8,12 @@ Inherits clLibDataExample
 		  Dim returnValue() as string = Super.describe()
 		  
 		  
-		  returnValue.append("- create an empty datatable")
-		  returnValue.append("- apply filter functions to create two dataseries")
-		  returnValue.append("- operation on dataseries to create a new dataserie")
-		  returnValue.append("- customise formatting of boolean values")
+		  returnValue.Add("- create an empty datatable")
+		  returnValue.Add("- apply filter functions to create two dataseries")
+		  returnValue.Add("- operation on dataseries to create a new dataserie")
+		  returnValue.Add("- customise formatting of boolean values")
+		  returnValue.Add("- range formatting for number values")
+		  
 		  return returnValue
 		  
 		End Function
@@ -33,16 +35,26 @@ Inherits clLibDataExample
 		  
 		  Dim table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  call table0.add_columns(Array("country","city"))
+		  dim col_cloned_sales as clNumberDataSerie =  clNumberDataSerie(table0.add_column(new clNumberDataSerie("sales")))
 		  
-		  table0.append_row(Array("France","Paris",1100))
+		  table0.append_row(Array("France","Paris",600))
 		  table0.append_row(Array("France","Marseille",1200))
 		  table0.append_row(Array("Belgique","Bruxelles",1300))
-		  table0.append_row(Array("USA","NewYork",1400))
+		  table0.append_row(Array("USA","NewYork",2400))
 		  table0.append_row(Array("Belgique","Bruxelles",1500))
 		  table0.append_row(Array("USA","Chicago",1600))
 		  
-		   
+		  col_cloned_sales = col_cloned_sales.clone()
+		  col_cloned_sales.name = "Formatted sales"
+		  
+		   call table0.add_column(col_cloned_sales)
+		  
+		  col_cloned_sales.active_range_formatting("","")
+		  col_cloned_sales.add_formatting_range(0,999.99,"small")
+		  col_cloned_sales.add_formatting_range(1000,1999.99,"medium")
+		  col_cloned_sales.add_formatting_range(2000,2999.99,"big")
+		  
 		  
 		  call table0.add_column(new clBooleanDataSerie("is_france", table0.filter_apply_function(AddressOf field_filter,"country","France")))
 		  call table0.add_column(new clBooleanDataSerie("is_belgium", table0.filter_apply_function(AddressOf field_filter, "country","Belgique")))

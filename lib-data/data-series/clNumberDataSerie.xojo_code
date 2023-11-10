@@ -3,6 +3,23 @@ Protected Class clNumberDataSerie
 Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
+		Sub active_range_formatting(the_below_label as string, the_above_label as string)
+		  self.formatter = new clRangeFormatting(the_below_label, the_above_label)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub add_formatting_range(low_bound as double, high_bound as double, label as string)
+		  if self.formatter = nil then Return
+		  
+		  self.formatter.add_range(low_bound, high_bound, label)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  
 		  items.Append(the_item)
@@ -94,6 +111,12 @@ Inherits clAbstractDataSerie
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub drop_range_formatting()
+		  self.formatter = nil
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function filter_value_in_range(minimum_value as double, maximum_value as double) As variant()
 		  Dim return_boolean() As Variant
@@ -143,8 +166,9 @@ Inherits clAbstractDataSerie
 		Function get_element_as_string(the_element_index as integer) As string
 		  // Calling the overridden superclass method.
 		  
-		  return format(self.get_element(the_element_index), format_str)
+		  if self.formatter = nil then return format(self.get_element(the_element_index), format_str)
 		  
+		  return self.formatter.range_format(self.get_element(the_element_index))
 		End Function
 	#tag EndMethod
 
@@ -373,6 +397,10 @@ Inherits clAbstractDataSerie
 
 	#tag Property, Flags = &h1
 		Protected default_value As double
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected formatter As clRangeFormatting
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
