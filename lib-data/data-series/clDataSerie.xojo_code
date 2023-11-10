@@ -2,7 +2,7 @@
 Protected Class clDataSerie
 Inherits clAbstractDataSerie
 Implements itf_json_able
-	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  items.Append(the_item)
@@ -14,12 +14,37 @@ Implements itf_json_able
 		Function clone() As clDataSerie
 		  Dim tmp As New clDataSerie(Self.name)
 		  
+		  self.clone_info(tmp)
+		  
+		  tmp.add_meta_data("source","clone from " + self.full_name)
+		  
 		  For Each v As variant In Self.items
 		    tmp.append_element(v)
 		    
 		  Next
 		  
-		  tmp.add_meta_data("source","clone from " + self.full_name)
+		  Return tmp
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub clone_info(target as clDataSerie)
+		  super.clone_info(target)
+		  
+		  target.default_value = self.default_value
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clone_structure() As clDataSerie
+		  Dim tmp As New clDataSerie(Self.name)
+		  
+		  self.clone_info(tmp)
+		  
+		  tmp.add_meta_data("source","clone structure from " + self.full_name)
 		  
 		  Return tmp
 		  

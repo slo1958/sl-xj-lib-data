@@ -95,6 +95,7 @@ Class=clMetaData;lib-data/data-common/clMetaData.xojo_code;&h0000000038A8EFFF;&h
 Class=clLibDataExample_021;lib-data-examples/clLibDataExample_021.xojo_code;&h000000004CD437FF;&h0000000073919FFF;false
 Interface=itf_logmessage_writer;lib-data-tests/support_tests/itf_logmessage_writer.xojo_code;&h000000005BAEC7FF;&h0000000017396FFF;false
 Class=clWriteToSystemLog;lib-data-tests/support_tests/clWriteToSystemLog.xojo_code;&h00000000514557FF;&h0000000017396FFF;false
+Class=clLibDataExample_022;lib-data-examples/clLibDataExample_022.xojo_code;&h00000000793A1FFF;&h0000000073919FFF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1

@@ -351,10 +351,16 @@ Implements Xojo.Core.Iterable,itf_json_able
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub clone_info(target as clAbstractDataSerie)
+		  target.display_title = self.display_title
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function clone_structure() As clAbstractDataSerie
 		  //  
-		  //  Clone the current data serie (only implemented at typed subclasses)
+		  //  Clone the structure current data serie (only implemented at typed subclasses)
 		  //
 		  //
 		  //  Parameters

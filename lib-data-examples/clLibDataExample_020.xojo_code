@@ -23,7 +23,7 @@ Inherits clLibDataExample
 		  
 		  dim c0 as new clDataSerie("Action")
 		  dim c1 as new clDataSerie("DataSerie")
-		  dim c2 as new clNumberDataSerie("NumberDataSerie")
+		  dim c2 as new clNumberDataSerie("NumberDataSerie", array(123.45, 123.45, 123.45))
 		  dim c3 as new clStringDataSerie("StringDataSerie")
 		  
 		  c0.append_element("Add 'aaa'")

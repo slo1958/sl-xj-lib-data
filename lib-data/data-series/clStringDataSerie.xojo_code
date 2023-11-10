@@ -13,12 +13,39 @@ Inherits clAbstractDataSerie
 		Function clone() As clStringDataSerie
 		  Dim tmp As New clStringDataSerie(Self.name)
 		  
+		  self.clone_info(tmp)
+		  
 		  For Each v As string In Self.items
 		    tmp.append_element(v)
 		    
 		  Next
 		  
 		  tmp.add_meta_data("source","clone from " + self.full_name)
+		  
+		  Return tmp
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub clone_info(target as clStringDataSerie)
+		  super.clone_info(target)
+		  
+		  target.default_value = self.default_value
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clone_structure() As clStringDataSerie
+		  // Calling the overridden superclass method.
+		  Var returnValue as clAbstractDataSerie = Super.clone_structure()
+		  Dim tmp As New clStringDataSerie(Self.name)
+		  
+		  self.clone_info(tmp)
+		  
+		  tmp.add_meta_data("source","clone structure from " + self.full_name)
 		  
 		  Return tmp
 		  

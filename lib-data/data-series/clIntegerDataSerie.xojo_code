@@ -55,12 +55,38 @@ Inherits clAbstractDataSerie
 		Function clone() As clIntegerDataSerie
 		  Dim tmp As New clIntegerDataSerie(Self.name)
 		  
+		  self.clone_info(tmp)
+		  
 		  For Each v As integer In Self.items
 		    tmp.append_element(v)
 		    
 		  Next
 		  
 		  tmp.add_meta_data("source","clone from " + self.full_name)
+		  
+		  Return tmp
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub clone_info(target as clIntegerDataSerie)
+		  super.clone_info(target)
+		  
+		  target.default_value = self.default_value
+		  target.format_str = self.format_str
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clone_structure() As clIntegerDataSerie
+		  Dim tmp As New clIntegerDataSerie(Self.name)
+		  
+		  self.clone_info(tmp)
+		  
+		  tmp.add_meta_data("source","clone structure from " + self.full_name)
 		  
 		  Return tmp
 		  
@@ -312,6 +338,12 @@ Inherits clAbstractDataSerie
 		  End If
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub set_format(the_format as String)
+		  format_str = the_format
 		End Sub
 	#tag EndMethod
 

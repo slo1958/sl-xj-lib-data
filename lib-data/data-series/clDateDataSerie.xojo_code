@@ -13,6 +13,8 @@ Inherits clAbstractDataSerie
 		Function clone() As clDateDataSerie
 		  Dim tmp As New clDateDataSerie(Self.name)
 		  
+		  self.clone_info(tmp)
+		  
 		  For Each v As DateTime In Self.items
 		    tmp.append_element(v)
 		    
@@ -24,6 +26,15 @@ Inherits clAbstractDataSerie
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub clone_info(target as clDateDataSerie)
+		  super.clone_info(target)
+		  
+		  target.default_value = self.default_value
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21

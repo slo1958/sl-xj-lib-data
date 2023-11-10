@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clBooleanDataSerie
 Inherits clAbstractDataSerie
-	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
+	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  
@@ -12,6 +12,8 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function clone() As clBooleanDataSerie
 		  Dim tmp As New clBooleanDataSerie(Self.name)
+		  
+		  self.clone_info(tmp)
 		  
 		  For Each v As boolean In Self.items
 		    tmp.append_element(v)
@@ -26,16 +28,28 @@ Inherits clAbstractDataSerie
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub Constructor(the_label as string, the_values() as boolean)
-		  super.constructor(the_label)
+	#tag Method, Flags = &h1
+		Protected Sub clone_info(target as clBooleanDataSerie)
+		  super.clone_info(target)
 		  
-		  For i As Integer = 0 To the_values.Ubound
-		    self.append_element(the_values(i))
-		    
-		  Next
-		  
+		  target.default_value = self.default_value
+		  target.str_for_false = self.str_for_false
+		  target.str_for_true = self.str_for_true
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function clone_structure() As clBooleanDataSerie
+		  Dim tmp As New clBooleanDataSerie(Self.name)
+		  
+		  self.clone_info(tmp)
+		  
+		  tmp.add_meta_data("source","clone structure from " + self.full_name)
+		  
+		  Return tmp
+		  
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -78,7 +92,7 @@ Inherits clAbstractDataSerie
 		Function get_element_as_string(the_element_index as integer) As string
 		  // Calling the overridden superclass method.
 		  Var returnValue as string = Super.get_element_as_string(the_element_index)
-		  return if(self.get_element(the_element_index),"True","False")
+		  return if(self.get_element(the_element_index),self.str_for_true,self.str_for_false)
 		  
 		End Function
 	#tag EndMethod
@@ -210,6 +224,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub set_format(False_label as string, True_Label as string)
+		  
+		  self.str_for_false = False_label
+		  self.str_for_true = True_Label
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub set_length(the_length as integer, default_value as variant)
 		  
 		  if items.Ubound > the_length then
@@ -240,6 +263,14 @@ Inherits clAbstractDataSerie
 
 	#tag Property, Flags = &h1
 		Protected items() As boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected str_for_false As String = "False"
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected str_for_true As String = "True"
 	#tag EndProperty
 
 
