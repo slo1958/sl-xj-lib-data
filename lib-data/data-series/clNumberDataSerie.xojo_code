@@ -27,6 +27,24 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function average() As double
+		  dim c as new clBasicMath
+		  return c.average(items)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function average_non_zero() As double
+		  dim c as new clBasicMath
+		  return c.average_non_zero(items)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function clipped_by_range(low_value as variant, high_value as variant) As clNumberDataSerie
 		  
 		  dim new_col as clNumberDataSerie = self.clone()
@@ -107,6 +125,24 @@ Inherits clAbstractDataSerie
 		  
 		  Return tmp
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function count() As double
+		  
+		  dim c as new clBasicMath
+		  return c.count(items)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function count_non_zero() As double
+		  
+		  dim c as new clBasicMath
+		  return c.count_non_zero(items)
 		  
 		End Function
 	#tag EndMethod
@@ -371,6 +407,33 @@ Inherits clAbstractDataSerie
 		  Wend
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function standard_deviation(is_population as boolean = False) As double
+		  dim c as new clBasicMath
+		  return c.standard_deviation(items, is_population)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function standard_deviation_non_zero(is_population as boolean = False) As double
+		  dim c as new clBasicMath
+		  return c.standard_deviation_non_zero(items, is_population)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function sum() As double
+		  dim c as new clBasicMath
+		  return c.sum(items)
+		  
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

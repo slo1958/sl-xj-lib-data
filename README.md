@@ -98,6 +98,7 @@ Arithmetic operators (+, _, - ) have been overloaded.
 #### double data serie clNumberDataSerie
 Elements of the data serie are double. A type specific get_element_as_number() function returns a double instead of a variant.
 Arithmetic operators (+, _, - ) have been overloaded.
+Functions like count(), count_non_zero(), average(), average_non_zero(), standard_deviation(), standard_deviation_non_zero()  are reimplemented for clNumberDataSerie to exclude invalid numbers and infinite numbers.
 
 
 #### boolean data serie clBooleanDataSerie

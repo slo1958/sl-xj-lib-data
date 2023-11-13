@@ -4,17 +4,17 @@ Protected Class clGrouper
 		Sub Constructor(selected_columns() as clAbstractDataSerie)
 		  dim usefull_columns(-1) as clAbstractDataSerie
 		  
-		  redim col_names(-1)
+		  redim dimension_column_names(-1)
 		  
 		  for i as integer = 0 to selected_columns.LastIndex
 		    if selected_columns(i) <> nil then
-		      col_names.Add(selected_columns(i).name)
+		      dimension_column_names.Add(selected_columns(i).name)
 		      usefull_columns.add(selected_columns(i))
 		    end if
 		    
 		  next
 		  
-		  if col_names.LastIndex < 0 then return
+		  if dimension_column_names.LastIndex < 0 then return
 		  
 		  top_dictionary = new Dictionary
 		  
@@ -49,7 +49,7 @@ Protected Class clGrouper
 
 	#tag Method, Flags = &h0
 		Sub flat1(labels() as string, values() as variant, depth as integer, level_dict as Dictionary, output_cols() as clAbstractDataSerie)
-		  labels(depth) = col_names(depth)
+		  labels(depth) = dimension_column_names(depth)
 		  
 		  for each k as variant in level_dict.keys
 		    
@@ -86,15 +86,15 @@ Protected Class clGrouper
 		  //  Pre-allocate work array
 		  //  
 		  
-		  redim tmp_label(col_names.Count)
-		  redim tmp_value(col_names.Count)
+		  redim tmp_label(dimension_column_names.Count)
+		  redim tmp_value(dimension_column_names.Count)
 		  
 		  //  
 		  //  Prepare output space for grouped dimensions
 		  //  
 		  Dim output_dimensions() As clAbstractDataSerie
 		  
-		  for each name as string in col_names
+		  for each name as string in dimension_column_names
 		    output_dimensions.Add(new clDataSerie(name))
 		    
 		  Next
@@ -102,14 +102,13 @@ Protected Class clGrouper
 		  flat1(tmp_label, tmp_value,  0, top_dictionary, output_dimensions)
 		  
 		  return output_dimensions
-		  
-		  dim k as integer 
+		   
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		col_names() As String
+		dimension_column_names() As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
