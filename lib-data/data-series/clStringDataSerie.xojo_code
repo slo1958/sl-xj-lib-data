@@ -99,7 +99,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function left(count as integer) As clStringDataSerie
+		Function Left(count as integer) As clStringDataSerie
 		  dim res as new clStringDataSerie(me.name+ " left " + str(count))
 		  
 		  for i as integer = 0 to me.upper_bound
@@ -119,6 +119,21 @@ Inherits clAbstractDataSerie
 		  
 		  for i as integer = 0 to me.upper_bound
 		    res.append_element(me.get_element_as_string(i).Lowercase())
+		    
+		  next
+		  
+		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Middle(from_char as integer, length as integer) As clStringDataSerie
+		  dim res as new clStringDataSerie(me.name+ " Middle " + str(length) + " char. from "  + str(from_char) )
+		  
+		  for i as integer = 0 to me.upper_bound
+		    res.append_element(me.get_element_as_string(i).Middle(from_char, length))
 		    
 		  next
 		  
@@ -189,7 +204,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function right(count as integer) As clStringDataSerie
+		Function Right(count as integer) As clStringDataSerie
 		  dim res as new clStringDataSerie(me.name+ " right " + str(count))
 		  
 		  for i as integer = 0 to me.upper_bound
@@ -300,6 +315,34 @@ Inherits clAbstractDataSerie
 		  
 		  return res
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToInteger() As clIntegerDataSerie
+		  dim res as new clIntegerDataSerie(self.name+" as integer")
+		  
+		  for i as integer = 0 to self.upper_bound
+		    res.append_element(self.get_element_as_integer(i))
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToNumber() As clNumberDataSerie
+		  dim res as new clNumberDataSerie(self.name+" as double")
+		  
+		  for i as integer = 0 to self.upper_bound
+		    res.append_element(self.get_element_as_integer(i))
+		    
+		  next
+		  
+		  return res
 		  
 		End Function
 	#tag EndMethod
