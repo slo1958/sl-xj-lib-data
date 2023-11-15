@@ -788,10 +788,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Function get_type() As string
 		  
-		  Var t As Introspection.TypeInfo
-		  t = Introspection.GetType(self)
-		  
-		  return  t.Name 
+		  return  clDataType.TranslateFromSerie(self)
 		End Function
 	#tag EndMethod
 

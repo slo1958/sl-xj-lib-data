@@ -1,14 +1,14 @@
 #tag Class
 Class clSqliteDBAccess
 Inherits clAbstractDatabaseAccess
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AppendFields(table_name as string, field_names() as string, field_types() as string)
 		  
 		  dim tmp_sql as string
 		  
 		  for i as integer = 0 to field_names.LastIndex
-		    tmp_sql = "ALTER TABLE " + table_name + " add " + field_names(i) + " " + self.convert_type(field_types(i))
+		    tmp_sql = "ALTER TABLE " + table_name + " add " + field_names(i) + " " + self.get_sql_type(field_types(i))
 		    
 		    self.ExecuteSQL(tmp_sql)
 		    
@@ -27,21 +27,12 @@ Inherits clAbstractDatabaseAccess
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function convert_type(source_type as string) As String
-		  
-		  if source_type = "string" then return "text"
-		  
-		  return source_type
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub create_table(table_name as string, field_names() as string, field_types() as string)
 		  dim tmp_fields() as string
 		  dim tmp_sql as string
 		  
 		  for i as integer = 0 to field_names.LastIndex
-		    tmp_fields.Add field_names(i) + " " + self.convert_type(field_types(i))
+		    tmp_fields.Add field_names(i) + " " + self.get_sql_type(field_types(i))
 		    
 		  next
 		  
@@ -78,6 +69,17 @@ Inherits clAbstractDatabaseAccess
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function get_sql_type(source_type as string) As String
+		  // Calling the overridden superclass method.
+		  Var returnValue as String = Super.get_sql_type(source_type)
+		  
+		  if source_type = "string" then return "text"
+		  
+		  return source_type
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		db As SQLiteDatabase
@@ -85,6 +87,14 @@ Inherits clAbstractDatabaseAccess
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="verbose"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true

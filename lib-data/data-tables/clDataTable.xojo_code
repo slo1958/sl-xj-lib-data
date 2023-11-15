@@ -1102,6 +1102,30 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function create_table_from_structure(new_table_name as String) As clDataTable
+		  
+		  dim tbl as new clDataTable(new_table_name)
+		  
+		  for each row as clDataRow in self
+		    dim col_name as string = row.get_cell(structure_name_column)
+		    dim col_type as string = row.get_cell(structure_type_column)
+		    dim col_title as string  = row.get_cell(structure_title_column)
+		    
+		    dim column as clAbstractDataSerie = tbl.add_column(clDataType.CreateDataSerie(col_name, col_type))
+		    
+		    if col_title.Length > 0 then
+		      column.display_title = col_title
+		      
+		    end if
+		    
+		  next
+		  
+		  return tbl
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub debug_dump()
 		  
 		  Dim tmp_item() As String

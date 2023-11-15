@@ -870,7 +870,7 @@ Protected Module clDataTable_tests
 		  
 		  dct = new Dictionary
 		  dct.value("name") = array("Country", "City", "Sales")
-		  dct.Value("type") = array("clDataSerie","clDataSerie","clDataSerie")
+		  dct.Value("type") = array("Generic","Generic","Generic")
 		  dct.Value("title") = array("Pays","Ville","Ventes")
 		  
 		  dim struc_expected as new clDataTable("exp_struct", dct)
@@ -916,12 +916,16 @@ Protected Module clDataTable_tests
 		  
 		  dct = new Dictionary
 		  dct.value("name") = array("Country", "City", "Sales")
-		  dct.Value("type") = array("clDataSerie","clDataSerie","clNumberDataSerie")
+		  dct.Value("type") = array("Generic","Generic","Number")
 		  dct.Value("title") = array("Pays","Ville","Ventes")
 		  
 		  dim struc_expected as new clDataTable("exp_struct", dct)
-		  
 		  call check_table(log,"structure", struc_expected, struc0)
+		  
+		  dim table1 as clDataTable = struc0.create_table_from_structure("mytable")
+		  
+		  dim struc1 as clDataTable = table0.get_structure_as_table
+		  call check_table(log,"structure", struc_expected, struc1)
 		  
 		  
 		  log.end_exec(CurrentMethodName)

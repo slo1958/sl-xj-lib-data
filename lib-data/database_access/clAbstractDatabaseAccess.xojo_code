@@ -8,12 +8,6 @@ Protected Class clAbstractDatabaseAccess
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function convert_type(source_type as string) As String
-		  return source_type
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Shared Function conv_db_type(db_type as integer) As String
 		  
 		  select  case db_type
@@ -102,6 +96,14 @@ Protected Class clAbstractDatabaseAccess
 
 	#tag Method, Flags = &h0
 		Function get_db() As Database
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function get_sql_type(source_type as string) As String
+		  return source_type
+		  
 		  
 		End Function
 	#tag EndMethod
