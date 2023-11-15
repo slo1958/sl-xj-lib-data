@@ -10,7 +10,15 @@ Implements itf_table_row_writer
 		  
 		  dim tmpStr() as string
 		  
-		  for each field as string in row_data
+		  for each row_field as variant in row_data
+		    dim field as string
+		    
+		    if row_field.type = 4 or row_field.type=5 then
+		      field = str(row_field,"-##########0.0##########")
+		    else 
+		      field = row_field
+		    end if
+		    
 		    dim reqQuotes as Boolean = False
 		    
 		    reqQuotes = reqQuotes or (field.IndexOf(field_separator)>0)
@@ -41,6 +49,27 @@ Implements itf_table_row_writer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(the_destination_file as FolderItem, has_header as Boolean)
+		  self.DestinationFile = the_destination_file
+		  
+		  
+		  if not self.DestinationFile.IsFolder and self.DestinationFile.IsWriteable then
+		    self.TextStream = TextOutputStream.Create(self.DestinationFile)
+		    
+		  else
+		    self.TextStream =  nil
+		    
+		  end if 
+		  
+		  self.internal_init_config(nil) 
+		  
+		  self.header_written = not has_header
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_destination_file as FolderItem, has_header as Boolean, config as clTextFileConfig)
 		  self.DestinationFile = the_destination_file
 		  
@@ -53,13 +82,7 @@ Implements itf_table_row_writer
 		    
 		  end if 
 		  
-		  dim tmp_config as clTextFileConfig = config
-		  
-		  if tmp_config = nil then tmp_config = new clTextFileConfig
-		  
-		  self.field_separator = tmp_config.field_separator
-		  self.encoding = tmp_config.enc
-		  self.quote_char = tmp_config.quote_char
+		  self.internal_init_config(config)
 		  
 		  
 		  self.header_written = not has_header
@@ -98,6 +121,20 @@ Implements itf_table_row_writer
 		  TextStream.close
 		  TextStream = nil
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub internal_init_config(config as clTextFileConfig)
+		  
+		  dim tmp_config as clTextFileConfig = config
+		  
+		  if tmp_config = nil then tmp_config = new clTextFileConfig
+		  
+		  self.field_separator = tmp_config.field_separator
+		  self.encoding = tmp_config.enc
+		  self.quote_char = tmp_config.quote_char
 		  
 		End Sub
 	#tag EndMethod
