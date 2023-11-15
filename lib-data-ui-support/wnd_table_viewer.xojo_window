@@ -29,9 +29,12 @@ Begin DesktopWindow wnd_table_viewer
       AllowFocus      =   False
       AllowFocusRing  =   False
       AllowTabs       =   True
+      allow_update_window_title=   False
       Backdrop        =   0
       BackgroundColor =   &cFFFFFF00
+      block_list_events=   False
       Composited      =   False
+      current_table   =   ""
       Enabled         =   True
       HasBackgroundColor=   False
       Height          =   362
@@ -65,7 +68,7 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub add_table(mytable as itf_table_column_reader)
+		Sub add_table(mytable as TableColumnReaderInterface)
 		  
 		  ccDataPool_Viewer1.add_table(mytable)
 		  

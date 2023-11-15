@@ -19,7 +19,7 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
+		Function run(log as LogMessageInterface) As TableColumnReaderInterface()
 		  
 		  //  Example_016
 		  //  - test date 
@@ -135,7 +135,7 @@ Inherits clLibDataExample
 		  my_table7.rename("loaded from merged in memory data tables")
 		  my_table8.rename("loaded from merged db tables")
 		  
-		  dim ret() as itf_table_column_reader
+		  dim ret() as TableColumnReaderInterface
 		  
 		  ret.add(my_table1)
 		  ret.add(my_table2)

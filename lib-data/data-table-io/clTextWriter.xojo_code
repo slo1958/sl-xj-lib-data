@@ -1,9 +1,9 @@
 #tag Class
 Class clTextWriter
-Implements itf_table_row_writer
+Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
 		Sub add_row(row_data() as variant)
-		  // Part of the itf_table_row_writer interface.
+		  // Part of the TableRowWriterInterface interface.
 		  const kDoubleQuote = """"
 		  
 		  if textstream = nil then return
@@ -93,7 +93,7 @@ Implements itf_table_row_writer
 
 	#tag Method, Flags = &h0
 		Sub define_meta_data(name as string, columns() as string)
-		  // Part of the itf_table_row_writer interface.
+		  // Part of the TableRowWriterInterface interface.
 		  
 		  if header_written then return
 		  
@@ -104,7 +104,7 @@ Implements itf_table_row_writer
 
 	#tag Method, Flags = &h0
 		Sub define_meta_data(name as string, columns() as string, column_type() as string)
-		  // Part of the itf_table_row_writer interface.
+		  // Part of the TableRowWriterInterface interface.
 		  
 		  
 		  if header_written then return
@@ -116,7 +116,7 @@ Implements itf_table_row_writer
 
 	#tag Method, Flags = &h0
 		Sub done()
-		  // Part of the itf_table_row_writer interface.
+		  // Part of the TableRowWriterInterface interface.
 		  
 		  TextStream.close
 		  TextStream = nil

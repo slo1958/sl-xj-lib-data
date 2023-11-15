@@ -1,5 +1,5 @@
 #tag Window
-Begin Window main_window Implements support_tests.itf_logmessage_writer
+Begin Window main_window Implements support_tests.LogMessageInterface
    BackColor       =   &cFFFFFF00
    Backdrop        =   0
    CloseButton     =   True
@@ -287,7 +287,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub write_message(msg as string)
-		  // Part of the support_tests.itf_logmessage_writer interface.
+		  // Part of the support_tests.LogMessageInterface interface.
 		  writemessage(msg)
 		  
 		End Sub
@@ -302,7 +302,7 @@ End
 		  writemessage "started"
 		  
 		  
-		  dim logwriter as  itf_logmessage_writer = nil
+		  dim logwriter as  LogMessageInterface = nil
 		  
 		  if CheckBox1.value then
 		    logwriter = self
@@ -351,7 +351,7 @@ End
 		Sub Action()
 		  writemessage "started"
 		  
-		  dim logwriter as  itf_logmessage_writer = nil
+		  dim logwriter as  LogMessageInterface = nil
 		  
 		  if CheckBox1.value then
 		    logwriter = self

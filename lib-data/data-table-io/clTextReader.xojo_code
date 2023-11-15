@@ -1,6 +1,6 @@
 #tag Class
 Class clTextReader
-Implements itf_table_row_reader
+Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Sub Close()
 		  if self.textstream = nil then 
@@ -18,7 +18,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function column_count() As integer
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  return mheader.Count
 		  
 		  
@@ -62,7 +62,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function current_row_number() As integer
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  
 		  Return line_count
 		End Function
@@ -95,7 +95,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function end_of_table() As boolean
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  return EndOfFile
 		  
 		  
@@ -117,7 +117,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function GetColumnNames() As string()
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  
 		  dim tmp() as string
 		  for each s as string in mheader
@@ -137,7 +137,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function name() As string
-		  // Part of the itf_table_row_reader interface
+		  // Part of the TableRowReaderInterface interface
 		  
 		  if self.mDataFile = nil then return ""
 		  
@@ -149,7 +149,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function next_row() As variant()
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  
 		  const kDoubleQuote = """"
 		  

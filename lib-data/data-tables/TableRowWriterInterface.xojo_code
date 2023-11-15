@@ -1,5 +1,5 @@
 #tag Interface
-Protected Interface itf_table_row_writer
+Protected Interface TableRowWriterInterface
 	#tag Method, Flags = &h0
 		Sub add_row(row_data() as variant)
 		  

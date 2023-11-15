@@ -1,6 +1,6 @@
 #tag Class
 Class clWriteToSystemLog
-Implements support_tests.itf_logmessage_writer
+Implements support_tests.LogMessageInterface
 	#tag Method, Flags = &h0
 		Sub end_exec(method as string)
 		  write_message("Done with " + method)

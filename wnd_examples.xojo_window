@@ -169,13 +169,13 @@ End
 		  
 		  if item = nil then return
 		  
-		  dim tables() as itf_table_column_reader = item.run(item)
+		  dim tables() as TableColumnReaderInterface = item.run(item)
 		  
 		  dim wnd as new wnd_table_viewer
 		  
 		  wnd.reset_viewer
 		  
-		  for each table as itf_table_column_reader in tables
+		  for each table as TableColumnReaderInterface in tables
 		    wnd.add_table(table)
 		    
 		  next

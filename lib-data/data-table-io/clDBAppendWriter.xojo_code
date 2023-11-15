@@ -1,10 +1,10 @@
 #tag Class
 Class clDBAppendWriter
 Inherits clDBWriter
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub define_meta_data(name as string, columns() as string, column_type() as string)
-		  // Part of the itf_table_row_writer interface.
+		  // Part of the TableRowWriterInterface interface.
 		  
 		  self.table_name = name
 		  
@@ -69,7 +69,7 @@ Inherits clDBWriter
 		    return
 		    
 		  else
-		    self.dbAccess.create_table(self.table_name, self.columns, column_type)
+		    self.dbAccess.CreateTable(self.table_name, self.columns, column_type)
 		    
 		  end if
 		  

@@ -1,9 +1,9 @@
 #tag Class
 Class clDBReader
-Implements itf_table_row_reader
+Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Function column_count() As integer
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  
 		  if rs = nil then return -1
 		  
@@ -14,7 +14,7 @@ Implements itf_table_row_reader
 	#tag Method, Flags = &h0
 		Sub Constructor(dbAccess as clAbstractDatabaseAccess, record_source as string)
 		  self.dbAccess = dbAccess
-		  if dbAccess <> nil then self.db = dbAccess.get_db
+		  if dbAccess <> nil then self.db = dbAccess.GetDatabase
 		  
 		  dim select_index as integer = record_source.IndexOf("select ") 
 		  if select_index < 0 then 
@@ -45,7 +45,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function current_row_number() As integer
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  
 		  if rs = nil then return -1
 		  
@@ -55,7 +55,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function end_of_table() As boolean
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  
 		  if rs = nil then return True
 		  
@@ -67,7 +67,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function GetColumnNames() As string()
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  
 		  dim tmp() as string
 		  
@@ -104,7 +104,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function name() As string
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  
 		  return self.source_name
 		  
@@ -114,7 +114,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function next_row() As variant()
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  
 		  dim tmp() as variant
 		  

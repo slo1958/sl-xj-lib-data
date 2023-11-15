@@ -16,7 +16,7 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
+		Function run(log as LogMessageInterface) As TableColumnReaderInterface()
 		  
 		  //  Example_011
 		  //  - test basic 'unique'
@@ -45,7 +45,7 @@ Inherits clLibDataExample
 		  
 		  Dim table1 As clDataTable = table0.unique(array("country", "city"))
 		  
-		  dim ret() as itf_table_column_reader
+		  dim ret() as TableColumnReaderInterface
 		  ret.Add(table0)
 		  ret.Add(table1)
 		  return ret

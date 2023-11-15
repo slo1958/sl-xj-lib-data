@@ -1,9 +1,9 @@
 #tag Module
 Protected Module clDataPool_tests
 	#tag Method, Flags = &h0
-		Sub tests(log as itf_logmessage_writer)
+		Sub tests(log as LogMessageInterface)
 		  
-		  dim logwriter as  itf_logmessage_writer = log 
+		  dim logwriter as  LogMessageInterface = log 
 		  
 		  if log = nil then
 		    logwriter = new clWriteToSystemLog
@@ -22,7 +22,7 @@ Protected Module clDataPool_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_001(log as itf_logmessage_writer)
+		Sub test_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -98,7 +98,7 @@ Protected Module clDataPool_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_002(log as itf_logmessage_writer)
+		Sub test_002(log as LogMessageInterface)
 		  //  
 		  //  Test simplified interface to tables in data pool
 		  //  

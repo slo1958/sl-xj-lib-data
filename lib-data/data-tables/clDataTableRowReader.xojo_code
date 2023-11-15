@@ -1,9 +1,9 @@
 #tag Class
 Protected Class clDataTableRowReader
-Implements itf_table_row_reader
+Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Function column_count() As integer
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  return table.column_count
 		  
 		End Function
@@ -19,7 +19,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function current_row_number() As integer
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  return current_row
 		  
 		End Function
@@ -27,7 +27,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function end_of_table() As boolean
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  
 		  return current_row >=  table.row_count
 		  
@@ -36,7 +36,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function GetColumnNames() As string()
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  return table.GetColumnNames
 		End Function
 	#tag EndMethod
@@ -49,7 +49,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function name() As string
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  return table.name
 		  
 		End Function
@@ -57,7 +57,7 @@ Implements itf_table_row_reader
 
 	#tag Method, Flags = &h0
 		Function next_row() As variant()
-		  // Part of the itf_table_row_reader interface.
+		  // Part of the TableRowReaderInterface interface.
 		  dim row_value() as variant
 		  
 		  for column_index as integer = 0 to table.column_count-1

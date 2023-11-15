@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clLibDataExample
-Implements support_tests.itf_logmessage_writer
+Implements support_tests.LogMessageInterface
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  dim tmp() as string
@@ -70,7 +70,7 @@ Implements support_tests.itf_logmessage_writer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
+		Function run(log as LogMessageInterface) As TableColumnReaderInterface()
 		  
 		End Function
 	#tag EndMethod
@@ -83,7 +83,7 @@ Implements support_tests.itf_logmessage_writer
 
 	#tag Method, Flags = &h0
 		Sub write_message(msg as string)
-		  // Part of the support_tests.itf_logmessage_writer interface.
+		  // Part of the support_tests.LogMessageInterface interface.
 		  
 		  System.DebugLog(msg)
 		  

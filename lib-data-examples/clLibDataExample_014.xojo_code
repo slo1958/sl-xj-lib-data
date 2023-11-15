@@ -19,7 +19,7 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
+		Function run(log as LogMessageInterface) As TableColumnReaderInterface()
 		  
 		  //  Example_014
 		  //  - test clip and clipped
@@ -48,7 +48,7 @@ Inherits clLibDataExample
 		  
 		  call table0.add_column(col_sales.clipped_by_range(1100, 1500) * 2)
 		  
-		  dim ret() as itf_table_column_reader
+		  dim ret() as TableColumnReaderInterface
 		  ret.add(table0)
 		  
 		  return ret

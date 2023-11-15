@@ -17,7 +17,7 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
+		Function run(log as LogMessageInterface) As TableColumnReaderInterface()
 		  //
 		  //  Example_009
 		  //  - test basic validation
@@ -49,7 +49,7 @@ Inherits clLibDataExample
 		  
 		  
 		  //  all types not the same, so need to explictely build the returned array
-		  dim ret() as itf_table_column_reader
+		  dim ret() as TableColumnReaderInterface
 		  ret.append(table0)
 		  ret.append(table1)
 		  ret.append(tableValid)

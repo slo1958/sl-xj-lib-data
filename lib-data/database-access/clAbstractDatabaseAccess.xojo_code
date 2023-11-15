@@ -81,7 +81,7 @@ Protected Class clAbstractDatabaseAccess
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub create_table(table_name as string, field_names() as string, field_types() as string)
+		Sub CreateTable(table_name as string, field_names() as string, field_types() as string)
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
@@ -95,13 +95,13 @@ Protected Class clAbstractDatabaseAccess
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_db() As Database
+		Function GetDatabase() As Database
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_sql_type(source_type as string) As String
+		Function GetSQLType(source_type as string) As String
 		  return source_type
 		  
 		  

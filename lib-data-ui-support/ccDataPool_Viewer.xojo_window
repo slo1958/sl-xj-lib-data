@@ -201,7 +201,7 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub add_table(mytable as itf_table_column_reader)
+		Sub add_table(mytable as TableColumnReaderInterface)
 		  
 		  if mytable = nil Then
 		    
@@ -308,7 +308,7 @@ End
 		  
 		  
 		  current_table = table_name
-		  dim tbl as itf_table_column_reader = table_dict.value(current_table)
+		  dim tbl as TableColumnReaderInterface = table_dict.value(current_table)
 		  
 		  if tbl is nil then
 		    System.DebugLog(CurrentMethodName+" cannot find table " + table_name)

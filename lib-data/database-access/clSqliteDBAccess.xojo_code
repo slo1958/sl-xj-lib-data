@@ -8,7 +8,7 @@ Inherits clAbstractDatabaseAccess
 		  dim tmp_sql as string
 		  
 		  for i as integer = 0 to field_names.LastIndex
-		    tmp_sql = "ALTER TABLE " + table_name + " add " + field_names(i) + " " + self.get_sql_type(field_types(i))
+		    tmp_sql = "ALTER TABLE " + table_name + " add " + field_names(i) + " " + self.GetSQLType(field_types(i))
 		    
 		    self.ExecuteSQL(tmp_sql)
 		    
@@ -27,12 +27,12 @@ Inherits clAbstractDatabaseAccess
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub create_table(table_name as string, field_names() as string, field_types() as string)
+		Sub CreateTable(table_name as string, field_names() as string, field_types() as string)
 		  dim tmp_fields() as string
 		  dim tmp_sql as string
 		  
 		  for i as integer = 0 to field_names.LastIndex
-		    tmp_fields.Add field_names(i) + " " + self.get_sql_type(field_types(i))
+		    tmp_fields.Add field_names(i) + " " + self.GetSQLType(field_types(i))
 		    
 		  next
 		  
@@ -64,15 +64,15 @@ Inherits clAbstractDatabaseAccess
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_db() As Database
+		Function GetDatabase() As Database
 		  return db
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_sql_type(source_type as string) As String
+		Function GetSQLType(source_type as string) As String
 		  // Calling the overridden superclass method.
-		  Var returnValue as String = Super.get_sql_type(source_type)
+		  Var returnValue as String = Super.GetSQLType(source_type)
 		  
 		  if source_type = "string" then return "text"
 		  

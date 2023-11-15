@@ -19,7 +19,7 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
+		Function run(log as LogMessageInterface) As TableColumnReaderInterface()
 		  
 		  //  Example_012
 		  //  - test string handling
@@ -55,7 +55,7 @@ Inherits clLibDataExample
 		  
 		  dim table4 as clDataTable  = table2.groupby(array("country"), array("Sales"), array(""))
 		  
-		  dim ret() as itf_table_column_reader
+		  dim ret() as TableColumnReaderInterface
 		  ret.Add(table1)
 		  ret.Add(table2)
 		  ret.Add(table3)

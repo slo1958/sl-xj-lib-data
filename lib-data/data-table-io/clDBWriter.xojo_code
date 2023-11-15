@@ -1,9 +1,9 @@
 #tag Class
 Class clDBWriter
-Implements itf_table_row_writer
+Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
 		Sub add_row(row_data() as variant)
-		  // Part of the itf_table_row_writer interface.
+		  // Part of the TableRowWriterInterface interface.
 		  
 		  dim dbrow as new DatabaseRow
 		  
@@ -21,14 +21,14 @@ Implements itf_table_row_writer
 		Sub Constructor(dbAccess as clAbstractDatabaseAccess)
 		  self.table_created = False
 		  self.dbAccess = dbAccess
-		  self.db = dbAccess.get_db
+		  self.db = dbAccess.GetDatabase
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub define_meta_data(name as string, columns() as string)
-		  // Part of the itf_table_row_writer interface.
+		  // Part of the TableRowWriterInterface interface.
 		  
 		  dim tmp_type() as string
 		  
@@ -44,7 +44,7 @@ Implements itf_table_row_writer
 
 	#tag Method, Flags = &h0
 		Sub define_meta_data(name as string, columns() as string, column_type() as string)
-		  // Part of the itf_table_row_writer interface.
+		  // Part of the TableRowWriterInterface interface.
 		  
 		  self.table_name = name
 		  
@@ -57,7 +57,7 @@ Implements itf_table_row_writer
 		    
 		  next
 		  
-		  self.dbAccess.create_table(self.table_name, self.columns, column_type)
+		  self.dbAccess.CreateTable(self.table_name, self.columns, column_type)
 		  
 		  
 		  
@@ -68,7 +68,7 @@ Implements itf_table_row_writer
 
 	#tag Method, Flags = &h0
 		Sub done()
-		  // Part of the itf_table_row_writer interface.
+		  // Part of the TableRowWriterInterface interface.
 		  
 		  
 		End Sub

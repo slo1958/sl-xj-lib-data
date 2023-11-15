@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clLibDataExample_022
 Inherits clLibDataExample
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
@@ -20,7 +20,7 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
+		Function run(log as LogMessageInterface) As TableColumnReaderInterface()
 		  
 		  //  Example_022
 		  //  - create an empty table
@@ -48,7 +48,7 @@ Inherits clLibDataExample
 		  col_cloned_sales = col_cloned_sales.clone()
 		  col_cloned_sales.name = "Formatted sales"
 		  
-		   call table0.add_column(col_cloned_sales)
+		  call table0.add_column(col_cloned_sales)
 		  
 		  col_cloned_sales.active_range_formatting("","")
 		  col_cloned_sales.add_formatting_range(0,999.99,"small")

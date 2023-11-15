@@ -1,7 +1,7 @@
 #tag Module
 Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
-		Function check_serie(log as support_tests.itf_logmessage_writer, label as string, expected as clAbstractDataSerie, calculated as clAbstractDataSerie, accepted_error_on_double as double = 0.00001) As Boolean
+		Function check_serie(log as support_tests.LogMessageInterface, label as string, expected as clAbstractDataSerie, calculated as clAbstractDataSerie, accepted_error_on_double as double = 0.00001) As Boolean
 		  
 		  if not  check_value(log,label + " name", expected.name, calculated.name) then
 		    return False
@@ -53,9 +53,9 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests(log as itf_logmessage_writer)
+		Sub tests(log as LogMessageInterface)
 		  
-		  dim logwriter as  itf_logmessage_writer = log 
+		  dim logwriter as  LogMessageInterface = log 
 		  
 		  if log = nil then
 		    logwriter = new clWriteToSystemLog
@@ -86,9 +86,9 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests_io(log as itf_logmessage_writer)
+		Sub tests_io(log as LogMessageInterface)
 		  
-		  dim logwriter as  itf_logmessage_writer = log 
+		  dim logwriter as  LogMessageInterface = log 
 		  
 		  if log = nil then
 		    logwriter = new clWriteToSystemLog
@@ -105,7 +105,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_001(log as itf_logmessage_writer)
+		Sub test_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -126,7 +126,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_003(log as itf_logmessage_writer)
+		Sub test_003(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -157,7 +157,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_006(log as itf_logmessage_writer)
+		Sub test_006(log as LogMessageInterface)
 		  
 		  
 		  log.start_exec(CurrentMethodName)
@@ -224,7 +224,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_007(log as itf_logmessage_writer)
+		Sub test_007(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -253,7 +253,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_008(log as itf_logmessage_writer)
+		Sub test_008(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -288,7 +288,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_009(log as itf_logmessage_writer)
+		Sub test_009(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -304,7 +304,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_010(log as itf_logmessage_writer)
+		Sub test_010(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -363,7 +363,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_011(log as itf_logmessage_writer)
+		Sub test_011(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -383,7 +383,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_012(log as itf_logmessage_writer)
+		Sub test_012(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -403,7 +403,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_014(log as itf_logmessage_writer)
+		Sub test_014(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -424,7 +424,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_015(log as itf_logmessage_writer)
+		Sub test_015(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -465,7 +465,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_016(log as itf_logmessage_writer)
+		Sub test_016(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -510,7 +510,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_017(log as itf_logmessage_writer)
+		Sub test_017(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -569,7 +569,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_018(log as itf_logmessage_writer)
+		Sub test_018(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -599,7 +599,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_001(log as itf_logmessage_writer)
+		Sub test_io_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -623,7 +623,7 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_005(log as itf_logmessage_writer)
+		Sub test_io_005(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  

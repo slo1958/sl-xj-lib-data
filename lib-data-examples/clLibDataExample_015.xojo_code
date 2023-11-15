@@ -17,7 +17,7 @@ Inherits clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function run(log as itf_logmessage_writer) As itf_table_column_reader()
+		Function run(log as LogMessageInterface) As TableColumnReaderInterface()
 		  
 		  //  Example_015
 		  //  - test date 
@@ -47,7 +47,7 @@ Inherits clLibDataExample
 		  
 		  dim table0 as new clDataTable("output", serie_array(c1, c2, c3, c4, c5, c6, c7))
 		  
-		  dim ret() as itf_table_column_reader
+		  dim ret() as TableColumnReaderInterface
 		  ret.add(table0)
 		  
 		  return ret

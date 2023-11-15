@@ -27,7 +27,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function check_table(log as itf_logmessage_writer, label as string, expected as clDataTable, calculated as clDataTable, accepted_error_on_double as double = 0.00001) As Boolean
+		Function check_table(log as LogMessageInterface, label as string, expected as clDataTable, calculated as clDataTable, accepted_error_on_double as double = 0.00001) As Boolean
 		  dim cnt1 as integer  
 		  dim cnt2 as integer 
 		  
@@ -57,9 +57,9 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests(log as itf_logmessage_writer)
+		Sub tests(log as LogMessageInterface)
 		  
-		  dim logwriter as  itf_logmessage_writer = log 
+		  dim logwriter as  LogMessageInterface = log 
 		  
 		  if log = nil then
 		    logwriter = new clWriteToSystemLog
@@ -93,9 +93,9 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests_io(log as itf_logmessage_writer)
+		Sub tests_io(log as LogMessageInterface)
 		  
-		  dim logwriter as  itf_logmessage_writer = log 
+		  dim logwriter as  LogMessageInterface = log 
 		  
 		  if log = nil then
 		    logwriter = new clWriteToSystemLog
@@ -119,7 +119,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_001(log as itf_logmessage_writer)
+		Sub test_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -157,7 +157,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_002(log as itf_logmessage_writer)
+		Sub test_002(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -213,7 +213,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_003(log as itf_logmessage_writer)
+		Sub test_003(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -256,7 +256,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_005(log as itf_logmessage_writer)
+		Sub test_005(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -304,7 +304,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_006(log as itf_logmessage_writer)
+		Sub test_006(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -360,7 +360,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_007(log as itf_logmessage_writer)
+		Sub test_007(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -388,7 +388,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_008(log as itf_logmessage_writer)
+		Sub test_008(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -434,7 +434,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_009(log as itf_logmessage_writer)
+		Sub test_009(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -504,7 +504,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_010(log as itf_logmessage_writer)
+		Sub test_010(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -547,7 +547,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_011(log as itf_logmessage_writer)
+		Sub test_011(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -575,7 +575,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_012(log as itf_logmessage_writer)
+		Sub test_012(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -615,7 +615,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_013(log as itf_logmessage_writer)
+		Sub test_013(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -659,7 +659,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_014(log as itf_logmessage_writer)
+		Sub test_014(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -714,7 +714,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_015(log as itf_logmessage_writer)
+		Sub test_015(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -770,7 +770,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_017(log as itf_logmessage_writer)
+		Sub test_017(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -807,7 +807,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_018(log as itf_logmessage_writer)
+		Sub test_018(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -841,7 +841,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_019(log as itf_logmessage_writer)
+		Sub test_019(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -887,7 +887,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_020(log as itf_logmessage_writer)
+		Sub test_020(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -922,7 +922,7 @@ Protected Module clDataTable_tests
 		  dim struc_expected as new clDataTable("exp_struct", dct)
 		  call check_table(log,"structure", struc_expected, struc0)
 		  
-		  dim table1 as clDataTable = struc0.create_table_from_structure("mytable")
+		  dim table1 as clDataTable = struc0.CreateTableFromStructure("mytable")
 		  
 		  dim struc1 as clDataTable = table0.get_structure_as_table
 		  call check_table(log,"structure", struc_expected, struc1)
@@ -937,7 +937,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_021(log as itf_logmessage_writer)
+		Sub test_021(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -997,9 +997,9 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_examples(log as itf_logmessage_writer)
+		Sub test_examples(log as LogMessageInterface)
 		  
-		  dim logwriter as  itf_logmessage_writer = log 
+		  dim logwriter as  LogMessageInterface = log 
 		  
 		  if log = nil then
 		    logwriter = new clWriteToSystemLog
@@ -1017,7 +1017,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_001(log as itf_logmessage_writer)
+		Sub test_io_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -1053,7 +1053,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_002(log as itf_logmessage_writer)
+		Sub test_io_002(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -1164,7 +1164,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_003(log as itf_logmessage_writer)
+		Sub test_io_003(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -1271,7 +1271,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_004(log as itf_logmessage_writer)
+		Sub test_io_004(log as LogMessageInterface)
 		  
 		  
 		  log.start_exec(CurrentMethodName)
@@ -1331,7 +1331,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_005(log as itf_logmessage_writer)
+		Sub test_io_005(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
 		  

@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataTableValidation
-Implements itf_table_column_reader
+Implements TableColumnReaderInterface
 	#tag Method, Flags = &h0
 		Sub add_message(field_name as string, row_index as integer, message as string)
 		  dim r as new Dictionary
@@ -19,7 +19,7 @@ Implements itf_table_column_reader
 
 	#tag Method, Flags = &h0
 		Function all_columns() As clAbstractDataSerie()
-		  // Part of the itf_table_column_reader interface.
+		  // Part of the TableColumnReaderInterface interface.
 		  
 		  dim cols() as clAbstractDataSerie
 		  
@@ -43,7 +43,7 @@ Implements itf_table_column_reader
 
 	#tag Method, Flags = &h0
 		Function column_count() As integer
-		  // Part of the itf_table_column_reader interface.
+		  // Part of the TableColumnReaderInterface interface.
 		  
 		  return 4
 		  
@@ -77,7 +77,7 @@ Implements itf_table_column_reader
 
 	#tag Method, Flags = &h0
 		Function GetColumnNames() As string()
-		  // Part of the itf_table_column_reader interface
+		  // Part of the TableColumnReaderInterface interface
 		  
 		  dim tmp() as string
 		  
@@ -93,7 +93,7 @@ Implements itf_table_column_reader
 
 	#tag Method, Flags = &h0
 		Function get_column(the_column_name as String) As clAbstractDataSerie
-		  // Part of the itf_table_column_reader interface.
+		  // Part of the TableColumnReaderInterface interface.
 		  
 		  dim output as new clDataSerie(the_column_name)
 		  
@@ -181,7 +181,7 @@ Implements itf_table_column_reader
 
 	#tag Method, Flags = &h0
 		Function is_persistant() As boolean
-		  // Part of the itf_table_column_reader interface.
+		  // Part of the TableColumnReaderInterface interface.
 		  
 		  return False
 		End Function
@@ -195,7 +195,7 @@ Implements itf_table_column_reader
 
 	#tag Method, Flags = &h0
 		Function row_count() As integer
-		  // Part of the itf_table_column_reader interface.
+		  // Part of the TableColumnReaderInterface interface.
 		  
 		  return valid_columns.Ubound+1
 		  

@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataTable
-Implements itf_table_column_reader,Iterable
+Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function add_column(the_column as clAbstractDataSerie) As clAbstractDataSerie
 		  //  
@@ -246,7 +246,7 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub append_from_column_source(the_source as itf_table_column_reader, create_missing_columns as boolean = True)
+		Sub append_from_column_source(the_source as TableColumnReaderInterface, create_missing_columns as boolean = True)
 		  //  
 		  //  Add  the data row from column source. New columns may be added to the current table
 		  //  
@@ -303,7 +303,7 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub append_from_row_source(the_source as itf_table_row_reader, create_missing_columns as boolean = True)
+		Sub append_from_row_source(the_source as TableRowReaderInterface, create_missing_columns as boolean = True)
 		  //  
 		  //  Add  the data row from column source. New columns may be added to the current table
 		  //  
@@ -352,7 +352,7 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub append_from_row_source(the_source as itf_table_row_reader, mapping_dict as dictionary)
+		Sub append_from_row_source(the_source as TableRowReaderInterface, mapping_dict as dictionary)
 		  //  
 		  //  Add  the data row from column source. New columns may be added to the current table
 		  //  
@@ -764,129 +764,6 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(table_source as itf_table_column_reader, materialize as boolean = False)
-		  //
-		  //  Creates a datatable from a table column reader
-		  //  The function creates a virtual table if the 'materalize' flag is False and the source table is 'persistant', for example another data_table
-		  //  The function clones the columnw otherwise
-		  //  
-		  //  Parameters:
-		  //  - the table reader
-		  //  - materialize flag
-		  //
-		  //  Returns:
-		  //  - 
-		  //
-		  
-		  meta_dict = new clMetaData 
-		  
-		  self.allow_local_columns = False
-		  
-		  Dim tmp_table_name As String = table_source.name.Trim
-		  
-		  if tmp_table_name.Length = 0 then
-		    tmp_table_name = "Noname"
-		    
-		  end if 
-		  
-		  add_meta_data("source", tmp_table_name)
-		  
-		  internal_new_table("from " + tmp_table_name)
-		  
-		  if table_source.is_persistant and not materialize then
-		    // 
-		    // we create a virtual table
-		    //
-		    self.link_to_source = table_source
-		    
-		    For Each column_name As String In table_source.GetColumnNames
-		      Dim tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
-		      
-		      If tmp_column <> Nil Then
-		        call self.add_column(tmp_column)
-		        
-		      else
-		        add_error("select_column","cannot find column " + column_name)
-		        
-		      End If
-		      
-		    next
-		  else
-		    
-		    For Each column_name As String In table_source.GetColumnNames
-		      Dim tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
-		      
-		      If tmp_column <> Nil Then
-		        call self.add_column(tmp_column.clone)
-		        
-		      else
-		        add_error("select_column","cannot find column " + column_name)
-		        
-		      End If
-		      
-		    next
-		    
-		    
-		  end if
-		  
-		  self.adjust_length()
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(table_source as itf_table_row_reader, allocator as column_allocator = nil)
-		  //
-		  //  Creates a datatable from a table row reader
-		  //  
-		  //  Parameters:
-		  //  - the table reader
-		  //
-		  //  Returns:
-		  //  - 
-		  //
-		  
-		  meta_dict = new clMetaData
-		  
-		  self.allow_local_columns = False
-		  
-		  Dim tmp_table_name As String = table_source.name.Trim
-		  
-		  if tmp_table_name.Length = 0 then
-		    tmp_table_name = "Noname"
-		    
-		  end if 
-		  
-		  add_meta_data("source", tmp_table_name)
-		  
-		  internal_new_table("from " + tmp_table_name)
-		  
-		  // dim columns() as clAbstractDataSerie
-		  
-		  dim tmp_column_names() as string = table_source.GetColumnNames
-		  dim tmp_column_types as Dictionary = table_source.GetColumnTypes
-		  
-		  for each tmp_column_name as string in tmp_column_names
-		    
-		    if allocator = nil or tmp_column_types = nil then
-		      columns.Add(new clDataSerie(tmp_column_name))
-		      
-		    else
-		      columns.Add(allocator.Invoke(tmp_column_name, tmp_column_types.value(tmp_column_name)))
-		      
-		    end if
-		    
-		  next
-		  
-		  
-		  call self.internal_append_from_row_source(table_source, columns, "")
-		  
-		  self.adjust_length()
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(the_table_name as string)
 		  //
 		  //  Creates a datatable
@@ -1004,7 +881,38 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(table_name as string, table_source as itf_table_row_reader, allocator as column_allocator = nil)
+		Sub Constructor(the_table_name as string, column_names() as string)
+		  //  
+		  //  Creates a data table from a list of column names
+		  //  
+		  //  Parameters:
+		  //  - the name of the table
+		  //  -  a string array with the list of names for columns
+		  //  
+		  //  Returns:
+		  //  -  
+		  //  
+		  meta_dict = new clMetaData
+		  
+		  Dim tmp_table_name As String
+		  
+		  tmp_table_name = the_table_name
+		  
+		  internal_new_table(tmp_table_name)
+		  
+		  
+		  For Each name As string In column_names
+		    dim temp_name as string = name.Trim
+		    call Self.add_column(name)
+		    
+		  Next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(table_name as string, table_source as TableRowReaderInterface, allocator as column_allocator = nil)
 		  //
 		  //  Creates a datatable from a table row reader
 		  //  
@@ -1071,38 +979,130 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table_name as string, column_names() as string)
-		  //  
-		  //  Creates a data table from a list of column names
+		Sub Constructor(table_source as TableColumnReaderInterface, materialize as boolean = False)
+		  //
+		  //  Creates a datatable from a table column reader
+		  //  The function creates a virtual table if the 'materalize' flag is False and the source table is 'persistant', for example another data_table
+		  //  The function clones the columnw otherwise
 		  //  
 		  //  Parameters:
-		  //  - the name of the table
-		  //  -  a string array with the list of names for columns
-		  //  
+		  //  - the table reader
+		  //  - materialize flag
+		  //
 		  //  Returns:
-		  //  -  
-		  //  
-		  meta_dict = new clMetaData
+		  //  - 
+		  //
 		  
-		  Dim tmp_table_name As String
+		  meta_dict = new clMetaData 
 		  
-		  tmp_table_name = the_table_name
+		  self.allow_local_columns = False
 		  
-		  internal_new_table(tmp_table_name)
+		  Dim tmp_table_name As String = table_source.name.Trim
 		  
-		  
-		  For Each name As string In column_names
-		    dim temp_name as string = name.Trim
-		    call Self.add_column(name)
+		  if tmp_table_name.Length = 0 then
+		    tmp_table_name = "Noname"
 		    
-		  Next
+		  end if 
 		  
+		  add_meta_data("source", tmp_table_name)
+		  
+		  internal_new_table("from " + tmp_table_name)
+		  
+		  if table_source.is_persistant and not materialize then
+		    // 
+		    // we create a virtual table
+		    //
+		    self.link_to_source = table_source
+		    
+		    For Each column_name As String In table_source.GetColumnNames
+		      Dim tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
+		      
+		      If tmp_column <> Nil Then
+		        call self.add_column(tmp_column)
+		        
+		      else
+		        add_error("select_column","cannot find column " + column_name)
+		        
+		      End If
+		      
+		    next
+		  else
+		    
+		    For Each column_name As String In table_source.GetColumnNames
+		      Dim tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
+		      
+		      If tmp_column <> Nil Then
+		        call self.add_column(tmp_column.clone)
+		        
+		      else
+		        add_error("select_column","cannot find column " + column_name)
+		        
+		      End If
+		      
+		    next
+		    
+		    
+		  end if
+		  
+		  self.adjust_length()
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function create_table_from_structure(new_table_name as String) As clDataTable
+		Sub Constructor(table_source as TableRowReaderInterface, allocator as column_allocator = nil)
+		  //
+		  //  Creates a datatable from a table row reader
+		  //  
+		  //  Parameters:
+		  //  - the table reader
+		  //
+		  //  Returns:
+		  //  - 
+		  //
+		  
+		  meta_dict = new clMetaData
+		  
+		  self.allow_local_columns = False
+		  
+		  Dim tmp_table_name As String = table_source.name.Trim
+		  
+		  if tmp_table_name.Length = 0 then
+		    tmp_table_name = "Noname"
+		    
+		  end if 
+		  
+		  add_meta_data("source", tmp_table_name)
+		  
+		  internal_new_table("from " + tmp_table_name)
+		  
+		  // dim columns() as clAbstractDataSerie
+		  
+		  dim tmp_column_names() as string = table_source.GetColumnNames
+		  dim tmp_column_types as Dictionary = table_source.GetColumnTypes
+		  
+		  for each tmp_column_name as string in tmp_column_names
+		    
+		    if allocator = nil or tmp_column_types = nil then
+		      columns.Add(new clDataSerie(tmp_column_name))
+		      
+		    else
+		      columns.Add(allocator.Invoke(tmp_column_name, tmp_column_types.value(tmp_column_name)))
+		      
+		    end if
+		    
+		  next
+		  
+		  
+		  call self.internal_append_from_row_source(table_source, columns, "")
+		  
+		  self.adjust_length()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function CreateTableFromStructure(new_table_name as String) As clDataTable
 		  
 		  dim tbl as new clDataTable(new_table_name)
 		  
@@ -1939,7 +1939,7 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_append_from_row_source(the_source as itf_table_row_reader, target_columns() as clAbstractDataSerie, source_name as string) As integer
+		Private Function internal_append_from_row_source(the_source as TableRowReaderInterface, target_columns() as clAbstractDataSerie, source_name as string) As integer
 		  dim added_rows as integer
 		  
 		  dim source_name_col as clAbstractDataSerie
@@ -2147,7 +2147,7 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub save(write_to as itf_table_row_writer)
+		Sub save(write_to as TableRowWriterInterface)
 		  dim col() as string = self.GetColumnNames
 		  
 		  write_to.define_meta_data(name, col)
@@ -2358,7 +2358,7 @@ Implements itf_table_column_reader,Iterable
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected link_to_source As itf_table_column_reader
+		Protected link_to_source As TableColumnReaderInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

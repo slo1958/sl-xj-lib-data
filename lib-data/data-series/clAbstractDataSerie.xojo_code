@@ -1095,8 +1095,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 		Function to_json() As JSONItem
 		  // Part of the itf_json_able interface.
 		  
-		  // Part of the itf_string_able interface.
-		  
 		  Dim js_list As New JSONItem
 		  Dim js_return As New JSONItem
 		  

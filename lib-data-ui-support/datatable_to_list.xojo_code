@@ -1,10 +1,10 @@
 #tag Module
 Protected Module datatable_to_list
 	#tag Method, Flags = &h0
-		Sub show_table_in_listbox(thetable as itf_table_column_reader, thelist as DesktopListBox)
+		Sub show_table_in_listbox(thetable as TableColumnReaderInterface, thelist as DesktopListBox)
 		  
 		  dim tmp_listbox as DesktopListBox = thelist
-		  dim tmp_tbl as itf_table_column_reader = thetable
+		  dim tmp_tbl as TableColumnReaderInterface = thetable
 		  
 		  
 		  dim nbr_columns as integer = tmp_tbl.column_count
