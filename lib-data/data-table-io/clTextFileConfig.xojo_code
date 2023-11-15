@@ -8,7 +8,7 @@ Class clTextFileConfig
 		  
 		  self.quote_char = """"
 		  
-		  
+		  self.NumberFormat = "-##########0.0##########"
 		End Sub
 	#tag EndMethod
 
@@ -20,7 +20,7 @@ Class clTextFileConfig
 		  
 		  self.quote_char = """"
 		  
-		  
+		  self.NumberFormat = "-##########0.0##########"
 		End Sub
 	#tag EndMethod
 
@@ -38,6 +38,14 @@ Class clTextFileConfig
 		    
 		  end if
 		  
+		  self.NumberFormat = "-##########0.0##########"
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub update_number_format(new_format as string)
+		  NumberFormat = new_format
+		  
 		End Sub
 	#tag EndMethod
 
@@ -48,6 +56,10 @@ Class clTextFileConfig
 
 	#tag Property, Flags = &h0
 		field_separator As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		NumberFormat As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -110,7 +122,7 @@ Class clTextFileConfig
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

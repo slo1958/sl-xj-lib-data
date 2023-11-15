@@ -14,7 +14,7 @@ Implements itf_table_row_writer
 		    dim field as string
 		    
 		    if row_field.type = 4 or row_field.type=5 then
-		      field = str(row_field,"-##########0.0##########")
+		      field = str(row_field,self.number_format)
 		    else 
 		      field = row_field
 		    end if
@@ -135,6 +135,7 @@ Implements itf_table_row_writer
 		  self.field_separator = tmp_config.field_separator
 		  self.encoding = tmp_config.enc
 		  self.quote_char = tmp_config.quote_char
+		  self.number_format = tmp_config.NumberFormat
 		  
 		End Sub
 	#tag EndMethod
@@ -173,6 +174,10 @@ Implements itf_table_row_writer
 
 	#tag Property, Flags = &h1
 		Protected line_count As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected number_format As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
