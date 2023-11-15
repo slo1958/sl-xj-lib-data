@@ -1,0 +1,4 @@
+Alpha	Beta	Group	Gamma	Delta
+Aaaa	20	2	5.555	111.001
+Bbbb	21	2	6.666	222.002
+

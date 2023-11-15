@@ -139,19 +139,6 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function tabke_names() As string()
-		  dim tmp() as string
-		  
-		  for each k as String in datatable_dict.Keys
-		    tmp.Append(k)
-		    
-		  next
-		  
-		  return tmp
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub table(assigns tbl as clDataTable)
 		  self.set_table(tbl)
 		End Sub
@@ -173,6 +160,19 @@ Implements Iterable
 	#tag Method, Flags = &h0
 		Function table_count() As integer
 		  return datatable_dict.KeyCount
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function table_names() As string()
+		  dim tmp() as string
+		  
+		  for each k as String in datatable_dict.Keys
+		    tmp.Append(k)
+		    
+		  next
+		  
+		  return tmp
 		End Function
 	#tag EndMethod
 

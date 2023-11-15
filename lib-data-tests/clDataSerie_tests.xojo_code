@@ -1,7 +1,7 @@
 #tag Module
 Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
-		Function check_serie(log as support_tests.itf_logmessage_writer, label as string, expected as clAbstractDataSerie, calculated as clAbstractDataSerie) As Boolean
+		Function check_serie(log as support_tests.itf_logmessage_writer, label as string, expected as clAbstractDataSerie, calculated as clAbstractDataSerie, accepted_error_on_double as double = 0.00001) As Boolean
 		  
 		  if not  check_value(log,label + " name", expected.name, calculated.name) then
 		    return False
@@ -17,7 +17,7 @@ Protected Module clDataSerie_tests
 		  dim cell_ok as Boolean = True
 		  
 		  for row as integer = 0 to expected.row_count-1
-		    cell_ok = cell_ok and check_value(log,  label + " row " + str(row), expected.get_element(row), calculated.get_element(row))
+		    cell_ok = cell_ok and check_value(log,  label + " row " + str(row), expected.get_element(row), calculated.get_element(row), accepted_error_on_double)
 		    
 		  next
 		  

@@ -344,25 +344,57 @@ Implements itf_table_column_reader,Iterable
 		    
 		  next
 		  
+		  call self.internal_append_from_row_source(the_source, tmp_columns, the_source.name)
 		  
-		  while not the_source.end_of_table
-		    dim tmp_row() as variant
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub append_from_row_source(the_source as itf_table_row_reader, mapping_dict as dictionary)
+		  //  
+		  //  Add  the data row from column source. New columns may be added to the current table
+		  //  
+		  //  For example, 
+		  //  - with the current table containing columns A, B, C 
+		  //  - appending from the_source,  a table with columns X, Y, Z
+		  //  - mapping dictionary X:A, Y:B, Z:D
+		  //  the values from X, and Y are appended to the existing columns A and B
+		  //  a new column D is created to store the values from Z
+		  
+		  //  Parameters:
+		  //  - the source , providing data column by column
+		  //  - mapping dictionary, key is field name in the_source, value is the field name in the clDataTable
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  dim length_before as integer = self.row_count
+		  
+		  dim tmp_columns() as clAbstractDataSerie
+		  
+		  for each source_column_name as string in the_source.GetColumnNames
+		    dim tmp_col as clAbstractDataSerie = nil
 		    
-		    tmp_row  = the_source.next_row
-		    
-		    if tmp_row <> nil then 
+		    if mapping_dict.HasKey(source_column_name) then
+		      dim target_column_name as string = mapping_dict.value(source_column_name)
 		      
-		      for i as integer=0 to tmp_columns.LastIndex
-		        tmp_columns(i).append_element(tmp_row(i))
+		      tmp_col = self.get_column(target_column_name)
+		      
+		      if tmp_col = nil then
+		        tmp_col = new clDataSerie(target_column_name)
+		        tmp_col.set_length(length_before)
+		        call self.add_column(tmp_col)
 		        
-		      next
-		      
+		      end if
 		    end if
 		    
-		  wend
+		    tmp_columns.add(tmp_col)
+		    
+		  next
 		  
-		  // make sure all columns have the same length
-		  self.adjust_length
+		  call self.internal_append_from_row_source(the_source, tmp_columns, the_source.name)
 		  
 		  
 		  
@@ -847,22 +879,7 @@ Implements itf_table_column_reader,Iterable
 		  next
 		  
 		  
-		  while not table_source.end_of_table
-		    dim tmp_row() as variant
-		    
-		    tmp_row  = table_source.next_row
-		    
-		    if tmp_row <> nil then
-		      
-		      for i as integer=0 to tmp_column_names.LastIndex
-		        columns(i).append_element(tmp_row(i))
-		        
-		      next 
-		      
-		    end if
-		    
-		  wend
-		  
+		  call self.internal_append_from_row_source(table_source, columns, "")
 		  
 		  self.adjust_length()
 		  
@@ -1898,6 +1915,51 @@ Implements itf_table_column_reader,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
+		Private Function internal_append_from_row_source(the_source as itf_table_row_reader, target_columns() as clAbstractDataSerie, source_name as string) As integer
+		  dim added_rows as integer
+		  
+		  dim source_name_col as clAbstractDataSerie
+		  
+		  if source_name.Length > 0 then
+		    source_name_col = self.get_column(loaded_data_source_column)
+		    
+		  end if
+		  
+		  while not the_source.end_of_table
+		    dim tmp_row() as variant
+		    added_rows = added_rows + 1
+		    
+		    tmp_row  = the_source.next_row
+		    
+		    if tmp_row <> nil then 
+		      
+		      for i as integer=0 to target_columns.LastIndex
+		        if target_columns(i) <> nil then
+		          if i <= tmp_row.LastIndex then
+		            target_columns(i).append_element(tmp_row(i))
+		            
+		          else
+		            target_columns(i).append_element(target_columns(i).get_default_value)
+		            
+		          end if
+		        end if
+		      next
+		      
+		      if source_name_col <> nil then source_name_col.append_element(source_name)
+		      
+		    end if
+		    
+		  wend
+		  
+		  // make sure all columns have the same length
+		  self.adjust_length
+		  
+		  return added_rows
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
 		Private Function internal_join(the_table as clDataTable, own_keys() as string, alt_keys() as string) As Boolean
 		  
 		End Function
@@ -2295,6 +2357,9 @@ Implements itf_table_column_reader,Iterable
 		Protected table_name As String
 	#tag EndProperty
 
+
+	#tag Constant, Name = loaded_data_source_column, Type = String, Dynamic = False, Default = \"loaded_from", Scope = Public
+	#tag EndConstant
 
 	#tag Constant, Name = statistics_average_column, Type = String, Dynamic = False, Default = \"average", Scope = Public
 	#tag EndConstant

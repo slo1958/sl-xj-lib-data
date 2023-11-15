@@ -99,6 +99,7 @@ Class=clLibDataExample_022;lib-data-examples/clLibDataExample_022.xojo_code;&h00
 Class=clRangeFormatting;lib-data/data-common/clRangeFormatting.xojo_code;&h000000002B2127FF;&h000000006DAC7FFF;false
 Class=clBasicMath;lib-data/data-common/clBasicMath.xojo_code;&h0000000049740FFF;&h000000006DAC7FFF;false
 DesktopWindow=ccDataPool_Viewer;lib-data-ui-support/ccDataPool_Viewer.xojo_window;&h00000000166BA7FF;&h000000006C2547FF;false
+Class=clLibDataExample_023;lib-data-examples/clLibDataExample_023.xojo_code;&h00000000196707FF;&h0000000073919FFF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1

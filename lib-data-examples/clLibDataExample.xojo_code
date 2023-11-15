@@ -42,6 +42,7 @@ Implements support_tests.itf_logmessage_writer
 		  ex.Add(new clLibDataExample_020)
 		  ex.Add(new clLibDataExample_021)
 		  ex.Add(new clLibDataExample_022)
+		  ex.Add(new clLibDataExample_023)
 		  return ex
 		  
 		End Function

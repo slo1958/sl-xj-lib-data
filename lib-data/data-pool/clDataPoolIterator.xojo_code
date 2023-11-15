@@ -6,7 +6,7 @@ Implements Iterator
 		  tmp_pool = the_pool
 		  last_table_index = -1
 		  
-		  tables = tmp_pool.tabke_names()
+		  tables = tmp_pool.table_names()
 		  
 		  
 		End Sub

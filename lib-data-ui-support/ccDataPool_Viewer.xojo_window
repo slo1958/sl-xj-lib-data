@@ -48,7 +48,7 @@ Begin DesktopContainer ccDataPool_Viewer
       HasHorizontalScrollbar=   False
       HasVerticalScrollbar=   True
       HeadingIndex    =   -1
-      Height          =   355
+      Height          =   335
       Index           =   -2147483648
       InitialValue    =   ""
       Italic          =   False
@@ -65,7 +65,7 @@ Begin DesktopContainer ccDataPool_Viewer
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   0
+      Top             =   20
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -292,25 +292,8 @@ End
 
 	#tag Method, Flags = &h0
 		Sub show_description(description as string)
-		  if description.Trim.Length = 0 then
-		    if not lbl_description.Visible then return
-		    lbl_description.Visible = false
-		    lb_data.top = lb_data.top -22
-		    lb_data.Height = lb_data.Height + 22
-		    return 
-		    
-		  end if
 		  
-		  if lbl_description.Visible then
-		    lbl_description.text = description
-		    return
-		    
-		  end if
-		  
-		  lb_data.Height = lb_data.Height - 22
-		  lb_data.top = lb_data.top +22
-		  lbl_description.Visible = True
-		  lbl_description.Text = description
+		  lbl_description.text = description
 		  
 		  
 		End Sub

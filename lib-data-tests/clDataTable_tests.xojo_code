@@ -27,7 +27,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function check_table(log as itf_logmessage_writer, label as string, expected as clDataTable, calculated as clDataTable) As Boolean
+		Function check_table(log as itf_logmessage_writer, label as string, expected as clDataTable, calculated as clDataTable, accepted_error_on_double as double = 0.00001) As Boolean
 		  dim cnt1 as integer  
 		  dim cnt2 as integer 
 		  
@@ -39,7 +39,7 @@ Protected Module clDataTable_tests
 		  dim col_ok as boolean = True
 		  for col as integer = 0 to expected.column_count-1
 		    
-		    col_ok = col_ok and check_serie(log, label + " field [" + expected.column_name(col)+"]", expected.get_column_by_index(col), calculated.get_column_by_index(col))
+		    col_ok = col_ok and check_serie(log, label + " field [" + expected.column_name(col)+"]", expected.get_column_by_index(col), calculated.get_column_by_index(col), accepted_error_on_double)
 		    
 		  next
 		  
@@ -104,11 +104,13 @@ Protected Module clDataTable_tests
 		  
 		  logwriter.start_exec(CurrentMethodName)
 		  
-		  //test_io_001
+		  test_io_001(logwriter)
 		  
 		  test_io_002(logwriter)
 		  
 		  test_io_003(logwriter)
+		  
+		  test_io_004(logwriter)
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		End Sub
@@ -1257,6 +1259,66 @@ Protected Module clDataTable_tests
 		  call check_table(log,"Test7/Test8", my_table7, my_table8)
 		  
 		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_io_004(log as itf_logmessage_writer)
+		  
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  Dim fld_folder As New FolderItem
+		  Dim fld_file1 As FolderItem
+		  Dim fld_file2 As FolderItem
+		  Dim fld_file3 As FolderItem
+		  dim fld_fileX as FolderItem
+		  
+		  fld_folder = fld_folder.Child("test-data")
+		  
+		  fld_file1 = fld_folder.Child("myfile4_A_tab.txt")
+		  fld_file2  = fld_folder.Child("myfile4_B_tab.txt") 
+		  fld_file3  = fld_folder.Child("myfile4_C_tab.txt") 
+		  fld_fileX  = fld_folder.Child("myfile4_X_tab.txt") 
+		  
+		  
+		  dim my_table as new clDataTable("calc")
+		  call my_table.add_column(new clStringDataSerie("Alpha"))
+		  call my_table.add_column(new clIntegerDataSerie("Beta"))
+		  call my_table.add_column(new clNumberDataSerie("Delta"))
+		  call my_table.add_column(new clNumberDataSerie("Gamma"))
+		  call my_table.add_column(new clIntegerDataSerie("Group"))
+		  
+		  
+		  dim dct_mapping_file3 as new Dictionary
+		  dct_mapping_file3.value("Un") = "Alpha"
+		  dct_mapping_file3.value("Deux") = "Beta"
+		  dct_mapping_file3.value("Trois") = "Gamma"
+		  dct_mapping_file3.value("Quatre") = "Delta"
+		  dct_mapping_file3.value("Extra") = "New_col"
+		  
+		  my_table.append_from_row_source(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  
+		  my_table.append_from_row_source(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
+		  
+		  my_table.append_from_row_source(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
+		  
+		  dim expected_table as new clDataTable("calc")
+		  call expected_table.add_column(new clStringDataSerie("Alpha"))
+		  call expected_table.add_column(new clIntegerDataSerie("Beta"))
+		  call expected_table.add_column(new clNumberDataSerie("Delta"))
+		  call expected_table.add_column(new clNumberDataSerie("Gamma"))
+		  call expected_table.add_column(new clIntegerDataSerie("Group"))
+		  call expected_table.add_column(new clStringDataSerie("New_col"))
+		  
+		  expected_table.append_from_row_source(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
+		  
+		  call check_table(log,"T4/T5", expected_table, my_table, 0.0001) 
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  
 		  
 		End Sub
