@@ -12,20 +12,25 @@ Implements itf_table_row_reader
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(dbAccess as clAbstractDatabaseAccess, source_name as string)
+		Sub Constructor(dbAccess as clAbstractDatabaseAccess, record_source as string)
 		  self.dbAccess = dbAccess
-		  self.db = dbAccess.get_db
+		  if dbAccess <> nil then self.db = dbAccess.get_db
 		  
-		  
-		  if source_name.IndexOf("select of ") <= 0 then 
-		    self.source_sql = "select * from " + source_name
+		  dim select_index as integer = record_source.IndexOf("select ") 
+		  if select_index < 0 then 
+		    self.source_name = record_source
+		    self.source_sql = "select * from " + record_source
 		    
 		  else
-		    self.source_sql = source_name
+		    self.source_sql = record_source
+		    dim from_index as integer = record_source.IndexOf(" from")
+		    self.source_name = record_source.Middle(from_index+6,record_source.Length).trim().NthField(" ",1).trim()
+		    
+		    if self.source_name.Length = 0 then self.source_name = record_source.left(20)
 		    
 		  end if
 		  
-		  self.rs = db.SelectSQL(self.source_sql)
+		  if self.db <> nil then self.rs = self.db.SelectSQL(self.source_sql)
 		  
 		  
 		  
@@ -101,7 +106,7 @@ Implements itf_table_row_reader
 		Function name() As string
 		  // Part of the itf_table_row_reader interface.
 		  
-		  return ""
+		  return self.source_name
 		  
 		  
 		End Function
@@ -142,6 +147,10 @@ Implements itf_table_row_reader
 
 	#tag Property, Flags = &h1
 		Protected rs As rowset
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected source_name As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

@@ -112,6 +112,8 @@ Protected Module clDataTable_tests
 		  
 		  test_io_004(logwriter)
 		  
+		  test_io_005(logwriter)
+		  
 		  logwriter.end_exec(CurrentMethodName)
 		End Sub
 	#tag EndMethod
@@ -1316,6 +1318,36 @@ Protected Module clDataTable_tests
 		  expected_table.append_from_row_source(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
 		  
 		  call check_table(log,"T4/T5", expected_table, my_table, 0.0001) 
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_io_005(log as itf_logmessage_writer)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  dim v1 as new clDBReader(nil, "my_table")
+		  dim v1_name as string = v1.name
+		  
+		  
+		  dim v2 as new clDBReader(nil, "select alpha, beta from my_table")
+		  dim v2_name as string = v2.name
+		  
+		  dim v3 as new clDBReader(nil, "select alpha, beta from my_table left join something on ")
+		  dim v3_name as string = v3.name
+		  
+		  dim v4 as new clDBReader(nil, "select alpha, beta  from   my_table")
+		  dim v4_name as string = v2.name
+		  
+		  call check_value(log, "name v1", "my_table", v1_name)
+		  call check_value(log, "name v2", "my_table", v2_name)
+		  call check_value(log, "name v3", "my_table", v3_name)
+		  call check_value(log, "name v3", "my_table", v4_name)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
