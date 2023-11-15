@@ -1,5 +1,5 @@
 #tag Interface
-Interface itf_logmessage_writer
+Interface LogMessageInterface
 	#tag Method, Flags = &h0
 		Sub end_exec(method as string)
 		  
