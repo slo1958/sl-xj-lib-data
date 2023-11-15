@@ -1342,7 +1342,7 @@ Protected Module clDataTable_tests
 		  dim v3_name as string = v3.name
 		  
 		  dim v4 as new clDBReader(nil, "select alpha, beta  from   my_table")
-		  dim v4_name as string = v2.name
+		  dim v4_name as string = v4.name
 		  
 		  call check_value(log, "name v1", "my_table", v1_name)
 		  call check_value(log, "name v2", "my_table", v2_name)
