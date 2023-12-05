@@ -49,6 +49,12 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub alter_external_name(new_name as string)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_destination_file as FolderItem, has_header as Boolean)
 		  self.DestinationFile = the_destination_file
 		  

@@ -18,6 +18,12 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub alter_external_name(new_name as string)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(dbAccess as clAbstractDatabaseAccess)
 		  self.table_created = False
 		  self.dbAccess = dbAccess
