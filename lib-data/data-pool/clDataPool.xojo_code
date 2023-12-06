@@ -5,9 +5,9 @@ Implements Iterable
 		Sub Constructor()
 		  self.datatable_dict = new Dictionary
 		  
-		  self.filename_prefix = ""
+		  self.fullname_prefix = ""
 		  
-		  self.filename_suffix = ""
+		  self.fullname_suffix = ""
 		  
 		  self.verbose = False
 		End Sub
@@ -37,13 +37,10 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub save(write_to as TableRowWriterInterface)
+		Sub save(write_to as TableRowWriterInterface, flag_empty_table as boolean = false)
 		  
-		  for each table as clDataTable in datatable_dict.Values()
-		    write_to.alter_external_name(table.name)
-		    
-		    table.save(write_to)
-		    
+		  for each table_name as String in datatable_dict.Keys
+		    call self.save_table(table_name, write_to, flag_empty_table)
 		    
 		  next
 		  
@@ -51,51 +48,50 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function save_datatable(name as string, folder_path as string, flag_empty_datatable as boolean = false) As Boolean
-		  
+		Function save_table(name as string, write_to as TableRowWriterInterface, flag_empty_table as boolean = false) As Boolean
 		  
 		  dim table as clDataTable = self.get_table(name)
 		  
 		  if table = Nil then
-		    writelog("Cannot find table %0", name)
+		    writelog("Cannot find table %0 in pool keys", name)
 		    return False
 		    
 		  end if
 		  
-		  if flag_empty_datatable and table.row_count < 1 then
+		  if flag_empty_table and table.row_count < 1 then
 		    writelog("Table %0 is empty", name)
 		    
 		  end if
 		  
-		  dim filename as string = name
+		  dim fullname as string = name
 		  
-		  if self.filename_prefix.Length > 0 then
-		    filename = self.filename_prefix + filename
+		  if self.fullname_prefix.Length > 0 then
+		    fullname = self.fullname_prefix + fullname
 		    
 		  end if
 		  
-		  if self.filename_suffix.Length > 0 then
-		    filename = filename + self.filename_suffix
+		  if self.fullname_suffix.Length > 0 then
+		    fullname = fullname + self.fullname_suffix
 		    
 		  end if
 		  
-		  //  write datatable as text file
+		  write_to.alter_external_name(fullname)
 		  
-		  writelog("Saving %0 as file %1 in folder %2", name, filename, folder_path)
+		  table.save(write_to)
 		  
 		  return True
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_filename_prefix(prefix as string)
-		  self.filename_prefix = prefix
+		Sub set_fullname_prefix(prefix as string)
+		  self.fullname_prefix = prefix
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_filename_suffix(suffix as string)
-		  self.filename_suffix = suffix
+		Sub set_fullname_suffix(suffix as string)
+		  self.fullname_suffix = suffix
 		End Sub
 	#tag EndMethod
 
@@ -233,11 +229,11 @@ Implements Iterable
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected filename_prefix As String
+		Protected fullname_prefix As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected filename_suffix As String
+		Protected fullname_suffix As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
