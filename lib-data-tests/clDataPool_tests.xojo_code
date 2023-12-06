@@ -248,9 +248,16 @@ Protected Module clDataPool_tests
 		  Dim loaded_table2 As New clDataTable(new clTextReader(fld_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
 		  
 		  call check_table(log,"table 1", loaded_table1, pool_table1)
-		  
 		  call check_table(log,"table 2", loaded_table2, pool_table2)
 		  
+		  
+		  dim test_data_pool as new clDataPool
+		  test_data_pool.load_table(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
+		  test_data_pool.load_table(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
+		  
+		  
+		  call check_table(log,"pool table 1",my_data_pool.get_table("PoolTable1"), test_data_pool.get_table("from PoolTable1.csv"))
+		  call check_table(log,"pool table 2",my_data_pool.get_table("PoolTable2"), test_data_pool.get_table("from PoolTable2.csv"))
 		  
 		  log.end_exec(CurrentMethodName)
 		  

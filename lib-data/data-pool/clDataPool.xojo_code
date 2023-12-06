@@ -31,9 +31,11 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function load_datatable(name as string, file_path as string) As Boolean
+		Sub load_table(table_source as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
+		  dim tmp_table as new clDataTable(table_source, allocator)
 		  
-		End Function
+		  self.set_table(tmp_table)
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
