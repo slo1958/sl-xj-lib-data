@@ -9,6 +9,8 @@ Class clTextFileConfig
 		  self.quote_char = """"
 		  
 		  self.NumberFormat = "-##########0.0##########"
+		  
+		  self.file_extension = ".csv"
 		End Sub
 	#tag EndMethod
 
@@ -21,6 +23,8 @@ Class clTextFileConfig
 		  self.quote_char = """"
 		  
 		  self.NumberFormat = "-##########0.0##########"
+		  
+		  self.file_extension = ".csv"
 		End Sub
 	#tag EndMethod
 
@@ -39,6 +43,8 @@ Class clTextFileConfig
 		  end if
 		  
 		  self.NumberFormat = "-##########0.0##########"
+		  
+		  self.file_extension = ".csv"
 		End Sub
 	#tag EndMethod
 
@@ -56,6 +62,10 @@ Class clTextFileConfig
 
 	#tag Property, Flags = &h0
 		field_separator As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		file_extension As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -123,6 +133,14 @@ Class clTextFileConfig
 			InitialValue=""
 			Type="String"
 			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="NumberFormat"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="string"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

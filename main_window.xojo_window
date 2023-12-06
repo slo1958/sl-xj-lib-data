@@ -366,10 +366,8 @@ End
 		  clDataTable_tests.tests_io(logwriter)
 		  writemessage "data table tests io done"
 		  
-		  'clDataPool_tests.tests
-		  'writemessage "data pool tests done"
-		  
-		  
+		  clDataPool_tests.tests_io(logwriter)
+		  writemessage "data pool tests done"
 		  
 		  writemessage "all tests done"
 		  

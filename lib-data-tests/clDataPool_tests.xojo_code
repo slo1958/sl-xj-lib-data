@@ -13,7 +13,27 @@ Protected Module clDataPool_tests
 		  logwriter.start_exec(CurrentMethodName)
 		  
 		  test_001(logwriter)
-		  test_002(logwriter)
+		  test_002(logwriter) 
+		  
+		  logwriter.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub tests_io(log as LogMessageInterface)
+		  
+		  dim logwriter as  LogMessageInterface = log 
+		  
+		  if log = nil then
+		    logwriter = new clWriteToSystemLog
+		  end if
+		  
+		  
+		  logwriter.start_exec(CurrentMethodName)
+		  
+		  test_io_001(logwriter) 
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		  
@@ -170,6 +190,66 @@ Protected Module clDataPool_tests
 		  call check_table(log,"T1", expected_t1, my_data_pool.table("table_1"))
 		  call check_table(log,"T2", expected_t2, my_data_pool.table("T2"))
 		  call check_table(log,"res", expected_res, my_data_pool.table("res"))
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_io_001(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  dim my_data_pool as new clDataPool
+		  
+		  dim rtst As clDataRow
+		  
+		  
+		  dim pool_table1 as  New clDataTable("PoolTable1")
+		  
+		  for i as integer = 1 to 4
+		    rtst = New clDataRow
+		    rtst.set_cell("aaa",I*1000)
+		    rtst.set_cell("bbb","abcd")
+		    rtst.set_cell("ccc",123.456 * i) 
+		    
+		    pool_table1.append_row(rtst)
+		    
+		  next
+		  
+		  my_data_pool.set_table( pool_table1)
+		  
+		  
+		  dim pool_table2 as New clDataTable("PoolTable2")
+		  for i as integer = 5 to 9
+		    rtst = New clDataRow
+		    rtst.set_cell("aaa",I*1000)
+		    rtst.set_cell("bbb","xyz")
+		    rtst.set_cell("ddd",567.89 * i)
+		    
+		    pool_table2.append_row(rtst)
+		    
+		  next
+		  
+		  my_data_pool.set_table(pool_table2)
+		  
+		  
+		  Dim fld_folder As New FolderItem
+		  
+		  fld_folder = fld_folder.Child("test-data")
+		  
+		  my_data_pool.save(new clTextWriter(fld_folder, True))
+		  
+		  
+		  Dim loaded_table1 As New clDataTable(new clTextReader(fld_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
+		  Dim loaded_table2 As New clDataTable(new clTextReader(fld_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
+		  
+		  call check_table(log,"table 1", loaded_table1, pool_table1)
+		  
+		  call check_table(log,"table 2", loaded_table2, pool_table2)
 		  
 		  
 		  log.end_exec(CurrentMethodName)

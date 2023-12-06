@@ -51,47 +51,51 @@ Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
 		Sub alter_external_name(new_name as string)
 		  
+		  dim tmp_fld as new FolderItem  
+		  
+		  if self.DestinationPath = nil then
+		    self.TextStream = nil
+		    return
+		    
+		  elseif self.DestinationPath.IsFolder then
+		    tmp_fld = self.DestinationPath.Child(new_name + self.default_extension)
+		    open_text_Stream(tmp_fld)
+		    
+		  else
+		    tmp_fld = self.DestinationPath.Parent.Child(new_name + self.default_extension)
+		    open_text_Stream(tmp_fld)
+		    
+		  end if
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_destination_file as FolderItem, has_header as Boolean)
-		  self.DestinationFile = the_destination_file
+		Sub Constructor(the_destination_path as FolderItem, has_header as Boolean)
+		  self.DestinationPath = the_destination_path
+		  self.file_has_header = has_header
 		  
-		  
-		  if not self.DestinationFile.IsFolder and self.DestinationFile.IsWriteable then
-		    self.TextStream = TextOutputStream.Create(self.DestinationFile)
-		    
-		  else
-		    self.TextStream =  nil
-		    
-		  end if 
+		  open_text_Stream(self.DestinationPath)
 		  
 		  self.internal_init_config(nil) 
 		  
-		  self.header_written = not has_header
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_destination_file as FolderItem, has_header as Boolean, config as clTextFileConfig)
-		  self.DestinationFile = the_destination_file
+		Sub Constructor(the_destination_path as FolderItem, has_header as Boolean, config as clTextFileConfig)
+		  self.DestinationPath = the_destination_path
+		  self.file_has_header = has_header
 		  
-		  
-		  if not self.DestinationFile.IsFolder and self.DestinationFile.IsWriteable then
-		    self.TextStream = TextOutputStream.Create(self.DestinationFile)
-		    
-		  else
-		    self.TextStream =  nil
-		    
-		  end if 
+		  open_text_Stream(self.DestinationPath)
 		  
 		  self.internal_init_config(config)
 		  
 		  
-		  self.header_written = not has_header
 		  
 		  
 		End Sub
@@ -142,6 +146,26 @@ Implements TableRowWriterInterface
 		  self.encoding = tmp_config.enc
 		  self.quote_char = tmp_config.quote_char
 		  self.number_format = tmp_config.NumberFormat
+		  self.default_extension = tmp_config.file_extension
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub open_text_Stream(tmp_file as FolderItem)
+		  
+		  self.line_count = 0
+		  
+		  self.current_file = tmp_file
+		  
+		  if not self.current_file.IsFolder and self.current_file.IsWriteable then
+		    self.TextStream = TextOutputStream.Create(self.current_file)
+		    
+		  else
+		    self.TextStream =  nil
+		    
+		  end if 
+		  
+		  self.header_written = not self.file_has_header
 		  
 		End Sub
 	#tag EndMethod
@@ -163,7 +187,15 @@ Implements TableRowWriterInterface
 
 
 	#tag Property, Flags = &h1
-		Protected DestinationFile As folderitem
+		Protected current_file As FolderItem
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		default_extension As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected DestinationPath As folderitem
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -172,6 +204,10 @@ Implements TableRowWriterInterface
 
 	#tag Property, Flags = &h1
 		Protected field_separator As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected file_has_header As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

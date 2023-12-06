@@ -37,7 +37,15 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub save_all(folder_path as string)
+		Sub save(write_to as TableRowWriterInterface)
+		  
+		  for each table as clDataTable in datatable_dict.Values()
+		    write_to.alter_external_name(table.name)
+		    
+		    table.save(write_to)
+		    
+		    
+		  next
 		  
 		End Sub
 	#tag EndMethod
