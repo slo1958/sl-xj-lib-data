@@ -19,7 +19,7 @@ Implements TableRowWriterInterface
 
 	#tag Method, Flags = &h0
 		Sub alter_external_name(new_name as string)
-		  
+		  self.table_name = new_name
 		End Sub
 	#tag EndMethod
 
