@@ -34,6 +34,7 @@ Protected Module clDataPool_tests
 		  logwriter.start_exec(CurrentMethodName)
 		  
 		  test_io_001(logwriter) 
+		  test_io_002(logwriter) 
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		  
@@ -258,6 +259,80 @@ Protected Module clDataPool_tests
 		  
 		  call check_table(log,"pool table 1",my_data_pool.get_table("PoolTable1"), test_data_pool.get_table("from PoolTable1.csv"))
 		  call check_table(log,"pool table 2",my_data_pool.get_table("PoolTable2"), test_data_pool.get_table("from PoolTable2.csv"))
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_io_002(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  dim my_data_pool as new clDataPool
+		  
+		  dim rtst As clDataRow
+		  
+		  dim db as new SQLiteDatabase
+		  
+		  Try
+		    db.Connect
+		    
+		  Catch error As DatabaseException
+		    System.DebugLog("DB Connection Error: " + error.Message)
+		    
+		  End Try
+		  
+		  
+		  dim pool_table1 as  New clDataTable("PoolTable1")
+		  
+		  for i as integer = 1 to 4
+		    rtst = New clDataRow
+		    rtst.set_cell("aaa",I*1000)
+		    rtst.set_cell("bbb","abcd")
+		    rtst.set_cell("ccc",123.456 * i) 
+		    
+		    pool_table1.append_row(rtst)
+		    
+		  next
+		  
+		  my_data_pool.set_table( pool_table1)
+		  
+		  
+		  dim pool_table2 as New clDataTable("PoolTable2")
+		  for i as integer = 5 to 9
+		    rtst = New clDataRow
+		    rtst.set_cell("aaa",I*1000)
+		    rtst.set_cell("bbb","xyz")
+		    rtst.set_cell("ddd",567.89 * i)
+		    
+		    pool_table2.append_row(rtst)
+		    
+		  next
+		  
+		  my_data_pool.set_table(pool_table2)
+		  
+		  
+		  
+		  my_data_pool.save(new clDBWriter(new clSqliteDBAccess(db)))
+		  
+		  
+		  dim loaded_table1 as new clDataTable(new clDBReader(new clSqliteDBAccess(db),"PoolTable1"))
+		  Dim loaded_table2 As New clDataTable(new clDBReader(db.SelectSql("select * from PoolTable2")))
+		  
+		  call check_table(log,"table 1", loaded_table1, pool_table1)
+		  call check_table(log,"table 2", loaded_table2, pool_table2)
+		  
+		  
+		  // dim test_data_pool as new clDataPool
+		  // test_data_pool.load_table(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
+		  // test_data_pool.load_table(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
+		  // 
+		  // 
+		  // call check_table(log,"pool table 1",my_data_pool.get_table("PoolTable1"), test_data_pool.get_table("from PoolTable1.csv"))
+		  // call check_table(log,"pool table 2",my_data_pool.get_table("PoolTable2"), test_data_pool.get_table("from PoolTable2.csv"))
 		  
 		  log.end_exec(CurrentMethodName)
 		  

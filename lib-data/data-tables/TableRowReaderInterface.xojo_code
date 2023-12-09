@@ -43,6 +43,27 @@ Protected Interface TableRowReaderInterface
 	#tag EndMethod
 
 
+	#tag Note, Name = Untitled
+		
+		add an iterator to get list of objects
+		
+		Text file reader:
+		= for text file:: list of files if path is a folder
+		= for text file: one file if path is a file
+		= for text file: add an optional mask, set to '*.csv' by default
+		
+		DB Reader:
+		= for db reader: list of tables
+		= for db reader: add an optional mask to filter table names, set to '*' by default
+		= for db reader: add an option to include /exclude views
+		 
+		
+		Add method 'get_list_as_table', whoch provides a clDataSourceTable (subclass of clDataTable) to generate a datatable from resulting list
+		
+		
+	#tag EndNote
+
+
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="Name"
