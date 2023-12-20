@@ -136,6 +136,44 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetListOfExternalElements() As string()
+		  dim ret() as string
+		  
+		  dim tmp_fd as FolderItem
+		  
+		  if mDataFile = nil then
+		    return ret
+		    
+		  end if
+		  
+		  if mDataFile.IsFolder then
+		    tmp_fd = mDataFile
+		    
+		  else 
+		    tmp_fd = mDataFile.Parent
+		    
+		  end if
+		  
+		  if not tmp_fd.Exists then
+		    return ret
+		    
+		  end if
+		  
+		  For Each file As FolderItem In tmp_fd.Children
+		    if not file.IsFolder then
+		      ret.Add(file.Name)
+		      
+		    end if
+		    
+		  next
+		  
+		  return ret
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function name() As string
 		  // Part of the TableRowReaderInterface interface
 		  

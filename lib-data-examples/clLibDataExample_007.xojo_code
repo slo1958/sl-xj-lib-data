@@ -9,6 +9,7 @@ Inherits clLibDataExample
 		  returnValue.Add("- create an empty datatable")
 		  returnValue.Add("- fast append data")
 		  returnValue.Add("- create a dataserie  by applying a simple operation between columns")
+		  returnValue.add(" - show behviour with and without explicit name for the new column")
 		  
 		  return returnValue 
 		End Function
@@ -40,8 +41,8 @@ Inherits clLibDataExample
 		  table0.append_row(Array("gamma", 10, 50))
 		  
 		  
-		  dim sr as clAbstractDataSerie = table0.add_column(clNumberDataSerie(table0.get_column("unit_price")) * clNumberDataSerie(table0.get_column("quantity")))
-		  
+		  dim s1 as clAbstractDataSerie = table0.add_column(clNumberDataSerie(table0.get_column("unit_price")) * clNumberDataSerie(table0.get_column("quantity"))).rename("sales")
+		  dim s2 as clAbstractDataSerie = table0.add_column(clNumberDataSerie(table0.get_column("unit_price")) * clNumberDataSerie(table0.get_column("quantity")))
 		  return Array(table0)
 		  
 		  

@@ -48,6 +48,12 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetListOfExternalElements() As string()
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function name() As string
 		  // Part of the TableRowReaderInterface interface.
 		  return table.name
@@ -69,6 +75,12 @@ Implements TableRowReaderInterface
 		  return row_value
 		End Function
 	#tag EndMethod
+
+
+	#tag Note, Name = Description
+		
+		Read rows from a table to feed another table
+	#tag EndNote
 
 
 	#tag Property, Flags = &h21

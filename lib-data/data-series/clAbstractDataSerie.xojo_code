@@ -554,7 +554,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_apply_function(the_filter_function as filter_column, paramarray function_param as variant) As variant()
+		Function filter_apply_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
 		  Dim return_boolean() As Variant
 		  
 		  Return return_boolean
@@ -563,7 +563,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function filter_column(the_row_index as integer, the_row_count as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
+		Delegate Function filter_column_by_rows(the_row_index as integer, the_row_count as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
