@@ -1582,6 +1582,16 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function get_number_column(the_column_name as string) As clNumberDataSerie
+		  
+		  
+		  dim tmp as clAbstractDataSerie =  self.get_column(the_column_name, false)
+		  
+		  return clNumberDataSerie(tmp)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function get_row(the_row_index as integer, include_index as Boolean) As clDataRow
 		  //  
 		  //  returns a specific data row
