@@ -139,6 +139,20 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 
+	#tag Note, Name = Description
+		Used to load data in a clDataTable from a database table or query
+		
+		Can be used with an existing recordset or by providing an instance of a  database access component.
+		
+		The database access component is responsible for preparing sql statement using the appropriate sql dialect.
+		
+		
+		
+		
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h1
 		Protected db As Database
 	#tag EndProperty

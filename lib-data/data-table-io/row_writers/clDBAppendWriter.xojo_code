@@ -84,6 +84,20 @@ Inherits clDBWriter
 	#tag EndMethod
 
 
+	#tag Note, Name = Description
+		
+		Used to download data from a clDataTable to a database table, the data in the target table is retained before transfering the rows.
+		Add missing columns to the target table.
+		
+		Uses an instance of a  database access component.
+		
+		The database access component is responsible for preparing sql statement using the appropriate sql dialect.
+		
+		
+		
+	#tag EndNote
+
+
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="Name"

@@ -26,6 +26,15 @@ Implements Iterable
 	#tag EndMethod
 
 
+	#tag Note, Name = Description
+		Used together with clDataTableFilterIterator, allows to loop thru rows of a table, matching a condition stored as a boolean serie.
+		The boolean serie can be either an independant boolean serie or a column in the table.
+		
+		
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h0
 		tmp_serie As clBooleanDataSerie
 	#tag EndProperty

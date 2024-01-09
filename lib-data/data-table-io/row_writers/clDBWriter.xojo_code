@@ -81,6 +81,19 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 
+	#tag Note, Name = Description
+		
+		Used to download data from a clDataTable to a database table, the target table is emptied before transfering the rows.
+		
+		Uses an instance of a  database access component.
+		
+		The database access component is responsible for preparing sql statement using the appropriate sql dialect.
+		
+		
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h1
 		Protected columns() As String
 	#tag EndProperty

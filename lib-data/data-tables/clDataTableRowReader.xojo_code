@@ -78,8 +78,8 @@ Implements TableRowReaderInterface
 
 
 	#tag Note, Name = Description
-		
-		Read rows from a table to feed another table
+		Implements the row reader interface using a table as source.
+		It could be used to read rows from a table to feed another table.
 	#tag EndNote
 
 

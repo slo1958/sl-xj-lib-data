@@ -1170,7 +1170,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		- clCompressedDataSerie: stores elements as variant, but internally elements are stored as an integer, an index in a value dictionary.
 		- clNumberDataSerie: stores elements as double
 		- clIntegerDataSerie: stores elements as integer
-		-clBooleanDataSerie: stores elements as Boolean
+		- clBooleanDataSerie: stores elements as Boolean
 		- clDateDataSerie: stores elements as timestamp
 		- clDataSerieRowID: used to assign a unique row id to each row, starting at 0. Used by clDataTable to handle the row index
 		
@@ -1208,6 +1208,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndNote
 
 	#tag Note, Name = Methods to be defined in child class
+		METHODS TO BE DEFINED IN CHILD CLASSES
 		
 		append_element
 		

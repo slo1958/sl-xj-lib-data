@@ -262,13 +262,6 @@ Implements TableColumnReaderInterface
 		
 	#tag EndNote
 
-	#tag Note, Name = Version
-		0.0.1 - 2023-04-16
-		First version
-		
-		
-	#tag EndNote
-
 
 	#tag Property, Flags = &h1
 		Protected opt_allow_extra_columns As Boolean = False

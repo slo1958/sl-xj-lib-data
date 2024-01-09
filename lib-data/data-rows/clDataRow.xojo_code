@@ -98,15 +98,8 @@ Implements Iterable
 	#tag Note, Name = Description
 		A dataRow is a dictionary where the keys are the column name and the values are taken from the current record in each dataSerie.
 		
-		This is a conveniant but very slow process.
+		This is a conveniant but very slow process to loop over records in a table.
 		
-		
-		
-	#tag EndNote
-
-	#tag Note, Name = Version
-		0.0.1 - 2023-04-16
-		First version
 		
 		
 	#tag EndNote
