@@ -903,7 +903,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  For Each name As string In column_names
 		    dim temp_name as string = name.Trim
-		    call Self.add_column(name)
+		    call Self.add_column(temp_name)
 		    
 		  Next
 		  

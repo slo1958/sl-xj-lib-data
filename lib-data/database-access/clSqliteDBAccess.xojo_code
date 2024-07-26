@@ -72,7 +72,7 @@ Inherits clAbstractDatabaseAccess
 	#tag Method, Flags = &h0
 		Function GetSQLType(source_type as string) As String
 		  // Calling the overridden superclass method.
-		  Var returnValue as String = Super.GetSQLType(source_type)
+		  // Var returnValue as String = Super.GetSQLType(source_type)
 		  
 		  if source_type = "string" then return "text"
 		  
