@@ -28,7 +28,7 @@ Protected Module clDataTableFilterFunctions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function retain_serie_head(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function retain_dataSerie_head(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
 		  //  
 		  //  Implementation of basic filter_row to return n top rows.
 		  //  
@@ -58,7 +58,7 @@ Protected Module clDataTableFilterFunctions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function retain_serie_tail(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function retain_dataSerie_tail(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
 		  //  
 		  //  Implementation of basic filter_row to return n last rows.
 		  //  

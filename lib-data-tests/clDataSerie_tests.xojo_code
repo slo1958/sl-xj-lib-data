@@ -186,9 +186,9 @@ Protected Module clDataSerie_tests
 		  
 		  f1 = src.filter_apply_function(AddressOf filter01)
 		  
-		  f2 = src.filter_apply_function(AddressOf retain_serie_head, 7)
+		  f2 = src.filter_apply_function(AddressOf retain_dataSerie_head, 7)
 		  
-		  f3 = src.filter_apply_function(AddressOf retain_serie_tail)
+		  f3 = src.filter_apply_function(AddressOf retain_dataSerie_tail)
 		  
 		  Dim c1 As New clDataSerie("test001", f1)
 		  Dim c2 As New clDataSerie("test002", f2)
