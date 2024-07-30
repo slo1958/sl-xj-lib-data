@@ -64,7 +64,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function add_column(the_column_name as String) As clDataSerie
+		Function add_column(the_column_name as String) As clAbstractDataSerie
 		  //  
 		  //  Add  an empty column to the table
 		  //  
@@ -81,7 +81,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function add_column(the_column_name as String, default_value as variant) As clDataSerie
+		Function add_column(the_column_name as String, default_value as variant) As clAbstractDataSerie
 		  //  
 		  //  Add  an constant column to the table
 		  //  
@@ -105,7 +105,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		  
-		  Dim tmp_column As clDataSerie
+		  Dim tmp_column As clAbstractDataSerie
 		  
 		  If not self.is_virtual then
 		    tmp_column = New clDataSerie(tmp_column_name)
@@ -414,15 +414,6 @@ Implements TableColumnReaderInterface,Iterable
 		  //  (nothing)
 		  //  
 		  Dim tmp_row_count As Integer = Self.row_count
-		  
-		  Dim columns_to_update() As String
-		  
-		  For Each column As clAbstractDataSerie In columns
-		    columns_to_update.Append(column.name)
-		    
-		  Next
-		  
-		  
 		  
 		  For Each column As String In the_row
 		    Dim tmp_column As clAbstractDataSerie = Self.get_column(column)

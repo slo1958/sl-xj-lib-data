@@ -236,7 +236,7 @@ Protected Module clDataTable_tests
 		  
 		  my_table1.append_row(rtst) 
 		  
-		  Dim my_col As clDataSerie
+		  Dim my_col As clAbstractDataSerie
 		  Dim my_table3 As clDataTable = my_table1.select_columns(Array("aaa","zccc")) // zccc does not exist, not included in my_table3
 		  
 		  
