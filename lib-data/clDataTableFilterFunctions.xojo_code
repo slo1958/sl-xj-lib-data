@@ -90,6 +90,25 @@ Protected Module clDataTableFilterFunctions
 	#tag EndMethod
 
 
+	#tag Note, Name = About Table filter methods
+		A function can be used as a table filter if it matches the prototype of the 'filter_row' delegate defined in clDataTable.
+		
+		The prototype is:
+		
+		function xyz(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) as boolean
+		
+		where
+		- the_row_index: index of the current row
+		- the_row_count: number of rows in the table
+		- the_column_names(): list of columns in in the table
+		- the_cell_values(): values of the columns for the current row
+		- function_param: additional paramters used to defined the bahaviour of the function
+		
+		
+		This module contains example table filter methods.
+	#tag EndNote
+
+
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="Index"
