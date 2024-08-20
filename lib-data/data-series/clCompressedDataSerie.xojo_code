@@ -5,7 +5,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  
-		  dim item_entry as Integer
+		  var item_entry as Integer
 		  
 		  if self.items_value_dict.HasKey(the_item) then
 		    item_entry = self.items_value_dict.Value(the_item)
@@ -26,13 +26,13 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function clone() As clCompressedDataSerie
-		  Dim tmp As New clCompressedDataSerie(Self.name)
+		  var tmp As New clCompressedDataSerie(Self.name)
 		  tmp.display_title = self.display_title
 		  
 		  tmp.add_meta_data("source","clone from " + self.full_name)
 		  
 		  For Each item_index As Integer In Self.items_index
-		    dim v as Variant 
+		    var v as Variant 
 		    
 		    if item_index >=0 then
 		      v = self.items_value_list(item_index)
@@ -52,7 +52,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function clone_structure() As clCompressedDataSerie
-		  Dim tmp As New clCompressedDataSerie(Self.name)
+		  var tmp As New clCompressedDataSerie(Self.name)
 		  tmp.display_title = self.display_title
 		  
 		  tmp.add_meta_data("source","clone structure from " + self.full_name)
@@ -65,11 +65,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function filter_apply_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
-		  Dim return_boolean() As Variant
+		  var return_boolean() As Variant
 		  
 		  For row_index As Integer=0 To items_index.Ubound
-		    dim item_index as integer = items_index(row_index)
-		    dim v as Variant
+		    var item_index as integer = items_index(row_index)
+		    var v as Variant
 		    
 		    if item_index >=0 then
 		      v = self.items_value_list(item_index)
@@ -88,10 +88,10 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function get_element(the_element_index as integer) As variant
 		  
-		  dim v as Variant
+		  var v as Variant
 		  
 		  If 0 <= the_element_index And  the_element_index <= items_index.Ubound then
-		    dim item_index As Integer = Self.items_index(the_element_index)
+		    var item_index As Integer = Self.items_index(the_element_index)
 		    
 		    if item_index >=0 then
 		      v = self.items_value_list(item_index)
@@ -121,7 +121,7 @@ Inherits clAbstractDataSerie
 		Sub set_element(the_element_index as integer, the_item as Variant)
 		  If 0 <= the_element_index And  the_element_index <= items_index.Ubound Then
 		    
-		    dim item_entry as Integer
+		    var item_entry as Integer
 		    
 		    if self.items_value_dict.HasKey(the_item) then
 		      item_entry = self.items_value_dict.Value(the_item)

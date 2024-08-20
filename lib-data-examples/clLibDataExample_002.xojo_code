@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a small table")
 		  returnValue.Add("- aggregate using 0, 1 and 2 dimensions")
@@ -28,7 +28,7 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  Dim table0 As New clDataTable("mytable", serie_array( _
+		  var table0 As New clDataTable("mytable", serie_array( _
 		  New clDataSerie("City",  "Paris","Lyon","Namur","Paris","Charleroi","Milan") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -37,13 +37,13 @@ Inherits clLibDataExample
 		  ))
 		  
 		  
-		  Dim table1 As clDataTable = table0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
+		  var table1 As clDataTable = table0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
 		  
 		  
-		  Dim table2 As clDataTable = table0.groupby(string_array, string_array("Sales"), string_array)
+		  var table2 As clDataTable = table0.groupby(string_array, string_array("Sales"), string_array)
 		  table2.rename("Grand total")
 		  
-		  Dim table3 As clDataTable = table0.groupby(string_array("Country","City"), string_array, string_array(""))
+		  var table3 As clDataTable = table0.groupby(string_array("Country","City"), string_array, string_array(""))
 		  
 		  return array(table0, table1, table2, table3)
 		End Function

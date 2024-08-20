@@ -8,10 +8,10 @@ Implements TableRowWriterInterface
 		  
 		  if textstream = nil then return
 		  
-		  dim tmpStr() as string
+		  var tmpStr() as string
 		  
 		  for each row_field as variant in row_data
-		    dim field as string
+		    var field as string
 		    
 		    if row_field.type = 4 or row_field.type=5 then
 		      field = str(row_field,self.number_format)
@@ -19,7 +19,7 @@ Implements TableRowWriterInterface
 		      field = row_field
 		    end if
 		    
-		    dim reqQuotes as Boolean = False
+		    var reqQuotes as Boolean = False
 		    
 		    reqQuotes = reqQuotes or (field.IndexOf(field_separator)>0)
 		    
@@ -51,7 +51,7 @@ Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
 		Sub alter_external_name(new_name as string)
 		  
-		  dim tmp_fld as new FolderItem  
+		  var tmp_fld as new FolderItem  
 		  
 		  if self.DestinationPath = nil then
 		    self.TextStream = nil
@@ -138,7 +138,7 @@ Implements TableRowWriterInterface
 	#tag Method, Flags = &h21
 		Private Sub internal_init_config(config as clTextFileConfig)
 		  
-		  dim tmp_config as clTextFileConfig = config
+		  var tmp_config as clTextFileConfig = config
 		  
 		  if tmp_config = nil then tmp_config = new clTextFileConfig
 		  
@@ -172,7 +172,7 @@ Implements TableRowWriterInterface
 
 	#tag Method, Flags = &h21
 		Private Sub write_column_headers(headers() as string)
-		  dim tmp() as variant
+		  var tmp() as variant
 		  
 		  for each s as string in headers
 		    tmp.add(s)

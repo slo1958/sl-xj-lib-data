@@ -3,7 +3,7 @@ Protected Class clDataTableValidation
 Implements TableColumnReaderInterface
 	#tag Method, Flags = &h0
 		Sub add_message(field_name as string, row_index as integer, message as string)
-		  dim r as new Dictionary
+		  var r as new Dictionary
 		  
 		  r.value(field_name_output_column)=  field_name
 		  r.value(row_index_output_column) =  row_index
@@ -21,12 +21,12 @@ Implements TableColumnReaderInterface
 		Function all_columns() As clAbstractDataSerie()
 		  // Part of the TableColumnReaderInterface interface.
 		  
-		  dim cols() as clAbstractDataSerie
+		  var cols() as clAbstractDataSerie
 		  
-		  dim col_name as new clDataSerie( field_name_input_column )
-		  dim col_input as new clDataSerie( field_nullable_input_column )
-		  dim col_mandatory as new clDataSerie(field_mandatory_input_column )
-		  dim col_type as new clDataSerie(field_type_input_column)
+		  var col_name as new clDataSerie( field_name_input_column )
+		  var col_input as new clDataSerie( field_nullable_input_column )
+		  var col_mandatory as new clDataSerie(field_mandatory_input_column )
+		  var col_type as new clDataSerie(field_type_input_column)
 		  
 		  
 		  for each column as clDataSerieValidation in valid_columns
@@ -79,7 +79,7 @@ Implements TableColumnReaderInterface
 		Function GetColumnNames() As string()
 		  // Part of the TableColumnReaderInterface interface
 		  
-		  dim tmp() as string
+		  var tmp() as string
 		  
 		  tmp.Append(field_name_input_column)
 		  tmp.Append(field_type_input_column)
@@ -95,7 +95,7 @@ Implements TableColumnReaderInterface
 		Function get_column(the_column_name as String) As clAbstractDataSerie
 		  // Part of the TableColumnReaderInterface interface.
 		  
-		  dim output as new clDataSerie(the_column_name)
+		  var output as new clDataSerie(the_column_name)
 		  
 		  for each column as clDataSerieValidation in valid_columns
 		    
@@ -128,7 +128,7 @@ Implements TableColumnReaderInterface
 	#tag Method, Flags = &h0
 		Function get_column_by_index(column_index as integer) As clAbstractDataSerie
 		  
-		  dim output as clDataSerie
+		  var output as clDataSerie
 		  
 		  try
 		    output = new clDataSerie(self.get_column_name(column_index))
@@ -167,7 +167,7 @@ Implements TableColumnReaderInterface
 
 	#tag Method, Flags = &h0
 		Function get_column_name(column_index as integer) As string
-		  dim tmp() as string = self.GetColumnNames()
+		  var tmp() as string = self.GetColumnNames()
 		  
 		  return tmp(column_index)
 		End Function
@@ -207,17 +207,17 @@ Implements TableColumnReaderInterface
 		  
 		  self.results_table = new clDataTable("error_report", array(field_name_output_column ,  row_index_output_column, message_output_column))
 		  
-		  dim tmp_data_columns() as string = table.GetColumnNames
+		  var tmp_data_columns() as string = table.GetColumnNames
 		  
 		  for each column as clDataSerieValidation in valid_columns
 		    
 		    if  table.GetColumnNames.IndexOf(column.name) >= 0 then
-		      dim tmp() as clAbstractDataSerie = column.validate(table.get_column(column.name))
+		      var tmp() as clAbstractDataSerie = column.validate(table.get_column(column.name))
 		      
 		      tmp(0).rename(row_index_output_column)
 		      tmp(1).rename(message_output_column )
 		      
-		      dim tmp_table as new clDataTable("temp", tmp)
+		      var tmp_table as new clDataTable("temp", tmp)
 		      call tmp_table.add_column(field_name_output_column, column.name)
 		      
 		      self.results_table.append_from_column_source(tmp_table)

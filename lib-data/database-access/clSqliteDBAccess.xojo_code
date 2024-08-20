@@ -5,7 +5,7 @@ Inherits clAbstractDatabaseAccess
 	#tag Method, Flags = &h0
 		Sub AppendFields(table_name as string, field_names() as string, field_types() as string)
 		  
-		  dim tmp_sql as string
+		  var tmp_sql as string
 		  
 		  for i as integer = 0 to field_names.LastIndex
 		    tmp_sql = "ALTER TABLE " + table_name + " add " + field_names(i) + " " + self.GetSQLType(field_types(i))
@@ -28,8 +28,8 @@ Inherits clAbstractDatabaseAccess
 
 	#tag Method, Flags = &h0
 		Sub CreateTable(table_name as string, field_names() as string, field_types() as string)
-		  dim tmp_fields() as string
-		  dim tmp_sql as string
+		  var tmp_fields() as string
+		  var tmp_sql as string
 		  
 		  for i as integer = 0 to field_names.LastIndex
 		    tmp_fields.Add field_names(i) + " " + self.GetSQLType(field_types(i))
@@ -45,7 +45,7 @@ Inherits clAbstractDatabaseAccess
 
 	#tag Method, Flags = &h0
 		Sub DropTable(table_name as string)
-		  dim tmp_sql as string
+		  var tmp_sql as string
 		  
 		  tmp_sql =  "DROP TABLE IF EXISTS " + table_name 
 		  

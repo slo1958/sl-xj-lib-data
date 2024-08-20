@@ -110,7 +110,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Returns:
 		  //  
 		  
-		  dim tmp_source as clAbstractDataSerie = the_serie
+		  var tmp_source as clAbstractDataSerie = the_serie
 		  
 		  For row_num As Integer = 0 To tmp_source.row_count-1
 		    self.append_element(tmp_source.get_element(row_num))
@@ -142,15 +142,15 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function average() As double
-		  Dim limit As Integer = row_count - 1
-		  Dim i As Integer
+		  var limit As Integer = row_count - 1
+		  var i As Integer
 		  
-		  Dim s As Double
-		  dim n as integer
+		  var s As Double
+		  var n as integer
 		  
 		  For i = 0 To limit
 		    if self.element_is_defined(i) then
-		      dim tmp as Double = get_element_as_number(i)
+		      var tmp as Double = get_element_as_number(i)
 		      s = s + tmp
 		      n = n + 1
 		      
@@ -167,15 +167,15 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function average_non_zero() As double
-		  Dim limit As Integer = row_count - 1
-		  Dim i As Integer
+		  var limit As Integer = row_count - 1
+		  var i As Integer
 		  
-		  Dim s As Double
-		  dim n as integer
+		  var s As Double
+		  var n as integer
 		  
 		  For i = 0 To limit
 		    if self.element_is_defined(i) then
-		      dim tmp as Double = get_element_as_number(i)
+		      var tmp as Double = get_element_as_number(i)
 		      
 		      if tmp <> 0 then
 		        s = s + tmp
@@ -219,7 +219,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Returns:
 		  //  - the new data serie
 		  
-		  dim new_col as clAbstractDataSerie = self.clone()
+		  var new_col as clAbstractDataSerie = self.clone()
 		  
 		  new_col.rename("clip " + self.name)
 		  
@@ -245,11 +245,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //
 		  
 		  
-		  dim last_index as integer = self.row_count
-		  dim count_changes as integer = 0
+		  var last_index as integer = self.row_count
+		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index
-		    dim tmp as variant = self.get_element(index)
+		    var tmp as variant = self.get_element(index)
 		    
 		    if  tmp > high_value then
 		      self.set_element(index, high_value)
@@ -277,11 +277,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //
 		  
 		  
-		  dim last_index as integer = self.row_count
-		  dim count_changes as integer = 0
+		  var last_index as integer = self.row_count
+		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index
-		    dim tmp as variant = self.get_element(index)
+		    var tmp as variant = self.get_element(index)
 		    
 		    if low_value > tmp then
 		      self.set_element(index, low_value)
@@ -310,11 +310,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  - the number of values changed
 		  //
 		  
-		  dim last_index as integer = self.row_count
-		  dim count_changes as integer = 0
+		  var last_index as integer = self.row_count
+		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index
-		    dim tmp as variant = self.get_element(index)
+		    var tmp as variant = self.get_element(index)
 		    
 		    if low_value > tmp then
 		      self.set_element(index, low_value)
@@ -403,7 +403,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  if the_values.LastIndex < 0 then return
 		  
 		  if the_values(0).IsArray and the_values.LastIndex = 0 then
-		    dim tmp() as variant = make_variant_array(the_values(0))
+		    var tmp() as variant = make_variant_array(the_values(0))
 		    
 		    For i As Integer = 0 To tmp.Ubound
 		      self.append_element(tmp(i))
@@ -452,10 +452,10 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function count() As double
-		  Dim limit As Integer = row_count - 1
-		  Dim i As Integer
+		  var limit As Integer = row_count - 1
+		  var i As Integer
 		  
-		  dim n as integer
+		  var n as integer
 		  
 		  For i = 0 To limit
 		    if self.element_is_defined(i) then
@@ -472,10 +472,10 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function count_non_zero() As double
-		  Dim limit As Integer = row_count - 1
-		  Dim i As Integer
+		  var limit As Integer = row_count - 1
+		  var i As Integer
 		  
-		  dim n as integer
+		  var n as integer
 		  
 		  For i = 0 To limit
 		    if self.element_is_defined(i) and self.get_element_as_number(i) <> 0 then
@@ -493,7 +493,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Sub debug_dump()
 		  
-		  Dim tmp_item() As String
+		  var tmp_item() As String
 		  
 		  System.DebugLog("----START SERIE " + Self.serie_name+" --------")
 		  
@@ -501,9 +501,9 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  System.DebugLog(Join(tmp_item, ";"))
 		  
 		  For row As Integer = 0 To row_count-1
-		    Dim element As variant = get_element(row)
-		    Dim ok_convert As Boolean
-		    Redim tmp_item(-1)
+		    var element As variant = get_element(row)
+		    var ok_convert As Boolean
+		    redim tmp_item(-1)
 		    
 		    tmp_item.Append(Str(row))
 		    
@@ -555,7 +555,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function filter_apply_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
-		  Dim return_boolean() As Variant
+		  var return_boolean() As Variant
 		  
 		  Return return_boolean
 		  
@@ -571,7 +571,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //
 		  // returns row index of rows matching the value
 		  //
-		  Dim ret() As Integer
+		  var ret() As Integer
 		  
 		  For i As Integer = 0 To self.upper_bound
 		    if self.get_element(i) = the_find_value Then
@@ -605,7 +605,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		Function GetIterator() As Xojo.Core.Iterator
 		  // Part of the Xojo.Core.Iterable interface.
 		  
-		  Dim tmp_serie_iterator As New clDataSerieIterator(self)
+		  var tmp_serie_iterator As New clDataSerieIterator(self)
 		  
 		  Return tmp_serie_iterator 
 		End Function
@@ -652,7 +652,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Function get_element_as_data_serie(the_element_index as integer) As clDataSerie
 		  
-		  Dim tmp_v As clDataSerie
+		  var tmp_v As clDataSerie
 		  
 		  Try 
 		    tmp_v = get_element(the_element_index)
@@ -681,8 +681,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  // Note: this generic method is overloaded when the serie is natively using integer
 		  
-		  Dim tmp_d As integer
-		  Dim tmp_v As variant
+		  var tmp_d As integer
+		  var tmp_v As variant
 		  
 		  tmp_v = get_element(the_element_index)
 		  
@@ -714,8 +714,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  // Note: this generic method is overloaded when the serie is natively using double
 		  
 		  
-		  Dim tmp_d As Double
-		  Dim tmp_v As variant
+		  var tmp_d As Double
+		  var tmp_v As variant
 		  
 		  tmp_v = get_element(the_element_index)
 		  
@@ -746,8 +746,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  // Note: this generic method is overloaded when the serie is natively using string
 		  
-		  Dim tmp_s As String
-		  Dim tmp_v As variant
+		  var tmp_s As String
+		  var tmp_v As variant
 		  
 		  tmp_v = get_element(the_element_index)
 		  
@@ -913,14 +913,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //
 		  
 		  
-		  dim last_index as integer = self.row_count
-		  dim count_changes as integer = 0
+		  var last_index as integer = self.row_count
+		  var count_changes as integer = 0
 		  
-		  dim corr as double = 10 ^ max(nb_decimal,0)
+		  var corr as double = 10 ^ max(nb_decimal,0)
 		  
 		  for index as integer = 0 to last_index
-		    dim current_value as variant = self.get_element(index)
-		    dim new_value as double = round(current_value * corr) / corr
+		    var current_value as variant = self.get_element(index)
+		    var new_value as double = round(current_value * corr) / corr
 		    
 		    if current_value <> new_value then
 		      self.set_element(index, new_value)
@@ -957,7 +957,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub set_length(the_length as integer)
-		  dim v as variant = self.get_default_value
+		  var v as variant = self.get_default_value
 		  
 		  self.set_length(the_length, v)
 		  
@@ -996,15 +996,15 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function standard_deviation(is_population as boolean = False) As double
-		  Dim limit As Integer = row_count - 1
-		  Dim i As Integer
+		  var limit As Integer = row_count - 1
+		  var i As Integer
 		  
-		  Dim s1 As Double
-		  dim s2 as double
+		  var s1 As Double
+		  var s2 as double
 		  
-		  dim tmp as Double
+		  var tmp as Double
 		  
-		  dim n as integer
+		  var n as integer
 		  
 		  For i = 0 To limit
 		    if self.element_is_defined(i) then
@@ -1020,7 +1020,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  if n < 2 then return 0
 		  
-		  dim m as double = s1/n
+		  var m as double = s1/n
 		  
 		  if is_population then
 		    return Sqrt((n * m * m - 2 * m *s1 + s2)  / (n))
@@ -1035,15 +1035,15 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function standard_deviation_non_zero(is_population as boolean = False) As double
-		  Dim limit As Integer = row_count - 1
-		  Dim i As Integer
+		  var limit As Integer = row_count - 1
+		  var i As Integer
 		  
-		  Dim s1 As Double
-		  dim s2 as double
+		  var s1 As Double
+		  var s2 as double
 		  
-		  dim tmp as Double
+		  var tmp as Double
 		  
-		  dim n as integer
+		  var n as integer
 		  
 		  For i = 0 To limit
 		    if self.element_is_defined(i) then
@@ -1062,7 +1062,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  if n < 2 then return 0
 		  
-		  dim m as double = s1/n
+		  var m as double = s1/n
 		  
 		  if is_population then
 		    return Sqrt((n * m * m - 2 * m *s1 + s2)  / (n))
@@ -1077,10 +1077,10 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function sum() As double
-		  Dim limit As Integer = row_count - 1
-		  Dim i As Integer
+		  var limit As Integer = row_count - 1
+		  var i As Integer
 		  
-		  Dim s As Double
+		  var s As Double
 		  For i = 0 To limit
 		    s = s + get_element_as_number(i)
 		    
@@ -1095,11 +1095,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 		Function to_json() As JSONItem
 		  // Part of the itf_json_able interface.
 		  
-		  Dim js_list As New JSONItem
-		  Dim js_return As New JSONItem
+		  var js_list As New JSONItem
+		  var js_return As New JSONItem
 		  
 		  For row As Integer = 0 To row_count-1
-		    Dim element As variant = get_element(row)
+		    var element As variant = get_element(row)
 		    
 		    If element IsA itf_json_able Then
 		      js_list.append(itf_json_able(element).to_json)
@@ -1108,7 +1108,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		      Try
 		        js_list.Append(element.StringValue)
 		        
-		      Catch TypeMismatchExceptiondim  
+		      Catch TypeMismatchExceptionvar  
 		        js_list.Append("Cannot convert")
 		        
 		      End Try
@@ -1126,11 +1126,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function unique() As variant()
-		  dim dct as new Dictionary
-		  dim results() as variant
+		  var dct as new Dictionary
+		  var results() as variant
 		  
 		  for row as integer = 0 to upper_bound
-		    dim tmp as variant = self.get_element(row)
+		    var tmp as variant = self.get_element(row)
 		    
 		    if dct.HasKey(tmp) then
 		      dct.value(tmp)  = dct.Value(tmp) + 1

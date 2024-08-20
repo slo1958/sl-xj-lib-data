@@ -24,7 +24,7 @@ Inherits clDataSerie
 		  
 		  serie_value_separator = Chr(9)
 		  
-		  Redim Self.serie_headers(-1)
+		  redim Self.serie_headers(-1)
 		  For Each element As String In the_labels
 		    Self.serie_headers.Append(element)
 		    
@@ -52,7 +52,7 @@ Inherits clDataSerie
 	#tag Method, Flags = &h0
 		Sub set_element(the_element_index as integer, the_item as Variant)
 		  
-		  Dim tmp() As String
+		  var tmp() As String
 		  
 		  tmp = Split(the_item, serie_value_separator)
 		  
@@ -78,20 +78,20 @@ Inherits clDataSerie
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="display_title"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Index"
 			Visible=true
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
 			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="last_error_message"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Left"

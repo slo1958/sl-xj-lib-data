@@ -32,7 +32,7 @@ Implements Iterable
 
 	#tag Method, Flags = &h0
 		Sub load_table(table_source as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
-		  dim tmp_table as new clDataTable(table_source, allocator)
+		  var tmp_table as new clDataTable(table_source, allocator)
 		  
 		  self.set_table(tmp_table)
 		End Sub
@@ -52,7 +52,7 @@ Implements Iterable
 	#tag Method, Flags = &h0
 		Function save_table(name as string, write_to as TableRowWriterInterface, flag_empty_table as boolean = false) As Boolean
 		  
-		  dim table as clDataTable = self.get_table(name)
+		  var table as clDataTable = self.get_table(name)
 		  
 		  if table = Nil then
 		    writelog("Cannot find table %0 in pool keys", name)
@@ -65,7 +65,7 @@ Implements Iterable
 		    
 		  end if
 		  
-		  dim fullname as string = name
+		  var fullname as string = name
 		  
 		  if self.fullname_prefix.Length > 0 then
 		    fullname = self.fullname_prefix + fullname
@@ -110,7 +110,7 @@ Implements Iterable
 	#tag Method, Flags = &h0
 		Sub set_multiple_tables_with_key(table_key() as string, table() as clDataTable)
 		  for i as integer = 0 to table_key.Ubound
-		    dim tbl as clDataTable
+		    var tbl as clDataTable
 		    
 		    try
 		      tbl = table(i)
@@ -171,7 +171,7 @@ Implements Iterable
 
 	#tag Method, Flags = &h0
 		Function table_names() As string()
-		  dim tmp() as string
+		  var tmp() as string
 		  
 		  for each k as String in datatable_dict.Keys
 		    tmp.Append(k)
@@ -185,7 +185,7 @@ Implements Iterable
 	#tag Method, Flags = &h0
 		Sub writelog(message as string, paramarray txt as string)
 		  if self.verbose then
-		    dim tmp as string = message
+		    var tmp as string = message
 		    
 		    for i as integer = 0 to txt.ubound
 		      tmp = tmp.ReplaceAll("%"+str(i), txt(i))

@@ -149,7 +149,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Open()
-		  dim ex() as clLibDataExample = clLibDataExample.get_all_examples
+		  var ex() as clLibDataExample = clLibDataExample.get_all_examples
 		  
 		  listbox1.RemoveAllRows
 		  
@@ -169,9 +169,9 @@ End
 		  
 		  if item = nil then return
 		  
-		  dim tables() as TableColumnReaderInterface = item.run(item)
+		  var tables() as TableColumnReaderInterface = item.run(item)
 		  
-		  dim wnd as new wnd_table_viewer
+		  var wnd as new wnd_table_viewer
 		  
 		  wnd.reset_viewer
 		  
@@ -189,7 +189,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub show_example_description(item as clLibDataExample)
-		  dim msg() as string
+		  var msg() as string
 		  
 		  if item <> nil then
 		    msg = item.describe
@@ -207,9 +207,9 @@ End
 #tag Events Listbox1
 	#tag Event
 		Sub Change()
-		  dim idx as integer = me.SelectedRowIndex
+		  var idx as integer = me.SelectedRowIndex
 		  
-		  dim tmp as clLibDataExample
+		  var tmp as clLibDataExample
 		  
 		  
 		  if idx >= 0 then
@@ -234,9 +234,9 @@ End
 	#tag Event
 		Sub MouseMove(X As Integer, Y As Integer)
 		  
-		  dim idx as integer = me.RowFromXY(x,y)
+		  var idx as integer = me.RowFromXY(x,y)
 		  
-		  dim tmp as clLibDataExample
+		  var tmp as clLibDataExample
 		  
 		  if idx >= 0 then
 		    try
@@ -266,9 +266,9 @@ End
 	#tag Event
 		Sub Action()
 		  
-		  dim tmp as clLibDataExample
+		  var tmp as clLibDataExample
 		  
-		  dim idx as integer = Listbox1.SelectedRowIndex
+		  var idx as integer = Listbox1.SelectedRowIndex
 		  
 		  try
 		    tmp = clLibDataExample(Listbox1.RowTagAt(idx))

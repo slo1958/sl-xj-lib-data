@@ -10,10 +10,10 @@ Inherits clDBWriter
 		  
 		  self.columns.RemoveAll
 		  
-		  dim table_found as Boolean
+		  var table_found as Boolean
 		  
-		  dim tmp_missing_columns() as string
-		  dim tmp_missing_types() as String
+		  var tmp_missing_columns() as string
+		  var tmp_missing_types() as String
 		  
 		  for index as integer = 0 to columns.LastIndex
 		    
@@ -26,7 +26,7 @@ Inherits clDBWriter
 		  
 		  table_found = False
 		  
-		  dim rs as RowSet 
+		  var rs as RowSet 
 		  
 		  rs = db.Tables()
 		  while not ( rs.AfterLastRow or table_found)
@@ -41,8 +41,8 @@ Inherits clDBWriter
 		    rs = db.TableColumns(name)
 		    
 		    while not rs.AfterLastRow
-		      dim tmp_field as string = rs.Column("ColumnName").StringValue
-		      dim idx as integer = tmp_missing_columns.IndexOf(tmp_field)
+		      var tmp_field as string = rs.Column("ColumnName").StringValue
+		      var idx as integer = tmp_missing_columns.IndexOf(tmp_field)
 		      
 		      if idx >= 0 then 
 		        tmp_missing_columns.RemoveAt(idx)

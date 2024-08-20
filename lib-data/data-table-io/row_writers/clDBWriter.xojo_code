@@ -5,7 +5,7 @@ Implements TableRowWriterInterface
 		Sub add_row(row_data() as variant)
 		  // Part of the TableRowWriterInterface interface.
 		  
-		  dim dbrow as new DatabaseRow
+		  var dbrow as new DatabaseRow
 		  
 		  for i as integer = 0 to self.columns.LastIndex
 		    
@@ -36,7 +36,7 @@ Implements TableRowWriterInterface
 		Sub define_meta_data(name as string, columns() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
-		  dim tmp_type() as string
+		  var tmp_type() as string
 		  
 		  for i as integer = 0 to columns.LastIndex
 		    tmp_type.add("string")

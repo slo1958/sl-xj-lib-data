@@ -14,7 +14,7 @@ Protected Module clDataSerie_tests
 		  end if
 		  
 		  
-		  dim cell_ok as Boolean = True
+		  var cell_ok as Boolean = True
 		  
 		  for row as integer = 0 to expected.row_count-1
 		    cell_ok = cell_ok and check_value(log,  label + " row " + str(row), expected.get_element(row), calculated.get_element(row), accepted_error_on_double)
@@ -55,7 +55,7 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub tests(log as LogMessageInterface)
 		  
-		  dim logwriter as  LogMessageInterface = log 
+		  var logwriter as  LogMessageInterface = log 
 		  
 		  if log = nil then
 		    logwriter = new clWriteToSystemLog
@@ -88,7 +88,7 @@ Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
 		Sub tests_io(log as LogMessageInterface)
 		  
-		  dim logwriter as  LogMessageInterface = log 
+		  var logwriter as  LogMessageInterface = log 
 		  
 		  if log = nil then
 		    logwriter = new clWriteToSystemLog
@@ -109,7 +109,7 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim test  As clDataSerie
+		  var test  As clDataSerie
 		  
 		  
 		  test = New clDataSerie("test")
@@ -130,11 +130,11 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim test  As clDataSerie
+		  var test  As clDataSerie
 		  
 		  test = New clDataSerie("test", variant_array("aaa",123,True))
 		  
-		  dim expected() as variant
+		  var expected() as variant
 		  expected.add("aaa")
 		  expected.add(123)
 		  expected.Add(True)
@@ -162,7 +162,7 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim src As New clDataSerie("premier") 
+		  var src As New clDataSerie("premier") 
 		  
 		  src.append_element("aaa1")
 		  src.append_element("bb1")
@@ -177,9 +177,9 @@ Protected Module clDataSerie_tests
 		  src.append_element("bb4")
 		  src.append_element("cccc4")
 		  
-		  Dim f1() As variant
-		  Dim f2() As variant
-		  Dim f3() As Variant
+		  var f1() As variant
+		  var f2() As variant
+		  var f3() As Variant
 		  
 		  // all boolean arrays have the same size
 		  //
@@ -190,12 +190,12 @@ Protected Module clDataSerie_tests
 		  
 		  f3 = src.filter_apply_function(AddressOf retain_dataSerie_tail)
 		  
-		  Dim c1 As New clDataSerie("test001", f1)
-		  Dim c2 As New clDataSerie("test002", f2)
-		  dim c3 as New clDataSerie("test003", f3)
+		  var c1 As New clDataSerie("test001", f1)
+		  var c2 As New clDataSerie("test002", f2)
+		  var c3 as New clDataSerie("test003", f3)
 		  
 		  
-		  dim cnt1, cnt2, cnt3, cnt4, cnt5, cnt6 as Integer
+		  var cnt1, cnt2, cnt3, cnt4, cnt5, cnt6 as Integer
 		  
 		  for i as integer =  0 to f1.LastIndex
 		    if f1(i) then  cnt1 = cnt1 + 1
@@ -228,8 +228,8 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim c1 As New clDataSerie("premier") 
-		  Dim c2 As New clDataSerie("second") 
+		  var c1 As New clDataSerie("premier") 
+		  var c2 As New clDataSerie("second") 
 		  
 		  c1.append_element("123.4")
 		  c1.append_element(140.5)
@@ -238,8 +238,8 @@ Protected Module clDataSerie_tests
 		  c2.append_element(140.5)
 		  c2.append_element("yoyo")
 		  
-		  Dim d1 As Double
-		  Dim d2 As Double
+		  var d1 As Double
+		  var d2 As Double
 		  
 		  d1 = c1.sum
 		  d2 = c2.sum
@@ -257,10 +257,10 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim c1 As New clDataSerie("premier") 
-		  Dim c2 As New clDataSerie("second") 
-		  Dim c3 As New clDataSerie("parent")
-		  Dim c4 As New clDataSerie("grand-parent")
+		  var c1 As New clDataSerie("premier") 
+		  var c2 As New clDataSerie("second") 
+		  var c3 As New clDataSerie("parent")
+		  var c4 As New clDataSerie("grand-parent")
 		  
 		  c1.append_element("123.4")
 		  c1.append_element(140.5)
@@ -275,8 +275,8 @@ Protected Module clDataSerie_tests
 		  
 		  c4.append_element(c3)
 		  
-		  Dim d3 As Double = c3.sum
-		  Dim d4 As Double = c4.sum
+		  var d3 As Double = c3.sum
+		  var d4 As Double = c4.sum
 		  
 		  call check_value(log,"upper bound for c3", 1, c3.upper_bound)
 		  call check_value(log, "upper bound for c4", 0, c4.upper_bound)
@@ -292,7 +292,7 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim c1 As New clDataSerieMultiValued(Array("aaaa","bbbb")) 
+		  var c1 As New clDataSerieMultiValued(Array("aaaa","bbbb")) 
 		  
 		  call check_value(log,"name", "aaaa" + Chr(9) + "bbbb", c1.name)
 		  
@@ -308,8 +308,8 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim c1 As New clCompressedDataSerie("CompSerie") 
-		  Dim c2 As New clDataSerie("BaseSerie") 
+		  var c1 As New clCompressedDataSerie("CompSerie") 
+		  var c2 As New clDataSerie("BaseSerie") 
 		  
 		  c1.append_element("aaa")
 		  c1.append_element("bb")
@@ -330,17 +330,17 @@ Protected Module clDataSerie_tests
 		  c1.copy_to(c2)
 		  
 		  
-		  Dim f1() As variant
-		  Dim f2() As variant 
+		  var f1() As variant
+		  var f2() As variant 
 		  
 		  f1 = c1.filter_apply_function(AddressOf filter_value_is_not_aaa)
 		  
 		  f2 = c2.filter_apply_function(AddressOf filter_value_is_not_aaa)
 		  
-		  Dim r1 As New clDataSerie("test001", f1)
-		  Dim r2 As New clDataSerie("test002", f2)
+		  var r1 As New clDataSerie("test001", f1)
+		  var r2 As New clDataSerie("test002", f2)
 		  
-		  dim nbf1, nbf2, nbr1, nbr2 as integer
+		  var nbf1, nbf2, nbr1, nbr2 as integer
 		  
 		  for i as integer = 0 to f1.LastIndex
 		    if f1(i) then nbf1 = nbf1 + 1
@@ -367,7 +367,7 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim test  As clNumberDataSerie
+		  var test  As clNumberDataSerie
 		  
 		  
 		  test = New clNumberDataSerie("test")
@@ -387,7 +387,7 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim test  As clNumberDataSerie
+		  var test  As clNumberDataSerie
 		  
 		  
 		  test = New clNumberDataSerie("test")
@@ -407,7 +407,7 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim test  As clNumberDataSerie
+		  var test  As clNumberDataSerie
 		  
 		  
 		  test = New clNumberDataSerie("test")
@@ -428,8 +428,8 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim test0, test1, test2, test3  As clNumberDataSerie
-		  dim expected, delta as clNumberDataSerie
+		  var test0, test1, test2, test3  As clNumberDataSerie
+		  var expected, delta as clNumberDataSerie
 		  
 		  test1 = New clNumberDataSerie("test1")
 		  
@@ -470,10 +470,10 @@ Protected Module clDataSerie_tests
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  Dim c1 As New clDataSerie("premier") 
-		  Dim c2 As New clIntegerDataSerie("second") 
+		  var c1 As New clDataSerie("premier") 
+		  var c2 As New clIntegerDataSerie("second") 
 		  
-		  dim c3 as new clCompressedDataSerie("troisieme")
+		  var c3 as new clCompressedDataSerie("troisieme")
 		  
 		  for i as integer = 0 to 10
 		    c1.append_element("aaa")
@@ -496,9 +496,9 @@ Protected Module clDataSerie_tests
 		    
 		  next
 		  
-		  dim uniq1() as variant = c1.unique
-		  dim uniq2() as Variant = c2.unique
-		  dim uniq3() as variant = c3.unique
+		  var uniq1() as variant = c1.unique
+		  var uniq2() as Variant = c2.unique
+		  var uniq3() as variant = c3.unique
 		  
 		  call check_value(log, "uniq1", 5, uniq1.Count)
 		  call check_value(log, "uniq2", 5, uniq2.Count)
@@ -514,8 +514,8 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim c1 As New clCompressedDataSerie("CompSerie") 
-		  Dim c2 As New clDataSerie("BaseSerie") 
+		  var c1 As New clCompressedDataSerie("CompSerie") 
+		  var c2 As New clDataSerie("BaseSerie") 
 		  
 		  c1.append_element("aaa")
 		  c1.append_element("bb")
@@ -536,18 +536,18 @@ Protected Module clDataSerie_tests
 		  c1.copy_to(c2)
 		  
 		  
-		  Dim f1() As variant
-		  Dim f2() As variant 
+		  var f1() As variant
+		  var f2() As variant 
 		  
 		  f1 = c1.filter_apply_function(AddressOf filter_value_is_parameter,"aaa")
 		  
 		  f2 = c2.filter_apply_function(AddressOf filter_value_is_parameter,"aaa")
 		  
 		  
-		  Dim r1 As New clDataSerie("test001", f1)
-		  Dim r2 As New clDataSerie("test002", f2)
+		  var r1 As New clDataSerie("test001", f1)
+		  var r2 As New clDataSerie("test002", f2)
 		  
-		  dim nbf1, nbf2, nbr1, nbr2 as integer
+		  var nbf1, nbf2, nbr1, nbr2 as integer
 		  
 		  for i as integer = 0 to f1.LastIndex
 		    if f1(i) then nbf1 = nbf1 + 1
@@ -573,8 +573,8 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim c1 As New clDateDataSerie("premier") 
-		  Dim c2 As New clDateDataSerie("second") 
+		  var c1 As New clDateDataSerie("premier") 
+		  var c2 As New clDateDataSerie("second") 
 		  
 		  c1.append_element("2023-06-01")
 		  c1.append_element("2022-08-12")
@@ -582,15 +582,15 @@ Protected Module clDataSerie_tests
 		  c2.append_element("2021-06-01")
 		  c2.append_element("2020-08-01")
 		  
-		  dim c3 as clIntegerDataSerie = c1 - c2
+		  var c3 as clIntegerDataSerie = c1 - c2
 		  
-		  dim c4 as clIntegerDataSerie = c1 - DateTime.FromString("2020-01-01")
+		  var c4 as clIntegerDataSerie = c1 - DateTime.FromString("2020-01-01")
 		  
-		  dim c5 as clStringDataSerie = c1.ToString()
+		  var c5 as clStringDataSerie = c1.ToString()
 		  
-		  dim c6 as clStringDataSerie = c1.ToString(DateTime.FormatStyles.Medium)
+		  var c6 as clStringDataSerie = c1.ToString(DateTime.FormatStyles.Medium)
 		  
-		  dim c7 as clStringDataSerie = c1.ToString("yyyy-MM")
+		  var c7 as clStringDataSerie = c1.ToString("yyyy-MM")
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -603,18 +603,18 @@ Protected Module clDataSerie_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim k As Variant
+		  var k As Variant
 		  
-		  Dim fld_folder As New FolderItem
-		  Dim fld_file As FolderItem
+		  var fld_folder As New FolderItem
+		  var fld_file As FolderItem
 		  
 		  fld_folder = fld_folder.Child("test-data")
 		  
 		  fld_file = fld_folder.Child("myfile3_10K_tab.txt")
 		  
-		  Dim ss1 As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file, new clDataSerie(""), true))
+		  var ss1 As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file, new clDataSerie(""), true))
 		  
-		  Dim k2 As Integer = 1
+		  var k2 As Integer = 1
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -628,11 +628,11 @@ Protected Module clDataSerie_tests
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  Dim k As Variant
+		  var k As Variant
 		  
-		  Dim fld_folder As New FolderItem
-		  Dim fld_file_in As FolderItem
-		  Dim fld_file_out As FolderItem
+		  var fld_folder As New FolderItem
+		  var fld_file_in As FolderItem
+		  var fld_file_out As FolderItem
 		  
 		  fld_folder = fld_folder.Child("test-data")
 		  
@@ -641,7 +641,7 @@ Protected Module clDataSerie_tests
 		  fld_file_out =  fld_folder.Child("mytest.txt")
 		  
 		  
-		  Dim ss1 As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file_in, new clDataSerie(""), true))
+		  var ss1 As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file_in, new clDataSerie(""), true))
 		  
 		  save_DataSerie_to_textfile(fld_file_out, ss1, True)
 		  

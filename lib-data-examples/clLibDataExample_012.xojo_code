@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a datatable")
 		  returnValue.Add("- Text string handling")
@@ -30,15 +30,15 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  dim col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
-		  dim col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
+		  var col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
+		  var col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
 		  
-		  dim table1 as new clDataTable("source table", serie_array(col_source, col_sales))
+		  var table1 as new clDataTable("source table", serie_array(col_source, col_sales))
 		  
 		  
 		  // we split the "source" field to extract country and city
 		  
-		  dim table2 as new clDataTable("prepared", serie_array( _
+		  var table2 as new clDataTable("prepared", serie_array( _
 		  col_source, _
 		  col_source.text_before("-").rename("country"), _
 		  col_source.text_after("-").rename("city"), _
@@ -46,16 +46,16 @@ Inherits clLibDataExample
 		  true)
 		  
 		  
-		  dim col_city  as clStringDataSerie = clStringDataSerie(table2.get_column("city"))
+		  var col_city  as clStringDataSerie = clStringDataSerie(table2.get_column("city"))
 		  
 		  call table2.add_column(col_city.Uppercase.rename("City UC"))
 		  
-		  Dim table3 As clDataTable = table2.unique(array("country", "city"))
+		  var table3 As clDataTable = table2.unique(array("country", "city"))
 		  
 		  
-		  dim table4 as clDataTable  = table2.groupby(array("country"), array("Sales"), array(""))
+		  var table4 as clDataTable  = table2.groupby(array("country"), array("Sales"), array(""))
 		  
-		  dim ret() as TableColumnReaderInterface
+		  var ret() as TableColumnReaderInterface
 		  ret.Add(table1)
 		  ret.Add(table2)
 		  ret.Add(table3)

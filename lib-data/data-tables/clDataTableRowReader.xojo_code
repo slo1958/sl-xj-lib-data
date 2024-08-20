@@ -64,7 +64,7 @@ Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Function next_row() As variant()
 		  // Part of the TableRowReaderInterface interface.
-		  dim row_value() as variant
+		  var row_value() as variant
 		  
 		  for column_index as integer = 0 to table.column_count-1
 		    row_value.add(table.get_element(column_index, current_row))

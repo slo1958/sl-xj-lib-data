@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clStringDataSerie
 Inherits clAbstractDataSerie
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  
@@ -11,7 +11,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function clone() As clStringDataSerie
-		  Dim tmp As New clStringDataSerie(Self.name)
+		  var tmp As New clStringDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
@@ -41,7 +41,7 @@ Inherits clAbstractDataSerie
 		Function clone_structure() As clStringDataSerie
 		  // Calling the overridden superclass method.
 		  Var returnValue as clAbstractDataSerie = Super.clone_structure()
-		  Dim tmp As New clStringDataSerie(Self.name)
+		  var tmp As New clStringDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
@@ -55,8 +55,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function filter_value_in_list(list_of_values() as string) As variant()
-		  Dim return_boolean() As Variant
-		  dim my_item as string
+		  var return_boolean() As Variant
+		  var my_item as string
 		  
 		  For row_index As Integer=0 To items.Ubound
 		    my_item = items(row_index)
@@ -82,7 +82,7 @@ Inherits clAbstractDataSerie
 		    Return items(the_element_index)
 		    
 		  Else
-		    Dim v As integer
+		    var v As integer
 		    Return v
 		    
 		  End If
@@ -100,7 +100,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Left(count as integer) As clStringDataSerie
-		  dim res as new clStringDataSerie(me.name+ " left " + str(count))
+		  var res as new clStringDataSerie(me.name+ " left " + str(count))
 		  
 		  for i as integer = 0 to me.upper_bound
 		    res.append_element(me.get_element_as_string(i).left(count))
@@ -115,7 +115,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Lowercase() As clStringDataSerie
-		  dim res as new clStringDataSerie(me.name+ " lower")
+		  var res as new clStringDataSerie(me.name+ " lower")
 		  
 		  for i as integer = 0 to me.upper_bound
 		    res.append_element(me.get_element_as_string(i).Lowercase())
@@ -130,7 +130,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Middle(from_char as integer, length as integer) As clStringDataSerie
-		  dim res as new clStringDataSerie(me.name+ " Middle " + str(length) + " char. from "  + str(from_char) )
+		  var res as new clStringDataSerie(me.name+ " Middle " + str(length) + " char. from "  + str(from_char) )
 		  
 		  for i as integer = 0 to me.upper_bound
 		    res.append_element(me.get_element_as_string(i).Middle(from_char, length))
@@ -145,9 +145,9 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_add(right_serie as clStringDataSerie) As clStringDataSerie
-		  dim mx1 as integer = self.upper_bound
-		  dim mx2 as integer = right_serie.upper_bound
-		  dim mx0 as integer 
+		  var mx1 as integer = self.upper_bound
+		  var mx2 as integer = right_serie.upper_bound
+		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
 		    mx0 = mx1
@@ -155,9 +155,9 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  dim res as new clStringDataSerie(self.name+"+"+right_serie.name)
+		  var res as new clStringDataSerie(self.name+"+"+right_serie.name)
 		  for i as integer = 0 to mx0
-		    dim n as integer
+		    var n as integer
 		    
 		    if i <= mx1 then
 		      n = self.get_element(i)
@@ -180,7 +180,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_add(right_value as String) As clStringDataSerie
-		  dim res as new clStringDataSerie(self.name+"+"+str(right_value))
+		  var res as new clStringDataSerie(self.name+"+"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element_as_string(i) + right_value)
@@ -205,7 +205,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Right(count as integer) As clStringDataSerie
-		  dim res as new clStringDataSerie(me.name+ " right " + str(count))
+		  var res as new clStringDataSerie(me.name+ " right " + str(count))
 		  
 		  for i as integer = 0 to me.upper_bound
 		    res.append_element(me.get_element_as_string(i).right(count))
@@ -245,7 +245,7 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  While items.Ubound < the_length-1
-		    dim v as string = default_value.StringValue
+		    var v as string = default_value.StringValue
 		    items.Append(v)
 		    
 		  Wend
@@ -255,14 +255,14 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function text_after(search_str as string) As clStringDataSerie
-		  dim res as clStringDataSerie
+		  var res as clStringDataSerie
 		  
 		  res = new clStringDataSerie(me.name+ " text after  " + search_str)
 		  
 		  
 		  for i as integer = 0 to me.upper_bound
-		    dim tmp as string = me.get_element_as_string(i)
-		    dim idx as integer = tmp.IndexOf(search_str)
+		    var tmp as string = me.get_element_as_string(i)
+		    var idx as integer = tmp.IndexOf(search_str)
 		    
 		    if idx <0 then 
 		      res.append_element("")
@@ -282,11 +282,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function text_before(search_str as string) As clStringDataSerie
-		  dim res as new clStringDataSerie(me.name+ " text before  " + search_str)
+		  var res as new clStringDataSerie(me.name+ " text before  " + search_str)
 		  
 		  for i as integer = 0 to me.upper_bound
-		    dim tmp as string = me.get_element_as_string(i)
-		    dim idx as integer = tmp.IndexOf(search_str)
+		    var tmp as string = me.get_element_as_string(i)
+		    var idx as integer = tmp.IndexOf(search_str)
 		    
 		    if idx <0 then 
 		      res.append_element("")
@@ -306,7 +306,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Titlecase() As clStringDataSerie
-		  dim res as new clStringDataSerie(me.name+ " upper" )
+		  var res as new clStringDataSerie(me.name+ " upper" )
 		  
 		  for i as integer = 0 to me.upper_bound
 		    res.append_element(me.get_element_as_string(i).Titlecase)
@@ -321,7 +321,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToInteger() As clIntegerDataSerie
-		  dim res as new clIntegerDataSerie(self.name+" as integer")
+		  var res as new clIntegerDataSerie(self.name+" as integer")
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element_as_integer(i))
@@ -335,7 +335,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToNumber() As clNumberDataSerie
-		  dim res as new clNumberDataSerie(self.name+" as double")
+		  var res as new clNumberDataSerie(self.name+" as double")
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element_as_integer(i))
@@ -349,7 +349,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Trim() As clStringDataSerie
-		  dim res as new clStringDataSerie(me.name+ " trim" )
+		  var res as new clStringDataSerie(me.name+ " trim" )
 		  
 		  for i as integer = 0 to me.upper_bound
 		    res.append_element(me.get_element_as_string(i).Trim)
@@ -364,7 +364,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Uppercase() As clStringDataSerie
-		  dim res as new clStringDataSerie(me.name+ " upper" )
+		  var res as new clStringDataSerie(me.name+ " upper" )
 		  
 		  for i as integer = 0 to me.upper_bound
 		    res.append_element(me.get_element_as_string(i).Uppercase)

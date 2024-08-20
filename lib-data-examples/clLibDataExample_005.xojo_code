@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  
 		  returnValue.Add("- create an empty datatable")
@@ -28,7 +28,7 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  Dim table0 As New clDataTable("T1")
+		  var table0 As New clDataTable("T1")
 		  
 		  call table0.add_columns(Array("cc1","cc2","cc3"))
 		  

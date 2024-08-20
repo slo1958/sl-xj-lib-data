@@ -45,7 +45,7 @@ Implements Iterable
 
 	#tag Method, Flags = &h0
 		Function get_cells(column_names() as string) As Variant()
-		  dim v() as variant
+		  var v() as variant
 		  
 		  for each k as string in column_names
 		    v.Add(my_storage.value(k))
@@ -63,14 +63,14 @@ Implements Iterable
 		  // Part of the Iterable interface.
 		  
 		  
-		  Dim iteration_keys() As String
+		  var iteration_keys() As String
 		  
 		  For Each s As String In my_storage.Keys
 		    iteration_keys.Append(s)
 		    
 		  Next
 		  
-		  Dim tmp_row_iterator As New clDataRowIterator(iteration_keys)
+		  var tmp_row_iterator As New clDataRowIterator(iteration_keys)
 		  Return tmp_row_iterator 
 		End Function
 	#tag EndMethod

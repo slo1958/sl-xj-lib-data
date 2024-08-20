@@ -16,14 +16,14 @@ Implements TableRowReaderInterface
 		  self.dbAccess = dbAccess
 		  if dbAccess <> nil then self.db = dbAccess.GetDatabase
 		  
-		  dim select_index as integer = record_source.IndexOf("select ") 
+		  var select_index as integer = record_source.IndexOf("select ") 
 		  if select_index < 0 then 
 		    self.source_name = record_source
 		    self.source_sql = "select * from " + record_source
 		    
 		  else
 		    self.source_sql = record_source
-		    dim from_index as integer = record_source.IndexOf(" from")
+		    var from_index as integer = record_source.IndexOf(" from")
 		    self.source_name = record_source.Middle(from_index+6,record_source.Length).trim().NthField(" ",1).trim()
 		    
 		    if self.source_name.Length = 0 then self.source_name = record_source.left(20)
@@ -69,7 +69,7 @@ Implements TableRowReaderInterface
 		Function GetColumnNames() As string()
 		  // Part of the TableRowReaderInterface interface.
 		  
-		  dim tmp() as string
+		  var tmp() as string
 		  
 		  if rs = nil then return tmp
 		  
@@ -86,12 +86,12 @@ Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Function GetColumnTypes() As dictionary
 		  
-		  dim tmp as new Dictionary
+		  var tmp as new Dictionary
 		  
 		  if rs = nil then return nil
 		  
 		  for i as integer = 0 to rs.LastColumnIndex
-		    dim tmp_name as string = rs.ColumnAt(i).name
+		    var tmp_name as string = rs.ColumnAt(i).name
 		    
 		    tmp.value(tmp_name) = clAbstractDatabaseAccess.conv_db_type(rs.ColumnAt(i).Type)
 		    
@@ -122,7 +122,7 @@ Implements TableRowReaderInterface
 		Function next_row() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  
-		  dim tmp() as variant
+		  var tmp() as variant
 		  
 		  if rs = nil then return tmp
 		  

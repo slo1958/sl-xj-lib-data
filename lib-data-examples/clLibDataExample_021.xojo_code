@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- add a DataSerie, a NumberDataSerie, a StringDataSerie")
 		  returnValue.Add("- for each serie, add a string, a number, a 'nil' value")
@@ -20,12 +20,12 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  dim c1 as new clDataSerie("DataSerie")
-		  dim c2 as new clNumberDataSerie("NumberDataSerie")
-		  dim c3 as new clStringDataSerie("StringDataSerie")
-		  dim c4 as new clIntegerDataSerie("IntegerDataSerie")
+		  var c1 as new clDataSerie("DataSerie")
+		  var c2 as new clNumberDataSerie("NumberDataSerie")
+		  var c3 as new clStringDataSerie("StringDataSerie")
+		  var c4 as new clIntegerDataSerie("IntegerDataSerie")
 		  
-		  dim series() as clAbstractDataSerie = serie_array(c1, c2, c3, c4)
+		  var series() as clAbstractDataSerie = serie_array(c1, c2, c3, c4)
 		  
 		  for each cc as clAbstractDataSerie in series
 		    cc.append_element("aaa")
@@ -37,11 +37,11 @@ Inherits clLibDataExample
 		    
 		  next
 		  
-		  dim ret_tables() as clDataTable 
+		  var ret_tables() as clDataTable 
 		  
-		  dim data_table as new clDataTable("data", series)
-		  dim stat_table as clDataTable = data_table.get_statistics_as_table
-		  dim struc_table as clDataTable = data_table.get_structure_as_table
+		  var data_table as new clDataTable("data", series)
+		  var stat_table as clDataTable = data_table.get_statistics_as_table
+		  var struc_table as clDataTable = data_table.get_structure_as_table
 		  
 		  call stat_table.get_column(clDataTable.statistics_average_column).round_values(2)
 		  

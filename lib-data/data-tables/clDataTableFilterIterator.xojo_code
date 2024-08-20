@@ -14,7 +14,7 @@ Implements Iterator
 		Function MoveNext() As Boolean
 		  // Part of the Iterator interface.
 		  
-		  dim bFoundNext as boolean
+		  var bFoundNext as boolean
 		  
 		  while not bFoundNext
 		    if last_row_index < tmp_table.row_count then
@@ -108,14 +108,6 @@ Implements Iterator
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="last_row_index"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="tmp_serie"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

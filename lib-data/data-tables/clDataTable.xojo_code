@@ -12,9 +12,9 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - the data serie 
 		  //  
-		  Dim tmp_column As clAbstractDataSerie = the_column
+		  var tmp_column As clAbstractDataSerie = the_column
 		  
-		  Dim tmp_column_name As String = tmp_column.name
+		  var tmp_column_name As String = tmp_column.name
 		  
 		  If Self.get_column(tmp_column_name) <> Nil Then
 		    System.DebugLog("column " + tmp_column_name + " already defined in table.")
@@ -26,7 +26,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  //  physical table and column not yet linked
 		  if not self.is_virtual and not tmp_column.is_linked_to_table then
-		    dim max_row_count as integer = self.increase_length(tmp_column.row_count)
+		    var max_row_count as integer = self.increase_length(tmp_column.row_count)
 		    tmp_column.set_length(max_row_count)
 		    
 		    tmp_column.set_link_to_table(Self)
@@ -38,7 +38,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  //  adding a physical column to a virtual table (when permitted)
 		  if self.is_virtual and not tmp_column.is_linked_to_table and self.allow_local_columns then
-		    dim max_row_count as integer = self.increase_length(tmp_column.row_count)
+		    var max_row_count as integer = self.increase_length(tmp_column.row_count)
 		    tmp_column.set_length(max_row_count)
 		    
 		    tmp_column.set_link_to_table(Self)
@@ -74,7 +74,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - the new data serie
 		  //  
-		  dim v as variant
+		  var v as variant
 		  
 		  return add_column(the_column_name, v)
 		End Function
@@ -92,7 +92,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - the new data serie
 		  //  
-		  Dim tmp_column_name As String = the_column_name.trim
+		  var tmp_column_name As String = the_column_name.trim
 		  
 		  if tmp_column_name.len() = 0 then
 		    tmp_column_name = "Untitled " + str(self.column_count)
@@ -105,7 +105,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		  
-		  Dim tmp_column As clAbstractDataSerie
+		  var tmp_column As clAbstractDataSerie
 		  
 		  If not self.is_virtual then
 		    tmp_column = New clDataSerie(tmp_column_name)
@@ -146,7 +146,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - an array with the new data series
 		  //  
 		  
-		  Dim return_array() As clAbstractDataSerie
+		  var return_array() As clAbstractDataSerie
 		  
 		  for each col as clAbstractDataSerie in the_columns
 		    return_array.add( self.add_column(col))
@@ -171,8 +171,8 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  
 		  
-		  Dim return_array() As clAbstractDataSerie
-		  dim v as variant 
+		  var return_array() As clAbstractDataSerie
+		  var v as variant 
 		  For Each name As String In the_column_names
 		    return_array.append(add_column(name, v))
 		    
@@ -220,7 +220,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - (nothing)
 		  //  
 		  
-		  dim max_row_count as integer=-1
+		  var max_row_count as integer=-1
 		  
 		  
 		  for each c as clAbstractDataSerie in self.columns
@@ -264,12 +264,12 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  (nothing)
 		  //  
-		  dim length_before as integer = self.row_count
+		  var length_before as integer = self.row_count
 		  
 		  For Each src_tmp_column As clAbstractDataSerie In the_source.all_columns
-		    Dim column_name As String = src_tmp_column.name
+		    var column_name As String = src_tmp_column.name
 		    
-		    Dim dst_tmp_column As  clAbstractDataSerie = Self.get_column(column_name)
+		    var dst_tmp_column As  clAbstractDataSerie = Self.get_column(column_name)
 		    
 		    If dst_tmp_column <> Nil Then
 		      dst_tmp_column.append_serie(src_tmp_column)
@@ -289,7 +289,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Next
 		  
-		  Dim new_size As Integer = Self.row_count + the_source.row_count
+		  var new_size As Integer = Self.row_count + the_source.row_count
 		  
 		  Self.row_index.set_length(new_size)
 		  
@@ -321,12 +321,12 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  (nothing)
 		  //  
-		  dim length_before as integer = self.row_count
+		  var length_before as integer = self.row_count
 		  
-		  dim tmp_columns() as clAbstractDataSerie
+		  var tmp_columns() as clAbstractDataSerie
 		  
 		  for each column_name as string in the_source.GetColumnNames
-		    dim tmp_col as clAbstractDataSerie = self.get_column(column_name)
+		    var tmp_col as clAbstractDataSerie = self.get_column(column_name)
 		    
 		    if tmp_col = nil then
 		      if create_missing_columns then
@@ -370,15 +370,15 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  (nothing)
 		  //  
-		  dim length_before as integer = self.row_count
+		  var length_before as integer = self.row_count
 		  
-		  dim tmp_columns() as clAbstractDataSerie
+		  var tmp_columns() as clAbstractDataSerie
 		  
 		  for each source_column_name as string in the_source.GetColumnNames
-		    dim tmp_col as clAbstractDataSerie = nil
+		    var tmp_col as clAbstractDataSerie = nil
 		    
 		    if mapping_dict.HasKey(source_column_name) then
-		      dim target_column_name as string = mapping_dict.value(source_column_name)
+		      var target_column_name as string = mapping_dict.value(source_column_name)
 		      
 		      tmp_col = self.get_column(target_column_name)
 		      
@@ -413,10 +413,10 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  (nothing)
 		  //  
-		  Dim tmp_row_count As Integer = Self.row_count
+		  var tmp_row_count As Integer = Self.row_count
 		  
 		  For Each column As String In the_row
-		    Dim tmp_column As clAbstractDataSerie = Self.get_column(column)
+		    var tmp_column As clAbstractDataSerie = Self.get_column(column)
 		    
 		    If tmp_column = Nil And create_columns_flag Then
 		      tmp_column = add_column(column)
@@ -427,7 +427,7 @@ Implements TableColumnReaderInterface,Iterable
 		      Raise New clDataException("Adding row with unexpected column " + column)
 		      
 		    Else
-		      Dim tmp_item As variant = the_row.get_cell(column)
+		      var tmp_item As variant = the_row.get_cell(column)
 		      tmp_column.append_element(tmp_item)
 		      
 		    End If
@@ -538,12 +538,12 @@ Implements TableColumnReaderInterface,Iterable
 		  if column = nil then return 0
 		  if high_value_column = nil then return 0
 		  
-		  dim last_index as integer = column.row_count
-		  dim count_changes as integer = 0
+		  var last_index as integer = column.row_count
+		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index
-		    dim tmp as variant = column.get_element(index)
-		    dim high_value as Variant = high_value_column.get_element(index)
+		    var tmp as variant = column.get_element(index)
+		    var high_value as Variant = high_value_column.get_element(index)
 		    
 		    if  tmp > high_value then
 		      column.set_element(index, high_value)
@@ -560,8 +560,8 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function clip_high(column_name as string, high_value_column_name as String) As integer
 		  
-		  dim column as clAbstractDataSerie = self.get_column(column_name)
-		  dim high_column as clAbstractDataSerie = self.get_column(high_value_column_name)
+		  var column as clAbstractDataSerie = self.get_column(column_name)
+		  var high_column as clAbstractDataSerie = self.get_column(high_value_column_name)
 		  
 		  if column = nil then return 0
 		  if high_column = nil then return 0
@@ -575,7 +575,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function clip_high(column_name as string, high_value as variant) As integer
 		  
-		  dim column as clAbstractDataSerie = self.get_column(column_name)
+		  var column as clAbstractDataSerie = self.get_column(column_name)
 		  
 		  if column = nil then return 0
 		  
@@ -590,12 +590,12 @@ Implements TableColumnReaderInterface,Iterable
 		  if column = nil then return 0
 		  if low_value_column = nil then return 0
 		  
-		  dim last_index as integer = column.row_count
-		  dim count_changes as integer = 0
+		  var last_index as integer = column.row_count
+		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index
-		    dim tmp as variant = column.get_element(index)
-		    dim low_value as Variant = low_value_column.get_element(index)
+		    var tmp as variant = column.get_element(index)
+		    var low_value as Variant = low_value_column.get_element(index)
 		    
 		    if  tmp < low_value then
 		      column.set_element(index, low_value)
@@ -612,8 +612,8 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function clip_low(column_name as string, low_value_column_name as String) As integer
 		  
-		  dim column as clAbstractDataSerie = self.get_column(column_name)
-		  dim low_column as clAbstractDataSerie = self.get_column(low_value_column_name)
+		  var column as clAbstractDataSerie = self.get_column(column_name)
+		  var low_column as clAbstractDataSerie = self.get_column(low_value_column_name)
 		  
 		  if column = nil then return 0
 		  if low_column = nil then return 0
@@ -627,7 +627,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function clip_low(column_name as string, low_value as Variant) As integer
 		  
-		  dim column as clAbstractDataSerie = self.get_column(column_name)
+		  var column as clAbstractDataSerie = self.get_column(column_name)
 		  
 		  if column = nil then return 0
 		  
@@ -643,14 +643,14 @@ Implements TableColumnReaderInterface,Iterable
 		  if low_value_column = nil then return 0
 		  if high_value_column = nil then return 0
 		  
-		  dim last_index as integer = column.row_count
-		  dim count_changes as integer = 0
+		  var last_index as integer = column.row_count
+		  var count_changes as integer = 0
 		  
 		  
 		  for index as integer = 0 to last_index
-		    dim tmp as variant = column.get_element(index)
-		    dim low_value as Variant = low_value_column.get_element(index)
-		    dim high_value as Variant = high_value_column.get_element(index)
+		    var tmp as variant = column.get_element(index)
+		    var low_value as Variant = low_value_column.get_element(index)
+		    var high_value as Variant = high_value_column.get_element(index)
 		    
 		    
 		    if low_value > tmp then
@@ -672,9 +672,9 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function clip_range(column_name as string, low_value_column_name as string, high_value_column_name as String) As integer
 		  
-		  dim column as clAbstractDataSerie = self.get_column(column_name)
-		  dim high_column as clAbstractDataSerie = self.get_column(high_value_column_name)
-		  dim low_column as clAbstractDataSerie = self.get_column(low_value_column_name)
+		  var column as clAbstractDataSerie = self.get_column(column_name)
+		  var high_column as clAbstractDataSerie = self.get_column(high_value_column_name)
+		  var low_column as clAbstractDataSerie = self.get_column(low_value_column_name)
 		  
 		  if column = nil then return 0
 		  if high_column = nil then return 0
@@ -689,7 +689,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function clip_range(column_name as string, low_value as variant, high_value as variant) As integer
 		  
-		  dim column as clAbstractDataSerie = self.get_column(column_name)
+		  var column as clAbstractDataSerie = self.get_column(column_name)
 		  
 		  if column = nil then return 0
 		  
@@ -710,10 +710,10 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - Nothing
 		  //  
-		  dim output_table as new clDataTable(self.name+" copy")
+		  var output_table as new clDataTable(self.name+" copy")
 		  
 		  for each col as clAbstractDataSerie in self.columns
-		    dim new_col as clAbstractDataSerie = col.clone()
+		    var new_col as clAbstractDataSerie = col.clone()
 		    
 		    call output_table.add_column(new_col)
 		    
@@ -767,7 +767,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //
 		  meta_dict = new clMetaData
 		  
-		  Dim tmp_table_name As String
+		  var tmp_table_name As String
 		  
 		  tmp_table_name = the_table_name
 		  
@@ -795,7 +795,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  meta_dict = new clMetaData
 		  
-		  Dim tmp_columns() As clAbstractDataSerie = the_columns
+		  var tmp_columns() As clAbstractDataSerie = the_columns
 		  
 		  if the_columns = nil then return
 		  
@@ -843,16 +843,16 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  if the_columns = nil then return
 		  
-		  dim tmp_columns() as clAbstractDataSerie
+		  var tmp_columns() as clAbstractDataSerie
 		  
 		  for each tmp_column_name as string in the_columns.Keys
-		    dim v() as variant = make_variant_array(the_columns.value(tmp_column_name))
+		    var v() as variant = make_variant_array(the_columns.value(tmp_column_name))
 		    
 		    if allocator = nil then
 		      tmp_columns.Add(new clDataSerie(tmp_column_name, v))
 		      
 		    else
-		      dim tmp_column as clAbstractDataSerie = allocator.Invoke(tmp_column_name,"")
+		      var tmp_column as clAbstractDataSerie = allocator.Invoke(tmp_column_name,"")
 		      tmp_column.append_elements(v)
 		      
 		      tmp_columns.Add(tmp_column)
@@ -885,7 +885,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  meta_dict = new clMetaData
 		  
-		  Dim tmp_table_name As String
+		  var tmp_table_name As String
 		  
 		  tmp_table_name = the_table_name
 		  
@@ -893,7 +893,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		  For Each name As string In column_names
-		    dim temp_name as string = name.Trim
+		    var temp_name as string = name.Trim
 		    call Self.add_column(temp_name)
 		    
 		  Next
@@ -918,7 +918,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  self.allow_local_columns = False
 		  
-		  Dim tmp_table_name As String = table_name.Trim
+		  var tmp_table_name As String = table_name.Trim
 		  
 		  if tmp_table_name.Length = 0 then
 		    tmp_table_name = "Noname"
@@ -929,10 +929,10 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  internal_new_table(tmp_table_name)
 		  
-		  // dim columns() as clAbstractDataSerie
+		  // var columns() as clAbstractDataSerie
 		  
-		  dim tmp_column_names() as string = table_source.GetColumnNames
-		  dim tmp_column_types as Dictionary = table_source.GetColumnTypes
+		  var tmp_column_names() as string = table_source.GetColumnNames
+		  var tmp_column_types as Dictionary = table_source.GetColumnTypes
 		  
 		  for each tmp_column_name as string in tmp_column_names
 		    
@@ -948,7 +948,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		  while not table_source.end_of_table
-		    dim tmp_row() as variant
+		    var tmp_row() as variant
 		    
 		    tmp_row  = table_source.next_row
 		    
@@ -988,7 +988,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  self.allow_local_columns = False
 		  
-		  Dim tmp_table_name As String = table_source.name.Trim
+		  var tmp_table_name As String = table_source.name.Trim
 		  
 		  if tmp_table_name.Length = 0 then
 		    tmp_table_name = "Noname"
@@ -1006,7 +1006,7 @@ Implements TableColumnReaderInterface,Iterable
 		    self.link_to_source = table_source
 		    
 		    For Each column_name As String In table_source.GetColumnNames
-		      Dim tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
+		      var tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
 		      
 		      If tmp_column <> Nil Then
 		        call self.add_column(tmp_column)
@@ -1020,7 +1020,7 @@ Implements TableColumnReaderInterface,Iterable
 		  else
 		    
 		    For Each column_name As String In table_source.GetColumnNames
-		      Dim tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
+		      var tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
 		      
 		      If tmp_column <> Nil Then
 		        call self.add_column(tmp_column.clone)
@@ -1056,7 +1056,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  self.allow_local_columns = False
 		  
-		  Dim tmp_table_name As String = table_source.name.Trim
+		  var tmp_table_name As String = table_source.name.Trim
 		  
 		  if tmp_table_name.Length = 0 then
 		    tmp_table_name = "Noname"
@@ -1067,10 +1067,10 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  internal_new_table("from " + tmp_table_name)
 		  
-		  // dim columns() as clAbstractDataSerie
+		  // var columns() as clAbstractDataSerie
 		  
-		  dim tmp_column_names() as string = table_source.GetColumnNames
-		  dim tmp_column_types as Dictionary = table_source.GetColumnTypes
+		  var tmp_column_names() as string = table_source.GetColumnNames
+		  var tmp_column_types as Dictionary = table_source.GetColumnTypes
 		  
 		  for each tmp_column_name as string in tmp_column_names
 		    
@@ -1095,14 +1095,14 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function CreateTableFromStructure(new_table_name as String) As clDataTable
 		  
-		  dim tbl as new clDataTable(new_table_name)
+		  var tbl as new clDataTable(new_table_name)
 		  
 		  for each row as clDataRow in self
-		    dim col_name as string = row.get_cell(structure_name_column)
-		    dim col_type as string = row.get_cell(structure_type_column)
-		    dim col_title as string  = row.get_cell(structure_title_column)
+		    var col_name as string = row.get_cell(structure_name_column)
+		    var col_type as string = row.get_cell(structure_type_column)
+		    var col_title as string  = row.get_cell(structure_title_column)
 		    
-		    dim column as clAbstractDataSerie = tbl.add_column(clDataType.CreateDataSerie(col_name, col_type))
+		    var column as clAbstractDataSerie = tbl.add_column(clDataType.CreateDataSerie(col_name, col_type))
 		    
 		    if col_title.Length > 0 then
 		      column.display_title = col_title
@@ -1119,7 +1119,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Sub debug_dump()
 		  
-		  Dim tmp_item() As String
+		  var tmp_item() As String
 		  
 		  System.DebugLog("----START " + Self.table_name+" --------")
 		  
@@ -1135,7 +1135,7 @@ Implements TableColumnReaderInterface,Iterable
 		  System.DebugLog(Join(tmp_item, ";"))
 		  
 		  For row As Integer = 0 To row_count-1
-		    Redim tmp_item(-1)
+		    redim tmp_item(-1)
 		    
 		    tmp_item.Append(Self.row_index.get_element(row))
 		    
@@ -1164,7 +1164,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a data table filter
 		  //  
-		  dim retval as new clDataTableFilter(self, boolean_serie)
+		  var retval as new clDataTableFilter(self, boolean_serie)
 		  
 		  return retval
 		End Function
@@ -1182,7 +1182,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a data table filter
 		  //  
-		  dim retval as new clDataTableFilter(self, boolean_field_name)
+		  var retval as new clDataTableFilter(self, boolean_field_name)
 		  
 		  return retval
 		  
@@ -1202,17 +1202,17 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - a boolean data serie
 		  //  
 		  
-		  Dim return_boolean() As Variant
+		  var return_boolean() As Variant
 		  
-		  Dim column_names() As String
-		  dim column_values() as Variant
+		  var column_names() As String
+		  var column_values() as Variant
 		  
 		  for each column as clAbstractDataSerie in self.columns
 		    column_names.Append(column.name)
 		    
 		  next
 		  
-		  dim row_count as integer = self.row_count
+		  var row_count as integer = self.row_count
 		  
 		  For i As Integer=0 To row_count-1
 		    redim column_values(-1)
@@ -1247,7 +1247,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a data row if found or nil
 		  //  
-		  dim tmp_row_index as integer = self.find_first_matching_row_index(the_column_name, the_column_value)
+		  var tmp_row_index as integer = self.find_first_matching_row_index(the_column_name, the_column_value)
 		  
 		  if tmp_row_index <0 then
 		    return nil
@@ -1274,10 +1274,10 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - the index of the first matching data row as an integer, set to -1 if not found
 		  //  
 		  
-		  Dim tmp_columns() As clAbstractDataSerie
+		  var tmp_columns() As clAbstractDataSerie
 		  
 		  for each name as string in the_column_names
-		    dim tmp_column as clAbstractDataSerie = get_column(name)
+		    var tmp_column as clAbstractDataSerie = get_column(name)
 		    
 		    If tmp_column = Nil Then
 		      Return -2
@@ -1290,8 +1290,8 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  For row_index As Integer = 0 To tmp_columns(0).row_count-1
 		    
-		    dim ok_row as Boolean = True
-		    dim col_index as integer =  0
+		    var ok_row as Boolean = True
+		    var col_index as integer =  0
 		    
 		    while ok_row and col_index <= tmp_columns.LastIndex
 		      
@@ -1330,7 +1330,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - the index of the first matching data row as an integer, set to -1 if not found
 		  //  
 		  
-		  Dim tmp_column As clAbstractDataSerie
+		  var tmp_column As clAbstractDataSerie
 		  
 		  tmp_column = get_column(the_column_name)
 		  
@@ -1365,7 +1365,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a string array with the name of the columns
 		  //  
-		  Dim ret_str() As String
+		  var ret_str() As String
 		  For Each column As clAbstractDataSerie In columns
 		    ret_str.Append(column.name)
 		    
@@ -1439,11 +1439,11 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - the columns matching the name or nil, as an array
 		  //  
-		  Dim ret() As clAbstractDataSerie
+		  var ret() As clAbstractDataSerie
 		  
 		  
 		  For Each column_name As String In column_names
-		    Dim tmp_column As clAbstractDataSerie = Self.get_column(column_name)
+		    var tmp_column As clAbstractDataSerie = Self.get_column(column_name)
 		    
 		    ret.Append(tmp_column)
 		    
@@ -1536,7 +1536,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - the value of the matching cell or nil
 		  //  
-		  dim tmp_col as clAbstractDataSerie = self.get_column_by_index(the_column_index)
+		  var tmp_col as clAbstractDataSerie = self.get_column_by_index(the_column_index)
 		  
 		  if tmp_col = nil then return nil
 		  
@@ -1557,7 +1557,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - the value of the matching cell or nil
 		  //  
-		  dim tmp_col as clAbstractDataSerie = self.get_column(the_column_name)
+		  var tmp_col as clAbstractDataSerie = self.get_column(the_column_name)
 		  
 		  if tmp_col = nil then return nil
 		  
@@ -1576,7 +1576,7 @@ Implements TableColumnReaderInterface,Iterable
 		Function get_number_column(the_column_name as string) As clNumberDataSerie
 		  
 		  
-		  dim tmp as clAbstractDataSerie =  self.get_column(the_column_name, false)
+		  var tmp as clAbstractDataSerie =  self.get_column(the_column_name, false)
 		  
 		  return clNumberDataSerie(tmp)
 		End Function
@@ -1593,7 +1593,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a data row with the value of the cell in each column at the specified index
 		  //  
-		  dim tmp_row as new clDataRow
+		  var tmp_row as new clDataRow
 		  
 		  if not include_index then
 		    
@@ -1606,8 +1606,8 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		  for each column as clAbstractDataSerie in self.columns
-		    dim col_name as string = column.name
-		    dim col_val as Auto = column.get_element(the_row_index)
+		    var col_name as string = column.name
+		    var col_val as Auto = column.get_element(the_row_index)
 		    tmp_row.set_cell(col_name, col_val)
 		    
 		  next
@@ -1627,15 +1627,15 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function get_statistics_as_table() As clDataTable
 		  
-		  dim col_name() as string
-		  dim col_ubound() as integer
-		  dim col_count() as integer
-		  dim col_count_nz() as double
-		  dim col_sum() as Double
-		  dim col_average() as Double
-		  dim col_average_nz() as Double
-		  dim col_stdev() as Double
-		  dim col_stdev_nz() as Double
+		  var col_name() as string
+		  var col_ubound() as integer
+		  var col_count() as integer
+		  var col_count_nz() as double
+		  var col_sum() as Double
+		  var col_average() as Double
+		  var col_average_nz() as Double
+		  var col_stdev() as Double
+		  var col_stdev_nz() as Double
 		  
 		  
 		  for i as integer = 0 to columns.LastIndex
@@ -1655,7 +1655,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  dim series() as clAbstractDataSerie
+		  var series() as clAbstractDataSerie
 		  series.Add(new clDataSerie(statistics_name_column, col_name))
 		  series.add(new clIntegerDataSerie(statistics_ubound_column, col_ubound))
 		  series.Add(new clIntegerDataSerie(statistics_count_column, col_count))
@@ -1676,9 +1676,9 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function get_structure_as_table() As clDataTable
 		  
-		  dim col_name() as string
-		  dim col_type() as string
-		  dim col_title() as String
+		  var col_name() as string
+		  var col_type() as string
+		  var col_title() as String
 		  
 		  for i as integer = 0 to columns.LastIndex
 		    col_name.Add(columns(i).name)
@@ -1687,7 +1687,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  dim dct as new Dictionary
+		  var dct as new Dictionary
 		  dct.Value(structure_name_column) = col_name
 		  dct.Value(structure_type_column) = col_type
 		  dct.Value(structure_title_column) = col_title
@@ -1711,13 +1711,13 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - aggregated data table
 		  //  
 		  
-		  Dim input_dimensions() As clAbstractDataSerie
-		  Dim input_measures() As clAbstractDataSerie
-		  dim any_error as Boolean = false
+		  var input_dimensions() As clAbstractDataSerie
+		  var input_measures() As clAbstractDataSerie
+		  var any_error as Boolean = false
 		  
 		  For Each item As String In grouping_dimensions
 		    If Len(Trim(item)) > 0 Then
-		      dim tmp_serie as clAbstractDataSerie = self.get_column(item)
+		      var tmp_serie as clAbstractDataSerie = self.get_column(item)
 		      if tmp_serie <> nil then
 		        input_dimensions.Append(tmp_serie)
 		        
@@ -1731,7 +1731,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  For Each item As String In aggregate_measures
 		    If Len(Trim(item)) > 0 Then
-		      dim tmp_serie as clAbstractDataSerie = self.get_column(item)
+		      var tmp_serie as clAbstractDataSerie = self.get_column(item)
 		      if tmp_serie <> nil then
 		        input_measures.Append(tmp_serie)
 		        
@@ -1748,19 +1748,19 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		  
-		  Dim has_grouping As Boolean = input_dimensions.Ubound >=0
-		  Dim has_measures As Boolean = input_measures.Ubound >= 0
+		  var has_grouping As Boolean = input_dimensions.Ubound >=0
+		  var has_measures As Boolean = input_measures.Ubound >= 0
 		  
 		  
-		  Dim dct_lookup As New Dictionary
+		  var dct_lookup As New Dictionary
 		  
 		  
-		  Dim output_row_count As New clIntegerDataSerie("row_count")
+		  var output_row_count As New clIntegerDataSerie("row_count")
 		  
 		  //  
 		  //  Prepare output space for grouped dimensions
 		  //  
-		  Dim output_dimensions() As clDataSerie
+		  var output_dimensions() As clDataSerie
 		  For idx_dim As Integer = 0 To input_dimensions.Ubound
 		    output_dimensions.Append(New clDataSerie(input_dimensions(idx_dim).name))
 		    
@@ -1769,7 +1769,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  //  Prepare temporary space for aggregated measures
 		  //  
-		  Dim temp_measures() As clDataSerie
+		  var temp_measures() As clDataSerie
 		  For idx_mea As Integer = 0 To input_measures.Ubound
 		    temp_measures.Append(New clDataSerie(input_measures(idx_mea).name))
 		    If Not has_grouping Then
@@ -1780,22 +1780,22 @@ Implements TableColumnReaderInterface,Iterable
 		  Next
 		  
 		  
-		  Dim cnt As Integer = Self.row_count - 1
+		  var cnt As Integer = Self.row_count - 1
 		  
 		  
 		  For idx_row As Integer = 0 To cnt
-		    Dim idx_output As Integer = -1
+		    var idx_output As Integer = -1
 		    
 		    
 		    If has_grouping Then
-		      Dim tmp_key() As String
+		      var tmp_key() As String
 		      
 		      For idx_dim As Integer = 0 To input_dimensions.Ubound
 		        tmp_key.Append(input_dimensions(idx_dim).get_element(idx_row))
 		        
 		      Next
 		      
-		      Dim tmp_key_flat As String = Join(tmp_key,Chr(4))
+		      var tmp_key_flat As String = Join(tmp_key,Chr(4))
 		      
 		      
 		      If dct_lookup.HasKey(tmp_key_flat) Then
@@ -1827,14 +1827,14 @@ Implements TableColumnReaderInterface,Iterable
 		    output_row_count.set_element(idx_output, output_row_count.get_element(idx_output)+1)
 		    
 		    For idx_mea As Integer = 0 To input_measures.Ubound
-		      Dim tmp_serie As clDataSerie = temp_measures(idx_mea).get_element_as_data_serie(idx_output)
+		      var tmp_serie As clDataSerie = temp_measures(idx_mea).get_element_as_data_serie(idx_output)
 		      tmp_serie.append_element(input_measures(idx_mea).get_element(idx_row))
 		      
 		    Next
 		    
 		  Next
 		  
-		  Dim output_series() As clAbstractDataSerie
+		  var output_series() As clAbstractDataSerie
 		  
 		  For idx_dim As Integer = 0 To output_dimensions.Ubound
 		    output_series.Append(output_dimensions(idx_dim))
@@ -1843,7 +1843,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		  For idx_mea As Integer = 0 To temp_measures.Ubound
-		    Dim tmp_serie As New clNumberDataSerie("sum_" + input_measures(idx_mea).name)
+		    var tmp_serie As New clNumberDataSerie("sum_" + input_measures(idx_mea).name)
 		    
 		    For idx_item As Integer = 0 To temp_measures(idx_mea).row_count-1
 		      tmp_serie.append_element(temp_measures(idx_mea).get_element_as_data_serie(idx_item).sum)
@@ -1859,7 +1859,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  //  output table name
 		  //  
-		  dim tmp_name as string = self.name.trim
+		  var tmp_name as string = self.name.trim
 		  if tmp_name.len = 0 then
 		    tmp_name = "results"
 		    
@@ -1899,7 +1899,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - (nothing)
 		  //  
 		  
-		  dim max_row_count as integer
+		  var max_row_count as integer
 		  
 		  if self.row_count > the_length then
 		    max_row_count = self.row_count
@@ -1941,9 +1941,9 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h21
 		Private Function internal_append_from_row_source(the_source as TableRowReaderInterface, target_columns() as clAbstractDataSerie, source_name as string) As integer
-		  dim added_rows as integer
+		  var added_rows as integer
 		  
-		  dim source_name_col as clAbstractDataSerie
+		  var source_name_col as clAbstractDataSerie
 		  
 		  if source_name.Length > 0 then
 		    source_name_col = self.get_column(loaded_data_source_column)
@@ -1951,7 +1951,7 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		  while not the_source.end_of_table
-		    dim tmp_row() as variant
+		    var tmp_row() as variant
 		    added_rows = added_rows + 1
 		    
 		    tmp_row  = the_source.next_row
@@ -2043,8 +2043,8 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function join_table(table_to_join as clDataTable, key_mapping as Dictionary) As Boolean
 		  
-		  dim tmp_key1() as string
-		  dim tmp_key2() as String
+		  var tmp_key1() as string
+		  var tmp_key2() as String
 		  
 		  for each key as string in key_mapping.Keys
 		    
@@ -2063,8 +2063,8 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function join_table(table_to_join as clDataTable, keys() as string) As Boolean
 		  
-		  dim tmp_key1() as string
-		  dim tmp_key2() as String
+		  var tmp_key1() as string
+		  var tmp_key2() as String
 		  
 		  for each key as string in keys
 		    tmp_key1.Add(key)
@@ -2120,10 +2120,10 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  For idx As Integer = 0 To columns.Ubound
 		    
-		    Dim tmp_column_name As String = columns(idx).name
+		    var tmp_column_name As String = columns(idx).name
 		    
 		    If the_renaming_dict.HasKey(tmp_column_name) Then
-		      Dim tmp_new_name As String  = the_renaming_dict.value(tmp_column_name)
+		      var tmp_new_name As String  = the_renaming_dict.value(tmp_column_name)
 		      
 		      columns(idx).rename(tmp_new_name)
 		      
@@ -2149,7 +2149,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Sub save(write_to as TableRowWriterInterface)
-		  dim col() as string = self.GetColumnNames
+		  var col() as string = self.GetColumnNames
 		  
 		  write_to.define_meta_data(name, col)
 		  
@@ -2166,7 +2166,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function select_columns(column_names() as string) As clDataTable
-		  Dim res As New clDataTable("select " + Self.table_name)
+		  var res As New clDataTable("select " + Self.table_name)
 		  
 		  res.add_meta_data("source", self.table_name)
 		  res.row_index = Self.row_index
@@ -2176,7 +2176,7 @@ Implements TableColumnReaderInterface,Iterable
 		  res.link_to_parent = Self
 		  
 		  For Each column_name As String In column_names
-		    Dim tmp_column As clAbstractDataSerie = Self.get_column(column_name)
+		    var tmp_column As clAbstractDataSerie = Self.get_column(column_name)
 		    
 		    If tmp_column <> Nil Then
 		      call res.add_column(tmp_column)
@@ -2203,7 +2203,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function set_column_values(the_column_name as string, the_values() as variant, can_create as boolean) As clAbstractDataSerie
 		  
-		  dim temp_column as clAbstractDataSerie = self.get_column(the_column_name)
+		  var temp_column as clAbstractDataSerie = self.get_column(the_column_name)
 		  
 		  if temp_column = nil then
 		    
@@ -2229,11 +2229,11 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function unique(column_names() as string) As clDataTable
 		  
-		  dim selected_columns() as clAbstractDataSerie = self.get_columns(column_names)
+		  var selected_columns() as clAbstractDataSerie = self.get_columns(column_names)
 		  
-		  dim grp as new clGrouper(selected_columns)
+		  var grp as new clGrouper(selected_columns)
 		  
-		  dim res() as clAbstractDataSerie = grp.flatten()
+		  var res() as clAbstractDataSerie = grp.flatten()
 		  
 		  return new clDataTable("unique", res)
 		  

@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a  datatable")
 		  returnValue.Add("- create a view on the table")
@@ -27,7 +27,7 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  Dim table0 As New clDataTable("mytable", serie_array( _
+		  var table0 As New clDataTable("mytable", serie_array( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -36,7 +36,7 @@ Inherits clLibDataExample
 		  ))
 		  
 		  
-		  Dim view1 As clDataTable = table0.select_columns(array("Country", "City", "Sales"))
+		  var view1 As clDataTable = table0.select_columns(array("Country", "City", "Sales"))
 		  
 		  return array(table0, view1)
 		  

@@ -12,7 +12,7 @@ Implements itf_json_able
 
 	#tag Method, Flags = &h0
 		Function clone() As clDataSerie
-		  Dim tmp As New clDataSerie(Self.name)
+		  var tmp As New clDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
@@ -40,7 +40,7 @@ Implements itf_json_able
 
 	#tag Method, Flags = &h0
 		Function clone_structure() As clDataSerie
-		  Dim tmp As New clDataSerie(Self.name)
+		  var tmp As New clDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
@@ -54,7 +54,7 @@ Implements itf_json_able
 
 	#tag Method, Flags = &h0
 		Function filter_apply_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
-		  Dim return_boolean() As Variant
+		  var return_boolean() As Variant
 		  
 		  For row_index As Integer=0 To items.Ubound
 		    return_boolean.Append(the_filter_function.Invoke(row_index,  items.Ubound, name, items(row_index), function_param))
@@ -68,8 +68,8 @@ Implements itf_json_able
 
 	#tag Method, Flags = &h0
 		Function filter_value_in_list(list_of_values() as string) As boolean()
-		  Dim return_boolean() As boolean
-		  dim my_item as variant
+		  var return_boolean() As boolean
+		  var my_item as variant
 		  
 		  For row_index As Integer=0 To items.Ubound
 		    my_item = items(row_index)
@@ -95,7 +95,7 @@ Implements itf_json_able
 		    Return items(the_element_index)
 		    
 		  Else
-		    Dim v As Variant
+		    var v As Variant
 		    Return v
 		    
 		  End If
@@ -141,7 +141,7 @@ Implements itf_json_able
 		  
 		  
 		  While items.Ubound < the_length-1
-		    dim v as variant = default_value
+		    var v as variant = default_value
 		    items.Append(v)
 		    
 		  Wend

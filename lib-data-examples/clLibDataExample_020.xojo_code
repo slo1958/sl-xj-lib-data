@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- add a DataSerie, a NumberDataSerie, a StringDataSerie")
 		  returnValue.Add("- for each serie, add a string, a number, a 'nil' value")
@@ -21,10 +21,10 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  dim c0 as new clDataSerie("Action")
-		  dim c1 as new clDataSerie("DataSerie")
-		  dim c2 as new clNumberDataSerie("NumberDataSerie", array(123.45, 123.45, 123.45))
-		  dim c3 as new clStringDataSerie("StringDataSerie")
+		  var c0 as new clDataSerie("Action")
+		  var c1 as new clDataSerie("DataSerie")
+		  var c2 as new clNumberDataSerie("NumberDataSerie", array(123.45, 123.45, 123.45))
+		  var c3 as new clStringDataSerie("StringDataSerie")
 		  
 		  c0.append_element("Add 'aaa'")
 		  c1.append_element("aaa")
@@ -41,13 +41,13 @@ Inherits clLibDataExample
 		  c2.append_element(nil)
 		  c3.append_element(nil)
 		  
-		  dim ret_tables() as clDataTable
+		  var ret_tables() as clDataTable
 		  
 		  for each cc as clAbstractDataSerie in array(c1,c2,c3)
 		    
-		    dim c4 as new clDataSerie("get_element")
-		    dim c5 as new clDataSerie("element_is_defined")
-		    dim c6 as new clDataSerie("get_element_as_number")
+		    var c4 as new clDataSerie("get_element")
+		    var c5 as new clDataSerie("element_is_defined")
+		    var c6 as new clDataSerie("get_element_as_number")
 		    
 		    for i as integer = 0 to c1.upper_bound
 		      

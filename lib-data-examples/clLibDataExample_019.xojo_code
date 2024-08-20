@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a  datatable")
 		  returnValue.Add("- create a view on the table")
@@ -23,7 +23,7 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim table0 As New clDataTable("mytable without display title", serie_array( _
+		  var table0 As New clDataTable("mytable without display title", serie_array( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -31,7 +31,7 @@ Inherits clLibDataExample
 		  , New clDataSerie("Quantity", 51, 52,53,54, 55,56) _
 		  ))
 		  
-		  Dim table1 As New clDataTable("mytable with display titles", serie_array( _
+		  var table1 As New clDataTable("mytable with display titles", serie_array( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -47,9 +47,9 @@ Inherits clLibDataExample
 		  table1.get_column("Quantity").display_title="Volume"
 		  
 		  
-		  Dim view0 As clDataTable = table0.select_columns(array("Country", "City", "Sales"))
+		  var view0 As clDataTable = table0.select_columns(array("Country", "City", "Sales"))
 		  
-		  Dim view1 As clDataTable = table1.select_columns(array("Country", "City", "Sales"))
+		  var view1 As clDataTable = table1.select_columns(array("Country", "City", "Sales"))
 		  
 		  return array(table0, table1, view0, view1)
 		  

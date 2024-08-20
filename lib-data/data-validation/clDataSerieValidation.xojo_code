@@ -57,7 +57,7 @@ Protected Class clDataSerieValidation
 		  //  no more tests
 		  //  
 		  if not allow_null then
-		    dim row_index as integer = 0
+		    var row_index as integer = 0
 		    
 		    for each element as variant in the_serie
 		      row_index = row_index + 1

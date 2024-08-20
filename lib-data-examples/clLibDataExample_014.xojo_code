@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a datatable")
 		  returnValue.Add("- calculate sales * 2  BFEORE sales is clipped")
@@ -29,11 +29,11 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  dim col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
-		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
-		  dim col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  var col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
+		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  var col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  Dim table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
+		  var table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
 		  
 		  table0.append_row(Array("France","Paris",1100))
 		  table0.append_row(Array("","Marseille",1200))
@@ -48,7 +48,7 @@ Inherits clLibDataExample
 		  
 		  call table0.add_column(col_sales.clipped_by_range(1100, 1500) * 2)
 		  
-		  dim ret() as TableColumnReaderInterface
+		  var ret() as TableColumnReaderInterface
 		  ret.add(table0)
 		  
 		  return ret

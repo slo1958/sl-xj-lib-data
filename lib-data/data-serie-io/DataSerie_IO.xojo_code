@@ -7,9 +7,9 @@ Protected Module DataSerie_IO
 		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
 		  //
 		  
-		  Dim got_header As Boolean
-		  Dim text_file  As TextInputStream
-		  Dim return_header As String
+		  var got_header As Boolean
+		  var text_file  As TextInputStream
+		  var return_header As String
 		  
 		  If the_source = Nil Then
 		    Return nil
@@ -22,7 +22,7 @@ Protected Module DataSerie_IO
 		  got_header = Not has_header
 		  
 		  While Not text_file.EOF
-		    Dim tmp_source_line As String = text_file.ReadLine
+		    var tmp_source_line As String = text_file.ReadLine
 		    
 		    If got_header Then
 		      theDataSerie.append_element(tmp_source_line)
@@ -52,7 +52,7 @@ Protected Module DataSerie_IO
 		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
 		  //
 		  
-		  Dim text_file  As TextOutputStream
+		  var text_file  As TextOutputStream
 		  
 		  If the_destination = Nil Then
 		    Return

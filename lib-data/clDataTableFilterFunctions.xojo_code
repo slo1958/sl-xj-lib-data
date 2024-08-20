@@ -18,10 +18,10 @@ Protected Module clDataTableFilterFunctions
 		  //  Returns:
 		  //   - boolean: results of comparision, true if the value in the column matches the expected value
 		  //  
-		  dim field_name as string = function_param(0)
-		  dim field_value as variant = function_param(1)
+		  var field_name as string = function_param(0)
+		  var field_value as variant = function_param(1)
 		  
-		  dim idx as integer = the_column_names.IndexOf(field_name)
+		  var idx as integer = the_column_names.IndexOf(field_name)
 		  
 		  return the_cell_values(idx) = field_value
 		End Function
@@ -46,7 +46,7 @@ Protected Module clDataTableFilterFunctions
 		  //  
 		  
 		  If function_param.ubound >= 0 Then
-		    Dim tmp As Integer = function_param(0)
+		    var tmp As Integer = function_param(0)
 		    Return the_row < tmp
 		    
 		  Else
@@ -78,7 +78,7 @@ Protected Module clDataTableFilterFunctions
 		  
 		  If function_param.ubound >= 0 Then
 		    
-		    Dim tmp As Integer = function_param(0)
+		    var tmp As Integer = function_param(0)
 		    Return the_row > the_row_count - tmp
 		    
 		  Else

@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a datatable with dates")
 		  returnValue.Add("- compare payment date with deadline")
@@ -28,34 +28,34 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  // Build the table, to simulate loading from an external data source
-		  dim col_country as new clDataSerie("Customer", "C001", "", "C002", "C003", "C004","C005")
-		  dim col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
-		  dim col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
-		  dim col_penalty as new clNumberDataSerie("%up", 0.12, 0.12, 0.12 , 0.12, 0.12)
-		  dim col_expiry as new clDateDataSerie("InvoiceDate", "2023-03-05","2023-03-07","2023-03-12","2023-03-19","2023-04-03")
-		  dim col_pay as new clDateDataSerie("PaymentDate", "2023-03-08","2023-03-27","2023-03-20","2023-04-05","2023-05-12")
+		  var col_country as new clDataSerie("Customer", "C001", "", "C002", "C003", "C004","C005")
+		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  var col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  var col_penalty as new clNumberDataSerie("%up", 0.12, 0.12, 0.12 , 0.12, 0.12)
+		  var col_expiry as new clDateDataSerie("InvoiceDate", "2023-03-05","2023-03-07","2023-03-12","2023-03-19","2023-04-03")
+		  var col_pay as new clDateDataSerie("PaymentDate", "2023-03-08","2023-03-27","2023-03-20","2023-04-05","2023-05-12")
 		  
 		  col_penalty.set_format("#%")
 		  
-		  dim table0 as new clDataTable("mytable", serie_array(col_country, col_city, col_sales, col_expiry, col_pay, col_penalty))
+		  var table0 as new clDataTable("mytable", serie_array(col_country, col_city, col_sales, col_expiry, col_pay, col_penalty))
 		  
 		  // 
 		  // Start calculation
 		  //
 		  // number of days vs expiry date
-		  dim delay as clIntegerDataSerie = col_pay - col_expiry
+		  var delay as clIntegerDataSerie = col_pay - col_expiry
 		  
 		  // flag if number of days > 15 days
-		  dim flagged as clIntegerDataSerie = new clIntegerDataSerie("late-payment",delay.filter_value_in_range(15,9999))
+		  var flagged as clIntegerDataSerie = new clIntegerDataSerie("late-payment",delay.filter_value_in_range(15,9999))
 		  
 		  // calculate penalty and give a better name
-		  dim total_penaty as clNumberDataSerie = col_sales * col_penalty * flagged.ToDouble()
+		  var total_penaty as clNumberDataSerie = col_sales * col_penalty * flagged.ToDouble()
 		  total_penaty.rename("penalty")
 		  
 		  // update table
 		  call table0.add_columns(serie_array(delay, flagged, total_penaty))
 		  
-		  dim ret() as TableColumnReaderInterface
+		  var ret() as TableColumnReaderInterface
 		  
 		  ret.add(table0)
 		  

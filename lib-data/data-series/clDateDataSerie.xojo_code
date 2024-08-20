@@ -11,7 +11,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function clone() As clDateDataSerie
-		  Dim tmp As New clDateDataSerie(Self.name)
+		  var tmp As New clDateDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
@@ -48,8 +48,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function filter_value_in_list(list_of_values() as DateTime) As variant()
-		  Dim return_boolean() As Variant
-		  dim my_item as DateTime
+		  var return_boolean() As Variant
+		  var my_item as DateTime
 		  
 		  For row_index As Integer=0 To items.Ubound
 		    my_item = items(row_index)
@@ -64,8 +64,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function filter_value_in_range(minimum_value as datetime, maximum_value as DateTime) As variant()
-		  Dim return_boolean() As Variant
-		  dim my_item as DateTime
+		  var return_boolean() As Variant
+		  var my_item as DateTime
 		  
 		  For row_index As Integer=0 To items.Ubound
 		    my_item = items(row_index)
@@ -80,11 +80,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function filter_value_in_range(minimum_value_str as string, maximum_value_str as string) As variant()
-		  Dim return_boolean() As Variant
-		  dim my_item as DateTime
+		  var return_boolean() As Variant
+		  var my_item as DateTime
 		  
-		  dim minimum_value as DateTime = DateTime.FromString(minimum_value_str)
-		  dim maximum_value as DateTime = DateTime.FromString(maximum_value_str)
+		  var minimum_value as DateTime = DateTime.FromString(minimum_value_str)
+		  var maximum_value as DateTime = DateTime.FromString(maximum_value_str)
 		  
 		  For row_index As Integer=0 To items.Ubound
 		    my_item = items(row_index)
@@ -110,7 +110,7 @@ Inherits clAbstractDataSerie
 		    Return items(the_element_index)
 		    
 		  Else
-		    Dim v As integer
+		    var v As integer
 		    Return v
 		    
 		  End If
@@ -135,7 +135,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function get_element_as_string(the_element_index as integer) As string
 		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
-		    dim tmp as DateTime = items(the_element_index)
+		    var tmp as DateTime = items(the_element_index)
 		    if tmp = nil then return ""
 		    
 		    Return tmp.SQLDate
@@ -152,7 +152,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function get_element_as_string(the_element_index As integer, dateStyle As DateTime.FormatStyles) As String
 		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
-		    dim tmp as DateTime = items(the_element_index)
+		    var tmp as DateTime = items(the_element_index)
 		    if tmp = nil then return ""
 		    
 		    Return tmp.ToString(datestyle, DateTime.FormatStyles.None)
@@ -169,7 +169,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function get_element_as_string(the_element_index as integer, format as string) As string
 		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
-		    dim tmp as DateTime = items(the_element_index)
+		    var tmp as DateTime = items(the_element_index)
 		    if tmp = nil then return ""
 		    
 		    Return tmp.ToString(format)
@@ -185,9 +185,9 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_subtract(right_serie as clDateDataSerie) As clIntegerDataSerie
-		  dim mx1 as integer = self.upper_bound
-		  dim mx2 as integer = right_serie.upper_bound
-		  dim mx0 as integer 
+		  var mx1 as integer = self.upper_bound
+		  var mx2 as integer = right_serie.upper_bound
+		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
 		    mx0 = mx1
@@ -195,7 +195,7 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  dim res as new clIntegerDataSerie(self.name+"-"+right_serie.name)
+		  var res as new clIntegerDataSerie(self.name+"-"+right_serie.name)
 		  
 		  for i as integer = 0 to mx0
 		    
@@ -218,7 +218,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_subtract(right_value as DateTime) As clIntegerDataSerie
-		  dim res as new clIntegerDataSerie(self.name+" - "+ right_value.SQLDate)
+		  var res as new clIntegerDataSerie(self.name+" - "+ right_value.SQLDate)
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(diff_to_days(self.get_element_as_date(i) , right_value))
@@ -233,7 +233,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h21
 		Private Function prep_date(d as variant) As DateTime
-		  dim tmp as DateTime = d.DateTimeValue
+		  var tmp as DateTime = d.DateTimeValue
 		  
 		  return tmp
 		End Function
@@ -276,7 +276,7 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  While items.Ubound < the_length-1
-		    dim v as DateTime = default_value.DateTimeValue
+		    var v as DateTime = default_value.DateTimeValue
 		    
 		    items.Append(v)
 		    
@@ -287,7 +287,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToString() As clStringDataSerie
-		  dim res as new clStringDataSerie(self.name+" as sql-date")
+		  var res as new clStringDataSerie(self.name+" as sql-date")
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element_as_string(i))
@@ -301,7 +301,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToString(dateStyle As DateTime.FormatStyles) As clStringDataSerie
-		  dim res as new clStringDataSerie(self.name+" as string")
+		  var res as new clStringDataSerie(self.name+" as string")
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element_as_string(i, dateStyle))
@@ -315,7 +315,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToString(format as string) As clStringDataSerie
-		  dim res as new clStringDataSerie(self.name+" as " + format)
+		  var res as new clStringDataSerie(self.name+" as " + format)
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element_as_string(i, format))

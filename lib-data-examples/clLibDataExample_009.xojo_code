@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a datatable")
 		  returnValue.Add("- create a validation table")
@@ -26,7 +26,7 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim table0 As New clDataTable("mytable")
+		  var table0 As New clDataTable("mytable")
 		  
 		  call table0.add_columns(Array("country","city","sales"))
 		  
@@ -37,7 +37,7 @@ Inherits clLibDataExample
 		  table0.append_row(Array("Belgique","Bruxelles",1500))
 		  table0.append_row(Array("USA","Chicago",1600))
 		  
-		  dim tableValid as new clDataTableValidation("validation",array( _
+		  var tableValid as new clDataTableValidation("validation",array( _
 		  new clDataSerieValidation("country",  False, True) _
 		  , new clDataSerieValidation("city", True, true) _
 		  , new clDataSerieValidation("zip", True, True) _
@@ -45,11 +45,11 @@ Inherits clLibDataExample
 		  
 		  tableValid.validate(table0)
 		  
-		  Dim table1 As  clDataTable = tableValid.get_results()
+		  var table1 As  clDataTable = tableValid.get_results()
 		  
 		  
 		  //  all types not the same, so need to explictely build the returned array
-		  dim ret() as TableColumnReaderInterface
+		  var ret() as TableColumnReaderInterface
 		  ret.append(table0)
 		  ret.append(table1)
 		  ret.append(tableValid)

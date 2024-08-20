@@ -270,11 +270,11 @@ End
 #tag WindowCode
 	#tag Method, Flags = &h0
 		Function test_inserts(nbr_columns as integer, nbr_rows as integer) As double()
-		  dim nbr_int_cols as integer
-		  dim nbr_str_cols as integer
+		  var nbr_int_cols as integer
+		  var nbr_str_cols as integer
 		  
-		  dim int_values() as integer
-		  dim str_values() as string
+		  var int_values() as integer
+		  var str_values() as string
 		  
 		  nbr_int_cols = nbr_columns / 2
 		  nbr_str_cols = nbr_columns - nbr_int_cols
@@ -286,7 +286,7 @@ End
 		  
 		  
 		  
-		  dim tmp_str as string = "AZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBN"
+		  var tmp_str as string = "AZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBN"
 		  
 		  
 		  for i as integer = 0 to nbr_str_cols-1
@@ -295,33 +295,33 @@ End
 		    
 		  next
 		  
-		  dim tstart as Double  = System.Microseconds
+		  var tstart as Double  = System.Microseconds
 		  
 		  // create the structure
 		  
 		  
-		  dim int_col_list() as clIntegerDataSerie
-		  dim str_col_list() as clDataSerie
+		  var int_col_list() as clIntegerDataSerie
+		  var str_col_list() as clDataSerie
 		  
-		  dim col_list() as clAbstractDataSerie
+		  var col_list() as clAbstractDataSerie
 		  
 		  for i as integer = 0 to nbr_int_cols-1
-		    dim tmp as new clIntegerDataSerie("intcol" + str(i))
+		    var tmp as new clIntegerDataSerie("intcol" + str(i))
 		    col_list.Add(tmp)
 		    int_col_list.Add(tmp)
 		  next
 		  
 		  
 		  for i as integer = 0 to nbr_str_cols-1
-		    dim tmp as new clDataSerie("strcol" + str(i))
+		    var tmp as new clDataSerie("strcol" + str(i))
 		    col_list.Add(tmp)
 		    str_col_list.Add(tmp)
 		    
 		  next
 		  
-		  dim tbl as new clDataTable("MYTABLE", col_list)
+		  var tbl as new clDataTable("MYTABLE", col_list)
 		  
-		  dim tcreate as double = System.Microseconds
+		  var tcreate as double = System.Microseconds
 		  
 		  
 		  // load data
@@ -340,9 +340,9 @@ End
 		    
 		  next
 		  
-		  dim tload as double = System.Microseconds
+		  var tload as double = System.Microseconds
 		  
-		  dim ret() as double
+		  var ret() as double
 		  ret.Add tstart
 		  ret.Add tcreate
 		  ret.Add tload
@@ -357,7 +357,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub writemessage(Paramarray vprint as string)
-		  Dim tmp As String
+		  var tmp As String
 		  tmp = join(vprint, " ")
 		  Listbox1.AddRow tmp
 		  
@@ -374,14 +374,14 @@ End
 		  
 		  writemessage "Starting insert tests"
 		  
-		  dim ret() as double
+		  var ret() as double
 		  
-		  dim time_to_create as string
-		  dim time_to_load as String
+		  var time_to_create as string
+		  var time_to_load as String
 		  
 		  
-		  dim nbr_rows as integer = tf_rows.Text.ToInteger
-		  dim nbr_cols as integer = tf_cols.Text.ToInteger
+		  var nbr_rows as integer = tf_rows.Text.ToInteger
+		  var nbr_cols as integer = tf_cols.Text.ToInteger
 		  
 		  if nbr_rows < 1 then nbr_rows = 1
 		  nbr_rows = nbr_rows * 10000
@@ -401,3 +401,241 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
+#tag ViewBehavior
+	#tag ViewProperty
+		Name="Name"
+		Visible=true
+		Group="ID"
+		InitialValue=""
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Interfaces"
+		Visible=true
+		Group="ID"
+		InitialValue=""
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Super"
+		Visible=true
+		Group="ID"
+		InitialValue=""
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Width"
+		Visible=true
+		Group="Size"
+		InitialValue="600"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Height"
+		Visible=true
+		Group="Size"
+		InitialValue="400"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MinimumWidth"
+		Visible=true
+		Group="Size"
+		InitialValue="64"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MinimumHeight"
+		Visible=true
+		Group="Size"
+		InitialValue="64"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MaximumWidth"
+		Visible=true
+		Group="Size"
+		InitialValue="32000"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MaximumHeight"
+		Visible=true
+		Group="Size"
+		InitialValue="32000"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Type"
+		Visible=true
+		Group="Frame"
+		InitialValue="0"
+		Type="Types"
+		EditorType="Enum"
+		#tag EnumValues
+			"0 - Document"
+			"1 - Movable Modal"
+			"2 - Modal Dialog"
+			"3 - Floating Window"
+			"4 - Plain Box"
+			"5 - Shadowed Box"
+			"6 - Rounded Window"
+			"7 - Global Floating Window"
+			"8 - Sheet Window"
+			"9 - Metal Window"
+			"11 - Modeless Dialog"
+		#tag EndEnumValues
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Title"
+		Visible=true
+		Group="Frame"
+		InitialValue="Untitled"
+		Type="String"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="HasCloseButton"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="HasMaximizeButton"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="HasMinimizeButton"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="HasFullScreenButton"
+		Visible=true
+		Group="Frame"
+		InitialValue="False"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Resizeable"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Composite"
+		Visible=false
+		Group="OS X (Carbon)"
+		InitialValue="False"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MacProcID"
+		Visible=false
+		Group="OS X (Carbon)"
+		InitialValue="0"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="FullScreen"
+		Visible=false
+		Group="Behavior"
+		InitialValue="False"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="ImplicitInstance"
+		Visible=true
+		Group="Behavior"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="DefaultLocation"
+		Visible=true
+		Group="Behavior"
+		InitialValue="0"
+		Type="Locations"
+		EditorType="Enum"
+		#tag EnumValues
+			"0 - Default"
+			"1 - Parent Window"
+			"2 - Main Screen"
+			"3 - Parent Window Screen"
+			"4 - Stagger"
+		#tag EndEnumValues
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Visible"
+		Visible=true
+		Group="Behavior"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="HasBackgroundColor"
+		Visible=true
+		Group="Background"
+		InitialValue="False"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="BackgroundColor"
+		Visible=true
+		Group="Background"
+		InitialValue="&hFFFFFF"
+		Type="Color"
+		EditorType="Color"
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="Backdrop"
+		Visible=true
+		Group="Background"
+		InitialValue=""
+		Type="Picture"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MenuBar"
+		Visible=true
+		Group="Menus"
+		InitialValue=""
+		Type="MenuBar"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="MenuBarVisible"
+		Visible=true
+		Group="Deprecated"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+#tag EndViewBehavior

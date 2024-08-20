@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  
 		  returnValue.Add("- create an empty datatable")
@@ -31,10 +31,10 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim fld_folder As New FolderItem
-		  Dim fld_file1 As FolderItem
-		  Dim fld_file2 As FolderItem
-		  Dim fld_file3 As FolderItem
+		  var fld_folder As New FolderItem
+		  var fld_file1 As FolderItem
+		  var fld_file2 As FolderItem
+		  var fld_file3 As FolderItem
 		  
 		  fld_folder = fld_folder.Child("test-data")
 		  
@@ -42,7 +42,7 @@ Inherits clLibDataExample
 		  fld_file2  = fld_folder.Child("myfile4_B_tab.txt") 
 		  fld_file3  = fld_folder.Child("myfile4_C_tab.txt") 
 		  
-		  dim my_table as new clDataTable("consolidated")
+		  var my_table as new clDataTable("consolidated")
 		  call my_table.add_column(new clStringDataSerie("Alpha"))
 		  call my_table.add_column(new clIntegerDataSerie("Beta"))
 		  call my_table.add_column(new clNumberDataSerie("Delta"))
@@ -50,16 +50,16 @@ Inherits clLibDataExample
 		  call my_table.add_column(new clIntegerDataSerie("Group"))
 		  call my_table.add_column(new clStringDataSerie(clDataTable.loaded_data_source_column))
 		  
-		  dim dct_mapping_file3 as new Dictionary
+		  var dct_mapping_file3 as new Dictionary
 		  dct_mapping_file3.value("Un") = "Alpha"
 		  dct_mapping_file3.value("Deux") = "Beta"
 		  dct_mapping_file3.value("Trois") = "Gamma"
 		  dct_mapping_file3.value("Quatre") = "Delta"
 		  dct_mapping_file3.value("Extra") = "New_col"
 		  
-		  dim source_table1 as new clDataTable(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
-		  dim source_table2 as new clDataTable(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
-		  dim source_table3 as new clDataTable(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))))
+		  var source_table1 as new clDataTable(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  var source_table2 as new clDataTable(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
+		  var source_table3 as new clDataTable(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))))
 		  
 		  my_table.append_from_row_source(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  

@@ -28,7 +28,7 @@ Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Sub Constructor(fld as FolderItem, has_header as Boolean, config as clTextFileConfig)
 		  
-		  dim tmp_config as clTextFileConfig = config
+		  var tmp_config as clTextFileConfig = config
 		  
 		  if tmp_config = nil then tmp_config = new clTextFileConfig
 		  
@@ -46,7 +46,7 @@ Implements TableRowReaderInterface
 		  self.set_encoding(tmp_config.enc)
 		  
 		  if has_header then
-		    dim tmp() as variant = self.next_row
+		    var tmp() as variant = self.next_row
 		    self.mheader.RemoveAll
 		    
 		    for each v as variant in tmp
@@ -119,7 +119,7 @@ Implements TableRowReaderInterface
 		Function GetColumnNames() As string()
 		  // Part of the TableRowReaderInterface interface.
 		  
-		  dim tmp() as string
+		  var tmp() as string
 		  for each s as string in mheader
 		    tmp.add(s)
 		    
@@ -137,9 +137,9 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h0
 		Function GetListOfExternalElements() As string()
-		  dim ret() as string
+		  var ret() as string
 		  
-		  dim tmp_fd as FolderItem
+		  var tmp_fd as FolderItem
 		  
 		  if mDataFile = nil then
 		    return ret
@@ -191,10 +191,10 @@ Implements TableRowReaderInterface
 		  
 		  const kDoubleQuote = """"
 		  
-		  dim cellArray() as variant
+		  var cellArray() as variant
 		  
-		  dim lineBuffer as string
-		  dim charBuffer as string
+		  var lineBuffer as string
+		  var charBuffer as string
 		  
 		  if textstream = nil then
 		    return cellArray
@@ -212,13 +212,13 @@ Implements TableRowReaderInterface
 		  // since a single CR in a quoted string is handled as a line break by TextInputStream, we may have to read more
 		  // lines from the file
 		  
-		  dim cellBuffer as string
-		  dim bDone as Boolean = False
-		  dim gotQuote as Boolean = False
+		  var cellBuffer as string
+		  var bDone as Boolean = False
+		  var gotQuote as Boolean = False
 		  
 		  while not bDone
 		    
-		    dim lenBuffer as integer = lineBuffer.Length 
+		    var lenBuffer as integer = lineBuffer.Length 
 		    
 		    for index as integer = 1 to lenBuffer
 		      

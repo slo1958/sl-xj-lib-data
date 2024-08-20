@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clBooleanDataSerie
 Inherits clAbstractDataSerie
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  
@@ -11,7 +11,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function clone() As clBooleanDataSerie
-		  Dim tmp As New clBooleanDataSerie(Self.name)
+		  var tmp As New clBooleanDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
@@ -40,7 +40,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function clone_structure() As clBooleanDataSerie
-		  Dim tmp As New clBooleanDataSerie(Self.name)
+		  var tmp As New clBooleanDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
@@ -65,7 +65,7 @@ Inherits clAbstractDataSerie
 		    Return items(the_element_index)
 		    
 		  Else
-		    Dim v As integer
+		    var v As integer
 		    Return v
 		    
 		  End If
@@ -99,9 +99,9 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_and(right_serie as clBooleanDataSerie) As clBooleanDataSerie
-		  dim mx1 as integer = self.upper_bound
-		  dim mx2 as integer = right_serie.upper_bound
-		  dim mx0 as integer 
+		  var mx1 as integer = self.upper_bound
+		  var mx2 as integer = right_serie.upper_bound
+		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
 		    mx0 = mx1
@@ -109,9 +109,9 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  dim res as new clBooleanDataSerie(self.name+" and "+right_serie.name)
+		  var res as new clBooleanDataSerie(self.name+" and "+right_serie.name)
 		  for i as integer = 0 to mx0
-		    dim n as Boolean = true
+		    var n as Boolean = true
 		    
 		    if i <= mx1 then
 		      n = self.get_element_as_boolean(i)
@@ -134,9 +134,9 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_not() As clBooleanDataSerie
-		  dim mx0 as integer = self.upper_bound
+		  var mx0 as integer = self.upper_bound
 		  
-		  dim res as new clBooleanDataSerie("not " + self.name)
+		  var res as new clBooleanDataSerie("not " + self.name)
 		  
 		  for i as integer = 0 to mx0
 		    res.append_element(not self.get_element_as_boolean(i))
@@ -151,9 +151,9 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_or(right_serie as clBooleanDataSerie) As clBooleanDataSerie
-		  dim mx1 as integer = self.upper_bound
-		  dim mx2 as integer = right_serie.upper_bound
-		  dim mx0 as integer 
+		  var mx1 as integer = self.upper_bound
+		  var mx2 as integer = right_serie.upper_bound
+		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
 		    mx0 = mx1
@@ -161,9 +161,9 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  dim res as new clBooleanDataSerie(self.name+" or "+right_serie.name)
+		  var res as new clBooleanDataSerie(self.name+" or "+right_serie.name)
 		  for i as integer = 0 to mx0
-		    dim n as Boolean = False
+		    var n as Boolean = False
 		    
 		    if i <= mx1 then
 		      n = self.get_element_as_boolean(i)
@@ -241,7 +241,7 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  While items.Ubound < the_length-1
-		    dim v as boolean = default_value.BooleanValue
+		    var v as boolean = default_value.BooleanValue
 		    items.Append(v)
 		    
 		  Wend
@@ -251,7 +251,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToString() As clStringDataSerie
-		  dim res as new clStringDataSerie(self.name+" as string")
+		  var res as new clStringDataSerie(self.name+" as string")
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element_as_string(i))

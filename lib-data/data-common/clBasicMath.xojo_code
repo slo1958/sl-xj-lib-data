@@ -2,8 +2,8 @@
 Protected Class clBasicMath
 	#tag Method, Flags = &h0
 		Function average(values() as double) As double
-		  Dim s As Double
-		  dim n as integer
+		  var s As Double
+		  var n as integer
 		  
 		  for each d as double in values
 		    if not (d.IsNotANumber or d.IsInfinite) then
@@ -23,8 +23,8 @@ Protected Class clBasicMath
 
 	#tag Method, Flags = &h0
 		Function average_non_zero(values() as double) As double
-		  Dim s As Double
-		  dim n as integer
+		  var s As Double
+		  var n as integer
 		  
 		  for each d as double in values
 		    if not (d.IsNotANumber or d.IsInfinite) and (d <>0) then 
@@ -45,7 +45,7 @@ Protected Class clBasicMath
 
 	#tag Method, Flags = &h0
 		Function count(values() as double) As integer
-		  dim n as integer
+		  var n as integer
 		  
 		  for each d as double in values
 		    if not (d.IsNotANumber or d.IsInfinite) then
@@ -62,7 +62,7 @@ Protected Class clBasicMath
 
 	#tag Method, Flags = &h0
 		Function count_non_zero(values() as double) As integer
-		  dim n as integer
+		  var n as integer
 		  
 		  for each d as double in values
 		    if not (d.IsNotANumber or d.IsInfinite) and (d <>0) then
@@ -80,16 +80,16 @@ Protected Class clBasicMath
 	#tag Method, Flags = &h0
 		Function standard_deviation(values() as double, is_population as boolean = False) As double
 		  
-		  dim c as new clBasicMath
+		  var c as new clBasicMath
 		  
-		  Dim s1 As Double = c.sum(values)
-		  dim s2 as double = c.sum_squared(values)
-		  dim n as integer = c.count(values)
+		  var s1 As Double = c.sum(values)
+		  var s2 as double = c.sum_squared(values)
+		  var n as integer = c.count(values)
 		  
 		  
 		  if n < 2 then return 0
 		  
-		  dim m as double = s1 / n
+		  var m as double = s1 / n
 		  
 		  if is_population then
 		    return Sqrt((n * m * m - 2 * m *s1 + s2)  / (n))
@@ -105,16 +105,16 @@ Protected Class clBasicMath
 	#tag Method, Flags = &h0
 		Function standard_deviation_non_zero(values() as double, is_population as boolean = False) As double
 		  
-		  dim c as new clBasicMath
+		  var c as new clBasicMath
 		  
-		  Dim s1 As Double = c.sum(values)
-		  dim s2 as double = c.sum_squared(values)
-		  dim n as integer = c.count_non_zero(values)
+		  var s1 As Double = c.sum(values)
+		  var s2 as double = c.sum_squared(values)
+		  var n as integer = c.count_non_zero(values)
 		  
 		  
 		  if n < 2 then return 0
 		  
-		  dim m as double = s1 / n
+		  var m as double = s1 / n
 		  
 		  if is_population then
 		    return Sqrt((n * m * m - 2 * m *s1 + s2)  / (n))
@@ -129,7 +129,7 @@ Protected Class clBasicMath
 
 	#tag Method, Flags = &h0
 		Function sum(values() as double) As double
-		  dim retValue as Double
+		  var retValue as Double
 		  
 		  for each d as double in values
 		    if not (d.IsNotANumber or d.IsInfinite) then
@@ -145,7 +145,7 @@ Protected Class clBasicMath
 
 	#tag Method, Flags = &h0
 		Function sum_squared(values() as double) As double
-		  dim retValue as Double
+		  var retValue as Double
 		  
 		  for each d as double in values
 		    if not (d.IsNotANumber or d.IsInfinite) then

@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a datatable")
 		  returnValue.Add("- create a second table with unique values from the first one")
@@ -25,7 +25,7 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  Dim table0 As New clDataTable("mytable")
+		  var table0 As New clDataTable("mytable")
 		  
 		  call table0.add_columns(Array("country","city","sales"))
 		  
@@ -43,9 +43,9 @@ Inherits clLibDataExample
 		  table0.append_row(Array("USA","Chicago",1600))
 		  
 		  
-		  Dim table1 As clDataTable = table0.unique(array("country", "city"))
+		  var table1 As clDataTable = table0.unique(array("country", "city"))
 		  
-		  dim ret() as TableColumnReaderInterface
+		  var ret() as TableColumnReaderInterface
 		  ret.Add(table0)
 		  ret.Add(table1)
 		  return ret

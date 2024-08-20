@@ -1,11 +1,11 @@
 #tag Class
 Protected Class clLibDataExample_007
 Inherits clLibDataExample
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create an empty datatable")
 		  returnValue.Add("- fast append data")
@@ -30,7 +30,7 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  Dim table0 As New clDataTable("mytable")
+		  var table0 As New clDataTable("mytable")
 		  
 		  
 		  call table0.add_column(new clDataSerie("name"))
@@ -42,9 +42,9 @@ Inherits clLibDataExample
 		  table0.append_row(Array("gamma", 10, 50))
 		  
 		  
-		  dim s1 as clAbstractDataSerie = table0.add_column(table0.get_number_column("unit_price") * table0.get_number_column("quantity")).rename("sales")
+		  var s1 as clAbstractDataSerie = table0.add_column(table0.get_number_column("unit_price") * table0.get_number_column("quantity")).rename("sales")
 		  
-		  dim s2 as clAbstractDataSerie = table0.add_column(clNumberDataSerie(table0.get_column("unit_price")) * clNumberDataSerie(table0.get_column("quantity")))
+		  var s2 as clAbstractDataSerie = table0.add_column(clNumberDataSerie(table0.get_column("unit_price")) * clNumberDataSerie(table0.get_column("quantity")))
 		  return Array(table0)
 		  
 		  

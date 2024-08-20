@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  // Calling the overridden superclass method.
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  
 		  returnValue.Add("- create an empty datatable")
@@ -32,7 +32,7 @@ Inherits clLibDataExample
 		  
 		  
 		  
-		  Dim table0 As New clDataTable("mytable")
+		  var table0 As New clDataTable("mytable")
 		  
 		  call table0.add_columns(Array("country","city","sales"))
 		  
@@ -43,9 +43,9 @@ Inherits clLibDataExample
 		  table0.append_row(Array("Belgique","Bruxelles",1500))
 		  table0.append_row(Array("USA","Chicago",1600))
 		  
-		  dim is_france() as variant = table0.filter_apply_function(AddressOf field_filter,"country","France")
-		  dim is_belgium() as variant =  table0.filter_apply_function(AddressOf field_filter, "country","Belgique")
-		  dim is_europe() as variant
+		  var is_france() as variant = table0.filter_apply_function(AddressOf field_filter,"country","France")
+		  var is_belgium() as variant =  table0.filter_apply_function(AddressOf field_filter, "country","Belgique")
+		  var is_europe() as variant
 		  
 		  for i as integer = 0 to is_france.Ubound
 		    is_europe.Append(is_france(i).integerValue + is_belgium(i).integerValue)

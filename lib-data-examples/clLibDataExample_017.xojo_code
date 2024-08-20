@@ -5,7 +5,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function describe() As string()
 		  
-		  Dim returnValue() as string = Super.describe()
+		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- load a table from db")
 		  returnValue.Add("- save table to db")
@@ -32,7 +32,7 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  dim db as new SQLiteDatabase
+		  var db as new SQLiteDatabase
 		  
 		  Try
 		    db.Connect
@@ -42,7 +42,7 @@ Inherits clLibDataExample
 		    
 		  End Try
 		  
-		  dim dbrow as  DatabaseRow
+		  var dbrow as  DatabaseRow
 		  
 		  //test1
 		  db.ExecuteSQL("create table test1(ID INTEGER NOT NULL, aaa varchar(20), bbb integer, ccc float, PRIMARY KEY(ID))")
@@ -92,31 +92,31 @@ Inherits clLibDataExample
 		  db.AddRow("test3", dbrow)
 		  
 		  
-		  dim my_table1 as new clDataTable(new clDBReader(db.SelectSql("select * from test1")))
+		  var my_table1 as new clDataTable(new clDBReader(db.SelectSql("select * from test1")))
 		  my_table1.rename("test2")
 		  my_table1.save(new clDBWriter(new clSqliteDBAccess(db)))
 		  
-		  dim my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
+		  var my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
 		  
 		  call check_table(log,"Test1/Test2", my_table1, my_table2)
 		  
 		  
 		  
-		  dim my_table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3")))
+		  var my_table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3")))
 		  my_table3.rename("test4")
 		  my_table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
-		  dim my_table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
+		  var my_table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
 		  
 		  call check_table(log,"Test3/Test4", my_table3, my_table4)
 		  
 		  
-		  dim my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
+		  var my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
 		  
-		  dim my_table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
+		  var my_table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
 		  
 		  // create expected ds
-		  dim my_table7 as clDataTable = my_table5.clone
+		  var my_table7 as clDataTable = my_table5.clone
 		  my_table7.append_from_column_source(my_table6)
 		  
 		  
@@ -125,7 +125,7 @@ Inherits clLibDataExample
 		  my_table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
 		  
-		  dim my_table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
+		  var my_table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
 		  
 		  call check_table(log,"Test7/Test8", my_table7, my_table8)
 		  
@@ -135,7 +135,7 @@ Inherits clLibDataExample
 		  my_table7.rename("loaded from merged in memory data tables")
 		  my_table8.rename("loaded from merged db tables")
 		  
-		  dim ret() as TableColumnReaderInterface
+		  var ret() as TableColumnReaderInterface
 		  
 		  ret.add(my_table1)
 		  ret.add(my_table2)

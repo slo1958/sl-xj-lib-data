@@ -236,7 +236,7 @@ End
 		  
 		  block_list_events = True
 		  
-		  dim tmp() as String
+		  var tmp() as String
 		  
 		  for each v as variant in table_dict.keys()
 		    tmp.Append(v)
@@ -280,7 +280,7 @@ End
 		  
 		  lbl_comments.Height = comments.Count * 20 
 		  
-		  dim tmp_h as integer = lb_data.Height - lbl_comments.Height -10 + 20
+		  var tmp_h as integer = lb_data.Height - lbl_comments.Height -10 + 20
 		  
 		  lb_data.Height = tmp_h
 		  
@@ -308,7 +308,7 @@ End
 		  
 		  
 		  current_table = table_name
-		  dim tbl as TableColumnReaderInterface = table_dict.value(current_table)
+		  var tbl as TableColumnReaderInterface = table_dict.value(current_table)
 		  
 		  if tbl is nil then
 		    System.DebugLog(CurrentMethodName+" cannot find table " + table_name)
@@ -354,7 +354,7 @@ End
 #tag Events lb_list
 	#tag Event
 		Sub SelectionChanged()
-		  dim tmp_table as string = me.SelectedRowValue
+		  var tmp_table as string = me.SelectedRowValue
 		  
 		  show_table tmp_table
 		  
@@ -370,7 +370,7 @@ End
 	#tag EndEvent
 	#tag Event
 		Sub MouseMove(x As Integer, y As Integer)
-		  dim col_no as integer = me.ColumnFromXY(x,y)
+		  var col_no as integer = me.ColumnFromXY(x,y)
 		  
 		  if col_no < 0 then 
 		    show_description ""
@@ -378,7 +378,7 @@ End
 		    
 		  end if
 		  
-		  dim col as clAbstractDataSerie = clAbstractDataSerie(me.ColumnTagAt(col_no))
+		  var col as clAbstractDataSerie = clAbstractDataSerie(me.ColumnTagAt(col_no))
 		  
 		  if col = nil then
 		    show_description ""

@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clIntegerDataSerie
 Inherits clAbstractDataSerie
-	#tag CompatibilityFlags = (TargetConsole and (Target32Bit or Target64Bit)) or  (TargetWeb and (Target32Bit or Target64Bit)) or  (TargetDesktop and (Target32Bit or Target64Bit)) or  (TargetIOS and (Target64Bit)) or  (TargetAndroid and (Target64Bit))
+	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub append_element(the_item as Variant)
 		  
@@ -12,7 +12,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function clipped_by_range(low_value as variant, high_value as variant) As clIntegerDataSerie
 		  
-		  dim new_col as clIntegerDataSerie = self.clone()
+		  var new_col as clIntegerDataSerie = self.clone()
 		  
 		  new_col.rename("clip " + self.name)
 		  
@@ -26,14 +26,14 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function clip_range(low_value as variant, high_value as variant) As integer
-		  dim last_index as integer = self.row_count
-		  dim count_changes as integer = 0
+		  var last_index as integer = self.row_count
+		  var count_changes as integer = 0
 		  
-		  dim low_value_int as integer = low_value
-		  dim high_value_int as integer = high_value
+		  var low_value_int as integer = low_value
+		  var high_value_int as integer = high_value
 		  
 		  for index as integer = 0 to last_index
-		    dim tmp as integer = self.get_element(index)
+		    var tmp as integer = self.get_element(index)
 		    
 		    if low_value_int > tmp then
 		      self.set_element(index, low_value_int)
@@ -53,7 +53,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function clone() As clIntegerDataSerie
-		  Dim tmp As New clIntegerDataSerie(Self.name)
+		  var tmp As New clIntegerDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
@@ -82,7 +82,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function clone_structure() As clIntegerDataSerie
-		  Dim tmp As New clIntegerDataSerie(Self.name)
+		  var tmp As New clIntegerDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
@@ -96,8 +96,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function filter_value_in_list(list_of_values() as integer) As variant()
-		  Dim return_boolean() As Variant
-		  dim my_item as integer
+		  var return_boolean() As Variant
+		  var my_item as integer
 		  
 		  For row_index As Integer=0 To items.Ubound
 		    my_item = items(row_index)
@@ -112,8 +112,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function filter_value_in_range(minimum_value as integer, maximum_value as integer) As variant()
-		  Dim return_boolean() As Variant
-		  dim my_item as integer
+		  var return_boolean() As Variant
+		  var my_item as integer
 		  
 		  For row_index As Integer=0 To items.Ubound
 		    my_item = items(row_index)
@@ -139,7 +139,7 @@ Inherits clAbstractDataSerie
 		    Return items(the_element_index)
 		    
 		  Else
-		    Dim v As integer
+		    var v As integer
 		    Return v
 		    
 		  End If
@@ -165,9 +165,9 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_add(right_serie as clIntegerDataSerie) As clIntegerDataSerie
-		  dim mx1 as integer = self.upper_bound
-		  dim mx2 as integer = right_serie.upper_bound
-		  dim mx0 as integer 
+		  var mx1 as integer = self.upper_bound
+		  var mx2 as integer = right_serie.upper_bound
+		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
 		    mx0 = mx1
@@ -175,9 +175,9 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  dim res as new clIntegerDataSerie(self.name+"+"+right_serie.name)
+		  var res as new clIntegerDataSerie(self.name+"+"+right_serie.name)
 		  for i as integer = 0 to mx0
-		    dim n as integer
+		    var n as integer
 		    
 		    if i <= mx1 then
 		      n = self.get_element(i)
@@ -200,7 +200,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_add(right_value as integer) As clIntegerDataSerie
-		  dim res as new clIntegerDataSerie(self.name+"+"+str(right_value))
+		  var res as new clIntegerDataSerie(self.name+"+"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element(i) + right_value)
@@ -215,9 +215,9 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_multiply(right_serie as clIntegerDataSerie) As clIntegerDataSerie
-		  dim mx1 as integer = self.upper_bound
-		  dim mx2 as integer = right_serie.upper_bound
-		  dim mx0 as integer 
+		  var mx1 as integer = self.upper_bound
+		  var mx2 as integer = right_serie.upper_bound
+		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
 		    mx0 = mx1
@@ -225,9 +225,9 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  dim res as new clIntegerDataSerie(self.name+"*"+right_serie.name)
+		  var res as new clIntegerDataSerie(self.name+"*"+right_serie.name)
 		  for i as integer = 0 to mx0
-		    dim n as integer
+		    var n as integer
 		    
 		    if i <= mx1 then
 		      n = self.get_element(i)
@@ -250,7 +250,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_multiply(right_value as integer) As clIntegerDataSerie
-		  dim res as new clIntegerDataSerie(self.name+"*"+str(right_value))
+		  var res as new clIntegerDataSerie(self.name+"*"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element(i) * right_value)
@@ -265,9 +265,9 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_subtract(right_serie as clIntegerDataSerie) As clIntegerDataSerie
-		  dim mx1 as integer = self.upper_bound
-		  dim mx2 as integer = right_serie.upper_bound
-		  dim mx0 as integer 
+		  var mx1 as integer = self.upper_bound
+		  var mx2 as integer = right_serie.upper_bound
+		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
 		    mx0 = mx1
@@ -275,9 +275,9 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  dim res as new clIntegerDataSerie(self.name+"-"+right_serie.name)
+		  var res as new clIntegerDataSerie(self.name+"-"+right_serie.name)
 		  for i as integer = 0 to mx0
-		    dim n as integer
+		    var n as integer
 		    
 		    if i <= mx1 then
 		      n = self.get_element(i)
@@ -300,7 +300,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_subtract(right_value as integer) As clIntegerDataSerie
-		  dim res as new clIntegerDataSerie(self.name+"-"+str(right_value))
+		  var res as new clIntegerDataSerie(self.name+"-"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element(i) - right_value)
@@ -356,7 +356,7 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  While items.Ubound < the_length-1
-		    dim v as integer = default_value.IntegerValue
+		    var v as integer = default_value.IntegerValue
 		    items.Append(v)
 		    
 		  Wend
@@ -366,7 +366,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToDouble() As clNumberDataSerie
-		  dim res as new clNumberDataSerie(self.name + " to double")
+		  var res as new clNumberDataSerie(self.name + " to double")
 		  
 		  for i as integer =0 to self.upper_bound
 		    res.append_element(self.get_element(i))
@@ -380,7 +380,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToString() As clStringDataSerie
-		  dim res as new clStringDataSerie(self.name+" as string")
+		  var res as new clStringDataSerie(self.name+" as string")
 		  
 		  for i as integer = 0 to self.upper_bound
 		    res.append_element(self.get_element_as_string(i))

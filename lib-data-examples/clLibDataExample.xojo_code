@@ -3,7 +3,7 @@ Protected Class clLibDataExample
 Implements support_tests.LogMessageInterface
 	#tag Method, Flags = &h0
 		Function describe() As string()
-		  dim tmp() as string
+		  var tmp() as string
 		  
 		  tmp.append("Example _"  + format(self.id, "000"))
 		  
@@ -19,7 +19,7 @@ Implements support_tests.LogMessageInterface
 
 	#tag Method, Flags = &h0
 		Shared Function get_all_examples() As clLibDataExample()
-		  dim ex() as clLibDataExample
+		  var ex() as clLibDataExample
 		  
 		  ex.Add(new clLibDataExample_001)
 		  ex.Add(new clLibDataExample_002)

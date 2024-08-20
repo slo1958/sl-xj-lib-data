@@ -2,14 +2,14 @@
 Protected Module helper_functions
 	#tag Method, Flags = &h0
 		Function make_variant_array(v as Variant) As variant()
-		  dim res() as variant
+		  var res() as variant
 		  
 		  if not v.IsArray then return res
 		  
 		  Select case v.ArrayElementType 
 		    
 		  case variant.TypeBoolean 
-		    dim s() as Boolean = v
+		    var s() as Boolean = v
 		    
 		    for each a as boolean in s
 		      res.add(a)
@@ -17,7 +17,7 @@ Protected Module helper_functions
 		    next
 		    
 		  case Variant.TypeInteger, Variant.TypeInt32, Variant.TypeInt64
-		    dim s() as integer = v
+		    var s() as integer = v
 		    
 		    for each a as integer in s
 		      res.add(a)
@@ -26,7 +26,7 @@ Protected Module helper_functions
 		    
 		    
 		  case Variant.TypeDouble, variant.TypeSingle
-		    dim s() as double = v
+		    var s() as double = v
 		    
 		    for each a as double in s
 		      res.add(a)
@@ -35,7 +35,7 @@ Protected Module helper_functions
 		    
 		    
 		  case Variant.TypeString
-		    dim s() as string = v
+		    var s() as string = v
 		    
 		    for each a as string in s
 		      res.add(a)
@@ -53,7 +53,7 @@ Protected Module helper_functions
 
 	#tag Method, Flags = &h0
 		Function serie_array(paramarray series as clAbstractDataSerie) As clAbstractDataSerie()
-		  Dim tmp() As clAbstractDataSerie
+		  var tmp() As clAbstractDataSerie
 		  
 		  For Each c As clAbstractDataSerie In series
 		    tmp.Append(c)
@@ -90,7 +90,7 @@ Protected Module helper_functions
 
 	#tag Method, Flags = &h0
 		Function string_array(paramarray  items as string) As string()
-		  Dim ret() As String
+		  var ret() As String
 		  
 		  For Each item As String In items
 		    ret.append(item)  
@@ -104,7 +104,7 @@ Protected Module helper_functions
 
 	#tag Method, Flags = &h0
 		Function variant_array(paramarray  items as variant) As variant()
-		  Dim ret() As variant
+		  var ret() As variant
 		  
 		  For Each item As variant In items
 		    ret.append(item)

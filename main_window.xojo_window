@@ -277,7 +277,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub writemessage(Paramarray vprint as string)
-		  Dim tmp As String
+		  var tmp As String
 		  tmp = join(vprint, " ")
 		  Listbox1.AddRow tmp
 		  
@@ -302,7 +302,7 @@ End
 		  writemessage "started"
 		  
 		  
-		  dim logwriter as  LogMessageInterface = nil
+		  var logwriter as  LogMessageInterface = nil
 		  
 		  if CheckBox1.value then
 		    logwriter = self
@@ -351,7 +351,7 @@ End
 		Sub Action()
 		  writemessage "started"
 		  
-		  dim logwriter as  LogMessageInterface = nil
+		  var logwriter as  LogMessageInterface = nil
 		  
 		  if CheckBox1.value then
 		    logwriter = self

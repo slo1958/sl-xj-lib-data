@@ -3,11 +3,11 @@ Protected Module datatable_to_list
 	#tag Method, Flags = &h0
 		Sub show_table_in_listbox(thetable as TableColumnReaderInterface, thelist as DesktopListBox)
 		  
-		  dim tmp_listbox as DesktopListBox = thelist
-		  dim tmp_tbl as TableColumnReaderInterface = thetable
+		  var tmp_listbox as DesktopListBox = thelist
+		  var tmp_tbl as TableColumnReaderInterface = thetable
 		  
 		  
-		  dim nbr_columns as integer = tmp_tbl.column_count
+		  var nbr_columns as integer = tmp_tbl.column_count
 		  
 		  tmp_listbox.RemoveAllRows
 		  
@@ -28,7 +28,7 @@ Protected Module datatable_to_list
 		  //  
 		  //  show data
 		  //  
-		  dim tmp_last_row as integer = tmp_tbl.row_count
+		  var tmp_last_row as integer = tmp_tbl.row_count
 		  
 		  for row_index as integer = 0 to tmp_last_row - 1
 		    tmp_listbox.AddRow(str(row_index))
@@ -37,7 +37,7 @@ Protected Module datatable_to_list
 		  
 		  
 		  for column_index as integer = 0 to  nbr_columns-1
-		    dim tmp_col as clAbstractDataSerie = tmp_tbl.get_column_by_index(column_index)
+		    var tmp_col as clAbstractDataSerie = tmp_tbl.get_column_by_index(column_index)
 		    
 		    for  row_index as integer = 0 to tmp_last_row - 1
 		      
