@@ -46,6 +46,34 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(source() as Dictionary, name as string, retainColumns() as string)
+		  //
+		  // builds a row reader from a list of dictionaries, returned for instance from parsing a json file
+		  //
+		  // an instance of this call can then be used as input of the constructor of a data table
+		  //
+		  
+		  self.source_dict = source
+		  self.myname = name
+		  self.SampleSize = sampleSize
+		  
+		  var lastIndex as integer = sampleSize
+		  
+		  if lastIndex > source.LastIndex then lastIndex = source.LastIndex
+		  
+		  redim self.column_names(-1)
+		  
+		  for each column_name as string in retainColumns
+		    if self.column_names.IndexOf(column_name.Trim) < 0 then self.column_names.Add(column_name.trim)
+		    
+		  next
+		  
+		  self.last_row_index = -1
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function current_row_number() As integer
 		  // Part of the TableRowReaderInterface interface.
 		  return self.last_row_index

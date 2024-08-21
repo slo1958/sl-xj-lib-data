@@ -88,6 +88,7 @@ Protected Module clDataTable_tests
 		  test_020(logwriter)
 		  test_021(logwriter)
 		  test_022(logwriter)
+		  test_023(logwriter)
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		End Sub
@@ -1033,6 +1034,56 @@ Protected Module clDataTable_tests
 		  next
 		  
 		  var rs as new clListOfDictionariesReader(s, "actual")
+		  
+		  var t_actual  as new clDataTable("actual")
+		  t_actual.append_from_row_source(rs, true)
+		  
+		  
+		  call check_table(log,"list of dicts", t_expected, t_actual)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_023(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  // Build the source list of dictionaries
+		  
+		  var t_expected as new clDataTable("expected",string_array("field_a", "field_c", "field_d"))
+		  
+		  var s() as Dictionary
+		  
+		  for i as integer = 0 to 2
+		    var d as new Dictionary
+		    
+		    var fielda as string = str(1000+i)
+		    var fieldb as string =  "country"+str(i)
+		    var fieldc as string = "city"+str(i)
+		    
+		    d.value("field_a") = fielda
+		    d.value("field_b" ) = fieldb
+		    
+		    if i mod 2 = 0 then
+		      d.value("field_c") = fieldc
+		      
+		    else
+		      fieldc = ""
+		      
+		    end if
+		    
+		    t_expected.append_row(string_array(fielda, fieldc,""))
+		    
+		    s.Add(d)
+		    
+		  next
+		  
+		  var rs as new clListOfDictionariesReader(s, "actual", string_array("field_a","field_c","field_d"))
 		  
 		  var t_actual  as new clDataTable("actual")
 		  t_actual.append_from_row_source(rs, true)
