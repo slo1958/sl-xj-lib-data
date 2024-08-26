@@ -720,6 +720,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  tmp_v = get_element(the_element_index)
 		  
 		  Try 
+		    // some test cases will cause an exception here, this is expected
 		    tmp_d = tmp_v.DoubleValue
 		    
 		  Catch TypeMismatchException

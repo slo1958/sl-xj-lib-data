@@ -16,6 +16,35 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(obj as object)
+		  my_storage = new Dictionary
+		  mutable_flag = False
+		  my_label = ""
+		  
+		  if obj = nil then 
+		    my_label = "built from nil object" 
+		    return
+		    
+		  end if
+		  
+		  var t as Introspection.TypeInfo = Introspection.GetType(obj)
+		  
+		  my_label = t.Name
+		  
+		  for each p as Introspection.PropertyInfo in t.GetProperties
+		    
+		    if  p.PropertyType.IsPrimitive and  p.IsPublic and p.CanRead then
+		      var name as string = p.Name
+		      var value as variant = p.Value(obj)
+		      my_storage.value(name) = value
+		      
+		    end if
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_row_label as string = "")
 		  my_storage = New Dictionary
 		  mutable_flag = False
@@ -90,6 +119,31 @@ Implements Iterable
 		    my_storage.Value(the_cell_name) = the_cell_value
 		    
 		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub update_object(obj as Object)
+		  
+		  if obj = nil then return
+		  
+		  var t as Introspection.TypeInfo = Introspection.GetType(obj)
+		  
+		  for each p as Introspection.PropertyInfo in t.GetProperties
+		    
+		    if  p.PropertyType.IsPrimitive and  p.IsPublic and p.CanWrite then
+		      var name as string = p.Name
+		      
+		      If my_storage.HasKey(name) Then
+		        p.Value(obj) =   my_storage.Value(name) 
+		        
+		      end if
+		      
+		      
+		    end if
+		    
+		  next
 		  
 		End Sub
 	#tag EndMethod

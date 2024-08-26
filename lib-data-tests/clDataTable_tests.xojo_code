@@ -70,7 +70,7 @@ Protected Module clDataTable_tests
 		  test_001(logwriter)
 		  test_002(logwriter)
 		  test_003(logwriter)
-		  
+		  test_004(logwriter)
 		  test_005(logwriter)
 		  test_006(logwriter)
 		  test_007(logwriter)
@@ -82,6 +82,7 @@ Protected Module clDataTable_tests
 		  test_013(logwriter)
 		  test_014(logwriter)
 		  test_015(logwriter)
+		  test_016(logwriter)
 		  test_017(logwriter)
 		  test_018(logwriter)
 		  test_019(logwriter)
@@ -89,6 +90,8 @@ Protected Module clDataTable_tests
 		  test_021(logwriter)
 		  test_022(logwriter)
 		  test_023(logwriter)
+		  test_024(logwriter)
+		  test_025(logwriter)
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		End Sub
@@ -253,6 +256,46 @@ Protected Module clDataTable_tests
 		  
 		  log.end_exec(CurrentMethodName)
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_004(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var rtst As clDataRow
+		  
+		  var my_table As New clDataTable("T1")
+		  
+		  var d as new Dictionary
+		  d.value("aaa") = 1234
+		  d.value("bbb") =  "abcd"
+		  d.value("ccc") =  123.456
+		  rtst = New clDataRow(d)
+		  
+		  my_table.append_row(rtst)
+		  
+		  var c as new test_class_01
+		  c.aaa = 1235
+		  c.bbb = "abce"
+		  c.ddd = 987.654
+		  
+		  rtst = New clDataRow(c)
+		  
+		  my_table.append_row(rtst)
+		  
+		  var col1 as new clDataSerie("aaa", 1234, 1235)
+		  var col2 as new clDataSerie("bbb", "abcd", "abce")
+		  var col3 as new clDataSerie("ccc", 123.456, nil)
+		  var col4 as new clDataSerie("ddd", nil, 987.654)
+		  
+		  var texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
+		  
+		  call check_table(log, "T1", texpected, my_table)
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -772,6 +815,43 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_016(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  var my_table As New clDataTable("T1")
+		  
+		  var d as new test_class_02
+		  d.aaa = 1234
+		  d.bbb =  "abcd"
+		  d.ccc =  "123.456"
+		  
+		  my_table.append_row( New clDataRow(d))
+		  
+		  var c as new test_class_01
+		  c.aaa = 1235
+		  c.bbb = "abce"
+		  c.ddd = 987.654
+		  
+		  
+		  my_table.append_row(New clDataRow(c))
+		  
+		  var col1 as new clDataSerie("aaa", 1234, 1235)
+		  var col2 as new clDataSerie("bbb", "abcd", "abce")
+		  var col3 as new clDataSerie("ccc", 123.456, nil)
+		  var col4 as new clDataSerie("ddd", nil, 987.654)
+		  
+		  var texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
+		  
+		  call check_table(log, "T1", texpected, my_table)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_017(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
@@ -1091,6 +1171,97 @@ Protected Module clDataTable_tests
 		  
 		  call check_table(log,"list of dicts", t_expected, t_actual)
 		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_024(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var my_table As New clDataTable("T1", serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  
+		  var d as new test_class_02
+		  d.aaa = 1234
+		  d.bbb =  "abcd"
+		  d.ccc =  "123.456"
+		  
+		  my_table.append_row( New clDataRow(d), false)
+		  
+		  var c as new test_class_01
+		  c.aaa = 1235
+		  c.bbb = "abce"
+		  c.ddd = 987.654
+		  
+		  
+		  my_table.append_row(New clDataRow(c), True)
+		  
+		  var col1 as new clDataSerie("aaa", 1234, 1235)
+		  var col2 as new clDataSerie("bbb", "abcd", "abce")
+		  var col3 as new clDataSerie("ccc", 123.456, 0)
+		  var col4 as new clDataSerie("ddd", nil, 987.654)
+		  
+		  var texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
+		  
+		  call check_table(log, "T1", texpected, my_table)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_025(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var my_table_1 As New clDataTable("T1", serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  
+		  var r1 as new test_class_02
+		  r1.aaa = 1234
+		  r1.bbb =  "abcd"
+		  r1.ccc =  "123.456"
+		  
+		  my_table_1.append_row( New clDataRow(r1), False)
+		  
+		  var r2 as new test_class_02
+		  r2.aaa = 1235
+		  r2.bbb = "abce"
+		  r2.ccc = "987.654"
+		  
+		  my_table_1.append_row(New clDataRow(r2), False)
+		  
+		  var res() as test_class_03
+		  
+		  for each r as clDataRow in my_table_1
+		    res.Add(new test_class_03)
+		    r.update_object(res(res.LastIndex))
+		    
+		  next 
+		  
+		  for each c as test_class_03 in res
+		    c.aaa = c.aaa*2
+		    c.bbb = "$" + c.bbb
+		    
+		  next
+		  
+		  var my_table_2 As New clDataTable("T1", serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb")))
+		  
+		  for each c as test_class_03 in res
+		    my_table_2.append_row(new clDataRow(c), False)
+		    
+		  next
+		  
+		  
+		  var col1 as new clDataSerie("aaa", 2468, 2470)
+		  var col2 as new clDataSerie("bbb", "$abcd", "$abce")
+		  
+		  var texpected as new clDataTable("T1", serie_array(col1, col2))
+		  
+		  call check_table(log, "T1", texpected, my_table_2)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
