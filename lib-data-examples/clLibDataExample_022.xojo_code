@@ -56,8 +56,8 @@ Inherits clLibDataExample
 		  col_cloned_sales.add_formatting_range(2000,2999.99,"big")
 		  
 		  
-		  call table0.add_column(new clBooleanDataSerie("is_france", table0.filter_apply_function(AddressOf field_filter,"country","France")))
-		  call table0.add_column(new clBooleanDataSerie("is_belgium", table0.filter_apply_function(AddressOf field_filter, "country","Belgique")))
+		  call table0.add_column(new clBooleanDataSerie("is_france", table0.filter_with_function(AddressOf field_filter,"country","France")))
+		  call table0.add_column(new clBooleanDataSerie("is_belgium", table0.filter_with_function(AddressOf field_filter, "country","Belgique")))
 		  
 		  
 		  clBooleanDataSerie(table0.get_column("is_france")).set_format("≠ France","= France")

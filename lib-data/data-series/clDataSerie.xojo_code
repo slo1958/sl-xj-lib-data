@@ -53,11 +53,13 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_apply_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
-		  var return_boolean() As Variant
+		Function filter_value_in_list(list_of_values() as string) As boolean()
+		  var return_boolean() As boolean
+		  var my_item as variant
 		  
 		  For row_index As Integer=0 To items.Ubound
-		    return_boolean.Append(the_filter_function.Invoke(row_index,  items.Ubound, name, items(row_index), function_param))
+		    my_item = items(row_index)
+		    return_boolean.Append(list_of_values.IndexOf(my_item)>=0)
 		    
 		  Next
 		  
@@ -67,13 +69,11 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_value_in_list(list_of_values() as string) As boolean()
-		  var return_boolean() As boolean
-		  var my_item as variant
+		Function filter_with_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
+		  var return_boolean() As Variant
 		  
 		  For row_index As Integer=0 To items.Ubound
-		    my_item = items(row_index)
-		    return_boolean.Append(list_of_values.IndexOf(my_item)>=0)
+		    return_boolean.Append(the_filter_function.Invoke(row_index,  items.Ubound, name, items(row_index), function_param))
 		    
 		  Next
 		  

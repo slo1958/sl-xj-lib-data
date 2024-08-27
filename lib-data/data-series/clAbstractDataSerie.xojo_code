@@ -553,18 +553,18 @@ Implements Xojo.Core.Iterable,itf_json_able
 		End Function
 	#tag EndMethod
 
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function filter_column_by_rows(the_row_index as integer, the_row_count as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
+	#tag EndDelegateDeclaration
+
 	#tag Method, Flags = &h0
-		Function filter_apply_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
+		Function filter_with_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
 		  var return_boolean() As Variant
 		  
 		  Return return_boolean
 		  
 		End Function
 	#tag EndMethod
-
-	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function filter_column_by_rows(the_row_index as integer, the_row_count as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
-	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
 		Function find_row_index_for_value(the_find_value as Variant) As integer()
@@ -1215,7 +1215,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		
 		clone 
 		
-		filter_apply_function
+		filter_with_function
 		
 		get_element
 		

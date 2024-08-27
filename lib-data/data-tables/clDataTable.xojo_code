@@ -479,6 +479,59 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub append_row(SourceObject as object)
+		  
+		  //  Add  a data row to the table using the passed dictionary. Does not create new columns.
+		  //  
+		  //  Parameters:
+		  //  - an instance of a class
+		  //
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  
+		  
+		  
+		  if SourceObject = nil then return
+		  
+		  var d as new Dictionary
+		  var t as Introspection.TypeInfo = Introspection.GetType(SourceObject)
+		  
+		  
+		  for each p as Introspection.PropertyInfo in t.GetProperties
+		    
+		    if  p.PropertyType.IsPrimitive and  p.IsPublic and p.CanRead then
+		      var name as string = p.Name
+		      
+		      d.value(name) = p.Value(SourceObject)
+		      
+		      // If my_storage.HasKey(name) Then
+		      // p.Value(obj) =   my_storage.Value(name) 
+		      // 
+		      // end if
+		      
+		    end if
+		    
+		  next
+		  
+		  for each column as clAbstractDataSerie in self.columns
+		    if d.HasKey(column.name) then
+		      column.append_element(d.value(column.name))
+		      
+		    else
+		      column.append_element("")
+		      
+		    end if
+		    
+		  next
+		  
+		  Self.row_index.append_element("")
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub append_row(the_values() as string)
 		  
 		  //  Add  a data row to the table
@@ -528,6 +581,26 @@ Implements TableColumnReaderInterface,Iterable
 		  Next
 		  
 		  Self.row_index.append_element("")
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub append_rows(source_rows() as clDataRow, create_columns_flag as boolean = True)
+		  //  
+		  //  Add  data rows to the table
+		  //  
+		  //  Parameters:
+		  //  - the data rows as an array
+		  //  - flag allow the creation of missing columns
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  for each row as clDataRow in source_rows
+		    self.append_row(row, create_columns_flag)
+		    
+		  next
 		  
 		End Sub
 	#tag EndMethod
@@ -1189,8 +1262,12 @@ Implements TableColumnReaderInterface,Iterable
 		End Function
 	#tag EndMethod
 
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function filter_row(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+	#tag EndDelegateDeclaration
+
 	#tag Method, Flags = &h0
-		Function filter_apply_function(the_filter_function as filter_row, paramarray function_param as variant) As variant()
+		Function filter_with_function(the_filter_function as filter_row, paramarray function_param as variant) As variant()
 		  //  
 		  //  Applies a filter function to each data row of the table, returns a boolean data serie
 		  //  
@@ -1231,9 +1308,106 @@ Implements TableColumnReaderInterface,Iterable
 		End Function
 	#tag EndMethod
 
-	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function filter_row(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
-	#tag EndDelegateDeclaration
+	#tag Method, Flags = &h0
+		Function find_all_matching_row_indexes(the_column_names() as string, the_column_values() as string, limit as integer = -1) As integer()
+		  //  
+		  //  returns the index of the data rows where the value each columns matches the constants
+		  //  
+		  //  Parameters:
+		  //  - the name of the columns as an array of string
+		  //  - the value searched as a array of string
+		  // - the maximum number of indexes to return, -1 means no limit
+		  //  
+		  //  Returns:
+		  //  - an array with the index of all matching data row as an integer or nill if the referenced column does not exist
+		  //  
+		  
+		  var MatchingIndexes() as integer
+		  var tmp_columns() As clAbstractDataSerie
+		  
+		  for each name as string in the_column_names
+		    var tmp_column as clAbstractDataSerie = get_column(name)
+		    
+		    If tmp_column = Nil Then
+		      Return nil
+		      
+		    End If
+		    
+		    tmp_columns.Append(tmp_column)
+		  next
+		  
+		  
+		  For row_index As Integer = 0 To tmp_columns(0).row_count-1
+		    
+		    var ok_row as Boolean = True
+		    var col_index as integer =  0
+		    
+		    while ok_row and col_index <= tmp_columns.LastIndex
+		      
+		      If tmp_columns(col_index).get_element(row_index) <> the_column_values(col_index) Then
+		        ok_row = False
+		        
+		      else
+		        col_index = col_index + 1
+		        
+		      End If
+		      
+		    wend
+		    
+		    if ok_row and (MatchingIndexes.Count < limit or limit <0) then
+		      MatchingIndexes.Add(row_index)
+		      
+		    end if
+		  Next
+		  
+		  Return MatchingIndexes
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function find_all_matching_row_indexes(the_column_name as string, the_column_value as string, limit as integer = -1) As integer()
+		  //  
+		  //  returns the index of the data rows where the value in column matches the constant
+		  //  
+		  //  Parameters:
+		  //  - the name of the column
+		  //  - the value searched as a string
+		  // - the maximum number of indexes to return, -1 means no limit
+		  //  
+		  //  Returns:
+		  //  - an array with the index of all matching data row as an integer or nill if the referenced column does not exist
+		  //
+		  
+		  var MatchingIndexes() as integer
+		  
+		  var tmp_column As clAbstractDataSerie
+		  
+		  tmp_column = get_column(the_column_name)
+		  
+		  If tmp_column = Nil Then
+		    Return nil
+		    
+		  End If
+		  
+		  For i As Integer = 0 To tmp_column.row_count-1
+		    If tmp_column.get_element(i) = the_column_value Then
+		      if MatchingIndexes.Count < limit and limit>0 then
+		        MatchingIndexes.Add(i)
+		        
+		      end if
+		      
+		    End If
+		    
+		  Next
+		  
+		  Return MatchingIndexes
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function find_first_matching_row(the_column_name as string, the_column_value as string, include_index as Boolean) As clDataRow
@@ -2084,6 +2258,10 @@ Implements TableColumnReaderInterface,Iterable
 		  Return self.table_name
 		End Function
 	#tag EndMethod
+
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function object_allocator(name as string) As object
+	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
 		Sub rename(the_new_name as string)

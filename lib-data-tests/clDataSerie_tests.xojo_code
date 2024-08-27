@@ -184,11 +184,11 @@ Protected Module clDataSerie_tests
 		  // all boolean arrays have the same size
 		  //
 		  
-		  f1 = src.filter_apply_function(AddressOf filter01)
+		  f1 = src.filter_with_function(AddressOf filter01)
 		  
-		  f2 = src.filter_apply_function(AddressOf retain_dataSerie_head, 7)
+		  f2 = src.filter_with_function(AddressOf retain_dataSerie_head, 7)
 		  
-		  f3 = src.filter_apply_function(AddressOf retain_dataSerie_tail)
+		  f3 = src.filter_with_function(AddressOf retain_dataSerie_tail)
 		  
 		  var c1 As New clDataSerie("test001", f1)
 		  var c2 As New clDataSerie("test002", f2)
@@ -333,9 +333,9 @@ Protected Module clDataSerie_tests
 		  var f1() As variant
 		  var f2() As variant 
 		  
-		  f1 = c1.filter_apply_function(AddressOf filter_value_is_not_aaa)
+		  f1 = c1.filter_with_function(AddressOf filter_value_is_not_aaa)
 		  
-		  f2 = c2.filter_apply_function(AddressOf filter_value_is_not_aaa)
+		  f2 = c2.filter_with_function(AddressOf filter_value_is_not_aaa)
 		  
 		  var r1 As New clDataSerie("test001", f1)
 		  var r2 As New clDataSerie("test002", f2)
@@ -539,9 +539,9 @@ Protected Module clDataSerie_tests
 		  var f1() As variant
 		  var f2() As variant 
 		  
-		  f1 = c1.filter_apply_function(AddressOf filter_value_is_parameter,"aaa")
+		  f1 = c1.filter_with_function(AddressOf filter_value_is_parameter,"aaa")
 		  
-		  f2 = c2.filter_apply_function(AddressOf filter_value_is_parameter,"aaa")
+		  f2 = c2.filter_with_function(AddressOf filter_value_is_parameter,"aaa")
 		  
 		  
 		  var r1 As New clDataSerie("test001", f1)

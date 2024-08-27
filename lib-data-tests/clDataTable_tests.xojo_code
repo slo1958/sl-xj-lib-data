@@ -449,13 +449,13 @@ Protected Module clDataTable_tests
 		  
 		  //  The function is filtering on column cc2. The parameter is the value to look for
 		  
-		  var tmp1() as variant = my_table.filter_apply_function(AddressOf filter_008,"bbb0")
+		  var tmp1() as variant = my_table.filter_with_function(AddressOf filter_008,"bbb0")
 		  
 		  call my_table.add_column(new clBooleanDataSerie("is_bbb0", tmp1))
 		  
 		  call my_table.add_column(new clBooleanDataSerie("is_bbb1", clDataSerie(my_table.get_column("cc2")).filter_value_in_list(array("bbb1"))))
 		  
-		  call my_table.add_column(new clBooleanDataSerie("is_bbb3",  my_table.filter_apply_function(AddressOf filter_008, "bbb3")))
+		  call my_table.add_column(new clBooleanDataSerie("is_bbb3",  my_table.filter_with_function(AddressOf filter_008, "bbb3")))
 		  
 		  
 		  var col1 as new clDataSerie("cc1", "aaa0","aaa1","aaa2","aaa3")
