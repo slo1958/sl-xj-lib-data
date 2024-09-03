@@ -2,7 +2,41 @@
 Protected Class clDataRow
 Implements Iterable
 	#tag Method, Flags = &h0
-		Sub Constructor(SourceValues as Dictionary)
+		Function AsObject(allocator as clDataTable.object_allocator = nil) As object
+		  var obj as Object
+		  
+		  if allocator = nil then return nil
+		  
+		  obj = allocator.Invoke(self.get_cell(clDataTable.row_name_column))
+		  
+		  if obj = nil then return nil
+		  
+		  self.update_object(obj)
+		  
+		  return obj
+		   
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function AsObject(TypeFieldName as string, allocator as clDataTable.object_allocator = nil) As object
+		  var obj as Object
+		  
+		  if allocator = nil then return nil
+		  
+		  obj = allocator.Invoke(self.get_cell(TypeFieldName))
+		  
+		  if obj = nil then return nil
+		  
+		  self.update_object(obj)
+		  
+		  return obj
+		   
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(SourceValues as Dictionary, the_row_label as string = "")
 		  //  
 		  //  Create a row based on a dictionary
 		  //  
@@ -27,6 +61,11 @@ Implements Iterable
 		    my_storage.Value(k) = SourceValues.Value(k)
 		    
 		  next
+		  
+		  if the_row_label.trim.Length > 0 then
+		    self.my_label = the_row_label.Trim
+		    
+		  end if
 		  
 		End Sub
 	#tag EndMethod

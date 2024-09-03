@@ -415,6 +415,23 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  var tmp_row_count As Integer = Self.row_count
 		  
+		  if the_row.name.Trim = "" or not row_name_as_column then
+		    
+		  else
+		    var tmp_column as clAbstractDataSerie = self.get_column(row_name_column)
+		    
+		    If tmp_column = Nil And create_columns_flag Then
+		      tmp_column = add_column(row_name_column)
+		      
+		    End If
+		    
+		    if tmp_column <> nil then
+		      tmp_column.append_element(the_row.name)
+		      
+		    end if
+		    
+		  end if
+		  
 		  For Each column As String In the_row
 		    var tmp_column As clAbstractDataSerie = Self.get_column(column)
 		    
@@ -505,11 +522,6 @@ Implements TableColumnReaderInterface,Iterable
 		      
 		      d.value(name) = p.Value(SourceObject)
 		      
-		      // If my_storage.HasKey(name) Then
-		      // p.Value(obj) =   my_storage.Value(name) 
-		      // 
-		      // end if
-		      
 		    end if
 		    
 		  next
@@ -599,6 +611,25 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  for each row as clDataRow in source_rows
 		    self.append_row(row, create_columns_flag)
+		    
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub append_rows(source_objects() as object)
+		  //  
+		  //  Add  data rows to the table
+		  //  
+		  //  Parameters:
+		  //  - the data rows as an array
+		  //
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  for each obj as object in source_objects
+		    self.append_row(obj)
 		    
 		  next
 		  
@@ -2183,6 +2214,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  allow_local_columns =  False
 		  index_explicit_when_iterate = False
+		  row_name_as_column = False
 		End Sub
 	#tag EndMethod
 
@@ -2541,6 +2573,10 @@ Implements TableColumnReaderInterface,Iterable
 		Protected row_index As clDataSerieRowID
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		row_name_as_column As Boolean
+	#tag EndProperty
+
 	#tag Property, Flags = &h21
 		Private statistics_name_prefix As String
 	#tag EndProperty
@@ -2555,6 +2591,9 @@ Implements TableColumnReaderInterface,Iterable
 
 
 	#tag Constant, Name = loaded_data_source_column, Type = String, Dynamic = False, Default = \"loaded_from", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = row_name_column, Type = String, Dynamic = False, Default = \"row_type", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = statistics_average_column, Type = String, Dynamic = False, Default = \"average", Scope = Public

@@ -1,6 +1,27 @@
 #tag Module
 Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
+		Function alloc_obj(name as string) As object
+		  select case name
+		  case "test_class_01"
+		    return new test_class_01
+		    
+		  case "test_class_02"
+		    return new test_class_02
+		    
+		  case "test_class_03"
+		    return new test_class_03
+		    
+		  case else
+		    return nil
+		    
+		  end select
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function alloc_series_019(column_name as string, column_type_info as string) As clAbstractDataSerie
 		  if column_name = "Sales" then
 		    Return new clNumberDataSerie(column_name)
@@ -92,6 +113,8 @@ Protected Module clDataTable_tests
 		  test_023(logwriter)
 		  test_024(logwriter)
 		  test_025(logwriter)
+		  test_026(logwriter)
+		  
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		End Sub
@@ -1262,6 +1285,63 @@ Protected Module clDataTable_tests
 		  var texpected as new clDataTable("T1", serie_array(col1, col2))
 		  
 		  call check_table(log, "T1", texpected, my_table_2)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_026(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var my_table_0 As New clDataTable("T1", serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  my_table_0.row_name_as_column = True
+		  
+		  var r1 as new test_class_02
+		  r1.aaa = 1234
+		  r1.bbb =  "abcd"
+		  r1.ccc =  "123.456"
+		  
+		  my_table_0.append_row( New clDataRow(r1), True)
+		  
+		  var r2 as new test_class_02
+		  r2.aaa = 1235
+		  r2.bbb = "abce"
+		  r2.ccc = "987.654"
+		  
+		  my_table_0.append_row(New clDataRow(r2), False)
+		  
+		  
+		  var res_1() as test_class_02
+		  var res_2() as test_class_02
+		  
+		  
+		  for each r as clDataRow in my_table_0
+		    res_1.Add(test_class_02(r.AsObject("row_type", AddressOf alloc_obj)))
+		    
+		    res_2.Add(test_class_02(r.AsObject(AddressOf alloc_obj)))
+		    
+		  next
+		  
+		  var my_table_1 as new clDataTable("T2",serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  my_table_1.append_rows(res_1)
+		  
+		  
+		  var my_table_2 as new clDataTable("T2",serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  my_table_2.append_rows(res_2)
+		  
+		  
+		  
+		  var col1 as new clDataSerie("aaa", 1234, 1235)
+		  var col2 as new clDataSerie("bbb", "abcd", "abce")
+		  var col3 as new clNumberDataSerie("ccc", 123.456, 987.654)
+		  
+		  var texpected as new clDataTable("T2", serie_array(col1, col2,col3))
+		  
+		  call check_table(log, "T2a", texpected, my_table_1)
+		  call check_table(log, "T2b", texpected, my_table_2)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
