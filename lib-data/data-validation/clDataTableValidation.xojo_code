@@ -218,7 +218,7 @@ Implements TableColumnReaderInterface
 		      tmp(1).rename(message_output_column )
 		      
 		      var tmp_table as new clDataTable("temp", tmp)
-		      call tmp_table.add_column(field_name_output_column, column.name)
+		      call tmp_table.AddColumn(field_name_output_column, column.name)
 		      
 		      self.results_table.append_from_column_source(tmp_table)
 		      

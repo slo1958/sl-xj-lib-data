@@ -42,11 +42,11 @@ Inherits clLibDataExample
 		  table0.append_row(Array("","Marseille",2200))
 		  table0.append_row(Array("Belgique","",2300))
 		  
-		  call table0.add_column(col_sales *2 )
+		  call table0.AddColumn(col_sales *2 )
 		  
 		  call table0.clip_range("sales",1000, 2000)
 		  
-		  call table0.add_column(col_sales.clipped_by_range(1100, 1500) * 2)
+		  call table0.AddColumn(col_sales.clipped_by_range(1100, 1500) * 2)
 		  
 		  var ret() as TableColumnReaderInterface
 		  ret.add(table0)

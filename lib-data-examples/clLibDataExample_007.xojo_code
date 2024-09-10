@@ -33,18 +33,18 @@ Inherits clLibDataExample
 		  var table0 As New clDataTable("mytable")
 		  
 		  
-		  call table0.add_column(new clDataSerie("name"))
-		  call table0.add_column(new clNumberDataSerie("quantity"))
-		  call table0.add_column(new clNumberDataSerie("unit_price"))
+		  call table0.AddColumn(new clDataSerie("name"))
+		  call table0.AddColumn(new clNumberDataSerie("quantity"))
+		  call table0.AddColumn(new clNumberDataSerie("unit_price"))
 		  
 		  table0.append_row(Array("alpha",50, 6.5))
 		  table0.append_row(Array("beta", 20, 18))
 		  table0.append_row(Array("gamma", 10, 50))
 		  
 		  
-		  var s1 as clAbstractDataSerie = table0.add_column(table0.get_number_column("unit_price") * table0.get_number_column("quantity")).rename("sales")
+		  var s1 as clAbstractDataSerie = table0.AddColumn(table0.get_number_column("unit_price") * table0.get_number_column("quantity")).rename("sales")
 		  
-		  var s2 as clAbstractDataSerie = table0.add_column(clNumberDataSerie(table0.get_column("unit_price")) * clNumberDataSerie(table0.get_column("quantity")))
+		  var s2 as clAbstractDataSerie = table0.AddColumn(clNumberDataSerie(table0.get_column("unit_price")) * clNumberDataSerie(table0.get_column("quantity")))
 		  return Array(table0)
 		  
 		  

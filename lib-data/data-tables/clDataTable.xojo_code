@@ -2,7 +2,7 @@
 Protected Class clDataTable
 Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
-		Function add_column(the_column as clAbstractDataSerie) As clAbstractDataSerie
+		Function AddColumn(the_column as clAbstractDataSerie) As clAbstractDataSerie
 		  //  
 		  //  Add a data serie as a column to the table
 		  //  
@@ -64,7 +64,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function add_column(the_column_name as String) As clAbstractDataSerie
+		Function AddColumn(the_column_name as String) As clAbstractDataSerie
 		  //  
 		  //  Add  an empty column to the table
 		  //  
@@ -76,12 +76,12 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  var v as variant
 		  
-		  return add_column(the_column_name, v)
+		  return AddColumn(the_column_name, v)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function add_column(the_column_name as String, default_value as variant) As clAbstractDataSerie
+		Function AddColumn(the_column_name as String, default_value as variant) As clAbstractDataSerie
 		  //  
 		  //  Add  an constant column to the table
 		  //  
@@ -119,7 +119,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Else
 		    //  could be nil if the column exists in the parent datatable
-		    tmp_column = link_to_parent.add_column( tmp_column_name)
+		    tmp_column = link_to_parent.AddColumn( tmp_column_name)
 		    
 		  End If
 		  
@@ -135,7 +135,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function add_columns(the_columns() as clAbstractDataSerie) As clAbstractDataSerie()
+		Function AddColumns(the_columns() as clAbstractDataSerie) As clAbstractDataSerie()
 		  //  
 		  //  Add  a set of  empty columns to the table
 		  //  
@@ -149,7 +149,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var return_array() As clAbstractDataSerie
 		  
 		  for each col as clAbstractDataSerie in the_columns
-		    return_array.add( self.add_column(col))
+		    return_array.add( self.AddColumn(col))
 		    
 		  next
 		  
@@ -159,7 +159,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function add_columns(the_column_names() as string) As clAbstractDataSerie()
+		Function AddColumns(the_column_names() as string) As clAbstractDataSerie()
 		  //  
 		  //  Add  a set of  empty columns to the table
 		  //  
@@ -174,7 +174,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var return_array() As clAbstractDataSerie
 		  var v as variant 
 		  For Each name As String In the_column_names
-		    return_array.append(add_column(name, v))
+		    return_array.append(AddColumn(name, v))
 		    
 		  Next
 		  
@@ -275,7 +275,7 @@ Implements TableColumnReaderInterface,Iterable
 		      dst_tmp_column.append_serie(src_tmp_column)
 		      
 		    elseif create_missing_columns then
-		      dst_tmp_column = Self.add_column(column_name)
+		      dst_tmp_column = Self.AddColumn(column_name)
 		      dst_tmp_column.set_length(length_before)
 		      
 		      dst_tmp_column.append_serie(src_tmp_column)
@@ -322,7 +322,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var tmp_column as clAbstractDataSerie = self.get_column(row_name_column)
 		    
 		    If tmp_column = Nil And create_columns_flag Then
-		      tmp_column = add_column(row_name_column)
+		      tmp_column = AddColumn(row_name_column)
 		      
 		    End If
 		    
@@ -337,7 +337,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var tmp_column As clAbstractDataSerie = Self.get_column(column)
 		    
 		    If tmp_column = Nil And create_columns_flag Then
-		      tmp_column = add_column(column)
+		      tmp_column = AddColumn(column)
 		      
 		    End If
 		    
@@ -586,7 +586,7 @@ Implements TableColumnReaderInterface,Iterable
 		      if create_missing_columns then
 		        tmp_col = new clDataSerie(column_name)
 		        tmp_col.set_length(length_before)
-		        call self.add_column(tmp_col)
+		        call self.AddColumn(tmp_col)
 		        
 		      else
 		        add_error("append_row_from_table","Ignoring column " + column_name)
@@ -639,7 +639,7 @@ Implements TableColumnReaderInterface,Iterable
 		      if tmp_col = nil then
 		        tmp_col = new clDataSerie(target_column_name)
 		        tmp_col.set_length(length_before)
-		        call self.add_column(tmp_col)
+		        call self.AddColumn(tmp_col)
 		        
 		      end if
 		    end if
@@ -838,7 +838,7 @@ Implements TableColumnReaderInterface,Iterable
 		  for each col as clAbstractDataSerie in self.columns
 		    var new_col as clAbstractDataSerie = col.clone()
 		    
-		    call output_table.add_column(new_col)
+		    call output_table.AddColumn(new_col)
 		    
 		  next
 		  
@@ -942,7 +942,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  For Each c As clAbstractDataSerie In tmp_columns
 		    //  add column takes care of adjusting the length
-		    call Self.add_column(c)
+		    call Self.AddColumn(c)
 		    
 		  Next
 		End Sub
@@ -987,7 +987,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  For Each c As clAbstractDataSerie In tmp_columns
 		    //  add column takes care of adjusting the length
-		    call Self.add_column(c)
+		    call Self.AddColumn(c)
 		    
 		  Next
 		  
@@ -1017,7 +1017,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  For Each name As string In column_names
 		    var temp_name as string = name.Trim
-		    call Self.add_column(temp_name)
+		    call Self.AddColumn(temp_name)
 		    
 		  Next
 		  
@@ -1132,7 +1132,7 @@ Implements TableColumnReaderInterface,Iterable
 		      var tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
 		      
 		      If tmp_column <> Nil Then
-		        call self.add_column(tmp_column)
+		        call self.AddColumn(tmp_column)
 		        
 		      else
 		        add_error("select_column","cannot find column " + column_name)
@@ -1146,7 +1146,7 @@ Implements TableColumnReaderInterface,Iterable
 		      var tmp_column As clAbstractDataSerie = table_source.get_column(column_name)
 		      
 		      If tmp_column <> Nil Then
-		        call self.add_column(tmp_column.clone)
+		        call self.AddColumn(tmp_column.clone)
 		        
 		      else
 		        add_error("select_column","cannot find column " + column_name)
@@ -1225,7 +1225,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var col_type as string = row.get_cell(structure_type_column)
 		    var col_title as string  = row.get_cell(structure_title_column)
 		    
-		    var column as clAbstractDataSerie = tbl.add_column(clDataType.CreateDataSerie(col_name, col_type))
+		    var column as clAbstractDataSerie = tbl.AddColumn(clDataType.CreateDataSerie(col_name, col_type))
 		    
 		    if col_title.Length > 0 then
 		      column.display_title = col_title
@@ -2408,7 +2408,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var tmp_column As clAbstractDataSerie = Self.get_column(column_name)
 		    
 		    If tmp_column <> Nil Then
-		      call res.add_column(tmp_column)
+		      call res.AddColumn(tmp_column)
 		      
 		    else
 		      add_error("select_column","cannot find column " + column_name)
@@ -2438,7 +2438,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    if can_create then
 		      temp_column = new clDataSerie(the_column_name, the_values)
-		      call self.add_column(temp_column)
+		      call self.AddColumn(temp_column)
 		      
 		      return temp_column
 		      

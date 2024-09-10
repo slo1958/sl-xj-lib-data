@@ -30,7 +30,7 @@ Inherits clLibDataExample
 		  
 		  var table0 As New clDataTable("T1")
 		  
-		  call table0.add_columns(Array("cc1","cc2","cc3"))
+		  call table0.AddColumns(Array("cc1","cc2","cc3"))
 		  
 		  table0.append_row(Array("aaa0","bbb0","ccc0"))
 		  table0.append_row(Array("aaa1","bbb1","ccc1"))

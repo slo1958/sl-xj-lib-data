@@ -33,7 +33,7 @@ Inherits clLibDataExample
 		  
 		  var table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  call table0.AddColumns(Array("country","city","sales"))
 		  
 		  table0.append_row(Array("France","Paris",1100))
 		  table0.append_row(Array("France","Marseille",1200))
@@ -44,9 +44,9 @@ Inherits clLibDataExample
 		  
 		  var tmp1() as variant = table0.filter_with_function(AddressOf field_filter,"country","France")
 		  
-		  call table0.add_column(new clDataSerie("is_france", tmp1))
+		  call table0.AddColumn(new clDataSerie("is_france", tmp1))
 		  
-		  call table0.add_column(new clDataSerie("is_belgium",  table0.filter_with_function(AddressOf field_filter, "country","Belgique")))
+		  call table0.AddColumn(new clDataSerie("is_belgium",  table0.filter_with_function(AddressOf field_filter, "country","Belgique")))
 		  
 		  return array(table0)
 		  

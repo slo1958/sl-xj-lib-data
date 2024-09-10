@@ -268,7 +268,7 @@ Protected Module clDataTable_tests
 		  var my_table3 As clDataTable = my_table1.select_columns(Array("aaa","zccc")) // zccc does not exist, not included in my_table3
 		  
 		  
-		  my_col = my_table3.add_column("xyz") 
+		  my_col = my_table3.AddColumn("xyz") 
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("xyz", nil, nil) 
@@ -435,7 +435,7 @@ Protected Module clDataTable_tests
 		  
 		  var my_table As New clDataTable("T1")
 		  
-		  call my_table.add_columns(Array("cc1","cc2","cc3"))
+		  call my_table.AddColumns(Array("cc1","cc2","cc3"))
 		  
 		  my_table.append_row(Array("aaa0","bbb0","ccc0"))
 		  my_table.append_row(Array("aaa1","bbb1","ccc1"))
@@ -463,7 +463,7 @@ Protected Module clDataTable_tests
 		  
 		  var my_table As New clDataTable("T1")
 		  
-		  call my_table.add_columns(Array("cc1","cc2","cc3"))
+		  call my_table.AddColumns(Array("cc1","cc2","cc3"))
 		  
 		  my_table.append_row(Array("aaa0","bbb0","ccc0"))
 		  my_table.append_row(Array("aaa1","bbb1","ccc1"))
@@ -474,11 +474,11 @@ Protected Module clDataTable_tests
 		  
 		  var tmp1() as variant = my_table.filter_with_function(AddressOf filter_008,"bbb0")
 		  
-		  call my_table.add_column(new clBooleanDataSerie("is_bbb0", tmp1))
+		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb0", tmp1))
 		  
-		  call my_table.add_column(new clBooleanDataSerie("is_bbb1", clDataSerie(my_table.get_column("cc2")).filter_value_in_list(array("bbb1"))))
+		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb1", clDataSerie(my_table.get_column("cc2")).filter_value_in_list(array("bbb1"))))
 		  
-		  call my_table.add_column(new clBooleanDataSerie("is_bbb3",  my_table.filter_with_function(AddressOf filter_008, "bbb3")))
+		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb3",  my_table.filter_with_function(AddressOf filter_008, "bbb3")))
 		  
 		  
 		  var col1 as new clDataSerie("cc1", "aaa0","aaa1","aaa2","aaa3")
@@ -580,9 +580,9 @@ Protected Module clDataTable_tests
 		  var temp_row As clDataRow
 		  var mytable As New clDataTable("T1")
 		  
-		  call mytable.add_column(new clDataSerie("name"))
-		  call mytable.add_column(new clNumberDataSerie("quantity"))
-		  call mytable.add_column(new clNumberDataSerie("unit_price"))
+		  call mytable.AddColumn(new clDataSerie("name"))
+		  call mytable.AddColumn(new clNumberDataSerie("quantity"))
+		  call mytable.AddColumn(new clNumberDataSerie("unit_price"))
 		  
 		  temp_row = New clDataRow
 		  temp_row.set_cell("name","alpha")
@@ -596,7 +596,7 @@ Protected Module clDataTable_tests
 		  temp_row.set_cell("unit_price",8)
 		  mytable.append_row(temp_row)
 		  
-		  call mytable.add_column(clNumberDataSerie(mytable.get_column("unit_price")) * clNumberDataSerie(mytable.get_column("quantity")))
+		  call mytable.AddColumn(clNumberDataSerie(mytable.get_column("unit_price")) * clNumberDataSerie(mytable.get_column("quantity")))
 		  
 		  var col1 as new clDataSerie("name", "alpha","alpha")
 		  var col2 as new clNumberDataSerie("quantity", 50, 20)
@@ -622,7 +622,7 @@ Protected Module clDataTable_tests
 		  
 		  var table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  call table0.AddColumns(Array("country","city","sales"))
 		  
 		  table0.append_row(Array("France","Paris",1100))
 		  table0.append_row(Array("","Marseille",1200))
@@ -649,7 +649,7 @@ Protected Module clDataTable_tests
 		  
 		  var table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  call table0.AddColumns(Array("country","city","sales"))
 		  
 		  table0.append_row(Array("France","Paris",1100))
 		  table0.append_row(Array("","Marseille",1200))
@@ -660,7 +660,7 @@ Protected Module clDataTable_tests
 		  
 		  var filterserie as new clBooleanDataSerie("mask",(False, False,True, False, True, False)) 
 		  
-		  call table0.add_column(filterserie)
+		  call table0.AddColumn(filterserie)
 		  
 		  var tmp_row as clDataRow = table0.get_row(3, False)
 		  
@@ -690,7 +690,7 @@ Protected Module clDataTable_tests
 		  
 		  var table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  call table0.AddColumns(Array("country","city","sales"))
 		  
 		  table0.append_row(Array("France","Paris",1100))
 		  table0.append_row(Array("USA","NewYork",1400))
@@ -734,7 +734,7 @@ Protected Module clDataTable_tests
 		  
 		  var table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales","product"))
+		  call table0.AddColumns(Array("country","city","sales","product"))
 		  
 		  table0.append_row(Array("France","Paris",1100,"AA"))
 		  table0.append_row(Array("","Marseille",1200,"AA"))
@@ -748,14 +748,14 @@ Protected Module clDataTable_tests
 		    filter_country.append_element(cell = "Belgique")
 		    
 		  next
-		  call table0.add_column(filter_country)
+		  call table0.AddColumn(filter_country)
 		  
 		  var filter_product as new clBooleanDataSerie("mask_product")
 		  for each cell as string in table0.get_column("product")
 		    filter_product.append_element(cell = "BB")
 		    
 		  next
-		  call table0.add_column(not filter_product)
+		  call table0.AddColumn(not filter_product)
 		  
 		  
 		  table0.index_visible_when_iterate(True)
@@ -789,7 +789,7 @@ Protected Module clDataTable_tests
 		  
 		  var table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales","product"))
+		  call table0.AddColumns(Array("country","city","sales","product"))
 		  
 		  table0.append_row(Array("France","Paris",1100,"AA"))
 		  table0.append_row(Array("","Marseille",1200,"AA"))
@@ -881,7 +881,7 @@ Protected Module clDataTable_tests
 		  
 		  var table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  call table0.AddColumns(Array("country","city","sales"))
 		  
 		  table0.append_row(Array("France","Paris",1100))
 		  table0.append_row(Array("","Marseille",1200))
@@ -923,11 +923,11 @@ Protected Module clDataTable_tests
 		  
 		  var table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
 		  
-		  call table0.add_column(col_sales *2 )
+		  call table0.AddColumn(col_sales *2 )
 		  
 		  var nb as integer = table0.clip_range("sales",1000, 2000)
 		  
-		  call table0.add_column(col_sales.clipped_by_range(1100, 1500) * 2)
+		  call table0.AddColumn(col_sales.clipped_by_range(1100, 1500) * 2)
 		  
 		  // create expected table
 		  var col1 as clDataSerie = col_country.clone()
@@ -1643,11 +1643,11 @@ Protected Module clDataTable_tests
 		  
 		  
 		  var my_table as new clDataTable("calc")
-		  call my_table.add_column(new clStringDataSerie("Alpha"))
-		  call my_table.add_column(new clIntegerDataSerie("Beta"))
-		  call my_table.add_column(new clNumberDataSerie("Delta"))
-		  call my_table.add_column(new clNumberDataSerie("Gamma"))
-		  call my_table.add_column(new clIntegerDataSerie("Group"))
+		  call my_table.AddColumn(new clStringDataSerie("Alpha"))
+		  call my_table.AddColumn(new clIntegerDataSerie("Beta"))
+		  call my_table.AddColumn(new clNumberDataSerie("Delta"))
+		  call my_table.AddColumn(new clNumberDataSerie("Gamma"))
+		  call my_table.AddColumn(new clIntegerDataSerie("Group"))
 		  
 		  
 		  var dct_mapping_file3 as new Dictionary
@@ -1664,12 +1664,12 @@ Protected Module clDataTable_tests
 		  my_table.append_rows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
 		  
 		  var expected_table as new clDataTable("calc")
-		  call expected_table.add_column(new clStringDataSerie("Alpha"))
-		  call expected_table.add_column(new clIntegerDataSerie("Beta"))
-		  call expected_table.add_column(new clNumberDataSerie("Delta"))
-		  call expected_table.add_column(new clNumberDataSerie("Gamma"))
-		  call expected_table.add_column(new clIntegerDataSerie("Group"))
-		  call expected_table.add_column(new clStringDataSerie("New_col"))
+		  call expected_table.AddColumn(new clStringDataSerie("Alpha"))
+		  call expected_table.AddColumn(new clIntegerDataSerie("Beta"))
+		  call expected_table.AddColumn(new clNumberDataSerie("Delta"))
+		  call expected_table.AddColumn(new clNumberDataSerie("Gamma"))
+		  call expected_table.AddColumn(new clIntegerDataSerie("Group"))
+		  call expected_table.AddColumn(new clStringDataSerie("New_col"))
 		  
 		  expected_table.append_rows(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
 		  

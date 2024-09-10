@@ -43,12 +43,12 @@ Inherits clLibDataExample
 		  fld_file3  = fld_folder.Child("myfile4_C_tab.txt") 
 		  
 		  var my_table as new clDataTable("consolidated")
-		  call my_table.add_column(new clStringDataSerie("Alpha"))
-		  call my_table.add_column(new clIntegerDataSerie("Beta"))
-		  call my_table.add_column(new clNumberDataSerie("Delta"))
-		  call my_table.add_column(new clNumberDataSerie("Gamma"))
-		  call my_table.add_column(new clIntegerDataSerie("Group"))
-		  call my_table.add_column(new clStringDataSerie(clDataTable.loaded_data_source_column))
+		  call my_table.AddColumn(new clStringDataSerie("Alpha"))
+		  call my_table.AddColumn(new clIntegerDataSerie("Beta"))
+		  call my_table.AddColumn(new clNumberDataSerie("Delta"))
+		  call my_table.AddColumn(new clNumberDataSerie("Gamma"))
+		  call my_table.AddColumn(new clIntegerDataSerie("Group"))
+		  call my_table.AddColumn(new clStringDataSerie(clDataTable.loaded_data_source_column))
 		  
 		  var dct_mapping_file3 as new Dictionary
 		  dct_mapping_file3.value("Un") = "Alpha"

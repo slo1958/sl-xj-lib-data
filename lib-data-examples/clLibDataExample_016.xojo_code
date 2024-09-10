@@ -53,7 +53,7 @@ Inherits clLibDataExample
 		  total_penaty.rename("penalty")
 		  
 		  // update table
-		  call table0.add_columns(serie_array(delay, flagged, total_penaty))
+		  call table0.AddColumns(serie_array(delay, flagged, total_penaty))
 		  
 		  var ret() as TableColumnReaderInterface
 		  

@@ -28,7 +28,7 @@ Inherits clLibDataExample
 		  
 		  var table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  call table0.AddColumns(Array("country","city","sales"))
 		  
 		  table0.append_row(Array("France","Paris",1100))
 		  table0.append_row(Array("","Marseille",1200))

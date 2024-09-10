@@ -35,8 +35,8 @@ Inherits clLibDataExample
 		  
 		  var table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city"))
-		  var col_cloned_sales as clNumberDataSerie =  clNumberDataSerie(table0.add_column(new clNumberDataSerie("sales")))
+		  call table0.AddColumns(Array("country","city"))
+		  var col_cloned_sales as clNumberDataSerie =  clNumberDataSerie(table0.AddColumn(new clNumberDataSerie("sales")))
 		  
 		  table0.append_row(Array("France","Paris",600))
 		  table0.append_row(Array("France","Marseille",1200))
@@ -48,7 +48,7 @@ Inherits clLibDataExample
 		  col_cloned_sales = col_cloned_sales.clone()
 		  col_cloned_sales.name = "Formatted sales"
 		  
-		  call table0.add_column(col_cloned_sales)
+		  call table0.AddColumn(col_cloned_sales)
 		  
 		  col_cloned_sales.active_range_formatting("","")
 		  col_cloned_sales.add_formatting_range(0,999.99,"small")
@@ -56,8 +56,8 @@ Inherits clLibDataExample
 		  col_cloned_sales.add_formatting_range(2000,2999.99,"big")
 		  
 		  
-		  call table0.add_column(new clBooleanDataSerie("is_france", table0.filter_with_function(AddressOf field_filter,"country","France")))
-		  call table0.add_column(new clBooleanDataSerie("is_belgium", table0.filter_with_function(AddressOf field_filter, "country","Belgique")))
+		  call table0.AddColumn(new clBooleanDataSerie("is_france", table0.filter_with_function(AddressOf field_filter,"country","France")))
+		  call table0.AddColumn(new clBooleanDataSerie("is_belgium", table0.filter_with_function(AddressOf field_filter, "country","Belgique")))
 		  
 		  
 		  clBooleanDataSerie(table0.get_column("is_france")).set_format("≠ France","= France")

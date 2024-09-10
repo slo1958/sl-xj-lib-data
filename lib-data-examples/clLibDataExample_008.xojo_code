@@ -34,7 +34,7 @@ Inherits clLibDataExample
 		  
 		  var table0 As New clDataTable("mytable")
 		  
-		  call table0.add_columns(Array("country","city","sales"))
+		  call table0.AddColumns(Array("country","city","sales"))
 		  
 		  table0.append_row(Array("France","Paris",1100))
 		  table0.append_row(Array("France","Marseille",1200))
@@ -52,9 +52,9 @@ Inherits clLibDataExample
 		    
 		  next
 		  
-		  call table0.add_column(new clIntegerDataSerie("is_france"))
-		  call table0.add_column(new clIntegerDataSerie("is_belgium"))
-		  call table0.add_column(new clIntegerDataSerie("is_europe"))
+		  call table0.AddColumn(new clIntegerDataSerie("is_france"))
+		  call table0.AddColumn(new clIntegerDataSerie("is_belgium"))
+		  call table0.AddColumn(new clIntegerDataSerie("is_europe"))
 		  
 		  call table0.set_column_values("is_france", is_france, false)
 		  call table0.set_column_values("is_belgium", is_belgium, false)
