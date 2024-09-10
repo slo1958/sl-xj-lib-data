@@ -2,6 +2,22 @@
 Protected Class clAbstractDataSerie
 Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
+		Sub AddMetaData(type as string, message as string)
+		  //  
+		  //  Add meta data
+		  //  
+		  //  Parameters
+		  // - type (string) the key for the meta data
+		  //  - message (string) the associated message
+		  //  
+		  //  Returns:
+		  //  
+		  
+		  meta_dict.AddMetaData(type, message)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Add_alias(alias as string)
 		  //  
 		  //  Add an alias to a column. Record an error if the alias is matching the name of the column or if the name is already defined.
@@ -43,22 +59,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  
 		  self.last_error_message = msg
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub add_meta_data(type as string, message as string)
-		  //  
-		  //  Add meta data
-		  //  
-		  //  Parameters
-		  // - type (string) the key for the meta data
-		  //  - message (string) the associated message
-		  //  
-		  //  Returns:
-		  //  
-		  
-		  meta_dict.add_meta_data(type, message)
 		End Sub
 	#tag EndMethod
 
@@ -440,7 +440,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  
 		  target_data_serie.reset()
-		  target_data_serie.add_meta_data("source", self.name)
+		  target_data_serie.AddMetaData("source", self.name)
 		  
 		  for index as Integer = 0 to self.upper_bound
 		    target_data_serie.append_element(self.get_element(index))

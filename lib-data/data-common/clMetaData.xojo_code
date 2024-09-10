@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clMetaData
 	#tag Method, Flags = &h0
-		Sub add_meta_data(type as string, message as string)
+		Sub AddMetaData(type as string, message as string)
 		  var tmp_str as string = type.Trim+":"+message.Trim
 		  
 		  data_list.Append(tmp_str)

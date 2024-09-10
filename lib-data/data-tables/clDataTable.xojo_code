@@ -218,7 +218,7 @@ Implements TableColumnReaderInterface,Iterable
 		      dst_tmp_column.append_serie(src_tmp_column)
 		      
 		    else
-		      add_error("append_row_from_table","Ignoring column " + column_name)
+		      AddError("append_row_from_table","Ignoring column " + column_name)
 		      
 		    End If
 		    
@@ -236,6 +236,30 @@ Implements TableColumnReaderInterface,Iterable
 		  Next
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AddError(source_fct as string, error_msg as string)
+		  System.DebugLog(source_fct + " " + error_msg)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AddMetaData(type as string, message as string)
+		  //  
+		  //  Add  meta data to the table
+		  //  
+		  //  Parameters:
+		  //  - the meta data type
+		  //  - the meta data value
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  
+		  meta_dict.AddMetaData(type, message)
 		End Sub
 	#tag EndMethod
 
@@ -526,7 +550,7 @@ Implements TableColumnReaderInterface,Iterable
 		        call self.AddColumn(tmp_col)
 		        
 		      else
-		        add_error("append_row_from_table","Ignoring column " + column_name)
+		        AddError("append_row_from_table","Ignoring column " + column_name)
 		        
 		      end if 
 		    end if
@@ -589,30 +613,6 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub add_error(source_fct as string, error_msg as string)
-		  System.DebugLog(source_fct + " " + error_msg)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub add_meta_data(type as string, message as string)
-		  //  
-		  //  Add  meta data to the table
-		  //  
-		  //  Parameters:
-		  //  - the meta data type
-		  //  - the meta data value
-		  //  
-		  //  Returns:
-		  //  (nothing)
-		  //  
-		  
-		  meta_dict.add_meta_data(type, message)
 		End Sub
 	#tag EndMethod
 
@@ -1048,7 +1048,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if 
 		  
-		  add_meta_data("source", tmp_table_name)
+		  AddMetaData("source", tmp_table_name)
 		  
 		  internal_new_table(tmp_table_name)
 		  
@@ -1118,7 +1118,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if 
 		  
-		  add_meta_data("source", tmp_table_name)
+		  AddMetaData("source", tmp_table_name)
 		  
 		  internal_new_table("from " + tmp_table_name)
 		  
@@ -1135,7 +1135,7 @@ Implements TableColumnReaderInterface,Iterable
 		        call self.AddColumn(tmp_column)
 		        
 		      else
-		        add_error("select_column","cannot find column " + column_name)
+		        AddError("select_column","cannot find column " + column_name)
 		        
 		      End If
 		      
@@ -1149,7 +1149,7 @@ Implements TableColumnReaderInterface,Iterable
 		        call self.AddColumn(tmp_column.clone)
 		        
 		      else
-		        add_error("select_column","cannot find column " + column_name)
+		        AddError("select_column","cannot find column " + column_name)
 		        
 		      End If
 		      
@@ -1186,7 +1186,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if 
 		  
-		  add_meta_data("source", tmp_table_name)
+		  AddMetaData("source", tmp_table_name)
 		  
 		  internal_new_table("from " + tmp_table_name)
 		  
@@ -1946,7 +1946,7 @@ Implements TableColumnReaderInterface,Iterable
 		        input_dimensions.Append(tmp_serie)
 		        
 		      else
-		        add_error("GroupBy","cannot find column " + item)
+		        AddError("GroupBy","cannot find column " + item)
 		        any_error = True
 		      end if
 		      
@@ -1960,7 +1960,7 @@ Implements TableColumnReaderInterface,Iterable
 		        input_measures.Append(tmp_serie)
 		        
 		      else
-		        add_error("GroupBy","cannot find column " + item)
+		        AddError("GroupBy","cannot find column " + item)
 		        any_error = True
 		      End If
 		    end if
@@ -2397,7 +2397,7 @@ Implements TableColumnReaderInterface,Iterable
 		Function select_columns(column_names() as string) As clDataTable
 		  var res As New clDataTable("select " + Self.table_name)
 		  
-		  res.add_meta_data("source", self.table_name)
+		  res.AddMetaData("source", self.table_name)
 		  res.row_index = Self.row_index
 		  //  
 		  //  link to parent must be called BEFORE adding logical columns
@@ -2411,7 +2411,7 @@ Implements TableColumnReaderInterface,Iterable
 		      call res.AddColumn(tmp_column)
 		      
 		    else
-		      add_error("select_column","cannot find column " + column_name)
+		      AddError("select_column","cannot find column " + column_name)
 		      
 		    End If
 		    

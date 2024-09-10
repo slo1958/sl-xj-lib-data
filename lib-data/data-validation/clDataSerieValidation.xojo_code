@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clDataSerieValidation
 	#tag Method, Flags = &h0
-		Sub add_error(the_row as integer, message as String)
+		Sub AddError(the_row as integer, message as String)
 		  report_row_number.append_element(the_row)
 		  report_error_info.append_element(message)
 		  
@@ -40,14 +40,14 @@ Protected Class clDataSerieValidation
 		  report_error_info = new clDataSerie("error_message")
 		  
 		  if the_serie = nil then
-		    add_error(-1,"Missing column")
+		    AddError(-1,"Missing column")
 		    
 		    return array(report_row_number, report_error_info)
 		    
 		  end if
 		  
 		  if the_serie.name <> mname then
-		    add_error(-1,"Invalid name, expecting " + mname + ", found " + the_serie.name+".")
+		    AddError(-1,"Invalid name, expecting " + mname + ", found " + the_serie.name+".")
 		    
 		    return array(report_row_number, report_error_info)
 		    
@@ -77,10 +77,10 @@ Protected Class clDataSerieValidation
 		Sub validate_element(row_index as integer, element as Variant)
 		  
 		  if element.IsNull then
-		    add_error(row_index, "Null value")
+		    AddError(row_index, "Null value")
 		    
 		  elseif element.StringValue = "" then
-		    add_error(row_index, "Null value")
+		    AddError(row_index, "Null value")
 		    
 		  else
 		    

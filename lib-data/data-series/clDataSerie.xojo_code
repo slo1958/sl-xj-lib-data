@@ -16,7 +16,7 @@ Implements itf_json_able
 		  
 		  self.clone_info(tmp)
 		  
-		  tmp.add_meta_data("source","clone from " + self.full_name)
+		  tmp.AddMetaData("source","clone from " + self.full_name)
 		  
 		  For Each v As variant In Self.items
 		    tmp.append_element(v)
@@ -44,7 +44,7 @@ Implements itf_json_able
 		  
 		  self.clone_info(tmp)
 		  
-		  tmp.add_meta_data("source","clone structure from " + self.full_name)
+		  tmp.AddMetaData("source","clone structure from " + self.full_name)
 		  
 		  Return tmp
 		  
@@ -107,7 +107,7 @@ Implements itf_json_able
 	#tag Method, Flags = &h0
 		Sub reset_elements()
 		  
-		  self.meta_dict.add_meta_data("type","general")
+		  self.meta_dict.AddMetaData("type","general")
 		  
 		  redim items(-1)
 		  

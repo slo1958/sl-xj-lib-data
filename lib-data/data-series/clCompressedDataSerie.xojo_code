@@ -29,7 +29,7 @@ Inherits clAbstractDataSerie
 		  var tmp As New clCompressedDataSerie(Self.name)
 		  tmp.display_title = self.display_title
 		  
-		  tmp.add_meta_data("source","clone from " + self.full_name)
+		  tmp.AddMetaData("source","clone from " + self.full_name)
 		  
 		  For Each item_index As Integer In Self.items_index
 		    var v as Variant 
@@ -55,7 +55,7 @@ Inherits clAbstractDataSerie
 		  var tmp As New clCompressedDataSerie(Self.name)
 		  tmp.display_title = self.display_title
 		  
-		  tmp.add_meta_data("source","clone structure from " + self.full_name)
+		  tmp.AddMetaData("source","clone structure from " + self.full_name)
 		  
 		  Return tmp
 		  

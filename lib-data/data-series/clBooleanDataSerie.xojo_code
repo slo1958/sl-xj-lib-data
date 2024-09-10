@@ -20,7 +20,7 @@ Inherits clAbstractDataSerie
 		    
 		  Next
 		  
-		  tmp.add_meta_data("source","clone from " + self.full_name)
+		  tmp.AddMetaData("source","clone from " + self.full_name)
 		  
 		  Return tmp
 		  
@@ -44,7 +44,7 @@ Inherits clAbstractDataSerie
 		  
 		  self.clone_info(tmp)
 		  
-		  tmp.add_meta_data("source","clone structure from " + self.full_name)
+		  tmp.AddMetaData("source","clone structure from " + self.full_name)
 		  
 		  Return tmp
 		  
@@ -187,7 +187,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub reset_elements()
 		  
-		  self.meta_dict.add_meta_data("type","boolean")
+		  self.meta_dict.AddMetaData("type","boolean")
 		  
 		  redim items(-1)
 		  
