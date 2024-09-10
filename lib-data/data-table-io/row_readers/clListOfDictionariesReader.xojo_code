@@ -2,7 +2,7 @@
 Protected Class clListOfDictionariesReader
 Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
-		Function column_count() As integer
+		Function ColumnCount() As integer
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  return column_names.Count
@@ -209,7 +209,23 @@ Implements TableRowReaderInterface
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="source_dict()"
+			Name="last_row_index"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="myname"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="SampleSize"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

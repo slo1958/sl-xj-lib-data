@@ -13,14 +13,14 @@ Inherits clAbstractDataSerie
 		Function clone() As clDateDataSerie
 		  var tmp As New clDateDataSerie(Self.name)
 		  
-		  self.clone_info(tmp)
+		  self.CloneInfo(tmp)
 		  
 		  For Each v As DateTime In Self.items
 		    tmp.AddElement(v)
 		    
 		  Next
 		  
-		  tmp.AddMetaData("source","clone from " + self.full_name)
+		  tmp.AddMetadata("source","clone from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -29,8 +29,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub clone_info(target as clDateDataSerie)
-		  super.clone_info(target)
+		Protected Sub CloneInfo(target as clDateDataSerie)
+		  super.CloneInfo(target)
 		  
 		  target.default_value = self.default_value
 		  
@@ -47,11 +47,11 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_value_in_list(list_of_values() as DateTime) As variant()
+		Function FilterValueInList(list_of_values() as DateTime) As variant()
 		  var return_boolean() As Variant
 		  var my_item as DateTime
 		  
-		  For row_index As Integer=0 To items.Ubound
+		  For row_index As Integer=0 To items.LastIndex
 		    my_item = items(row_index)
 		    return_boolean.Append(list_of_values.IndexOf(my_item)>=0)
 		    
@@ -63,50 +63,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_value_in_range(minimum_value as datetime, maximum_value as DateTime) As variant()
-		  var return_boolean() As Variant
-		  var my_item as DateTime
-		  
-		  For row_index As Integer=0 To items.Ubound
-		    my_item = items(row_index)
-		    return_boolean.Append((minimum_value <= my_item) and (my_item <= maximum_value))
-		    
-		  Next
-		  
-		  Return return_boolean
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function filter_value_in_range(minimum_value_str as string, maximum_value_str as string) As variant()
-		  var return_boolean() As Variant
-		  var my_item as DateTime
-		  
-		  var minimum_value as DateTime = DateTime.FromString(minimum_value_str)
-		  var maximum_value as DateTime = DateTime.FromString(maximum_value_str)
-		  
-		  For row_index As Integer=0 To items.Ubound
-		    my_item = items(row_index)
-		    return_boolean.Append((minimum_value <= my_item) and (my_item <= maximum_value))
-		    
-		  Next
-		  
-		  Return return_boolean
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function get_default_value() As variant
+		Function GetDefaultValue() As variant
 		  return default_value
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element(the_element_index as integer) As variant
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
+		Function GetElement(the_element_index as integer) As variant
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    Return items(the_element_index)
 		    
 		  Else
@@ -120,9 +85,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_date(the_element_index as integer) As DateTime
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
-		    return self.get_element(the_element_index)
+		Function GetElementAsDate(the_element_index as integer) As DateTime
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
+		    return self.GetElement(the_element_index)
 		    
 		  else
 		    return nil
@@ -133,8 +98,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_string(the_element_index as integer) As string
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
+		Function GetElementAsString(the_element_index as integer) As string
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    var tmp as DateTime = items(the_element_index)
 		    if tmp = nil then return ""
 		    
@@ -150,8 +115,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_string(the_element_index As integer, dateStyle As DateTime.FormatStyles) As String
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
+		Function GetElementAsString(the_element_index As integer, dateStyle As DateTime.FormatStyles) As String
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    var tmp as DateTime = items(the_element_index)
 		    if tmp = nil then return ""
 		    
@@ -167,8 +132,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_string(the_element_index as integer, format as string) As string
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
+		Function GetElementAsString(the_element_index as integer, format as string) As string
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    var tmp as DateTime = items(the_element_index)
 		    if tmp = nil then return ""
 		    
@@ -184,9 +149,51 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetFilterColumnValuesInRange(minimum_value as datetime, maximum_value as DateTime) As variant()
+		  var return_boolean() As Variant
+		  var my_item as DateTime
+		  
+		  For row_index As Integer=0 To items.LastIndex
+		    my_item = items(row_index)
+		    return_boolean.Append((minimum_value <= my_item) and (my_item <= maximum_value))
+		    
+		  Next
+		  
+		  Return return_boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetFilterColumnValuesInRange(minimum_value_str as string, maximum_value_str as string) As variant()
+		  var return_boolean() As Variant
+		  var my_item as DateTime
+		  
+		  var minimum_value as DateTime = DateTime.FromString(minimum_value_str)
+		  var maximum_value as DateTime = DateTime.FromString(maximum_value_str)
+		  
+		  For row_index As Integer=0 To items.LastIndex
+		    my_item = items(row_index)
+		    return_boolean.Append((minimum_value <= my_item) and (my_item <= maximum_value))
+		    
+		  Next
+		  
+		  Return return_boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function LastIndex() As integer
+		  Return items.LastIndex
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function operator_subtract(right_serie as clDateDataSerie) As clIntegerDataSerie
-		  var mx1 as integer = self.upper_bound
-		  var mx2 as integer = right_serie.upper_bound
+		  var mx1 as integer = self.LastIndex
+		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
@@ -200,7 +207,7 @@ Inherits clAbstractDataSerie
 		  for i as integer = 0 to mx0
 		    
 		    if i <= mx1 and i <= mx2 then
-		      res.AddElement(diff_to_days(self.get_element_as_date(i), right_serie.get_element_as_date(i) ) )
+		      res.AddElement(diff_to_days(self.GetElementAsDate(i), right_serie.GetElementAsDate(i) ) )
 		      
 		    else
 		      res.AddElement(0)
@@ -220,8 +227,8 @@ Inherits clAbstractDataSerie
 		Function operator_subtract(right_value as DateTime) As clIntegerDataSerie
 		  var res as new clIntegerDataSerie(self.name+" - "+ right_value.SQLDate)
 		  
-		  for i as integer = 0 to self.upper_bound
-		    res.AddElement(diff_to_days(self.get_element_as_date(i) , right_value))
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(diff_to_days(self.GetElementAsDate(i) , right_value))
 		    
 		  next
 		  
@@ -240,9 +247,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset_elements()
+		Sub ResetElementss()
 		  
-		  self.meta_dict.AddMetaData("type","date")
+		  self.meta_dict.AddMetadata("type","date")
 		  
 		  redim items(-1)
 		  
@@ -250,15 +257,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_default_value(v as variant)
+		Sub SetDefaultValue(v as variant)
 		  default_value = v
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_element(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound Then
+		Sub SetElement(the_element_index as integer, the_item as Variant)
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
 		    items(the_element_index) = prep_date(the_item)
 		    
 		  End If
@@ -268,14 +275,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_length(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, default_value as variant)
 		  
-		  if items.Ubound > the_length then
+		  if items.LastIndex > the_length then
 		    Raise New clDataException("Column " + self.name + " contains more elements than expected")
 		  end if
 		  
 		  
-		  While items.Ubound < the_length-1
+		  While items.LastIndex < the_length-1
 		    var v as DateTime = default_value.DateTimeValue
 		    
 		    items.Append(v)
@@ -289,8 +296,8 @@ Inherits clAbstractDataSerie
 		Function ToString() As clStringDataSerie
 		  var res as new clStringDataSerie(self.name+" as sql-date")
 		  
-		  for i as integer = 0 to self.upper_bound
-		    res.AddElement(self.get_element_as_string(i))
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsString(i))
 		    
 		  next
 		  
@@ -303,8 +310,8 @@ Inherits clAbstractDataSerie
 		Function ToString(dateStyle As DateTime.FormatStyles) As clStringDataSerie
 		  var res as new clStringDataSerie(self.name+" as string")
 		  
-		  for i as integer = 0 to self.upper_bound
-		    res.AddElement(self.get_element_as_string(i, dateStyle))
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsString(i, dateStyle))
 		    
 		  next
 		  
@@ -317,19 +324,12 @@ Inherits clAbstractDataSerie
 		Function ToString(format as string) As clStringDataSerie
 		  var res as new clStringDataSerie(self.name+" as " + format)
 		  
-		  for i as integer = 0 to self.upper_bound
-		    res.AddElement(self.get_element_as_string(i, format))
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsString(i, format))
 		    
 		  next
 		  
 		  return res
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function upper_bound() As integer
-		  Return items.Ubound
 		  
 		End Function
 	#tag EndMethod

@@ -85,8 +85,8 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset_viewer()
-		  ccDataPool_Viewer1.reset_viewer
+		Sub Reset_viewer()
+		  ccDataPool_Viewer1.Reset_viewer
 		End Sub
 	#tag EndMethod
 

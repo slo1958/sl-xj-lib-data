@@ -35,7 +35,7 @@ Inherits clLibDataExample
 		  var col_expiry as new clDateDataSerie("InvoiceDate", "2023-03-05","2023-03-07","2023-03-12","2023-03-19","2023-04-03")
 		  var col_pay as new clDateDataSerie("PaymentDate", "2023-03-08","2023-03-27","2023-03-20","2023-04-05","2023-05-12")
 		  
-		  col_penalty.set_format("#%")
+		  col_penalty.SetFormat("#%")
 		  
 		  var table0 as new clDataTable("mytable", serie_array(col_country, col_city, col_sales, col_expiry, col_pay, col_penalty))
 		  
@@ -46,7 +46,7 @@ Inherits clLibDataExample
 		  var delay as clIntegerDataSerie = col_pay - col_expiry
 		  
 		  // flag if number of days > 15 days
-		  var flagged as clIntegerDataSerie = new clIntegerDataSerie("late-payment",delay.filter_value_in_range(15,9999))
+		  var flagged as clIntegerDataSerie = new clIntegerDataSerie("late-payment",delay.GetFilterColumnValuesInRange(15,9999))
 		  
 		  // calculate penalty and give a better name
 		  var total_penaty as clNumberDataSerie = col_sales * col_penalty * flagged.ToDouble()

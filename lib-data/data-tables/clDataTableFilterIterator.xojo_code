@@ -17,11 +17,11 @@ Implements Iterator
 		  var bFoundNext as boolean
 		  
 		  while not bFoundNext
-		    if last_row_index < tmp_table.row_count then
+		    if last_row_index < tmp_table.RowCount then
 		      last_row_index = last_row_index + 1
 		      
-		      if tmp_serie.get_element_as_boolean(last_row_index) then
-		        value_to_return = tmp_table.get_row(last_row_index, tmp_table.is_index_visible_when_iterate)
+		      if tmp_serie.GetElementAsBoolean(last_row_index) then
+		        value_to_return = tmp_table.GetRowAt(last_row_index, tmp_table.is_index_visible_when_iterate)
 		        
 		        return True
 		      end if

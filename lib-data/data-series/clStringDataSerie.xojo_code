@@ -10,17 +10,17 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clStringDataSerie
+		Function Clone() As clStringDataSerie
 		  var tmp As New clStringDataSerie(Self.name)
 		  
-		  self.clone_info(tmp)
+		  self.CloneInfo(tmp)
 		  
 		  For Each v As string In Self.items
 		    tmp.AddElement(v)
 		    
 		  Next
 		  
-		  tmp.AddMetaData("source","clone from " + self.full_name)
+		  tmp.AddMetadata("source","clone from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -29,8 +29,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub clone_info(target as clStringDataSerie)
-		  super.clone_info(target)
+		Protected Sub CloneInfo(target as clStringDataSerie)
+		  super.CloneInfo(target)
 		  
 		  target.default_value = self.default_value
 		  
@@ -38,14 +38,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone_structure() As clStringDataSerie
+		Function CloneStructure() As clStringDataSerie
 		  // Calling the overridden superclass method.
-		  Var returnValue as clAbstractDataSerie = Super.clone_structure()
+		  Var returnValue as clAbstractDataSerie = Super.CloneStructure()
 		  var tmp As New clStringDataSerie(Self.name)
 		  
-		  self.clone_info(tmp)
+		  self.CloneInfo(tmp)
 		  
-		  tmp.AddMetaData("source","clone structure from " + self.full_name)
+		  tmp.AddMetadata("source","clone structure from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -54,11 +54,11 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_value_in_list(list_of_values() as string) As variant()
+		Function FilterValueInList(list_of_values() as string) As variant()
 		  var return_boolean() As Variant
 		  var my_item as string
 		  
-		  For row_index As Integer=0 To items.Ubound
+		  For row_index As Integer=0 To items.LastIndex
 		    my_item = items(row_index)
 		    return_boolean.Append(list_of_values.IndexOf(my_item)>=0)
 		    
@@ -70,15 +70,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_default_value() As variant
+		Function GetDefaultValue() As variant
 		  return default_value
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element(the_element_index as integer) As variant
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
+		Function GetElement(the_element_index as integer) As variant
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    Return items(the_element_index)
 		    
 		  Else
@@ -92,8 +92,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_string(the_element_index as integer) As string
-		  return self.get_element(the_element_index)
+		Function GetElementAsString(the_element_index as integer) As string
+		  return self.GetElement(the_element_index)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function LastIndex() As integer
+		  Return items.LastIndex
 		  
 		End Function
 	#tag EndMethod
@@ -102,8 +109,8 @@ Inherits clAbstractDataSerie
 		Function Left(count as integer) As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " left " + str(count))
 		  
-		  for i as integer = 0 to me.upper_bound
-		    res.AddElement(me.get_element_as_string(i).left(count))
+		  for i as integer = 0 to me.LastIndex
+		    res.AddElement(me.GetElementAsString(i).left(count))
 		    
 		  next
 		  
@@ -117,8 +124,8 @@ Inherits clAbstractDataSerie
 		Function Lowercase() As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " lower")
 		  
-		  for i as integer = 0 to me.upper_bound
-		    res.AddElement(me.get_element_as_string(i).Lowercase())
+		  for i as integer = 0 to me.LastIndex
+		    res.AddElement(me.GetElementAsString(i).Lowercase())
 		    
 		  next
 		  
@@ -132,8 +139,8 @@ Inherits clAbstractDataSerie
 		Function Middle(from_char as integer, length as integer) As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " Middle " + str(length) + " char. from "  + str(from_char) )
 		  
-		  for i as integer = 0 to me.upper_bound
-		    res.AddElement(me.get_element_as_string(i).Middle(from_char, length))
+		  for i as integer = 0 to me.LastIndex
+		    res.AddElement(me.GetElementAsString(i).Middle(from_char, length))
 		    
 		  next
 		  
@@ -145,8 +152,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_add(right_serie as clStringDataSerie) As clStringDataSerie
-		  var mx1 as integer = self.upper_bound
-		  var mx2 as integer = right_serie.upper_bound
+		  var mx1 as integer = self.LastIndex
+		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
@@ -160,11 +167,11 @@ Inherits clAbstractDataSerie
 		    var n as integer
 		    
 		    if i <= mx1 then
-		      n = self.get_element(i)
+		      n = self.GetElement(i)
 		    end if
 		    
 		    if i<= mx2 then
-		      n = n + right_serie.get_element(i)
+		      n = n + right_serie.GetElement(i)
 		      
 		    end if
 		    
@@ -182,8 +189,8 @@ Inherits clAbstractDataSerie
 		Function operator_add(right_value as String) As clStringDataSerie
 		  var res as new clStringDataSerie(self.name+"+"+str(right_value))
 		  
-		  for i as integer = 0 to self.upper_bound
-		    res.AddElement(self.get_element_as_string(i) + right_value)
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsString(i) + right_value)
 		    
 		  next
 		  
@@ -194,9 +201,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset_elements()
+		Sub ResetElementss()
 		  
-		  self.meta_dict.AddMetaData("type","string")
+		  self.meta_dict.AddMetadata("type","string")
 		  
 		  redim items(-1)
 		  
@@ -207,8 +214,8 @@ Inherits clAbstractDataSerie
 		Function Right(count as integer) As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " right " + str(count))
 		  
-		  for i as integer = 0 to me.upper_bound
-		    res.AddElement(me.get_element_as_string(i).right(count))
+		  for i as integer = 0 to me.LastIndex
+		    res.AddElement(me.GetElementAsString(i).right(count))
 		    
 		  next
 		  
@@ -219,15 +226,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_default_value(v as variant)
+		Sub SetDefaultValue(v as variant)
 		  default_value = v
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_element(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound Then
+		Sub SetElement(the_element_index as integer, the_item as Variant)
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
 		    items(the_element_index) = the_item.StringValue
 		    
 		  End If
@@ -237,14 +244,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_length(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, default_value as variant)
 		  
-		  if items.Ubound > the_length then
+		  if items.LastIndex > the_length then
 		    Raise New clDataException("Column " + self.name + " contains more elements than expected")
 		  end if
 		  
 		  
-		  While items.Ubound < the_length-1
+		  While items.LastIndex < the_length-1
 		    var v as string = default_value.StringValue
 		    items.Append(v)
 		    
@@ -260,8 +267,8 @@ Inherits clAbstractDataSerie
 		  res = new clStringDataSerie(me.name+ " text after  " + search_str)
 		  
 		  
-		  for i as integer = 0 to me.upper_bound
-		    var tmp as string = me.get_element_as_string(i)
+		  for i as integer = 0 to me.LastIndex
+		    var tmp as string = me.GetElementAsString(i)
 		    var idx as integer = tmp.IndexOf(search_str)
 		    
 		    if idx <0 then 
@@ -284,8 +291,8 @@ Inherits clAbstractDataSerie
 		Function text_before(search_str as string) As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " text before  " + search_str)
 		  
-		  for i as integer = 0 to me.upper_bound
-		    var tmp as string = me.get_element_as_string(i)
+		  for i as integer = 0 to me.LastIndex
+		    var tmp as string = me.GetElementAsString(i)
 		    var idx as integer = tmp.IndexOf(search_str)
 		    
 		    if idx <0 then 
@@ -308,8 +315,8 @@ Inherits clAbstractDataSerie
 		Function Titlecase() As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " upper" )
 		  
-		  for i as integer = 0 to me.upper_bound
-		    res.AddElement(me.get_element_as_string(i).Titlecase)
+		  for i as integer = 0 to me.LastIndex
+		    res.AddElement(me.GetElementAsString(i).Titlecase)
 		    
 		  next
 		  
@@ -323,8 +330,8 @@ Inherits clAbstractDataSerie
 		Function ToInteger() As clIntegerDataSerie
 		  var res as new clIntegerDataSerie(self.name+" as integer")
 		  
-		  for i as integer = 0 to self.upper_bound
-		    res.AddElement(self.get_element_as_integer(i))
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsInteger(i))
 		    
 		  next
 		  
@@ -337,8 +344,8 @@ Inherits clAbstractDataSerie
 		Function ToNumber() As clNumberDataSerie
 		  var res as new clNumberDataSerie(self.name+" as double")
 		  
-		  for i as integer = 0 to self.upper_bound
-		    res.AddElement(self.get_element_as_integer(i))
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsInteger(i))
 		    
 		  next
 		  
@@ -351,8 +358,8 @@ Inherits clAbstractDataSerie
 		Function Trim() As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " trim" )
 		  
-		  for i as integer = 0 to me.upper_bound
-		    res.AddElement(me.get_element_as_string(i).Trim)
+		  for i as integer = 0 to me.LastIndex
+		    res.AddElement(me.GetElementAsString(i).Trim)
 		    
 		  next
 		  
@@ -366,20 +373,13 @@ Inherits clAbstractDataSerie
 		Function Uppercase() As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " upper" )
 		  
-		  for i as integer = 0 to me.upper_bound
-		    res.AddElement(me.get_element_as_string(i).Uppercase)
+		  for i as integer = 0 to me.LastIndex
+		    res.AddElement(me.GetElementAsString(i).Uppercase)
 		    
 		  next
 		  
 		  return res
 		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function upper_bound() As integer
-		  Return items.Ubound
 		  
 		End Function
 	#tag EndMethod

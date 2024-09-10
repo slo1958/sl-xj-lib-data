@@ -60,7 +60,7 @@ Implements Iterable
 		    
 		  end if
 		  
-		  if flag_empty_table and table.row_count < 1 then
+		  if flag_empty_table and table.RowCount < 1 then
 		    writelog("Table %0 is empty", name)
 		    
 		  end if
@@ -109,7 +109,7 @@ Implements Iterable
 
 	#tag Method, Flags = &h0
 		Sub set_multiple_tables_with_key(table_key() as string, table() as clDataTable)
-		  for i as integer = 0 to table_key.Ubound
+		  for i as integer = 0 to table_key.LastIndex
 		    var tbl as clDataTable
 		    
 		    try
@@ -187,7 +187,7 @@ Implements Iterable
 		  if self.verbose then
 		    var tmp as string = message
 		    
-		    for i as integer = 0 to txt.ubound
+		    for i as integer = 0 to txt.LastIndex
 		      tmp = tmp.ReplaceAll("%"+str(i), txt(i))
 		    next
 		    

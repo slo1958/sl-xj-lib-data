@@ -30,11 +30,11 @@ Inherits clLibDataExample
 		  
 		  var table0 As New clDataTable("mytable", dct ,AddressOf alloc_series_019)
 		  
-		  table0.get_column("City").display_title = "Ville"
-		  table0.get_column("Country").display_title = "Pays"
-		  table0.get_column("Sales").display_title="Ventes" 
+		  table0.GetColumn("City").display_title = "Ville"
+		  table0.GetColumn("Country").display_title = "Pays"
+		  table0.GetColumn("Sales").display_title="Ventes" 
 		  
-		  var struc0 as clDataTable = table0.get_structure_as_table
+		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  
 		  return array(table0, struc0)
 		  

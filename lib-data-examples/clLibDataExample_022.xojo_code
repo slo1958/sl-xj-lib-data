@@ -45,22 +45,22 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
-		  col_cloned_sales = col_cloned_sales.clone()
+		  col_cloned_sales = col_cloned_sales.Clone()
 		  col_cloned_sales.name = "Formatted sales"
 		  
 		  call table0.AddColumn(col_cloned_sales)
 		  
-		  col_cloned_sales.active_range_formatting("","")
+		  col_cloned_sales.ActiveRangeFormatting("","")
 		  col_cloned_sales.AddFormattingRange(0,999.99,"small")
 		  col_cloned_sales.AddFormattingRange(1000,1999.99,"medium")
 		  col_cloned_sales.AddFormattingRange(2000,2999.99,"big")
 		  
 		  
-		  call table0.AddColumn(new clBooleanDataSerie("is_france", table0.filter_with_function(AddressOf field_filter,"country","France")))
-		  call table0.AddColumn(new clBooleanDataSerie("is_belgium", table0.filter_with_function(AddressOf field_filter, "country","Belgique")))
+		  call table0.AddColumn(new clBooleanDataSerie("is_france", table0.FilterWithFunction(AddressOf field_filter,"country","France")))
+		  call table0.AddColumn(new clBooleanDataSerie("is_belgium", table0.FilterWithFunction(AddressOf field_filter, "country","Belgique")))
 		  
 		  
-		  clBooleanDataSerie(table0.get_column("is_france")).set_format("≠ France","= France")
+		  clBooleanDataSerie(table0.GetColumn("is_france")).SetFormat("≠ France","= France")
 		  
 		  return array(table0)
 		  

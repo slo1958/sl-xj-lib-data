@@ -40,11 +40,11 @@ Inherits clLibDataExample
 		  ))
 		  
 		  
-		  table1.get_column("City").display_title = "Ville"
-		  table1.get_column("Country").display_title = "Pays"
-		  table1.get_column("Year").display_title = "Année"
-		  table1.get_column("Sales").display_title="Ventes"
-		  table1.get_column("Quantity").display_title="Volume"
+		  table1.GetColumn("City").display_title = "Ville"
+		  table1.GetColumn("Country").display_title = "Pays"
+		  table1.GetColumn("Year").display_title = "Année"
+		  table1.GetColumn("Sales").display_title="Ventes"
+		  table1.GetColumn("Quantity").display_title="Volume"
 		  
 		  
 		  var view0 As clDataTable = table0.select_columns(array("Country", "City", "Sales"))

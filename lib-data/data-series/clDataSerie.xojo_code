@@ -14,9 +14,9 @@ Implements itf_json_able
 		Function clone() As clDataSerie
 		  var tmp As New clDataSerie(Self.name)
 		  
-		  self.clone_info(tmp)
+		  self.CloneInfo(tmp)
 		  
-		  tmp.AddMetaData("source","clone from " + self.full_name)
+		  tmp.AddMetadata("source","clone from " + self.FullName)
 		  
 		  For Each v As variant In Self.items
 		    tmp.AddElement(v)
@@ -30,8 +30,8 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub clone_info(target as clDataSerie)
-		  super.clone_info(target)
+		Protected Sub CloneInfo(target as clDataSerie)
+		  super.CloneInfo(target)
 		  
 		  target.default_value = self.default_value
 		  
@@ -39,12 +39,12 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone_structure() As clDataSerie
+		Function CloneStructure() As clDataSerie
 		  var tmp As New clDataSerie(Self.name)
 		  
-		  self.clone_info(tmp)
+		  self.CloneInfo(tmp)
 		  
-		  tmp.AddMetaData("source","clone structure from " + self.full_name)
+		  tmp.AddMetadata("source","clone structure from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -53,11 +53,11 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_value_in_list(list_of_values() as string) As boolean()
+		Function FilterValueInList(list_of_values() as string) As boolean()
 		  var return_boolean() As boolean
 		  var my_item as variant
 		  
-		  For row_index As Integer=0 To items.Ubound
+		  For row_index As Integer=0 To items.LastIndex
 		    my_item = items(row_index)
 		    return_boolean.Append(list_of_values.IndexOf(my_item)>=0)
 		    
@@ -69,11 +69,11 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_with_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
+		Function FilterWithFunction(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
 		  var return_boolean() As Variant
 		  
-		  For row_index As Integer=0 To items.Ubound
-		    return_boolean.Append(the_filter_function.Invoke(row_index,  items.Ubound, name, items(row_index), function_param))
+		  For row_index As Integer=0 To items.LastIndex
+		    return_boolean.Append(the_filter_function.Invoke(row_index,  items.LastIndex, name, items(row_index), function_param))
 		    
 		  Next
 		  
@@ -83,15 +83,15 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_default_value() As variant
+		Function GetDefaultValue() As variant
 		  return default_value
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element(the_element_index as integer) As Variant
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
+		Function GetElement(the_element_index as integer) As Variant
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    Return items(the_element_index)
 		    
 		  Else
@@ -105,9 +105,16 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset_elements()
+		Function LastIndex() As integer
+		  Return items.LastIndex
 		  
-		  self.meta_dict.AddMetaData("type","general")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ResetElementss()
+		  
+		  self.meta_dict.AddMetadata("type","general")
 		  
 		  redim items(-1)
 		  
@@ -115,15 +122,15 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_default_value(v as variant)
+		Sub SetDefaultValue(v as variant)
 		  default_value = v
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_element(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound Then
+		Sub SetElement(the_element_index as integer, the_item as Variant)
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
 		    items(the_element_index) = the_item
 		    
 		  End If
@@ -133,27 +140,20 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_length(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, default_value as variant)
 		  
-		  if items.Ubound > the_length then
+		  if items.LastIndex > the_length then
 		    Raise New clDataException("Column " + self.name + " contains more elements than expected")
 		  end if
 		  
 		  
-		  While items.Ubound < the_length-1
+		  While items.LastIndex < the_length-1
 		    var v as variant = default_value
 		    items.Append(v)
 		    
 		  Wend
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function upper_bound() As integer
-		  Return items.Ubound
-		  
-		End Function
 	#tag EndMethod
 
 

@@ -17,7 +17,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function column_count() As integer
+		Function ColumnCount() As integer
 		  // Part of the TableRowReaderInterface interface.
 		  return mheader.Count
 		  

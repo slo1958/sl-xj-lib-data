@@ -38,7 +38,7 @@ Protected Module DataSerie_IO
 		  
 		  text_file.close
 		  
-		  theDataSerie.AddMetaData("source",the_source.Name)
+		  theDataSerie.AddMetadata("source",the_source.Name)
 		  
 		  return theDataSerie
 		  
@@ -66,8 +66,8 @@ Protected Module DataSerie_IO
 		    
 		  End If
 		  
-		  For i As Integer = 0 To theDataSerie.upper_bound
-		    text_file.WriteLine theDataSerie.get_element(i)
+		  For i As Integer = 0 To theDataSerie.LastIndex
+		    text_file.WriteLine theDataSerie.GetElement(i)
 		    
 		  Next
 		  

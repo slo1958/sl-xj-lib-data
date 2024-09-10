@@ -14,7 +14,7 @@ Implements Iterator
 		Function MoveNext() As Boolean
 		  // Part of the Xojo.Core.Iterator interface.
 		  
-		  If iteration_keys.Ubound>=0 Then
+		  If iteration_keys.LastIndex>=0 Then
 		    iteration_next_key = iteration_keys(0)
 		    iteration_keys.remove(0)
 		    Return True

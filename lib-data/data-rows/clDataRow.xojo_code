@@ -14,7 +14,7 @@ Implements Iterable
 		  self.update_object(obj)
 		  
 		  return obj
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -31,7 +31,7 @@ Implements Iterable
 		  self.update_object(obj)
 		  
 		  return obj
-		   
+		  
 		End Function
 	#tag EndMethod
 

@@ -61,7 +61,7 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function count_non_zero(values() as double) As integer
+		Function CountNonZero(values() as double) As integer
 		  var n as integer
 		  
 		  for each d as double in values
@@ -78,13 +78,13 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function standard_deviation(values() as double, is_population as boolean = False) As double
+		Function StandardDeviation(values() as double, is_population as boolean = False) As double
 		  
 		  var c as new clBasicMath
 		  
 		  var s1 As Double = c.sum(values)
 		  var s2 as double = c.sum_squared(values)
-		  var n as integer = c.count(values)
+		  var n as integer = c.Count(values)
 		  
 		  
 		  if n < 2 then return 0
@@ -103,13 +103,13 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function standard_deviation_non_zero(values() as double, is_population as boolean = False) As double
+		Function StandardDeviationNonZero(values() as double, is_population as boolean = False) As double
 		  
 		  var c as new clBasicMath
 		  
 		  var s1 As Double = c.sum(values)
 		  var s2 as double = c.sum_squared(values)
-		  var n as integer = c.count_non_zero(values)
+		  var n as integer = c.CountNonZero(values)
 		  
 		  
 		  if n < 2 then return 0

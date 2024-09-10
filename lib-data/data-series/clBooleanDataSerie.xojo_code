@@ -13,14 +13,14 @@ Inherits clAbstractDataSerie
 		Function clone() As clBooleanDataSerie
 		  var tmp As New clBooleanDataSerie(Self.name)
 		  
-		  self.clone_info(tmp)
+		  self.CloneInfo(tmp)
 		  
 		  For Each v As boolean In Self.items
 		    tmp.AddElement(v)
 		    
 		  Next
 		  
-		  tmp.AddMetaData("source","clone from " + self.full_name)
+		  tmp.AddMetadata("source","clone from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -29,8 +29,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub clone_info(target as clBooleanDataSerie)
-		  super.clone_info(target)
+		Protected Sub CloneInfo(target as clBooleanDataSerie)
+		  super.CloneInfo(target)
 		  
 		  target.default_value = self.default_value
 		  target.str_for_false = self.str_for_false
@@ -39,12 +39,12 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone_structure() As clBooleanDataSerie
+		Function CloneStructure() As clBooleanDataSerie
 		  var tmp As New clBooleanDataSerie(Self.name)
 		  
-		  self.clone_info(tmp)
+		  self.CloneInfo(tmp)
 		  
-		  tmp.AddMetaData("source","clone structure from " + self.full_name)
+		  tmp.AddMetadata("source","clone structure from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -53,15 +53,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_default_value() As variant
+		Function GetDefaultValue() As variant
 		  return default_value
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element(the_element_index as integer) As variant
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound then
+		Function GetElement(the_element_index as integer) As variant
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    Return items(the_element_index)
 		    
 		  Else
@@ -75,32 +75,39 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_boolean(the_element_index as integer) As boolean
-		  return self.get_element(the_element_index)
+		Function GetElementAsBoolean(the_element_index as integer) As boolean
+		  return self.GetElement(the_element_index)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_integer(the_element_index as integer) As integer
-		  return if(self.get_element(the_element_index),1,0)
+		Function GetElementAsInteger(the_element_index as integer) As integer
+		  return if(self.GetElement(the_element_index),1,0)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_string(the_element_index as integer) As string
+		Function GetElementAsString(the_element_index as integer) As string
 		  // Calling the overridden superclass method.
-		  Var returnValue as string = Super.get_element_as_string(the_element_index)
-		  return if(self.get_element(the_element_index),self.str_for_true,self.str_for_false)
+		  Var returnValue as string = Super.GetElementAsString(the_element_index)
+		  return if(self.GetElement(the_element_index),self.str_for_true,self.str_for_false)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function LastIndex() As integer
+		  Return items.LastIndex
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function operator_and(right_serie as clBooleanDataSerie) As clBooleanDataSerie
-		  var mx1 as integer = self.upper_bound
-		  var mx2 as integer = right_serie.upper_bound
+		  var mx1 as integer = self.LastIndex
+		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
@@ -114,11 +121,11 @@ Inherits clAbstractDataSerie
 		    var n as Boolean = true
 		    
 		    if i <= mx1 then
-		      n = self.get_element_as_boolean(i)
+		      n = self.GetElementAsBoolean(i)
 		    end if
 		    
 		    if i<= mx2 then
-		      n = n and right_serie.get_element_as_boolean(i)
+		      n = n and right_serie.GetElementAsBoolean(i)
 		      
 		    end if
 		    
@@ -134,12 +141,12 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_not() As clBooleanDataSerie
-		  var mx0 as integer = self.upper_bound
+		  var mx0 as integer = self.LastIndex
 		  
 		  var res as new clBooleanDataSerie("not " + self.name)
 		  
 		  for i as integer = 0 to mx0
-		    res.AddElement(not self.get_element_as_boolean(i))
+		    res.AddElement(not self.GetElementAsBoolean(i))
 		    
 		  next
 		  
@@ -151,8 +158,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_or(right_serie as clBooleanDataSerie) As clBooleanDataSerie
-		  var mx1 as integer = self.upper_bound
-		  var mx2 as integer = right_serie.upper_bound
+		  var mx1 as integer = self.LastIndex
+		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
 		  
 		  if mx1 > mx2 then
@@ -166,11 +173,11 @@ Inherits clAbstractDataSerie
 		    var n as Boolean = False
 		    
 		    if i <= mx1 then
-		      n = self.get_element_as_boolean(i)
+		      n = self.GetElementAsBoolean(i)
 		    end if
 		    
 		    if i<= mx2 then
-		      n = n or right_serie.get_element_as_boolean(i)
+		      n = n or right_serie.GetElementAsBoolean(i)
 		      
 		    end if
 		    
@@ -185,9 +192,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset_elements()
+		Sub ResetElementss()
 		  
-		  self.meta_dict.AddMetaData("type","boolean")
+		  self.meta_dict.AddMetadata("type","boolean")
 		  
 		  redim items(-1)
 		  
@@ -195,15 +202,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_default_value(v as variant)
+		Sub SetDefaultValue(v as variant)
 		  default_value = v
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_element(the_element_index as integer, the_item as String)
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound Then
+		Sub SetElement(the_element_index as integer, the_item as String)
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
 		    items(the_element_index) = (the_item.Trim.Uppercase = "TRUE")
 		    
 		  End If
@@ -213,8 +220,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_element(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items.Ubound Then
+		Sub SetElement(the_element_index as integer, the_item as Variant)
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
 		    items(the_element_index) = the_item.BooleanValue
 		    
 		  End If
@@ -224,7 +231,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_format(False_label as string, True_Label as string)
+		Sub SetFormat(False_label as string, True_Label as string)
 		  
 		  self.str_for_false = False_label
 		  self.str_for_true = True_Label
@@ -233,14 +240,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_length(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, default_value as variant)
 		  
-		  if items.Ubound > the_length then
+		  if items.LastIndex > the_length then
 		    Raise New clDataException("Column " + self.name + " contains more elements than expected")
 		  end if
 		  
 		  
-		  While items.Ubound < the_length-1
+		  While items.LastIndex < the_length-1
 		    var v as boolean = default_value.BooleanValue
 		    items.Append(v)
 		    
@@ -253,19 +260,12 @@ Inherits clAbstractDataSerie
 		Function ToString() As clStringDataSerie
 		  var res as new clStringDataSerie(self.name+" as string")
 		  
-		  for i as integer = 0 to self.upper_bound
-		    res.AddElement(self.get_element_as_string(i))
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsString(i))
 		    
 		  next
 		  
 		  return res
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function upper_bound() As integer
-		  Return items.Ubound
 		  
 		End Function
 	#tag EndMethod

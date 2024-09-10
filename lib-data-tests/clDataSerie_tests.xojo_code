@@ -8,7 +8,7 @@ Protected Module clDataSerie_tests
 		    
 		  end if
 		  
-		  if not check_value(log, label + " row count", expected.row_count, calculated.row_count) then
+		  if not check_value(log, label + " row count", expected.RowCount, calculated.RowCount) then
 		    Return False
 		    
 		  end if
@@ -16,8 +16,8 @@ Protected Module clDataSerie_tests
 		  
 		  var cell_ok as Boolean = True
 		  
-		  for row as integer = 0 to expected.row_count-1
-		    cell_ok = cell_ok and check_value(log,  label + " row " + str(row), expected.get_element(row), calculated.get_element(row), accepted_error_on_double)
+		  for row as integer = 0 to expected.RowCount-1
+		    cell_ok = cell_ok and check_value(log,  label + " row " + str(row), expected.GetElement(row), calculated.GetElement(row), accepted_error_on_double)
 		    
 		  next
 		  
@@ -27,21 +27,21 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter01(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function filter01(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
 		  Return True
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_value_is_not_aaa(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function filter_value_is_not_aaa(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
 		  Return the_value <> "aaa"
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_value_is_parameter(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function filter_value_is_parameter(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
 		  try
 		    Return the_value = function_param(0)
 		    
@@ -117,7 +117,7 @@ Protected Module clDataSerie_tests
 		  test.AddElement("hello")
 		  test.AddElement("world")
 		  
-		  call check_value(log,"row count", test.row_count, 2)
+		  call check_value(log,"row count", test.RowCount, 2)
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -139,14 +139,14 @@ Protected Module clDataSerie_tests
 		  expected.add(123)
 		  expected.Add(True)
 		  
-		  if test.row_count <> 3 then
+		  if test.RowCount <> 3 then
 		    System.DebugLog("Invalid row count")
 		    return
 		    
 		  end if
 		  
-		  for row as integer =0 to test.row_count-1
-		    call check_value(log,"row " + str(row), expected(row), test.get_element(row))
+		  for row as integer =0 to test.RowCount-1
+		    call check_value(log,"row " + str(row), expected(row), test.GetElement(row))
 		    
 		  next
 		  
@@ -184,11 +184,11 @@ Protected Module clDataSerie_tests
 		  // all boolean arrays have the same size
 		  //
 		  
-		  f1 = src.filter_with_function(AddressOf filter01)
+		  f1 = src.FilterWithFunction(AddressOf filter01)
 		  
-		  f2 = src.filter_with_function(AddressOf retain_dataSerie_head, 7)
+		  f2 = src.FilterWithFunction(AddressOf retain_dataSerie_head, 7)
 		  
-		  f3 = src.filter_with_function(AddressOf retain_dataSerie_tail)
+		  f3 = src.FilterWithFunction(AddressOf retain_dataSerie_tail)
 		  
 		  var c1 As New clDataSerie("test001", f1)
 		  var c2 As New clDataSerie("test002", f2)
@@ -202,9 +202,9 @@ Protected Module clDataSerie_tests
 		    if f2(i) then cnt2 = cnt2 + 1 
 		    if f3(i) then cnt3 = cnt3 + 1
 		    
-		    if c1.get_element(i) then cnt4 = cnt4 + 1
-		    if c2.get_element(i) then cnt5 = cnt5 + 1
-		    if c3.get_element(i) then cnt6 = cnt6 + 1
+		    if c1.GetElement(i) then cnt4 = cnt4 + 1
+		    if c2.GetElement(i) then cnt5 = cnt5 + 1
+		    if c3.GetElement(i) then cnt6 = cnt6 + 1
 		    
 		  next
 		  
@@ -278,8 +278,8 @@ Protected Module clDataSerie_tests
 		  var d3 As Double = c3.sum
 		  var d4 As Double = c4.sum
 		  
-		  call check_value(log,"upper bound for c3", 1, c3.upper_bound)
-		  call check_value(log, "upper bound for c4", 0, c4.upper_bound)
+		  call check_value(log,"upper bound for c3", 1, c3.LastIndex)
+		  call check_value(log, "upper bound for c4", 0, c4.LastIndex)
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -327,15 +327,15 @@ Protected Module clDataSerie_tests
 		  c1.AddElement("cccc")
 		  c1.AddElement("cccc")
 		  
-		  c1.copy_to(c2)
+		  c1.CopyTo(c2)
 		  
 		  
 		  var f1() As variant
 		  var f2() As variant 
 		  
-		  f1 = c1.filter_with_function(AddressOf filter_value_is_not_aaa)
+		  f1 = c1.FilterWithFunction(AddressOf filter_value_is_not_aaa)
 		  
-		  f2 = c2.filter_with_function(AddressOf filter_value_is_not_aaa)
+		  f2 = c2.FilterWithFunction(AddressOf filter_value_is_not_aaa)
 		  
 		  var r1 As New clDataSerie("test001", f1)
 		  var r2 As New clDataSerie("test002", f2)
@@ -346,8 +346,8 @@ Protected Module clDataSerie_tests
 		    if f1(i) then nbf1 = nbf1 + 1
 		    if f2(i) then nbf2 = nbf2 + 1
 		    
-		    if r1.get_element(i) then nbr1 = nbr1 + 1
-		    if r2.get_element(i) then nbr2 = nbr2 + 1
+		    if r1.GetElement(i) then nbr1 = nbr1 + 1
+		    if r2.GetElement(i) then nbr2 = nbr2 + 1
 		    
 		  next
 		  
@@ -375,7 +375,7 @@ Protected Module clDataSerie_tests
 		  test.AddElement(125)
 		  test.AddElement(142)
 		  
-		  call check_value(log,"row count", test.row_count, 2) 
+		  call check_value(log,"row count", test.RowCount, 2) 
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -395,7 +395,7 @@ Protected Module clDataSerie_tests
 		  test.AddElement("125")
 		  test.AddElement(142)
 		  
-		  call check_value(log,"row count", test.row_count, 2) 
+		  call check_value(log,"row count", test.RowCount, 2) 
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -415,7 +415,7 @@ Protected Module clDataSerie_tests
 		  test.AddElement("abc")
 		  test.AddElement(142)
 		  
-		  call check_value(log,"row count", test.row_count, 2)
+		  call check_value(log,"row count", test.RowCount, 2)
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -533,15 +533,15 @@ Protected Module clDataSerie_tests
 		  c1.AddElement("cccc")
 		  c1.AddElement("cccc")
 		  
-		  c1.copy_to(c2)
+		  c1.CopyTo(c2)
 		  
 		  
 		  var f1() As variant
 		  var f2() As variant 
 		  
-		  f1 = c1.filter_with_function(AddressOf filter_value_is_parameter,"aaa")
+		  f1 = c1.FilterWithFunction(AddressOf filter_value_is_parameter,"aaa")
 		  
-		  f2 = c2.filter_with_function(AddressOf filter_value_is_parameter,"aaa")
+		  f2 = c2.FilterWithFunction(AddressOf filter_value_is_parameter,"aaa")
 		  
 		  
 		  var r1 As New clDataSerie("test001", f1)
@@ -553,8 +553,8 @@ Protected Module clDataSerie_tests
 		    if f1(i) then nbf1 = nbf1 + 1
 		    if f2(i) then nbf2 = nbf2 + 1
 		    
-		    if r1.get_element(i) then nbr1 = nbr1 + 1
-		    if r2.get_element(i) then nbr2 = nbr2 + 1
+		    if r1.GetElement(i) then nbr1 = nbr1 + 1
+		    if r2.GetElement(i) then nbr2 = nbr2 + 1
 		    
 		  next
 		  

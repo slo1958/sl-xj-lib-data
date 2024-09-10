@@ -84,7 +84,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddMetaData(type as string, message as string)
+		Sub AddMetadata(type as string, message as string)
 		  //  
 		  //  Add meta data
 		  //  
@@ -95,7 +95,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Returns:
 		  //  
 		  
-		  meta_dict.AddMetaData(type, message)
+		  meta_dict.AddMetadata(type, message)
 		End Sub
 	#tag EndMethod
 
@@ -112,8 +112,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  var tmp_source as clAbstractDataSerie = the_serie
 		  
-		  For row_num As Integer = 0 To tmp_source.row_count-1
-		    self.AddElement(tmp_source.get_element(row_num))
+		  For row_num As Integer = 0 To tmp_source.RowCount-1
+		    self.AddElement(tmp_source.GetElement(row_num))
 		    
 		  Next
 		  
@@ -132,8 +132,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  
 		  
 		  
-		  for index as Integer = 0 to self.upper_bound
-		    target_data_serie.AddElement(self.get_element(index))
+		  for index as Integer = 0 to self.LastIndex
+		    target_data_serie.AddElement(self.GetElement(index))
 		    
 		  next
 		  
@@ -142,15 +142,15 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function Average() As double
-		  var limit As Integer = row_count - 1
+		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
 		  var s As Double
 		  var n as integer
 		  
 		  For i = 0 To limit
-		    if self.element_is_defined(i) then
-		      var tmp as Double = get_element_as_number(i)
+		    if self.ElementIsDefined(i) then
+		      var tmp as Double = GetElementAsNumber(i)
 		      s = s + tmp
 		      n = n + 1
 		      
@@ -167,15 +167,15 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function AverageNonZero() As double
-		  var limit As Integer = row_count - 1
+		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
 		  var s As Double
 		  var n as integer
 		  
 		  For i = 0 To limit
-		    if self.element_is_defined(i) then
-		      var tmp as Double = get_element_as_number(i)
+		    if self.ElementIsDefined(i) then
+		      var tmp as Double = GetElementAsNumber(i)
 		      
 		      if tmp <> 0 then
 		        s = s + tmp
@@ -208,12 +208,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ClipByRange(low_value as variant, high_value as variant)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function ClipByRange(low_value as variant, high_value as variant) As integer
 		  //  
 		  //  Clip the values of the current data serie to a range: 
@@ -228,18 +222,18 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  - the number of values changed
 		  //
 		  
-		  var last_index as integer = self.row_count
+		  var last_index as integer = self.RowCount
 		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index
-		    var tmp as variant = self.get_element(index)
+		    var tmp as variant = self.GetElement(index)
 		    
 		    if low_value > tmp then
-		      self.set_element(index, low_value)
+		      self.SetElement(index, low_value)
 		      count_changes = count_changes + 1
 		      
 		    elseif  tmp > high_value then
-		      self.set_element(index, high_value)
+		      self.SetElement(index, high_value)
 		      count_changes = count_changes + 1
 		      
 		    end if
@@ -264,14 +258,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //
 		  
 		  
-		  var last_index as integer = self.row_count
+		  var last_index as integer = self.RowCount
 		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index
-		    var tmp as variant = self.get_element(index)
+		    var tmp as variant = self.GetElement(index)
 		    
 		    if  tmp > high_value then
-		      self.set_element(index, high_value)
+		      self.SetElement(index, high_value)
 		      count_changes = count_changes + 1
 		      
 		    end if
@@ -296,14 +290,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //
 		  
 		  
-		  var last_index as integer = self.row_count
+		  var last_index as integer = self.RowCount
 		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index
-		    var tmp as variant = self.get_element(index)
+		    var tmp as variant = self.GetElement(index)
 		    
 		    if low_value > tmp then
-		      self.set_element(index, low_value)
+		      self.SetElement(index, low_value)
 		      count_changes = count_changes + 1
 		      
 		    end if
@@ -326,11 +320,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Returns:
 		  //  - the new data serie
 		  
-		  var new_col as clAbstractDataSerie = self.clone()
+		  var new_col as clAbstractDataSerie = self.Clone()
 		  
 		  new_col.rename("clip " + self.name)
 		  
-		  new_col.ClipByRange(low_value, high_value)
+		  call new_col.ClipByRange(low_value, high_value)
 		  
 		  return new_col
 		  
@@ -358,13 +352,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub clone_info(target as clAbstractDataSerie)
+		Protected Sub CloneInfo(target as clAbstractDataSerie)
 		  target.display_title = self.display_title
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone_structure() As clAbstractDataSerie
+		Function CloneStructure() As clAbstractDataSerie
 		  //  
 		  //  Clone the structure current data serie (only implemented at typed subclasses)
 		  //
@@ -385,12 +379,12 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Sub Constructor(the_label as string, the_values() as variant)
 		  
-		  self.reset
+		  self.Reset
 		  
 		  serie_name = the_label
 		  physical_table_link = Nil
 		  
-		  For i As Integer = 0 To the_values.Ubound
+		  For i As Integer = 0 To the_values.LastIndex
 		    self.AddElement(the_values(i))
 		    
 		  Next
@@ -401,7 +395,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Sub Constructor(the_label as string, paramarray the_values() as variant)
 		  
-		  self.reset
+		  self.Reset
 		  
 		  serie_name = the_label
 		  physical_table_link = Nil
@@ -411,7 +405,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  if the_values(0).IsArray and the_values.LastIndex = 0 then
 		    var tmp() as variant = make_variant_array(the_values(0))
 		    
-		    For i As Integer = 0 To tmp.Ubound
+		    For i As Integer = 0 To tmp.LastIndex
 		      self.AddElement(tmp(i))
 		      
 		    Next
@@ -421,7 +415,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  end if
 		  
 		  
-		  For i As Integer = 0 To the_values.Ubound
+		  For i As Integer = 0 To the_values.LastIndex
 		    self.AddElement(the_values(i))
 		    
 		  Next
@@ -430,7 +424,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub copy_to(target_data_serie as clAbstractDataSerie)
+		Sub CopyTo(target_data_serie as clAbstractDataSerie)
 		  //  
 		  //  Copy the elements of the current data serie to another data serie, the other data serie is cleared before copy
 		  //.    if lower than low_value, element is replaced by low_value
@@ -445,11 +439,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  
 		  
-		  target_data_serie.reset()
-		  target_data_serie.AddMetaData("source", self.name)
+		  target_data_serie.Reset()
+		  target_data_serie.AddMetadata("source", self.name)
 		  
-		  for index as Integer = 0 to self.upper_bound
-		    target_data_serie.AddElement(self.get_element(index))
+		  for index as Integer = 0 to self.LastIndex
+		    target_data_serie.AddElement(self.GetElement(index))
 		    
 		  next
 		  
@@ -458,13 +452,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function count() As double
-		  var limit As Integer = row_count - 1
+		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
 		  var n as integer
 		  
 		  For i = 0 To limit
-		    if self.element_is_defined(i) then
+		    if self.ElementIsDefined(i) then
 		      n = n + 1
 		      
 		    end if
@@ -477,14 +471,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function count_non_zero() As double
-		  var limit As Integer = row_count - 1
+		Function CountNonZero() As double
+		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
 		  var n as integer
 		  
 		  For i = 0 To limit
-		    if self.element_is_defined(i) and self.get_element_as_number(i) <> 0 then
+		    if self.ElementIsDefined(i) and self.GetElementAsNumber(i) <> 0 then
 		      n = n + 1
 		      
 		    end if
@@ -506,8 +500,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  System.DebugLog(Join(tmp_item, ";"))
 		  
-		  For row As Integer = 0 To row_count-1
-		    var element As variant = get_element(row)
+		  For row As Integer = 0 To RowCount-1
+		    var element As variant = GetElement(row)
 		    var ok_convert As Boolean
 		    redim tmp_item(-1)
 		    
@@ -516,7 +510,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    ok_convert = False
 		    
 		    If element IsA clDataSerie Then
-		      tmp_item.Append(itf_json_able(element).to_json.ToString)
+		      tmp_item.Append(itf_json_able(element).ToJSON.ToString)
 		      ok_convert = True
 		      
 		    Else
@@ -532,7 +526,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		    If Not ok_convert Then
 		      If element IsA itf_json_able Then
-		        tmp_item.Append(itf_json_able(element).to_json.ToString)
+		        tmp_item.Append(itf_json_able(element).ToJSON.ToString)
 		        ok_convert = True
 		      End If
 		      
@@ -553,18 +547,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function element_is_defined(the_element_index as integer) As Boolean
-		  return self.get_element(the_element_index) <> nil
+		Function ElementIsDefined(the_element_index As integer) As Boolean
+		  return self.GetElement(the_element_index) <> nil
 		  
 		End Function
 	#tag EndMethod
 
-	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function filter_column_by_rows(the_row_index as integer, the_row_count as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
-	#tag EndDelegateDeclaration
-
 	#tag Method, Flags = &h0
-		Function filter_with_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
+		Function FilterWithFunction(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
 		  var return_boolean() As Variant
 		  
 		  Return return_boolean
@@ -572,15 +562,19 @@ Implements Xojo.Core.Iterable,itf_json_able
 		End Function
 	#tag EndMethod
 
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function filter_column_by_rows(the_row_index as integer, the_RowCount as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
+	#tag EndDelegateDeclaration
+
 	#tag Method, Flags = &h0
-		Function find_row_index_for_value(the_find_value as Variant) As integer()
+		Function FindRowIndexForValue(the_find_value as Variant) As integer()
 		  //
 		  // returns row index of rows matching the value
 		  //
 		  var ret() As Integer
 		  
-		  For i As Integer = 0 To self.upper_bound
-		    if self.get_element(i) = the_find_value Then
+		  For i As Integer = 0 To self.LastIndex
+		    if self.GetElement(i) = the_find_value Then
 		      ret.Append(i)
 		      
 		    End If
@@ -592,7 +586,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function full_name(add_brackets as boolean = False) As string
+		Function FullName(add_brackets as boolean = False) As string
 		  if self.physical_table_link = nil then
 		    return self.name
 		    
@@ -608,17 +602,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetIterator() As Xojo.Core.Iterator
-		  // Part of the Xojo.Core.Iterable interface.
-		  
-		  var tmp_serie_iterator As New clDataSerieIterator(self)
-		  
-		  Return tmp_serie_iterator 
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function get_default_value() As variant
+		Function GetDefaultValue() As variant
 		  //  
 		  //  Return the default value defined for the data serie (only implemented at type specific subclasses)
 		  //
@@ -637,7 +621,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element(the_element_index as integer) As Variant
+		Function GetElement(the_element_index as integer) As Variant
 		  //  
 		  //  Returns the element at index (only implemented in type specific subclasses)
 		  //
@@ -656,12 +640,12 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_data_serie(the_element_index as integer) As clDataSerie
+		Function GetElementAsDataSerie(the_element_index as integer) As clDataSerie
 		  
 		  var tmp_v As clDataSerie
 		  
 		  Try 
-		    tmp_v = get_element(the_element_index)
+		    tmp_v = GetElement(the_element_index)
 		    
 		  Catch TypeMismatchException
 		    tmp_v = Nil
@@ -674,7 +658,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_integer(the_element_index as integer) As integer
+		Function GetElementAsInteger(the_element_index as integer) As integer
 		  //  
 		  //  Returns the element at index as a double
 		  //
@@ -690,7 +674,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  var tmp_d As integer
 		  var tmp_v As variant
 		  
-		  tmp_v = get_element(the_element_index)
+		  tmp_v = GetElement(the_element_index)
 		  
 		  Try 
 		    tmp_d = tmp_v.IntegerValue
@@ -706,7 +690,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_number(the_element_index as integer) As double
+		Function GetElementAsNumber(the_element_index as integer) As double
 		  //  
 		  //  Returns the element at index as a double
 		  //
@@ -723,7 +707,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  var tmp_d As Double
 		  var tmp_v As variant
 		  
-		  tmp_v = get_element(the_element_index)
+		  tmp_v = GetElement(the_element_index)
 		  
 		  Try 
 		    // some test cases will cause an exception here, this is expected
@@ -740,7 +724,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element_as_string(the_element_index as integer) As string
+		Function GetElementAsString(the_element_index as integer) As string
 		  //  
 		  //  Returns the element at index as a string
 		  //
@@ -756,7 +740,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  var tmp_s As String
 		  var tmp_v As variant
 		  
-		  tmp_v = get_element(the_element_index)
+		  tmp_v = GetElement(the_element_index)
 		  
 		  Try 
 		    tmp_s = tmp_v.StringValue
@@ -772,13 +756,23 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_last_error_message() As string
+		Function GetIterator() As Xojo.Core.Iterator
+		  // Part of the Xojo.Core.Iterable interface.
+		  
+		  var tmp_serie_iterator As New clDataSerieIterator(self)
+		  
+		  Return tmp_serie_iterator 
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetLastErrorMessage() As string
 		  return self.last_error_message
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_meta_data() As clMetaData
+		Function GetMetadata() As clMetaData
 		  //  
 		  //  Returns the meta data dictionary of the current data serie
 		  //
@@ -793,14 +787,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_type() As string
+		Function GetType() As string
 		  
 		  return  clDataType.TranslateFromSerie(self)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function has_alias(alias as string) As Boolean
+		Function HasAlias(alias as string) As Boolean
 		  //  
 		  //  Check if the current data serie has the specified the alias
 		  //
@@ -817,7 +811,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function is_linked_to_table() As Boolean
+		Function IsLinkedToTable() As Boolean
 		  //  
 		  //  Checks if the current data serie is linked to a table
 		  //
@@ -833,7 +827,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub rename(the_new_name as string)
+		Function LastIndex() As integer
+		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Rename(the_new_name as string)
 		  //  
 		  //  use setter of computed property
 		  //  
@@ -846,7 +847,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function rename(the_new_name as string) As clAbstractDataSerie
+		Function Rename(the_new_name as string) As clAbstractDataSerie
 		  //  
 		  //  use setter of computed property
 		  //  
@@ -859,7 +860,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset()
+		Sub Reset()
 		  //  
 		  //  Reset the data serie. Type specific subclasses will clear all values.
 		  //
@@ -868,14 +869,14 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Returns:
 		  //
 		  
-		  self.reset_meta_data
-		  self.reset_elements
+		  self.ResetMetadata
+		  self.ResetElements
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset_elements()
+		Sub ResetElements()
 		  //  
 		  //  Clear the list of values (implemented at type specific subclasses)
 		  //
@@ -892,7 +893,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset_meta_data()
+		Sub ResetMetadata()
 		  //  
 		  //  Resets the meta data
 		  //
@@ -901,13 +902,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Returns:
 		  //
 		  
-		  self.meta_dict = new clMetaData
+		  self.meta_dict = new clMetadata
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function round_values(nb_decimal as integer = 0) As integer
+		Function RoundValues(nb_decimal as integer = 0) As integer
 		  //  
 		  //  Round the values of the current data serie against a high_value:
 		  //.    
@@ -920,17 +921,17 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //
 		  
 		  
-		  var last_index as integer = self.row_count
+		  var last_index as integer = self.RowCount
 		  var count_changes as integer = 0
 		  
 		  var corr as double = 10 ^ max(nb_decimal,0)
 		  
 		  for index as integer = 0 to last_index
-		    var current_value as variant = self.get_element(index)
+		    var current_value as variant = self.GetElement(index)
 		    var new_value as double = round(current_value * corr) / corr
 		    
 		    if current_value <> new_value then
-		      self.set_element(index, new_value)
+		      self.SetElement(index, new_value)
 		      count_changes = count_changes + 1
 		      
 		    end if
@@ -942,13 +943,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function row_count() As integer
-		  return self.upper_bound+1
+		Function RowCount() As integer
+		  return self.LastIndex+1
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_default_value(v as Variant)
+		Sub SetDefaultValue(v as Variant)
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		  
@@ -956,30 +957,39 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_element(the_element_index as integer, the_item as Variant)
+		Sub SetElement(the_element_index as integer, the_item as Variant)
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_length(the_length as integer)
-		  var v as variant = self.get_default_value
+		Sub SetElements(the_values() as variant)
+		  for i as integer = 0 to the_values.LastIndex
+		    self.SetElement(i, the_values(i))
+		    
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetLength(the_length as integer)
+		  var v as variant = self.GetDefaultValue
 		  
-		  self.set_length(the_length, v)
+		  self.SetLength(the_length, v)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_length(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, default_value as variant)
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_link_to_table(the_table as clDataTable)
+		Sub SetLinkToTable(the_table as clDataTable)
 		  
 		  If physical_table_link = Nil Then
 		    physical_table_link = the_table
@@ -993,17 +1003,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_values(the_values() as variant)
-		  for i as integer = 0 to the_values.Ubound
-		    self.set_element(i, the_values(i))
-		    
-		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function standard_deviation(is_population as boolean = False) As double
-		  var limit As Integer = row_count - 1
+		Function StandardDeviation(is_population as boolean = False) As double
+		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
 		  var s1 As Double
@@ -1014,8 +1015,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  var n as integer
 		  
 		  For i = 0 To limit
-		    if self.element_is_defined(i) then
-		      tmp = get_element_as_number(i)
+		    if self.ElementIsDefined(i) then
+		      tmp = GetElementAsNumber(i)
 		      s1 = s1 + tmp
 		      s2 = s2 + tmp * tmp
 		      
@@ -1041,8 +1042,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function standard_deviation_non_zero(is_population as boolean = False) As double
-		  var limit As Integer = row_count - 1
+		Function StandardDeviationNonZero(is_population as boolean = False) As double
+		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
 		  var s1 As Double
@@ -1053,8 +1054,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  var n as integer
 		  
 		  For i = 0 To limit
-		    if self.element_is_defined(i) then
-		      tmp = get_element_as_number(i)
+		    if self.ElementIsDefined(i) then
+		      tmp = GetElementAsNumber(i)
 		      if tmp <> 0 then
 		        s1 = s1 + tmp
 		        s2 = s2 + tmp * tmp
@@ -1083,13 +1084,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function sum() As double
-		  var limit As Integer = row_count - 1
+		Function Sum() As double
+		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
 		  var s As Double
 		  For i = 0 To limit
-		    s = s + get_element_as_number(i)
+		    s = s + GetElementAsNumber(i)
 		    
 		  Next
 		  
@@ -1099,17 +1100,17 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function to_json() As JSONItem
+		Function ToJSON() As JSONItem
 		  // Part of the itf_json_able interface.
 		  
 		  var js_list As New JSONItem
 		  var js_return As New JSONItem
 		  
-		  For row As Integer = 0 To row_count-1
-		    var element As variant = get_element(row)
+		  For row As Integer = 0 To RowCount-1
+		    var element As variant = GetElement(row)
 		    
 		    If element IsA itf_json_able Then
-		      js_list.append(itf_json_able(element).to_json)
+		      js_list.append(itf_json_able(element).ToJSON)
 		      
 		    Else
 		      Try
@@ -1136,8 +1137,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  var dct as new Dictionary
 		  var results() as variant
 		  
-		  for row as integer = 0 to upper_bound
-		    var tmp as variant = self.get_element(row)
+		  for row as integer = 0 to LastIndex
+		    var tmp as variant = self.GetElement(row)
 		    
 		    if dct.HasKey(tmp) then
 		      dct.value(tmp)  = dct.Value(tmp) + 1
@@ -1155,13 +1156,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  
 		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function upper_bound() As integer
-		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Function
 	#tag EndMethod
@@ -1214,24 +1208,24 @@ Implements Xojo.Core.Iterable,itf_json_able
 		
 	#tag EndNote
 
-	#tag Note, Name = Methods to be defined in child class
+	#tag Note, Name = Methods to be defined in child classes
 		METHODS TO BE DEFINED IN CHILD CLASSES
 		
 		append_element
 		
 		clone 
 		
-		filter_with_function
+		FilterWithFunction
 		
 		get_element
 		
 		remove_all_elements
 		
-		set_element
+		SetElement
 		
-		set_length
+		SetLength
 		
-		upper_bound
+		LastIndex
 	#tag EndNote
 
 
@@ -1267,7 +1261,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected meta_dict As clMetaData
+		Protected meta_dict As clMetadata
 	#tag EndProperty
 
 	#tag ComputedProperty, Flags = &h0

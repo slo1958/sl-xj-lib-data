@@ -46,7 +46,7 @@ Inherits clLibDataExample
 		  true)
 		  
 		  
-		  var col_city  as clStringDataSerie = clStringDataSerie(table2.get_column("city"))
+		  var col_city  as clStringDataSerie = clStringDataSerie(table2.GetColumn("city"))
 		  
 		  call table2.AddColumn(col_city.Uppercase.rename("City UC"))
 		  

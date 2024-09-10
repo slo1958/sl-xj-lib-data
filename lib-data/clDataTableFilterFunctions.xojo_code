@@ -1,13 +1,13 @@
 #tag Module
 Protected Module clDataTableFilterFunctions
 	#tag Method, Flags = &h0
-		Function field_filter(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		Function field_filter(the_row_index as integer, the_RowCount as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
 		  //  
 		  //  Implementation of basic filter_row to compare the value of a cell in a column (name as paramter #0) to a constant value (paramter #1)
 		  //  
 		  //  Parameters
 		  //  - the_row_index: index of the current row
-		  //  - the_row_count: number of rows in the table
+		  //  - the_RowCount: number of rows in the table
 		  //  - the_column_names(): list of columns in in the table
 		  //  - the_cell_values(): values of the columns for the current row
 		  //  - function_param: additional paramters used to defined the bahaviour of the function
@@ -28,13 +28,13 @@ Protected Module clDataTableFilterFunctions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function retain_dataSerie_head(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function retain_dataSerie_head(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
 		  //  
 		  //  Implementation of basic filter_row to return n top rows.
 		  //  
 		  //  Parameters
 		  //  - the_row_index: index of the current row
-		  //  - the_row_count: number of rows in the table
+		  //  - the_RowCount: number of rows in the table
 		  //  - the_column_names(): list of columns in in the table
 		  //  - the_cell_values(): values of the columns for the current row
 		  //  - function_param: additional paramters used to defined the bahaviour of the function
@@ -45,7 +45,7 @@ Protected Module clDataTableFilterFunctions
 		  //   - boolean: true for selected header rows
 		  //  
 		  
-		  If function_param.ubound >= 0 Then
+		  If function_param.LastIndex >= 0 Then
 		    var tmp As Integer = function_param(0)
 		    Return the_row < tmp
 		    
@@ -58,13 +58,13 @@ Protected Module clDataTableFilterFunctions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function retain_dataSerie_tail(the_row as integer, the_row_count as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function retain_dataSerie_tail(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
 		  //  
 		  //  Implementation of basic filter_row to return n last rows.
 		  //  
 		  //  Parameters
 		  //  - the_row_index: index of the current row
-		  //  - the_row_count: number of rows in the table
+		  //  - the_RowCount: number of rows in the table
 		  //  - the_column_names(): list of columns in in the table
 		  //  - the_cell_values(): values of the columns for the current row
 		  //  - function_param: additional paramters used to defined the bahaviour of the function
@@ -76,13 +76,13 @@ Protected Module clDataTableFilterFunctions
 		  //  
 		  
 		  
-		  If function_param.ubound >= 0 Then
+		  If function_param.LastIndex >= 0 Then
 		    
 		    var tmp As Integer = function_param(0)
-		    Return the_row > the_row_count - tmp
+		    Return the_row > the_RowCount - tmp
 		    
 		  Else
-		    Return  the_row > the_row_count - 10
+		    Return  the_row > the_RowCount - 10
 		    
 		  End If
 		  
@@ -95,11 +95,11 @@ Protected Module clDataTableFilterFunctions
 		
 		The prototype is:
 		
-		function xyz(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) as boolean
+		function xyz(the_row_index as integer, the_RowCount as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) as boolean
 		
 		where
 		- the_row_index: index of the current row
-		- the_row_count: number of rows in the table
+		- the_RowCount: number of rows in the table
 		- the_column_names(): list of columns in in the table
 		- the_cell_values(): values of the columns for the current row
 		- function_param: additional paramters used to defined the bahaviour of the function

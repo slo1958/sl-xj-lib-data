@@ -40,10 +40,10 @@ Inherits clLibDataExample
 		  var ret_tables() as clDataTable 
 		  
 		  var data_table as new clDataTable("data", series)
-		  var stat_table as clDataTable = data_table.get_statistics_as_table
-		  var struc_table as clDataTable = data_table.get_structure_as_table
+		  var stat_table as clDataTable = data_table.GetStatisticsAsTable
+		  var struc_table as clDataTable = data_table.GetStructureAsTable
 		  
-		  call stat_table.get_column(clDataTable.statistics_average_column).round_values(2)
+		  call stat_table.GetColumn(clDataTable.statistics_average_column).RoundValues(2)
 		  
 		  ret_tables.Add(data_table)
 		  ret_tables.add(stat_table)

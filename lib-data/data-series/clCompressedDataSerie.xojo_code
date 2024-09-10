@@ -12,7 +12,7 @@ Inherits clAbstractDataSerie
 		    
 		  else
 		    items_value_list.Append(the_item)
-		    item_entry = items_value_list.Ubound
+		    item_entry = items_value_list.LastIndex
 		    self.items_value_dict.Value(the_item) = item_entry
 		    
 		  end if
@@ -29,7 +29,7 @@ Inherits clAbstractDataSerie
 		  var tmp As New clCompressedDataSerie(Self.name)
 		  tmp.display_title = self.display_title
 		  
-		  tmp.AddMetaData("source","clone from " + self.full_name)
+		  tmp.AddMetadata("source","clone from " + self.FullName)
 		  
 		  For Each item_index As Integer In Self.items_index
 		    var v as Variant 
@@ -51,11 +51,11 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone_structure() As clCompressedDataSerie
+		Function CloneStructure() As clCompressedDataSerie
 		  var tmp As New clCompressedDataSerie(Self.name)
 		  tmp.display_title = self.display_title
 		  
-		  tmp.AddMetaData("source","clone structure from " + self.full_name)
+		  tmp.AddMetadata("source","clone structure from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -64,10 +64,10 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_with_function(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
+		Function FilterWithFunction(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
 		  var return_boolean() As Variant
 		  
-		  For row_index As Integer=0 To items_index.Ubound
+		  For row_index As Integer=0 To items_index.LastIndex
 		    var item_index as integer = items_index(row_index)
 		    var v as Variant
 		    
@@ -76,7 +76,7 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    return_boolean.Append(the_filter_function.Invoke(row_index, items_index.Ubound, name, v, function_param))
+		    return_boolean.Append(the_filter_function.Invoke(row_index, items_index.LastIndex, name, v, function_param))
 		    
 		  Next
 		  
@@ -86,11 +86,11 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_element(the_element_index as integer) As variant
+		Function GetElement(the_element_index as integer) As variant
 		  
 		  var v as Variant
 		  
-		  If 0 <= the_element_index And  the_element_index <= items_index.Ubound then
+		  If 0 <= the_element_index And  the_element_index <= items_index.LastIndex then
 		    var item_index As Integer = Self.items_index(the_element_index)
 		    
 		    if item_index >=0 then
@@ -106,7 +106,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset_elements()
+		Function LastIndex() As integer
+		  Return items_index.LastIndex
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ResetElementss()
 		  
 		  items_value_dict = new Dictionary
 		  
@@ -118,8 +125,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_element(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items_index.Ubound Then
+		Sub SetElement(the_element_index as integer, the_item as Variant)
+		  If 0 <= the_element_index And  the_element_index <= items_index.LastIndex Then
 		    
 		    var item_entry as Integer
 		    
@@ -128,7 +135,7 @@ Inherits clAbstractDataSerie
 		      
 		    else
 		      items_value_list.Append(the_item)
-		      item_entry = items_value_list.Ubound
+		      item_entry = items_value_list.LastIndex
 		      self.items_value_dict.Value(the_item) = item_entry
 		      
 		    end if
@@ -142,20 +149,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_length(the_length as integer, default_value as variant)
-		  While items_index.Ubound < the_length-1
+		Sub SetLength(the_length as integer, default_value as variant)
+		  While items_index.LastIndex < the_length-1
 		    items_index.Append(-1)
 		    
 		  Wend
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function upper_bound() As integer
-		  Return items_index.Ubound
-		  
-		End Function
 	#tag EndMethod
 
 

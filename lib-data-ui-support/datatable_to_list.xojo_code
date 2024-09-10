@@ -7,7 +7,7 @@ Protected Module datatable_to_list
 		  var tmp_tbl as TableColumnReaderInterface = thetable
 		  
 		  
-		  var nbr_columns as integer = tmp_tbl.column_count
+		  var nbr_columns as integer = tmp_tbl.ColumnCount
 		  
 		  tmp_listbox.RemoveAllRows
 		  
@@ -21,14 +21,14 @@ Protected Module datatable_to_list
 		  tmp_listbox.HeaderAt(0)="#"
 		  
 		  for column_index as integer = 0 to  nbr_columns-1
-		    tmp_listbox.HeaderAt(column_index+1) = tmp_tbl.get_column_by_index(column_index).display_title
-		    tmp_listbox.ColumnTagAt(column_index+1) = tmp_tbl.get_column_by_index(column_index)
+		    tmp_listbox.HeaderAt(column_index+1) = tmp_tbl.GetColumnAt(column_index).display_title
+		    tmp_listbox.ColumnTagAt(column_index+1) = tmp_tbl.GetColumnAt(column_index)
 		  next
 		  
 		  //  
 		  //  show data
 		  //  
-		  var tmp_last_row as integer = tmp_tbl.row_count
+		  var tmp_last_row as integer = tmp_tbl.RowCount
 		  
 		  for row_index as integer = 0 to tmp_last_row - 1
 		    tmp_listbox.AddRow(str(row_index))
@@ -37,11 +37,11 @@ Protected Module datatable_to_list
 		  
 		  
 		  for column_index as integer = 0 to  nbr_columns-1
-		    var tmp_col as clAbstractDataSerie = tmp_tbl.get_column_by_index(column_index)
+		    var tmp_col as clAbstractDataSerie = tmp_tbl.GetColumnAt(column_index)
 		    
 		    for  row_index as integer = 0 to tmp_last_row - 1
 		      
-		      tmp_listbox.CellTextAt(row_index, column_index+1) =  tmp_col.get_element_as_string(row_index)
+		      tmp_listbox.CellTextAt(row_index, column_index+1) =  tmp_col.GetElementAsString(row_index)
 		      
 		    next
 		    

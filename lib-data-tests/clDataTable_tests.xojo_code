@@ -52,15 +52,15 @@ Protected Module clDataTable_tests
 		  var cnt1 as integer  
 		  var cnt2 as integer 
 		  
-		  cnt1 = expected.column_count
-		  cnt2 = calculated.column_count
+		  cnt1 = expected.ColumnCount
+		  cnt2 = calculated.ColumnCount
 		  
 		  if not check_value(log,"column count", cnt1, cnt2) then return False
 		  
 		  var col_ok as boolean = True
-		  for col as integer = 0 to expected.column_count-1
+		  for col as integer = 0 to expected.ColumnCount-1
 		    
-		    col_ok = col_ok and check_serie(log, label + " field [" + expected.column_name(col)+"]", expected.get_column_by_index(col), calculated.get_column_by_index(col), accepted_error_on_double)
+		    col_ok = col_ok and check_serie(log, label + " field [" + expected.ColumnNameAt(col)+"]", expected.GetColumnAt(col), calculated.GetColumnAt(col), accepted_error_on_double)
 		    
 		  next
 		  
@@ -70,7 +70,7 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_008(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		Function filter_008(the_row_index as integer, the_RowCount as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
 		  var idx as integer = the_column_names.IndexOf("cc2")
 		  
 		  return the_cell_values(idx) = function_param(0)
@@ -349,7 +349,7 @@ Protected Module clDataTable_tests
 		  
 		  var cols() As clAbstractDataSerie
 		  
-		  cols = my_table.get_columns("aaa","bbb","ddd")
+		  cols = my_table.GetColumns("aaa","bbb","ddd")
 		  
 		  cols(1).rename("bB1")
 		  
@@ -442,9 +442,9 @@ Protected Module clDataTable_tests
 		  my_table.AddRow(Array("aaa2","bbb2","ccc2"))
 		  my_table.AddRow(Array("aaa3","bbb3","ccc3"))
 		  
-		  var tmp1 As Integer = my_table.find_first_matching_row_index("cc2","bbb2")
-		  var tmp2 As Integer = my_table.find_first_matching_row_index("cc2","zzz2")
-		  var tmp3 As Integer = my_table.find_first_matching_row_index("zz2","bbb2")
+		  var tmp1 As Integer = my_table.FindFirstMatchingRowIndex("cc2","bbb2")
+		  var tmp2 As Integer = my_table.FindFirstMatchingRowIndex("cc2","zzz2")
+		  var tmp3 As Integer = my_table.FindFirstMatchingRowIndex("zz2","bbb2")
 		  
 		  call check_value(log, "tmp1", 2, tmp1)
 		  call check_value(log, "tmp2", -1, tmp2) // value not found
@@ -472,13 +472,13 @@ Protected Module clDataTable_tests
 		  
 		  //  The function is filtering on column cc2. The parameter is the value to look for
 		  
-		  var tmp1() as variant = my_table.filter_with_function(AddressOf filter_008,"bbb0")
+		  var tmp1() as variant = my_table.FilterWithFunction(AddressOf filter_008,"bbb0")
 		  
 		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb0", tmp1))
 		  
-		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb1", clDataSerie(my_table.get_column("cc2")).filter_value_in_list(array("bbb1"))))
+		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb1", clDataSerie(my_table.GetColumn("cc2")).FilterValueInList(array("bbb1"))))
 		  
-		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb3",  my_table.filter_with_function(AddressOf filter_008, "bbb3")))
+		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb3",  my_table.FilterWithFunction(AddressOf filter_008, "bbb3")))
 		  
 		  
 		  var col1 as new clDataSerie("cc1", "aaa0","aaa1","aaa2","aaa3")
@@ -533,8 +533,8 @@ Protected Module clDataTable_tests
 		    
 		  next
 		  
-		  var my_table3 as clDataTable = my_table1.clone()
-		  var my_table4 as clDataTable = my_table1.clone()
+		  var my_table3 as clDataTable = my_table1.Clone()
+		  var my_table4 as clDataTable = my_table1.Clone()
 		  
 		  my_table3.AddColumns(my_table2, true)
 		  my_table4.AddColumns(my_table2, false)
@@ -596,7 +596,7 @@ Protected Module clDataTable_tests
 		  temp_row.set_cell("unit_price",8)
 		  mytable.AddRow(temp_row)
 		  
-		  call mytable.AddColumn(clNumberDataSerie(mytable.get_column("unit_price")) * clNumberDataSerie(mytable.get_column("quantity")))
+		  call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNumberDataSerie(mytable.GetColumn("quantity")))
 		  
 		  var col1 as new clDataSerie("name", "alpha","alpha")
 		  var col2 as new clNumberDataSerie("quantity", 50, 20)
@@ -631,7 +631,7 @@ Protected Module clDataTable_tests
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
-		  var tmp_row as clDataRow = table0.get_row(2, False)
+		  var tmp_row as clDataRow = table0.GetRowAt(2, False)
 		  
 		  call check_value(log,"row 2, country", "Belgique", tmp_row.get_cell("country"))
 		  call check_value(log, "row 2, city", "", tmp_row.get_cell("city"))
@@ -662,7 +662,7 @@ Protected Module clDataTable_tests
 		  
 		  call table0.AddColumn(filterserie)
 		  
-		  var tmp_row as clDataRow = table0.get_row(3, False)
+		  var tmp_row as clDataRow = table0.GetRowAt(3, False)
 		  
 		  call check_value(log,"row 3, country", "USA", tmp_row.get_cell("country"))
 		  call check_value(log, "row 3, city", "NewYork", tmp_row.get_cell("city"))
@@ -671,7 +671,7 @@ Protected Module clDataTable_tests
 		  
 		  var k as integer = 0
 		  
-		  for each row as clDataRow in table0.filtered_on("mask")
+		  for each row as clDataRow in table0.FilteredOn("mask")
 		    k = k+1
 		  next
 		  
@@ -744,14 +744,14 @@ Protected Module clDataTable_tests
 		  table0.AddRow(Array("USA","Chicago",1600,"AA"))
 		  
 		  var filter_country as new clBooleanDataSerie("mask_country")
-		  for each cell as string in table0.get_column("Country")
+		  for each cell as string in table0.GetColumn("Country")
 		    filter_country.AddElement(cell = "Belgique")
 		    
 		  next
 		  call table0.AddColumn(filter_country)
 		  
 		  var filter_product as new clBooleanDataSerie("mask_product")
-		  for each cell as string in table0.get_column("product")
+		  for each cell as string in table0.GetColumn("product")
 		    filter_product.AddElement(cell = "BB")
 		    
 		  next
@@ -770,8 +770,8 @@ Protected Module clDataTable_tests
 		  
 		  var k as integer = 1
 		  
-		  //  use the name of the boolean serie as parameter to 'filtered_on'
-		  for each row as clDataRow in table0.filtered_on("mask_country")
+		  //  use the name of the boolean serie as parameter to 'FilteredOn'
+		  for each row as clDataRow in table0.FilteredOn("mask_country")
 		    k = k+1
 		  next
 		  
@@ -799,13 +799,13 @@ Protected Module clDataTable_tests
 		  table0.AddRow(Array("USA","Chicago",1600,"AA"))
 		  
 		  var filter_country as new clBooleanDataSerie("mask_country")
-		  for each cell as string in table0.get_column("Country")
+		  for each cell as string in table0.GetColumn("Country")
 		    filter_country.AddElement(cell = "Belgique")
 		    
 		  next 
 		  
 		  var filter_product as new clBooleanDataSerie("mask_product")
-		  for each cell as string in table0.get_column("product")
+		  for each cell as string in table0.GetColumn("product")
 		    filter_product.AddElement(cell = "BB")
 		    
 		  next 
@@ -825,9 +825,9 @@ Protected Module clDataTable_tests
 		  
 		  var k as integer = 1
 		  
-		  //  directly use the  boolean serie as parameter to 'filtered_on'; and, or and not operator are overloaded for clBooleanDataSerie
+		  //  directly use the  boolean serie as parameter to 'FilteredOn'; and, or and not operator are overloaded for clBooleanDataSerie
 		  
-		  for each row as clDataRow in table0.filtered_on(filter_country and filter_product)
+		  for each row as clDataRow in table0.FilteredOn(filter_country and filter_product)
 		    k = k+1
 		  next
 		  
@@ -930,8 +930,8 @@ Protected Module clDataTable_tests
 		  call table0.AddColumn(col_sales.ClippedByRange(1100, 1500) * 2)
 		  
 		  // create expected table
-		  var col1 as clDataSerie = col_country.clone()
-		  var col2 as clDataSerie = col_city.clone()
+		  var col1 as clDataSerie = col_country.Clone()
+		  var col2 as clDataSerie = col_city.Clone()
 		  var col3 as new clNumberDataSerie("sales", 1000.0, 1200.0, 1400.0, 1600.0, 2000.0)
 		  var col4 as new clNumberDataSerie("sales*2", 1800.0, 2400.0, 2800.0, 3200.0, 5800.0)
 		  var col5 as new clNumberDataSerie("clip sales*2", 2200.0, 2400.0, 2800.0, 3000.0, 3000.0)
@@ -967,11 +967,11 @@ Protected Module clDataTable_tests
 		  
 		  call check_table(log,"use dict for creation", table_expected, table0)
 		  
-		  table0.get_column("City").display_title = "Ville"
-		  table0.get_column("Country").display_title = "Pays"
-		  table0.get_column("Sales").display_title="Ventes" 
+		  table0.GetColumn("City").display_title = "Ville"
+		  table0.GetColumn("Country").display_title = "Pays"
+		  table0.GetColumn("Sales").display_title="Ventes" 
 		  
-		  var struc0 as clDataTable = table0.get_structure_as_table
+		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  
 		  dct = new Dictionary
 		  dct.value("name") = array("Country", "City", "Sales")
@@ -1013,11 +1013,11 @@ Protected Module clDataTable_tests
 		  
 		  call check_table(log,"use dict for creation", table_expected, table0)
 		  
-		  table0.get_column("City").display_title = "Ville"
-		  table0.get_column("Country").display_title = "Pays"
-		  table0.get_column("Sales").display_title="Ventes" 
+		  table0.GetColumn("City").display_title = "Ville"
+		  table0.GetColumn("Country").display_title = "Pays"
+		  table0.GetColumn("Sales").display_title="Ventes" 
 		  
-		  var struc0 as clDataTable = table0.get_structure_as_table
+		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  
 		  dct = new Dictionary
 		  dct.value("name") = array("Country", "City", "Sales")
@@ -1029,7 +1029,7 @@ Protected Module clDataTable_tests
 		  
 		  var table1 as clDataTable = struc0.CreateTableFromStructure("mytable")
 		  
-		  var struc1 as clDataTable = table0.get_structure_as_table
+		  var struc1 as clDataTable = table0.GetStructureAsTable
 		  call check_table(log,"structure", struc_expected, struc1)
 		  
 		  
@@ -1066,9 +1066,9 @@ Protected Module clDataTable_tests
 		  
 		  
 		  var data_table as new clDataTable("data", series)
-		  var stat_table as clDataTable = data_table.get_statistics_as_table
+		  var stat_table as clDataTable = data_table.GetStatisticsAsTable
 		  
-		  call stat_table.get_column(clDataTable.statistics_average_column).round_values(2)
+		  call stat_table.GetColumn(clDataTable.statistics_average_column).RoundValues(2)
 		  
 		  
 		  //

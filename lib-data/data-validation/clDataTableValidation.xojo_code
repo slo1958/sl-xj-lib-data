@@ -42,11 +42,19 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function column_count() As integer
+		Function ColumnCount() As integer
 		  // Part of the TableColumnReaderInterface interface.
 		  
 		  return 4
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ColumnNameAt(column_index as integer) As string
+		  var tmp() as string = self.GetColumnNames()
+		  
+		  return tmp(column_index)
 		End Function
 	#tag EndMethod
 
@@ -76,23 +84,7 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumnNames() As string()
-		  // Part of the TableColumnReaderInterface interface
-		  
-		  var tmp() as string
-		  
-		  tmp.Append(field_name_input_column)
-		  tmp.Append(field_type_input_column)
-		  tmp.Append(field_nullable_input_column)
-		  tmp.Append(field_mandatory_input_column)
-		  
-		  return tmp
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function get_column(the_column_name as String) As clAbstractDataSerie
+		Function GetColumn(the_column_name as String) As clAbstractDataSerie
 		  // Part of the TableColumnReaderInterface interface.
 		  
 		  var output as new clDataSerie(the_column_name)
@@ -126,12 +118,12 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_column_by_index(column_index as integer) As clAbstractDataSerie
+		Function GetColumnAt(column_index as integer) As clAbstractDataSerie
 		  
 		  var output as clDataSerie
 		  
 		  try
-		    output = new clDataSerie(self.get_column_name(column_index))
+		    output = new clDataSerie(self.ColumnNameAt(column_index))
 		    
 		  catch
 		    return nil
@@ -166,10 +158,18 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_column_name(column_index as integer) As string
-		  var tmp() as string = self.GetColumnNames()
+		Function GetColumnNames() As string()
+		  // Part of the TableColumnReaderInterface interface
 		  
-		  return tmp(column_index)
+		  var tmp() as string
+		  
+		  tmp.Append(field_name_input_column)
+		  tmp.Append(field_type_input_column)
+		  tmp.Append(field_nullable_input_column)
+		  tmp.Append(field_mandatory_input_column)
+		  
+		  return tmp
+		  
 		End Function
 	#tag EndMethod
 
@@ -194,10 +194,10 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function row_count() As integer
+		Function RowCount() As integer
 		  // Part of the TableColumnReaderInterface interface.
 		  
-		  return valid_columns.Ubound+1
+		  return valid_columns.LastIndex+1
 		  
 		End Function
 	#tag EndMethod
@@ -212,7 +212,7 @@ Implements TableColumnReaderInterface
 		  for each column as clDataSerieValidation in valid_columns
 		    
 		    if  table.GetColumnNames.IndexOf(column.name) >= 0 then
-		      var tmp() as clAbstractDataSerie = column.validate(table.get_column(column.name))
+		      var tmp() as clAbstractDataSerie = column.validate(table.GetColumn(column.name))
 		      
 		      tmp(0).rename(row_index_output_column)
 		      tmp(1).rename(message_output_column )

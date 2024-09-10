@@ -7,25 +7,25 @@ Protected Interface TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function column_count() As integer
+		Function ColumnCount() As integer
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumn(the_column_name as String) As clAbstractDataSerie
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumnAt(column_index as integer) As clAbstractDataSerie
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetColumnNames() As string()
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function get_column(the_column_name as String) As clAbstractDataSerie
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function get_column_by_index(column_index as integer) As clAbstractDataSerie
 		  
 		End Function
 	#tag EndMethod
@@ -43,7 +43,7 @@ Protected Interface TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function row_count() As integer
+		Function RowCount() As integer
 		  
 		End Function
 	#tag EndMethod

@@ -46,14 +46,14 @@ Inherits clLibDataExample
 		  for each cc as clAbstractDataSerie in array(c1,c2,c3)
 		    
 		    var c4 as new clDataSerie("get_element")
-		    var c5 as new clDataSerie("element_is_defined")
+		    var c5 as new clDataSerie("ElementIsDefined(")
 		    var c6 as new clDataSerie("get_element_as_number")
 		    
-		    for i as integer = 0 to c1.upper_bound
+		    for i as integer = 0 to c1.LastIndex
 		      
-		      c4.AddElement(cc.get_element(i))
-		      c5.AddElement(str(cc.element_is_defined(i)))
-		      c6.AddElement(str(c2.get_element_as_number(i)))
+		      c4.AddElement(cc.GetElement(i))
+		      c5.AddElement(str(cc.ElementIsDefined(i)))
+		      c6.AddElement(str(c2.GetElementAsNumber(i)))
 		      
 		    next
 		    

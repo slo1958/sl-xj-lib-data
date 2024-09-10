@@ -2,9 +2,9 @@
 Protected Class clDataTableRowReader
 Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
-		Function column_count() As integer
+		Function ColumnCount() As integer
 		  // Part of the TableRowReaderInterface interface.
-		  return table.column_count
+		  return table.ColumnCount
 		  
 		End Function
 	#tag EndMethod
@@ -29,7 +29,7 @@ Implements TableRowReaderInterface
 		Function end_of_table() As boolean
 		  // Part of the TableRowReaderInterface interface.
 		  
-		  return current_row >=  table.row_count
+		  return current_row >=  table.RowCount
 		  
 		End Function
 	#tag EndMethod
@@ -66,8 +66,8 @@ Implements TableRowReaderInterface
 		  // Part of the TableRowReaderInterface interface.
 		  var row_value() as variant
 		  
-		  for column_index as integer = 0 to table.column_count-1
-		    row_value.add(table.get_element(column_index, current_row))
+		  for column_index as integer = 0 to table.ColumnCount-1
+		    row_value.add(table.GetElement(column_index, current_row))
 		    
 		  next
 		  

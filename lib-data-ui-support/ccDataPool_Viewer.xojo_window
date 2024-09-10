@@ -191,7 +191,7 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
-		  reset_viewer
+		  Reset_viewer
 		  allow_update_window_title = True
 		  
 		  Opening
@@ -386,7 +386,7 @@ End
 		    
 		  end if
 		  
-		  show_description   col.full_name(true)
+		  show_description   col.FullName(true)
 		  
 		End Sub
 	#tag EndEvent

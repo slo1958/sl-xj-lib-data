@@ -1,7 +1,7 @@
 #tag Interface
 Protected Interface itf_json_able
 	#tag Method, Flags = &h0
-		Function to_json() As JSONItem
+		Function ToJSON() As JSONItem
 		  
 		End Function
 	#tag EndMethod

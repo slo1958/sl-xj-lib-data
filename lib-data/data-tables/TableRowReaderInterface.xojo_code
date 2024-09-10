@@ -1,7 +1,7 @@
 #tag Interface
 Protected Interface TableRowReaderInterface
 	#tag Method, Flags = &h0
-		Function column_count() As integer
+		Function ColumnCount() As integer
 		  
 		End Function
 	#tag EndMethod

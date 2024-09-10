@@ -18,14 +18,14 @@ Protected Class clGrouper
 		  
 		  top_dictionary = new Dictionary
 		  
-		  for row as integer = 0 to usefull_columns(0).row_count-1
+		  for row as integer = 0 to usefull_columns(0).RowCount-1
 		    
 		    var work_dict as Dictionary = top_dictionary
 		    
 		    var next_dict as Dictionary = nil
 		    
 		    for column_index as integer = 0 to usefull_columns.LastIndex
-		      var tmp_value as variant = usefull_columns(column_index).get_element(row)
+		      var tmp_value as variant = usefull_columns(column_index).GetElement(row)
 		      
 		      if work_dict.HasKey(tmp_value) then
 		        next_dict = work_dict.value(tmp_value)

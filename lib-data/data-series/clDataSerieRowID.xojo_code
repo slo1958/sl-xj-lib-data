@@ -20,23 +20,23 @@ Inherits clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset_elements()
+		Sub ResetElementss()
 		  
-		  self.meta_dict = new clMetaData
-		  self.meta_dict.AddMetaData("type","index")
+		  self.meta_dict = new clMetadata
+		  self.meta_dict.AddMetadata("type","index")
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_element(the_element_index as integer, the_item as Variant)
+		Sub SetElement(the_element_index as integer, the_item as Variant)
 		  Return
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_length(the_length as integer, default_value as variant)
-		  While items.Ubound < the_length-1
+		Sub SetLength(the_length as integer, default_value as variant)
+		  While items.LastIndex < the_length-1
 		    Self.last_index  = Self.last_index  +1
 		    items.Append(Str(Self.last_index ))
 		    

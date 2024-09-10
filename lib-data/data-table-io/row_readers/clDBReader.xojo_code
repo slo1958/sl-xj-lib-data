@@ -2,7 +2,7 @@
 Class clDBReader
 Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
-		Function column_count() As integer
+		Function ColumnCount() As integer
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  if rs = nil then return -1

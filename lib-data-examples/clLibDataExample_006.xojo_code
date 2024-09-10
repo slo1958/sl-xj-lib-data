@@ -42,11 +42,11 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("Italy","Rome",1600))
 		  
-		  var tmp1() as variant = table0.filter_with_function(AddressOf field_filter,"country","France")
+		  var tmp1() as variant = table0.FilterWithFunction(AddressOf field_filter,"country","France")
 		  
 		  call table0.AddColumn(new clDataSerie("is_france", tmp1))
 		  
-		  call table0.AddColumn(new clDataSerie("is_belgium",  table0.filter_with_function(AddressOf field_filter, "country","Belgique")))
+		  call table0.AddColumn(new clDataSerie("is_belgium",  table0.FilterWithFunction(AddressOf field_filter, "country","Belgique")))
 		  
 		  return array(table0)
 		  

@@ -42,8 +42,8 @@ Inherits clLibDataExample
 		  
 		  var table1 as new clDataTable("res")
 		  
-		  for row_index as integer = 0 to table0.row_count-1
-		    var tmp_row as clDataRow = table0.get_row(row_index, True)
+		  for row_index as integer = 0 to table0.RowCount-1
+		    var tmp_row as clDataRow = table0.GetRowAt(row_index, True)
 		    table1.AddRow(tmp_row)
 		  next
 		  

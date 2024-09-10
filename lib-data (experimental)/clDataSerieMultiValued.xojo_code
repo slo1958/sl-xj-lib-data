@@ -50,13 +50,13 @@ Inherits clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_element(the_element_index as integer, the_item as Variant)
+		Sub SetElement(the_element_index as integer, the_item as Variant)
 		  
 		  var tmp() As String
 		  
 		  tmp = Split(the_item, serie_value_separator)
 		  
-		  If tmp.Ubound = Self.serie_headers.Ubound Then
+		  If tmp.LastIndex = Self.serie_headers.LastIndex Then
 		    
 		    
 		  Else

@@ -42,9 +42,9 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("gamma", 10, 50))
 		  
 		  
-		  var s1 as clAbstractDataSerie = table0.AddColumn(table0.get_number_column("unit_price") * table0.get_number_column("quantity")).rename("sales")
+		  var s1 as clAbstractDataSerie = table0.AddColumn(table0.GetNumberColumn("unit_price") * table0.GetNumberColumn("quantity")).rename("sales")
 		  
-		  var s2 as clAbstractDataSerie = table0.AddColumn(clNumberDataSerie(table0.get_column("unit_price")) * clNumberDataSerie(table0.get_column("quantity")))
+		  var s2 as clAbstractDataSerie = table0.AddColumn(clNumberDataSerie(table0.GetColumn("unit_price")) * clNumberDataSerie(table0.GetColumn("quantity")))
 		  return Array(table0)
 		  
 		  

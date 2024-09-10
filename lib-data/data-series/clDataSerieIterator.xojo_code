@@ -17,13 +17,13 @@ Implements Xojo.Core.Iterator
 		    iteration_next_value = ""
 		    return false
 		    
-		  elseif current_index >= temp_serie.upper_bound then
+		  elseif current_index >= temp_serie.LastIndex then
 		    iteration_next_value = ""
 		    return false
 		    
 		  else
 		    current_index = current_index + 1
-		    iteration_next_value = temp_serie.get_element(current_index)
+		    iteration_next_value = temp_serie.GetElement(current_index)
 		    Return True
 		    
 		  end if

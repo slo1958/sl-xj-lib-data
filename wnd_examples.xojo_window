@@ -173,7 +173,7 @@ End
 		  
 		  var wnd as new wnd_table_viewer
 		  
-		  wnd.reset_viewer
+		  wnd.Reset_viewer
 		  
 		  for each table as TableColumnReaderInterface in tables
 		    wnd.add_table(table)

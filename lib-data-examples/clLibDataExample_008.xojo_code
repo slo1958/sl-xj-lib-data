@@ -43,11 +43,11 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
-		  var is_france() as variant = table0.filter_with_function(AddressOf field_filter,"country","France")
-		  var is_belgium() as variant =  table0.filter_with_function(AddressOf field_filter, "country","Belgique")
+		  var is_france() as variant = table0.FilterWithFunction(AddressOf field_filter,"country","France")
+		  var is_belgium() as variant =  table0.FilterWithFunction(AddressOf field_filter, "country","Belgique")
 		  var is_europe() as variant
 		  
-		  for i as integer = 0 to is_france.Ubound
+		  for i as integer = 0 to is_france.LastIndex
 		    is_europe.Append(is_france(i).integerValue + is_belgium(i).integerValue)
 		    
 		  next
