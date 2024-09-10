@@ -83,7 +83,7 @@ Protected Module clDataPool_tests
 		  
 		  my_data_pool.set_table(my_data_pool.get_table("table_1").clone(), "res")
 		  
-		  my_data_pool.get_table("res").append_from_column_source(my_data_pool.get_table("T2"))
+		  my_data_pool.get_table("res").AddColumns(my_data_pool.get_table("T2"))
 		  
 		  var col1 as clDataSerie
 		  var col2 as clDataSerie
@@ -164,7 +164,7 @@ Protected Module clDataPool_tests
 		  
 		  my_data_pool.table("res") = my_data_pool.table("table_1").clone()
 		  
-		  my_data_pool.table("res").append_from_column_source(my_data_pool.table("T2"))
+		  my_data_pool.table("res").AddColumns(my_data_pool.table("T2"))
 		  
 		  var col1 as clDataSerie
 		  var col2 as clDataSerie

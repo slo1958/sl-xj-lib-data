@@ -183,6 +183,63 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AddColumns(the_source as TableColumnReaderInterface, create_missing_columns as boolean = True)
+		  //  
+		  //  Add  the data row from column source. New columns may be added to the current table
+		  //  
+		  //  For example, 
+		  //  - with the current table containing columns A, B, C 
+		  //  - with  the flag create_missing_column set to true
+		  //  - appending from a table with columns A, B, D 
+		  //  the values from A, and B are appended to the existing columns A and B
+		  //  a new column is created to store the values for D 
+		  
+		  //  Parameters:
+		  //  - the source , providing data column by column
+		  //  - flag allow the creation of missing columns
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  var length_before as integer = self.row_count
+		  
+		  For Each src_tmp_column As clAbstractDataSerie In the_source.all_columns
+		    var column_name As String = src_tmp_column.name
+		    
+		    var dst_tmp_column As  clAbstractDataSerie = Self.get_column(column_name)
+		    
+		    If dst_tmp_column <> Nil Then
+		      dst_tmp_column.append_serie(src_tmp_column)
+		      
+		    elseif create_missing_columns then
+		      dst_tmp_column = Self.AddColumn(column_name)
+		      dst_tmp_column.set_length(length_before)
+		      
+		      dst_tmp_column.append_serie(src_tmp_column)
+		      
+		    else
+		      add_error("append_row_from_table","Ignoring column " + column_name)
+		      
+		    End If
+		    
+		    
+		    
+		  Next
+		  
+		  var new_size As Integer = Self.row_count + the_source.row_count
+		  
+		  Self.row_index.set_length(new_size)
+		  
+		  For Each tmp_column As clAbstractDataSerie In Self.columns
+		    tmp_column.set_length(new_size)
+		    
+		  Next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub AddRow(the_row as clDataRow, create_columns_flag as boolean = True)
 		  //  
 		  //  Add  a data row to the table
@@ -596,63 +653,6 @@ Implements TableColumnReaderInterface,Iterable
 		Function all_columns() As clAbstractDataSerie()
 		  return columns
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub append_from_column_source(the_source as TableColumnReaderInterface, create_missing_columns as boolean = True)
-		  //  
-		  //  Add  the data row from column source. New columns may be added to the current table
-		  //  
-		  //  For example, 
-		  //  - with the current table containing columns A, B, C 
-		  //  - with  the flag create_missing_column set to true
-		  //  - appending from a table with columns A, B, D 
-		  //  the values from A, and B are appended to the existing columns A and B
-		  //  a new column is created to store the values for D 
-		  
-		  //  Parameters:
-		  //  - the source , providing data column by column
-		  //  - flag allow the creation of missing columns
-		  //  
-		  //  Returns:
-		  //  (nothing)
-		  //  
-		  var length_before as integer = self.row_count
-		  
-		  For Each src_tmp_column As clAbstractDataSerie In the_source.all_columns
-		    var column_name As String = src_tmp_column.name
-		    
-		    var dst_tmp_column As  clAbstractDataSerie = Self.get_column(column_name)
-		    
-		    If dst_tmp_column <> Nil Then
-		      dst_tmp_column.append_serie(src_tmp_column)
-		      
-		    elseif create_missing_columns then
-		      dst_tmp_column = Self.AddColumn(column_name)
-		      dst_tmp_column.set_length(length_before)
-		      
-		      dst_tmp_column.append_serie(src_tmp_column)
-		      
-		    else
-		      add_error("append_row_from_table","Ignoring column " + column_name)
-		      
-		    End If
-		    
-		    
-		    
-		  Next
-		  
-		  var new_size As Integer = Self.row_count + the_source.row_count
-		  
-		  Self.row_index.set_length(new_size)
-		  
-		  For Each tmp_column As clAbstractDataSerie In Self.columns
-		    tmp_column.set_length(new_size)
-		    
-		  Next
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
