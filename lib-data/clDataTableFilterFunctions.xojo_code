@@ -1,7 +1,7 @@
 #tag Module
 Protected Module clDataTableFilterFunctions
 	#tag Method, Flags = &h0
-		Function field_filter(the_row_index as integer, the_RowCount as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		Function BasicFieldFilter(the_row_index as integer, the_RowCount as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
 		  //  
 		  //  Implementation of basic filter_row to compare the value of a cell in a column (name as paramter #0) to a constant value (paramter #1)
 		  //  
@@ -28,7 +28,7 @@ Protected Module clDataTableFilterFunctions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function retain_dataSerie_head(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function RetainSerieHead(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
 		  //  
 		  //  Implementation of basic filter_row to return n top rows.
 		  //  
@@ -58,7 +58,7 @@ Protected Module clDataTableFilterFunctions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function retain_dataSerie_tail(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function RetainSerieTail(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
 		  //  
 		  //  Implementation of basic filter_row to return n last rows.
 		  //  

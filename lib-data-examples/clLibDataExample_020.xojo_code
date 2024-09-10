@@ -57,7 +57,7 @@ Inherits clLibDataExample
 		      
 		    next
 		    
-		    ret_tables.Add(new clDataTable(cc.name, serie_array(c0.clone,cc,c4,c5,c6)))
+		    ret_tables.Add(new clDataTable(cc.name, SerieArray(c0.clone,cc,c4,c5,c6)))
 		    
 		  next
 		  

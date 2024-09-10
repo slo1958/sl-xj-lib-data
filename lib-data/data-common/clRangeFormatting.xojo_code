@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clRangeFormatting
 	#tag Method, Flags = &h0
-		Sub add_range(low_bound as double, high_bound as double, label as string)
+		Sub AddRange(low_bound as double, high_bound as double, label as string)
 		  self.range_min.Add(low_bound)
 		  self.range_max.Add(high_bound)
 		  
@@ -37,7 +37,7 @@ Protected Class clRangeFormatting
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function range_format(the_value as Double) As String
+		Function RangeFormat(the_value as Double) As String
 		  
 		  if the_value < lowest_value then return below_label
 		  
@@ -132,8 +132,32 @@ Protected Class clRangeFormatting
 			Name="below_label"
 			Visible=false
 			Group="Behavior"
+			InitialValue="'LOW"""""
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="above_label"
+			Visible=false
+			Group="Behavior"
+			InitialValue="""""HIGH"""""
+			Type="string"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="highest_value"
+			Visible=false
+			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
+			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="lowest_value"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Double"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

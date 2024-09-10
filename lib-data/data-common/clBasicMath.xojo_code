@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clBasicMath
 	#tag Method, Flags = &h0
-		Function average(values() as double) As double
+		Function Average(values() as double) As double
 		  var s As Double
 		  var n as integer
 		  
@@ -44,7 +44,7 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function count(values() as double) As integer
+		Function Count(values() as double) As integer
 		  var n as integer
 		  
 		  for each d as double in values
@@ -83,7 +83,7 @@ Protected Class clBasicMath
 		  var c as new clBasicMath
 		  
 		  var s1 As Double = c.sum(values)
-		  var s2 as double = c.sum_squared(values)
+		  var s2 as double = c.SumSquared(values)
 		  var n as integer = c.Count(values)
 		  
 		  
@@ -108,7 +108,7 @@ Protected Class clBasicMath
 		  var c as new clBasicMath
 		  
 		  var s1 As Double = c.sum(values)
-		  var s2 as double = c.sum_squared(values)
+		  var s2 as double = c.SumSquared(values)
 		  var n as integer = c.CountNonZero(values)
 		  
 		  
@@ -128,7 +128,7 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function sum(values() as double) As double
+		Function Sum(values() as double) As double
 		  var retValue as Double
 		  
 		  for each d as double in values
@@ -144,7 +144,7 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function sum_squared(values() as double) As double
+		Function SumSquared(values() as double) As double
 		  var retValue as Double
 		  
 		  for each d as double in values

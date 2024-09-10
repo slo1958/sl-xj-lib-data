@@ -2,7 +2,7 @@
 Class clDBWriter
 Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
-		Sub add_row(row_data() as variant)
+		Sub AddRow(row_data() as variant)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  var dbrow as new DatabaseRow
@@ -18,12 +18,6 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub alter_external_name(new_name as string)
-		  self.table_name = new_name
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(dbAccess as clAbstractDatabaseAccess)
 		  self.table_created = False
 		  self.dbAccess = dbAccess
@@ -33,7 +27,7 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub define_meta_data(name as string, columns() as string)
+		Sub DefineMetadata(name as string, columns() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  var tmp_type() as string
@@ -43,13 +37,13 @@ Implements TableRowWriterInterface
 		    
 		  next
 		  
-		  define_meta_data(name, columns, tmp_type)
+		  DefineMetadata(name, columns, tmp_type)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub define_meta_data(name as string, columns() as string, column_type() as string)
+		Sub DefineMetadata(name as string, columns() as string, column_type() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  self.table_name = name
@@ -73,10 +67,16 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub done()
+		Sub Done()
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateExternalName(new_name as string)
+		  self.table_name = new_name
 		End Sub
 	#tag EndMethod
 

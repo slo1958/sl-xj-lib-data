@@ -74,7 +74,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function current_row_number() As integer
+		Function CurrentRowIndex() As integer
 		  // Part of the TableRowReaderInterface interface.
 		  return self.last_row_index
 		  
@@ -82,7 +82,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function end_of_table() As boolean
+		Function EndOfTable() As boolean
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  return self.last_row_index >= self.source_dict.LastIndex
@@ -115,7 +115,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As string
+		Function Name() As string
 		  // Part of the TableRowReaderInterface interface.
 		  Return self.myname
 		  
@@ -124,7 +124,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function next_row() As variant()
+		Function NextRow() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  var cellArray() as variant

@@ -45,7 +45,7 @@ Inherits clLibDataExample
 		  
 		  tableValid.validate(table0)
 		  
-		  var table1 As  clDataTable = tableValid.get_results()
+		  var table1 As  clDataTable = tableValid.GetResults()
 		  
 		  
 		  //  all types not the same, so need to explictely build the returned array

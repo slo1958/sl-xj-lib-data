@@ -20,7 +20,7 @@ Inherits clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ResetElementss()
+		Sub ResetElements()
 		  
 		  self.meta_dict = new clMetadata
 		  self.meta_dict.AddMetadata("type","index")

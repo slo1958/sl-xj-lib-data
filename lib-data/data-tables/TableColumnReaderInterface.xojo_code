@@ -1,13 +1,13 @@
 #tag Interface
 Protected Interface TableColumnReaderInterface
 	#tag Method, Flags = &h0
-		Function all_columns() As clAbstractDataSerie()
+		Function ColumnCount() As integer
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ColumnCount() As integer
+		Function GetAllColumns() As clAbstractDataSerie()
 		  
 		End Function
 	#tag EndMethod
@@ -31,7 +31,7 @@ Protected Interface TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function is_persistant() As boolean
+		Function IsPersistant() As boolean
 		  
 		End Function
 	#tag EndMethod

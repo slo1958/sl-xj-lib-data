@@ -44,7 +44,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function current_row_number() As integer
+		Function CurrentRowIndex() As integer
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  if rs = nil then return -1
@@ -54,7 +54,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function end_of_table() As boolean
+		Function EndOfTable() As boolean
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  if rs = nil then return True
@@ -109,7 +109,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As string
+		Function Name() As string
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  return self.source_name
@@ -119,7 +119,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function next_row() As variant()
+		Function NextRow() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  var tmp() as variant

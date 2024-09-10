@@ -10,7 +10,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clDateDataSerie
+		Function Clone() As clDateDataSerie
 		  var tmp As New clDateDataSerie(Self.name)
 		  
 		  self.CloneInfo(tmp)
@@ -247,7 +247,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ResetElementss()
+		Sub ResetElements()
 		  
 		  self.meta_dict.AddMetadata("type","date")
 		  

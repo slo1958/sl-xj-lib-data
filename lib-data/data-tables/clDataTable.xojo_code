@@ -25,8 +25,8 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		  //  physical table and column not yet linked
-		  if not self.is_virtual and not tmp_column.IsLinkedToTable then
-		    var max_RowCount as integer = self.increase_length(tmp_column.RowCount)
+		  if not self.IsVirtual and not tmp_column.IsLinkedToTable then
+		    var max_RowCount as integer = self.IncreaseLength(tmp_column.RowCount)
 		    tmp_column.SetLength(max_RowCount)
 		    
 		    tmp_column.SetLinkToTable(Self)
@@ -37,8 +37,8 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		  //  adding a physical column to a virtual table (when permitted)
-		  if self.is_virtual and not tmp_column.IsLinkedToTable and self.allow_local_columns then
-		    var max_RowCount as integer = self.increase_length(tmp_column.RowCount)
+		  if self.IsVirtual and not tmp_column.IsLinkedToTable and self.allow_local_columns then
+		    var max_RowCount as integer = self.IncreaseLength(tmp_column.RowCount)
 		    tmp_column.SetLength(max_RowCount)
 		    
 		    tmp_column.SetLinkToTable(Self)
@@ -49,7 +49,7 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		  //  we add a column from another table to a virtual table
-		  if self.is_virtual and tmp_column.IsLinkedToTable then
+		  if self.IsVirtual and tmp_column.IsLinkedToTable then
 		    tmp_column.SetLength(RowCount)
 		    Self.columns.Append(tmp_column)
 		    return tmp_column
@@ -107,7 +107,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_column As clAbstractDataSerie
 		  
-		  If not self.is_virtual then
+		  If not self.IsVirtual then
 		    tmp_column = New clDataSerie(tmp_column_name)
 		    tmp_column.SetLinkToTable(Self)
 		    tmp_column.SetLength(RowCount, default_value)
@@ -203,7 +203,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  var length_before as integer = self.RowCount
 		  
-		  For Each src_tmp_column As clAbstractDataSerie In the_source.all_columns
+		  For Each src_tmp_column As clAbstractDataSerie In the_source.GetAllColumns
 		    var column_name As String = src_tmp_column.name
 		    
 		    var dst_tmp_column As  clAbstractDataSerie = Self.GetColumn(column_name)
@@ -617,7 +617,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub adjust_length()
+		Sub AdjustLength()
 		  //  
 		  //   adjust  the length of each data serie in the table, to match the longest data serie
 		  //  to use after directly inserting in columns 
@@ -647,12 +647,6 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function all_columns() As clAbstractDataSerie()
-		  return columns
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -823,7 +817,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clDataTable
+		Function Clone() As clDataTable
 		  
 		  //  Duplicate the table and all its columns
 		  //  
@@ -940,7 +934,7 @@ Implements TableColumnReaderInterface,Iterable
 		      tmp_columns(i) = tmp_columns(i).clone
 		      
 		    Elseif tmp_columns(i).IsLinkedToTable And Not AutoCloneColumns Then
-		      Raise New clDataException("Cannot add a linked serie to a new table, use select_columns() method instead.")
+		      Raise New clDataException("Cannot add a linked serie to a new table, use SelectColumns() method instead.")
 		      
 		    Else
 		      
@@ -979,7 +973,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var tmp_columns() as clAbstractDataSerie
 		  
 		  for each tmp_column_name as string in the_columns.Keys
-		    var v() as variant = make_variant_array(the_columns.value(tmp_column_name))
+		    var v() as variant = MakeVariantArray(the_columns.value(tmp_column_name))
 		    
 		    if allocator = nil then
 		      tmp_columns.Add(new clDataSerie(tmp_column_name, v))
@@ -1080,10 +1074,10 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  
-		  while not table_source.end_of_table
+		  while not table_source.EndOfTable
 		    var tmp_row() as variant
 		    
-		    tmp_row  = table_source.next_row
+		    tmp_row  = table_source.NextRow
 		    
 		    if tmp_row <> nil then
 		      
@@ -1097,7 +1091,7 @@ Implements TableColumnReaderInterface,Iterable
 		  wend
 		  
 		  
-		  self.adjust_length()
+		  self.AdjustLength()
 		  
 		End Sub
 	#tag EndMethod
@@ -1132,7 +1126,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  internal_new_table("from " + tmp_table_name)
 		  
-		  if table_source.is_persistant and not materialize then
+		  if table_source.IsPersistant and not materialize then
 		    // 
 		    // we create a virtual table
 		    //
@@ -1168,7 +1162,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		  
-		  self.adjust_length()
+		  self.AdjustLength()
 		  
 		End Sub
 	#tag EndMethod
@@ -1220,7 +1214,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  call self.internal_AddRows(table_source, columns, "")
 		  
-		  self.adjust_length()
+		  self.AdjustLength()
 		  
 		End Sub
 	#tag EndMethod
@@ -1589,6 +1583,12 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetAllColumns() As clAbstractDataSerie()
+		  return columns
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetColumn(the_column_name as String) As clAbstractDataSerie
 		  //  
 		  //  returns a column
@@ -1826,6 +1826,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetRowReader() As clDataTableRowReader
+		  return new clDataTableRowReader(self)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetStatisticsAsTable() As clDataTable
 		  
 		  var col_name() as string
@@ -1899,14 +1906,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_row_reader() As clDataTableRowReader
-		  return new clDataTableRowReader(self)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function groupby(grouping_dimensions() as string, aggregate_measures() as string, aggregate_mode() as string) As clDataTable
+		Function GroupBy(grouping_dimensions() as string, aggregate_measures() as string, aggregate_mode() as string) As clDataTable
 		  //  
 		  //  returns a new data table with the results of the aggregation
 		  //  
@@ -2095,7 +2095,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function increase_length(the_length as integer) As integer
+		Function IncreaseLength(the_length as integer) As integer
 		  //  
 		  //   increases the length of each data serie in the table. If the current length is greater than the parameter, the maximum current length is used
 		  //  In normal case, all columns have the same length.
@@ -2129,8 +2129,21 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub index_visible_when_iterate(status as Boolean)
+		Sub IndexVisibleWhenIterating(status as Boolean)
 		  self.index_explicit_when_iterate = status
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub internal_AddRow(the_row_data() as variant)
+		  
+		  If the_row_data.LastIndex <> columns.LastIndex Then
+		    Raise new clDataException("Invalid row in internal_AddRow")
+		    
+		  End If
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -2145,11 +2158,11 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		  
-		  while not the_source.end_of_table
+		  while not the_source.EndOfTable
 		    var tmp_row() as variant
 		    added_rows = added_rows + 1
 		    
-		    tmp_row  = the_source.next_row
+		    tmp_row  = the_source.NextRow
 		    
 		    if tmp_row <> nil then 
 		      
@@ -2172,24 +2185,11 @@ Implements TableColumnReaderInterface,Iterable
 		  wend
 		  
 		  // make sure all columns have the same length
-		  self.adjust_length
+		  self.AdjustLength
 		  
 		  return added_rows
 		  
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub internal_add_row(the_row_data() as variant)
-		  
-		  If the_row_data.LastIndex <> columns.LastIndex Then
-		    Raise new clDataException("Invalid row in internal_add_row")
-		    
-		  End If
-		  
-		  
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -2222,19 +2222,19 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function is_index_visible_when_iterate() As Boolean
+		Function IsIndexVisibleWhenIterating() As Boolean
 		  return self.index_explicit_when_iterate 
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function is_persistant() As boolean
-		  return not is_virtual
+		Function IsPersistant() As boolean
+		  return not IsVirtual
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function is_virtual() As Boolean
+		Function IsVirtual() As Boolean
 		  return link_to_parent <> Nil 
 		End Function
 	#tag EndMethod
@@ -2250,7 +2250,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function join_table(table_to_join as clDataTable, key_mapping as Dictionary) As Boolean
+		Function JoinWith(table_to_join as clDataTable, key_mapping as Dictionary) As Boolean
 		  
 		  var tmp_key1() as string
 		  var tmp_key2() as String
@@ -2270,7 +2270,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function join_table(table_to_join as clDataTable, keys() as string) As Boolean
+		Function JoinWith(table_to_join as clDataTable, keys() as string) As Boolean
 		  
 		  var tmp_key1() as string
 		  var tmp_key2() as String
@@ -2289,7 +2289,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As string
+		Function Name() As string
 		  Return self.table_name
 		End Function
 	#tag EndMethod
@@ -2299,7 +2299,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
-		Sub rename(the_new_name as string)
+		Sub Rename(the_new_name as string)
 		  
 		  If the_new_name.Trim.Len = 0 Then
 		    Self.table_name = "noname"
@@ -2314,7 +2314,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub rename_column(the_column_name as string, the_new_name as string)
+		Sub RenameColumn(the_column_name as string, the_new_name as string)
 		  
 		  For idx As Integer = 0 To columns.LastIndex
 		    
@@ -2329,7 +2329,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub rename_columns(the_renaming_dict as Dictionary)
+		Sub RenameColumns(the_renaming_dict as Dictionary)
 		  
 		  For idx As Integer = 0 To columns.LastIndex
 		    
@@ -2361,14 +2361,14 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub save(write_to as TableRowWriterInterface)
+		Sub Save(write_to as TableRowWriterInterface)
 		  var col() as string = self.GetColumnNames
 		  
-		  write_to.define_meta_data(name, col)
+		  write_to.DefineMetadata(name, col)
 		  
 		  for each row as clDataRow in self
 		    
-		    write_to.add_row(row.get_cells(col))
+		    write_to.AddRow(row.get_cells(col))
 		    
 		  next
 		  
@@ -2378,7 +2378,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function select_columns(column_names() as string) As clDataTable
+		Function SelectColumns(column_names() as string) As clDataTable
 		  var res As New clDataTable("select " + Self.table_name)
 		  
 		  res.AddMetadata("source", self.table_name)
@@ -2395,7 +2395,7 @@ Implements TableColumnReaderInterface,Iterable
 		      call res.AddColumn(tmp_column)
 		      
 		    else
-		      AddError("select_column","cannot find column " + column_name)
+		      AddError("GetColumns","cannot find column " + column_name)
 		      
 		    End If
 		    
@@ -2408,13 +2408,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function select_columns(paramarray column_names as string) As clDataTable
-		  Return select_columns(column_names)
+		Function SelectColumns(paramarray column_names as string) As clDataTable
+		  Return SelectColumns(column_names)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function set_column_values(the_column_name as string, the_values() as variant, can_create as boolean) As clAbstractDataSerie
+		Function SetColumnValues(the_column_name as string, the_values() as variant, can_create as boolean) As clAbstractDataSerie
 		  
 		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
 		  

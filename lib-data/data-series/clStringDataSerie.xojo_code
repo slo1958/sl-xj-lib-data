@@ -201,7 +201,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ResetElementss()
+		Sub ResetElements()
 		  
 		  self.meta_dict.AddMetadata("type","string")
 		  
@@ -261,7 +261,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function text_after(search_str as string) As clStringDataSerie
+		Function TextAfter(search_str as string) As clStringDataSerie
 		  var res as clStringDataSerie
 		  
 		  res = new clStringDataSerie(me.name+ " text after  " + search_str)
@@ -288,7 +288,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function text_before(search_str as string) As clStringDataSerie
+		Function TextBefore(search_str as string) As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " text before  " + search_str)
 		  
 		  for i as integer = 0 to me.LastIndex

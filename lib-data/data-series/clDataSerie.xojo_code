@@ -11,7 +11,7 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clDataSerie
+		Function Clone() As clDataSerie
 		  var tmp As New clDataSerie(Self.name)
 		  
 		  self.CloneInfo(tmp)
@@ -69,7 +69,7 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FilterWithFunction(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
+		Function FilterWithFunction(the_filter_function as FilterColumnByRows, paramarray function_param as variant) As variant()
 		  var return_boolean() As Variant
 		  
 		  For row_index As Integer=0 To items.LastIndex
@@ -112,7 +112,7 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ResetElementss()
+		Sub ResetElements()
 		  
 		  self.meta_dict.AddMetadata("type","general")
 		  

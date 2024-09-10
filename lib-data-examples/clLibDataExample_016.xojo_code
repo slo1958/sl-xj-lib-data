@@ -37,7 +37,7 @@ Inherits clLibDataExample
 		  
 		  col_penalty.SetFormat("#%")
 		  
-		  var table0 as new clDataTable("mytable", serie_array(col_country, col_city, col_sales, col_expiry, col_pay, col_penalty))
+		  var table0 as new clDataTable("mytable", SerieArray(col_country, col_city, col_sales, col_expiry, col_pay, col_penalty))
 		  
 		  // 
 		  // Start calculation
@@ -53,7 +53,7 @@ Inherits clLibDataExample
 		  total_penaty.rename("penalty")
 		  
 		  // update table
-		  call table0.AddColumns(serie_array(delay, flagged, total_penaty))
+		  call table0.AddColumns(SerieArray(delay, flagged, total_penaty))
 		  
 		  var ret() as TableColumnReaderInterface
 		  

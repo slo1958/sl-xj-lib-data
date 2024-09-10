@@ -14,9 +14,22 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_table(table_name as string) As clDataTable
+		Function GetTable(table_name as string) As clDataTable
 		  return self.datatable_dict.Lookup(table_name, Nil)
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetTableNames() As string()
+		  var tmp() as string
+		  
+		  for each k as String in datatable_dict.Keys
+		    tmp.Append(k)
+		    
+		  next
+		  
+		  return tmp
 		End Function
 	#tag EndMethod
 
@@ -31,18 +44,18 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub load_table(table_source as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
+		Sub LoadTable(table_source as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
 		  var tmp_table as new clDataTable(table_source, allocator)
 		  
-		  self.set_table(tmp_table)
+		  self.SetTable(tmp_table)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub save(write_to as TableRowWriterInterface, flag_empty_table as boolean = false)
+		Sub Save(write_to as TableRowWriterInterface, flag_empty_table as boolean = false)
 		  
 		  for each table_name as String in datatable_dict.Keys
-		    call self.save_table(table_name, write_to, flag_empty_table)
+		    call self.SaveTable(table_name, write_to, flag_empty_table)
 		    
 		  next
 		  
@@ -50,18 +63,18 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function save_table(name as string, write_to as TableRowWriterInterface, flag_empty_table as boolean = false) As Boolean
+		Function SaveTable(name as string, write_to as TableRowWriterInterface, flag_empty_table as boolean = false) As Boolean
 		  
-		  var table as clDataTable = self.get_table(name)
+		  var table as clDataTable = self.GetTable(name)
 		  
 		  if table = Nil then
-		    writelog("Cannot find table %0 in pool keys", name)
+		    WriteLog("Cannot find table %0 in pool keys", name)
 		    return False
 		    
 		  end if
 		  
 		  if flag_empty_table and table.RowCount < 1 then
-		    writelog("Table %0 is empty", name)
+		    WriteLog("Table %0 is empty", name)
 		    
 		  end if
 		  
@@ -77,7 +90,7 @@ Implements Iterable
 		    
 		  end if
 		  
-		  write_to.alter_external_name(fullname)
+		  write_to.UpdateExternalName(fullname)
 		  
 		  table.save(write_to)
 		  
@@ -86,21 +99,38 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_fullname_prefix(prefix as string)
+		Sub SetFullnamePrefix(prefix as string)
 		  self.fullname_prefix = prefix
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_fullname_suffix(suffix as string)
+		Sub SetFullnameSuffix(suffix as string)
 		  self.fullname_suffix = suffix
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_multiple_tables(table() as clDataTable)
+		Sub SetTable(table as clDataTable, table_key as string = "")
+		  
+		  
+		  if table_key.length() > 0 then
+		    self.datatable_dict.value(table_key) =  table
+		    WriteLog("Saving datatable %0 as %1", table.name, table_key)
+		    
+		  else
+		    self.datatable_dict.value(table.name) =  table
+		    WriteLog("Saving datatable %0 as %1", table.name, table.name)
+		    
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetTables(table() as clDataTable)
 		  for each tbl as clDataTable in table
-		    self.set_table(tbl)
+		    self.SetTable(tbl)
 		    
 		  next
 		  
@@ -108,17 +138,17 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_multiple_tables_with_key(table_key() as string, table() as clDataTable)
+		Sub SetTables(table_key() as string, table() as clDataTable)
 		  for i as integer = 0 to table_key.LastIndex
 		    var tbl as clDataTable
 		    
 		    try
 		      tbl = table(i)
 		      
-		      self.set_table(tbl, table_key(i))
+		      self.SetTable(tbl, table_key(i))
 		      
 		    Catch
-		      writelog("No matching datatable for %0", table_key(i))
+		      WriteLog("No matching datatable for %0", table_key(i))
 		      
 		    end try
 		    
@@ -128,62 +158,32 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_table(table as clDataTable, table_key as string = "")
-		  
-		  
-		  if table_key.length() > 0 then
-		    self.datatable_dict.value(table_key) =  table
-		    writelog("Saving datatable %0 as %1", table.name, table_key)
-		    
-		  else
-		    self.datatable_dict.value(table.name) =  table
-		    writelog("Saving datatable %0 as %1", table.name, table.name)
-		    
-		  end if
-		  
+		Sub Table(assigns tbl as clDataTable)
+		  self.SetTable(tbl)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub table(assigns tbl as clDataTable)
-		  self.set_table(tbl)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function table(table_name as string) As clDataTable
-		  return self.get_table(table_name)
+		Function Table(table_name as string) As clDataTable
+		  return self.GetTable(table_name)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub table(table_name as string, assigns tbl as clDataTable)
-		  self.set_table(tbl, table_name)
+		Sub Table(table_name as string, assigns tbl as clDataTable)
+		  self.SetTable(tbl, table_name)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function table_count() As integer
+		Function TableCount() As integer
 		  return datatable_dict.KeyCount
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function table_names() As string()
-		  var tmp() as string
-		  
-		  for each k as String in datatable_dict.Keys
-		    tmp.Append(k)
-		    
-		  next
-		  
-		  return tmp
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub writelog(message as string, paramarray txt as string)
+		Sub WriteLog(message as string, paramarray txt as string)
 		  if self.verbose then
 		    var tmp as string = message
 		    

@@ -26,13 +26,13 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  var table1 As New clDataTable("table-1", serie_array( _
+		  var table1 As New clDataTable("table-1", SerieArray( _
 		  New clDataSerie("aaa",  123, 456, 789) _
 		  , New clDataSerie("bbb",  "abc", "def","ghi") _
 		  , New clDataSerie("ccc",  123.4,234.5,345.6) _
 		  ))
 		  
-		  var table2 As New clDataTable("table-2", serie_array( _
+		  var table2 As New clDataTable("table-2", SerieArray( _
 		  New clDataSerie("aaa",  123, 456, 789) _
 		  , New clDataSerie("bbb",  "abc", "def","ghi") _
 		  , New clDataSerie("zzz",  987.6,876.5, 765.4) _

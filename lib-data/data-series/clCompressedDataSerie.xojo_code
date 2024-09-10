@@ -64,7 +64,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FilterWithFunction(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
+		Function FilterWithFunction(the_filter_function as FilterColumnByRows, paramarray function_param as variant) As variant()
 		  var return_boolean() As Variant
 		  
 		  For row_index As Integer=0 To items_index.LastIndex
@@ -113,7 +113,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ResetElementss()
+		Sub ResetElements()
 		  
 		  items_value_dict = new Dictionary
 		  

@@ -33,7 +33,7 @@ Inherits clLibDataExample
 		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  var col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
+		  var table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
 		  
 		  table0.AddRow(Array("France","Paris",1100))
 		  table0.AddRow(Array("","Marseille",1200))

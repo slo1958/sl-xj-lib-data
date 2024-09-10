@@ -1,7 +1,7 @@
 #tag Module
 Protected Module helper_functions
 	#tag Method, Flags = &h0
-		Function make_variant_array(v as Variant) As variant()
+		Function MakeVariantArray(v as Variant) As variant()
 		  var res() as variant
 		  
 		  if not v.IsArray then return res
@@ -52,7 +52,7 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function serie_array(paramarray series as clAbstractDataSerie) As clAbstractDataSerie()
+		Function SerieArray(paramarray series as clAbstractDataSerie) As clAbstractDataSerie()
 		  var tmp() As clAbstractDataSerie
 		  
 		  For Each c As clAbstractDataSerie In series
@@ -67,7 +67,7 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function standard_serie_allocator(column_name as string, column_type_info as string) As clAbstractDataSerie
+		Function StandardSerieAllocator(column_name as string, column_type_info as string) As clAbstractDataSerie
 		  
 		  select case column_type_info
 		    
@@ -89,7 +89,7 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function string_array(paramarray  items as string) As string()
+		Function StringArray(paramarray items as string) As string()
 		  var ret() As String
 		  
 		  For Each item As String In items
@@ -103,7 +103,7 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function variant_array(paramarray  items as variant) As variant()
+		Function VariantArray(paramarray items as variant) As variant()
 		  var ret() As variant
 		  
 		  For Each item As variant In items

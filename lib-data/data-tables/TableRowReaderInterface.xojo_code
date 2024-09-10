@@ -7,13 +7,13 @@ Protected Interface TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function current_row_number() As integer
+		Function CurrentRowIndex() As integer
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function end_of_table() As boolean
+		Function EndOfTable() As boolean
 		  
 		End Function
 	#tag EndMethod
@@ -37,13 +37,13 @@ Protected Interface TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As string
+		Function Name() As string
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function next_row() As variant()
+		Function NextRow() As variant()
 		  
 		End Function
 	#tag EndMethod

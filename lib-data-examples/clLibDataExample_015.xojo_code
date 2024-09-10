@@ -45,7 +45,7 @@ Inherits clLibDataExample
 		  
 		  var c7 as clStringDataSerie = c1.ToString("yyyy-MM")
 		  
-		  var table0 as new clDataTable("output", serie_array(c1, c2, c3, c4, c5, c6, c7))
+		  var table0 as new clDataTable("output", SerieArray(c1, c2, c3, c4, c5, c6, c7))
 		  
 		  var ret() as TableColumnReaderInterface
 		  ret.add(table0)

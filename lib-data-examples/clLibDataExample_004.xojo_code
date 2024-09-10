@@ -27,7 +27,7 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  var table0 As New clDataTable("mytable", serie_array( _
+		  var table0 As New clDataTable("mytable", SerieArray( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -36,7 +36,7 @@ Inherits clLibDataExample
 		  ))
 		  
 		  
-		  var view1 As clDataTable = table0.select_columns(array("Country", "City", "Sales"))
+		  var view1 As clDataTable = table0.SelectColumns(array("Country", "City", "Sales"))
 		  
 		  return array(table0, view1)
 		  

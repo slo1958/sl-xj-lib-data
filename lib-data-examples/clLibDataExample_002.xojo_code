@@ -28,7 +28,7 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  var table0 As New clDataTable("mytable", serie_array( _
+		  var table0 As New clDataTable("mytable", SerieArray( _
 		  New clDataSerie("City",  "Paris","Lyon","Namur","Paris","Charleroi","Milan") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -37,13 +37,13 @@ Inherits clLibDataExample
 		  ))
 		  
 		  
-		  var table1 As clDataTable = table0.groupby(string_array("Country"), string_array("Sales"), string_array(""))
+		  var table1 As clDataTable = table0.groupby(StringArray("Country"), StringArray("Sales"), StringArray(""))
 		  
 		  
-		  var table2 As clDataTable = table0.groupby(string_array, string_array("Sales"), string_array)
+		  var table2 As clDataTable = table0.groupby(StringArray, StringArray("Sales"), StringArray)
 		  table2.rename("Grand total")
 		  
-		  var table3 As clDataTable = table0.groupby(string_array("Country","City"), string_array, string_array(""))
+		  var table3 As clDataTable = table0.groupby(StringArray("Country","City"), StringArray, StringArray(""))
 		  
 		  return array(table0, table1, table2, table3)
 		End Function

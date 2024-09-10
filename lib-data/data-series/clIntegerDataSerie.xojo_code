@@ -54,7 +54,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clIntegerDataSerie
+		Function Clone() As clIntegerDataSerie
 		  var tmp As New clIntegerDataSerie(Self.name)
 		  
 		  self.CloneInfo(tmp)
@@ -323,7 +323,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ResetElementss()
+		Sub ResetElements()
 		  
 		  self.meta_dict.AddMetadata("type","integer")
 		  

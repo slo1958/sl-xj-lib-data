@@ -18,7 +18,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function current_row_number() As integer
+		Function CurrentRowIndex() As integer
 		  // Part of the TableRowReaderInterface interface.
 		  return current_row
 		  
@@ -26,7 +26,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function end_of_table() As boolean
+		Function EndOfTable() As boolean
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  return current_row >=  table.RowCount
@@ -62,7 +62,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function next_row() As variant()
+		Function NextRow() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  var row_value() as variant
 		  

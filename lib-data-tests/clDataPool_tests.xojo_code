@@ -64,7 +64,7 @@ Protected Module clDataPool_tests
 		    
 		  next
 		  
-		  my_data_pool.set_table( table, "table_1")
+		  my_data_pool.SetTable( table, "table_1")
 		  
 		  
 		  table =  New clDataTable("T2")
@@ -78,12 +78,12 @@ Protected Module clDataPool_tests
 		    
 		  next
 		  
-		  my_data_pool.set_table(table)
+		  my_data_pool.SetTable(table)
 		  
 		  
-		  my_data_pool.set_table(my_data_pool.get_table("table_1").Clone(), "res")
+		  my_data_pool.SetTable(my_data_pool.GetTable("table_1").Clone(), "res")
 		  
-		  my_data_pool.get_table("res").AddColumns(my_data_pool.get_table("T2"))
+		  my_data_pool.GetTable("res").AddColumns(my_data_pool.GetTable("T2"))
 		  
 		  var col1 as clDataSerie
 		  var col2 as clDataSerie
@@ -94,22 +94,22 @@ Protected Module clDataPool_tests
 		  col1 = new clDataSerie("aaa", 1000,2000,3000,4000)
 		  col2 = new clDataSerie("bbb","abcd","abcd","abcd","abcd")
 		  col3 = new clDataSerie("ccc",123.456, 123.456,123.456,123.456)
-		  var expected_t1 as new clDataTable("T1", serie_array(col1, col2, col3))
+		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3))
 		  
 		  col1 = new clDataSerie("aaa", 5000,6000,7000,8000, 9000)
 		  col2 = new clDataSerie("bbb","xyz","xyz","xyz","xyz","xyz")
 		  col3 = new clDataSerie("ddd",567.89,567.89,567.89,567.89,567.89)
-		  var expected_t2 as new clDataTable("T1", serie_array(col1, col2, col3))
+		  var expected_t2 as new clDataTable("T1", SerieArray(col1, col2, col3))
 		  
 		  col1 = new clDataSerie("aaa",1000,2000,3000,4000,5000,6000,7000,8000,9000)
 		  col2 = new clDataSerie("bbb","abcd","abcd","abcd","abcd","xyz","xyz","xyz","xyz","xyz")
 		  col3 = new clDataSerie("ccc",123.456, 123.456,123.456,123.456,v,v,v,v,v)
 		  col4 = new clDataSerie("ddd",v,v,v,v,567.89,567.89,567.89,567.89,567.89)
-		  var expected_res as new clDataTable("res", serie_array(col1, col2, col3, col4))
+		  var expected_res as new clDataTable("res", SerieArray(col1, col2, col3, col4))
 		  
-		  call check_table(log,"T1", expected_t1, my_data_pool.get_table("table_1"))
-		  call check_table(log,"T2", expected_t2, my_data_pool.get_table("T2"))
-		  call check_table(log,"res", expected_res, my_data_pool.get_table("res"))
+		  call check_table(log,"T1", expected_t1, my_data_pool.GetTable("table_1"))
+		  call check_table(log,"T2", expected_t2, my_data_pool.GetTable("T2"))
+		  call check_table(log,"res", expected_res, my_data_pool.GetTable("res"))
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -175,18 +175,18 @@ Protected Module clDataPool_tests
 		  col1 = new clDataSerie("aaa", 1000,2000,3000,4000)
 		  col2 = new clDataSerie("bbb","abcd","abcd","abcd","abcd")
 		  col3 = new clDataSerie("ccc",123.456, 123.456,123.456,123.456)
-		  var expected_t1 as new clDataTable("T1", serie_array(col1, col2, col3))
+		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3))
 		  
 		  col1 = new clDataSerie("aaa", 5000,6000,7000,8000)
 		  col2 = new clDataSerie("bbb","xyz","xyz","xyz","xyz")
 		  col3 = new clDataSerie("ddd",567.89,567.89,567.89,567.89)
-		  var expected_t2 as new clDataTable("T1", serie_array(col1, col2, col3))
+		  var expected_t2 as new clDataTable("T1", SerieArray(col1, col2, col3))
 		  
 		  col1 = new clDataSerie("aaa",1000,2000,3000,4000,5000,6000,7000,8000)
 		  col2 = new clDataSerie("bbb","abcd","abcd","abcd","abcd","xyz","xyz","xyz","xyz")
 		  col3 = new clDataSerie("ccc",123.456, 123.456,123.456,123.456,v,v,v,v)
 		  col4 = new clDataSerie("ddd",v,v,v,v,567.89,567.89,567.89,567.89)
-		  var expected_res as new clDataTable("res", serie_array(col1, col2, col3, col4))
+		  var expected_res as new clDataTable("res", SerieArray(col1, col2, col3, col4))
 		  
 		  call check_table(log,"T1", expected_t1, my_data_pool.table("table_1"))
 		  call check_table(log,"T2", expected_t2, my_data_pool.table("T2"))
@@ -221,7 +221,7 @@ Protected Module clDataPool_tests
 		    
 		  next
 		  
-		  my_data_pool.set_table( pool_table1)
+		  my_data_pool.SetTable( pool_table1)
 		  
 		  
 		  var pool_table2 as New clDataTable("PoolTable2")
@@ -235,7 +235,7 @@ Protected Module clDataPool_tests
 		    
 		  next
 		  
-		  my_data_pool.set_table(pool_table2)
+		  my_data_pool.SetTable(pool_table2)
 		  
 		  
 		  var fld_folder As New FolderItem
@@ -253,12 +253,12 @@ Protected Module clDataPool_tests
 		  
 		  
 		  var test_data_pool as new clDataPool
-		  test_data_pool.load_table(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
-		  test_data_pool.load_table(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
+		  test_data_pool.LoadTable(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
+		  test_data_pool.LoadTable(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
 		  
 		  
-		  call check_table(log,"pool table 1",my_data_pool.get_table("PoolTable1"), test_data_pool.get_table("from PoolTable1.csv"))
-		  call check_table(log,"pool table 2",my_data_pool.get_table("PoolTable2"), test_data_pool.get_table("from PoolTable2.csv"))
+		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1.csv"))
+		  call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2.csv"))
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -298,7 +298,7 @@ Protected Module clDataPool_tests
 		    
 		  next
 		  
-		  my_data_pool.set_table( pool_table1)
+		  my_data_pool.SetTable( pool_table1)
 		  
 		  
 		  var pool_table2 as New clDataTable("PoolTable2")
@@ -312,7 +312,7 @@ Protected Module clDataPool_tests
 		    
 		  next
 		  
-		  my_data_pool.set_table(pool_table2)
+		  my_data_pool.SetTable(pool_table2)
 		  
 		  
 		  
@@ -327,12 +327,12 @@ Protected Module clDataPool_tests
 		  
 		  
 		  // var test_data_pool as new clDataPool
-		  // test_data_pool.load_table(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
-		  // test_data_pool.load_table(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
+		  // test_data_pool.LoadTable(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
+		  // test_data_pool.LoadTable(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
 		  // 
 		  // 
-		  // call check_table(log,"pool table 1",my_data_pool.get_table("PoolTable1"), test_data_pool.get_table("from PoolTable1.csv"))
-		  // call check_table(log,"pool table 2",my_data_pool.get_table("PoolTable2"), test_data_pool.get_table("from PoolTable2.csv"))
+		  // call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1.csv"))
+		  // call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2.csv"))
 		  
 		  log.end_exec(CurrentMethodName)
 		  

@@ -1,31 +1,31 @@
 #tag Interface
 Protected Interface TableRowWriterInterface
 	#tag Method, Flags = &h0
-		Sub add_row(row_data() as variant)
+		Sub AddRow(row_data() as variant)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub alter_external_name(new_name as string)
+		Sub DefineMetadata(name as string, columns() as string)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub define_meta_data(name as string, columns() as string)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub define_meta_data(name as string, columns() as string, column_type() as string)
+		Sub DefineMetadata(name as string, columns() as string, column_type() as string)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub done()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateExternalName(new_name as string)
 		  
 		End Sub
 	#tag EndMethod

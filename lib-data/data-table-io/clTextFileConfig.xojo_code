@@ -49,7 +49,7 @@ Class clTextFileConfig
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub update_number_format(new_format as string)
+		Sub UpdateNumberFormat(new_format as string)
 		  NumberFormat = new_format
 		  
 		End Sub
@@ -140,6 +140,14 @@ Class clTextFileConfig
 			Group="Behavior"
 			InitialValue=""
 			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="file_extension"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

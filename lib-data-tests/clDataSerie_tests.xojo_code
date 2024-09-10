@@ -132,7 +132,7 @@ Protected Module clDataSerie_tests
 		  
 		  var test  As clDataSerie
 		  
-		  test = New clDataSerie("test", variant_array("aaa",123,True))
+		  test = New clDataSerie("test", VariantArray("aaa",123,True))
 		  
 		  var expected() as variant
 		  expected.add("aaa")
@@ -186,9 +186,9 @@ Protected Module clDataSerie_tests
 		  
 		  f1 = src.FilterWithFunction(AddressOf filter01)
 		  
-		  f2 = src.FilterWithFunction(AddressOf retain_dataSerie_head, 7)
+		  f2 = src.FilterWithFunction(AddressOf RetainSerieHead, 7)
 		  
-		  f3 = src.FilterWithFunction(AddressOf retain_dataSerie_tail)
+		  f3 = src.FilterWithFunction(AddressOf RetainSerieTail)
 		  
 		  var c1 As New clDataSerie("test001", f1)
 		  var c2 As New clDataSerie("test002", f2)

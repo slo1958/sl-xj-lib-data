@@ -16,7 +16,7 @@ Implements Iterator
 		  if last_row_index < tmp_table.RowCount - 1 then
 		    last_row_index = last_row_index + 1
 		    
-		    value_to_return = tmp_table.GetRowAt(last_row_index, tmp_table.is_index_visible_when_iterate)
+		    value_to_return = tmp_table.GetRowAt(last_row_index, tmp_table.IsIndexVisibleWhenIterating)
 		    
 		    return True
 		    

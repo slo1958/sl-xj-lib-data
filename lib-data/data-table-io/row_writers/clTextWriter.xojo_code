@@ -2,7 +2,7 @@
 Class clTextWriter
 Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
-		Sub add_row(row_data() as variant)
+		Sub AddRow(row_data() as variant)
 		  // Part of the TableRowWriterInterface interface.
 		  const kDoubleQuote = """"
 		  
@@ -49,30 +49,6 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub alter_external_name(new_name as string)
-		  
-		  var tmp_fld as new FolderItem  
-		  
-		  if self.DestinationPath = nil then
-		    self.TextStream = nil
-		    return
-		    
-		  elseif self.DestinationPath.IsFolder then
-		    tmp_fld = self.DestinationPath.Child(new_name + self.default_extension)
-		    open_text_Stream(tmp_fld)
-		    
-		  else
-		    tmp_fld = self.DestinationPath.Parent.Child(new_name + self.default_extension)
-		    open_text_Stream(tmp_fld)
-		    
-		  end if
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(the_destination_path as FolderItem, has_header as Boolean)
 		  self.DestinationPath = the_destination_path
 		  self.file_has_header = has_header
@@ -102,7 +78,7 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub define_meta_data(name as string, columns() as string)
+		Sub DefineMetadata(name as string, columns() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  if header_written then return
@@ -113,7 +89,7 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub define_meta_data(name as string, columns() as string, column_type() as string)
+		Sub DefineMetadata(name as string, columns() as string, column_type() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  
@@ -125,7 +101,7 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub done()
+		Sub Done()
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  if textstream = nil then return
@@ -172,6 +148,30 @@ Implements TableRowWriterInterface
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub UpdateExternalName(new_name as string)
+		  
+		  var tmp_fld as new FolderItem  
+		  
+		  if self.DestinationPath = nil then
+		    self.TextStream = nil
+		    return
+		    
+		  elseif self.DestinationPath.IsFolder then
+		    tmp_fld = self.DestinationPath.Child(new_name + self.default_extension)
+		    open_text_Stream(tmp_fld)
+		    
+		  else
+		    tmp_fld = self.DestinationPath.Parent.Child(new_name + self.default_extension)
+		    open_text_Stream(tmp_fld)
+		    
+		  end if
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Sub write_column_headers(headers() as string)
 		  var tmp() as variant
@@ -181,7 +181,7 @@ Implements TableRowWriterInterface
 		    
 		  next
 		  
-		  self.add_row(tmp)
+		  self.AddRow(tmp)
 		  
 		  header_written = True
 		End Sub

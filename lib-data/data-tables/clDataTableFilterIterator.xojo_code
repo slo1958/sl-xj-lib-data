@@ -21,7 +21,7 @@ Implements Iterator
 		      last_row_index = last_row_index + 1
 		      
 		      if tmp_serie.GetElementAsBoolean(last_row_index) then
-		        value_to_return = tmp_table.GetRowAt(last_row_index, tmp_table.is_index_visible_when_iterate)
+		        value_to_return = tmp_table.GetRowAt(last_row_index, tmp_table.IsIndexVisibleWhenIterating)
 		        
 		        return True
 		      end if

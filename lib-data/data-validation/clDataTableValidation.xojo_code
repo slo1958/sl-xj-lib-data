@@ -18,30 +18,6 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function all_columns() As clAbstractDataSerie()
-		  // Part of the TableColumnReaderInterface interface.
-		  
-		  var cols() as clAbstractDataSerie
-		  
-		  var col_name as new clDataSerie( field_name_input_column )
-		  var col_input as new clDataSerie( field_nullable_input_column )
-		  var col_mandatory as new clDataSerie(field_mandatory_input_column )
-		  var col_type as new clDataSerie(field_type_input_column)
-		  
-		  
-		  for each column as clDataSerieValidation in valid_columns
-		    col_name.AddElement(column.name)
-		    col_input.AddElement(column.is_nullable)
-		    col_mandatory.AddElement(column.is_required)
-		    col_type.AddElement("generic")
-		    
-		  next
-		  
-		  Return cols
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function ColumnCount() As integer
 		  // Part of the TableColumnReaderInterface interface.
 		  
@@ -59,7 +35,7 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub constructor(validation_name as string, columns() as clDataSerieValidation, allow_extra_columns as boolean = False)
+		Sub Constructor(validation_name as string, columns() as clDataSerieValidation, allow_extra_columns as boolean = False)
 		  redim valid_columns(-1)
 		  
 		  if validation_name.trim.len = 0 then
@@ -81,6 +57,30 @@ Implements TableColumnReaderInterface
 		  
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetAllColumns() As clAbstractDataSerie()
+		  // Part of the TableColumnReaderInterface interface.
+		  
+		  var cols() as clAbstractDataSerie
+		  
+		  var col_name as new clDataSerie( field_name_input_column )
+		  var col_input as new clDataSerie( field_nullable_input_column )
+		  var col_mandatory as new clDataSerie(field_mandatory_input_column )
+		  var col_type as new clDataSerie(field_type_input_column)
+		  
+		  
+		  for each column as clDataSerieValidation in valid_columns
+		    col_name.AddElement(column.name)
+		    col_input.AddElement(column.is_nullable)
+		    col_mandatory.AddElement(column.is_required)
+		    col_type.AddElement("generic")
+		    
+		  next
+		  
+		  Return cols
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -174,13 +174,13 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_results() As clDataTable
+		Function GetResults() As clDataTable
 		  Return results_table
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function is_persistant() As boolean
+		Function IsPersistant() As boolean
 		  // Part of the TableColumnReaderInterface interface.
 		  
 		  return False
@@ -188,7 +188,7 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As String
+		Function Name() As String
 		  return table_name
 		End Function
 	#tag EndMethod
@@ -203,7 +203,7 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub validate(table as clDataTable)
+		Sub Validate(table as clDataTable)
 		  
 		  self.results_table = new clDataTable("error_report", array(field_name_output_column ,  row_index_output_column, message_output_column))
 		  

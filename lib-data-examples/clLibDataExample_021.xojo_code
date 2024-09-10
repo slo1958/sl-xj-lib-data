@@ -25,7 +25,7 @@ Inherits clLibDataExample
 		  var c3 as new clStringDataSerie("StringDataSerie")
 		  var c4 as new clIntegerDataSerie("IntegerDataSerie")
 		  
-		  var series() as clAbstractDataSerie = serie_array(c1, c2, c3, c4)
+		  var series() as clAbstractDataSerie = SerieArray(c1, c2, c3, c4)
 		  
 		  for each cc as clAbstractDataSerie in series
 		    cc.AddElement("aaa")

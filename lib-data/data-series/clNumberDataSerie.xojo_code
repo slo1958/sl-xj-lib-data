@@ -20,14 +20,14 @@ Inherits clAbstractDataSerie
 		Sub AddFormattingRange(low_bound as double, high_bound as double, label as string)
 		  if self.formatter = nil then Return
 		  
-		  self.formatter.add_range(low_bound, high_bound, label)
+		  self.formatter.AddRange(low_bound, high_bound, label)
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function average() As double
+		Function Average() As double
 		  var c as new clBasicMath
 		  return c.average(items)
 		  
@@ -46,8 +46,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ClipByRange(low_value as variant, high_value as variant) As integer
-		  // Calling the overridden superclass method.
-		  Var returnValue as integer = Super.ClipByRange(low_value, high_value)
+		  
 		  var last_index as integer = self.RowCount
 		  var count_changes as integer = 0
 		  
@@ -132,7 +131,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function count() As double
+		Function Count() As double
 		  
 		  var c as new clBasicMath
 		  return c.Count(items)
@@ -187,11 +186,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetElementAsString(the_element_index as integer) As string
-		  // Calling the overridden superclass method.
+		  
 		  
 		  if self.formatter = nil then return format(self.GetElement(the_element_index), format_str)
 		  
-		  return self.formatter.range_format(self.GetElement(the_element_index))
+		  return self.formatter.RangeFormat(self.GetElement(the_element_index))
 		End Function
 	#tag EndMethod
 
@@ -213,8 +212,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function LastIndex() As integer
-		  // Calling the overridden superclass method.
-		  Var returnValue as integer = Super.LastIndex()
+		  
 		  Return items.LastIndex
 		  
 		End Function
@@ -371,9 +369,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ResetElementss()
-		  // Calling the overridden superclass method.
-		  Super.ResetElements()
+		Sub ResetElements()
 		  
 		  self.meta_dict.AddMetadata("type","number")
 		  

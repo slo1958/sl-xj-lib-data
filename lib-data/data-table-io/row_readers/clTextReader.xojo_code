@@ -46,7 +46,7 @@ Implements TableRowReaderInterface
 		  self.set_encoding(tmp_config.enc)
 		  
 		  if has_header then
-		    var tmp() as variant = self.next_row
+		    var tmp() as variant = self.NextRow
 		    self.mheader.RemoveAll
 		    
 		    for each v as variant in tmp
@@ -61,7 +61,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function current_row_number() As integer
+		Function CurrentRowIndex() As integer
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  Return line_count
@@ -94,7 +94,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function end_of_table() As boolean
+		Function EndOfTable() As boolean
 		  // Part of the TableRowReaderInterface interface.
 		  return EndOfFile
 		  
@@ -174,7 +174,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As string
+		Function Name() As string
 		  // Part of the TableRowReaderInterface interface
 		  
 		  if self.mDataFile = nil then return ""
@@ -186,7 +186,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function next_row() As variant()
+		Function NextRow() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  const kDoubleQuote = """"

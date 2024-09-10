@@ -43,8 +43,8 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
-		  var is_france() as variant = table0.FilterWithFunction(AddressOf field_filter,"country","France")
-		  var is_belgium() as variant =  table0.FilterWithFunction(AddressOf field_filter, "country","Belgique")
+		  var is_france() as variant = table0.FilterWithFunction(AddressOf BasicFieldFilter,"country","France")
+		  var is_belgium() as variant =  table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")
 		  var is_europe() as variant
 		  
 		  for i as integer = 0 to is_france.LastIndex
@@ -56,9 +56,9 @@ Inherits clLibDataExample
 		  call table0.AddColumn(new clIntegerDataSerie("is_belgium"))
 		  call table0.AddColumn(new clIntegerDataSerie("is_europe"))
 		  
-		  call table0.set_column_values("is_france", is_france, false)
-		  call table0.set_column_values("is_belgium", is_belgium, false)
-		  call table0.set_column_values("is_europe", is_europe, false)
+		  call table0.SetColumnValues("is_france", is_france, false)
+		  call table0.SetColumnValues("is_belgium", is_belgium, false)
+		  call table0.SetColumnValues("is_europe", is_europe, false)
 		  
 		  return array(table0)
 		  

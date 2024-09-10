@@ -56,8 +56,8 @@ Inherits clLibDataExample
 		  col_cloned_sales.AddFormattingRange(2000,2999.99,"big")
 		  
 		  
-		  call table0.AddColumn(new clBooleanDataSerie("is_france", table0.FilterWithFunction(AddressOf field_filter,"country","France")))
-		  call table0.AddColumn(new clBooleanDataSerie("is_belgium", table0.FilterWithFunction(AddressOf field_filter, "country","Belgique")))
+		  call table0.AddColumn(new clBooleanDataSerie("is_france", table0.FilterWithFunction(AddressOf BasicFieldFilter,"country","France")))
+		  call table0.AddColumn(new clBooleanDataSerie("is_belgium", table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")))
 		  
 		  
 		  clBooleanDataSerie(table0.GetColumn("is_france")).SetFormat("≠ France","= France")

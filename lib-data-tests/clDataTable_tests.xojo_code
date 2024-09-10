@@ -175,7 +175,7 @@ Protected Module clDataTable_tests
 		  var col4 as new clDataSerie("ddd", nil, 987.654)
 		  
 		  
-		  var texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
+		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
 		  call check_table(log, "T1", texpected, my_table)
 		  
@@ -225,12 +225,12 @@ Protected Module clDataTable_tests
 		  
 		  my_table1.AddColumns(my_table2)
 		  
-		  var my_table3 As clDataTable = my_table1.select_columns(Array("aaa","zccc"))
+		  var my_table3 As clDataTable = my_table1.SelectColumns(Array("aaa","zccc"))
 		  
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235, 81234, 81235)
 		  var col2 as new clDataSerie("zccc", nil, nil, 8123.456, nil)
-		  var texpected as new clDataTable("select T1", serie_array(col1, col2))
+		  var texpected as new clDataTable("select T1", SerieArray(col1, col2))
 		  
 		  call check_table(log, "T1", my_table3, texpected)
 		  
@@ -265,7 +265,7 @@ Protected Module clDataTable_tests
 		  my_table1.AddRow(rtst) 
 		  
 		  var my_col As clAbstractDataSerie
-		  var my_table3 As clDataTable = my_table1.select_columns(Array("aaa","zccc")) // zccc does not exist, not included in my_table3
+		  var my_table3 As clDataTable = my_table1.SelectColumns(Array("aaa","zccc")) // zccc does not exist, not included in my_table3
 		  
 		  
 		  my_col = my_table3.AddColumn("xyz") 
@@ -273,7 +273,7 @@ Protected Module clDataTable_tests
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("xyz", nil, nil) 
 		  
-		  var texpected as new clDataTable("select T1", serie_array(col1, col2))
+		  var texpected as new clDataTable("select T1", SerieArray(col1, col2))
 		  
 		  call check_table(log,"T1", texpected, my_table3)
 		  
@@ -314,7 +314,7 @@ Protected Module clDataTable_tests
 		  var col3 as new clDataSerie("ccc", 123.456, nil)
 		  var col4 as new clDataSerie("ddd", nil, 987.654)
 		  
-		  var texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
+		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
 		  call check_table(log, "T1", texpected, my_table)
 		  
@@ -359,7 +359,7 @@ Protected Module clDataTable_tests
 		  var col4 as new clDataSerie("ddd", nil, 987.654)
 		  
 		  
-		  var texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
+		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
 		  call check_table(log,"T1", texpected, my_table)
 		  
@@ -390,9 +390,9 @@ Protected Module clDataTable_tests
 		  c2.AddElement(56)
 		  c2.AddElement(78)
 		  
-		  var t1 As New clDataTable("mytable1", serie_array(c1, c2))
+		  var t1 As New clDataTable("mytable1", SerieArray(c1, c2))
 		  
-		  var t2 As New clDataTable("mytable2", serie_array(c1, c2), True)
+		  var t2 As New clDataTable("mytable2", SerieArray(c1, c2), True)
 		  
 		  var r1 As clDataRow
 		  r1 = New clDataRow
@@ -408,13 +408,13 @@ Protected Module clDataTable_tests
 		  var col1 as new clDataSerie("premier","aaa","bbb","ccc",nil,"dddd")
 		  var col2 as new clDataSerie("second",12,34,56,78,90)
 		  
-		  var expected_t1 as new clDataTable("mytable1", serie_array(col1, col2))
+		  var expected_t1 as new clDataTable("mytable1", SerieArray(col1, col2))
 		  
 		  var col3 as new clDataSerie("premier","aaa","bbb","ccc",nil,"dddd")
 		  var col4 as new clDataSerie("second",12,34,56,78,90)
 		  var col5 as new clDataSerie("troisieme",nil,nil,nil,nil,True)
 		  
-		  var expected_t2 as new clDataTable("mytable2", serie_array(col3, col4, col5))
+		  var expected_t2 as new clDataTable("mytable2", SerieArray(col3, col4, col5))
 		  
 		  call check_table(log,"mytable1", expected_t1, t1)
 		  
@@ -490,7 +490,7 @@ Protected Module clDataTable_tests
 		  var col5 as new clDataSerie("is_bbb1", False, True, False, False)
 		  var col6 as new clDataSerie("is_bbb3", False, False, False, True)
 		  
-		  var expected as new clDataTable("T1", serie_array(col1, col2, col3, col4, col5, col6))
+		  var expected as new clDataTable("T1", SerieArray(col1, col2, col3, col4, col5, col6))
 		  
 		  call check_table(log,"t1", expected, my_table)
 		  
@@ -543,22 +543,22 @@ Protected Module clDataTable_tests
 		  var col2 as new clDataSerie("bbb","abcd","abcd","abcd","abcd")
 		  var col3 as new clDataSerie("ccc", 123.456, 123.456, 123.456, 123.456)
 		  
-		  var expected_t1 as new clDataTable("T1", serie_array(col1, col2, col3))
+		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3))
 		  
 		  var col4 as new clDataSerie("aaa", 5000, 6000, 7000, 8000, 9000)
 		  var col5 as new clDataSerie("bbb","xyz","xyz","xyz","xyz", "xyz")
 		  var col6 as new clDataSerie("ddd", 567.89, 567.89, 567.89, 567.89, 567.89)
 		  
-		  var expected_t2 as new clDataTable("T2", serie_array(col4, col5, col6))
+		  var expected_t2 as new clDataTable("T2", SerieArray(col4, col5, col6))
 		  
 		  
 		  var col7 as new clDataSerie("aaa", 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000)
 		  var col8 as new clDataSerie("bbb","abcd","abcd","abcd","abcd","xyz","xyz","xyz","xyz", "xyz")
 		  var col9 as new clDataSerie("ccc", 123.456, 123.456, 123.456, 123.456, nil, nil, nil, nil, nil)
 		  var col0 as new clDataSerie("ddd", nil, nil, nil, nil, 567.89, 567.89, 567.89, 567.89, 567.89)
-		  var expected_t3 as new clDataTable("T3", serie_array(col7, col8, col9, col0))
+		  var expected_t3 as new clDataTable("T3", SerieArray(col7, col8, col9, col0))
 		  
-		  var expected_t4 as new clDataTable("T4", serie_array(col7, col8, col9), True)
+		  var expected_t4 as new clDataTable("T4", SerieArray(col7, col8, col9), True)
 		  
 		  call check_table(log,"T1", expected_t1, my_table1)
 		  call check_table(log,"T2", expected_t2, my_table2)
@@ -603,7 +603,7 @@ Protected Module clDataTable_tests
 		  var col3 as new clNumberDataSerie("unit_price", 6, 8)
 		  var col4 as new clNumberDataSerie("unit_price*quantity", 300, 160)
 		  
-		  var expected_t1 as new clDataTable("T1", serie_array(col1, col2, col3, col4))
+		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4))
 		  
 		  call check_table(log,"T1", expected_t1, mytable)
 		  
@@ -695,7 +695,7 @@ Protected Module clDataTable_tests
 		  table0.AddRow(Array("France","Paris",1100))
 		  table0.AddRow(Array("USA","NewYork",1400))
 		  
-		  table0.index_visible_when_iterate(True)
+		  table0.IndexVisibleWhenIterating(True)
 		  
 		  var row_index as integer = 0 // required for validation
 		  
@@ -758,7 +758,7 @@ Protected Module clDataTable_tests
 		  call table0.AddColumn(not filter_product)
 		  
 		  
-		  table0.index_visible_when_iterate(True)
+		  table0.IndexVisibleWhenIterating(True)
 		  
 		  for each row as clDataRow in table0
 		    for each cell as string in row
@@ -813,7 +813,7 @@ Protected Module clDataTable_tests
 		  //  
 		  //  The filter series are not added to the table, but we can used them to filter the datatable
 		  
-		  table0.index_visible_when_iterate(True)
+		  table0.IndexVisibleWhenIterating(True)
 		  
 		  for each row as clDataRow in table0
 		    for each cell as string in row
@@ -865,7 +865,7 @@ Protected Module clDataTable_tests
 		  var col3 as new clDataSerie("ccc", 123.456, nil)
 		  var col4 as new clDataSerie("ddd", nil, 987.654)
 		  
-		  var texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
+		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
 		  call check_table(log, "T1", texpected, my_table)
 		  
@@ -903,7 +903,7 @@ Protected Module clDataTable_tests
 		  
 		  var col2 as new clDataSerie("city", "Paris", "Marseille", "","Bruxelles","NewYork","Chicago")
 		  
-		  call check_table(log,"unique", new clDataTable("mytable", serie_array(col1, col2)), table1)
+		  call check_table(log,"unique", new clDataTable("mytable", SerieArray(col1, col2)), table1)
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -921,7 +921,7 @@ Protected Module clDataTable_tests
 		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  var col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
+		  var table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
 		  
 		  call table0.AddColumn(col_sales *2 )
 		  
@@ -936,7 +936,7 @@ Protected Module clDataTable_tests
 		  var col4 as new clNumberDataSerie("sales*2", 1800.0, 2400.0, 2800.0, 3200.0, 5800.0)
 		  var col5 as new clNumberDataSerie("clip sales*2", 2200.0, 2400.0, 2800.0, 3000.0, 3000.0)
 		  
-		  call check_table(log,"clipping fct", new clDataTable("mytable", serie_array(col1, col2, col3, col4, col5)), table0)
+		  call check_table(log,"clipping fct", new clDataTable("mytable", SerieArray(col1, col2, col3, col4, col5)), table0)
 		  
 		  call check_value(log, "nb clipped", 3, nb)
 		  
@@ -963,7 +963,7 @@ Protected Module clDataTable_tests
 		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  var col_sales as new clNumberDataSerie("Sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table_expected As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
+		  var table_expected As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
 		  
 		  call check_table(log,"use dict for creation", table_expected, table0)
 		  
@@ -1009,7 +1009,7 @@ Protected Module clDataTable_tests
 		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  var col_sales as new clNumberDataSerie("Sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table_expected As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
+		  var table_expected As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
 		  
 		  call check_table(log,"use dict for creation", table_expected, table0)
 		  
@@ -1051,7 +1051,7 @@ Protected Module clDataTable_tests
 		  var c3 as new clStringDataSerie("StringDataSerie")
 		  var c4 as new clIntegerDataSerie("IntegerDataSerie")
 		  
-		  var series() as clAbstractDataSerie = serie_array(c1, c2, c3, c4)
+		  var series() as clAbstractDataSerie = SerieArray(c1, c2, c3, c4)
 		  
 		  for each cc as clAbstractDataSerie in series
 		    cc.AddElement("aaa")
@@ -1109,7 +1109,7 @@ Protected Module clDataTable_tests
 		  
 		  // Build the source list of dictionaries
 		  
-		  var t_expected as new clDataTable("expected",string_array("field_a", "field_b","field_c"))
+		  var t_expected as new clDataTable("expected",StringArray("field_a", "field_b","field_c"))
 		  
 		  var s() as Dictionary
 		  
@@ -1130,7 +1130,7 @@ Protected Module clDataTable_tests
 		      fieldc = ""
 		      
 		    end if
-		    t_expected.AddRow(string_array(fielda, fieldb, fieldc))
+		    t_expected.AddRow(StringArray(fielda, fieldb, fieldc))
 		    
 		    s.Add(d)
 		    
@@ -1158,7 +1158,7 @@ Protected Module clDataTable_tests
 		  
 		  // Build the source list of dictionaries
 		  
-		  var t_expected as new clDataTable("expected",string_array("field_a", "field_c", "field_d"))
+		  var t_expected as new clDataTable("expected",StringArray("field_a", "field_c", "field_d"))
 		  
 		  var s() as Dictionary
 		  
@@ -1180,13 +1180,13 @@ Protected Module clDataTable_tests
 		      
 		    end if
 		    
-		    t_expected.AddRow(string_array(fielda, fieldc,""))
+		    t_expected.AddRow(StringArray(fielda, fieldc,""))
 		    
 		    s.Add(d)
 		    
 		  next
 		  
-		  var rs as new clListOfDictionariesReader(s, "actual", string_array("field_a","field_c","field_d"))
+		  var rs as new clListOfDictionariesReader(s, "actual", StringArray("field_a","field_c","field_d"))
 		  
 		  var t_actual  as new clDataTable("actual")
 		  t_actual.AddRows(rs, true)
@@ -1205,7 +1205,7 @@ Protected Module clDataTable_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var my_table As New clDataTable("T1", serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  var my_table As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
 		  
 		  var d as new test_class_02
 		  d.aaa = 1234
@@ -1227,7 +1227,7 @@ Protected Module clDataTable_tests
 		  var col3 as new clDataSerie("ccc", 123.456, 0)
 		  var col4 as new clDataSerie("ddd", nil, 987.654)
 		  
-		  var texpected as new clDataTable("T1", serie_array(col1, col2, col3 ,col4))
+		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
 		  call check_table(log, "T1", texpected, my_table)
 		  
@@ -1241,7 +1241,7 @@ Protected Module clDataTable_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var my_table_1 As New clDataTable("T1", serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  var my_table_1 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
 		  
 		  var r1 as new test_class_02
 		  r1.aaa = 1234
@@ -1271,7 +1271,7 @@ Protected Module clDataTable_tests
 		    
 		  next
 		  
-		  var my_table_2 As New clDataTable("T1", serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb")))
+		  var my_table_2 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb")))
 		  
 		  for each c as test_class_03 in res
 		    my_table_2.AddRow(new clDataRow(c), False)
@@ -1282,7 +1282,7 @@ Protected Module clDataTable_tests
 		  var col1 as new clDataSerie("aaa", 2468, 2470)
 		  var col2 as new clDataSerie("bbb", "$abcd", "$abce")
 		  
-		  var texpected as new clDataTable("T1", serie_array(col1, col2))
+		  var texpected as new clDataTable("T1", SerieArray(col1, col2))
 		  
 		  call check_table(log, "T1", texpected, my_table_2)
 		  
@@ -1296,7 +1296,7 @@ Protected Module clDataTable_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var my_table_0 As New clDataTable("T1", serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  var my_table_0 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
 		  my_table_0.row_name_as_column = True
 		  
 		  var r1 as new test_class_02
@@ -1325,11 +1325,11 @@ Protected Module clDataTable_tests
 		    
 		  next
 		  
-		  var my_table_1 as new clDataTable("T2",serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  var my_table_1 as new clDataTable("T2",SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
 		  my_table_1.AddRows(res_1)
 		  
 		  
-		  var my_table_2 as new clDataTable("T2",serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  var my_table_2 as new clDataTable("T2",SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
 		  my_table_2.AddRows(res_2)
 		  
 		  
@@ -1338,7 +1338,7 @@ Protected Module clDataTable_tests
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
 		  var col3 as new clNumberDataSerie("ccc", 123.456, 987.654)
 		  
-		  var texpected as new clDataTable("T2", serie_array(col1, col2,col3))
+		  var texpected as new clDataTable("T2", SerieArray(col1, col2,col3))
 		  
 		  call check_table(log, "T2a", texpected, my_table_1)
 		  call check_table(log, "T2b", texpected, my_table_2)

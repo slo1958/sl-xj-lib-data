@@ -6,7 +6,7 @@ Implements Iterator
 		  tmp_pool = the_pool
 		  last_table_index = -1
 		  
-		  tables = tmp_pool.table_names()
+		  tables = tmp_pool.GetTableNames()
 		  
 		  
 		End Sub
@@ -19,7 +19,7 @@ Implements Iterator
 		  if last_table_index < tables.LastIndex then
 		    last_table_index = last_table_index + 1
 		    
-		    value_to_return = tmp_pool.get_table(tables(last_table_index))
+		    value_to_return = tmp_pool.GetTable(tables(last_table_index))
 		    return True
 		    
 		  else

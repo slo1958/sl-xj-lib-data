@@ -33,15 +33,15 @@ Inherits clLibDataExample
 		  var col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
 		  var col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
 		  
-		  var table1 as new clDataTable("source table", serie_array(col_source, col_sales))
+		  var table1 as new clDataTable("source table", SerieArray(col_source, col_sales))
 		  
 		  
 		  // we split the "source" field to extract country and city
 		  
-		  var table2 as new clDataTable("prepared", serie_array( _
+		  var table2 as new clDataTable("prepared", SerieArray( _
 		  col_source, _
-		  col_source.text_before("-").rename("country"), _
-		  col_source.text_after("-").rename("city"), _
+		  col_source.TextBefore("-").rename("country"), _
+		  col_source.TextAfter("-").rename("city"), _
 		  col_sales),_
 		  true)
 		  

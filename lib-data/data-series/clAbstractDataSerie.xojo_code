@@ -333,7 +333,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clAbstractDataSerie
+		Function Clone() As clAbstractDataSerie
 		  //  
 		  //  Clone the current data serie (only implemented at typed subclasses)
 		  //
@@ -403,7 +403,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  if the_values.LastIndex < 0 then return
 		  
 		  if the_values(0).IsArray and the_values.LastIndex = 0 then
-		    var tmp() as variant = make_variant_array(the_values(0))
+		    var tmp() as variant = MakeVariantArray(the_values(0))
 		    
 		    For i As Integer = 0 To tmp.LastIndex
 		      self.AddElement(tmp(i))
@@ -553,18 +553,18 @@ Implements Xojo.Core.Iterable,itf_json_able
 		End Function
 	#tag EndMethod
 
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function FilterColumnByRows(the_row_index as integer, the_RowCount as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
+	#tag EndDelegateDeclaration
+
 	#tag Method, Flags = &h0
-		Function FilterWithFunction(the_filter_function as filter_column_by_rows, paramarray function_param as variant) As variant()
+		Function FilterWithFunction(the_filter_function as FilterColumnByRows, paramarray function_param as variant) As variant()
 		  var return_boolean() As Variant
 		  
 		  Return return_boolean
 		  
 		End Function
 	#tag EndMethod
-
-	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function filter_column_by_rows(the_row_index as integer, the_RowCount as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
-	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
 		Function FindRowIndexForValue(the_find_value as Variant) As integer()
@@ -1133,7 +1133,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function unique() As variant()
+		Function Unique() As variant()
 		  var dct as new Dictionary
 		  var results() as variant
 		  

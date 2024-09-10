@@ -10,7 +10,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clBooleanDataSerie
+		Function Clone() As clBooleanDataSerie
 		  var tmp As New clBooleanDataSerie(Self.name)
 		  
 		  self.CloneInfo(tmp)
@@ -90,8 +90,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetElementAsString(the_element_index as integer) As string
-		  // Calling the overridden superclass method.
-		  Var returnValue as string = Super.GetElementAsString(the_element_index)
+		   
 		  return if(self.GetElement(the_element_index),self.str_for_true,self.str_for_false)
 		  
 		End Function
@@ -192,7 +191,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ResetElementss()
+		Sub ResetElements()
 		  
 		  self.meta_dict.AddMetadata("type","boolean")
 		  
