@@ -30,12 +30,12 @@ Inherits clLibDataExample
 		  
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("","Marseille",1200))
+		  table0.AddRow(Array("Belgique","",1300))
+		  table0.AddRow(Array("USA","NewYork",1400))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500))
+		  table0.AddRow(Array("USA","Chicago",1600))
 		  
 		  var tableValid as new clDataTableValidation("validation",array( _
 		  new clDataSerieValidation("country",  False, True) _

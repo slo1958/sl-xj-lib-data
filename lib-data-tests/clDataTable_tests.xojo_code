@@ -160,14 +160,14 @@ Protected Module clDataTable_tests
 		  rtst.set_cell("bbb","abcd")
 		  rtst.set_cell("ccc",123.456)
 		  
-		  my_table.append_row(rtst)
+		  my_table.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1235)
 		  rtst.set_cell("bbb","abce")
 		  rtst.set_cell("ddd",987.654)
 		  
-		  my_table.append_row(rtst)
+		  my_table.AddRow(rtst)
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
@@ -198,14 +198,14 @@ Protected Module clDataTable_tests
 		  rtst.set_cell("bbb","abcd")
 		  rtst.set_cell("ccc",123.456)
 		  
-		  my_table1.append_row(rtst)
+		  my_table1.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1235)
 		  rtst.set_cell("bbb","abce")
 		  rtst.set_cell("ddd",987.654)
 		  
-		  my_table1.append_row(rtst)
+		  my_table1.AddRow(rtst)
 		  
 		  var my_table2 As New clDataTable("T2")
 		  
@@ -214,14 +214,14 @@ Protected Module clDataTable_tests
 		  rtst.set_cell("bbb","zabcd")
 		  rtst.set_cell("zccc",8123.456)
 		  
-		  my_table2.append_row(rtst)
+		  my_table2.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",81235)
 		  rtst.set_cell("bbb","zabce")
 		  rtst.set_cell("zddd",8987.654)
 		  
-		  my_table2.append_row(rtst)
+		  my_table2.AddRow(rtst)
 		  
 		  my_table1.append_from_column_source(my_table2)
 		  
@@ -255,14 +255,14 @@ Protected Module clDataTable_tests
 		  rtst.set_cell("bbb","abcd")
 		  rtst.set_cell("ccc",123.456)
 		  
-		  my_table1.append_row(rtst)
+		  my_table1.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1235)
 		  rtst.set_cell("bbb","abce")
 		  rtst.set_cell("ddd",987.654)
 		  
-		  my_table1.append_row(rtst) 
+		  my_table1.AddRow(rtst) 
 		  
 		  var my_col As clAbstractDataSerie
 		  var my_table3 As clDataTable = my_table1.select_columns(Array("aaa","zccc")) // zccc does not exist, not included in my_table3
@@ -298,7 +298,7 @@ Protected Module clDataTable_tests
 		  d.value("ccc") =  123.456
 		  rtst = New clDataRow(d)
 		  
-		  my_table.append_row(rtst)
+		  my_table.AddRow(rtst)
 		  
 		  var c as new test_class_01
 		  c.aaa = 1235
@@ -307,7 +307,7 @@ Protected Module clDataTable_tests
 		  
 		  rtst = New clDataRow(c)
 		  
-		  my_table.append_row(rtst)
+		  my_table.AddRow(rtst)
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
@@ -338,14 +338,14 @@ Protected Module clDataTable_tests
 		  rtst.set_cell("bbb","abcd")
 		  rtst.set_cell("ccc",123.456)
 		  
-		  my_table.append_row(rtst)
+		  my_table.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.set_cell("aaa",1235)
 		  rtst.set_cell("bbb","abce")
 		  rtst.set_cell("ddd",987.654)
 		  
-		  my_table.append_row(rtst)
+		  my_table.AddRow(rtst)
 		  
 		  var cols() As clAbstractDataSerie
 		  
@@ -399,10 +399,10 @@ Protected Module clDataTable_tests
 		  r1.set_cell("premier","dddd")
 		  r1.set_cell("second",90)
 		  
-		  t1.append_row(r1)
+		  t1.AddRow(r1)
 		  
 		  r1.set_cell("troisieme",True)
-		  t2.append_row(r1)
+		  t2.AddRow(r1)
 		  
 		  
 		  var col1 as new clDataSerie("premier","aaa","bbb","ccc",nil,"dddd")
@@ -437,10 +437,10 @@ Protected Module clDataTable_tests
 		  
 		  call my_table.AddColumns(Array("cc1","cc2","cc3"))
 		  
-		  my_table.append_row(Array("aaa0","bbb0","ccc0"))
-		  my_table.append_row(Array("aaa1","bbb1","ccc1"))
-		  my_table.append_row(Array("aaa2","bbb2","ccc2"))
-		  my_table.append_row(Array("aaa3","bbb3","ccc3"))
+		  my_table.AddRow(Array("aaa0","bbb0","ccc0"))
+		  my_table.AddRow(Array("aaa1","bbb1","ccc1"))
+		  my_table.AddRow(Array("aaa2","bbb2","ccc2"))
+		  my_table.AddRow(Array("aaa3","bbb3","ccc3"))
 		  
 		  var tmp1 As Integer = my_table.find_first_matching_row_index("cc2","bbb2")
 		  var tmp2 As Integer = my_table.find_first_matching_row_index("cc2","zzz2")
@@ -465,10 +465,10 @@ Protected Module clDataTable_tests
 		  
 		  call my_table.AddColumns(Array("cc1","cc2","cc3"))
 		  
-		  my_table.append_row(Array("aaa0","bbb0","ccc0"))
-		  my_table.append_row(Array("aaa1","bbb1","ccc1"))
-		  my_table.append_row(Array("aaa2","bbb0","ccc2"))
-		  my_table.append_row(Array("aaa3","bbb3","ccc3"))
+		  my_table.AddRow(Array("aaa0","bbb0","ccc0"))
+		  my_table.AddRow(Array("aaa1","bbb1","ccc1"))
+		  my_table.AddRow(Array("aaa2","bbb0","ccc2"))
+		  my_table.AddRow(Array("aaa3","bbb3","ccc3"))
 		  
 		  //  The function is filtering on column cc2. The parameter is the value to look for
 		  
@@ -518,7 +518,7 @@ Protected Module clDataTable_tests
 		    rtst.set_cell("bbb","abcd")
 		    rtst.set_cell("ccc",123.456)
 		    
-		    my_table1.append_row(rtst)
+		    my_table1.AddRow(rtst)
 		    
 		  next
 		  
@@ -529,7 +529,7 @@ Protected Module clDataTable_tests
 		    rtst.set_cell("bbb","xyz")
 		    rtst.set_cell("ddd",567.89)
 		    
-		    my_table2.append_row(rtst)
+		    my_table2.AddRow(rtst)
 		    
 		  next
 		  
@@ -588,13 +588,13 @@ Protected Module clDataTable_tests
 		  temp_row.set_cell("name","alpha")
 		  temp_row.set_cell("quantity",50)
 		  temp_row.set_cell("unit_price",6)
-		  mytable.append_row(temp_row)
+		  mytable.AddRow(temp_row)
 		  
 		  temp_row = New clDataRow
 		  temp_row.set_cell("name","alpha")
 		  temp_row.set_cell("quantity",20)
 		  temp_row.set_cell("unit_price",8)
-		  mytable.append_row(temp_row)
+		  mytable.AddRow(temp_row)
 		  
 		  call mytable.AddColumn(clNumberDataSerie(mytable.get_column("unit_price")) * clNumberDataSerie(mytable.get_column("quantity")))
 		  
@@ -624,12 +624,12 @@ Protected Module clDataTable_tests
 		  
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("","Marseille",1200))
+		  table0.AddRow(Array("Belgique","",1300))
+		  table0.AddRow(Array("USA","NewYork",1400))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500))
+		  table0.AddRow(Array("USA","Chicago",1600))
 		  
 		  var tmp_row as clDataRow = table0.get_row(2, False)
 		  
@@ -651,12 +651,12 @@ Protected Module clDataTable_tests
 		  
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("","Marseille",1200))
+		  table0.AddRow(Array("Belgique","",1300))
+		  table0.AddRow(Array("USA","NewYork",1400))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500))
+		  table0.AddRow(Array("USA","Chicago",1600))
 		  
 		  var filterserie as new clBooleanDataSerie("mask",(False, False,True, False, True, False)) 
 		  
@@ -692,8 +692,8 @@ Protected Module clDataTable_tests
 		  
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("USA","NewYork",1400))
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("USA","NewYork",1400))
 		  
 		  table0.index_visible_when_iterate(True)
 		  
@@ -736,12 +736,12 @@ Protected Module clDataTable_tests
 		  
 		  call table0.AddColumns(Array("country","city","sales","product"))
 		  
-		  table0.append_row(Array("France","Paris",1100,"AA"))
-		  table0.append_row(Array("","Marseille",1200,"AA"))
-		  table0.append_row(Array("Belgique","",1300,"AA"))
-		  table0.append_row(Array("USA","NewYork",1400,"AA"))
-		  table0.append_row(Array("Belgique","Bruxelles",1500,"BB"))
-		  table0.append_row(Array("USA","Chicago",1600,"AA"))
+		  table0.AddRow(Array("France","Paris",1100,"AA"))
+		  table0.AddRow(Array("","Marseille",1200,"AA"))
+		  table0.AddRow(Array("Belgique","",1300,"AA"))
+		  table0.AddRow(Array("USA","NewYork",1400,"AA"))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500,"BB"))
+		  table0.AddRow(Array("USA","Chicago",1600,"AA"))
 		  
 		  var filter_country as new clBooleanDataSerie("mask_country")
 		  for each cell as string in table0.get_column("Country")
@@ -791,12 +791,12 @@ Protected Module clDataTable_tests
 		  
 		  call table0.AddColumns(Array("country","city","sales","product"))
 		  
-		  table0.append_row(Array("France","Paris",1100,"AA"))
-		  table0.append_row(Array("","Marseille",1200,"AA"))
-		  table0.append_row(Array("Belgique","",1300,"AA"))
-		  table0.append_row(Array("USA","NewYork",1400,"AA"))
-		  table0.append_row(Array("Belgique","Bruxelles",1500,"BB"))
-		  table0.append_row(Array("USA","Chicago",1600,"AA"))
+		  table0.AddRow(Array("France","Paris",1100,"AA"))
+		  table0.AddRow(Array("","Marseille",1200,"AA"))
+		  table0.AddRow(Array("Belgique","",1300,"AA"))
+		  table0.AddRow(Array("USA","NewYork",1400,"AA"))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500,"BB"))
+		  table0.AddRow(Array("USA","Chicago",1600,"AA"))
 		  
 		  var filter_country as new clBooleanDataSerie("mask_country")
 		  for each cell as string in table0.get_column("Country")
@@ -850,7 +850,7 @@ Protected Module clDataTable_tests
 		  d.bbb =  "abcd"
 		  d.ccc =  "123.456"
 		  
-		  my_table.append_row( New clDataRow(d))
+		  my_table.AddRow( New clDataRow(d))
 		  
 		  var c as new test_class_01
 		  c.aaa = 1235
@@ -858,7 +858,7 @@ Protected Module clDataTable_tests
 		  c.ddd = 987.654
 		  
 		  
-		  my_table.append_row(New clDataRow(c))
+		  my_table.AddRow(New clDataRow(c))
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
@@ -883,18 +883,18 @@ Protected Module clDataTable_tests
 		  
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("France","Paris",2100))
-		  table0.append_row(Array("","Marseille",2200))
-		  table0.append_row(Array("Belgique","",2300))
-		  table0.append_row(Array("USA","NewYork",2400))
-		  table0.append_row(Array("Belgique","Bruxelles",2500))
-		  table0.append_row(Array("USA","Chicago",2600))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("","Marseille",1200))
+		  table0.AddRow(Array("Belgique","",1300))
+		  table0.AddRow(Array("France","Paris",2100))
+		  table0.AddRow(Array("","Marseille",2200))
+		  table0.AddRow(Array("Belgique","",2300))
+		  table0.AddRow(Array("USA","NewYork",2400))
+		  table0.AddRow(Array("Belgique","Bruxelles",2500))
+		  table0.AddRow(Array("USA","Chicago",2600))
+		  table0.AddRow(Array("USA","NewYork",1400))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500))
+		  table0.AddRow(Array("USA","Chicago",1600))
 		  
 		  
 		  var table1 As clDataTable = table0.unique(array("country", "city"))
@@ -1130,7 +1130,7 @@ Protected Module clDataTable_tests
 		      fieldc = ""
 		      
 		    end if
-		    t_expected.append_row(string_array(fielda, fieldb, fieldc))
+		    t_expected.AddRow(string_array(fielda, fieldb, fieldc))
 		    
 		    s.Add(d)
 		    
@@ -1139,7 +1139,7 @@ Protected Module clDataTable_tests
 		  var rs as new clListOfDictionariesReader(s, "actual")
 		  
 		  var t_actual  as new clDataTable("actual")
-		  t_actual.append_rows(rs, true)
+		  t_actual.AddRows(rs, true)
 		  
 		  
 		  call check_table(log,"list of dicts", t_expected, t_actual)
@@ -1180,7 +1180,7 @@ Protected Module clDataTable_tests
 		      
 		    end if
 		    
-		    t_expected.append_row(string_array(fielda, fieldc,""))
+		    t_expected.AddRow(string_array(fielda, fieldc,""))
 		    
 		    s.Add(d)
 		    
@@ -1189,7 +1189,7 @@ Protected Module clDataTable_tests
 		  var rs as new clListOfDictionariesReader(s, "actual", string_array("field_a","field_c","field_d"))
 		  
 		  var t_actual  as new clDataTable("actual")
-		  t_actual.append_rows(rs, true)
+		  t_actual.AddRows(rs, true)
 		  
 		  
 		  call check_table(log,"list of dicts", t_expected, t_actual)
@@ -1212,7 +1212,7 @@ Protected Module clDataTable_tests
 		  d.bbb =  "abcd"
 		  d.ccc =  "123.456"
 		  
-		  my_table.append_row( New clDataRow(d), false)
+		  my_table.AddRow( New clDataRow(d), false)
 		  
 		  var c as new test_class_01
 		  c.aaa = 1235
@@ -1220,7 +1220,7 @@ Protected Module clDataTable_tests
 		  c.ddd = 987.654
 		  
 		  
-		  my_table.append_row(New clDataRow(c), True)
+		  my_table.AddRow(New clDataRow(c), True)
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
@@ -1248,14 +1248,14 @@ Protected Module clDataTable_tests
 		  r1.bbb =  "abcd"
 		  r1.ccc =  "123.456"
 		  
-		  my_table_1.append_row( New clDataRow(r1), False)
+		  my_table_1.AddRow( New clDataRow(r1), False)
 		  
 		  var r2 as new test_class_02
 		  r2.aaa = 1235
 		  r2.bbb = "abce"
 		  r2.ccc = "987.654"
 		  
-		  my_table_1.append_row(New clDataRow(r2), False)
+		  my_table_1.AddRow(New clDataRow(r2), False)
 		  
 		  var res() as test_class_03
 		  
@@ -1274,7 +1274,7 @@ Protected Module clDataTable_tests
 		  var my_table_2 As New clDataTable("T1", serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb")))
 		  
 		  for each c as test_class_03 in res
-		    my_table_2.append_row(new clDataRow(c), False)
+		    my_table_2.AddRow(new clDataRow(c), False)
 		    
 		  next
 		  
@@ -1304,14 +1304,14 @@ Protected Module clDataTable_tests
 		  r1.bbb =  "abcd"
 		  r1.ccc =  "123.456"
 		  
-		  my_table_0.append_row( New clDataRow(r1), True)
+		  my_table_0.AddRow( New clDataRow(r1), True)
 		  
 		  var r2 as new test_class_02
 		  r2.aaa = 1235
 		  r2.bbb = "abce"
 		  r2.ccc = "987.654"
 		  
-		  my_table_0.append_row(New clDataRow(r2), False)
+		  my_table_0.AddRow(New clDataRow(r2), False)
 		  
 		  
 		  var res_1() as test_class_02
@@ -1326,11 +1326,11 @@ Protected Module clDataTable_tests
 		  next
 		  
 		  var my_table_1 as new clDataTable("T2",serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
-		  my_table_1.append_rows(res_1)
+		  my_table_1.AddRows(res_1)
 		  
 		  
 		  var my_table_2 as new clDataTable("T2",serie_array(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
-		  my_table_2.append_rows(res_2)
+		  my_table_2.AddRows(res_2)
 		  
 		  
 		  
@@ -1657,11 +1657,11 @@ Protected Module clDataTable_tests
 		  dct_mapping_file3.value("Quatre") = "Delta"
 		  dct_mapping_file3.value("Extra") = "New_col"
 		  
-		  my_table.append_rows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  my_table.AddRows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
-		  my_table.append_rows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
+		  my_table.AddRows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
 		  
-		  my_table.append_rows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
+		  my_table.AddRows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
 		  
 		  var expected_table as new clDataTable("calc")
 		  call expected_table.AddColumn(new clStringDataSerie("Alpha"))
@@ -1671,7 +1671,7 @@ Protected Module clDataTable_tests
 		  call expected_table.AddColumn(new clIntegerDataSerie("Group"))
 		  call expected_table.AddColumn(new clStringDataSerie("New_col"))
 		  
-		  expected_table.append_rows(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
+		  expected_table.AddRows(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
 		  
 		  call check_table(log,"T4/T5", expected_table, my_table, 0.0001) 
 		  

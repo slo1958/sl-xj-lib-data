@@ -61,11 +61,11 @@ Inherits clLibDataExample
 		  var source_table2 as new clDataTable(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
 		  var source_table3 as new clDataTable(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))))
 		  
-		  my_table.append_rows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  my_table.AddRows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
-		  my_table.append_rows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
+		  my_table.AddRows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
 		  
-		  my_table.append_rows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
+		  my_table.AddRows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
 		  
 		  log.end_exec(CurrentMethodName)
 		  

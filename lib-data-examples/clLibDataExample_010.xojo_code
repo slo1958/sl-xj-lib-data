@@ -32,19 +32,19 @@ Inherits clLibDataExample
 		  
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("","Marseille",1200))
+		  table0.AddRow(Array("Belgique","",1300))
+		  table0.AddRow(Array("USA","NewYork",1400))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500))
+		  table0.AddRow(Array("USA","Chicago",1600))
 		  
 		  
 		  var table1 as new clDataTable("res")
 		  
 		  for row_index as integer = 0 to table0.row_count-1
 		    var tmp_row as clDataRow = table0.get_row(row_index, True)
-		    table1.append_row(tmp_row)
+		    table1.AddRow(tmp_row)
 		  next
 		  
 		  

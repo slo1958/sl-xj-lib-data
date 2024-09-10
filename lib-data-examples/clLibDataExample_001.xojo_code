@@ -35,20 +35,20 @@ Inherits clLibDataExample
 		  row.set_cell("aaa",1234)
 		  row.set_cell("bbb","abcd")
 		  row.set_cell("ccc",123.4)
-		  table.append_row(row)
+		  table.AddRow(row)
 		  
 		  row = New clDataRow
 		  row.set_cell("aaa",1235)
 		  row.set_cell("bbb","abce")
 		  row.set_cell("ddd",987.654)
-		  table.append_row(row)
+		  table.AddRow(row)
 		  
 		  row = New clDataRow
 		  row.set_cell("aaa",1234)
 		  row.set_cell("bbb","abcd")
 		  row.set_cell("ccc",456.1)
 		  row.set_cell("ddd",789.2)
-		  table.append_row(row)
+		  table.AddRow(row)
 		  
 		  
 		  return array(table)

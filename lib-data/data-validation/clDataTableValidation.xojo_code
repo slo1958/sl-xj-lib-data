@@ -10,7 +10,7 @@ Implements TableColumnReaderInterface
 		  r.Value(message_output_column) =  message
 		  
 		  if results_table <> nil then
-		    self.results_table.append_row(r)
+		    self.results_table.AddRow(r)
 		    
 		  end if
 		  

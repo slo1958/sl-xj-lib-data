@@ -60,7 +60,7 @@ Protected Module clDataPool_tests
 		    rtst.set_cell("bbb","abcd")
 		    rtst.set_cell("ccc",123.456)
 		    
-		    table.append_row(rtst)
+		    table.AddRow(rtst)
 		    
 		  next
 		  
@@ -74,7 +74,7 @@ Protected Module clDataPool_tests
 		    rtst.set_cell("bbb","xyz")
 		    rtst.set_cell("ddd",567.89)
 		    
-		    table.append_row(rtst)
+		    table.AddRow(rtst)
 		    
 		  next
 		  
@@ -141,7 +141,7 @@ Protected Module clDataPool_tests
 		    rtst.set_cell("bbb","abcd")
 		    rtst.set_cell("ccc",123.456)
 		    
-		    table.append_row(rtst)
+		    table.AddRow(rtst)
 		    
 		  next
 		  
@@ -155,7 +155,7 @@ Protected Module clDataPool_tests
 		    rtst.set_cell("bbb","xyz")
 		    rtst.set_cell("ddd",567.89)
 		    
-		    table.append_row(rtst)
+		    table.AddRow(rtst)
 		    
 		  next
 		  
@@ -217,7 +217,7 @@ Protected Module clDataPool_tests
 		    rtst.set_cell("bbb","abcd")
 		    rtst.set_cell("ccc",123.456 * i) 
 		    
-		    pool_table1.append_row(rtst)
+		    pool_table1.AddRow(rtst)
 		    
 		  next
 		  
@@ -231,7 +231,7 @@ Protected Module clDataPool_tests
 		    rtst.set_cell("bbb","xyz")
 		    rtst.set_cell("ddd",567.89 * i)
 		    
-		    pool_table2.append_row(rtst)
+		    pool_table2.AddRow(rtst)
 		    
 		  next
 		  
@@ -294,7 +294,7 @@ Protected Module clDataPool_tests
 		    rtst.set_cell("bbb","abcd")
 		    rtst.set_cell("ccc",123.456 * i) 
 		    
-		    pool_table1.append_row(rtst)
+		    pool_table1.AddRow(rtst)
 		    
 		  next
 		  
@@ -308,7 +308,7 @@ Protected Module clDataPool_tests
 		    rtst.set_cell("bbb","xyz")
 		    rtst.set_cell("ddd",567.89 * i)
 		    
-		    pool_table2.append_row(rtst)
+		    pool_table2.AddRow(rtst)
 		    
 		  next
 		  

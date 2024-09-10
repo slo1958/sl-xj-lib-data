@@ -32,10 +32,10 @@ Inherits clLibDataExample
 		  
 		  call table0.AddColumns(Array("cc1","cc2","cc3"))
 		  
-		  table0.append_row(Array("aaa0","bbb0","ccc0"))
-		  table0.append_row(Array("aaa1","bbb1","ccc1"))
-		  table0.append_row(Array("aaa2","bbb2","ccc2"))
-		  table0.append_row(Array("aaa3","bbb3","ccc3"))
+		  table0.AddRow(Array("aaa0","bbb0","ccc0"))
+		  table0.AddRow(Array("aaa1","bbb1","ccc1"))
+		  table0.AddRow(Array("aaa2","bbb2","ccc2"))
+		  table0.AddRow(Array("aaa3","bbb3","ccc3"))
 		  
 		  return array(table0)
 		  

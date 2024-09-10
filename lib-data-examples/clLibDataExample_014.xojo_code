@@ -35,12 +35,12 @@ Inherits clLibDataExample
 		  
 		  var table0 As New clDataTable("mytable", serie_array(col_country, col_city, col_sales))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("","Marseille",1200))
-		  table0.append_row(Array("Belgique","",1300))
-		  table0.append_row(Array("France","Paris",2100))
-		  table0.append_row(Array("","Marseille",2200))
-		  table0.append_row(Array("Belgique","",2300))
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("","Marseille",1200))
+		  table0.AddRow(Array("Belgique","",1300))
+		  table0.AddRow(Array("France","Paris",2100))
+		  table0.AddRow(Array("","Marseille",2200))
+		  table0.AddRow(Array("Belgique","",2300))
 		  
 		  call table0.AddColumn(col_sales *2 )
 		  

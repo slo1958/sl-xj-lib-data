@@ -36,12 +36,12 @@ Inherits clLibDataExample
 		  
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
-		  table0.append_row(Array("France","Paris",1100))
-		  table0.append_row(Array("France","Marseille",1200))
-		  table0.append_row(Array("Belgique","Bruxelles",1300))
-		  table0.append_row(Array("USA","NewYork",1400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("France","Marseille",1200))
+		  table0.AddRow(Array("Belgique","Bruxelles",1300))
+		  table0.AddRow(Array("USA","NewYork",1400))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500))
+		  table0.AddRow(Array("USA","Chicago",1600))
 		  
 		  var is_france() as variant = table0.filter_with_function(AddressOf field_filter,"country","France")
 		  var is_belgium() as variant =  table0.filter_with_function(AddressOf field_filter, "country","Belgique")

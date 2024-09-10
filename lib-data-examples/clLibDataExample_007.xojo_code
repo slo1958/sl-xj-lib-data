@@ -37,9 +37,9 @@ Inherits clLibDataExample
 		  call table0.AddColumn(new clNumberDataSerie("quantity"))
 		  call table0.AddColumn(new clNumberDataSerie("unit_price"))
 		  
-		  table0.append_row(Array("alpha",50, 6.5))
-		  table0.append_row(Array("beta", 20, 18))
-		  table0.append_row(Array("gamma", 10, 50))
+		  table0.AddRow(Array("alpha",50, 6.5))
+		  table0.AddRow(Array("beta", 20, 18))
+		  table0.AddRow(Array("gamma", 10, 50))
 		  
 		  
 		  var s1 as clAbstractDataSerie = table0.AddColumn(table0.get_number_column("unit_price") * table0.get_number_column("quantity")).rename("sales")

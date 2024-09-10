@@ -43,7 +43,7 @@ Inherits clLibDataExample
 		  table3.rename("Using column source")
 		  
 		  var table4 as clDataTable = table1.clone
-		  table4.append_rows(new clDataTableRowReader(table2))
+		  table4.AddRows(new clDataTableRowReader(table2))
 		  table4.rename("Using row source")
 		  
 		  return array (table1, table2, table3, table4)

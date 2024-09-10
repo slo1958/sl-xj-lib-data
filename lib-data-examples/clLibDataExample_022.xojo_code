@@ -38,12 +38,12 @@ Inherits clLibDataExample
 		  call table0.AddColumns(Array("country","city"))
 		  var col_cloned_sales as clNumberDataSerie =  clNumberDataSerie(table0.AddColumn(new clNumberDataSerie("sales")))
 		  
-		  table0.append_row(Array("France","Paris",600))
-		  table0.append_row(Array("France","Marseille",1200))
-		  table0.append_row(Array("Belgique","Bruxelles",1300))
-		  table0.append_row(Array("USA","NewYork",2400))
-		  table0.append_row(Array("Belgique","Bruxelles",1500))
-		  table0.append_row(Array("USA","Chicago",1600))
+		  table0.AddRow(Array("France","Paris",600))
+		  table0.AddRow(Array("France","Marseille",1200))
+		  table0.AddRow(Array("Belgique","Bruxelles",1300))
+		  table0.AddRow(Array("USA","NewYork",2400))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500))
+		  table0.AddRow(Array("USA","Chicago",1600))
 		  
 		  col_cloned_sales = col_cloned_sales.clone()
 		  col_cloned_sales.name = "Formatted sales"
