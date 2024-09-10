@@ -35,8 +35,8 @@ You can create a data serie:
 
 dim my_serie As New clDataSerie("some_values")
 
-my_serie.append_element("abcd")
-my_serie.append_element("efgh")
+my_serie.AddElement("abcd")
+my_serie.AddElement("efgh")
 ...
 
 
@@ -89,7 +89,7 @@ The default data series stores values as variant.
 (subclass of clDataSerie)
 This class is only used to maintain the record index stored in tables. The value is automatically set to the next value of a counter. 
 
-The value passed as parameter to methods like append_element(), set_element() are ignored.
+The value passed as parameter to methods like AddElement(), set_element() are ignored.
 
 #### integer data serie clIntegerDataSerie
 Elements of the data serie are integer. A type specific get_element_as_integer() function returns an integer instead of a variant.
@@ -141,12 +141,12 @@ Dim my_serie3 As New clDataSerie("region")
 
 
 // populate the series
-my_serie1.append_element(...)
+my_serie1.AddElement(...)
 ...
-my_serie3.append_element(...)
+my_serie3.AddElement(...)
 
 
-Dim my_table As New clDataTable("mytable1", make_serie_array(my_serie1, my_serie2))
+Dim my_table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 
 ```
 
@@ -174,12 +174,12 @@ Dim my_serie3 As New clDataSerie("region")
 
 
 // populate the series
-my_serie1.append_element(...)
+my_serie1.AddElement(...)
 ...
 
-Dim my_table1 As New clDataTable("mytable1", make_serie_array(my_serie1, my_serie2))
+Dim my_table1 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 
-Dim my_table2 As New clDataTable("mytable1", make_serie_array(my_serie1, my_serie3), True)
+Dim my_table2 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie3), True)
 ```
 
 Note the last parameter for the second call to the constructor: it is telling the constructor to clone the data serie if it belongs to another table. In the example, my_serie1 will be cloned.
@@ -195,12 +195,12 @@ This will create a new column, named 'unit_price*quantity':
 
 Dim mytable As New clDataTable("T1")
 
-call mytable.add_column(new clDataSerie("name"))
-call mytable.add_column(new clNumberDataSerie("quantity"))
-call mytable.add_column(new clNumberDataSerie("unit_price"))
+call mytable.AddColumn(new clDataSerie("name"))
+call mytable.AddColumn(new clNumberDataSerie("quantity"))
+call mytable.AddColumn(new clNumberDataSerie("unit_price"))
 ....
 
-call mytable.add_column(clNumberDataSerie(mytable.get_column("unit_price")) * clNumberDataSerie(mytable.get_column("quantity")))
+call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNumberDataSerie(mytable.GetColumn("quantity")))
 
 
 ```
@@ -213,11 +213,11 @@ call mytable.add_column(clNumberDataSerie(mytable.get_column("unit_price")) * cl
 ```xojo
 Dim mytable As New clDataTable("mytable")
 
-call mytable.add_columns(Array("country","city","sales"))
+call mytable.AddColumns(Array("country","city","sales"))
 
-mytable.append_row(Array("France","Paris",1100))
-mytable.append_row(Array("France","Marseille",1200))
-mytable.append_row(Array("Belgique","Bruxelles",1300))
+mytable.AddRow(Array("France","Paris",1100))
+mytable.AddRow(Array("France","Marseille",1200))
+mytable.AddRow(Array("Belgique","Bruxelles",1300))
 
 ```
 
@@ -226,22 +226,22 @@ This option is slower, but safer.
 
 ```xojo
 
-call mytable.add_column(new clDataSerie("name"))
-call mytable.add_column(new clNumberDataSerie("quantity"))
-call mytable.add_column(new clNumberDataSerie("unit_price"))
+call mytable.AddColumn(new clDataSerie("name"))
+call mytable.AddColumn(new clNumberDataSerie("quantity"))
+call mytable.AddColumn(new clNumberDataSerie("unit_price"))
 
 
 temp_row = New clDataRow
-temp_row.set_cell("name","alpha")
-temp_row.set_cell("quantity",50)
-temp_row.set_cell("unit_price",6)
-mytable.append_row(temp_row)
+temp_row.SetCell("name","alpha")
+temp_row.SetCell("quantity",50)
+temp_row.SetCell("unit_price",6)
+mytable.AddRow(temp_row)
 
 temp_row = New clDataRow
-temp_row.set_cell("name","alpha")
-temp_row.set_cell("quantity",20)
-temp_row.set_cell("unit_price",8)
-mytable.append_row(temp_row)
+temp_row.SetCell("name","alpha")
+temp_row.SetCell("quantity",20)
+temp_row.SetCell("unit_price",8)
+mytable.AddRow(temp_row)
 
 ```
 
@@ -270,9 +270,9 @@ Assuming mytable1 contains 'name' and 'first-name', mytable2 contains 'name' and
 
 ```xojo
 
-mytable1.append_from_column_source(mytable2, true)
+mytable1.AddColumns(mytable2, true)
 
-mytable1.append_from_column_source(mytable3, false)
+mytable1.AddColumns(mytable3, false)
 
 ```
 
@@ -315,17 +315,17 @@ Let's consider the following example:
 ```xojo
 Dim table0 As New clDataTable("mytable")
 
-call table0.add_columns(Array("country","city","sales"))
+call table0.AddColumns(Array("country","city","sales"))
 
-table0.append_row(Array("France","Paris",1100))
-table0.append_row(Array("France","Marseille",1200))
-table0.append_row(Array("Belgique","Bruxelles",1300))
-table0.append_row(Array("USA","NewYork",1400))
-table0.append_row(Array("Belgique","Bruxelles",1500))
-table0.append_row(Array("USA","Chicago",1600))
+table0.AddRow(Array("France","Paris",1100))
+table0.AddRow(Array("France","Marseille",1200))
+table0.AddRow(Array("Belgique","Bruxelles",1300))
+table0.AddRow(Array("USA","NewYork",1400))
+table0.AddRow(Array("Belgique","Bruxelles",1500))
+table0.AddRow(Array("USA","Chicago",1600))
 
-dim is_france() as variant = table0.apply_filter(AddressOf field_filter,"country","France")
-dim is_belgium() as variant =  table0.apply_filter(AddressOf field_filter, "country","Belgique")
+dim is_france() as variant = table0.FilterWithFunction(AddressOf BasicFieldFilter,"country","France")
+dim is_belgium() as variant =  table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")
 dim is_europe() as variant
 
 for i as integer = 0 to is_france.Ubound
@@ -333,20 +333,20 @@ for i as integer = 0 to is_france.Ubound
   
 next
 
-call table0.add_column(new clIntegerDataSerie("is_france"))
-call table0.add_column(new clIntegerDataSerie("is_belgium"))
-call table0.add_column(new clIntegerDataSerie("is_europe"))
+call table0.AddColumn(new clIntegerDataSerie("is_france"))
+call table0.AddColumn(new clIntegerDataSerie("is_belgium"))
+call table0.AddColumn(new clIntegerDataSerie("is_europe"))
 
-call table0.set_column_values("is_france", is_france, false)
-call table0.set_column_values("is_belgium", is_belgium, false)
-call table0.set_column_values("is_europe", is_europe, false)
+call table0.SetColumnValues("is_france", is_france, false)
+call table0.SetColumnValues("is_belgium", is_belgium, false)
+call table0.SetColumnValues("is_europe", is_europe, false)
 
 
 ```
 
-The function table.apply_filter() returns an array of variant, one element corresponds to one row in the table, the element is true if the filter function passed as parameter returns 'true' when processing the record.
+The function table.FilterWithFunction() returns an array of variant, one element corresponds to one row in the table, the element is true if the filter function passed as parameter returns 'true' when processing the record.
 
-The filter function field_filter(fieldname, fieldvalue) returns True if the field fieldname has the value fieldvalue, the function receives the current row to apply the test (more details under 'About filter function')
+The filter function BasicFieldFilter(fieldname, fieldvalue) returns True if the field fieldname has the value fieldvalue, the function receives the current row to apply the test (more details under 'About filter function')
 
 
 The resulting arrays are then saved to new columns using the function 'set_column_value'
@@ -360,13 +360,13 @@ A filter function has the following prototype:
 Function xyz(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
 ```
 
-The array function_param receives the additional parameters passed to apply_filter()
+The array function_param receives the additional parameters passed to FilterWithFunction()
 
-For example, the function field_filter() used before has the following implementation:
+For example, the function BasicFieldFilter() used before has the following implementation:
 
 ```xojo
 
-		Function field_filter(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		Function BasicFieldFilter(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
 		  dim field_name as string = function_param(0)
 		  dim field_value as variant = function_param(1)
 		  
@@ -376,7 +376,7 @@ For example, the function field_filter() used before has the following implement
 		End Function
 
 ```
-The parameters the_row_index, the_row_count, the_column_names(), the_cell_values() are populated by apply_filter() when it calls the filter_function().
+The parameters the_row_index, the_row_count, the_column_names(), the_cell_values() are populated by FilterWithFunction() when it calls the filter_function().
 
 ### filtering using a masking column (boolean column)
 
@@ -386,30 +386,30 @@ Let's consider the following example:
  
 Dim table0 As New clDataTable("mytable")
 
-call table0.add_columns(Array("country","city","sales","product"))
+call table0.AddColumns(Array("country","city","sales","product"))
 
-table0.append_row(Array("France","Paris",1100,"AA"))
-table0.append_row(Array("","Marseille",1200,"AA"))
-table0.append_row(Array("Belgique","",1300,"AA"))
-table0.append_row(Array("USA","NewYork",1400,"AA"))
-table0.append_row(Array("Belgique","Bruxelles",1500,"BB"))
-table0.append_row(Array("USA","Chicago",1600,"AA"))
+table0.AddRow(Array("France","Paris",1100,"AA"))
+table0.AddRow(Array("","Marseille",1200,"AA"))
+table0.AddRow(Array("Belgique","",1300,"AA"))
+table0.AddRow(Array("USA","NewYork",1400,"AA"))
+table0.AddRow(Array("Belgique","Bruxelles",1500,"BB"))
+table0.AddRow(Array("USA","Chicago",1600,"AA"))
 
 dim filter_country as new clBooleanDataSerie("mask_country")
-for each cell as string in table0.get_column("Country")
-  filter_country.append_element(cell = "Belgique")
+for each cell as string in table0.GetColumn("Country")
+  filter_country.AddElement(cell = "Belgique")
   
 next
 
-call table0.add_column(filter_country)
+call table0.AddColumn(filter_country)
 
 dim filter_product as new clBooleanDataSerie("mask_product")
-for each cell as string in table0.get_column("product")
-  filter_product.append_element(cell = "BB")
+for each cell as string in table0.GetColumn("product")
+  filter_product.AddElement(cell = "BB")
   
 next
 
-call table0.add_column(not filter_product)
+call table0.AddColumn(not filter_product)
 
 table0.index_visible_when_iterate(True)
 
@@ -428,14 +428,14 @@ Note in this example the use of boolean operator between boolean data series.
 
 ```xojo
 dim filter_country as new clBooleanDataSerie("mask_country")
-for each cell as string in table0.get_column("Country")
-  filter_country.append_element(cell = "Belgique")
+for each cell as string in table0.GetColumn("Country")
+  filter_country.AddElement(cell = "Belgique")
   
 next 
 
 dim filter_product as new clBooleanDataSerie("mask_product")
-for each cell as string in table0.get_column("product")
-  filter_product.append_element(cell = "BB")
+for each cell as string in table0.GetColumn("product")
+  filter_product.AddElement(cell = "BB")
   
 next 
 
