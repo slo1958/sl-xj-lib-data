@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clMetaData
+Protected Class clMetadata
 	#tag Method, Flags = &h0
 		Sub AddMetaData(type as string, message as string)
 		  var tmp_str as string = type.Trim+":"+message.Trim
