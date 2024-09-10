@@ -303,105 +303,6 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub append_from_row_source(the_source as TableRowReaderInterface, create_missing_columns as boolean = True)
-		  //  
-		  //  Add  the data row from column source. New columns may be added to the current table
-		  //  
-		  //  For example, 
-		  //  - with the current table containing columns A, B, C 
-		  //  - with  the flag create_missing_column set to true
-		  //  - appending from a table with columns A, B, D 
-		  //  the values from A, and B are appended to the existing columns A and B
-		  //  a new column is created to store the values for D 
-		  
-		  //  Parameters:
-		  //  - the source , providing data column by column
-		  //  - flag allow the creation of missing columns
-		  //  
-		  //  Returns:
-		  //  (nothing)
-		  //  
-		  var length_before as integer = self.row_count
-		  
-		  var tmp_columns() as clAbstractDataSerie
-		  
-		  for each column_name as string in the_source.GetColumnNames
-		    var tmp_col as clAbstractDataSerie = self.get_column(column_name)
-		    
-		    if tmp_col = nil then
-		      if create_missing_columns then
-		        tmp_col = new clDataSerie(column_name)
-		        tmp_col.set_length(length_before)
-		        call self.add_column(tmp_col)
-		        
-		      else
-		        add_error("append_row_from_table","Ignoring column " + column_name)
-		        
-		      end if 
-		    end if
-		    
-		    tmp_columns.add(tmp_col)
-		    
-		  next
-		  
-		  call self.internal_append_from_row_source(the_source, tmp_columns, the_source.name)
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub append_from_row_source(the_source as TableRowReaderInterface, mapping_dict as dictionary)
-		  //  
-		  //  Add  the data row from column source. New columns may be added to the current table
-		  //  
-		  //  For example, 
-		  //  - with the current table containing columns A, B, C 
-		  //  - appending from the_source,  a table with columns X, Y, Z
-		  //  - mapping dictionary X:A, Y:B, Z:D
-		  //  the values from X, and Y are appended to the existing columns A and B
-		  //  a new column D is created to store the values from Z
-		  
-		  //  Parameters:
-		  //  - the source , providing data column by column
-		  //  - mapping dictionary, key is field name in the_source, value is the field name in the clDataTable
-		  //  
-		  //  Returns:
-		  //  (nothing)
-		  //  
-		  var length_before as integer = self.row_count
-		  
-		  var tmp_columns() as clAbstractDataSerie
-		  
-		  for each source_column_name as string in the_source.GetColumnNames
-		    var tmp_col as clAbstractDataSerie = nil
-		    
-		    if mapping_dict.HasKey(source_column_name) then
-		      var target_column_name as string = mapping_dict.value(source_column_name)
-		      
-		      tmp_col = self.get_column(target_column_name)
-		      
-		      if tmp_col = nil then
-		        tmp_col = new clDataSerie(target_column_name)
-		        tmp_col.set_length(length_before)
-		        call self.add_column(tmp_col)
-		        
-		      end if
-		    end if
-		    
-		    tmp_columns.add(tmp_col)
-		    
-		  next
-		  
-		  call self.internal_append_from_row_source(the_source, tmp_columns, the_source.name)
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub append_row(the_row as clDataRow, create_columns_flag as boolean=True)
 		  //  
 		  //  Add  a data row to the table
@@ -618,6 +519,25 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub append_rows(source_dictionaries() as Dictionary)
+		  //  
+		  //  Add  data rows to the table
+		  //  
+		  //  Parameters:
+		  //  - the data rows as an array
+		  //
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  for each dict as Dictionary in source_dictionaries
+		    self.append_row(dict)
+		    
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub append_rows(source_objects() as object)
 		  //  
 		  //  Add  data rows to the table
@@ -632,6 +552,105 @@ Implements TableColumnReaderInterface,Iterable
 		    self.append_row(obj)
 		    
 		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub append_rows(the_source as TableRowReaderInterface, create_missing_columns as boolean = True)
+		  //  
+		  //  Add  the data row from column source. New columns may be added to the current table
+		  //  
+		  //  For example, 
+		  //  - with the current table containing columns A, B, C 
+		  //  - with  the flag create_missing_column set to true
+		  //  - appending from a table with columns A, B, D 
+		  //  the values from A, and B are appended to the existing columns A and B
+		  //  a new column is created to store the values for D 
+		  
+		  //  Parameters:
+		  //  - the source , providing data column by column
+		  //  - flag allow the creation of missing columns
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  var length_before as integer = self.row_count
+		  
+		  var tmp_columns() as clAbstractDataSerie
+		  
+		  for each column_name as string in the_source.GetColumnNames
+		    var tmp_col as clAbstractDataSerie = self.get_column(column_name)
+		    
+		    if tmp_col = nil then
+		      if create_missing_columns then
+		        tmp_col = new clDataSerie(column_name)
+		        tmp_col.set_length(length_before)
+		        call self.add_column(tmp_col)
+		        
+		      else
+		        add_error("append_row_from_table","Ignoring column " + column_name)
+		        
+		      end if 
+		    end if
+		    
+		    tmp_columns.add(tmp_col)
+		    
+		  next
+		  
+		  call self.internal_append_rows(the_source, tmp_columns, the_source.name)
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub append_rows(the_source as TableRowReaderInterface, mapping_dict as dictionary)
+		  //  
+		  //  Add  the data row from column source. New columns may be added to the current table
+		  //  
+		  //  For example, 
+		  //  - with the current table containing columns A, B, C 
+		  //  - appending from the_source,  a table with columns X, Y, Z
+		  //  - mapping dictionary X:A, Y:B, Z:D
+		  //  the values from X, and Y are appended to the existing columns A and B
+		  //  a new column D is created to store the values from Z
+		  
+		  //  Parameters:
+		  //  - the source , providing data column by column
+		  //  - mapping dictionary, key is field name in the_source, value is the field name in the clDataTable
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  var length_before as integer = self.row_count
+		  
+		  var tmp_columns() as clAbstractDataSerie
+		  
+		  for each source_column_name as string in the_source.GetColumnNames
+		    var tmp_col as clAbstractDataSerie = nil
+		    
+		    if mapping_dict.HasKey(source_column_name) then
+		      var target_column_name as string = mapping_dict.value(source_column_name)
+		      
+		      tmp_col = self.get_column(target_column_name)
+		      
+		      if tmp_col = nil then
+		        tmp_col = new clDataSerie(target_column_name)
+		        tmp_col.set_length(length_before)
+		        call self.add_column(tmp_col)
+		        
+		      end if
+		    end if
+		    
+		    tmp_columns.add(tmp_col)
+		    
+		  next
+		  
+		  call self.internal_append_rows(the_source, tmp_columns, the_source.name)
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -1189,7 +1208,7 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  
-		  call self.internal_append_from_row_source(table_source, columns, "")
+		  call self.internal_append_rows(table_source, columns, "")
 		  
 		  self.adjust_length()
 		  
@@ -2145,7 +2164,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_append_from_row_source(the_source as TableRowReaderInterface, target_columns() as clAbstractDataSerie, source_name as string) As integer
+		Private Function internal_append_rows(the_source as TableRowReaderInterface, target_columns() as clAbstractDataSerie, source_name as string) As integer
 		  var added_rows as integer
 		  
 		  var source_name_col as clAbstractDataSerie
@@ -2672,6 +2691,14 @@ Implements TableColumnReaderInterface,Iterable
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="row_name_as_column"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

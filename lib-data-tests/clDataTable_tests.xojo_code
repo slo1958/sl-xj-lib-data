@@ -1139,7 +1139,7 @@ Protected Module clDataTable_tests
 		  var rs as new clListOfDictionariesReader(s, "actual")
 		  
 		  var t_actual  as new clDataTable("actual")
-		  t_actual.append_from_row_source(rs, true)
+		  t_actual.append_rows(rs, true)
 		  
 		  
 		  call check_table(log,"list of dicts", t_expected, t_actual)
@@ -1189,7 +1189,7 @@ Protected Module clDataTable_tests
 		  var rs as new clListOfDictionariesReader(s, "actual", string_array("field_a","field_c","field_d"))
 		  
 		  var t_actual  as new clDataTable("actual")
-		  t_actual.append_from_row_source(rs, true)
+		  t_actual.append_rows(rs, true)
 		  
 		  
 		  call check_table(log,"list of dicts", t_expected, t_actual)
@@ -1657,11 +1657,11 @@ Protected Module clDataTable_tests
 		  dct_mapping_file3.value("Quatre") = "Delta"
 		  dct_mapping_file3.value("Extra") = "New_col"
 		  
-		  my_table.append_from_row_source(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  my_table.append_rows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
-		  my_table.append_from_row_source(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
+		  my_table.append_rows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
 		  
-		  my_table.append_from_row_source(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
+		  my_table.append_rows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
 		  
 		  var expected_table as new clDataTable("calc")
 		  call expected_table.add_column(new clStringDataSerie("Alpha"))
@@ -1671,7 +1671,7 @@ Protected Module clDataTable_tests
 		  call expected_table.add_column(new clIntegerDataSerie("Group"))
 		  call expected_table.add_column(new clStringDataSerie("New_col"))
 		  
-		  expected_table.append_from_row_source(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
+		  expected_table.append_rows(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
 		  
 		  call check_table(log,"T4/T5", expected_table, my_table, 0.0001) 
 		  

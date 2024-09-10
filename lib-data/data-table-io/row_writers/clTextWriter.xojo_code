@@ -128,6 +128,8 @@ Implements TableRowWriterInterface
 		Sub done()
 		  // Part of the TableRowWriterInterface interface.
 		  
+		  if textstream = nil then return
+		  
 		  TextStream.close
 		  TextStream = nil
 		  
