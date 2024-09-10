@@ -3,7 +3,7 @@ Protected Class clDateDataSerie
 Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub append_element(the_item as Variant)
+		Sub AddElement(the_item as Variant)
 		  
 		  items.Append(prep_date(the_item))
 		End Sub
@@ -16,7 +16,7 @@ Inherits clAbstractDataSerie
 		  self.clone_info(tmp)
 		  
 		  For Each v As DateTime In Self.items
-		    tmp.append_element(v)
+		    tmp.AddElement(v)
 		    
 		  Next
 		  
@@ -200,10 +200,10 @@ Inherits clAbstractDataSerie
 		  for i as integer = 0 to mx0
 		    
 		    if i <= mx1 and i <= mx2 then
-		      res.append_element(diff_to_days(self.get_element_as_date(i), right_serie.get_element_as_date(i) ) )
+		      res.AddElement(diff_to_days(self.get_element_as_date(i), right_serie.get_element_as_date(i) ) )
 		      
 		    else
-		      res.append_element(0)
+		      res.AddElement(0)
 		      
 		    end if
 		    
@@ -221,7 +221,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+" - "+ right_value.SQLDate)
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(diff_to_days(self.get_element_as_date(i) , right_value))
+		    res.AddElement(diff_to_days(self.get_element_as_date(i) , right_value))
 		    
 		  next
 		  
@@ -290,7 +290,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(self.name+" as sql-date")
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element_as_string(i))
+		    res.AddElement(self.get_element_as_string(i))
 		    
 		  next
 		  
@@ -304,7 +304,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(self.name+" as string")
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element_as_string(i, dateStyle))
+		    res.AddElement(self.get_element_as_string(i, dateStyle))
 		    
 		  next
 		  
@@ -318,7 +318,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(self.name+" as " + format)
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element_as_string(i, format))
+		    res.AddElement(self.get_element_as_string(i, format))
 		    
 		  next
 		  

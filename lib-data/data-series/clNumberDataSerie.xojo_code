@@ -10,19 +10,19 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub add_formatting_range(low_bound as double, high_bound as double, label as string)
+		Sub AddElement(the_item as Variant)
+		  
+		  items.Append(the_item)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AddFormattingRange(low_bound as double, high_bound as double, label as string)
 		  if self.formatter = nil then Return
 		  
 		  self.formatter.add_range(low_bound, high_bound, label)
 		  
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub append_element(the_item as Variant)
-		  
-		  items.Append(the_item)
 		End Sub
 	#tag EndMethod
 
@@ -36,31 +36,18 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function average_non_zero() As double
+		Function AverageNonZero() As double
 		  var c as new clBasicMath
-		  return c.average_non_zero(items)
+		  return c.AverageNonZero(items)
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clipped_by_range(low_value as variant, high_value as variant) As clNumberDataSerie
-		  
-		  var new_col as clNumberDataSerie = self.clone()
-		  
-		  new_col.rename("clip " + self.name)
-		  
-		  call new_col.clip_range(low_value, high_value)
-		  
-		  return new_col
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function clip_range(low_value as variant, high_value as variant) As integer
+		Function ClipByRange(low_value as variant, high_value as variant) As integer
+		  // Calling the overridden superclass method.
+		  Var returnValue as integer = Super.ClipByRange(low_value, high_value)
 		  var last_index as integer = self.row_count
 		  var count_changes as integer = 0
 		  
@@ -87,13 +74,28 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ClippedByRange(low_value as variant, high_value as variant) As clNumberDataSerie
+		  
+		  var new_col as clNumberDataSerie = self.clone()
+		  
+		  new_col.rename("clip " + self.name)
+		  
+		  new_col.ClipByRange(low_value, high_value)
+		  
+		  return new_col
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function clone() As clNumberDataSerie
 		  var tmp As New clNumberDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
 		  For Each v As double In Self.items
-		    tmp.append_element(v)
+		    tmp.AddElement(v)
 		    
 		  Next
 		  
@@ -233,7 +235,7 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    res.append_element(n)
+		    res.AddElement(n)
 		    
 		  next
 		  
@@ -248,7 +250,7 @@ Inherits clAbstractDataSerie
 		  var res as new clNumberDataSerie(self.name+"+"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element(i) + right_value)
+		    res.AddElement(self.get_element(i) + right_value)
 		    
 		  next
 		  
@@ -283,7 +285,7 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    res.append_element(n)
+		    res.AddElement(n)
 		    
 		  next
 		  
@@ -298,7 +300,7 @@ Inherits clAbstractDataSerie
 		  var res as new clNumberDataSerie(self.name+"*"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element(i) * right_value)
+		    res.AddElement(self.get_element(i) * right_value)
 		    
 		  next
 		  
@@ -333,7 +335,7 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    res.append_element(n)
+		    res.AddElement(n)
 		    
 		  next
 		  
@@ -348,7 +350,7 @@ Inherits clAbstractDataSerie
 		  var res as new clNumberDataSerie(self.name+"-"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element(i) - right_value)
+		    res.AddElement(self.get_element(i) - right_value)
 		    
 		  next
 		  
@@ -441,7 +443,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(self.name+" as string")
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element_as_string(i))
+		    res.AddElement(self.get_element_as_string(i))
 		    
 		  next
 		  

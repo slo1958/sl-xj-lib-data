@@ -3,7 +3,7 @@ Protected Class clStringDataSerie
 Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub append_element(the_item as Variant)
+		Sub AddElement(the_item as Variant)
 		  
 		  items.Append(the_item.StringValue)
 		End Sub
@@ -16,7 +16,7 @@ Inherits clAbstractDataSerie
 		  self.clone_info(tmp)
 		  
 		  For Each v As string In Self.items
-		    tmp.append_element(v)
+		    tmp.AddElement(v)
 		    
 		  Next
 		  
@@ -103,7 +103,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(me.name+ " left " + str(count))
 		  
 		  for i as integer = 0 to me.upper_bound
-		    res.append_element(me.get_element_as_string(i).left(count))
+		    res.AddElement(me.get_element_as_string(i).left(count))
 		    
 		  next
 		  
@@ -118,7 +118,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(me.name+ " lower")
 		  
 		  for i as integer = 0 to me.upper_bound
-		    res.append_element(me.get_element_as_string(i).Lowercase())
+		    res.AddElement(me.get_element_as_string(i).Lowercase())
 		    
 		  next
 		  
@@ -133,7 +133,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(me.name+ " Middle " + str(length) + " char. from "  + str(from_char) )
 		  
 		  for i as integer = 0 to me.upper_bound
-		    res.append_element(me.get_element_as_string(i).Middle(from_char, length))
+		    res.AddElement(me.get_element_as_string(i).Middle(from_char, length))
 		    
 		  next
 		  
@@ -168,7 +168,7 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    res.append_element(n)
+		    res.AddElement(n)
 		    
 		  next
 		  
@@ -183,7 +183,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(self.name+"+"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element_as_string(i) + right_value)
+		    res.AddElement(self.get_element_as_string(i) + right_value)
 		    
 		  next
 		  
@@ -208,7 +208,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(me.name+ " right " + str(count))
 		  
 		  for i as integer = 0 to me.upper_bound
-		    res.append_element(me.get_element_as_string(i).right(count))
+		    res.AddElement(me.get_element_as_string(i).right(count))
 		    
 		  next
 		  
@@ -265,10 +265,10 @@ Inherits clAbstractDataSerie
 		    var idx as integer = tmp.IndexOf(search_str)
 		    
 		    if idx <0 then 
-		      res.append_element("")
+		      res.AddElement("")
 		      
 		    else
-		      res.append_element(tmp.mid( idx + 1 +  len(search_str), len(tmp)))
+		      res.AddElement(tmp.mid( idx + 1 +  len(search_str), len(tmp)))
 		      
 		    end if
 		    
@@ -289,10 +289,10 @@ Inherits clAbstractDataSerie
 		    var idx as integer = tmp.IndexOf(search_str)
 		    
 		    if idx <0 then 
-		      res.append_element("")
+		      res.AddElement("")
 		      
 		    else
-		      res.append_element(tmp.left(idx))
+		      res.AddElement(tmp.left(idx))
 		      
 		    end if
 		    
@@ -309,7 +309,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(me.name+ " upper" )
 		  
 		  for i as integer = 0 to me.upper_bound
-		    res.append_element(me.get_element_as_string(i).Titlecase)
+		    res.AddElement(me.get_element_as_string(i).Titlecase)
 		    
 		  next
 		  
@@ -324,7 +324,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+" as integer")
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element_as_integer(i))
+		    res.AddElement(self.get_element_as_integer(i))
 		    
 		  next
 		  
@@ -338,7 +338,7 @@ Inherits clAbstractDataSerie
 		  var res as new clNumberDataSerie(self.name+" as double")
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element_as_integer(i))
+		    res.AddElement(self.get_element_as_integer(i))
 		    
 		  next
 		  
@@ -352,7 +352,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(me.name+ " trim" )
 		  
 		  for i as integer = 0 to me.upper_bound
-		    res.append_element(me.get_element_as_string(i).Trim)
+		    res.AddElement(me.get_element_as_string(i).Trim)
 		    
 		  next
 		  
@@ -367,7 +367,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(me.name+ " upper" )
 		  
 		  for i as integer = 0 to me.upper_bound
-		    res.append_element(me.get_element_as_string(i).Uppercase)
+		    res.AddElement(me.get_element_as_string(i).Uppercase)
 		    
 		  next
 		  

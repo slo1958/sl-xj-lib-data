@@ -22,7 +22,7 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function average_non_zero(values() as double) As double
+		Function AverageNonZero(values() as double) As double
 		  var s As Double
 		  var n as integer
 		  

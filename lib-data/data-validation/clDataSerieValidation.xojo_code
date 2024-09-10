@@ -2,8 +2,8 @@
 Protected Class clDataSerieValidation
 	#tag Method, Flags = &h0
 		Sub AddError(the_row as integer, message as String)
-		  report_row_number.append_element(the_row)
-		  report_error_info.append_element(message)
+		  report_row_number.AddElement(the_row)
+		  report_error_info.AddElement(message)
 		  
 		End Sub
 	#tag EndMethod

@@ -329,13 +329,13 @@ End
 		  for row as integer = 0 to nbr_rows
 		    
 		    for i as integer = 0 to nbr_int_cols-1
-		      int_col_list(i).append_element(int_values(i))
+		      int_col_list(i).AddElement(int_values(i))
 		      
 		    next
 		    
 		    
 		    for i as integer = 0 to nbr_str_cols-1
-		      str_col_list(i).append_element(str_values(i))
+		      str_col_list(i).AddElement(str_values(i))
 		    next
 		    
 		  next

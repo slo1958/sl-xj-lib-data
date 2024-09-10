@@ -9,8 +9,8 @@ Inherits clLibDataExample
 		  
 		  returnValue.Add("- create a datatable")
 		  returnValue.Add("- calculate sales * 2  BFEORE sales is clipped")
-		  returnValue.Add("- apply clip_range 1000..2000 on the sales column")
-		  returnValue.Add("- created a new column using clipped_by_range 1100..1500 and multiply results by 2")
+		  returnValue.Add("- apply ClipByRange 1000..2000 on the sales column")
+		  returnValue.Add("- created a new column using ClippedByRange 1100..1500 and multiply results by 2")
 		  
 		  
 		  return returnValue
@@ -44,9 +44,9 @@ Inherits clLibDataExample
 		  
 		  call table0.AddColumn(col_sales *2 )
 		  
-		  call table0.clip_range("sales",1000, 2000)
+		  call table0.ClipByRange("sales",1000, 2000)
 		  
-		  call table0.AddColumn(col_sales.clipped_by_range(1100, 1500) * 2)
+		  call table0.AddColumn(col_sales.ClippedByRange(1100, 1500) * 2)
 		  
 		  var ret() as TableColumnReaderInterface
 		  ret.add(table0)

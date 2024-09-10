@@ -28,12 +28,12 @@ Inherits clLibDataExample
 		  var series() as clAbstractDataSerie = serie_array(c1, c2, c3, c4)
 		  
 		  for each cc as clAbstractDataSerie in series
-		    cc.append_element("aaa")
-		    cc.append_element(100)
-		    cc.append_element(119)
-		    cc.append_element(120)
-		    cc.append_element(nil)
-		    cc.append_element(0)
+		    cc.AddElement("aaa")
+		    cc.AddElement(100)
+		    cc.AddElement(119)
+		    cc.AddElement(120)
+		    cc.AddElement(nil)
+		    cc.AddElement(0)
 		    
 		  next
 		  

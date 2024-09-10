@@ -2,7 +2,7 @@
 Protected Class clDataTableValidation
 Implements TableColumnReaderInterface
 	#tag Method, Flags = &h0
-		Sub add_message(field_name as string, row_index as integer, message as string)
+		Sub AddMessage(field_name as string, row_index as integer, message as string)
 		  var r as new Dictionary
 		  
 		  r.value(field_name_output_column)=  field_name
@@ -30,10 +30,10 @@ Implements TableColumnReaderInterface
 		  
 		  
 		  for each column as clDataSerieValidation in valid_columns
-		    col_name.append_element(column.name)
-		    col_input.append_element(column.is_nullable)
-		    col_mandatory.append_element(column.is_required)
-		    col_type.append_element("generic")
+		    col_name.AddElement(column.name)
+		    col_input.AddElement(column.is_nullable)
+		    col_mandatory.AddElement(column.is_required)
+		    col_type.AddElement("generic")
 		    
 		  next
 		  
@@ -101,16 +101,16 @@ Implements TableColumnReaderInterface
 		    
 		    select case the_column_name
 		    case  field_name_input_column 
-		      output.append_element(column.name)
+		      output.AddElement(column.name)
 		      
 		    case field_nullable_input_column 
-		      output.append_element(column.is_nullable)
+		      output.AddElement(column.is_nullable)
 		      
 		    case  field_mandatory_input_column 
-		      output.append_element(column.is_required)
+		      output.AddElement(column.is_required)
 		      
 		    case field_type_input_column
-		      output.append_element("generic")
+		      output.AddElement("generic")
 		      
 		    case else
 		      
@@ -143,16 +143,16 @@ Implements TableColumnReaderInterface
 		    
 		    select case column_index
 		    case  0 
-		      output.append_element(column.name)
+		      output.AddElement(column.name)
 		      
 		    case 1 
-		      output.append_element(column.is_nullable)
+		      output.AddElement(column.is_nullable)
 		      
 		    case  2 
-		      output.append_element(column.is_required)
+		      output.AddElement(column.is_required)
 		      
 		    case 3
-		      output.append_element("generic")
+		      output.AddElement("generic")
 		      
 		    case else
 		      
@@ -225,7 +225,7 @@ Implements TableColumnReaderInterface
 		      tmp_data_columns.RemoveAt(tmp_data_columns.IndexOf(column.name))
 		      
 		    elseif column.is_required Then
-		      add_message(column.name, -1, "missing mandatory column ")
+		      AddMessage(column.name, -1, "missing mandatory column ")
 		      
 		    else
 		      
@@ -237,7 +237,7 @@ Implements TableColumnReaderInterface
 		  
 		  if not opt_allow_extra_columns and tmp_data_columns.Count >0 then
 		    for each column as string in tmp_data_columns
-		      add_message(column, -1, "unexpected extra column")
+		      AddMessage(column, -1, "unexpected extra column")
 		      
 		    next
 		    

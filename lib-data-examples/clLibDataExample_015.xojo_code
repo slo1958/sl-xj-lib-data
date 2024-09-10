@@ -29,11 +29,11 @@ Inherits clLibDataExample
 		  var c1 As New clDateDataSerie("ExpiryDate") 
 		  var c2 As New clDateDataSerie("CurrentDate") 
 		  
-		  c1.append_element("2023-06-01")
-		  c1.append_element("2022-08-12")
+		  c1.AddElement("2023-06-01")
+		  c1.AddElement("2022-08-12")
 		  
-		  c2.append_element("2021-06-01")
-		  c2.append_element("2020-08-01")
+		  c2.AddElement("2021-06-01")
+		  c2.AddElement("2020-08-01")
 		  
 		  var c3 as clIntegerDataSerie = c1 - c2
 		  

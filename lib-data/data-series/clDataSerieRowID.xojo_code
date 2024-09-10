@@ -3,9 +3,9 @@ Protected Class clDataSerieRowID
 Inherits clDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub append_element(the_item as Variant)
+		Sub AddElement(the_item as Variant)
 		  Self.last_index  = Self.last_index  +1
-		  Super.append_element(Str(Self.last_index ))
+		  Super.AddElement(Str(Self.last_index ))
 		  
 		End Sub
 	#tag EndMethod

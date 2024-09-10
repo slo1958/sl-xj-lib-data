@@ -26,20 +26,20 @@ Inherits clLibDataExample
 		  var c2 as new clNumberDataSerie("NumberDataSerie", array(123.45, 123.45, 123.45))
 		  var c3 as new clStringDataSerie("StringDataSerie")
 		  
-		  c0.append_element("Add 'aaa'")
-		  c1.append_element("aaa")
-		  c2.append_element("aaa")
-		  c3.append_element("aaa")
+		  c0.AddElement("Add 'aaa'")
+		  c1.AddElement("aaa")
+		  c2.AddElement("aaa")
+		  c3.AddElement("aaa")
 		  
-		  c0.append_element("Add 123.45")
-		  c1.append_element(123.45)
-		  c2.append_element(123.45)
-		  c3.append_element(123.45)
+		  c0.AddElement("Add 123.45")
+		  c1.AddElement(123.45)
+		  c2.AddElement(123.45)
+		  c3.AddElement(123.45)
 		  
-		  c0.append_element("Add nil")
-		  c1.append_element(nil)
-		  c2.append_element(nil)
-		  c3.append_element(nil)
+		  c0.AddElement("Add nil")
+		  c1.AddElement(nil)
+		  c2.AddElement(nil)
+		  c3.AddElement(nil)
 		  
 		  var ret_tables() as clDataTable
 		  
@@ -51,9 +51,9 @@ Inherits clLibDataExample
 		    
 		    for i as integer = 0 to c1.upper_bound
 		      
-		      c4.append_element(cc.get_element(i))
-		      c5.append_element(str(cc.element_is_defined(i)))
-		      c6.append_element(str(c2.get_element_as_number(i)))
+		      c4.AddElement(cc.get_element(i))
+		      c5.AddElement(str(cc.element_is_defined(i)))
+		      c6.AddElement(str(c2.get_element_as_number(i)))
 		      
 		    next
 		    

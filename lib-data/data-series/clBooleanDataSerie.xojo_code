@@ -3,7 +3,7 @@ Protected Class clBooleanDataSerie
 Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub append_element(the_item as Variant)
+		Sub AddElement(the_item as Variant)
 		  
 		  items.Append(the_item.BooleanValue)
 		End Sub
@@ -16,7 +16,7 @@ Inherits clAbstractDataSerie
 		  self.clone_info(tmp)
 		  
 		  For Each v As boolean In Self.items
-		    tmp.append_element(v)
+		    tmp.AddElement(v)
 		    
 		  Next
 		  
@@ -122,7 +122,7 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    res.append_element(n)
+		    res.AddElement(n)
 		    
 		  next
 		  
@@ -139,7 +139,7 @@ Inherits clAbstractDataSerie
 		  var res as new clBooleanDataSerie("not " + self.name)
 		  
 		  for i as integer = 0 to mx0
-		    res.append_element(not self.get_element_as_boolean(i))
+		    res.AddElement(not self.get_element_as_boolean(i))
 		    
 		  next
 		  
@@ -174,7 +174,7 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    res.append_element(n)
+		    res.AddElement(n)
 		    
 		  next
 		  
@@ -254,7 +254,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(self.name+" as string")
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element_as_string(i))
+		    res.AddElement(self.get_element_as_string(i))
 		    
 		  next
 		  

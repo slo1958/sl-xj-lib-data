@@ -51,9 +51,9 @@ Inherits clLibDataExample
 		  call table0.AddColumn(col_cloned_sales)
 		  
 		  col_cloned_sales.active_range_formatting("","")
-		  col_cloned_sales.add_formatting_range(0,999.99,"small")
-		  col_cloned_sales.add_formatting_range(1000,1999.99,"medium")
-		  col_cloned_sales.add_formatting_range(2000,2999.99,"big")
+		  col_cloned_sales.AddFormattingRange(0,999.99,"small")
+		  col_cloned_sales.AddFormattingRange(1000,1999.99,"medium")
+		  col_cloned_sales.AddFormattingRange(2000,2999.99,"big")
 		  
 		  
 		  call table0.AddColumn(new clBooleanDataSerie("is_france", table0.filter_with_function(AddressOf field_filter,"country","France")))

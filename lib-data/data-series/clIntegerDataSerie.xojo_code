@@ -3,29 +3,16 @@ Protected Class clIntegerDataSerie
 Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub append_element(the_item as Variant)
+		Sub AddElement(the_item as Variant)
 		  
 		  items.Append(the_item.IntegerValue)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clipped_by_range(low_value as variant, high_value as variant) As clIntegerDataSerie
-		  
-		  var new_col as clIntegerDataSerie = self.clone()
-		  
-		  new_col.rename("clip " + self.name)
-		  
-		  call new_col.clip_range(low_value, high_value)
-		  
-		  return new_col
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function clip_range(low_value as variant, high_value as variant) As integer
+		Function ClipByRange(low_value as variant, high_value as variant) As integer
+		  // Calling the overridden superclass method.
+		  Var returnValue as integer = Super.ClipByRange(low_value, high_value)
 		  var last_index as integer = self.row_count
 		  var count_changes as integer = 0
 		  
@@ -52,13 +39,28 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ClippedByRange(low_value as variant, high_value as variant) As clIntegerDataSerie
+		  
+		  var new_col as clIntegerDataSerie = self.clone()
+		  
+		  new_col.rename("clip " + self.name)
+		  
+		  call new_col.ClipByRange(low_value, high_value)
+		  
+		  return new_col
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function clone() As clIntegerDataSerie
 		  var tmp As New clIntegerDataSerie(Self.name)
 		  
 		  self.clone_info(tmp)
 		  
 		  For Each v As integer In Self.items
-		    tmp.append_element(v)
+		    tmp.AddElement(v)
 		    
 		  Next
 		  
@@ -188,7 +190,7 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    res.append_element(n)
+		    res.AddElement(n)
 		    
 		  next
 		  
@@ -203,7 +205,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+"+"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element(i) + right_value)
+		    res.AddElement(self.get_element(i) + right_value)
 		    
 		  next
 		  
@@ -238,7 +240,7 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    res.append_element(n)
+		    res.AddElement(n)
 		    
 		  next
 		  
@@ -253,7 +255,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+"*"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element(i) * right_value)
+		    res.AddElement(self.get_element(i) * right_value)
 		    
 		  next
 		  
@@ -288,7 +290,7 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    res.append_element(n)
+		    res.AddElement(n)
 		    
 		  next
 		  
@@ -303,7 +305,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+"-"+str(right_value))
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element(i) - right_value)
+		    res.AddElement(self.get_element(i) - right_value)
 		    
 		  next
 		  
@@ -369,7 +371,7 @@ Inherits clAbstractDataSerie
 		  var res as new clNumberDataSerie(self.name + " to double")
 		  
 		  for i as integer =0 to self.upper_bound
-		    res.append_element(self.get_element(i))
+		    res.AddElement(self.get_element(i))
 		    
 		  next
 		  
@@ -383,7 +385,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(self.name+" as string")
 		  
 		  for i as integer = 0 to self.upper_bound
-		    res.append_element(self.get_element_as_string(i))
+		    res.AddElement(self.get_element_as_string(i))
 		    
 		  next
 		  

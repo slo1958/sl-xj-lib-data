@@ -209,13 +209,13 @@ Implements TableColumnReaderInterface,Iterable
 		    var dst_tmp_column As  clAbstractDataSerie = Self.get_column(column_name)
 		    
 		    If dst_tmp_column <> Nil Then
-		      dst_tmp_column.append_serie(src_tmp_column)
+		      dst_tmp_column.AddSerie(src_tmp_column)
 		      
 		    elseif create_missing_columns then
 		      dst_tmp_column = Self.AddColumn(column_name)
 		      dst_tmp_column.set_length(length_before)
 		      
-		      dst_tmp_column.append_serie(src_tmp_column)
+		      dst_tmp_column.AddSerie(src_tmp_column)
 		      
 		    else
 		      AddError("append_row_from_table","Ignoring column " + column_name)
@@ -288,7 +288,7 @@ Implements TableColumnReaderInterface,Iterable
 		    End If
 		    
 		    if tmp_column <> nil then
-		      tmp_column.append_element(the_row.name)
+		      tmp_column.AddElement(the_row.name)
 		      
 		    end if
 		    
@@ -307,13 +307,13 @@ Implements TableColumnReaderInterface,Iterable
 		      
 		    Else
 		      var tmp_item As variant = the_row.get_cell(column)
-		      tmp_column.append_element(tmp_item)
+		      tmp_column.AddElement(tmp_item)
 		      
 		    End If
 		    
 		  Next
 		  
-		  Self.row_index.append_element("")
+		  Self.row_index.AddElement("")
 		  
 		  For Each column As clAbstractDataSerie In Self.columns
 		    column.set_length(tmp_row_count+1)
@@ -343,16 +343,16 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  for each column as clAbstractDataSerie in self.columns
 		    if the_values.HasKey(column.name) then
-		      column.append_element(the_values.value(column.name))
+		      column.AddElement(the_values.value(column.name))
 		      
 		    else
-		      column.append_element("")
+		      column.AddElement("")
 		      
 		    end if
 		    
 		  next
 		  
-		  Self.row_index.append_element("")
+		  Self.row_index.AddElement("")
 		  
 		End Sub
 	#tag EndMethod
@@ -390,16 +390,16 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  for each column as clAbstractDataSerie in self.columns
 		    if d.HasKey(column.name) then
-		      column.append_element(d.value(column.name))
+		      column.AddElement(d.value(column.name))
 		      
 		    else
-		      column.append_element("")
+		      column.AddElement("")
 		      
 		    end if
 		    
 		  next
 		  
-		  Self.row_index.append_element("")
+		  Self.row_index.AddElement("")
 		  
 		  
 		End Sub
@@ -418,16 +418,16 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  For i As Integer = 0 To columns.Ubound
 		    If i <= the_values.Ubound Then
-		      columns(i).append_element(the_values(i))
+		      columns(i).AddElement(the_values(i))
 		      
 		    Else
-		      columns(i).append_element("")
+		      columns(i).AddElement("")
 		      
 		    End If
 		    
 		  Next
 		  
-		  Self.row_index.append_element("")
+		  Self.row_index.AddElement("")
 		  
 		End Sub
 	#tag EndMethod
@@ -445,16 +445,16 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  For i As Integer = 0 To columns.Ubound
 		    If i <= the_values.Ubound Then
-		      columns(i).append_element(the_values(i))
+		      columns(i).AddElement(the_values(i))
 		      
 		    Else
-		      columns(i).append_element("")
+		      columns(i).AddElement("")
 		      
 		    End If
 		    
 		  Next
 		  
-		  Self.row_index.append_element("")
+		  Self.row_index.AddElement("")
 		  
 		End Sub
 	#tag EndMethod
@@ -656,111 +656,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clip_high(column as clAbstractDataSerie, high_value_column as clAbstractDataSerie) As integer
-		  
-		  if column = nil then return 0
-		  if high_value_column = nil then return 0
-		  
-		  var last_index as integer = column.row_count
-		  var count_changes as integer = 0
-		  
-		  for index as integer = 0 to last_index
-		    var tmp as variant = column.get_element(index)
-		    var high_value as Variant = high_value_column.get_element(index)
-		    
-		    if  tmp > high_value then
-		      column.set_element(index, high_value)
-		      count_changes = count_changes + 1
-		      
-		    end if
-		    
-		  next
-		  
-		  Return count_changes
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function clip_high(column_name as string, high_value_column_name as String) As integer
-		  
-		  var column as clAbstractDataSerie = self.get_column(column_name)
-		  var high_column as clAbstractDataSerie = self.get_column(high_value_column_name)
-		  
-		  if column = nil then return 0
-		  if high_column = nil then return 0
-		  
-		  return self.clip_high(column, high_column)
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function clip_high(column_name as string, high_value as variant) As integer
-		  
-		  var column as clAbstractDataSerie = self.get_column(column_name)
-		  
-		  if column = nil then return 0
-		  
-		  return column.clip_high(high_value)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function clip_low(column as clAbstractDataSerie, low_value_column as clAbstractDataSerie) As integer
-		  
-		  if column = nil then return 0
-		  if low_value_column = nil then return 0
-		  
-		  var last_index as integer = column.row_count
-		  var count_changes as integer = 0
-		  
-		  for index as integer = 0 to last_index
-		    var tmp as variant = column.get_element(index)
-		    var low_value as Variant = low_value_column.get_element(index)
-		    
-		    if  tmp < low_value then
-		      column.set_element(index, low_value)
-		      count_changes = count_changes + 1
-		      
-		    end if
-		    
-		  next
-		  
-		  Return count_changes
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function clip_low(column_name as string, low_value_column_name as String) As integer
-		  
-		  var column as clAbstractDataSerie = self.get_column(column_name)
-		  var low_column as clAbstractDataSerie = self.get_column(low_value_column_name)
-		  
-		  if column = nil then return 0
-		  if low_column = nil then return 0
-		  
-		  return self.clip_low(column, low_column)
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function clip_low(column_name as string, low_value as Variant) As integer
-		  
-		  var column as clAbstractDataSerie = self.get_column(column_name)
-		  
-		  if column = nil then return 0
-		  
-		  return column.clip_low(low_value)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function clip_range(column as clAbstractDataSerie, low_value_column as clAbstractDataSerie, high_value_column as clAbstractDataSerie) As integer
+		Function ClipByRange(column as clAbstractDataSerie, low_value_column as clAbstractDataSerie, high_value_column as clAbstractDataSerie) As integer
 		  
 		  if column = nil then return 0
 		  if low_value_column = nil then return 0
@@ -793,7 +689,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clip_range(column_name as string, low_value_column_name as string, high_value_column_name as String) As integer
+		Function ClipByRange(column_name as string, low_value_column_name as string, high_value_column_name as String) As integer
 		  
 		  var column as clAbstractDataSerie = self.get_column(column_name)
 		  var high_column as clAbstractDataSerie = self.get_column(high_value_column_name)
@@ -803,21 +699,125 @@ Implements TableColumnReaderInterface,Iterable
 		  if high_column = nil then return 0
 		  if low_column = nil then return 0
 		  
-		  return self.clip_range(column, low_column, high_column)
+		  return self.ClipByRange(column, low_column, high_column)
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clip_range(column_name as string, low_value as variant, high_value as variant) As integer
+		Function ClipByRange(column_name as string, low_value as variant, high_value as variant) As integer
 		  
 		  var column as clAbstractDataSerie = self.get_column(column_name)
 		  
 		  if column = nil then return 0
 		  
-		  return column.clip_range(low_value, high_value)
+		  return column.ClipByRange(low_value, high_value)
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ClipHighValues(column as clAbstractDataSerie, high_value_column as clAbstractDataSerie) As integer
+		  
+		  if column = nil then return 0
+		  if high_value_column = nil then return 0
+		  
+		  var last_index as integer = column.row_count
+		  var count_changes as integer = 0
+		  
+		  for index as integer = 0 to last_index
+		    var tmp as variant = column.get_element(index)
+		    var high_value as Variant = high_value_column.get_element(index)
+		    
+		    if  tmp > high_value then
+		      column.set_element(index, high_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ClipHighValues(column_name as string, high_value_column_name as String) As integer
+		  
+		  var column as clAbstractDataSerie = self.get_column(column_name)
+		  var high_column as clAbstractDataSerie = self.get_column(high_value_column_name)
+		  
+		  if column = nil then return 0
+		  if high_column = nil then return 0
+		  
+		  return self.ClipHighValues(column, high_column)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ClipHighValues(column_name as string, high_value as variant) As integer
+		  
+		  var column as clAbstractDataSerie = self.get_column(column_name)
+		  
+		  if column = nil then return 0
+		  
+		  return column.ClipHighValues(high_value)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ClipLowValues(column as clAbstractDataSerie, low_value_column as clAbstractDataSerie) As integer
+		  
+		  if column = nil then return 0
+		  if low_value_column = nil then return 0
+		  
+		  var last_index as integer = column.row_count
+		  var count_changes as integer = 0
+		  
+		  for index as integer = 0 to last_index
+		    var tmp as variant = column.get_element(index)
+		    var low_value as Variant = low_value_column.get_element(index)
+		    
+		    if  tmp < low_value then
+		      column.set_element(index, low_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ClipLowValues(column_name as string, low_value_column_name as String) As integer
+		  
+		  var column as clAbstractDataSerie = self.get_column(column_name)
+		  var low_column as clAbstractDataSerie = self.get_column(low_value_column_name)
+		  
+		  if column = nil then return 0
+		  if low_column = nil then return 0
+		  
+		  return self.ClipLowValues(column, low_column)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ClipLowValues(column_name as string, low_value as Variant) As integer
+		  
+		  var column as clAbstractDataSerie = self.get_column(column_name)
+		  
+		  if column = nil then return 0
+		  
+		  return column.ClipLowValues(low_value)
 		  
 		End Function
 	#tag EndMethod
@@ -976,7 +976,7 @@ Implements TableColumnReaderInterface,Iterable
 		      
 		    else
 		      var tmp_column as clAbstractDataSerie = allocator.Invoke(tmp_column_name,"")
-		      tmp_column.append_elements(v)
+		      tmp_column.AddElements(v)
 		      
 		      tmp_columns.Add(tmp_column)
 		      
@@ -1078,7 +1078,7 @@ Implements TableColumnReaderInterface,Iterable
 		    if tmp_row <> nil then
 		      
 		      for i as integer=0 to tmp_column_names.LastIndex
-		        columns(i).append_element(tmp_row(i))
+		        columns(i).AddElement(tmp_row(i))
 		        
 		      next 
 		      
@@ -1872,7 +1872,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    col_sum.add(columns(i).sum)
 		    col_average.Add(columns(i).average)
-		    col_average_nz.Add(columns(i).average_non_zero)
+		    col_average_nz.Add(columns(i).AverageNonZero)
 		    
 		    col_stdev.Add(columns(i).standard_deviation)
 		    col_stdev_nz.Add(columns(i).standard_deviation_non_zero)
@@ -1997,8 +1997,8 @@ Implements TableColumnReaderInterface,Iterable
 		  For idx_mea As Integer = 0 To input_measures.Ubound
 		    temp_measures.Append(New clDataSerie(input_measures(idx_mea).name))
 		    If Not has_grouping Then
-		      temp_measures(idx_mea).append_element(New clDataSerie("x"))
-		      output_row_count.append_element(0)
+		      temp_measures(idx_mea).AddElement(New clDataSerie("x"))
+		      output_row_count.AddElement(0)
 		    End If
 		    
 		  Next
@@ -2027,15 +2027,15 @@ Implements TableColumnReaderInterface,Iterable
 		        
 		      Else
 		        For idx_dim As Integer = 0 To input_dimensions.Ubound
-		          output_dimensions(idx_dim).append_element(tmp_key(idx_dim))
+		          output_dimensions(idx_dim).AddElement(tmp_key(idx_dim))
 		          
 		        Next
 		        idx_output = output_dimensions(0).row_count - 1
 		        
-		        output_row_count.append_element(0)
+		        output_row_count.AddElement(0)
 		        
 		        For idx_mea As Integer = 0 To input_measures.Ubound
-		          temp_measures(idx_mea).append_element(New clDataSerie("x"))
+		          temp_measures(idx_mea).AddElement(New clDataSerie("x"))
 		          
 		        Next
 		        
@@ -2052,7 +2052,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    For idx_mea As Integer = 0 To input_measures.Ubound
 		      var tmp_serie As clDataSerie = temp_measures(idx_mea).get_element_as_data_serie(idx_output)
-		      tmp_serie.append_element(input_measures(idx_mea).get_element(idx_row))
+		      tmp_serie.AddElement(input_measures(idx_mea).get_element(idx_row))
 		      
 		    Next
 		    
@@ -2070,7 +2070,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var tmp_serie As New clNumberDataSerie("sum_" + input_measures(idx_mea).name)
 		    
 		    For idx_item As Integer = 0 To temp_measures(idx_mea).row_count-1
-		      tmp_serie.append_element(temp_measures(idx_mea).get_element_as_data_serie(idx_item).sum)
+		      tmp_serie.AddElement(temp_measures(idx_mea).get_element_as_data_serie(idx_item).sum)
 		      
 		    Next
 		    
@@ -2172,16 +2172,16 @@ Implements TableColumnReaderInterface,Iterable
 		      for i as integer=0 to target_columns.LastIndex
 		        if target_columns(i) <> nil then
 		          if i <= tmp_row.LastIndex then
-		            target_columns(i).append_element(tmp_row(i))
+		            target_columns(i).AddElement(tmp_row(i))
 		            
 		          else
-		            target_columns(i).append_element(target_columns(i).get_default_value)
+		            target_columns(i).AddElement(target_columns(i).get_default_value)
 		            
 		          end if
 		        end if
 		      next
 		      
-		      if source_name_col <> nil then source_name_col.append_element(source_name)
+		      if source_name_col <> nil then source_name_col.AddElement(source_name)
 		      
 		    end if
 		    

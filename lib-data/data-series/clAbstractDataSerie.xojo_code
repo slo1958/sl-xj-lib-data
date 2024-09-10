@@ -2,23 +2,7 @@
 Protected Class clAbstractDataSerie
 Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
-		Sub AddMetaData(type as string, message as string)
-		  //  
-		  //  Add meta data
-		  //  
-		  //  Parameters
-		  // - type (string) the key for the meta data
-		  //  - message (string) the associated message
-		  //  
-		  //  Returns:
-		  //  
-		  
-		  meta_dict.AddMetaData(type, message)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Add_alias(alias as string)
+		Sub AddAlias(alias as string)
 		  //  
 		  //  Add an alias to a column. Record an error if the alias is matching the name of the column or if the name is already defined.
 		  //  
@@ -30,7 +14,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  
 		  if alias = name then
-		    self.add_error_message("Alias " + alias + " already used as name.")
+		    self.AddErrorMessage("Alias " + alias + " already used as name.")
 		    return 
 		    
 		  end if
@@ -41,29 +25,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    Return
 		  end if
 		  
-		  self.add_error_message("Alias " + alias + " already defined.")
+		  self.AddErrorMessage("Alias " + alias + " already defined.")
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub add_error_message(msg as string)
-		  //  
-		  //  Add an error message
-		  //  
-		  //  Parameters
-		  //  - error message (string) 
-		  //  
-		  //  Returns:
-		  //  
-		  
-		  
-		  self.last_error_message = msg
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub append_element(the_item as Variant)
+		Sub AddElement(the_item as Variant)
 		  //  
 		  //  Add an element to the data serie
 		  //  Implemented in type specific subclass
@@ -80,7 +48,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub append_elements(the_items() as Variant)
+		Sub AddElements(the_items() as Variant)
 		  //  
 		  //  Add elements to the data serie
 		  //  
@@ -91,7 +59,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  
 		  
 		  for each item as variant in the_items
-		    self.append_element(item)
+		    self.AddElement(item)
 		    
 		  next
 		  
@@ -100,7 +68,39 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub append_serie(the_serie as clAbstractDataSerie)
+		Sub AddErrorMessage(msg as string)
+		  //  
+		  //  Add an error message
+		  //  
+		  //  Parameters
+		  //  - error message (string) 
+		  //  
+		  //  Returns:
+		  //  
+		  
+		  
+		  self.last_error_message = msg
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AddMetaData(type as string, message as string)
+		  //  
+		  //  Add meta data
+		  //  
+		  //  Parameters
+		  // - type (string) the key for the meta data
+		  //  - message (string) the associated message
+		  //  
+		  //  Returns:
+		  //  
+		  
+		  meta_dict.AddMetaData(type, message)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AddSerie(the_serie as clAbstractDataSerie)
 		  //  
 		  //  Add all elements of a data serie to the current data serie
 		  //
@@ -113,7 +113,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  var tmp_source as clAbstractDataSerie = the_serie
 		  
 		  For row_num As Integer = 0 To tmp_source.row_count-1
-		    self.append_element(tmp_source.get_element(row_num))
+		    self.AddElement(tmp_source.get_element(row_num))
 		    
 		  Next
 		  
@@ -121,7 +121,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub append_to(target_data_serie as clAbstractDataSerie)
+		Sub AddToTarget(target_data_serie as clAbstractDataSerie)
 		  //  
 		  //  Add all elements of the current data serie to  another data serie
 		  //
@@ -133,7 +133,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  
 		  for index as Integer = 0 to self.upper_bound
-		    target_data_serie.append_element(self.get_element(index))
+		    target_data_serie.AddElement(self.get_element(index))
 		    
 		  next
 		  
@@ -141,7 +141,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function average() As double
+		Function Average() As double
 		  var limit As Integer = row_count - 1
 		  var i As Integer
 		  
@@ -166,7 +166,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function average_non_zero() As double
+		Function AverageNonZero() As double
 		  var limit As Integer = row_count - 1
 		  var i As Integer
 		  
@@ -193,7 +193,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub clear_aliases()
+		Sub ClearAliasses()
 		  //  
 		  //  Remove all aliases
 		  //
@@ -208,95 +208,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clipped_by_range(low_value as variant, high_value as variant) As clAbstractDataSerie
-		  //  
-		  //  Create a new data_serie containing elements of the current data serie clipped to range
-		  //
-		  //  Parameters
-		  //  - low_value (variant) lower bound
-		  // - high_value (variant) upper bound
-		  //  
-		  //  Returns:
-		  //  - the new data serie
+		Sub ClipByRange(low_value as variant, high_value as variant)
 		  
-		  var new_col as clAbstractDataSerie = self.clone()
-		  
-		  new_col.rename("clip " + self.name)
-		  
-		  call new_col.clip_range(low_value, high_value)
-		  
-		  return new_col
-		  
-		  
-		End Function
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clip_high(high_value as variant) As integer
-		  //  
-		  //  Clip the values of the current data serie against a high_value:
-		  //.    if higher than high_value, element is replaced by high_value
-		  //
-		  //  Parameters
-		  // - high_value (variant) upper bound
-		  //  
-		  //  Returns:
-		  //  - the number of values changed
-		  //
-		  
-		  
-		  var last_index as integer = self.row_count
-		  var count_changes as integer = 0
-		  
-		  for index as integer = 0 to last_index
-		    var tmp as variant = self.get_element(index)
-		    
-		    if  tmp > high_value then
-		      self.set_element(index, high_value)
-		      count_changes = count_changes + 1
-		      
-		    end if
-		    
-		  next
-		  
-		  Return count_changes
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function clip_low(low_value as Variant) As integer
-		  //  
-		  //  Clip the values of the current data serie against a low_value:
-		  //.    if lower than low_value, element is replaced by low_value
-		  //
-		  //  Parameters
-		  //  - low_value (variant) lower bound
-		  //  
-		  //  Returns:
-		  //  - the number of values changed
-		  //
-		  
-		  
-		  var last_index as integer = self.row_count
-		  var count_changes as integer = 0
-		  
-		  for index as integer = 0 to last_index
-		    var tmp as variant = self.get_element(index)
-		    
-		    if low_value > tmp then
-		      self.set_element(index, low_value)
-		      count_changes = count_changes + 1
-		      
-		    end if
-		    
-		  next
-		  
-		  Return count_changes
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function clip_range(low_value as variant, high_value as variant) As integer
+		Function ClipByRange(low_value as variant, high_value as variant) As integer
 		  //  
 		  //  Clip the values of the current data serie to a range: 
 		  //.    if lower than low_value, element is replaced by low_value
@@ -329,6 +247,94 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  next
 		  
 		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ClipHighValues(high_value as variant) As integer
+		  //  
+		  //  Clip the values of the current data serie against a high_value:
+		  //.    if higher than high_value, element is replaced by high_value
+		  //
+		  //  Parameters
+		  // - high_value (variant) upper bound
+		  //  
+		  //  Returns:
+		  //  - the number of values changed
+		  //
+		  
+		  
+		  var last_index as integer = self.row_count
+		  var count_changes as integer = 0
+		  
+		  for index as integer = 0 to last_index
+		    var tmp as variant = self.get_element(index)
+		    
+		    if  tmp > high_value then
+		      self.set_element(index, high_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ClipLowValues(low_value as Variant) As integer
+		  //  
+		  //  Clip the values of the current data serie against a low_value:
+		  //.    if lower than low_value, element is replaced by low_value
+		  //
+		  //  Parameters
+		  //  - low_value (variant) lower bound
+		  //  
+		  //  Returns:
+		  //  - the number of values changed
+		  //
+		  
+		  
+		  var last_index as integer = self.row_count
+		  var count_changes as integer = 0
+		  
+		  for index as integer = 0 to last_index
+		    var tmp as variant = self.get_element(index)
+		    
+		    if low_value > tmp then
+		      self.set_element(index, low_value)
+		      count_changes = count_changes + 1
+		      
+		    end if
+		    
+		  next
+		  
+		  Return count_changes
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ClippedByRange(low_value as variant, high_value as variant) As clAbstractDataSerie
+		  //  
+		  //  Create a new data_serie containing elements of the current data serie clipped to range
+		  //
+		  //  Parameters
+		  //  - low_value (variant) lower bound
+		  // - high_value (variant) upper bound
+		  //  
+		  //  Returns:
+		  //  - the new data serie
+		  
+		  var new_col as clAbstractDataSerie = self.clone()
+		  
+		  new_col.rename("clip " + self.name)
+		  
+		  new_col.ClipByRange(low_value, high_value)
+		  
+		  return new_col
+		  
+		  
 		End Function
 	#tag EndMethod
 
@@ -385,7 +391,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  physical_table_link = Nil
 		  
 		  For i As Integer = 0 To the_values.Ubound
-		    self.append_element(the_values(i))
+		    self.AddElement(the_values(i))
 		    
 		  Next
 		  
@@ -406,7 +412,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    var tmp() as variant = make_variant_array(the_values(0))
 		    
 		    For i As Integer = 0 To tmp.Ubound
-		      self.append_element(tmp(i))
+		      self.AddElement(tmp(i))
 		      
 		    Next
 		    
@@ -416,7 +422,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  
 		  For i As Integer = 0 To the_values.Ubound
-		    self.append_element(the_values(i))
+		    self.AddElement(the_values(i))
 		    
 		  Next
 		  
@@ -443,7 +449,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  target_data_serie.AddMetaData("source", self.name)
 		  
 		  for index as Integer = 0 to self.upper_bound
-		    target_data_serie.append_element(self.get_element(index))
+		    target_data_serie.AddElement(self.get_element(index))
 		    
 		  next
 		  
@@ -659,7 +665,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_v = Nil
-		    self.add_error_message("Cannot convert element "+Str(the_element_index) + " to string.")
+		    self.AddErrorMessage("Cannot convert element "+Str(the_element_index) + " to string.")
 		    
 		  End Try
 		  
@@ -691,7 +697,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_d = 0
-		    self.add_error_message( "Cannot convert element "+Str(the_element_index) + " to integer.")
+		    self.AddErrorMessage( "Cannot convert element "+Str(the_element_index) + " to integer.")
 		    
 		  End Try
 		  
@@ -725,7 +731,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_d = 0
-		    self.add_error_message( "Cannot convert element "+Str(the_element_index) + " to number.")
+		    self.AddErrorMessage( "Cannot convert element "+Str(the_element_index) + " to number.")
 		    
 		  End Try
 		  
@@ -757,7 +763,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_s = ""
-		    self.add_error_message( "Cannot convert element "+Str(the_element_index) + " to string.")
+		    self.AddErrorMessage( "Cannot convert element "+Str(the_element_index) + " to string.")
 		    
 		  End Try
 		  

@@ -60,7 +60,7 @@ Protected Class clGrouper
 		    if d.keys.Count = 0 then // reached the end
 		      
 		      for col as integer = 0 to output_cols.LastIndex
-		        output_cols(col).append_element(values(col))
+		        output_cols(col).AddElement(values(col))
 		        
 		      next
 		      

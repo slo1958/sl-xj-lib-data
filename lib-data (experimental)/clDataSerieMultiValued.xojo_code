@@ -2,7 +2,7 @@
 Protected Class clDataSerieMultiValued
 Inherits clDataSerie
 	#tag Method, Flags = &h0
-		Sub append_element(the_item as Variant)
+		Sub AddElement(the_item as Variant)
 		  
 		End Sub
 	#tag EndMethod

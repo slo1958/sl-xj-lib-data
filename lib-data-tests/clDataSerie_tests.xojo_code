@@ -114,8 +114,8 @@ Protected Module clDataSerie_tests
 		  
 		  test = New clDataSerie("test")
 		  
-		  test.append_element("hello")
-		  test.append_element("world")
+		  test.AddElement("hello")
+		  test.AddElement("world")
 		  
 		  call check_value(log,"row count", test.row_count, 2)
 		  
@@ -164,18 +164,18 @@ Protected Module clDataSerie_tests
 		  
 		  var src As New clDataSerie("premier") 
 		  
-		  src.append_element("aaa1")
-		  src.append_element("bb1")
-		  src.append_element("cccc1")
-		  src.append_element("aaa2")
-		  src.append_element("bb2")
-		  src.append_element("cccc2")
-		  src.append_element("aaa3")
-		  src.append_element("bb3")
-		  src.append_element("cccc3")
-		  src.append_element("aaa4")
-		  src.append_element("bb4")
-		  src.append_element("cccc4")
+		  src.AddElement("aaa1")
+		  src.AddElement("bb1")
+		  src.AddElement("cccc1")
+		  src.AddElement("aaa2")
+		  src.AddElement("bb2")
+		  src.AddElement("cccc2")
+		  src.AddElement("aaa3")
+		  src.AddElement("bb3")
+		  src.AddElement("cccc3")
+		  src.AddElement("aaa4")
+		  src.AddElement("bb4")
+		  src.AddElement("cccc4")
 		  
 		  var f1() As variant
 		  var f2() As variant
@@ -231,12 +231,12 @@ Protected Module clDataSerie_tests
 		  var c1 As New clDataSerie("premier") 
 		  var c2 As New clDataSerie("second") 
 		  
-		  c1.append_element("123.4")
-		  c1.append_element(140.5)
+		  c1.AddElement("123.4")
+		  c1.AddElement(140.5)
 		  
-		  c2.append_element("123.4")
-		  c2.append_element(140.5)
-		  c2.append_element("yoyo")
+		  c2.AddElement("123.4")
+		  c2.AddElement(140.5)
+		  c2.AddElement("yoyo")
 		  
 		  var d1 As Double
 		  var d2 As Double
@@ -262,18 +262,18 @@ Protected Module clDataSerie_tests
 		  var c3 As New clDataSerie("parent")
 		  var c4 As New clDataSerie("grand-parent")
 		  
-		  c1.append_element("123.4")
-		  c1.append_element(140.5)
+		  c1.AddElement("123.4")
+		  c1.AddElement(140.5)
 		  
-		  c2.append_element("123.4")
-		  c2.append_element(140.5)
-		  c2.append_element("yoyo")
+		  c2.AddElement("123.4")
+		  c2.AddElement(140.5)
+		  c2.AddElement("yoyo")
 		  
 		  
-		  c3.append_element(c1)
-		  c3.append_element(c2)
+		  c3.AddElement(c1)
+		  c3.AddElement(c2)
 		  
-		  c4.append_element(c3)
+		  c4.AddElement(c3)
 		  
 		  var d3 As Double = c3.sum
 		  var d4 As Double = c4.sum
@@ -311,21 +311,21 @@ Protected Module clDataSerie_tests
 		  var c1 As New clCompressedDataSerie("CompSerie") 
 		  var c2 As New clDataSerie("BaseSerie") 
 		  
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("cccc")
+		  c1.AddElement("aaa")
+		  c1.AddElement("bb")
+		  c1.AddElement("cccc")
+		  c1.AddElement("aaa")
+		  c1.AddElement("bb")
+		  c1.AddElement("cccc")
+		  c1.AddElement("aaa")
+		  c1.AddElement("bb")
+		  c1.AddElement("cccc")
+		  c1.AddElement("aaa")
+		  c1.AddElement("bb")
+		  c1.AddElement("cccc")
+		  c1.AddElement("bb")
+		  c1.AddElement("cccc")
+		  c1.AddElement("cccc")
 		  
 		  c1.copy_to(c2)
 		  
@@ -372,8 +372,8 @@ Protected Module clDataSerie_tests
 		  
 		  test = New clNumberDataSerie("test")
 		  
-		  test.append_element(125)
-		  test.append_element(142)
+		  test.AddElement(125)
+		  test.AddElement(142)
 		  
 		  call check_value(log,"row count", test.row_count, 2) 
 		  
@@ -392,8 +392,8 @@ Protected Module clDataSerie_tests
 		  
 		  test = New clNumberDataSerie("test")
 		  
-		  test.append_element("125")
-		  test.append_element(142)
+		  test.AddElement("125")
+		  test.AddElement(142)
 		  
 		  call check_value(log,"row count", test.row_count, 2) 
 		  
@@ -412,8 +412,8 @@ Protected Module clDataSerie_tests
 		  
 		  test = New clNumberDataSerie("test")
 		  
-		  test.append_element("abc")
-		  test.append_element(142)
+		  test.AddElement("abc")
+		  test.AddElement(142)
 		  
 		  call check_value(log,"row count", test.row_count, 2)
 		  
@@ -433,25 +433,25 @@ Protected Module clDataSerie_tests
 		  
 		  test1 = New clNumberDataSerie("test1")
 		  
-		  test1.append_element(124)
-		  test1.append_element(456)
+		  test1.AddElement(124)
+		  test1.AddElement(456)
 		  
 		  test2 = new clNumberDataSerie("test2")
-		  test2.append_element(12)
-		  test2.append_element(24)
-		  test2.append_element(10)
+		  test2.AddElement(12)
+		  test2.AddElement(24)
+		  test2.AddElement(10)
 		  
 		  test3 = new clNumberDataSerie("test3")
-		  test3.append_element(100)
-		  test3.append_element(300)
-		  test3.append_element(6)
+		  test3.AddElement(100)
+		  test3.AddElement(300)
+		  test3.AddElement(6)
 		  
 		  test0 = (test1 + test2 - test3 + 1000) * 0.5
 		  
 		  expected = new clNumberDataSerie("expected")
-		  expected.append_element(518)
-		  expected.append_element(590)
-		  expected.append_element(502)
+		  expected.AddElement(518)
+		  expected.AddElement(590)
+		  expected.AddElement(502)
 		  
 		  delta = test0 - expected
 		  
@@ -476,23 +476,23 @@ Protected Module clDataSerie_tests
 		  var c3 as new clCompressedDataSerie("troisieme")
 		  
 		  for i as integer = 0 to 10
-		    c1.append_element("aaa")
-		    c1.append_element("bb")
-		    c1.append_element("cccc")
-		    c1.append_element("ddddd")
-		    c1.append_element("ee")
+		    c1.AddElement("aaa")
+		    c1.AddElement("bb")
+		    c1.AddElement("cccc")
+		    c1.AddElement("ddddd")
+		    c1.AddElement("ee")
 		    
-		    c2.append_element(345)
-		    c2.append_element(5678)
-		    c2.append_element(12756)
-		    c2.append_element(3345)
-		    c2.append_element(564378)
+		    c2.AddElement(345)
+		    c2.AddElement(5678)
+		    c2.AddElement(12756)
+		    c2.AddElement(3345)
+		    c2.AddElement(564378)
 		    
-		    c3.append_element("aaa")
-		    c3.append_element("bb")
-		    c3.append_element("cccc")
-		    c3.append_element("ddddd")
-		    c3.append_element("ee")
+		    c3.AddElement("aaa")
+		    c3.AddElement("bb")
+		    c3.AddElement("cccc")
+		    c3.AddElement("ddddd")
+		    c3.AddElement("ee")
 		    
 		  next
 		  
@@ -517,21 +517,21 @@ Protected Module clDataSerie_tests
 		  var c1 As New clCompressedDataSerie("CompSerie") 
 		  var c2 As New clDataSerie("BaseSerie") 
 		  
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("aaa")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("bb")
-		  c1.append_element("cccc")
-		  c1.append_element("cccc")
+		  c1.AddElement("aaa")
+		  c1.AddElement("bb")
+		  c1.AddElement("cccc")
+		  c1.AddElement("aaa")
+		  c1.AddElement("bb")
+		  c1.AddElement("cccc")
+		  c1.AddElement("aaa")
+		  c1.AddElement("bb")
+		  c1.AddElement("cccc")
+		  c1.AddElement("aaa")
+		  c1.AddElement("bb")
+		  c1.AddElement("cccc")
+		  c1.AddElement("bb")
+		  c1.AddElement("cccc")
+		  c1.AddElement("cccc")
 		  
 		  c1.copy_to(c2)
 		  
@@ -576,11 +576,11 @@ Protected Module clDataSerie_tests
 		  var c1 As New clDateDataSerie("premier") 
 		  var c2 As New clDateDataSerie("second") 
 		  
-		  c1.append_element("2023-06-01")
-		  c1.append_element("2022-08-12")
+		  c1.AddElement("2023-06-01")
+		  c1.AddElement("2022-08-12")
 		  
-		  c2.append_element("2021-06-01")
-		  c2.append_element("2020-08-01")
+		  c2.AddElement("2021-06-01")
+		  c2.AddElement("2020-08-01")
 		  
 		  var c3 as clIntegerDataSerie = c1 - c2
 		  

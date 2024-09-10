@@ -25,7 +25,7 @@ Protected Module DataSerie_IO
 		    var tmp_source_line As String = text_file.ReadLine
 		    
 		    If got_header Then
-		      theDataSerie.append_element(tmp_source_line)
+		      theDataSerie.AddElement(tmp_source_line)
 		      
 		    Else
 		      theDataSerie.rename(tmp_source_line)

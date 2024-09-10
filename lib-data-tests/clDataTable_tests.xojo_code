@@ -380,15 +380,15 @@ Protected Module clDataTable_tests
 		  var c1 As New clDataSerie("premier")
 		  var c2 As New clDataSerie("second")
 		  
-		  c1.append_element("aaa")
-		  c1.append_element("bbb")
-		  c1.append_element("ccc")
+		  c1.AddElement("aaa")
+		  c1.AddElement("bbb")
+		  c1.AddElement("ccc")
 		  
 		  
-		  c2.append_element(12)
-		  c2.append_element(34)
-		  c2.append_element(56)
-		  c2.append_element(78)
+		  c2.AddElement(12)
+		  c2.AddElement(34)
+		  c2.AddElement(56)
+		  c2.AddElement(78)
 		  
 		  var t1 As New clDataTable("mytable1", serie_array(c1, c2))
 		  
@@ -745,14 +745,14 @@ Protected Module clDataTable_tests
 		  
 		  var filter_country as new clBooleanDataSerie("mask_country")
 		  for each cell as string in table0.get_column("Country")
-		    filter_country.append_element(cell = "Belgique")
+		    filter_country.AddElement(cell = "Belgique")
 		    
 		  next
 		  call table0.AddColumn(filter_country)
 		  
 		  var filter_product as new clBooleanDataSerie("mask_product")
 		  for each cell as string in table0.get_column("product")
-		    filter_product.append_element(cell = "BB")
+		    filter_product.AddElement(cell = "BB")
 		    
 		  next
 		  call table0.AddColumn(not filter_product)
@@ -800,13 +800,13 @@ Protected Module clDataTable_tests
 		  
 		  var filter_country as new clBooleanDataSerie("mask_country")
 		  for each cell as string in table0.get_column("Country")
-		    filter_country.append_element(cell = "Belgique")
+		    filter_country.AddElement(cell = "Belgique")
 		    
 		  next 
 		  
 		  var filter_product as new clBooleanDataSerie("mask_product")
 		  for each cell as string in table0.get_column("product")
-		    filter_product.append_element(cell = "BB")
+		    filter_product.AddElement(cell = "BB")
 		    
 		  next 
 		  
@@ -925,9 +925,9 @@ Protected Module clDataTable_tests
 		  
 		  call table0.AddColumn(col_sales *2 )
 		  
-		  var nb as integer = table0.clip_range("sales",1000, 2000)
+		  var nb as integer = table0.ClipByRange("sales",1000, 2000)
 		  
-		  call table0.AddColumn(col_sales.clipped_by_range(1100, 1500) * 2)
+		  call table0.AddColumn(col_sales.ClippedByRange(1100, 1500) * 2)
 		  
 		  // create expected table
 		  var col1 as clDataSerie = col_country.clone()
@@ -1054,12 +1054,12 @@ Protected Module clDataTable_tests
 		  var series() as clAbstractDataSerie = serie_array(c1, c2, c3, c4)
 		  
 		  for each cc as clAbstractDataSerie in series
-		    cc.append_element("aaa")
-		    cc.append_element(100)
-		    cc.append_element(119)
-		    cc.append_element(120)
-		    cc.append_element(nil)
-		    cc.append_element(0)
+		    cc.AddElement("aaa")
+		    cc.AddElement(100)
+		    cc.AddElement(119)
+		    cc.AddElement(120)
+		    cc.AddElement(nil)
+		    cc.AddElement(0)
 		    
 		  next
 		  
