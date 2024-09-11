@@ -5,7 +5,7 @@ Data handling classes
 - Description of source tree
 
 
-About Xojo version: tested with Xojo 2023 on Mac.
+About Xojo version: tested with Xojo 2024 release 1.1 on Mac.
 
 
 
@@ -49,7 +49,7 @@ Depending on your version of Xojp, you may need use the helper function make\_va
 
 ```xojo
 
-dim my_serie As New clDataSerie("some_values", make_variant_array("aaa",123,True))
+dim my_serie As New clDataSerie("some_values", VariantArray("aaa",123,True))
 
  
 ```
@@ -154,7 +154,7 @@ A shorter way to do it:
 
 ```xojo
 
-Dim my_table As New clDataTable("mytable", serie_array( _
+Dim my_table As New clDataTable("mytable", SerieArray( _
 New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -305,7 +305,7 @@ Assuming the table table_customer contains sales by customer, together with the 
 
 
 ```xojo
-Dim table_country As clDataTable = table_customer.groupby(string_array("Country"), string_array("Sales"), string_array(""))
+Dim table_country As clDataTable = table_customer.groupby(StringArray("Country"), StringArray("Sales"), StringArray(""))
 ```
 
 ### filtering
@@ -411,11 +411,11 @@ next
 
 call table0.AddColumn(not filter_product)
 
-table0.index_visible_when_iterate(True)
+table0.IndexVisibleWhenIterating(True)
 
 
 ' use the name of the boolean serie as parameter to 'filtered_on' 
-for each row as clDataRow in table0.filtered_on("mask_country")
+for each row as clDataRow in table0.FilteredOn(“mask_country")
   … do something
 next
 
@@ -444,9 +444,9 @@ next
 
 table0.index_visible_when_iterate(True)
 
-' directly use the  boolean serie as parameter to 'filtered_on'; and, or and not operator are overloaded for clBooleanDataSerie
+' directly use the  boolean serie as parameter to ‘FilteredOn; and, or and not operator are overloaded for clBooleanDataSerie
 
-for each row as clDataRow in table0.filtered_on(filter_country and filter_product)
+for each row as clDataRow in table0.FilteredOn(filter_country and filter_product)
  … do something
 next
 
@@ -460,7 +460,7 @@ A virtual data table is returned by the data table method select_columns()
 
 ```xojo
 
-my_virtual_table = my_table.select_columns(array("customer","product"))
+my_virtual_table = my_table.SelectColumns(array("customer","product"))
 
 
 ```
@@ -486,24 +486,24 @@ Creation of the test dataset
 dim col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
 dim col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
 
-dim table1 as new clDataTable("source table", serie_array(col_source, col_sales))
+dim table1 as new clDataTable("source table", SerieArray(col_source, col_sales))
 
 ```
 
 Creation of a new table, with split columns
 
 ```xojo
-dim table2 as new clDataTable("prepared", serie_array( _
+dim table2 as new clDataTable("prepared", SerieArray( _
 col_source, _
-col_source.text_before("-").rename("country"), _
-col_source.text_after("-").rename("city"), _
+col_source.TextBefore(“-“).Rename("country"), _
+col_source.TextAfter(“-“).Rename("city"), _
 col_sales),_
  true)
 ```
 Getting the total sales per country
 
 ```xojo
-Dim table4 As clDataTable = table2.groupby(string_array("country"), string_array("sales"), string_array(""))
+Dim table4 As clDataTable = table2.GroupBy(StringArray("country"), StringArray("sales"), StringArray(""))
 ```
 
 
@@ -523,11 +523,11 @@ dim dtp as new clDataPool
 '
 '.. create table as a clDataTable, with name T1
 '
-dtp.set_table(table)
+dtp.SetTable(table)
 
 '
 '
-dtp.set_table(dtp.get_table("T1").clone(), "res")
+dtp.SetTable(dtp.get_table("T1").clone(), "res")
 '
 ' ...
 '
