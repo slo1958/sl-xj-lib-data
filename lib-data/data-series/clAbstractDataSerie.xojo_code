@@ -451,7 +451,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function count() As double
+		Function Count() As double
 		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  

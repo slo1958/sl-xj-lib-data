@@ -1978,6 +1978,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Prepare temporary space for aggregated measures
 		  //  
 		  var temp_measures() As clDataSerie
+		  
 		  For idx_mea As Integer = 0 To input_measures.LastIndex
 		    temp_measures.Append(New clDataSerie(input_measures(idx_mea).name))
 		    If Not has_grouping Then
@@ -2440,13 +2441,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function unique(column_names() as string) As clDataTable
+		Function Unique(column_names() as string) As clDataTable
 		  
 		  var selected_columns() as clAbstractDataSerie = self.GetColumns(column_names)
 		  
 		  var grp as new clGrouper(selected_columns)
 		  
-		  var res() as clAbstractDataSerie = grp.flatten()
+		  var res() as clAbstractDataSerie = grp.Flattened()
 		  
 		  return new clDataTable("unique", res)
 		  

@@ -48,34 +48,19 @@ Protected Class clGrouper
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub flat1(labels() as string, values() as variant, depth as integer, level_dict as Dictionary, output_cols() as clAbstractDataSerie)
-		  labels(depth) = dimension_column_names(depth)
+		Function Flattened() As clAbstractDataSerie()
+		  //  
+		  //  Flatten the tree, creating one row for each unique combination of keys
+		  //  Used to get unique values from the columns passed to the constructor
+		  //  
+		  //  Parameters:
+		  //  - (none)
+		  //  
+		  //  Returns:
+		  //  - array of dataseries
+		  //  
 		  
-		  for each k as variant in level_dict.keys
-		    
-		    values(depth) = k
-		    
-		    var d as Dictionary = Dictionary(level_dict.value(k))
-		    
-		    if d.keys.Count = 0 then // reached the end
-		      
-		      for col as integer = 0 to output_cols.LastIndex
-		        output_cols(col).AddElement(values(col))
-		        
-		      next
-		      
-		      
-		    else
-		      flat1(labels, values, depth+1, d, output_cols)
-		      
-		    end if
-		    
-		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function flatten() As clAbstractDataSerie()
+		  
 		  if top_dictionary = nil then return nil
 		  
 		  
@@ -99,12 +84,49 @@ Protected Class clGrouper
 		    
 		  Next
 		  
-		  flat1(tmp_label, tmp_value,  0, top_dictionary, output_dimensions)
+		  FlattenNextDimension(tmp_label, tmp_value,  0, top_dictionary, output_dimensions)
 		  
 		  return output_dimensions
 		  
 		End Function
 	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub FlattenNextDimension(labels() as string, ColumnLatestValue() as variant, depth as integer, level_dict as Dictionary, output_cols() as clAbstractDataSerie)
+		  labels(depth) = dimension_column_names(depth)
+		  
+		  for each k as variant in level_dict.keys
+		    
+		    ColumnLatestValue(depth) = k
+		    
+		    var d as Dictionary = Dictionary(level_dict.value(k))
+		    
+		    if d.keys.Count = 0 then // reached the end
+		      
+		      for col as integer = 0 to output_cols.LastIndex
+		        output_cols(col).AddElement(ColumnLatestValue(col))
+		        
+		      next
+		      
+		      
+		    else
+		      FlattenNextDimension(labels, ColumnLatestValue, depth+1, d, output_cols)
+		      
+		    end if
+		    
+		  next
+		End Sub
+	#tag EndMethod
+
+
+	#tag Note, Name = Description
+		The Grouper constructor creates a tree of dictionaries with the values of the selected dimensions (columns) as keys
+		
+		The tree is then flattened to obtain the combination of unique values
+		
+		Grouper can be extended to perform other calculations 
+		
+	#tag EndNote
 
 
 	#tag Property, Flags = &h0
