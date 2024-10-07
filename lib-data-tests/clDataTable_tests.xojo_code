@@ -114,6 +114,7 @@ Protected Module clDataTable_tests
 		  test_024(logwriter)
 		  test_025(logwriter)
 		  test_026(logwriter)
+		  test_027(logwriter)
 		  
 		  
 		  logwriter.end_exec(CurrentMethodName)
@@ -151,9 +152,9 @@ Protected Module clDataTable_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var rtst As clDataRow
-		  
 		  var my_table As New clDataTable("T1")
+		  
+		  var rtst As clDataRow
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",1234)
@@ -1342,6 +1343,32 @@ Protected Module clDataTable_tests
 		  
 		  call check_table(log, "T2a", texpected, my_table_1)
 		  call check_table(log, "T2b", texpected, my_table_2)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_027(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var my_table As New clDataTable("T1", array("aaa", "bbb", "ccc","ddd"))
+		  
+		  my_table.AddRow(new Dictionary("aaa":1234, "bbb": "abcd", "ccc":123.456))
+		  
+		  my_table.AddRow(new Dictionary("aaa":1235, "bbb": "abce", "ddd":987.654)) //, "eee":"to_ignore"))
+		  
+		  var col1 as new clDataSerie("aaa", 1234, 1235)
+		  var col2 as new clDataSerie("bbb", "abcd", "abce")
+		  var col3 as new clDataSerie("ccc", 123.456, nil)
+		  var col4 as new clDataSerie("ddd", nil, 987.654)
+		  
+		  
+		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
+		  
+		  call check_table(log, "T1", texpected, my_table)
 		  
 		  log.end_exec(CurrentMethodName)
 		  

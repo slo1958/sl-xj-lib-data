@@ -346,7 +346,7 @@ Implements TableColumnReaderInterface,Iterable
 		      column.AddElement(the_values.value(column.name))
 		      
 		    else
-		      column.AddElement("")
+		      column.AddElement(column.GetDefaultValue())
 		      
 		    end if
 		    
@@ -393,7 +393,7 @@ Implements TableColumnReaderInterface,Iterable
 		      column.AddElement(d.value(column.name))
 		      
 		    else
-		      column.AddElement("")
+		      column.AddElement(column.GetDefaultValue())
 		      
 		    end if
 		    
@@ -421,7 +421,7 @@ Implements TableColumnReaderInterface,Iterable
 		      columns(i).AddElement(the_values(i))
 		      
 		    Else
-		      columns(i).AddElement("")
+		      columns(i).AddElement(columns(i).GetDefaultValue())
 		      
 		    End If
 		    
@@ -448,7 +448,7 @@ Implements TableColumnReaderInterface,Iterable
 		      columns(i).AddElement(the_values(i))
 		      
 		    Else
-		      columns(i).AddElement("")
+		      columns(i).AddElement(columns(i).GetDefaultValue())
 		      
 		    End If
 		    
