@@ -225,7 +225,7 @@ Protected Module clDataTable_tests
 		  
 		  my_table2.AddRow(rtst)
 		  
-		  my_table1.AddColumns(my_table2)
+		  my_table1.AddTableData(my_table2)
 		  
 		  var my_table3 As clDataTable = my_table1.SelectColumns(Array("aaa","zccc"))
 		  
@@ -538,8 +538,8 @@ Protected Module clDataTable_tests
 		  var my_table3 as clDataTable = my_table1.Clone()
 		  var my_table4 as clDataTable = my_table1.Clone()
 		  
-		  my_table3.AddColumns(my_table2, true)
-		  my_table4.AddColumns(my_table2, false)
+		  my_table3.AddTableData(my_table2, true)
+		  my_table4.AddTableData(my_table2, false)
 		  
 		  var col1 as new clDataSerie("aaa", 1000, 2000, 3000, 4000)
 		  var col2 as new clDataSerie("bbb","abcd","abcd","abcd","abcd")
@@ -1555,7 +1555,7 @@ Protected Module clDataTable_tests
 		  
 		  // create expected ds
 		  var my_table7 as clDataTable = my_table5.clone
-		  my_table7.AddColumns(my_table6)
+		  my_table7.AddTableData(my_table6)
 		  
 		  
 		  // add rows from test3 to test2
@@ -1665,7 +1665,7 @@ Protected Module clDataTable_tests
 		  
 		  // create expected ds
 		  var my_table7 as clDataTable = my_table5.clone
-		  my_table7.AddColumns(my_table6)
+		  my_table7.AddTableData(my_table6)
 		  
 		  
 		  // add rows from test3 to test2

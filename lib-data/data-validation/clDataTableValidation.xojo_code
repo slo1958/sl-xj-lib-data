@@ -220,7 +220,7 @@ Implements TableColumnReaderInterface
 		      var tmp_table as new clDataTable("temp", tmp)
 		      call tmp_table.AddColumn(field_name_output_column, column.name)
 		      
-		      self.results_table.AddColumns(tmp_table)
+		      self.results_table.AddTableData(tmp_table)
 		      
 		      tmp_data_columns.RemoveAt(tmp_data_columns.IndexOf(column.name))
 		      

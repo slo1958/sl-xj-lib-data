@@ -117,7 +117,7 @@ Inherits clLibDataExample
 		  
 		  // create expected ds
 		  var my_table7 as clDataTable = my_table5.clone
-		  my_table7.AddColumns(my_table6)
+		  my_table7.AddTableData(my_table6)
 		  
 		  
 		  // add rows from test3 to test2

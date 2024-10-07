@@ -220,11 +220,15 @@ mytable.AddRow(Array("France","Marseille",1200))
 mytable.AddRow(Array("Belgique","Bruxelles",1300))
 
 ```
+Note that the constructor of the clDataTable receives the list of columns to create, since adding a row from a dictionary will only update existing columns.
+
 
 #### using clDataRow
 This option is slower, but safer.
 
 ```xojo
+
+var mytable As New clDataTable("T1")
 
 call mytable.AddColumn(new clDataSerie("name"))
 call mytable.AddColumn(new clNumberDataSerie("quantity"))
@@ -245,7 +249,19 @@ mytable.AddRow(temp_row)
 
 ```
 
+You can also pass a dictionary:
 
+```xojo
+var mytable As New clDataTable("T1")
+
+call mytable.AddColumn(new clDataSerie("name"))
+call mytable.AddColumn(new clNumberDataSerie("quantity"))
+call mytable.AddColumn(new clNumberDataSerie("unit_price"))
+
+mytable.AddRow(new Dictionary("name": "alpha", "quantity":50, "unit_price": 6))
+mytable.AddRow(new Dictionary("name": "alpha", "quantity":20, "unit_price": 8))
+
+```
 
 ### Load a data table from file
 
@@ -270,9 +286,9 @@ Assuming mytable1 contains 'name' and 'first-name', mytable2 contains 'name' and
 
 ```xojo
 
-mytable1.AddColumns(mytable2, true)
+mytable1.AddTableData(mytable2, true)
 
-mytable1.AddColumns(mytable3, false)
+mytable1.AddTableData(mytable3, false)
 
 ```
 
@@ -284,7 +300,7 @@ After those two calls: mytable1 contains all the rows from the three tables. The
 ```xojo
 for each row as clDataRow in mytable
   for each cell as string in row
-    system.DebugLog("field " + cell + "value " + row.get_cell(cell))
+    system.DebugLog("field " + cell + "value " + row.SetCell(cell))
     
   next
   
@@ -624,3 +640,4 @@ This folder contains ‘data table’ aware components.
 Test files used by some test cases
 
 
+GetCell
