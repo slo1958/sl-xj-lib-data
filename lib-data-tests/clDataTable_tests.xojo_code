@@ -156,16 +156,16 @@ Protected Module clDataTable_tests
 		  var my_table As New clDataTable("T1")
 		  
 		  rtst = New clDataRow
-		  rtst.set_cell("aaa",1234)
-		  rtst.set_cell("bbb","abcd")
-		  rtst.set_cell("ccc",123.456)
+		  rtst.SetCell("aaa",1234)
+		  rtst.SetCell("bbb","abcd")
+		  rtst.SetCell("ccc",123.456)
 		  
 		  my_table.AddRow(rtst)
 		  
 		  rtst = New clDataRow
-		  rtst.set_cell("aaa",1235)
-		  rtst.set_cell("bbb","abce")
-		  rtst.set_cell("ddd",987.654)
+		  rtst.SetCell("aaa",1235)
+		  rtst.SetCell("bbb","abce")
+		  rtst.SetCell("ddd",987.654)
 		  
 		  my_table.AddRow(rtst)
 		  
@@ -194,32 +194,32 @@ Protected Module clDataTable_tests
 		  var my_table1 As New clDataTable("T1")
 		  
 		  rtst = New clDataRow
-		  rtst.set_cell("aaa",1234)
-		  rtst.set_cell("bbb","abcd")
-		  rtst.set_cell("ccc",123.456)
+		  rtst.SetCell("aaa",1234)
+		  rtst.SetCell("bbb","abcd")
+		  rtst.SetCell("ccc",123.456)
 		  
 		  my_table1.AddRow(rtst)
 		  
 		  rtst = New clDataRow
-		  rtst.set_cell("aaa",1235)
-		  rtst.set_cell("bbb","abce")
-		  rtst.set_cell("ddd",987.654)
+		  rtst.SetCell("aaa",1235)
+		  rtst.SetCell("bbb","abce")
+		  rtst.SetCell("ddd",987.654)
 		  
 		  my_table1.AddRow(rtst)
 		  
 		  var my_table2 As New clDataTable("T2")
 		  
 		  rtst = New clDataRow
-		  rtst.set_cell("aaa",81234)
-		  rtst.set_cell("bbb","zabcd")
-		  rtst.set_cell("zccc",8123.456)
+		  rtst.SetCell("aaa",81234)
+		  rtst.SetCell("bbb","zabcd")
+		  rtst.SetCell("zccc",8123.456)
 		  
 		  my_table2.AddRow(rtst)
 		  
 		  rtst = New clDataRow
-		  rtst.set_cell("aaa",81235)
-		  rtst.set_cell("bbb","zabce")
-		  rtst.set_cell("zddd",8987.654)
+		  rtst.SetCell("aaa",81235)
+		  rtst.SetCell("bbb","zabce")
+		  rtst.SetCell("zddd",8987.654)
 		  
 		  my_table2.AddRow(rtst)
 		  
@@ -251,16 +251,16 @@ Protected Module clDataTable_tests
 		  
 		  
 		  rtst = New clDataRow
-		  rtst.set_cell("aaa",1234)
-		  rtst.set_cell("bbb","abcd")
-		  rtst.set_cell("ccc",123.456)
+		  rtst.SetCell("aaa",1234)
+		  rtst.SetCell("bbb","abcd")
+		  rtst.SetCell("ccc",123.456)
 		  
 		  my_table1.AddRow(rtst)
 		  
 		  rtst = New clDataRow
-		  rtst.set_cell("aaa",1235)
-		  rtst.set_cell("bbb","abce")
-		  rtst.set_cell("ddd",987.654)
+		  rtst.SetCell("aaa",1235)
+		  rtst.SetCell("bbb","abce")
+		  rtst.SetCell("ddd",987.654)
 		  
 		  my_table1.AddRow(rtst) 
 		  
@@ -334,16 +334,16 @@ Protected Module clDataTable_tests
 		  var my_table As New clDataTable("T1")
 		  
 		  rtst = New clDataRow
-		  rtst.set_cell("aaa",1234)
-		  rtst.set_cell("bbb","abcd")
-		  rtst.set_cell("ccc",123.456)
+		  rtst.SetCell("aaa",1234)
+		  rtst.SetCell("bbb","abcd")
+		  rtst.SetCell("ccc",123.456)
 		  
 		  my_table.AddRow(rtst)
 		  
 		  rtst = New clDataRow
-		  rtst.set_cell("aaa",1235)
-		  rtst.set_cell("bbb","abce")
-		  rtst.set_cell("ddd",987.654)
+		  rtst.SetCell("aaa",1235)
+		  rtst.SetCell("bbb","abce")
+		  rtst.SetCell("ddd",987.654)
 		  
 		  my_table.AddRow(rtst)
 		  
@@ -396,12 +396,12 @@ Protected Module clDataTable_tests
 		  
 		  var r1 As clDataRow
 		  r1 = New clDataRow
-		  r1.set_cell("premier","dddd")
-		  r1.set_cell("second",90)
+		  r1.SetCell("premier","dddd")
+		  r1.SetCell("second",90)
 		  
 		  t1.AddRow(r1)
 		  
-		  r1.set_cell("troisieme",True)
+		  r1.SetCell("troisieme",True)
 		  t2.AddRow(r1)
 		  
 		  
@@ -514,9 +514,9 @@ Protected Module clDataTable_tests
 		  
 		  for i as integer = 1 to 4
 		    rtst = New clDataRow
-		    rtst.set_cell("aaa",I*1000)
-		    rtst.set_cell("bbb","abcd")
-		    rtst.set_cell("ccc",123.456)
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","abcd")
+		    rtst.SetCell("ccc",123.456)
 		    
 		    my_table1.AddRow(rtst)
 		    
@@ -525,9 +525,9 @@ Protected Module clDataTable_tests
 		  
 		  for i as integer = 5 to 9
 		    rtst = New clDataRow
-		    rtst.set_cell("aaa",I*1000)
-		    rtst.set_cell("bbb","xyz")
-		    rtst.set_cell("ddd",567.89)
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","xyz")
+		    rtst.SetCell("ddd",567.89)
 		    
 		    my_table2.AddRow(rtst)
 		    
@@ -585,15 +585,15 @@ Protected Module clDataTable_tests
 		  call mytable.AddColumn(new clNumberDataSerie("unit_price"))
 		  
 		  temp_row = New clDataRow
-		  temp_row.set_cell("name","alpha")
-		  temp_row.set_cell("quantity",50)
-		  temp_row.set_cell("unit_price",6)
+		  temp_row.SetCell("name","alpha")
+		  temp_row.SetCell("quantity",50)
+		  temp_row.SetCell("unit_price",6)
 		  mytable.AddRow(temp_row)
 		  
 		  temp_row = New clDataRow
-		  temp_row.set_cell("name","alpha")
-		  temp_row.set_cell("quantity",20)
-		  temp_row.set_cell("unit_price",8)
+		  temp_row.SetCell("name","alpha")
+		  temp_row.SetCell("quantity",20)
+		  temp_row.SetCell("unit_price",8)
 		  mytable.AddRow(temp_row)
 		  
 		  call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNumberDataSerie(mytable.GetColumn("quantity")))
@@ -633,9 +633,9 @@ Protected Module clDataTable_tests
 		  
 		  var tmp_row as clDataRow = table0.GetRowAt(2, False)
 		  
-		  call check_value(log,"row 2, country", "Belgique", tmp_row.get_cell("country"))
-		  call check_value(log, "row 2, city", "", tmp_row.get_cell("city"))
-		  call check_value(log,"row 2, sales", 1300, tmp_row.get_cell("sales"))
+		  call check_value(log,"row 2, country", "Belgique", tmp_row.GetCell("country"))
+		  call check_value(log, "row 2, city", "", tmp_row.GetCell("city"))
+		  call check_value(log,"row 2, sales", 1300, tmp_row.GetCell("sales"))
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -664,10 +664,10 @@ Protected Module clDataTable_tests
 		  
 		  var tmp_row as clDataRow = table0.GetRowAt(3, False)
 		  
-		  call check_value(log,"row 3, country", "USA", tmp_row.get_cell("country"))
-		  call check_value(log, "row 3, city", "NewYork", tmp_row.get_cell("city"))
-		  call check_value(log,"row 3, sales", 1400, tmp_row.get_cell("sales"))
-		  call check_value(log, "row 3, mask", False, tmp_row.get_cell("mask"))
+		  call check_value(log,"row 3, country", "USA", tmp_row.GetCell("country"))
+		  call check_value(log, "row 3, city", "NewYork", tmp_row.GetCell("city"))
+		  call check_value(log,"row 3, sales", 1400, tmp_row.GetCell("sales"))
+		  call check_value(log, "row 3, mask", False, tmp_row.GetCell("mask"))
 		  
 		  var k as integer = 0
 		  
@@ -702,16 +702,16 @@ Protected Module clDataTable_tests
 		  for each row as clDataRow in table0
 		    
 		    if row_index = 0 then
-		      call check_value(log,"row 0, index",  0, row.get_cell("row_index"))
-		      call check_value(log, "row 0, country",  "France", row.get_cell("country"))
-		      call check_value(log,"row 0, city",  "Paris", row.get_cell("city"))
-		      call check_value(log, "row 0, sales",  1100, row.get_cell("sales"))
+		      call check_value(log,"row 0, index",  0, row.GetCell("row_index"))
+		      call check_value(log, "row 0, country",  "France", row.GetCell("country"))
+		      call check_value(log,"row 0, city",  "Paris", row.GetCell("city"))
+		      call check_value(log, "row 0, sales",  1100, row.GetCell("sales"))
 		      
 		    elseif row_index  = 1 then
-		      call check_value(log, "row 1, index",  1, row.get_cell("row_index"))
-		      call check_value(log, "row 1, country",  "USA", row.get_cell("country"))
-		      call check_value(log, "row 1, city",  "NewYork", row.get_cell("city"))
-		      call check_value(log, "row 1, sales",  1400, row.get_cell("sales"))
+		      call check_value(log, "row 1, index",  1, row.GetCell("row_index"))
+		      call check_value(log, "row 1, country",  "USA", row.GetCell("country"))
+		      call check_value(log, "row 1, city",  "NewYork", row.GetCell("city"))
+		      call check_value(log, "row 1, sales",  1400, row.GetCell("sales"))
 		      
 		      
 		      
@@ -762,7 +762,7 @@ Protected Module clDataTable_tests
 		  
 		  for each row as clDataRow in table0
 		    for each cell as string in row
-		      //system.DebugLog("field " + cell + "value " + row.get_cell(cell))
+		      //system.DebugLog("field " + cell + "value " + row.GetCell(cell))
 		      
 		    next
 		    
@@ -817,7 +817,7 @@ Protected Module clDataTable_tests
 		  
 		  for each row as clDataRow in table0
 		    for each cell as string in row
-		      //system.DebugLog("field " + cell + "value " + row.get_cell(cell))
+		      //system.DebugLog("field " + cell + "value " + row.GetCell(cell))
 		      
 		    next
 		    
@@ -1261,7 +1261,7 @@ Protected Module clDataTable_tests
 		  
 		  for each r as clDataRow in my_table_1
 		    res.Add(new test_class_03)
-		    r.update_object(res(res.LastIndex))
+		    r.UpdateObject(res(res.LastIndex))
 		    
 		  next 
 		  

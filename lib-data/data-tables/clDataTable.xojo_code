@@ -306,7 +306,7 @@ Implements TableColumnReaderInterface,Iterable
 		      Raise New clDataException("Adding row with unexpected column " + column)
 		      
 		    Else
-		      var tmp_item As variant = the_row.get_cell(column)
+		      var tmp_item As variant = the_row.GetCell(column)
 		      tmp_column.AddElement(tmp_item)
 		      
 		    End If
@@ -818,7 +818,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function Clone() As clDataTable
-		  
+		  //
 		  //  Duplicate the table and all its columns
 		  //  
 		  //  Parameters:
@@ -1225,9 +1225,9 @@ Implements TableColumnReaderInterface,Iterable
 		  var tbl as new clDataTable(new_table_name)
 		  
 		  for each row as clDataRow in self
-		    var col_name as string = row.get_cell(structure_name_column)
-		    var col_type as string = row.get_cell(structure_type_column)
-		    var col_title as string  = row.get_cell(structure_title_column)
+		    var col_name as string = row.GetCell(structure_name_column)
+		    var col_type as string = row.GetCell(structure_type_column)
+		    var col_title as string  = row.GetCell(structure_title_column)
 		    
 		    var column as clAbstractDataSerie = tbl.AddColumn(clDataType.CreateDataSerie(col_name, col_type))
 		    
@@ -1806,20 +1806,21 @@ Implements TableColumnReaderInterface,Iterable
 		  if not include_index then
 		    
 		  elseif row_index = nil then
-		    tmp_row.set_cell("row_index",  the_row_index)
+		    tmp_row.SetCell("row_index",  the_row_index)
 		    
 		  else
-		    tmp_row.set_cell("row_index",  row_index.GetElement(the_row_index))
+		    tmp_row.SetCell("row_index",  row_index.GetElement(the_row_index))
 		    
 		  end if
 		  
 		  for each column as clAbstractDataSerie in self.columns
 		    var col_name as string = column.name
 		    var col_val as Auto = column.GetElement(the_row_index)
-		    tmp_row.set_cell(col_name, col_val)
+		    tmp_row.SetCell(col_name, col_val)
 		    
 		  next
 		  
+		  tmp_row.SetTableLink(self)
 		  return tmp_row
 		  
 		End Function
@@ -2369,7 +2370,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  for each row as clDataRow in self
 		    
-		    write_to.AddRow(row.get_cells(col))
+		    write_to.AddRow(row.GetCells(col))
 		    
 		  next
 		  

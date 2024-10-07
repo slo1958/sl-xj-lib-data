@@ -56,9 +56,9 @@ Protected Module clDataPool_tests
 		  table =  New clDataTable("T1")
 		  for i as integer = 1 to 4
 		    rtst = New clDataRow
-		    rtst.set_cell("aaa",I*1000)
-		    rtst.set_cell("bbb","abcd")
-		    rtst.set_cell("ccc",123.456)
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","abcd")
+		    rtst.SetCell("ccc",123.456)
 		    
 		    table.AddRow(rtst)
 		    
@@ -70,9 +70,9 @@ Protected Module clDataPool_tests
 		  table =  New clDataTable("T2")
 		  for i as integer = 5 to 9
 		    rtst = New clDataRow
-		    rtst.set_cell("aaa",I*1000)
-		    rtst.set_cell("bbb","xyz")
-		    rtst.set_cell("ddd",567.89)
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","xyz")
+		    rtst.SetCell("ddd",567.89)
 		    
 		    table.AddRow(rtst)
 		    
@@ -137,9 +137,9 @@ Protected Module clDataPool_tests
 		  table =  New clDataTable("T1")
 		  for i as integer = 1 to 4
 		    rtst = New clDataRow
-		    rtst.set_cell("aaa",I*1000)
-		    rtst.set_cell("bbb","abcd")
-		    rtst.set_cell("ccc",123.456)
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","abcd")
+		    rtst.SetCell("ccc",123.456)
 		    
 		    table.AddRow(rtst)
 		    
@@ -151,9 +151,9 @@ Protected Module clDataPool_tests
 		  table =  New clDataTable("T2")
 		  for i as integer = 5 to 8
 		    rtst = New clDataRow
-		    rtst.set_cell("aaa",I*1000)
-		    rtst.set_cell("bbb","xyz")
-		    rtst.set_cell("ddd",567.89)
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","xyz")
+		    rtst.SetCell("ddd",567.89)
 		    
 		    table.AddRow(rtst)
 		    
@@ -213,9 +213,9 @@ Protected Module clDataPool_tests
 		  
 		  for i as integer = 1 to 4
 		    rtst = New clDataRow
-		    rtst.set_cell("aaa",I*1000)
-		    rtst.set_cell("bbb","abcd")
-		    rtst.set_cell("ccc",123.456 * i) 
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","abcd")
+		    rtst.SetCell("ccc",123.456 * i) 
 		    
 		    pool_table1.AddRow(rtst)
 		    
@@ -227,9 +227,9 @@ Protected Module clDataPool_tests
 		  var pool_table2 as New clDataTable("PoolTable2")
 		  for i as integer = 5 to 9
 		    rtst = New clDataRow
-		    rtst.set_cell("aaa",I*1000)
-		    rtst.set_cell("bbb","xyz")
-		    rtst.set_cell("ddd",567.89 * i)
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","xyz")
+		    rtst.SetCell("ddd",567.89 * i)
 		    
 		    pool_table2.AddRow(rtst)
 		    
@@ -290,9 +290,9 @@ Protected Module clDataPool_tests
 		  
 		  for i as integer = 1 to 4
 		    rtst = New clDataRow
-		    rtst.set_cell("aaa",I*1000)
-		    rtst.set_cell("bbb","abcd")
-		    rtst.set_cell("ccc",123.456 * i) 
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","abcd")
+		    rtst.SetCell("ccc",123.456 * i) 
 		    
 		    pool_table1.AddRow(rtst)
 		    
@@ -304,9 +304,9 @@ Protected Module clDataPool_tests
 		  var pool_table2 as New clDataTable("PoolTable2")
 		  for i as integer = 5 to 9
 		    rtst = New clDataRow
-		    rtst.set_cell("aaa",I*1000)
-		    rtst.set_cell("bbb","xyz")
-		    rtst.set_cell("ddd",567.89 * i)
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","xyz")
+		    rtst.SetCell("ddd",567.89 * i)
 		    
 		    pool_table2.AddRow(rtst)
 		    

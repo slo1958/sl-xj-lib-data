@@ -7,11 +7,11 @@ Implements Iterable
 		  
 		  if allocator = nil then return nil
 		  
-		  obj = allocator.Invoke(self.get_cell(clDataTable.row_name_column))
+		  obj = allocator.Invoke(self.GetCell(clDataTable.row_name_column))
 		  
 		  if obj = nil then return nil
 		  
-		  self.update_object(obj)
+		  self.UpdateObject(obj)
 		  
 		  return obj
 		  
@@ -24,15 +24,21 @@ Implements Iterable
 		  
 		  if allocator = nil then return nil
 		  
-		  obj = allocator.Invoke(self.get_cell(TypeFieldName))
+		  obj = allocator.Invoke(self.GetCell(TypeFieldName))
 		  
 		  if obj = nil then return nil
 		  
-		  self.update_object(obj)
+		  self.UpdateObject(obj)
 		  
 		  return obj
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ClearTableLink()
+		  self.table_link = nil
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -74,6 +80,7 @@ Implements Iterable
 		Sub Constructor(SourceObject as object)
 		  //  
 		  //  Create a row based on an object
+		  //  Uses only the values of public properties r
 		  //  
 		  //  Parameters:
 		  //  - an instance of the class to create a datarow 
@@ -130,7 +137,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_cell(the_cell_name as String) As variant
+		Function GetCell(the_cell_name as String) As variant
 		  //  
 		  //  Get the value of one field / cell
 		  //  
@@ -154,7 +161,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_cells() As Dictionary
+		Function GetCells() As Dictionary
 		  //  
 		  //  Get the value of all fields / cells as a dictionary
 		  //  
@@ -171,7 +178,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function get_cells(RequestedColumnNames() as string) As Variant()
+		Function GetCells(RequestedColumnNames() as string) As Variant()
 		  //  
 		  //  Get the value of listed fields / cells
 		  //  
@@ -201,6 +208,12 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetTableLink() As clDataTable
+		  return self.table_link  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Iterator() As Iterator
 		  // Part of the Iterable interface.
 		  
@@ -218,7 +231,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As string
+		Function Name() As string
 		  //  
 		  //  Get the name of the row
 		  //  
@@ -234,7 +247,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub set_cell(the_cell_name as string, the_cell_value as Variant)
+		Sub SetCell(the_cell_name as string, the_cell_value as Variant)
 		  //  
 		  //  Update the value of one field / cell
 		  //  
@@ -261,7 +274,19 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub update_object(TargetObject as Object)
+		Sub SetTableLink(theTable as clDataTable)
+		  if self.table_link = nil then
+		    self.table_link = theTable
+		    
+		  else
+		    raise new clDataException("Row already linked to table")
+		    
+		  end if
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateObject(TargetObject as Object)
 		  //  
 		  //  Update the public properties of an object from the cell values
 		  //  
@@ -342,6 +367,10 @@ Implements Iterable
 
 	#tag Property, Flags = &h1
 		Protected my_storage As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected table_link As clDataTable
 	#tag EndProperty
 
 
