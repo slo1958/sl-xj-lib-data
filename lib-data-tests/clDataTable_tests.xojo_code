@@ -1358,7 +1358,7 @@ Protected Module clDataTable_tests
 		  
 		  my_table.AddRow(new Dictionary("aaa":1234, "bbb": "abcd", "ccc":123.456))
 		  
-		  my_table.AddRow(new Dictionary("aaa":1235, "bbb": "abce", "ddd":987.654)) //, "eee":"to_ignore"))
+		  my_table.AddRow(new Dictionary("aaa":1235, "bbb": "abce", "ddd":987.654, "eee":"to_ignore"))
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
