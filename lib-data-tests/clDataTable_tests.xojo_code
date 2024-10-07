@@ -115,6 +115,7 @@ Protected Module clDataTable_tests
 		  test_025(logwriter)
 		  test_026(logwriter)
 		  test_027(logwriter)
+		  test_028(logwriter)
 		  
 		  
 		  logwriter.end_exec(CurrentMethodName)
@@ -1371,6 +1372,39 @@ Protected Module clDataTable_tests
 		  call check_table(log, "T1", texpected, my_table)
 		  
 		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_028(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  var mytable As New clDataTable("T1")
+		  
+		  call mytable.AddColumn(new clDataSerie("name"))
+		  call mytable.AddColumn(new clNumberDataSerie("quantity"))
+		  call mytable.AddColumn(new clNumberDataSerie("unit_price"))
+		  
+		  mytable.AddRow(new Dictionary("name": "alpha", "quantity":50, "unit_price": 6))
+		  mytable.AddRow(new Dictionary("name": "alpha", "quantity":20, "unit_price": 8))
+		  
+		  call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNumberDataSerie(mytable.GetColumn("quantity")))
+		  
+		  var col1 as new clDataSerie("name", "alpha","alpha")
+		  var col2 as new clNumberDataSerie("quantity", 50, 20)
+		  var col3 as new clNumberDataSerie("unit_price", 6, 8)
+		  var col4 as new clNumberDataSerie("unit_price*quantity", 300, 160)
+		  
+		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4))
+		  
+		  call check_table(log,"T1", expected_t1, mytable)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  
 		End Sub
 	#tag EndMethod
