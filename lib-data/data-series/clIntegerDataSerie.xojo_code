@@ -11,8 +11,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ClipByRange(low_value as variant, high_value as variant) As integer
-		  // Calling the overridden superclass method.
-		  Var returnValue as integer = Super.ClipByRange(low_value, high_value)
+		  
 		  var last_index as integer = self.RowCount
 		  var count_changes as integer = 0
 		  

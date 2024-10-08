@@ -116,6 +116,7 @@ Protected Module clDataTable_tests
 		  test_026(logwriter)
 		  test_027(logwriter)
 		  test_028(logwriter)
+		  test_029(logwriter)
 		  
 		  
 		  logwriter.end_exec(CurrentMethodName)
@@ -921,24 +922,30 @@ Protected Module clDataTable_tests
 		  
 		  var col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
 		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  var col_something as new clIntegerDataSerie("Something", 1000, 2000, 3000, 4000, 5000)
+		  
 		  var col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
+		  var table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales, col_something))
 		  
 		  call table0.AddColumn(col_sales *2 )
 		  
 		  var nb as integer = table0.ClipByRange("sales",1000, 2000)
 		  
 		  call table0.AddColumn(col_sales.ClippedByRange(1100, 1500) * 2)
+		  call table0.AddColumn(col_something.ClippedByRange(2500, 4500))
 		  
 		  // create expected table
-		  var col1 as clDataSerie = col_country.Clone()
-		  var col2 as clDataSerie = col_city.Clone()
-		  var col3 as new clNumberDataSerie("sales", 1000.0, 1200.0, 1400.0, 1600.0, 2000.0)
-		  var col4 as new clNumberDataSerie("sales*2", 1800.0, 2400.0, 2800.0, 3200.0, 5800.0)
-		  var col5 as new clNumberDataSerie("clip sales*2", 2200.0, 2400.0, 2800.0, 3000.0, 3000.0)
+		  var columns() as clAbstractDataSerie
+		  columns.Add  col_country.Clone()
+		  columns.Add  col_city.Clone()
+		  columns.Add  new clNumberDataSerie("sales", 1000.0, 1200.0, 1400.0, 1600.0, 2000.0)
+		  columns.Add  col_something.Clone()
+		  columns.Add new clNumberDataSerie("sales*2", 1800.0, 2400.0, 2800.0, 3200.0, 5800.0)
+		  columns.Add  new clNumberDataSerie("clip sales*2", 2200.0, 2400.0, 2800.0, 3000.0, 3000.0)
+		  columns.Add new clIntegerDataSerie("clip something", 2500,2500, 3000, 4000, 4500)
 		  
-		  call check_table(log,"clipping fct", new clDataTable("mytable", SerieArray(col1, col2, col3, col4, col5)), table0)
+		  call check_table(log,"clipping fct", new clDataTable("mytable", Columns), table0)
 		  
 		  call check_value(log, "nb clipped", 3, nb)
 		  
@@ -1007,19 +1014,28 @@ Protected Module clDataTable_tests
 		  
 		  var table0 As New clDataTable("mytable", dct ,AddressOf alloc_series_019)
 		  
+		  //
+		  // Check structure and content of table created from dictionaries
+		  //
 		  var col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
 		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  var col_sales as new clNumberDataSerie("Sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table_expected As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
+		  var table_expected0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
 		  
-		  call check_table(log,"use dict for creation", table_expected, table0)
+		  call check_table(log,"use dict for creation", table_expected0, table0)
+		  
+		  
+		  //
+		  // Extract structure as table and validate
+		  //
 		  
 		  table0.GetColumn("City").display_title = "Ville"
 		  table0.GetColumn("Country").display_title = "Pays"
 		  table0.GetColumn("Sales").display_title="Ventes" 
 		  
 		  var struc0 as clDataTable = table0.GetStructureAsTable
+		  
 		  
 		  dct = new Dictionary
 		  dct.value("name") = array("Country", "City", "Sales")
@@ -1029,9 +1045,23 @@ Protected Module clDataTable_tests
 		  var struc_expected as new clDataTable("exp_struct", dct)
 		  call check_table(log,"structure", struc_expected, struc0)
 		  
+		  
+		  
+		  //
+		  // Create table from structure description and check structure
+		  //
+		  
 		  var table1 as clDataTable = struc0.CreateTableFromStructure("mytable")
 		  
+		  var col_country1 as new clDataSerie("Country")
+		  var col_city1 as new clDataSerie("City")
+		  var col_sales1 as new clNumberDataSerie("Sales")
+		  var table_expected1 As New clDataTable("mytable", SerieArray(col_country1, col_city1, col_sales1))
+		  call check_table(log,"create from structure table", table_expected1, table1)
+		  
+		  
 		  var struc1 as clDataTable = table0.GetStructureAsTable
+		  
 		  call check_table(log,"structure", struc_expected, struc1)
 		  
 		  
@@ -1390,6 +1420,39 @@ Protected Module clDataTable_tests
 		  
 		  mytable.AddRow(new Dictionary("name": "alpha", "quantity":50, "unit_price": 6))
 		  mytable.AddRow(new Dictionary("name": "alpha", "quantity":20, "unit_price": 8))
+		  
+		  call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNumberDataSerie(mytable.GetColumn("quantity")))
+		  
+		  var col1 as new clDataSerie("name", "alpha","alpha")
+		  var col2 as new clNumberDataSerie("quantity", 50, 20)
+		  var col3 as new clNumberDataSerie("unit_price", 6, 8)
+		  var col4 as new clNumberDataSerie("unit_price*quantity", 300, 160)
+		  
+		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4))
+		  
+		  call check_table(log,"T1", expected_t1, mytable)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_029(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  var mytable As New clDataTable("T1")
+		  
+		  call mytable.AddColumn(new clDataSerie("name"))
+		  call mytable.AddColumn(new clNumberDataSerie("quantity"))
+		  call mytable.AddColumn(new clNumberDataSerie("unit_price"))
+		  
+		  mytable.AddRow("name": "alpha", "quantity":50, "unit_price": 6)
+		  mytable.AddRow("name": "alpha", "quantity":20, "unit_price": 8)
 		  
 		  call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNumberDataSerie(mytable.GetColumn("quantity")))
 		  

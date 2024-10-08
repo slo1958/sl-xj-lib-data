@@ -349,6 +349,36 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AddRow(firstEntry as Pair, ParamArray entries as Pair)
+		  
+		  //  Add  a data row to the table using the passed list of pairs. Does not create new columns.
+		  //  
+		  //  Parameters:
+		  //  - first (mandatory) pair
+		  //  - remaing pairs 
+		  // 
+		  // Each pair with fieldn name / field value
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  
+		  if firstEntry = nil then 
+		    return
+		    
+		  end if
+		  
+		  var tempRow as new clDataRow(firstEntry, entries)
+		  
+		  // Do not add missing columns
+		  self.AddRow(tempRow, false)
+		  
+		  // Self.row_index.AddElement("")
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub AddRow(the_values() as string)
 		  
 		  //  Add  a data row to the table

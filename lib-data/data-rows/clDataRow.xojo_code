@@ -117,6 +117,77 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(firstEntry as Pair, entries() as Pair)
+		  //  
+		  //  Create a row based on a list of pairs
+		  //   
+		  //  
+		  //  Parameters:
+		  //  - firstEntry: first (mandatory) pair
+		  //  - the pairs to create a datarow 
+		  //  
+		  //  Returns:
+		  //   This is a constructor
+		  //  
+		  
+		  my_storage = New Dictionary()
+		  mutable_flag = False
+		  my_label = ""
+		  
+		  if firstEntry = nil then 
+		    my_label = "built from nil pair" 
+		    return
+		    
+		  end if
+		  
+		  my_storage.value(firstEntry.Left) = firstEntry.Right
+		  
+		  for each p as pair in entries
+		    my_storage.value(p.Left) = p.Right
+		    
+		  next
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(firstEntry as pair, ParamArray entries as Pair)
+		  //  
+		  //  Create a row based on a list of pairs
+		  //  
+		  //  Parameters:
+		  //  - firstEntry: first (mandatory) pair
+		  //  - the pairs to create a datarow 
+		  //  
+		  //  Returns:
+		  //   This is a constructor
+		  //  
+		  
+		  my_storage = New Dictionary()
+		  mutable_flag = False
+		  my_label = ""
+		  
+		  if firstEntry = nil then 
+		    my_label = "built from nil pair" 
+		    return
+		    
+		  end if
+		  
+		  my_storage.value(firstEntry.Left) = firstEntry.Right
+		  
+		  for each p as pair in entries
+		    my_storage.value(p.Left) = p.Right
+		    
+		  next
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_row_label as string = "")
 		  //  
 		  //  Create a row based object

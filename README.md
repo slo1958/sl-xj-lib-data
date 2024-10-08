@@ -16,8 +16,12 @@ The library supports three main classes:
 - clDataTable
 - clDataPool
 
-Note: the methods used to read and write data to files will be moved out of the core library.
+To ease handling of data row, we also have:
 
+- clDataRow
+
+
+Note that the library handle data by columns, any use of clDataRow means the called method need to transpose some data, which is time consuming.
 
 ## About clDataSerie
 A serie is mainly a named one-dimension array. Elements of the array are 'variant'. The main purpose of this class is to store column data for clDataTable. 
@@ -263,6 +267,23 @@ mytable.AddRow(new Dictionary("name": "alpha", "quantity":20, "unit_price": 8))
 
 ```
 
+
+Or directly define the values:
+
+```xojo
+var mytable As New clDataTable("T1")
+
+call mytable.AddColumn(new clDataSerie("name"))
+call mytable.AddColumn(new clNumberDataSerie("quantity"))
+call mytable.AddColumn(new clNumberDataSerie("unit_price"))
+
+mytable.AddRow("name": "alpha", "quantity":50, "unit_price": 6)
+mytable.AddRow("name": "alpha", "quantity":20, "unit_price": 8)
+
+```
+
+
+
 ### Load a data table from file
 
 Create a folder item pointing to the file, then create the data table. The flag causes the method to use the values in the first row as field names. By default, the reader assumes utf-8 encoded, tab separated file. We need to alter the default settings for a coma-separated file.
@@ -300,7 +321,7 @@ After those two calls: mytable1 contains all the rows from the three tables. The
 ```xojo
 for each row as clDataRow in mytable
   for each cell as string in row
-    system.DebugLog("field " + cell + "value " + row.SetCell(cell))
+    system.DebugLog("field " + cell + "value " + row.GetCell(cell))
     
   next
   

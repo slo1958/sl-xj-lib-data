@@ -39,8 +39,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function CloneStructure() As clStringDataSerie
-		  // Calling the overridden superclass method.
-		  Var returnValue as clAbstractDataSerie = Super.CloneStructure()
+		  
 		  var tmp As New clStringDataSerie(Self.name)
 		  
 		  self.CloneInfo(tmp)

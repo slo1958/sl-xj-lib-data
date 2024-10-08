@@ -150,6 +150,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub SetLength(the_length as integer, default_value as variant)
+		  
 		  While items_index.LastIndex < the_length-1
 		    items_index.Append(-1)
 		    
