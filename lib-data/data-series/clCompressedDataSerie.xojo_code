@@ -86,6 +86,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetDefaultValue() As variant
+		  
+		  return default_value
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetElement(the_element_index as integer) As variant
 		  
 		  var v as Variant
@@ -125,6 +133,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetDefaultValue(v as Variant)
+		  
+		  default_value = v
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetElement(the_element_index as integer, the_item as Variant)
 		  If 0 <= the_element_index And  the_element_index <= items_index.LastIndex Then
 		    
@@ -159,6 +174,10 @@ Inherits clAbstractDataSerie
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h0
+		default_value As variant
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		items_index() As Integer
