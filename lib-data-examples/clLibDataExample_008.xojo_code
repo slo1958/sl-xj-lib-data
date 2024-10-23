@@ -47,18 +47,13 @@ Inherits clLibDataExample
 		  var is_belgium() as variant =  table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")
 		  var is_europe() as variant
 		  
-		  for i as integer = 0 to is_france.LastIndex
-		    is_europe.Append(is_france(i).integerValue + is_belgium(i).integerValue)
-		    
-		  next
-		  
 		  call table0.AddColumn(new clIntegerDataSerie("is_france"))
 		  call table0.AddColumn(new clIntegerDataSerie("is_belgium"))
 		  call table0.AddColumn(new clIntegerDataSerie("is_europe"))
 		  
 		  call table0.SetColumnValues("is_france", is_france, false)
 		  call table0.SetColumnValues("is_belgium", is_belgium, false)
-		  call table0.SetColumnValues("is_europe", is_europe, false)
+		  call table0.SetColumnValues("is_europe", clIntegerDataSerie(table0.GetColumn("is_france")) +clIntegerDataSerie( table0.GetColumn("is_belgium")), false)
 		  
 		  return array(table0)
 		  

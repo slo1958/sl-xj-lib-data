@@ -117,7 +117,7 @@ Protected Module clDataTable_tests
 		  test_027(logwriter)
 		  test_028(logwriter)
 		  test_029(logwriter)
-		  
+		  test_030(logwriter)
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		End Sub
@@ -1464,6 +1464,52 @@ Protected Module clDataTable_tests
 		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4))
 		  
 		  call check_table(log,"T1", expected_t1, mytable)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_030(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var table0 As New clDataTable("mytable")
+		  
+		  call table0.AddColumns(Array("country","city","sales"))
+		  
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("France","Marseille",1200))
+		  table0.AddRow(Array("Belgique","Bruxelles",1300))
+		  table0.AddRow(Array("USA","New York",1400))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500))
+		  table0.AddRow(Array("USA","Chicago",1600))
+		  
+		  var is_france() as variant = table0.FilterWithFunction(AddressOf BasicFieldFilter,"country","France")
+		  var is_belgium() as variant =  table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")
+		  
+		  call table0.AddColumn(new clIntegerDataSerie("is_france"))
+		  call table0.AddColumn(new clIntegerDataSerie("is_belgium"))
+		  call table0.AddColumn(new clIntegerDataSerie("is_europe"))
+		  
+		  call table0.SetColumnValues("is_france", is_france, false)
+		  call table0.SetColumnValues("is_belgium", is_belgium, false)
+		  call table0.SetColumnValues("is_europe", clIntegerDataSerie(table0.GetColumn("is_france")) +clIntegerDataSerie( table0.GetColumn("is_belgium")), false)
+		   
+		  
+		  var col1 as new clDataSerie("country", Array("France","France", "Belgique", "USA","Belgique","USA"))
+		  var col2 as new clDataSerie("City","Paris","Marseille","Bruxelles","New York", "Bruxelles","Chicago")
+		  var col3 as new clDataSerie("Sales",1100,1200,1300,1400,1500,1600)
+		  var col4 as new clIntegerDataSerie("is_france",1,1,0,0,0,0)
+		  var col5 as new clIntegerDataSerie("is_belgium",0,0,1,0,1,0)
+		  var col6 as new clIntegerDataSerie("is_europe",1,1,1,0,1,0)
+		  
+		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4, col5, col6))
+		  
+		  call check_table(log,"T1", expected_t1, table0)
 		  
 		  
 		  log.end_exec(CurrentMethodName)

@@ -989,7 +989,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  //  Parameters:
 		  //  - the name of the data table
-		  // - the columns as a dictionary
+		  // - the columns as a dictionary (column name as key, column values as an array of variant
 		  // - an option to clone a data serie (column) if it is already used in another table
 		  //
 		  //  Returns:
@@ -2442,6 +2442,37 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function SelectColumns(paramarray column_names as string) As clDataTable
 		  Return SelectColumns(column_names)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SetColumnValues(the_column_name as string, source_column as clAbstractDataSerie, can_create as boolean) As clAbstractDataSerie
+		  
+		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  
+		  if temp_column = nil then
+		    
+		    if can_create then
+		      temp_column = source_column.clone()
+		      temp_column.rename(the_column_name)
+		      
+		      call self.AddColumn(temp_column)
+		      
+		      return temp_column
+		      
+		    else
+		      return nil
+		      
+		    end if
+		    
+		  else
+		    for i as integer = 0 to source_column.RowCount
+		      temp_column.SetElement(i, source_column.GetElement(i))
+		      
+		    next
+		    
+		  end if
+		  
 		End Function
 	#tag EndMethod
 
