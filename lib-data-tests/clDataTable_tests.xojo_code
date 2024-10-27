@@ -1497,15 +1497,17 @@ Protected Module clDataTable_tests
 		  
 		  call table0.SetColumnValues("is_france", is_france, false)
 		  call table0.SetColumnValues("is_belgium", is_belgium, false)
-		  call table0.SetColumnValues("is_europe", clIntegerDataSerie(table0.GetColumn("is_france")) +clIntegerDataSerie( table0.GetColumn("is_belgium")), false)
-		   
+		  
+		  // Set the flag to 0 or 2 for test purposes only
+		  table0.Column("is_europe") = ( clIntegerDataSerie(table0.Column("is_france")) +clIntegerDataSerie( table0.Column("is_belgium"))) * 2
+		  
 		  
 		  var col1 as new clDataSerie("country", Array("France","France", "Belgique", "USA","Belgique","USA"))
 		  var col2 as new clDataSerie("City","Paris","Marseille","Bruxelles","New York", "Bruxelles","Chicago")
 		  var col3 as new clDataSerie("Sales",1100,1200,1300,1400,1500,1600)
 		  var col4 as new clIntegerDataSerie("is_france",1,1,0,0,0,0)
 		  var col5 as new clIntegerDataSerie("is_belgium",0,0,1,0,1,0)
-		  var col6 as new clIntegerDataSerie("is_europe",1,1,1,0,1,0)
+		  var col6 as new clIntegerDataSerie("is_europe",2,2,2,0,2,0)
 		  
 		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4, col5, col6))
 		  

@@ -8,9 +8,11 @@ Class clTextFileConfig
 		  
 		  self.quote_char = """"
 		  
-		  self.NumberFormat = "-##########0.0##########"
+		  self.DefaultNumberFormat = "-##########0.0##########"
 		  
 		  self.file_extension = ".csv"
+		  
+		  self.UseLocalFormatting = False
 		End Sub
 	#tag EndMethod
 
@@ -22,9 +24,11 @@ Class clTextFileConfig
 		  
 		  self.quote_char = """"
 		  
-		  self.NumberFormat = "-##########0.0##########"
+		  self.DefaultNumberFormat = "-##########0.0##########"
 		  
 		  self.file_extension = ".csv"
+		  
+		  self.UseLocalFormatting = False
 		End Sub
 	#tag EndMethod
 
@@ -42,19 +46,31 @@ Class clTextFileConfig
 		    
 		  end if
 		  
-		  self.NumberFormat = "-##########0.0##########"
+		  self.DefaultNumberFormat = "-##########0.0##########"
 		  
 		  self.file_extension = ".csv"
+		  
+		  self.UseLocalFormatting = False
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub EnableLocalFormatting()
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub UpdateNumberFormat(new_format as string)
-		  NumberFormat = new_format
+		  DefaultNumberFormat = new_format
 		  
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h0
+		DefaultNumberFormat As string
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		enc As TextEncoding
@@ -69,11 +85,11 @@ Class clTextFileConfig
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		NumberFormat As string
+		quote_char As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		quote_char As String
+		UseLocalFormatting As Boolean
 	#tag EndProperty
 
 
@@ -135,7 +151,7 @@ Class clTextFileConfig
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="NumberFormat"
+			Name="DefaultNumberFormat"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
@@ -148,7 +164,7 @@ Class clTextFileConfig
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

@@ -871,6 +871,48 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Column(the_column_name as string) As clAbstractDataSerie
+		  return self.GetColumn(the_column_name, false)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Column(the_column_name as string, assigns source_value as Variant)
+		  
+		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  
+		  if temp_column = nil then
+		    Raise New clDataException("Cannot find  column " + the_column_name)
+		    return 
+		    
+		  elseif source_value.Type = Variant.TypeObject then
+		    
+		    var temp_obj as Object = source_value.ObjectValue
+		    
+		    if temp_obj isa clAbstractDataSerie then
+		      temp_column.SetElements(clAbstractDataSerie(temp_obj))
+		      return
+		    end if
+		    
+		    Raise New clDataException("Assigned item is an object, when updating " + the_column_name)
+		    
+		  elseif source_value.IsArray then
+		    Raise New clDataException("Assigned item is an array, when updating " + the_column_name)
+		    
+		  else
+		    
+		    for i as integer = 0 to temp_column.RowCount
+		      temp_column.SetElement(i, source_value)
+		      
+		    next
+		    return
+		    
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ColumnCount() As integer
 		  
 		  //  Return the number of columns in a table
@@ -2466,10 +2508,7 @@ Implements TableColumnReaderInterface,Iterable
 		    end if
 		    
 		  else
-		    for i as integer = 0 to source_column.RowCount
-		      temp_column.SetElement(i, source_column.GetElement(i))
-		      
-		    next
+		    temp_column.SetElements(source_column)
 		    
 		  end if
 		  

@@ -13,8 +13,15 @@ Implements TableRowWriterInterface
 		  for each row_field as variant in row_data
 		    var field as string
 		    
-		    if row_field.type = 4 or row_field.type=5 then
-		      field = str(row_field,self.number_format)
+		    if row_field.type = variant.TypeSingle or row_field.type= Variant.TypeDouble then
+		      
+		      if self.Use_locale_for_numbers then
+		        field = format(row_field,self.default_number_format)
+		        
+		      else
+		        field = str(row_field,self.default_number_format)
+		        
+		      end if
 		    else 
 		      field = row_field
 		    end if
@@ -123,8 +130,9 @@ Implements TableRowWriterInterface
 		  self.field_separator = tmp_config.field_separator
 		  self.encoding = tmp_config.enc
 		  self.quote_char = tmp_config.quote_char
-		  self.number_format = tmp_config.NumberFormat
+		  self.default_number_format = tmp_config.DefaultNumberFormat
 		  self.default_extension = tmp_config.file_extension
+		  self.Use_locale_for_numbers = tmp_config.UseLocalFormatting
 		End Sub
 	#tag EndMethod
 
@@ -197,6 +205,10 @@ Implements TableRowWriterInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected default_number_format As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected DestinationPath As folderitem
 	#tag EndProperty
 
@@ -221,15 +233,15 @@ Implements TableRowWriterInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected number_format As string
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
 		Protected quote_char As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected TextStream As TextOutputStream
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected Use_locale_for_numbers As Boolean
 	#tag EndProperty
 
 

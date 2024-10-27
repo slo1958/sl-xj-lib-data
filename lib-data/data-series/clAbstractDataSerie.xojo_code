@@ -964,7 +964,17 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetElements(the_values as clAbstractDataSerie)
+		  for i as integer = 0 to the_values.LastIndex
+		    self.SetElement(i, the_values.GetElement(i))
+		    
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetElements(the_values() as variant)
+		  
 		  for i as integer = 0 to the_values.LastIndex
 		    self.SetElement(i, the_values(i))
 		    
