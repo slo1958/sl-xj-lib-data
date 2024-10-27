@@ -2208,6 +2208,48 @@ Implements TableColumnReaderInterface,Iterable
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function IntegerColumn(the_column_name as string) As clIntegerDataSerie
+		  return clIntegerDataSerie(self.GetColumn(the_column_name, false))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub IntegerColumn(the_column_name as string, assigns source_value as Variant)
+		  
+		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  
+		  if temp_column = nil then
+		    Raise New clDataException("Cannot find  column " + the_column_name)
+		    return 
+		    
+		  elseif source_value.Type = Variant.TypeObject then
+		    
+		    var temp_obj as Object = source_value.ObjectValue
+		    
+		    if temp_obj isa clNumberDataSerie or temp_obj isa clIntegerDataSerie then
+		      temp_column.SetElements(clAbstractDataSerie(temp_obj))
+		      return
+		    end if
+		    
+		    Raise New clDataException("Assigned item is an object, when updating " + the_column_name)
+		    
+		  elseif source_value.IsArray then
+		    Raise New clDataException("Assigned item is an array, when updating " + the_column_name)
+		    
+		  else
+		    
+		    for i as integer = 0 to temp_column.RowCount
+		      temp_column.SetElement(i, source_value)
+		      
+		    next
+		    return
+		    
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Sub internal_AddRow(the_row_data() as variant)
 		  
@@ -2366,6 +2408,48 @@ Implements TableColumnReaderInterface,Iterable
 		Function Name() As string
 		  Return self.table_name
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NumberColumn(the_column_name as string) As clNumberDataSerie
+		  return clNumberDataSerie(self.GetColumn(the_column_name, false))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub NumberColumn(the_column_name as string, assigns source_value as Variant)
+		  
+		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  
+		  if temp_column = nil then
+		    Raise New clDataException("Cannot find  column " + the_column_name)
+		    return 
+		    
+		  elseif source_value.Type = Variant.TypeObject then
+		    
+		    var temp_obj as Object = source_value.ObjectValue
+		    
+		    if temp_obj isa clNumberDataSerie or temp_obj isa clIntegerDataSerie then
+		      temp_column.SetElements(clAbstractDataSerie(temp_obj))
+		      return
+		    end if
+		    
+		    Raise New clDataException("Assigned item is an object, when updating " + the_column_name)
+		    
+		  elseif source_value.IsArray then
+		    Raise New clDataException("Assigned item is an array, when updating " + the_column_name)
+		    
+		  else
+		    
+		    for i as integer = 0 to temp_column.RowCount
+		      temp_column.SetElement(i, source_value)
+		      
+		    next
+		    return
+		    
+		  end if
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
@@ -2539,6 +2623,48 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function StringColumn(the_column_name as string) As clStringDataSerie
+		  return clStringDataSerie(self.GetColumn(the_column_name, false))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub StringColumn(the_column_name as string, assigns source_value as Variant)
+		  
+		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  
+		  if temp_column = nil then
+		    Raise New clDataException("Cannot find  column " + the_column_name)
+		    return 
+		    
+		  elseif source_value.Type = Variant.TypeObject then
+		    
+		    var temp_obj as Object = source_value.ObjectValue
+		    
+		    if temp_obj isa clAbstractDataSerie then
+		      temp_column.SetElements(clAbstractDataSerie(temp_obj))
+		      return
+		    end if
+		    
+		    Raise New clDataException("Assigned item is an object, when updating " + the_column_name)
+		    
+		  elseif source_value.IsArray then
+		    Raise New clDataException("Assigned item is an array, when updating " + the_column_name)
+		    
+		  else
+		    
+		    for i as integer = 0 to temp_column.RowCount
+		      temp_column.SetElement(i, source_value)
+		      
+		    next
+		    return
+		    
+		  end if
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

@@ -163,7 +163,7 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clStringDataSerie(self.name+"+"+right_serie.name)
 		  for i as integer = 0 to mx0
-		    var n as integer
+		    var n as string
 		    
 		    if i <= mx1 then
 		      n = self.GetElement(i)

@@ -118,6 +118,10 @@ Protected Module clDataTable_tests
 		  test_028(logwriter)
 		  test_029(logwriter)
 		  test_030(logwriter)
+		  test_031(logwriter)
+		  test_032(logwriter)
+		  test_033(logwriter)
+		  
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		End Sub
@@ -1515,6 +1519,118 @@ Protected Module clDataTable_tests
 		  
 		  
 		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_031(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  var mytable As New clDataTable("T1")
+		  
+		  call mytable.AddColumn(new clDataSerie("name"))
+		  call mytable.AddColumn(new clNumberDataSerie("quantity"))
+		  call mytable.AddColumn(new clNumberDataSerie("unit_price"))
+		  
+		  mytable.AddRow("name": "alpha", "quantity":50, "unit_price": 6)
+		  mytable.AddRow("name": "alpha", "quantity":20, "unit_price": 8)
+		  
+		  call mytable.AddColumn(mytable.NumberColumn("unit_price") * mytable.NumberColumn("quantity"))
+		  
+		  var col1 as new clDataSerie("name", "alpha","alpha")
+		  var col2 as new clNumberDataSerie("quantity", 50, 20)
+		  var col3 as new clNumberDataSerie("unit_price", 6, 8)
+		  var col4 as new clNumberDataSerie("unit_price*quantity", 300, 160)
+		  
+		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4))
+		  
+		  call check_table(log,"T1", expected_t1, mytable)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_032(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var table0 As New clDataTable("mytable")
+		  
+		  call table0.AddColumns(Array("country","city","sales"))
+		  
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("France","Marseille",1200))
+		  table0.AddRow(Array("Belgique","Bruxelles",1300))
+		  table0.AddRow(Array("USA","New York",1400))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500))
+		  table0.AddRow(Array("USA","Chicago",1600))
+		  
+		  var is_france() as variant = table0.FilterWithFunction(AddressOf BasicFieldFilter,"country","France")
+		  var is_belgium() as variant =  table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")
+		  
+		  call table0.AddColumn(new clIntegerDataSerie("is_france"))
+		  call table0.AddColumn(new clIntegerDataSerie("is_belgium"))
+		  call table0.AddColumn(new clIntegerDataSerie("is_europe"))
+		  
+		  call table0.SetColumnValues("is_france", is_france, false)
+		  call table0.SetColumnValues("is_belgium", is_belgium, false)
+		  
+		  // Set the flag to 0 or 2 for test purposes only
+		  table0.Column("is_europe") = (table0.IntegerColumn("is_france") +  table0.IntegerColumn("is_belgium")) * 2
+		  
+		  
+		  var col1 as new clDataSerie("country", Array("France","France", "Belgique", "USA","Belgique","USA"))
+		  var col2 as new clDataSerie("City","Paris","Marseille","Bruxelles","New York", "Bruxelles","Chicago")
+		  var col3 as new clDataSerie("Sales",1100,1200,1300,1400,1500,1600)
+		  var col4 as new clIntegerDataSerie("is_france",1,1,0,0,0,0)
+		  var col5 as new clIntegerDataSerie("is_belgium",0,0,1,0,1,0)
+		  var col6 as new clIntegerDataSerie("is_europe",2,2,2,0,2,0)
+		  
+		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4, col5, col6))
+		  
+		  call check_table(log,"T1", expected_t1, table0)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_033(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var col_country1 as new clStringDataSerie("Country", "France", "France", "Belgique")
+		  var col_city1 as new clStringDataSerie("City", "Paris", "Marseille", "Bruxelles")
+		  
+		  var table0 As New clDataTable("mytable", SerieArray(col_country1, col_city1))
+		  
+		  
+		  call table0.AddColumn(new clStringDataSerie("Combined"))
+		  
+		  table0.StringColumn("Combined") = table0.StringColumn("Country") + "-" + table0.StringColumn("City")
+		  
+		  var col_country2 as new  clStringDataSerie("Country", "France", "France", "Belgique")
+		  var col_city2 as new  clStringDataSerie("City", "Paris", "Marseille", "Bruxelles")
+		  var col_combined2 as new clStringDataSerie("Combined","France-Paris","France-Marseille","Belgique-Bruxelles")
+		  
+		  var table_expected As New clDataTable("mytable", SerieArray(col_country2, col_city2, col_combined2))
+		  
+		  call check_table(log,"use dict for creation", table_expected, table0)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
 		  
 		  
 		End Sub

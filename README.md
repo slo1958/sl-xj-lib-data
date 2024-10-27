@@ -202,10 +202,21 @@ Dim mytable As New clDataTable("T1")
 call mytable.AddColumn(new clDataSerie("name"))
 call mytable.AddColumn(new clNumberDataSerie("quantity"))
 call mytable.AddColumn(new clNumberDataSerie("unit_price"))
+
+....
+// add data to the table
 ....
 
+// Base syntax (the column will be named ‘unit_price*quantity’)
 call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNumberDataSerie(mytable.GetColumn("quantity")))
 
+
+// simplified syntax:
+mytable.AddColumn(mytable.NumberColumn("unit_price") * mytable.NumberColumn("quantity"))
+
+// If the target column exists in the table
+mytable.AddColumn(new clNumberDataSerie(“total”))
+mytable.NumberColumn(“total”) = mytable.NumberColumn("unit_price") * mytable.NumberColumn("quantity")
 
 ```
 
@@ -543,7 +554,49 @@ Getting the total sales per country
 Dim table4 As clDataTable = table2.GroupBy(StringArray("country"), StringArray("sales"), StringArray(""))
 ```
 
+### Updating columns
 
+Use GetColumn() to get access to a columns.
+Use SetColumnValues() to update a column.
+
+Use simplified syntax for common cases.
+
+
+```xojo
+
+Var MyColumn as clAbstractDataColumn= MyTable.GetColumn(“name”)
+
+// Create a new column if needed
+Var updated_column as clAbstractDataColumn =  MyTable.SetColumnValues(“another_column”, MyColumn, True)
+
+// Do not create a new column and ignore the returned value
+Call MyTable.SetColumnValues(“another_column”, MyColumn, False)
+
+// Use simple syntax, target column must exist
+MyTable.Column(“another_column”) =  MyColumn
+
+//
+// Another example
+// 
+
+// Create a column
+call MyTable.AddColumn(new clNumberDataSerie(“Total”))
+
+// Update the column with 	a constant value
+MyTable.column(“Total”) = 0
+
+// Update the column from other columns
+MyTable.column(“Total”) = clNumberDataSerie(MyTable.Column(“Total”)) + clNumberDataSerie(MyTable.Column(“something”))
+
+
+
+// Add a column with unit_price x quantity
+new_column = mytable.AddColumn(mytable.NumberColumn("unit_price") * mytable.NumberColumn("quantity"))
+
+
+
+```
+ 
 
 ## About validation
 
