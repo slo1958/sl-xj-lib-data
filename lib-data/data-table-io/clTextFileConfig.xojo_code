@@ -56,7 +56,7 @@ Class clTextFileConfig
 
 	#tag Method, Flags = &h0
 		Sub EnableLocalFormatting()
-		  
+		  UseLocalFormatting = True
 		End Sub
 	#tag EndMethod
 
@@ -165,6 +165,14 @@ Class clTextFileConfig
 			InitialValue=""
 			Type="String"
 			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="UseLocalFormatting"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
