@@ -74,6 +74,7 @@ Class=clLibDataExample_014;lib-data-examples/clLibDataExample_014.xojo_code;&h00
 Class=clLibDataExample_015;lib-data-examples/clLibDataExample_015.xojo_code;&h000000007BB57FFF;&h0000000073919FFF;false
 Class=clDataTableRowReader;lib-data/data-tables/clDataTableRowReader.xojo_code;&h0000000045B67FFF;&h0000000056943FFF;false
 Class=clDateDataSerie;lib-data/data-series/clDateDataSerie.xojo_code;&h00000000775B37FF;&h00000000054067FF;false
+Class=clDateTimeDataSerie;lib-data/data-series/clDateTimeDataSerie.xojo_code;&h000000005F70B7FF;&h00000000054067FF;false
 Class=clLibDataExample_016;lib-data-examples/clLibDataExample_016.xojo_code;&h00000000465DE7FF;&h0000000073919FFF;false
 Class=clLibDataExample_017;lib-data-examples/clLibDataExample_017.xojo_code;&h000000007A45BFFF;&h0000000073919FFF;false
 Class=clLibDataExample_018;lib-data-examples/clLibDataExample_018.xojo_code;&h000000004672D7FF;&h0000000073919FFF;false
