@@ -38,7 +38,10 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function diff_to_days(d1 as DateTime, d2 as DateTime) As integer
+		Private Function diff_to_integer(d1 as DateTime, d2 as DateTime) As integer
+		  //
+		  // Returns the difference in number of days
+		  //
 		  if d1 = nil or d2 = nil then return 0
 		  
 		  return round((d1.SecondsFrom1970 - d2.SecondsFrom1970) / (24 * 60 * 60))
@@ -207,7 +210,7 @@ Inherits clAbstractDataSerie
 		  for i as integer = 0 to mx0
 		    
 		    if i <= mx1 and i <= mx2 then
-		      res.AddElement(diff_to_days(self.GetElementAsDate(i), right_serie.GetElementAsDate(i) ) )
+		      res.AddElement(diff_to_integer(self.GetElementAsDate(i), right_serie.GetElementAsDate(i) ) )
 		      
 		    else
 		      res.AddElement(0)
@@ -228,7 +231,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+" - "+ right_value.SQLDate)
 		  
 		  for i as integer = 0 to self.LastIndex
-		    res.AddElement(diff_to_days(self.GetElementAsDate(i) , right_value))
+		    res.AddElement(diff_to_integer(self.GetElementAsDate(i) , right_value))
 		    
 		  next
 		  
@@ -293,6 +296,53 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ToDayInteger() As clIntegerDataSerie
+		  var res as new clIntegerDataSerie("Day of " + self.name)
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDate(i)
+		    
+		    if d = nil then
+		      res.AddElement(0)
+		      
+		    else
+		      res.AddElement(d.day)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToMonthInteger() As clIntegerDataSerie
+		  var res as new clIntegerDataSerie("Month of " + self.name)
+		  
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDate(i)
+		    
+		    if d = nil then
+		      res.AddElement(0)
+		      
+		    else
+		      res.AddElement(d.month)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ToString() As clStringDataSerie
 		  var res as new clStringDataSerie(self.name+" as sql-date")
 		  
@@ -329,6 +379,76 @@ Inherits clAbstractDataSerie
 		    
 		  next
 		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToYearInteger() As clIntegerDataSerie
+		  var res as new clIntegerDataSerie("Year of " + self.name)
+		  
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDate(i)
+		    
+		    if d = nil then
+		      res.AddElement(0)
+		      
+		    else
+		      res.AddElement(d.year)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToYearMonthString(separator as string = "-") As clStringDataSerie
+		  var res as new clStringDataSerie("Year Month of " + self.name)
+		  
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDate(i)
+		    
+		    if d = nil then
+		      res.AddElement("")
+		      
+		    else
+		      res.AddElement(d.ToString("yyyy" + separator + "MM"))
+		      
+		    end if
+		    
+		    
+		  next
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToYearString() As clStringDataSerie
+		  var res as new clStringDataSerie("Year of " + self.name)
+		  
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDate(i)
+		    
+		    if d = nil then
+		      res.AddElement("")
+		      
+		    else
+		      res.AddElement(d.ToString("yyyy"))
+		      
+		    end if
+		    
+		    
+		  next
 		  return res
 		  
 		End Function

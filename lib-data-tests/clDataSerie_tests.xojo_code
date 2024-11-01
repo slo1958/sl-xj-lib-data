@@ -79,6 +79,8 @@ Protected Module clDataSerie_tests
 		  test_016(logwriter)
 		  test_017(logwriter)
 		  test_018(logwriter)
+		  test_019(logwriter)
+		  test_020(logwriter)
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		  
@@ -591,6 +593,117 @@ Protected Module clDataSerie_tests
 		  var c6 as clStringDataSerie = c1.ToString(DateTime.FormatStyles.Medium)
 		  
 		  var c7 as clStringDataSerie = c1.ToString("yyyy-MM")
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_019(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var c1 As New clDateDataSerie("premier") 
+		  var c2 As New clDateDataSerie("second") 
+		  
+		  c1.AddElement("2023-06-01")
+		  c1.AddElement("2022-08-12")
+		  
+		  c2.AddElement("2021-06-01")
+		  c2.AddElement("2020-08-01")
+		  
+		  var c3 as clIntegerDataSerie = c1 - c2
+		  
+		  var c4 as clIntegerDataSerie = c1.ToYearInteger()
+		  
+		  var c5 as clStringDataSerie = c1.ToYearMonthString()
+		  
+		  var c6 as clIntegerDataSerie = c1.ToDayInteger()
+		  
+		  var c7 as clStringDataSerie = c1.ToString("yyyy-MM")
+		  
+		  var c8  as clStringDataSerie = c1.ToYearString()
+		  
+		  var expected_c3 as new clIntegerDataSerie("premier-second", 730, 741)
+		  
+		  var expected_c4 as new clIntegerDataSerie("Year of premier", 2023, 2022)
+		  
+		  var expected_c5 as new clStringDataSerie("Year Month of premier", "2023-06","2022-08")
+		  
+		  var expected_c6 as new clIntegerDataSerie("Day of premier", 1, 12)
+		  
+		  var expected_c7 as new clStringDataSerie("premier as yyyy-MM", "2023-06","2022-08")
+		  
+		  var expected_c8 as new clStringDataSerie("Year of premier", "2023", "2022")
+		  
+		  call check_serie(log, "c3", expected_c3, c3)
+		  call check_serie(log, "c4", expected_c4, c4)
+		  call check_serie(log, "c5", expected_c5, c5)
+		  call check_serie(log, "c6", expected_c6, c6)
+		  call check_serie(log, "c7", expected_c7, c7)
+		  call check_serie(log, "c8", expected_c8,c8)
+		  
+		   
+		  
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_020(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var c1 As New clDateTimeDataSerie("premier") 
+		  var c2 As New clDateTimeDataSerie("second") 
+		  
+		  c1.AddElement("2023-06-01")
+		  c1.AddElement("2022-08-12")
+		  c1.AddElement("2024-06-12 22:51:33")
+		  
+		  c2.AddElement("2021-06-01")
+		  c2.AddElement("2020-08-01")
+		  c2.AddElement("2024-06-12 22:52:31")
+		  
+		  var c3 as clIntegerDataSerie = c1 - c2
+		  
+		  var c4 as clIntegerDataSerie = c1.ToYearInteger()
+		  
+		  var c5 as clStringDataSerie = c1.ToYearMonthString()
+		  
+		  var c6 as clIntegerDataSerie = c1.ToDayInteger()
+		  
+		  var c7 as clStringDataSerie = c1.ToString("yyyy-MM")
+		  
+		  var c8  as clStringDataSerie = c1.ToYearString()
+		  
+		  // Differences in seconds
+		  var expected_c3 as new clIntegerDataSerie("premier-second", 63072000, 64022400, -58)
+		  
+		  var expected_c4 as new clIntegerDataSerie("Year of premier", 2023, 2022, 2024)
+		  
+		  var expected_c5 as new clStringDataSerie("Year Month of premier", "2023-06","2022-08", "2024-06")
+		  
+		  var expected_c6 as new clIntegerDataSerie("Day of premier", 1, 12, 12)
+		  
+		  var expected_c7 as new clStringDataSerie("premier as yyyy-MM", "2023-06","2022-08", "2024-06")
+		  
+		  var expected_c8 as new clStringDataSerie("Year of premier", "2023", "2022", "2024")
+		  
+		  call check_serie(log, "c3", expected_c3, c3)
+		  call check_serie(log, "c4", expected_c4, c4)
+		  call check_serie(log, "c5", expected_c5, c5)
+		  call check_serie(log, "c6", expected_c6, c6)
+		  call check_serie(log, "c7", expected_c7, c7)
+		  call check_serie(log, "c8", expected_c8,c8)
+		  
+		   
+		  
 		  
 		  
 		  log.end_exec(CurrentMethodName)
