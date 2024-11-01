@@ -608,7 +608,8 @@ Protected Module clDataSerie_tests
 		  var c1 As New clDateDataSerie("premier") 
 		  var c2 As New clDateDataSerie("second") 
 		  
-		  c1.AddElement("2023-06-01")
+		  // The time part must be reset/ignored since we use a DateDataSerie
+		  c1.AddElement("2023-06-01 18:12:11")
 		  c1.AddElement("2022-08-12")
 		  
 		  c2.AddElement("2021-06-01")
@@ -626,6 +627,10 @@ Protected Module clDataSerie_tests
 		  
 		  var c8  as clStringDataSerie = c1.ToYearString()
 		  
+		  var d4 as clIntegerDataSerie = c1.ToDayOfWeekInteger()
+		  
+		  var d5 as clIntegerDataSerie = c1.ToDayOfWeekInteger(True)
+		  
 		  var expected_c3 as new clIntegerDataSerie("premier-second", 730, 741)
 		  
 		  var expected_c4 as new clIntegerDataSerie("Year of premier", 2023, 2022)
@@ -638,6 +643,10 @@ Protected Module clDataSerie_tests
 		  
 		  var expected_c8 as new clStringDataSerie("Year of premier", "2023", "2022")
 		  
+		  var expected_d4 as new clIntegerDataSerie("Day of week of premier", 5, 6)
+		  
+		  var expected_d5 as new clIntegerDataSerie("Day of week of premier", 4,5)
+		  
 		  call check_serie(log, "c3", expected_c3, c3)
 		  call check_serie(log, "c4", expected_c4, c4)
 		  call check_serie(log, "c5", expected_c5, c5)
@@ -645,7 +654,10 @@ Protected Module clDataSerie_tests
 		  call check_serie(log, "c7", expected_c7, c7)
 		  call check_serie(log, "c8", expected_c8,c8)
 		  
-		   
+		  
+		  call check_serie(log, "d4",expected_d4, d4)
+		  call check_serie(log, "d5",expected_d5, d5)
+		  
 		  
 		  
 		  
@@ -662,6 +674,7 @@ Protected Module clDataSerie_tests
 		  var c1 As New clDateTimeDataSerie("premier") 
 		  var c2 As New clDateTimeDataSerie("second") 
 		  
+		  // The time part must be used since we use a DateTimeDataSerie
 		  c1.AddElement("2023-06-01")
 		  c1.AddElement("2022-08-12")
 		  c1.AddElement("2024-06-12 22:51:33")
@@ -682,6 +695,18 @@ Protected Module clDataSerie_tests
 		  
 		  var c8  as clStringDataSerie = c1.ToYearString()
 		  
+		  var c9 as clStringDataSerie = c1.ToHourMinuteString()
+		  
+		  var d1 as clIntegerDataSerie = c1.ToHourInteger()
+		  
+		  var d2 as clIntegerDataSerie = c1.ToMinuteInteger()
+		  
+		  var d3 as clIntegerDataSerie = c1.ToSecondInteger()
+		  
+		  var d4 as clIntegerDataSerie = c1.ToDayOfWeekInteger()
+		  
+		  var d5 as clIntegerDataSerie = c1.ToDayOfWeekInteger(True)
+		  
 		  // Differences in seconds
 		  var expected_c3 as new clIntegerDataSerie("premier-second", 63072000, 64022400, -58)
 		  
@@ -695,14 +720,32 @@ Protected Module clDataSerie_tests
 		  
 		  var expected_c8 as new clStringDataSerie("Year of premier", "2023", "2022", "2024")
 		  
+		  var expected_c9  as new clStringDataSerie("Hour minute of premier", "00:00","00:00","22:51")
+		  
+		  var expected_d1 as new clIntegerDataSerie("Hour of premier", 0,0, 22)
+		  
+		  var expected_d2 as new clIntegerDataSerie("Minute of premier", 0,0, 51)
+		  
+		  var expected_d3 as new clIntegerDataSerie("Second of premier", 0,0,33)
+		  
+		  var expected_d4 as new clIntegerDataSerie("Day of week of premier", 5, 6, 4)
+		  
+		  var expected_d5 as new clIntegerDataSerie("Day of week of premier", 4,5,3)
+		  
+		  
 		  call check_serie(log, "c3", expected_c3, c3)
 		  call check_serie(log, "c4", expected_c4, c4)
 		  call check_serie(log, "c5", expected_c5, c5)
 		  call check_serie(log, "c6", expected_c6, c6)
 		  call check_serie(log, "c7", expected_c7, c7)
 		  call check_serie(log, "c8", expected_c8,c8)
+		  call check_serie(log, "c9", expected_c9, c9)
+		  call check_serie(log, "d1",expected_d1, d1)
+		  call check_serie(log, "d2",expected_d2, d2)
+		  call check_serie(log, "d3",expected_d3, d3)
 		  
-		   
+		  call check_serie(log, "d4",expected_d4, d4)
+		  call check_serie(log, "d5",expected_d5, d5)
 		  
 		  
 		  

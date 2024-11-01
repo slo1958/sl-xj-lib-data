@@ -245,7 +245,8 @@ Inherits clAbstractDataSerie
 		Private Function prep_date(d as variant) As DateTime
 		  var tmp as DateTime = d.DateTimeValue
 		  
-		  return tmp
+		  return new DateTime(tmp.year, tmp.Month, tmp.Day)
+		  
 		End Function
 	#tag EndMethod
 
@@ -307,6 +308,70 @@ Inherits clAbstractDataSerie
 		      
 		    else
 		      res.AddElement(d.day)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToDayOfWeekInteger(WeekStartsOnMonday as boolean = false) As clIntegerDataSerie
+		  
+		  // The day of the week as an integer: 1=Sunday, 7=Saturday.
+		  
+		  var res as new clIntegerDataSerie("Day of week of " + self.name)
+		  
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var item as datetime = self.GetElementAsDate(i)
+		    
+		    if item = nil then
+		      res.AddElement(0)
+		      
+		    elseif WeekStartsOnMonday then
+		      var d as integer = item.DayOfWeek()
+		      if d=1 then 
+		        res.AddElement(7)
+		      else
+		        res.AddElement(d-1)
+		        
+		      end if
+		      
+		      
+		    else
+		      res.AddElement(item.DayOfWeek)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToDayOfYearInteger() As clIntegerDataSerie
+		  
+		  // The day of the week as an integer: 1=Sunday, 7=Saturday.
+		  
+		  var res as new clIntegerDataSerie("Day of year of " + self.name)
+		  
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDate(i)
+		    
+		    if d = nil then
+		      res.AddElement(0)
+		      
+		    else
+		      res.AddElement(d.DayOfYear)
 		      
 		    end if
 		    

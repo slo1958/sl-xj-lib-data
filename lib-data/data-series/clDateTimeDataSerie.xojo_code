@@ -316,6 +316,138 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ToDayOfWeekInteger(WeekStartsOnMonday as boolean = false) As clIntegerDataSerie
+		  
+		  // The day of the week as an integer: 1=Sunday, 7=Saturday.
+		  
+		  var res as new clIntegerDataSerie("Day of week of " + self.name)
+		  
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var item as datetime = self.GetElementAsDateTime(i)
+		    
+		    if item = nil then
+		      res.AddElement(0)
+		      
+		    elseif WeekStartsOnMonday then
+		      var d as integer = item.DayOfWeek()
+		      if d=1 then 
+		        res.AddElement(7)
+		      else
+		        res.AddElement(d-1)
+		        
+		      end if
+		      
+		      
+		    else
+		      res.AddElement(item.DayOfWeek)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToDayOfYearInteger() As clIntegerDataSerie
+		  
+		  // The day of the week as an integer: 1=Sunday, 7=Saturday.
+		  
+		  var res as new clIntegerDataSerie("Day of year of " + self.name)
+		  
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDateTime(i)
+		    
+		    if d = nil then
+		      res.AddElement(0)
+		      
+		    else
+		      res.AddElement(d.DayOfYear)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToHourInteger() As clIntegerDataSerie
+		  var res as new clIntegerDataSerie("Hour of " + self.name)
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDateTime(i)
+		    
+		    if d = nil then
+		      res.AddElement(0)
+		      
+		    else
+		      res.AddElement(d.Hour)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToHourMinuteString(separator as string = ":") As clStringDataSerie
+		  var res as new clStringDataSerie("Hour Minute of " + self.name)
+		  
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDateTime(i)
+		    
+		    if d = nil then
+		      res.AddElement("")
+		      
+		    else
+		      res.AddElement(d.ToString("HH" + separator + "mm"))
+		      
+		    end if
+		    
+		    
+		  next
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToMinuteInteger() As clIntegerDataSerie
+		  var res as new clIntegerDataSerie("Minute of " + self.name)
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDateTime(i)
+		    if d = nil then
+		      res.AddElement(0)
+		      
+		    else
+		      res.AddElement(d.Minute)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ToMonthInteger() As clIntegerDataSerie
 		  var res as new clIntegerDataSerie("Month of " + self.name)
 		  
@@ -328,6 +460,50 @@ Inherits clAbstractDataSerie
 		      
 		    else
 		      res.AddElement(d.month)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToSecondInteger() As clIntegerDataSerie
+		  var res as new clIntegerDataSerie("Second of " + self.name)
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDateTime(i)
+		    if d = nil then
+		      res.AddElement(0)
+		      
+		    else
+		      res.AddElement(d.Second)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ToSecondsFrom1970Integer() As clIntegerDataSerie
+		  var res as new clIntegerDataSerie("Minute of " + self.name)
+		  
+		  for i as integer = 0 to self.LastIndex
+		    var d as datetime = self.GetElementAsDateTime(i)
+		    if d = nil then
+		      res.AddElement(0)
+		      
+		    else
+		      res.AddElement(d.SecondsFrom1970)
 		      
 		    end if
 		    
