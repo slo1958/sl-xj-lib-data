@@ -105,8 +105,22 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetFullnamePrefixToTimeStamp()
+		  
+		  self.fullname_prefix = DateTime.Now.SQLDateTime.replaceall(":","").ReplaceAll("-","").ReplaceAll(" ","_") + "_"
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetFullnameSuffix(suffix as string)
 		  self.fullname_suffix = suffix
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetFullnameSuffixToTimeStamp()
+		  
+		  self.fullname_suffix = "_" +  DateTime.Now.SQLDateTime.replaceall(":","").ReplaceAll("-","").ReplaceAll(" ","_")
 		End Sub
 	#tag EndMethod
 
@@ -197,6 +211,15 @@ Implements Iterable
 		End Sub
 	#tag EndMethod
 
+
+	#tag Note, Name = Description
+		A datapool is a collection of datatables.
+		
+		A method is provided to save all tables in a datapool in a single call.
+		This method can also be used to track the evolution of the content of tables by calling SetFullnameSuffixToTimeStamp() to use a common timestamp as sufix or SetFullnamePrefixToTimeStamp() to use a common timestamp as prefix.
+		
+		Available on: https://github.com/slo1958/sl-xj-lib-data.git
+	#tag EndNote
 
 	#tag Note, Name = License
 		MIT License

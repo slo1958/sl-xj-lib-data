@@ -396,6 +396,8 @@ Implements Iterable
 		
 		This is a conveniant but very slow process to loop over records in a table.
 		
+		Available on: https://github.com/slo1958/sl-xj-lib-data.git
+		
 		
 		
 	#tag EndNote

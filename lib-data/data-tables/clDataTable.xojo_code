@@ -2690,6 +2690,7 @@ Implements TableColumnReaderInterface,Iterable
 		
 		Only one dataTable can 'own'  a dataSerie, but the series can be shared by multiple tables.
 		
+		Available on: https://github.com/slo1958/sl-xj-lib-data.git
 		
 	#tag EndNote
 
