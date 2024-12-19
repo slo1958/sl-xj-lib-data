@@ -32,18 +32,23 @@ Inherits clLibDataExample
 		  New clDataSerie("City",  "Paris","Lyon","Namur","Paris","Charleroi","Milan") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
-		  , New clDataSerie("Sales", 100,200,300,400,500,600) _
-		  , New clDataSerie("Quantity", 51, 52,53,54, 55,56) _
+		  , New clNumberDataSerie("Sales", 100,200,300,400,500,600) _
+		  , New clNumberDataSerie("Quantity", 51, 52,53,54, 55,56) _
 		  ))
 		  
+		  var newcol as clAbstractDataSerie =  table0.AddColumn( table0.GetNumberColumn("Sales") / table0.GetNumberColumn("Quantity"))
+		  newcol.rename("PPU")
 		  
-		  var table1 As clDataTable = table0.groupby(StringArray("Country"), StringArray("Sales"), StringArray(""))
+		  var table1 As clDataTable = table0.groupby(Array("Country"), Array( _
+		  "Sales": clDataTable.AggSum, _
+		  "PPU":clDataTable.AggMin, _
+		  "PPU":clDataTable.AggMax _
+		  ))
 		  
-		  
-		  var table2 As clDataTable = table0.groupby(StringArray, StringArray("Sales"), StringArray)
+		  var table2 As clDataTable = table0.GroupBy(Array(""), Array("Sales"))
 		  table2.rename("Grand total")
 		  
-		  var table3 As clDataTable = table0.groupby(StringArray("Country","City"), StringArray, StringArray(""))
+		  var table3 As clDataTable = table0.GroupBy(StringArray("Country","City"), StringArray)
 		  
 		  return array(table0, table1, table2, table3)
 		End Function

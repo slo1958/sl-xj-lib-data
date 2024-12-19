@@ -211,6 +211,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function IsZero(value as Double) As Boolean
+		  return abs(value) <0.000001
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function LastIndex() As integer
 		  
 		  Return items.LastIndex
@@ -261,6 +268,67 @@ Inherits clAbstractDataSerie
 		    res.AddElement(self.GetElement(i) + right_value)
 		    
 		  next
+		  
+		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function operator_divide(right_serie as clNumberDataSerie) As clNumberDataSerie
+		  var mx1 as integer = self.LastIndex
+		  var mx2 as integer = right_serie.LastIndex
+		  var mx0 as integer 
+		  
+		  if mx1 > mx2 then
+		    mx0 = mx1
+		  else
+		    mx0=mx2
+		  end if
+		  
+		  var res as new clNumberDataSerie(self.name+"/"+right_serie.name)
+		  for i as integer = 0 to mx0
+		    var n1 as double = 1
+		    var n2 as double = 0
+		    
+		    if i <= mx1 then n1 = self.GetElement(i)
+		    
+		    if i<= mx2 then
+		      n2 = right_serie.GetElement(i)
+		      
+		    end if
+		    
+		    if IsZero(n2) then
+		      res.AddElement(nil)
+		    else
+		      res.AddElement(n1/n2)
+		    end if
+		    
+		  next
+		  
+		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function operator_divide(right_value as double) As clNumberDataSerie
+		  var res as new clNumberDataSerie(self.name+"/"+str(right_value))
+		  
+		  if self.IsZero(right_value) then
+		    for i as integer = 0 to self.LastIndex
+		      res.AddElement(nil)
+		      
+		    next
+		    
+		  else
+		    for i as integer = 0 to self.LastIndex
+		      res.AddElement(self.GetElement(i) / right_value)
+		      
+		    next
+		  end if
 		  
 		  return res
 		  
@@ -480,7 +548,7 @@ Inherits clAbstractDataSerie
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="display_title"
+			Name="DisplayTitle"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

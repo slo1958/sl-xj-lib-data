@@ -52,6 +52,20 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function PairArray(paramarray items as pair) As Pair()
+		  var ret() As pair
+		  
+		  For Each item As variant In items
+		    ret.append(item)
+		    
+		  Next
+		  
+		  Return ret
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function SerieArray(paramarray series as clAbstractDataSerie) As clAbstractDataSerie()
 		  var tmp() As clAbstractDataSerie
 		  

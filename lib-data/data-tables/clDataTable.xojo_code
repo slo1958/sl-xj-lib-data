@@ -654,7 +654,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var msg as string = ReplacePlaceHolders(ErrorMessage, item)
 		  
 		  Self.LastWarningMessage = "In " + SourceFunctionName + ": " + msg
-		   
+		  
 		  System.DebugLog(Self.LastWarningMessage)
 		  
 		End Sub
@@ -2004,14 +2004,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GroupBy(grouping_dimensions() as string, aggregate_measures() as string, aggregate_mode() as string) As clDataTable
+		Function GroupBy(grouping_dimensions() as string, measures() as pair) As clDataTable
 		  //  
 		  //  returns a new data table with the results of the aggregation
 		  //  
 		  //  Parameters:
 		  //  - the list of columns to group by as an array of string
-		  //  - the list of columns to aggregated as an array of string
-		  //  - the list of type aggregation (current version: ignored, always do 'sum')
+		  //  - the list of columns to aggregat as an array of pair (fieldname: aggregate method)
 		  //  
 		  //  Returns:
 		  //  - aggregated data table
@@ -2035,18 +2034,43 @@ Implements TableColumnReaderInterface,Iterable
 		    End If
 		  Next
 		  
-		  For Each item As String In aggregate_measures
+		  var InputMeasureDictOperations as new Dictionary
+		  
+		  
+		  For Each AggregationPair As pair In measures
+		    var item as string = AggregationPair.Left
+		    var aggreg as String  = AggregationPair.Right
+		    
+		    if not IsValidAggregation(aggreg)  then
+		      AddErrorMessage(CurrentMethodName, ErrMsgInvalidAggregation, str(aggreg))
+		      any_error = True
+		    end if
+		    
 		    If Len(Trim(item)) > 0 Then
 		      var tmp_serie as clAbstractDataSerie = self.GetColumn(item)
-		      if tmp_serie <> nil then
-		        input_measures.Append(tmp_serie)
-		        
-		      else
+		      
+		      if tmp_serie = nil then
 		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  item)
 		        any_error = True
+		        
+		      elseif InputMeasureDictOperations.HasKey(item) then
+		        var temp() as string = InputMeasureDictOperations.value(item) 
+		        if temp.IndexOf(aggreg)<0  then
+		          temp.Add(aggreg)
+		        end if
+		        
+		      else
+		        input_measures.Append(tmp_serie)
+		        InputMeasureDictOperations.value(item) = array(aggreg)
+		        
 		      End If
+		      
+		    else
+		      AddErrorMessage(CurrentMethodName,ErrMsgMissingMeasureColumnName)
+		      
 		    end if
 		  Next
+		  
 		  
 		  if any_error then
 		    return nil
@@ -2078,6 +2102,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var temp_measures() As clDataSerie
 		  
 		  For idx_mea As Integer = 0 To input_measures.LastIndex
+		    
 		    temp_measures.Append(New clDataSerie(input_measures(idx_mea).name))
 		    If Not has_grouping Then
 		      temp_measures(idx_mea).AddElement(New clDataSerie("x"))
@@ -2150,14 +2175,38 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		  For idx_mea As Integer = 0 To temp_measures.LastIndex
-		    var tmp_serie As New clNumberDataSerie("sum_" + input_measures(idx_mea).name)
+		    var input_name as string = input_measures(idx_mea).name
+		    var operations() as string = InputMeasureDictOperations.value(input_name)
 		    
-		    For idx_item As Integer = 0 To temp_measures(idx_mea).RowCount-1
-		      tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).sum)
+		    for each operation as string in operations
 		      
-		    Next
-		    
-		    output_series.Append(tmp_serie)
+		      var tmp_serie As New clNumberDataSerie(operation + "_" + input_measures(idx_mea).name)
+		      
+		      For idx_item As Integer = 0 To temp_measures(idx_mea).RowCount-1
+		        
+		        select case operation
+		          
+		        Case aggSum
+		          tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).sum)
+		          
+		        Case aggMin
+		          tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).Minimum)
+		          
+		        Case aggMax
+		          tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).Maximum)
+		          
+		        case aggCount
+		          tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).Count)
+		          
+		        case else
+		          tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).sum)
+		          
+		        end Select
+		        
+		      Next
+		      
+		      output_series.Append(tmp_serie)
+		    next
 		    
 		  Next
 		  
@@ -2189,6 +2238,20 @@ Implements TableColumnReaderInterface,Iterable
 		  Return New clDataTable(tmp_name, output_series)
 		  
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GroupBy(grouping_dimensions() as string, measures() as String) As clDataTable
+		  var temp() as pair
+		  
+		  for each measure as string in measures
+		    temp.Add(measure: clDataTable.AggSum)
+		    
+		  next
+		  
+		  return self.GroupBy(grouping_dimensions, temp)
 		  
 		End Function
 	#tag EndMethod
@@ -2369,6 +2432,18 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function IsPersistant() As boolean
 		  return not IsVirtual
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function IsValidAggregation(Mode as String) As Boolean
+		  if mode = AggSum then return true
+		  if mode = AggCount then return true
+		  if mode = AggMin then return true
+		  if mode = AggMax then return true
+		  
+		  return false
+		  
 		End Function
 	#tag EndMethod
 
@@ -2871,6 +2946,18 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndProperty
 
 
+	#tag Constant, Name = aggCount, Type = String, Dynamic = False, Default = \"count", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = aggMax, Type = String, Dynamic = False, Default = \"max", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = aggMin, Type = String, Dynamic = False, Default = \"min", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = aggSum, Type = String, Dynamic = False, Default = \"sum", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = DefaultColumnNamePattern, Type = String, Dynamic = False, Default = \"Untitled %0", Scope = Public
 	#tag EndConstant
 
@@ -2884,6 +2971,12 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndConstant
 
 	#tag Constant, Name = ErrMsgIgnoringColumn, Type = String, Dynamic = False, Default = \"Ignoring column %0", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgInvalidAggregation, Type = String, Dynamic = False, Default = \"Invalid aggregation mode %0", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgMissingMeasureColumnName, Type = String, Dynamic = False, Default = \"Missing measure column name", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = LoadedDataSourceColumn, Type = String, Dynamic = False, Default = \"loaded_from", Scope = Public

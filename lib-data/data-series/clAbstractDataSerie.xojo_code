@@ -839,6 +839,44 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Maximum() As double
+		  var limit As Integer = RowCount - 1
+		  var i As Integer
+		  
+		  if limit <0 then return 0
+		  
+		  var mx as Double = GetElementAsNumber(0)
+		  
+		  For i = 1 To limit
+		    mx = max(mx, GetElementAsNumber(i))
+		    
+		  Next
+		  
+		  return mx
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Minimum() As double
+		  var limit As Integer = RowCount - 1
+		  var i As Integer
+		  
+		  if limit <0 then return 0
+		  
+		  var mx as Double = GetElementAsNumber(0)
+		  
+		  For i = 1 To limit
+		    mx = Min(mx, GetElementAsNumber(i))
+		    
+		  Next
+		  
+		  return mx
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Rename(the_new_name as string)
 		  //  
 		  //  use setter of computed property

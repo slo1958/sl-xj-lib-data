@@ -53,7 +53,7 @@ Inherits clLibDataExample
 		  var table3 As clDataTable = table2.unique(array("country", "city"))
 		  
 		  
-		  var table4 as clDataTable  = table2.groupby(array("country"), array("Sales"), array(""))
+		  var table4 as clDataTable  = table2.groupby(array("country"), array("Sales":clDataTable.AggSum,"Sales":clDataTable.AggMax))
 		  
 		  var ret() as TableColumnReaderInterface
 		  ret.Add(table1)
