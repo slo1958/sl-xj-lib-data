@@ -14,7 +14,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  
 		  if alias = name then
-		    self.AddErrorMessage("Alias " + alias + " already used as name.")
+		    self.AddErrorMessage(CurrentMethodName, ErrMsgAliasUsedAsName, alias)
 		    return 
 		    
 		  end if
@@ -25,7 +25,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    Return
 		  end if
 		  
-		  self.AddErrorMessage("Alias " + alias + " already defined.")
+		  self.AddErrorMessage(CurrentMethodName, ErrMsgAliasAlreadyDefined, alias)
 		  
 		End Sub
 	#tag EndMethod
@@ -68,18 +68,23 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddErrorMessage(msg as string)
+		Sub AddErrorMessage(source as string, ErrorMessage as string, paramarray item as string)
 		  //  
 		  //  Add an error message
 		  //  
 		  //  Parameters
-		  //  - error message (string) 
+		  //  - source: name of method generating the message
+		  //  - error message with placeholders
+		  // - list of values for placeholders
 		  //  
 		  //  Returns:
 		  //  
 		  
+		  var msg as string = ReplacePlaceHolders(ErrorMessage, item)
 		  
-		  self.last_error_message = msg
+		  self.LastErrorMessage = "In " + source+": " + msg
+		  
+		  System.DebugLog(self.LastErrorMessage)
 		End Sub
 	#tag EndMethod
 
@@ -353,7 +358,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h1
 		Protected Sub CloneInfo(target as clAbstractDataSerie)
-		  target.display_title = self.display_title
+		  target.DisplayTitle = self.DisplayTitle
 		End Sub
 	#tag EndMethod
 
@@ -381,7 +386,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  self.Reset
 		  
-		  serie_name = the_label
+		  SerieName = the_label
 		  physical_table_link = Nil
 		  
 		  For i As Integer = 0 To the_values.LastIndex
@@ -397,7 +402,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  self.Reset
 		  
-		  serie_name = the_label
+		  SerieName = the_label
 		  physical_table_link = Nil
 		  
 		  if the_values.LastIndex < 0 then return
@@ -495,7 +500,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  var tmp_item() As String
 		  
-		  System.DebugLog("----START SERIE " + Self.serie_name+" --------")
+		  System.DebugLog("----START SERIE " + Self.SerieName+" --------")
 		  
 		  
 		  System.DebugLog(Join(tmp_item, ";"))
@@ -541,7 +546,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Next
 		  
-		  System.DebugLog("----END " + Self.serie_name+" --------")
+		  System.DebugLog("----END " + Self.SerieName+" --------")
 		  
 		End Sub
 	#tag EndMethod
@@ -649,7 +654,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_v = Nil
-		    self.AddErrorMessage("Cannot convert element "+Str(the_element_index) + " to string.")
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(the_element_index) , "string")
 		    
 		  End Try
 		  
@@ -681,7 +686,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_d = 0
-		    self.AddErrorMessage( "Cannot convert element "+Str(the_element_index) + " to integer.")
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(the_element_index) , "integer")
 		    
 		  End Try
 		  
@@ -715,7 +720,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_d = 0
-		    self.AddErrorMessage( "Cannot convert element "+Str(the_element_index) + " to number.")
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(the_element_index) , "number")
 		    
 		  End Try
 		  
@@ -747,7 +752,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_s = ""
-		    self.AddErrorMessage( "Cannot convert element "+Str(the_element_index) + " to string.")
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(the_element_index) , "string")
 		    
 		  End Try
 		  
@@ -767,7 +772,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function GetLastErrorMessage() As string
-		  return self.last_error_message
+		  return self.LastErrorMessage
 		End Function
 	#tag EndMethod
 
@@ -856,6 +861,19 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  return self
 		  
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ReplacePlaceHolders(BaseString as string, values() as string) As string
+		  var ret as string = BaseString
+		  
+		  for i as integer = 0 to values.LastIndex
+		    ret = ret.replaceall("%"+str(i), values(i))
+		    
+		  next
+		  
+		  return ret
 		End Function
 	#tag EndMethod
 
@@ -1248,7 +1266,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		#tag Getter
 			Get
 			  if self.serie_title.len() = 0 then
-			    Return serie_name
+			    Return SerieName
 			    
 			  else
 			    return serie_title
@@ -1264,11 +1282,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 			  
 			End Set
 		#tag EndSetter
-		display_title As string
+		DisplayTitle As string
 	#tag EndComputedProperty
 
 	#tag Property, Flags = &h1
-		Protected last_error_message As String
+		Protected LastErrorMessage As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -1278,16 +1296,16 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag ComputedProperty, Flags = &h0
 		#tag Getter
 			Get
-			  Return serie_name
+			  Return SerieName
 			End Get
 		#tag EndGetter
 		#tag Setter
 			Set
 			  If value.Trim.Len = 0 Then
-			    Self.serie_name = "noname"
+			    Self.SerieName = "noname"
 			    
 			  Else
-			    Self.serie_name = value.Trim
+			    Self.SerieName = value.Trim
 			    
 			  End If
 			  
@@ -1301,12 +1319,25 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected serie_name As string
+		Protected SerieName As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected serie_title As string
 	#tag EndProperty
+
+
+	#tag Constant, Name = ErrMsgAliasAlreadyDefined, Type = String, Dynamic = False, Default = \"Alias %0 already defined ", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgAliasUsedAsName, Type = String, Dynamic = False, Default = \"Alias %0 already used as name", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgCannotConvert, Type = String, Dynamic = False, Default = \"Cannot convert %0 to %1", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgCannotConvertElement, Type = String, Dynamic = False, Default = \"Cannot convert element %0 to %1", Scope = Public
+	#tag EndConstant
 
 
 	#tag ViewBehavior
@@ -1351,7 +1382,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="display_title"
+			Name="DisplayTitle"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

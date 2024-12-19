@@ -1,27 +1,27 @@
 #tag Class
 Protected Class clDataType
 	#tag Method, Flags = &h0
-		Shared Function CreateDataSerie(serie_name as string, serie_type as String) As clAbstractDataSerie
+		Shared Function CreateDataSerie(SerieName as string, serie_type as String) As clAbstractDataSerie
 		  
 		  select case serie_type
 		    
 		  case  StringValue
-		    return new clStringDataSerie(serie_name)
+		    return new clStringDataSerie(SerieName)
 		    
 		  case NumberValue 
-		    return new clNumberDataSerie(serie_name)
+		    return new clNumberDataSerie(SerieName)
 		    
 		  case IntegerValue
-		    return new clIntegerDataSerie(serie_name)
-		     
+		    return new clIntegerDataSerie(SerieName)
+		    
 		  case DateValue
-		    return new clDateDataSerie(serie_name)
+		    return new clDateDataSerie(SerieName)
 		    
 		  case VariantValue
-		    return new clDataSerie(serie_name)
+		    return new clDataSerie(SerieName)
 		    
 		  else
-		    return new clDataSerie(serie_name)
+		    return new clDataSerie(SerieName)
 		    
 		  end select
 		  

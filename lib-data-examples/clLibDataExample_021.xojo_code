@@ -43,7 +43,7 @@ Inherits clLibDataExample
 		  var stat_table as clDataTable = data_table.GetStatisticsAsTable
 		  var struc_table as clDataTable = data_table.GetStructureAsTable
 		  
-		  call stat_table.GetColumn(clDataTable.statistics_average_column).RoundValues(2)
+		  call stat_table.GetColumn(clDataTable.StatisticsAverageColumn).RoundValues(2)
 		  
 		  ret_tables.Add(data_table)
 		  ret_tables.add(stat_table)

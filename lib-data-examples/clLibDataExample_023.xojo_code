@@ -48,7 +48,7 @@ Inherits clLibDataExample
 		  call my_table.AddColumn(new clNumberDataSerie("Delta"))
 		  call my_table.AddColumn(new clNumberDataSerie("Gamma"))
 		  call my_table.AddColumn(new clIntegerDataSerie("Group"))
-		  call my_table.AddColumn(new clStringDataSerie(clDataTable.loaded_data_source_column))
+		  call my_table.AddColumn(new clStringDataSerie(clDataTable.LoadedDataSourceColumn))
 		  
 		  var dct_mapping_file3 as new Dictionary
 		  dct_mapping_file3.value("Un") = "Alpha"

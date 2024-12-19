@@ -27,7 +27,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function clone() As clCompressedDataSerie
 		  var tmp As New clCompressedDataSerie(Self.name)
-		  tmp.display_title = self.display_title
+		  tmp.DisplayTitle = self.DisplayTitle
 		  
 		  tmp.AddMetadata("source","clone from " + self.FullName)
 		  
@@ -53,7 +53,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function CloneStructure() As clCompressedDataSerie
 		  var tmp As New clCompressedDataSerie(Self.name)
-		  tmp.display_title = self.display_title
+		  tmp.DisplayTitle = self.DisplayTitle
 		  
 		  tmp.AddMetadata("source","clone structure from " + self.FullName)
 		  

@@ -308,7 +308,7 @@ End
 		  
 		  
 		  current_table = table_name
-		  var tbl as TableColumnReaderInterface = table_dict.value(current_table)
+		  var tbl as TableColumnReaderInterface = table_dict.Lookup(current_table, nil)
 		  
 		  if tbl is nil then
 		    System.DebugLog(CurrentMethodName+" cannot find table " + table_name)

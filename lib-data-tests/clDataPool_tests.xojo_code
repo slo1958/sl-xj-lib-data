@@ -83,7 +83,7 @@ Protected Module clDataPool_tests
 		  
 		  my_data_pool.SetTable(my_data_pool.GetTable("table_1").Clone(), "res")
 		  
-		  my_data_pool.GetTable("res").AddTableData(my_data_pool.GetTable("T2"))
+		  my_data_pool.GetTable("res"). AddColumnsData(my_data_pool.GetTable("T2"))
 		  
 		  var col1 as clDataSerie
 		  var col2 as clDataSerie
@@ -164,7 +164,7 @@ Protected Module clDataPool_tests
 		  
 		  my_data_pool.table("res") = my_data_pool.table("table_1").Clone()
 		  
-		  my_data_pool.table("res").AddTableData(my_data_pool.table("T2"))
+		  my_data_pool.table("res"). AddColumnsData(my_data_pool.table("T2"))
 		  
 		  var col1 as clDataSerie
 		  var col2 as clDataSerie

@@ -17,7 +17,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var tmp_column_name As String = tmp_column.name
 		  
 		  If Self.GetColumn(tmp_column_name) <> Nil Then
-		    System.DebugLog("column " + tmp_column_name + " already defined in table.")
+		    self.AddWarningMessage(CurrentMethodName, ErrMsgColumnAlreadyDefined, tmp_column_name, self.TableName)
 		    Return Nil
 		    
 		  end if
@@ -95,12 +95,12 @@ Implements TableColumnReaderInterface,Iterable
 		  var tmp_column_name As String = the_column_name.trim
 		  
 		  if tmp_column_name.len() = 0 then
-		    tmp_column_name = "Untitled " + str(self.ColumnCount)
+		    tmp_column_name = ReplacePlaceHolders(DefaultColumnNamePattern,  str(self.ColumnCount))
 		    
 		  end if
 		  
 		  If Self.GetColumn(tmp_column_name) <> Nil Then
-		    System.DebugLog("column " + tmp_column_name + " already defined in table.")
+		    self.AddWarningMessage(CurrentMethodName, ErrMsgColumnAlreadyDefined, tmp_column_name, self.TableName)
 		    Return Nil
 		    
 		  end if
@@ -135,7 +135,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddColumns(the_columns() as clAbstractDataSerie) As clAbstractDataSerie()
+		Function AddColumns(NewColumns() as clAbstractDataSerie) As clAbstractDataSerie()
 		  //  
 		  //  Add  a set of  empty columns to the table
 		  //  
@@ -148,7 +148,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var return_array() As clAbstractDataSerie
 		  
-		  for each col as clAbstractDataSerie in the_columns
+		  for each col as clAbstractDataSerie in NewColumns
 		    return_array.add( self.AddColumn(col))
 		    
 		  next
@@ -159,7 +159,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddColumns(the_column_names() as string) As clAbstractDataSerie()
+		Function AddColumns(NewColumnNames() as string) As clAbstractDataSerie()
 		  //  
 		  //  Add  a set of  empty columns to the table
 		  //  
@@ -173,7 +173,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var return_array() As clAbstractDataSerie
 		  var v as variant 
-		  For Each name As String In the_column_names
+		  For Each name As String In NewColumnNames
 		    return_array.append(AddColumn(name, v))
 		    
 		  Next
@@ -183,8 +183,70 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddError(source_fct as string, error_msg as string)
-		  System.DebugLog(source_fct + " " + error_msg)
+		Sub AddColumnsData(the_source as TableColumnReaderInterface, CreateMissingColumns as boolean = True)
+		  //  
+		  //  Add  the data row from column source. New columns may be added to the current table
+		  //  
+		  //  For example, 
+		  //  - with the current table containing columns A, B, C 
+		  //  - with  the flag CreateMissingColumn set to true
+		  //  - appending from a table with columns A, B, D 
+		  //  the values from A, and B are appended to the existing columns A and B
+		  //  a new column is created to store the values for D 
+		  
+		  //  Parameters:
+		  //  - the source , providing data column by column
+		  //  - flag allow the creation of missing columns
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  var length_before as integer = self.RowCount
+		  
+		  For Each src_tmp_column As clAbstractDataSerie In the_source.GetAllColumns
+		    var column_name As String = src_tmp_column.name
+		    
+		    var dst_tmp_column As  clAbstractDataSerie = Self.GetColumn(column_name)
+		    
+		    If dst_tmp_column <> Nil Then
+		      dst_tmp_column.AddSerie(src_tmp_column)
+		      
+		    elseif CreateMissingColumns then
+		      dst_tmp_column = Self.AddColumn(column_name)
+		      dst_tmp_column.SetLength(length_before)
+		      
+		      dst_tmp_column.AddSerie(src_tmp_column)
+		      
+		    else
+		      AddErrorMessage(CurrentMethodName, ErrMsgIgnoringColumn , column_name)
+		      
+		    End If
+		    
+		    
+		    
+		  Next
+		  
+		  var new_size As Integer = Self.RowCount + the_source.RowCount
+		  
+		  Self.row_index.SetLength(new_size)
+		  
+		  For Each tmp_column As clAbstractDataSerie In Self.columns
+		    tmp_column.SetLength(new_size)
+		    
+		  Next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AddErrorMessage(SourceFunctionName as string, ErrorMessage as string, paramarray item as string)
+		  
+		  var msg as string = ReplacePlaceHolders(ErrorMessage, item)
+		  
+		  self.LastErrorMessage = "In " + SourceFunctionName+": " + msg
+		  
+		  System.DebugLog(self.LastErrorMessage)
 		  
 		End Sub
 	#tag EndMethod
@@ -207,7 +269,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRow(the_row as clDataRow, create_columns_flag as boolean = True)
+		Sub AddRow(NewRow as clDataRow, CreateColumnsFlag as boolean = True)
 		  //  
 		  //  Add  a data row to the table
 		  //  
@@ -220,27 +282,27 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  var tmp_RowCount As Integer = Self.RowCount
 		  
-		  if the_row.name.Trim = "" or not row_name_as_column then
+		  if NewRow.name.Trim = "" or not row_name_as_column then
 		    
 		  else
-		    var tmp_column as clAbstractDataSerie = self.GetColumn(row_name_column)
+		    var tmp_column as clAbstractDataSerie = self.GetColumn(RowNameColumn)
 		    
-		    If tmp_column = Nil And create_columns_flag Then
-		      tmp_column = AddColumn(row_name_column)
+		    If tmp_column = Nil And CreateColumnsFlag Then
+		      tmp_column = AddColumn(RowNameColumn)
 		      
 		    End If
 		    
 		    if tmp_column <> nil then
-		      tmp_column.AddElement(the_row.name)
+		      tmp_column.AddElement(NewRow.name)
 		      
 		    end if
 		    
 		  end if
 		  
-		  For Each column As String In the_row
+		  For Each column As String In NewRow
 		    var tmp_column As clAbstractDataSerie = Self.GetColumn(column)
 		    
-		    If tmp_column = Nil And create_columns_flag Then
+		    If tmp_column = Nil And CreateColumnsFlag Then
 		      tmp_column = AddColumn(column)
 		      
 		    End If
@@ -249,7 +311,7 @@ Implements TableColumnReaderInterface,Iterable
 		      Raise New clDataException("Adding row with unexpected column " + column)
 		      
 		    Else
-		      var tmp_item As variant = the_row.GetCell(column)
+		      var tmp_item As variant = NewRow.GetCell(column)
 		      tmp_column.AddElement(tmp_item)
 		      
 		    End If
@@ -268,7 +330,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRow(the_values as Dictionary)
+		Sub AddRow(NewCellsValue as Dictionary)
 		  
 		  //  Add  a data row to the table using the passed dictionary. Does not create new columns.
 		  //  
@@ -279,14 +341,11 @@ Implements TableColumnReaderInterface,Iterable
 		  //  (nothing)
 		  //  
 		  
-		  if the_values = nil then 
-		    return
-		    
-		  end if
+		  if NewCellsValue = nil then return
 		  
 		  for each column as clAbstractDataSerie in self.columns
-		    if the_values.HasKey(column.name) then
-		      column.AddElement(the_values.value(column.name))
+		    if NewCellsValue.HasKey(column.name) then
+		      column.AddElement(NewCellsValue.value(column.name))
 		      
 		    else
 		      column.AddElement(column.GetDefaultValue())
@@ -379,7 +438,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRow(the_values() as string)
+		Sub AddRow(NewCellsValue() as string)
 		  
 		  //  Add  a data row to the table
 		  //  
@@ -390,8 +449,8 @@ Implements TableColumnReaderInterface,Iterable
 		  //  (nothing)
 		  //  
 		  For i As Integer = 0 To columns.LastIndex
-		    If i <= the_values.LastIndex Then
-		      columns(i).AddElement(the_values(i))
+		    If i <= NewCellsValue.LastIndex Then
+		      columns(i).AddElement(NewCellsValue(i))
 		      
 		    Else
 		      columns(i).AddElement(columns(i).GetDefaultValue())
@@ -406,7 +465,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRow(the_values() as variant)
+		Sub AddRow(NewCellsValue() as variant)
 		  
 		  //  Add  a data row to the table
 		  //  
@@ -417,8 +476,8 @@ Implements TableColumnReaderInterface,Iterable
 		  //  (nothing)
 		  //  
 		  For i As Integer = 0 To columns.LastIndex
-		    If i <= the_values.LastIndex Then
-		      columns(i).AddElement(the_values(i))
+		    If i <= NewCellsValue.LastIndex Then
+		      columns(i).AddElement(NewCellsValue(i))
 		      
 		    Else
 		      columns(i).AddElement(columns(i).GetDefaultValue())
@@ -433,7 +492,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRows(source_rows() as clDataRow, create_columns_flag as boolean = True)
+		Sub AddRows(NewRowsSource() as clDataRow, CreateColumnsFlag as boolean = True)
 		  //  
 		  //  Add  data rows to the table
 		  //  
@@ -444,8 +503,8 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  (nothing)
 		  //  
-		  for each row as clDataRow in source_rows
-		    self.AddRow(row, create_columns_flag)
+		  for each row as clDataRow in NewRowsSource
+		    self.AddRow(row, CreateColumnsFlag)
 		    
 		  next
 		  
@@ -453,17 +512,17 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRows(source_dictionaries() as Dictionary)
+		Sub AddRows(NewRowsSource() as Dictionary)
 		  //  
 		  //  Add  data rows to the table
 		  //  
 		  //  Parameters:
-		  //  - the data rows as an array
+		  //  - the data rows as an array of dictionaries
 		  //
 		  //  Returns:
 		  //  (nothing)
 		  //  
-		  for each dict as Dictionary in source_dictionaries
+		  for each dict as Dictionary in NewRowsSource
 		    self.AddRow(dict)
 		    
 		  next
@@ -491,13 +550,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRows(the_source as TableRowReaderInterface, create_missing_columns as boolean = True)
+		Sub AddRows(NewRowsSource as TableRowReaderInterface, CreateMissingColumns as boolean = True)
 		  //  
 		  //  Add  the data row from column source. New columns may be added to the current table
 		  //  
 		  //  For example, 
 		  //  - with the current table containing columns A, B, C 
-		  //  - with  the flag create_missing_column set to true
+		  //  - with  the flag CreateMissingColumn set to true
 		  //  - appending from a table with columns A, B, D 
 		  //  the values from A, and B are appended to the existing columns A and B
 		  //  a new column is created to store the values for D 
@@ -513,17 +572,17 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_columns() as clAbstractDataSerie
 		  
-		  for each column_name as string in the_source.GetColumnNames
+		  for each column_name as string in NewRowsSource.GetColumnNames
 		    var tmp_col as clAbstractDataSerie = self.GetColumn(column_name)
 		    
 		    if tmp_col = nil then
-		      if create_missing_columns then
+		      if CreateMissingColumns then
 		        tmp_col = new clDataSerie(column_name)
 		        tmp_col.SetLength(length_before)
 		        call self.AddColumn(tmp_col)
 		        
 		      else
-		        AddError("append_row_from_table","Ignoring column " + column_name)
+		        AddErrorMessage(CurrentMethodName, ErrMsgIgnoringColumn, column_name)
 		        
 		      end if 
 		    end if
@@ -532,7 +591,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  call self.internal_AddRows(the_source, tmp_columns, the_source.name)
+		  call self.internal_AddRows(NewRowsSource, tmp_columns, NewRowsSource.name)
 		  
 		  
 		  
@@ -540,7 +599,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRows(the_source as TableRowReaderInterface, mapping_dict as dictionary)
+		Sub AddRows(NewRowsSource as TableRowReaderInterface, FieldMapping as dictionary)
 		  //  
 		  //  Add  the data row from column source. New columns may be added to the current table
 		  //  
@@ -562,11 +621,11 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_columns() as clAbstractDataSerie
 		  
-		  for each source_column_name as string in the_source.GetColumnNames
+		  for each source_column_name as string in NewRowsSource.GetColumnNames
 		    var tmp_col as clAbstractDataSerie = nil
 		    
-		    if mapping_dict.HasKey(source_column_name) then
-		      var tarGetColumn_name as string = mapping_dict.value(source_column_name)
+		    if FieldMapping.HasKey(source_column_name) then
+		      var tarGetColumn_name as string = FieldMapping.value(source_column_name)
 		      
 		      tmp_col = self.GetColumn(tarGetColumn_name)
 		      
@@ -582,7 +641,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  call self.internal_AddRows(the_source, tmp_columns, the_source.name)
+		  call self.internal_AddRows(NewRowsSource, tmp_columns, NewRowsSource.name)
 		  
 		  
 		  
@@ -590,58 +649,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddTableData(the_source as TableColumnReaderInterface, create_missing_columns as boolean = True)
-		  //  
-		  //  Add  the data row from column source. New columns may be added to the current table
-		  //  
-		  //  For example, 
-		  //  - with the current table containing columns A, B, C 
-		  //  - with  the flag create_missing_column set to true
-		  //  - appending from a table with columns A, B, D 
-		  //  the values from A, and B are appended to the existing columns A and B
-		  //  a new column is created to store the values for D 
+		Sub AddWarningMessage(SourceFunctionName as string, ErrorMessage as string, paramarray item as string)
 		  
-		  //  Parameters:
-		  //  - the source , providing data column by column
-		  //  - flag allow the creation of missing columns
-		  //  
-		  //  Returns:
-		  //  (nothing)
-		  //  
-		  var length_before as integer = self.RowCount
+		  var msg as string = ReplacePlaceHolders(ErrorMessage, item)
 		  
-		  For Each src_tmp_column As clAbstractDataSerie In the_source.GetAllColumns
-		    var column_name As String = src_tmp_column.name
-		    
-		    var dst_tmp_column As  clAbstractDataSerie = Self.GetColumn(column_name)
-		    
-		    If dst_tmp_column <> Nil Then
-		      dst_tmp_column.AddSerie(src_tmp_column)
-		      
-		    elseif create_missing_columns then
-		      dst_tmp_column = Self.AddColumn(column_name)
-		      dst_tmp_column.SetLength(length_before)
-		      
-		      dst_tmp_column.AddSerie(src_tmp_column)
-		      
-		    else
-		      AddError("append_row_from_table","Ignoring column " + column_name)
-		      
-		    End If
-		    
-		    
-		    
-		  Next
-		  
-		  var new_size As Integer = Self.RowCount + the_source.RowCount
-		  
-		  Self.row_index.SetLength(new_size)
-		  
-		  For Each tmp_column As clAbstractDataSerie In Self.columns
-		    tmp_column.SetLength(new_size)
-		    
-		  Next
-		  
+		  Self.LastWarningMessage = "In " + SourceFunctionName + ": " + msg
+		   
+		  System.DebugLog(Self.LastWarningMessage)
 		  
 		End Sub
 	#tag EndMethod
@@ -954,7 +968,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table_name as string)
+		Sub Constructor(NewTableName as string)
 		  //
 		  //  Creates a datatable
 		  //  
@@ -968,7 +982,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_table_name As String
 		  
-		  tmp_table_name = the_table_name
+		  tmp_table_name = NewTableName
 		  
 		  internal_new_table(tmp_table_name)
 		  
@@ -977,7 +991,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table_name as string, the_columns() as clabstractDataSerie, AutoCloneColumns as boolean = false)
+		Sub Constructor(NewTableName as string, ColumnsSource() as clabstractDataSerie, AutoCloneColumns as boolean = false)
 		  //
 		  // Creates a new data table from a set of columns. Columns cannot be part of another table. If AutoCloneColumn is true, a column 
 		  //  that is already used in another table will be cloned. If the parameter is false (default), an exception is generated if the column is already
@@ -994,9 +1008,9 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  meta_dict = new clMetadata
 		  
-		  var tmp_columns() As clAbstractDataSerie = the_columns
+		  var tmp_columns() As clAbstractDataSerie = ColumnsSource
 		  
-		  if the_columns = nil then return
+		  if ColumnsSource = nil then return
 		  
 		  For i As Integer = 0 To tmp_columns.LastIndex
 		    If tmp_columns(i) = Nil Then
@@ -1014,7 +1028,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Next
 		  
-		  internal_new_table(the_table_name)
+		  internal_new_table(NewTableName)
 		  
 		  For Each c As clAbstractDataSerie In tmp_columns
 		    //  add column takes care of adjusting the length
@@ -1025,7 +1039,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table_name as string, the_columns as Dictionary, allocator as column_allocator = nil)
+		Sub Constructor(NewTableName as string, ColumnsSource as Dictionary, allocator as column_allocator = nil)
 		  //
 		  // Creates a new data table from a set of columns. Columns are passed as a dictionary with column name as key and an array of values as value
 		  //  
@@ -1040,12 +1054,12 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  meta_dict = new clMetadata
 		  
-		  if the_columns = nil then return
+		  if ColumnsSource = nil then return
 		  
 		  var tmp_columns() as clAbstractDataSerie
 		  
-		  for each tmp_column_name as string in the_columns.Keys
-		    var v() as variant = MakeVariantArray(the_columns.value(tmp_column_name))
+		  for each tmp_column_name as string in ColumnsSource.Keys
+		    var v() as variant = MakeVariantArray(ColumnsSource.value(tmp_column_name))
 		    
 		    if allocator = nil then
 		      tmp_columns.Add(new clDataSerie(tmp_column_name, v))
@@ -1059,7 +1073,7 @@ Implements TableColumnReaderInterface,Iterable
 		    end if
 		  next
 		  
-		  internal_new_table(the_table_name)
+		  internal_new_table(NewTableName)
 		  
 		  For Each c As clAbstractDataSerie In tmp_columns
 		    //  add column takes care of adjusting the length
@@ -1071,7 +1085,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table_name as string, column_names() as string)
+		Sub Constructor(NewTableName as string, ColumnNames() as string)
 		  //  
 		  //  Creates a data table from a list of column names
 		  //  
@@ -1086,12 +1100,12 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_table_name As String
 		  
-		  tmp_table_name = the_table_name
+		  tmp_table_name = NewTableName
 		  
 		  internal_new_table(tmp_table_name)
 		  
 		  
-		  For Each name As string In column_names
+		  For Each name As string In ColumnNames
 		    var temp_name as string = name.Trim
 		    call Self.AddColumn(temp_name)
 		    
@@ -1102,7 +1116,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(table_name as string, table_source as TableRowReaderInterface, allocator as column_allocator = nil)
+		Sub Constructor(NewTableName as string, NewTableSource as TableRowReaderInterface, allocator as column_allocator = nil)
 		  //
 		  //  Creates a datatable from a table row reader
 		  //  
@@ -1117,10 +1131,10 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  self.allow_local_columns = False
 		  
-		  var tmp_table_name As String = table_name.Trim
+		  var tmp_table_name As String = NewTableName.Trim
 		  
 		  if tmp_table_name.Length = 0 then
-		    tmp_table_name = "Noname"
+		    tmp_table_name = DefaultTableName
 		    
 		  end if 
 		  
@@ -1130,8 +1144,8 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  // var columns() as clAbstractDataSerie
 		  
-		  var tmp_column_names() as string = table_source.GetColumnNames
-		  var tmp_column_types as Dictionary = table_source.GetColumnTypes
+		  var tmp_column_names() as string = NewTableSource.GetColumnNames
+		  var tmp_column_types as Dictionary = NewTableSource.GetColumnTypes
 		  
 		  for each tmp_column_name as string in tmp_column_names
 		    
@@ -1146,10 +1160,10 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  
-		  while not table_source.EndOfTable
+		  while not NewTableSource.EndOfTable
 		    var tmp_row() as variant
 		    
-		    tmp_row  = table_source.NextRow
+		    tmp_row  = NewTableSource.NextRow
 		    
 		    if tmp_row <> nil then
 		      
@@ -1169,7 +1183,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(table_source as TableColumnReaderInterface, materialize as boolean = False)
+		Sub Constructor(NewTableSource as TableColumnReaderInterface, materialize as boolean = False)
 		  //
 		  //  Creates a datatable from a table column reader
 		  //  The function creates a virtual table if the 'materalize' flag is False and the source table is 'persistant', for example another data_table
@@ -1187,10 +1201,10 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  self.allow_local_columns = False
 		  
-		  var tmp_table_name As String = table_source.name.Trim
+		  var tmp_table_name As String = NewTableSource.name.Trim
 		  
 		  if tmp_table_name.Length = 0 then
-		    tmp_table_name = "Noname"
+		    tmp_table_name = DefaultTableName
 		    
 		  end if 
 		  
@@ -1198,34 +1212,34 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  internal_new_table("from " + tmp_table_name)
 		  
-		  if table_source.IsPersistant and not materialize then
+		  if NewTableSource.IsPersistant and not materialize then
 		    // 
 		    // we create a virtual table
 		    //
-		    self.link_to_source = table_source
+		    self.link_to_source = NewTableSource
 		    
-		    For Each column_name As String In table_source.GetColumnNames
-		      var tmp_column As clAbstractDataSerie = table_source.GetColumn(column_name)
+		    For Each column_name As String In NewTableSource.GetColumnNames
+		      var tmp_column As clAbstractDataSerie = NewTableSource.GetColumn(column_name)
 		      
 		      If tmp_column <> Nil Then
 		        call self.AddColumn(tmp_column)
 		        
 		      else
-		        AddError("select_column","cannot find column " + column_name)
+		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  column_name)
 		        
 		      End If
 		      
 		    next
 		  else
 		    
-		    For Each column_name As String In table_source.GetColumnNames
-		      var tmp_column As clAbstractDataSerie = table_source.GetColumn(column_name)
+		    For Each column_name As String In NewTableSource.GetColumnNames
+		      var tmp_column As clAbstractDataSerie = NewTableSource.GetColumn(column_name)
 		      
 		      If tmp_column <> Nil Then
 		        call self.AddColumn(tmp_column.clone)
 		        
 		      else
-		        AddError("select_column","cannot find column " + column_name)
+		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  column_name)
 		        
 		      End If
 		      
@@ -1240,7 +1254,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(table_source as TableRowReaderInterface, allocator as column_allocator = nil)
+		Sub Constructor(NewTableSource as TableRowReaderInterface, allocator as column_allocator = nil)
 		  //
 		  //  Creates a datatable from a table row reader
 		  //  
@@ -1255,10 +1269,10 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  self.allow_local_columns = False
 		  
-		  var tmp_table_name As String = table_source.name.Trim
+		  var tmp_table_name As String = NewTableSource.name.Trim
 		  
 		  if tmp_table_name.Length = 0 then
-		    tmp_table_name = "Noname"
+		    tmp_table_name = DefaultTableName
 		    
 		  end if 
 		  
@@ -1268,8 +1282,8 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  // var columns() as clAbstractDataSerie
 		  
-		  var tmp_column_names() as string = table_source.GetColumnNames
-		  var tmp_column_types as Dictionary = table_source.GetColumnTypes
+		  var tmp_column_names() as string = NewTableSource.GetColumnNames
+		  var tmp_column_types as Dictionary = NewTableSource.GetColumnTypes
 		  
 		  for each tmp_column_name as string in tmp_column_names
 		    
@@ -1284,7 +1298,7 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  
-		  call self.internal_AddRows(table_source, columns, "")
+		  call self.internal_AddRows(NewTableSource, columns, "")
 		  
 		  self.AdjustLength()
 		  
@@ -1297,14 +1311,14 @@ Implements TableColumnReaderInterface,Iterable
 		  var tbl as new clDataTable(new_table_name)
 		  
 		  for each row as clDataRow in self
-		    var col_name as string = row.GetCell(structure_name_column)
-		    var col_type as string = row.GetCell(structure_type_column)
-		    var col_title as string  = row.GetCell(structure_title_column)
+		    var col_name as string = row.GetCell(StructureNameColumn)
+		    var col_type as string = row.GetCell(StructureTypeColumn)
+		    var col_title as string  = row.GetCell(StructureTitleColumn)
 		    
 		    var column as clAbstractDataSerie = tbl.AddColumn(clDataType.CreateDataSerie(col_name, col_type))
 		    
 		    if col_title.Length > 0 then
-		      column.display_title = col_title
+		      column.DisplayTitle = col_title
 		      
 		    end if
 		    
@@ -1320,7 +1334,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_item() As String
 		  
-		  System.DebugLog("----START " + Self.table_name+" --------")
+		  System.DebugLog("----START " + Self.Name+" --------")
 		  
 		  System.DebugLog("#rows : " + str(self.RowCount))
 		  System.DebugLog("#columns : " + str(self.columns.LastIndex+1))
@@ -1346,13 +1360,13 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Next
 		  
-		  System.DebugLog("----END " + Self.table_name+" --------")
+		  System.DebugLog("----END " + Self.Name+" --------")
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FilteredOn(boolean_serie as clBooleanDataSerie) As clDataTableFilter
+		Function FilteredOn(BooleanSerie as clBooleanDataSerie) As clDataTableFilter
 		  //  
 		  //  Creates a data table filter (iterable) using a column as a mask,  the column (data serie)  is passed as parameter. 
 		  //  The data serie does not need to belong to any data table
@@ -1363,14 +1377,14 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a data table filter
 		  //  
-		  var retval as new clDataTableFilter(self, boolean_serie)
+		  var retval as new clDataTableFilter(self, BooleanSerie)
 		  
 		  return retval
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FilteredOn(boolean_field_name as string) As clDataTableFilter
+		Function FilteredOn(BooleanFieldName as string) As clDataTableFilter
 		  //  
 		  //  Creates a data table filter (iterable) using a column as a mask, the name fof the column is passed as parameter. The column must be defined
 		  //  in the table
@@ -1381,7 +1395,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a data table filter
 		  //  
-		  var retval as new clDataTableFilter(self, boolean_field_name)
+		  var retval as new clDataTableFilter(self, BooleanFieldName)
 		  
 		  return retval
 		  
@@ -1906,7 +1920,10 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetStatisticsAsTable() As clDataTable
+		Function GetStatisticsAsTable(NewTableName as string = "") As clDataTable
+		  
+		  //
+		  //
 		  
 		  var col_name() as string
 		  var col_ubound() as integer
@@ -1937,25 +1954,29 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  var series() as clAbstractDataSerie
-		  series.Add(new clDataSerie(statistics_name_column, col_name))
-		  series.add(new clIntegerDataSerie(statistics_ubound_column, col_ubound))
-		  series.Add(new clIntegerDataSerie(statistics_count_column, col_count))
-		  series.Add(new clIntegerDataSerie(statistics_count_nz_column, col_count_nz))
+		  series.Add(new clDataSerie(StatisticsSerieNameColumn, col_name))
+		  series.add(new clIntegerDataSerie(StatisticsUboundColumn, col_ubound))
+		  series.Add(new clIntegerDataSerie(StatisticsCountColumn, col_count))
+		  series.Add(new clIntegerDataSerie(StatisticsCountNZColumn, col_count_nz))
 		  
-		  series.Add(new clNumberDataSerie(statistics_sum_column, col_sum))
-		  series.Add(new clNumberDataSerie(statistics_average_column, col_average))
-		  series.Add(new clNumberDataSerie(statistics_average_nz_column, col_average_nz))
+		  series.Add(new clNumberDataSerie(StatisticsSumColumn, col_sum))
+		  series.Add(new clNumberDataSerie(StatisticsAverageColumn, col_average))
+		  series.Add(new clNumberDataSerie(StatisticsAverageNZColumn, col_average_nz))
 		  
-		  series.Add(new clNumberDataSerie(statistics_std_dev_column, col_stdev))
-		  series.Add(new clNumberDataSerie(statistics_std_dev_nz_column, col_stdev_nz))
+		  series.Add(new clNumberDataSerie(StatisticsStdDevColumn, col_stdev))
+		  series.Add(new clNumberDataSerie(StatisticsStdDevNZColumn, col_stdev_nz))
 		  
-		  return new clDataTable(self.statistics_name_prefix + self.name, series)
+		  var temp as string = NewTableName.trim
+		  
+		  if temp.Length < 1 then temp = self.StatisticsTableNamePrefix.trim + " " + self.name
+		  
+		  return new clDataTable(temp, series)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetStructureAsTable() As clDataTable
+		Function GetStructureAsTable(NewTableName as string = "") As clDataTable
 		  
 		  var col_name() as string
 		  var col_type() as string
@@ -1964,16 +1985,20 @@ Implements TableColumnReaderInterface,Iterable
 		  for i as integer = 0 to columns.LastIndex
 		    col_name.Add(columns(i).name)
 		    col_type.add(columns(i).GetType)
-		    col_title.add(columns(i).display_title)
+		    col_title.add(columns(i).DisplayTitle)
 		    
 		  next
 		  
 		  var dct as new Dictionary
-		  dct.Value(structure_name_column) = col_name
-		  dct.Value(structure_type_column) = col_type
-		  dct.Value(structure_title_column) = col_title
+		  dct.Value(StructureNameColumn) = col_name
+		  dct.Value(StructureTypeColumn) = col_type
+		  dct.Value(StructureTitleColumn) = col_title
 		  
-		  return new clDataTable(self.structure_name_prefix + self.name, dct)
+		  var temp as string = NewTableName.trim
+		  
+		  if temp.Length < 1 then temp = self.StructureTableNamePrefix.trim + " " + self.name
+		  
+		  return new clDataTable(temp, dct)
 		  
 		End Function
 	#tag EndMethod
@@ -2003,7 +2028,7 @@ Implements TableColumnReaderInterface,Iterable
 		        input_dimensions.Append(tmp_serie)
 		        
 		      else
-		        AddError("GroupBy","cannot find column " + item)
+		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  item)
 		        any_error = True
 		      end if
 		      
@@ -2017,7 +2042,7 @@ Implements TableColumnReaderInterface,Iterable
 		        input_measures.Append(tmp_serie)
 		        
 		      else
-		        AddError("GroupBy","cannot find column " + item)
+		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  item)
 		        any_error = True
 		      End If
 		    end if
@@ -2270,7 +2295,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var source_name_col as clAbstractDataSerie
 		  
 		  if source_name.Length > 0 then
-		    source_name_col = self.GetColumn(loaded_data_source_column)
+		    source_name_col = self.GetColumn(LoadedDataSourceColumn)
 		    
 		  end if
 		  
@@ -2317,14 +2342,12 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h21
 		Private Sub internal_new_table(the_table_name as string)
 		  
-		  self.statistics_name_prefix = "statistics of "
-		  self.structure_name_prefix = "structure of "
 		  
 		  if the_table_name.trim.Length = 0 then 
-		    table_name = "Unnamed"
+		    Self.TableName = "Unnamed"
 		    
 		  else
-		    table_name = the_table_name.Trim
+		    self.TableName = the_table_name.Trim
 		    
 		  end if
 		  
@@ -2406,7 +2429,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function Name() As string
-		  Return self.table_name
+		  Return self.TableName
 		End Function
 	#tag EndMethod
 
@@ -2460,10 +2483,10 @@ Implements TableColumnReaderInterface,Iterable
 		Sub Rename(the_new_name as string)
 		  
 		  If the_new_name.Trim.Len = 0 Then
-		    Self.table_name = "noname"
+		    Self.TableName = DefaultTableName
 		    
 		  Else
-		    Self.table_name = the_new_name.Trim
+		    Self.TableName = the_new_name.Trim
 		    
 		  End If
 		  
@@ -2506,6 +2529,32 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ReplacePlaceHolders(BaseString as string, values() as string) As string
+		  var ret as string = BaseString
+		  
+		  for i as integer = 0 to values.LastIndex
+		    ret = ret.replaceall("%"+str(i), values(i))
+		    
+		  next
+		  
+		  return ret
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ReplacePlaceHolders(BaseString as string, paramarray values as string) As string
+		  var ret as string = BaseString
+		  
+		  for i as integer = 0 to values.LastIndex
+		    ret = ret.replaceall("%"+str(i), values(i))
+		    
+		  next
+		  
+		  return ret
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function RowCount() As integer
 		  If Self.row_index = Nil Then
 		    Return -1
@@ -2537,9 +2586,9 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function SelectColumns(column_names() as string) As clDataTable
-		  var res As New clDataTable("select " + Self.table_name)
+		  var res As New clDataTable("select " + Self.Name)
 		  
-		  res.AddMetadata("source", self.table_name)
+		  res.AddMetadata("source", self.Name)
 		  res.row_index = Self.row_index
 		  //  
 		  //  link to parent must be called BEFORE adding logical columns
@@ -2553,7 +2602,7 @@ Implements TableColumnReaderInterface,Iterable
 		      call res.AddColumn(tmp_column)
 		      
 		    else
-		      AddError("GetColumns","cannot find column " + column_name)
+		      AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  column_name)
 		      
 		    End If
 		    
@@ -2790,6 +2839,14 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected LastErrorMessage As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected LastWarningMessage As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected link_to_parent As clDataTable
 	#tag EndProperty
 
@@ -2809,63 +2866,84 @@ Implements TableColumnReaderInterface,Iterable
 		row_name_as_column As Boolean
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
-		Private statistics_name_prefix As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private structure_name_prefix As String
-	#tag EndProperty
-
 	#tag Property, Flags = &h1
-		Protected table_name As String
+		Protected TableName As String
 	#tag EndProperty
 
 
-	#tag Constant, Name = loaded_data_source_column, Type = String, Dynamic = False, Default = \"loaded_from", Scope = Public
+	#tag Constant, Name = DefaultColumnNamePattern, Type = String, Dynamic = False, Default = \"Untitled %0", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = row_name_column, Type = String, Dynamic = False, Default = \"row_type", Scope = Public
+	#tag Constant, Name = DefaultTableName, Type = String, Dynamic = False, Default = \"Noname", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = statistics_average_column, Type = String, Dynamic = False, Default = \"average", Scope = Public
+	#tag Constant, Name = ErrMsgCannotFIndColumn, Type = String, Dynamic = False, Default = \"Cannot find column %0", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = statistics_average_nz_column, Type = String, Dynamic = False, Default = \"average_nz", Scope = Public
+	#tag Constant, Name = ErrMsgColumnAlreadyDefined, Type = String, Dynamic = False, Default = \"Column %0 already defined in table %1", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = statistics_count_column, Type = String, Dynamic = False, Default = \"count", Scope = Public
+	#tag Constant, Name = ErrMsgIgnoringColumn, Type = String, Dynamic = False, Default = \"Ignoring column %0", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = statistics_count_nz_column, Type = String, Dynamic = False, Default = \"count_nz", Scope = Public
+	#tag Constant, Name = LoadedDataSourceColumn, Type = String, Dynamic = False, Default = \"loaded_from", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = statistics_name_column, Type = String, Dynamic = False, Default = \"name", Scope = Public
+	#tag Constant, Name = RowNameColumn, Type = String, Dynamic = False, Default = \"row_type", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = statistics_std_dev_column, Type = String, Dynamic = False, Default = \"std_dev", Scope = Public
+	#tag Constant, Name = StatisticsAverageColumn, Type = String, Dynamic = False, Default = \"average", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = statistics_std_dev_nz_column, Type = String, Dynamic = False, Default = \"std_dev_nz", Scope = Public
+	#tag Constant, Name = StatisticsAverageNZColumn, Type = String, Dynamic = False, Default = \"average_nz", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = statistics_sum_column, Type = String, Dynamic = False, Default = \"sum", Scope = Public
+	#tag Constant, Name = StatisticsCountColumn, Type = String, Dynamic = False, Default = \"count", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = statistics_ubound_column, Type = String, Dynamic = False, Default = \"ubound", Scope = Public
+	#tag Constant, Name = StatisticsCountNZColumn, Type = String, Dynamic = False, Default = \"count_nz", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = structure_name_column, Type = String, Dynamic = False, Default = \"name", Scope = Public
+	#tag Constant, Name = StatisticsSerieNameColumn, Type = String, Dynamic = False, Default = \"name", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = structure_title_column, Type = String, Dynamic = False, Default = \"title", Scope = Public
+	#tag Constant, Name = StatisticsStdDevColumn, Type = String, Dynamic = False, Default = \"std_dev", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = structure_type_column, Type = String, Dynamic = False, Default = \"type", Scope = Public
+	#tag Constant, Name = StatisticsStdDevNZColumn, Type = String, Dynamic = False, Default = \"std_dev_nz", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = StatisticsSumColumn, Type = String, Dynamic = False, Default = \"sum", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = StatisticsTableNamePrefix, Type = String, Dynamic = False, Default = \"statistics of", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = StatisticsUboundColumn, Type = String, Dynamic = False, Default = \"ubound", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = StructureNameColumn, Type = String, Dynamic = False, Default = \"name", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = StructureTableNamePrefix, Type = String, Dynamic = False, Default = \"structure of ", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = StructureTitleColumn, Type = String, Dynamic = False, Default = \"title", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = StructureTypeColumn, Type = String, Dynamic = False, Default = \"type", Scope = Public
 	#tag EndConstant
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
 			Visible=true
@@ -2880,14 +2958,6 @@ Implements TableColumnReaderInterface,Iterable
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="name"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty

@@ -2,17 +2,18 @@
 Protected Class clDataTableFilter
 Implements Iterable
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table as clDataTable, the_filter_serie as clBooleanDataSerie)
-		  self.tmp_table = the_table
+		Sub Constructor(SourceTable as clDataTable, the_filter_serie as clBooleanDataSerie)
+		  
+		  self.tmp_table = SourceTable
 		  self.tmp_serie = the_filter_serie
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table as clDataTable, the_filter_serie_name as string)
-		  self.tmp_table = the_table
+		Sub Constructor(SourceTable as clDataTable, the_filter_serie_name as string)
 		  
-		  self.tmp_serie = clBooleanDataSerie(self.tmp_table.GetColumn(the_filter_serie_name))
+		  self.tmp_table = SourceTable
+		  self.tmp_serie = clBooleanDataSerie(self.tmp_table.GetColumn(the_filter_Serie_Name))
 		End Sub
 	#tag EndMethod
 

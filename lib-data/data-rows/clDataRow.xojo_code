@@ -7,7 +7,7 @@ Implements Iterable
 		  
 		  if allocator = nil then return nil
 		  
-		  obj = allocator.Invoke(self.GetCell(clDataTable.row_name_column))
+		  obj = allocator.Invoke(self.GetCell(clDataTable.RowNameColumn))
 		  
 		  if obj = nil then return nil
 		  

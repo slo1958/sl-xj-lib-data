@@ -40,11 +40,11 @@ Inherits clLibDataExample
 		  ))
 		  
 		  
-		  table1.GetColumn("City").display_title = "Ville"
-		  table1.GetColumn("Country").display_title = "Pays"
-		  table1.GetColumn("Year").display_title = "Année"
-		  table1.GetColumn("Sales").display_title="Ventes"
-		  table1.GetColumn("Quantity").display_title="Volume"
+		  table1.GetColumn("City").DisplayTitle = "Ville"
+		  table1.GetColumn("Country").DisplayTitle = "Pays"
+		  table1.GetColumn("Year").DisplayTitle = "Année"
+		  table1.GetColumn("Sales").DisplayTitle="Ventes"
+		  table1.GetColumn("Quantity").DisplayTitle="Volume"
 		  
 		  
 		  var view0 As clDataTable = table0.SelectColumns(array("Country", "City", "Sales"))

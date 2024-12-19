@@ -44,8 +44,8 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub LoadTable(table_source as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
-		  var tmp_table as new clDataTable(table_source, allocator)
+		Sub LoadTable(NewTableSource as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
+		  var tmp_table as new clDataTable(NewTableSource, allocator)
 		  
 		  self.SetTable(tmp_table)
 		End Sub

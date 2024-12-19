@@ -230,7 +230,8 @@ Protected Module clDataTable_tests
 		  
 		  my_table2.AddRow(rtst)
 		  
-		  my_table1.AddTableData(my_table2)
+		  //my_table1. AddColumnsData(my_table2) $$$
+		  my_table1.AddColumnsData(my_table2)
 		  
 		  var my_table3 As clDataTable = my_table1.SelectColumns(Array("aaa","zccc"))
 		  
@@ -543,8 +544,8 @@ Protected Module clDataTable_tests
 		  var my_table3 as clDataTable = my_table1.Clone()
 		  var my_table4 as clDataTable = my_table1.Clone()
 		  
-		  my_table3.AddTableData(my_table2, true)
-		  my_table4.AddTableData(my_table2, false)
+		  my_table3. AddColumnsData(my_table2, true)
+		  my_table4. AddColumnsData(my_table2, false)
 		  
 		  var col1 as new clDataSerie("aaa", 1000, 2000, 3000, 4000)
 		  var col2 as new clDataSerie("bbb","abcd","abcd","abcd","abcd")
@@ -980,9 +981,9 @@ Protected Module clDataTable_tests
 		  
 		  call check_table(log,"use dict for creation", table_expected, table0)
 		  
-		  table0.GetColumn("City").display_title = "Ville"
-		  table0.GetColumn("Country").display_title = "Pays"
-		  table0.GetColumn("Sales").display_title="Ventes" 
+		  table0.GetColumn("City").DisplayTitle = "Ville"
+		  table0.GetColumn("Country").DisplayTitle = "Pays"
+		  table0.GetColumn("Sales").DisplayTitle="Ventes" 
 		  
 		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  
@@ -1034,9 +1035,9 @@ Protected Module clDataTable_tests
 		  // Extract structure as table and validate
 		  //
 		  
-		  table0.GetColumn("City").display_title = "Ville"
-		  table0.GetColumn("Country").display_title = "Pays"
-		  table0.GetColumn("Sales").display_title="Ventes" 
+		  table0.GetColumn("City").DisplayTitle = "Ville"
+		  table0.GetColumn("Country").DisplayTitle = "Pays"
+		  table0.GetColumn("Sales").DisplayTitle="Ventes" 
 		  
 		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  
@@ -1104,7 +1105,7 @@ Protected Module clDataTable_tests
 		  var data_table as new clDataTable("data", series)
 		  var stat_table as clDataTable = data_table.GetStatisticsAsTable
 		  
-		  call stat_table.GetColumn(clDataTable.statistics_average_column).RoundValues(2)
+		  call stat_table.GetColumn(clDataTable.StatisticsAverageColumn).RoundValues(2)
 		  
 		  
 		  //
@@ -1112,18 +1113,18 @@ Protected Module clDataTable_tests
 		  
 		  series.RemoveAll
 		  
-		  series.Add(new clDataSerie(clDataTable.statistics_name_column, array("DataSerie", "NumberDataSerie", "StringDataSerie", "IntegerDataSerie")))
+		  series.Add(new clDataSerie(clDataTable.StatisticsSerieNameColumn, array("DataSerie", "NumberDataSerie", "StringDataSerie", "IntegerDataSerie")))
 		  
-		  series.add(new clIntegerDataSerie(clDataTable.statistics_ubound_column, array(5,5,5,5)))
-		  series.Add(new clIntegerDataSerie(clDataTable.statistics_count_column, array(5,6,6,6)))
-		  series.Add(new clIntegerDataSerie(clDataTable.statistics_count_nz_column, array(3,3,3,3)))
+		  series.add(new clIntegerDataSerie(clDataTable.StatisticsUboundColumn, array(5,5,5,5)))
+		  series.Add(new clIntegerDataSerie(clDataTable.StatisticsCountColumn, array(5,6,6,6)))
+		  series.Add(new clIntegerDataSerie(clDataTable.StatisticsCountNZColumn, array(3,3,3,3)))
 		  
-		  series.Add(new clNumberDataSerie(clDataTable.statistics_sum_column, array(339.0,339.0,339.0,339.0)))
-		  series.Add(new clNumberDataSerie(clDataTable.statistics_average_column, array(67.8, 56.5, 56.5, 56.5)))
-		  series.Add(new clNumberDataSerie(clDataTable.statistics_average_nz_column, array(113, 113, 113, 113)))
+		  series.Add(new clNumberDataSerie(clDataTable.StatisticsSumColumn, array(339.0,339.0,339.0,339.0)))
+		  series.Add(new clNumberDataSerie(clDataTable.StatisticsAverageColumn, array(67.8, 56.5, 56.5, 56.5)))
+		  series.Add(new clNumberDataSerie(clDataTable.StatisticsAverageNZColumn, array(113, 113, 113, 113)))
 		  
-		  series.Add(new clNumberDataSerie(clDataTable.statistics_std_dev_column, array(62.4035, 62.3, 62.3, 62.3)))
-		  series.Add(new clNumberDataSerie(clDataTable.statistics_std_dev_nz_column, array(11.27, 11.27, 11.27)))
+		  series.Add(new clNumberDataSerie(clDataTable.StatisticsStdDevColumn, array(62.4035, 62.3, 62.3, 62.3)))
+		  series.Add(new clNumberDataSerie(clDataTable.StatisticsStdDevNZColumn, array(11.27, 11.27, 11.27)))
 		  
 		  var table_expected as clDataTable = new clDataTable("expected", series)
 		  
@@ -1782,7 +1783,7 @@ Protected Module clDataTable_tests
 		  
 		  // create expected ds
 		  var my_table7 as clDataTable = my_table5.clone
-		  my_table7.AddTableData(my_table6)
+		  my_table7. AddColumnsData(my_table6)
 		  
 		  
 		  // add rows from test3 to test2
@@ -1892,7 +1893,7 @@ Protected Module clDataTable_tests
 		  
 		  // create expected ds
 		  var my_table7 as clDataTable = my_table5.clone
-		  my_table7.AddTableData(my_table6)
+		  my_table7. AddColumnsData(my_table6)
 		  
 		  
 		  // add rows from test3 to test2

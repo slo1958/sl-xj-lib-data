@@ -21,7 +21,7 @@ Protected Module datatable_to_list
 		  tmp_listbox.HeaderAt(0)="#"
 		  
 		  for column_index as integer = 0 to  nbr_columns-1
-		    tmp_listbox.HeaderAt(column_index+1) = tmp_tbl.GetColumnAt(column_index).display_title
+		    tmp_listbox.HeaderAt(column_index+1) = tmp_tbl.GetColumnAt(column_index).DisplayTitle
 		    tmp_listbox.ColumnTagAt(column_index+1) = tmp_tbl.GetColumnAt(column_index)
 		  next
 		  

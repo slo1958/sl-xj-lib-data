@@ -46,9 +46,9 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(source() as Dictionary, name as string, retainColumns() as string)
+		Sub Constructor(source() as Dictionary, name as string, retainColumns() as string, sampleSize as integer = 10)
 		  //
-		  // builds a row reader from a list of dictionaries, returned for instance from parsing a json file
+		  // builds a row reader from an array of dictionaries, returned for instance from parsing a json file
 		  //
 		  // an instance of this call can then be used as input of the constructor of a data table
 		  //
@@ -222,7 +222,7 @@ Implements TableRowReaderInterface
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="SampleSize"

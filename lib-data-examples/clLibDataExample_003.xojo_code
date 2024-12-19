@@ -39,7 +39,7 @@ Inherits clLibDataExample
 		  ))
 		  
 		  var table3 as clDataTable = table1.clone
-		  table3.AddTableData(table2)
+		  table3. AddColumnsData(table2)
 		  table3.rename("Using column source")
 		  
 		  var table4 as clDataTable = table1.clone
