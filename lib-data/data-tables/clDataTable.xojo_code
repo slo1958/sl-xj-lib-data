@@ -1315,7 +1315,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var col_type as string = row.GetCell(StructureTypeColumn)
 		    var col_title as string  = row.GetCell(StructureTitleColumn)
 		    
-		    var column as clAbstractDataSerie = tbl.AddColumn(clDataType.CreateDataSerie(col_name, col_type))
+		    var column as clAbstractDataSerie = tbl.AddColumn(clDataType.CreateDataSerieFromType(col_name, col_type))
 		    
 		    if col_title.Length > 0 then
 		      column.DisplayTitle = col_title
@@ -1815,6 +1815,27 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  Return GetColumns(column_names)
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumnTypes() As string()
+		  //  
+		  //  Return the type of all columns
+		  //  
+		  //  Parameters:
+		  //  - none
+		  //  
+		  //  Returns:
+		  //  - a string array with the type of the columns
+		  //  
+		  var ret_str() As String
+		  For Each column As clAbstractDataSerie In columns
+		    ret_str.Add(column.GetType)
+		    
+		  Next
+		  
+		  Return ret_str
 		End Function
 	#tag EndMethod
 
@@ -2644,13 +2665,20 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Sub Save(write_to as TableRowWriterInterface)
-		  var col() as string = self.GetColumnNames
 		  
-		  write_to.DefineMetadata(name, col)
+		  var ColumnNames() as string = self.GetColumnNames
+		  var ColumnTypes() as string = self.GetColumnTypes
+		  
+		  write_to.DefineMetadata(name, ColumnNames, ColumnTypes)
 		  
 		  for each row as clDataRow in self
-		    
-		    write_to.AddRow(row.GetCells(col))
+		    if write_to.ExpectsDictionary then
+		      write_to.AddRow(row.GetCells)
+		      
+		    else
+		      write_to.AddRow(row.GetCells(ColumnNames))
+		      
+		    end if
 		    
 		  next
 		  

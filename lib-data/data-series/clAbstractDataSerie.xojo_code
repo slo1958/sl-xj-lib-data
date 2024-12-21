@@ -794,7 +794,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Function GetType() As string
 		  
-		  return  clDataType.TranslateFromSerie(self)
+		  return  clDataType.TranslateFromSerieToType(self)
 		End Function
 	#tag EndMethod
 

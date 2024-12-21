@@ -1,7 +1,36 @@
 #tag Class
 Protected Class clDataType
 	#tag Method, Flags = &h0
-		Shared Function CreateDataSerie(SerieName as string, serie_type as String) As clAbstractDataSerie
+		Shared Function CreateDataSerieFromClassName(SerieName as string, serie_type as String) As clAbstractDataSerie
+		  
+		  select case serie_type
+		    
+		  case  "clStringDataSerie"
+		    return new clStringDataSerie(SerieName)
+		    
+		  case "clNumerDataSerie" 
+		    return new clNumberDataSerie(SerieName)
+		    
+		  case "clIntegerDataSerie"
+		    return new clIntegerDataSerie(SerieName)
+		    
+		  case "clDateDataSerie"
+		    return new clDateDataSerie(SerieName)
+		    
+		  case "clDateTimeDataSerie"
+		    return new clDateTimeDataSerie(SerieName)
+		    
+		  else
+		    return new clDataSerie(SerieName)
+		    
+		  end select
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function CreateDataSerieFromType(SerieName as string, serie_type as String) As clAbstractDataSerie
 		  
 		  select case serie_type
 		    
@@ -30,7 +59,19 @@ Protected Class clDataType
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function TranslateFromSerie(serie as clAbstractDataSerie) As string
+		Shared Function TranslateFromSerieToClassName(serie as clAbstractDataSerie) As string
+		  
+		  Var t As Introspection.TypeInfo
+		  t = Introspection.GetType(serie)
+		  
+		  return t.name
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function TranslateFromSerieToType(serie as clAbstractDataSerie) As string
 		  
 		  Var t As Introspection.TypeInfo
 		  t = Introspection.GetType(serie)

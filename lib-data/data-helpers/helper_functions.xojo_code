@@ -81,23 +81,19 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function StandardSerieAllocator(column_name as string, column_type_info as string) As clAbstractDataSerie
+		Function StandardSerieAllocatorFromClass(NewColumnName as string, NewColumnClassInfo as string) As clAbstractDataSerie
 		  
-		  select case column_type_info
-		    
-		  case "clNumberDataSerie"
-		    return new clNumberDataSerie(column_name)
-		    
-		  case "clIntegerDataSerie"
-		    return new clIntegerDataSerie(column_name)
-		    
-		  case "clStringDataSerie"
-		    return new clStringDataSerie(column_name)
-		    
-		  else
-		    return new clDataSerie(column_name)
-		    
-		  end select
+		  return clDataType.CreateDataSerieFromClassName(NewColumnName, NewColumnClassInfo)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function StandardSerieAllocatorFromType(NewColumnName as string, NewColumnType as string) As clAbstractDataSerie
+		  
+		  return clDataType.CreateDataSerieFromType(NewColumnName, NewColumnType)
+		  
 		  
 		End Function
 	#tag EndMethod

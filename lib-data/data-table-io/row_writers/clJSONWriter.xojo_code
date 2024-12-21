@@ -1,9 +1,10 @@
 #tag Class
-Class clDBWriter
+Protected Class clJSONWriter
 Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
 		Sub AddRow(row_data as Dictionary)
-		  raise new clDataException("Unexpected call to addrow from dictionary.")
+		  
+		  self.Rows.Add(row_data)
 		  
 		End Sub
 	#tag EndMethod
@@ -12,119 +13,106 @@ Implements TableRowWriterInterface
 		Sub AddRow(row_data() as variant)
 		  // Part of the TableRowWriterInterface interface.
 		  
-		  var dbrow as new DatabaseRow
+		  raise new clDataException("Unexpected call to addrow from dictionary.")
 		  
-		  for i as integer = 0 to self.columns.LastIndex
-		    
-		    dbrow.Column(self.columns(i)) = row_data(i)
-		    
-		  next
-		  
-		  db.AddRow(self.table_name , dbrow)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(dbAccess as clAbstractDatabaseAccess)
-		  self.table_created = False
-		  self.dbAccess = dbAccess
-		  self.db = dbAccess.GetDatabase
+		Sub Constructor(the_destination_path as FolderItem, config as clJSONFileConfig)
+		  self.Destination = the_destination_path
+		  self.Configuration = config
 		  
+		  self.header =new Dictionary
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub DefineMetadata(name as string, columns() as string)
 		  // Part of the TableRowWriterInterface interface.
+		  var temp() as string
 		  
-		  var tmp_type() as string
-		  
-		  for i as integer = 0 to columns.LastIndex
-		    tmp_type.add(clDataType.StringValue)
-		    
-		  next
-		  
-		  DefineMetadata(name, columns, tmp_type)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub DefineMetadata(name as string, columns() as string, column_type() as string)
-		  // Part of the TableRowWriterInterface interface.
-		  
-		  self.table_name = name
-		  
-		  self.columns.RemoveAll
-		  
-		  self.dbAccess.DropTable(self.table_name)
-		  
-		  for i as integer = 0 to columns.LastIndex
-		    self.columns.Add columns(i)
-		    
-		  next
-		  
-		  self.dbAccess.CreateTable(self.table_name, self.columns, column_type)
-		  
-		  
-		  
+		  self.DefineMetadata(name, columns, temp)
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Done()
+		Sub DefineMetadata(DatasetName as string, columns() as string, column_type() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
+		  var d() as Dictionary
+		  
+		  for i as integer = 0 to columns.LastIndex
+		    var ColumnName as String = columns(i)
+		    
+		    var ColumnType as string = clDataType.VariantValue
+		    
+		    if column_type.LastIndex < i then
+		      ColumnType = column_type(i)
+		    end if
+		    
+		    d.Add(new Dictionary(self.Configuration.KeyforFieldName: ColumnName, self.Configuration.KeyforFieldType:ColumnType))
+		  next
+		  
+		  Header.value(self.Configuration.KeyForDatasetName)  = DatasetName
+		  Header.value(self.Configuration.KeyForListOfColumns) = d
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub done()
+		  // Part of the TableRowWriterInterface interface.
+		  
+		  
+		  var output_json as new JSONItem
+		  
+		  output_json.Value(Configuration.KeyForHeader) = Header
+		  output_json.value(Configuration.KeyForData) = rows
+		  
+		  output_json.Compact = False
+		   
+		  if self.destination = nil then return 
+		  
+		  var txt as TextOutputStream = TextOutputStream.Create(self.destination) 
+		  txt.Write(output_json.ToString)
+		  
+		  txt.close
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ExpectsDictionary() As Boolean
-		  return false
+		  return True
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub UpdateExternalName(new_name as string)
-		  self.table_name = new_name
+		  // Part of the TableRowWriterInterface interface.
+		  
+		  
 		End Sub
 	#tag EndMethod
 
 
-	#tag Note, Name = Description
-		
-		Used to download data from a clDataTable to a database table, the target table is emptied before transfering the rows.
-		
-		Uses an instance of a  database access component.
-		
-		The database access component is responsible for preparing sql statement using the appropriate sql dialect.
-		
-		
-		
-	#tag EndNote
-
-
-	#tag Property, Flags = &h1
-		Protected columns() As String
+	#tag Property, Flags = &h0
+		Configuration As clJSONFileConfig
 	#tag EndProperty
 
-	#tag Property, Flags = &h1
-		Protected db As Database
+	#tag Property, Flags = &h0
+		Destination As FolderItem
 	#tag EndProperty
 
-	#tag Property, Flags = &h1
-		Protected dbAccess As clAbstractDatabaseAccess
+	#tag Property, Flags = &h0
+		Header As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h1
-		Protected table_created As Boolean
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected table_name As String
+	#tag Property, Flags = &h0
+		Rows() As Dictionary
 	#tag EndProperty
 
 
@@ -166,6 +154,14 @@ Implements TableRowWriterInterface
 			Visible=true
 			Group="Position"
 			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Header"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

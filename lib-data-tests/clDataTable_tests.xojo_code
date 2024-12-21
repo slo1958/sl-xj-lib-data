@@ -1665,23 +1665,29 @@ Protected Module clDataTable_tests
 		  var fld_folder As New FolderItem
 		  var fld_file1 As FolderItem
 		  var fld_file2 As FolderItem
-		  var fld_file3 As FolderItem
+		  var fld_file3Text As FolderItem
+		  var fld_file3JSON As FolderItem
 		  
 		  fld_folder = fld_folder.Child("test-data")
 		  
 		  fld_file1 = fld_folder.Child("myfile3_10K_tab.txt")
 		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
-		  fld_file3  = fld_folder.Child("myfile3_10K_output.txt")
+		  fld_file3Text  = fld_folder.Child("myfile3_10K_output.txt")
+		  fld_file3JSON  = fld_folder.Child("myfile3_10K_output.json")
 		  
 		  var my_table3 As New clDataTable(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
 		  var my_table4 As New clDataTable(new clTextReader(fld_file2, True, New clTextFileConfig(",")))
 		  
-		  my_table4.save(new clTextWriter(fld_file3, True, new clTextFileConfig(";")))
+		  my_table4.save(new clTextWriter(fld_file3Text, True, new clTextFileConfig(";")))
 		  
-		  var my_table5 as new clDataTable(new clTextReader(fld_file3, True, new clTextFileConfig(";")))
+		  my_table4.save(new clJSONWriter(fld_file3JSON, new clJSONFileConfig()))
 		  
-		  call check_table(log,"T4/T5", my_table4, my_table5) 
+		  var my_table5Text as new clDataTable(new clTextReader(fld_file3Text, True, new clTextFileConfig(";")))
+		  var my_table5JSON as new clDataTable(new clJSONReader(fld_file3JSON, new clJSONFileConfig()))
+		  
+		  call check_table(log,"T4/T5Text", my_table4, my_table5Text) 
+		  call check_table(log,"T4/T5JSON", my_table4, my_table5JSON) 
 		  
 		  var my_table6  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series_io1)
 		  
