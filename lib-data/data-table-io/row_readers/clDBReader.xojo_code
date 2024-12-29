@@ -17,12 +17,22 @@ Implements TableRowReaderInterface
 		  if dbAccess <> nil then self.db = dbAccess.GetDatabase
 		  
 		  var ret() as string = GetSourceInfo(RecordSource)
-		  self.source_name = ret(0)
-		  self.source_sql = ret(1)
 		  
-		  if self.db <> nil then self.rs = self.db.SelectSQL(self.source_sql)
-		  
-		  
+		  if ret(1).length > 0 then
+		    self.source_name = ret(0)
+		    self.source_sql = ret(1)
+		    
+		    if self.db <> nil then self.rs = self.db.SelectSQL(self.source_sql)
+		    
+		  elseif self.db <> nil then
+		    var rs as RowSet = self.db.Tables
+		    for each row As DatabaseRow  in rs
+		      Tables.add(row.ColumnAt(0).StringValue)
+		    next
+		    
+		    rs.Close
+		    
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -94,6 +104,14 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h0
 		Function GetListOfExternalElements() As string()
+		  var ret() as string
+		  
+		  for each s as string in Tables
+		    ret.Add(s)
+		    
+		  next
+		  
+		  return ret
 		  
 		End Function
 	#tag EndMethod
@@ -104,6 +122,9 @@ Implements TableRowReaderInterface
 		  var select_index as integer = RecordSource.IndexOf("select ") 
 		  var tempSourceSQL as string
 		  var tempName as string
+		  
+		  if RecordSource.trim.Length = 0 then return array ("","")
+		  
 		  
 		  if select_index < 0 then 
 		    tempName = RecordSource
@@ -155,6 +176,14 @@ Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Sub UpdateExternalName(new_name as string)
 		  
+		  var ret() as string = GetSourceInfo(new_name)
+		  
+		  self.source_name = ret(0)
+		  self.source_sql = ret(1)
+		  
+		  if self.db <> nil then self.rs = self.db.SelectSQL(self.source_sql)
+		  
+		  return
 		End Sub
 	#tag EndMethod
 
@@ -195,6 +224,10 @@ Implements TableRowReaderInterface
 
 	#tag Property, Flags = &h1
 		Protected source_sql As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected Tables() As String
 	#tag EndProperty
 
 
