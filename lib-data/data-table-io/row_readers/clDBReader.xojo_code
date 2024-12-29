@@ -12,23 +12,13 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(dbAccess as clAbstractDatabaseAccess, record_source as string)
+		Sub Constructor(dbAccess as clAbstractDatabaseAccess, RecordSource as string)
 		  self.dbAccess = dbAccess
 		  if dbAccess <> nil then self.db = dbAccess.GetDatabase
 		  
-		  var select_index as integer = record_source.IndexOf("select ") 
-		  if select_index < 0 then 
-		    self.source_name = record_source
-		    self.source_sql = "select * from " + record_source
-		    
-		  else
-		    self.source_sql = record_source
-		    var from_index as integer = record_source.IndexOf(" from")
-		    self.source_name = record_source.Middle(from_index+6,record_source.Length).trim().NthField(" ",1).trim()
-		    
-		    if self.source_name.Length = 0 then self.source_name = record_source.left(20)
-		    
-		  end if
+		  var ret() as string = GetSourceInfo(RecordSource)
+		  self.source_name = ret(0)
+		  self.source_sql = ret(1)
 		  
 		  if self.db <> nil then self.rs = self.db.SelectSQL(self.source_sql)
 		  
@@ -49,7 +39,7 @@ Implements TableRowReaderInterface
 		  
 		  if rs = nil then return -1
 		  
-		  return line_count
+		  return LineCount
 		End Function
 	#tag EndMethod
 
@@ -109,6 +99,30 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetSourceInfo(RecordSource as string) As string()
+		  
+		  var select_index as integer = RecordSource.IndexOf("select ") 
+		  var tempSourceSQL as string
+		  var tempName as string
+		  
+		  if select_index < 0 then 
+		    tempName = RecordSource
+		    tempSourceSQL = "select * from " + RecordSource
+		    
+		  else
+		    tempSourceSQL = RecordSource
+		    var from_index as integer = RecordSource.IndexOf(" from")
+		    tempName = RecordSource.Middle(from_index+6,RecordSource.Length).trim().NthField(" ",1).trim()
+		    
+		    if tempName.Length = 0 then tempName = RecordSource.left(20)
+		    
+		  end if
+		  
+		  return array(tempName, tempSourceSQL)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Name() As string
 		  // Part of the TableRowReaderInterface interface.
 		  
@@ -162,7 +176,7 @@ Implements TableRowReaderInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected line_count As Integer
+		Protected LineCount As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

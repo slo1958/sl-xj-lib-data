@@ -12,9 +12,9 @@ Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Sub Constructor(fld as FolderItem, config as clJSONFileConfig)
 		  
-		  var tmp_config as clJSONFileConfig = config
+		  var TempConfig as clJSONFileConfig = config
 		  
-		  if tmp_config = nil then tmp_config = new clJSONFileConfig
+		  if TempConfig = nil then TempConfig = new clJSONFileConfig
 		  
 		  self.mDataFile = fld
 		  
@@ -251,11 +251,11 @@ Implements TableRowReaderInterface
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="MetaData"
+			Name="JSONSource"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
+			Type="string"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

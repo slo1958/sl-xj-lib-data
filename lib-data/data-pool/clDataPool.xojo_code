@@ -3,11 +3,11 @@ Protected Class clDataPool
 Implements Iterable
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  self.datatable_dict = new Dictionary
+		  self.DatatableDictionary = new Dictionary
 		  
-		  self.fullname_prefix = ""
+		  self.FullNamePrefix = ""
 		  
-		  self.fullname_suffix = ""
+		  self.FullNameSuffix = ""
 		  
 		  self.verbose = False
 		End Sub
@@ -15,7 +15,7 @@ Implements Iterable
 
 	#tag Method, Flags = &h0
 		Function GetTable(table_name as string) As clDataTable
-		  return self.datatable_dict.Lookup(table_name, Nil)
+		  return self.DatatableDictionary.Lookup(table_name, Nil)
 		  
 		End Function
 	#tag EndMethod
@@ -24,7 +24,7 @@ Implements Iterable
 		Function GetTableNames() As string()
 		  var tmp() as string
 		  
-		  for each k as String in datatable_dict.Keys
+		  for each k as String in DatatableDictionary.Keys
 		    tmp.Append(k)
 		    
 		  next
@@ -44,7 +44,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub LoadTable(NewTableSource as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
+		Sub LoadOneTable(NewTableSource as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
 		  var tmp_table as new clDataTable(NewTableSource, allocator)
 		  
 		  self.SetTable(tmp_table)
@@ -52,10 +52,10 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Save(write_to as TableRowWriterInterface, flag_empty_table as boolean = false)
+		Sub SaveEachTable(write_to as TableRowWriterInterface, flag_empty_table as boolean = false)
 		  
-		  for each table_name as String in datatable_dict.Keys
-		    call self.SaveTable(table_name, write_to, flag_empty_table)
+		  for each table_name as String in DatatableDictionary.Keys
+		    call self.SaveOneTable(table_name, write_to, flag_empty_table)
 		    
 		  next
 		  
@@ -63,7 +63,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SaveTable(name as string, write_to as TableRowWriterInterface, flag_empty_table as boolean = false) As Boolean
+		Function SaveOneTable(name as string, write_to as TableRowWriterInterface, flag_empty_table as boolean = false) As Boolean
 		  
 		  var table as clDataTable = self.GetTable(name)
 		  
@@ -80,13 +80,13 @@ Implements Iterable
 		  
 		  var fullname as string = name
 		  
-		  if self.fullname_prefix.Length > 0 then
-		    fullname = self.fullname_prefix + fullname
+		  if self.FullNamePrefix.Length > 0 then
+		    fullname = self.FullNamePrefix + fullname
 		    
 		  end if
 		  
-		  if self.fullname_suffix.Length > 0 then
-		    fullname = fullname + self.fullname_suffix
+		  if self.FullNameSuffix.Length > 0 then
+		    fullname = fullname + self.FullNameSuffix
 		    
 		  end if
 		  
@@ -100,27 +100,27 @@ Implements Iterable
 
 	#tag Method, Flags = &h0
 		Sub SetFullnamePrefix(prefix as string)
-		  self.fullname_prefix = prefix
+		  self.FullNamePrefix = prefix
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetFullnamePrefixToTimeStamp()
 		  
-		  self.fullname_prefix = DateTime.Now.SQLDateTime.replaceall(":","").ReplaceAll("-","").ReplaceAll(" ","_") + "_"
+		  self.FullNamePrefix = DateTime.Now.SQLDateTime.replaceall(":","").ReplaceAll("-","").ReplaceAll(" ","_") + "_"
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetFullnameSuffix(suffix as string)
-		  self.fullname_suffix = suffix
+		  self.FullNameSuffix = suffix
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetFullnameSuffixToTimeStamp()
 		  
-		  self.fullname_suffix = "_" +  DateTime.Now.SQLDateTime.replaceall(":","").ReplaceAll("-","").ReplaceAll(" ","_")
+		  self.FullNameSuffix = "_" +  DateTime.Now.SQLDateTime.replaceall(":","").ReplaceAll("-","").ReplaceAll(" ","_")
 		End Sub
 	#tag EndMethod
 
@@ -129,11 +129,11 @@ Implements Iterable
 		  
 		  
 		  if table_key.length() > 0 then
-		    self.datatable_dict.value(table_key) =  table
+		    self.DatatableDictionary.value(table_key) =  table
 		    WriteLog("Saving datatable %0 as %1", table.name, table_key)
 		    
 		  else
-		    self.datatable_dict.value(table.name) =  table
+		    self.DatatableDictionary.value(table.name) =  table
 		    WriteLog("Saving datatable %0 as %1", table.name, table.name)
 		    
 		  end if
@@ -192,7 +192,7 @@ Implements Iterable
 
 	#tag Method, Flags = &h0
 		Function TableCount() As integer
-		  return datatable_dict.KeyCount
+		  return DatatableDictionary.KeyCount
 		End Function
 	#tag EndMethod
 
@@ -250,15 +250,15 @@ Implements Iterable
 
 
 	#tag Property, Flags = &h0
-		datatable_dict As Dictionary
+		DatatableDictionary As Dictionary
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected fullname_prefix As String
+		Protected FullNamePrefix As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected fullname_suffix As String
+		Protected FullNameSuffix As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

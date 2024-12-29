@@ -50,7 +50,19 @@ Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
 		Function check_table(log as LogMessageInterface, label as string, expected as clDataTable, calculated as clDataTable, accepted_error_on_double as double = 0.00001) As Boolean
 		  var cnt1 as integer  
-		  var cnt2 as integer 
+		  var cnt2 as integer  
+		  
+		  if expected = nil then
+		    if log <> nil then log.write_message(CurrentMethodName+": Missing or unknow expected table.")
+		    return False
+		    
+		  end if
+		  
+		  if calculated = nil then
+		    if log <> nil then log.write_message(CurrentMethodName+": Missing or unknow calculated table.")
+		    return false
+		    
+		  end if
 		  
 		  cnt1 = expected.ColumnCount
 		  cnt2 = calculated.ColumnCount
@@ -1176,7 +1188,7 @@ Protected Module clDataTable_tests
 		  var rs as new clListOfDictionariesReader(s, "actual")
 		  
 		  var t_actual  as new clDataTable("actual")
-		  t_actual.AddRows(rs, true)
+		  call t_actual.AddRows(rs, true)
 		  
 		  
 		  call check_table(log,"list of dicts", t_expected, t_actual)
@@ -1226,7 +1238,7 @@ Protected Module clDataTable_tests
 		  var rs as new clListOfDictionariesReader(s, "actual", StringArray("field_a","field_c","field_d"))
 		  
 		  var t_actual  as new clDataTable("actual")
-		  t_actual.AddRows(rs, true)
+		  call t_actual.AddRows(rs, true)
 		  
 		  
 		  call check_table(log,"list of dicts", t_expected, t_actual)
@@ -1363,11 +1375,11 @@ Protected Module clDataTable_tests
 		  next
 		  
 		  var my_table_1 as new clDataTable("T2",SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
-		  my_table_1.AddRows(res_1)
+		  call my_table_1.AddRows(res_1)
 		  
 		  
 		  var my_table_2 as new clDataTable("T2",SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
-		  my_table_2.AddRows(res_2)
+		  call my_table_2.AddRows(res_2)
 		  
 		  
 		  
@@ -1952,11 +1964,11 @@ Protected Module clDataTable_tests
 		  dct_mapping_file3.value("Quatre") = "Delta"
 		  dct_mapping_file3.value("Extra") = "New_col"
 		  
-		  my_table.AddRows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  call my_table.AddRows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
-		  my_table.AddRows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
+		  call my_table.AddRows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
 		  
-		  my_table.AddRows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
+		  call my_table.AddRows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
 		  
 		  var expected_table as new clDataTable("calc")
 		  call expected_table.AddColumn(new clStringDataSerie("Alpha"))
@@ -1966,7 +1978,7 @@ Protected Module clDataTable_tests
 		  call expected_table.AddColumn(new clIntegerDataSerie("Group"))
 		  call expected_table.AddColumn(new clStringDataSerie("New_col"))
 		  
-		  expected_table.AddRows(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
+		  call expected_table.AddRows(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
 		  
 		  call check_table(log,"T4/T5", expected_table, my_table, 0.0001) 
 		  

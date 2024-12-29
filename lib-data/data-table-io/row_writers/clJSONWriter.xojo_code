@@ -28,32 +28,32 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DefineMetadata(name as string, columns() as string)
+		Sub DefineMetadata(DatasetName as string, ColumnName() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  var temp() as string
 		  
-		  self.DefineMetadata(name, columns, temp)
+		  self.DefineMetadata(DatasetName, ColumnName, temp)
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DefineMetadata(DatasetName as string, columns() as string, column_type() as string)
+		Sub DefineMetadata(DatasetName as string, ColumnName() as string, ColumnType() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  var d() as Dictionary
 		  
-		  for i as integer = 0 to columns.LastIndex
-		    var ColumnName as String = columns(i)
+		  for i as integer = 0 to ColumnName.LastIndex
+		    var TempColumnName as String = ColumnName(i).Trim
 		    
-		    var ColumnType as string = clDataType.VariantValue
+		    var TempColumnType as string = clDataType.VariantValue
 		    
-		    if column_type.LastIndex < i then
-		      ColumnType = column_type(i)
+		    if ColumnType.LastIndex < i then
+		      TempColumnType = ColumnType(i)
 		    end if
 		    
-		    d.Add(new Dictionary(self.Configuration.KeyforFieldName: ColumnName, self.Configuration.KeyforFieldType:ColumnType))
+		    d.Add(new Dictionary(self.Configuration.KeyforFieldName: TempColumnName, self.Configuration.KeyforFieldType:TempColumnType))
 		  next
 		  
 		  Header.value(self.Configuration.KeyForDatasetName)  = DatasetName
@@ -67,17 +67,17 @@ Implements TableRowWriterInterface
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  
-		  var output_json as new JSONItem
+		  OutputJSON =  new JSONItem
 		  
-		  output_json.Value(Configuration.KeyForHeader) = Header
-		  output_json.value(Configuration.KeyForData) = rows
+		  OutputJSON.Value(Configuration.KeyForHeader) = Header
+		  OutputJSON.value(Configuration.KeyForData) = rows
 		  
-		  output_json.Compact = False
-		   
+		  OutputJSON.Compact = False
+		  
 		  if self.destination = nil then return 
 		  
 		  var txt as TextOutputStream = TextOutputStream.Create(self.destination) 
-		  txt.Write(output_json.ToString)
+		  txt.Write(OutputJSON.ToString)
 		  
 		  txt.close
 		  
@@ -91,6 +91,12 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetJSON() As JSONItem
+		  return OutputJSON
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub UpdateExternalName(new_name as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
@@ -99,20 +105,24 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
-		Configuration As clJSONFileConfig
+	#tag Property, Flags = &h21
+		Private Configuration As clJSONFileConfig
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		Destination As FolderItem
+	#tag Property, Flags = &h21
+		Private Destination As FolderItem
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		Header As Dictionary
+	#tag Property, Flags = &h21
+		Private Header As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		Rows() As Dictionary
+	#tag Property, Flags = &h21
+		Private OutputJSON As JSONItem
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private Rows() As Dictionary
 	#tag EndProperty
 
 
@@ -154,14 +164,6 @@ Implements TableRowWriterInterface
 			Visible=true
 			Group="Position"
 			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Header"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

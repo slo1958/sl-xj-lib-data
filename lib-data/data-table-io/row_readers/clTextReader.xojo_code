@@ -28,9 +28,9 @@ Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Sub Constructor(fld as FolderItem, has_header as Boolean, config as clTextFileConfig)
 		  
-		  var tmp_config as clTextFileConfig = config
+		  var TempConfig as clTextFileConfig = config
 		  
-		  if tmp_config = nil then tmp_config = new clTextFileConfig
+		  if TempConfig = nil then TempConfig = new clTextFileConfig
 		  
 		  self.mDataFile = fld
 		  
@@ -41,9 +41,9 @@ Implements TableRowReaderInterface
 		  end if
 		  
 		  self.textstream  = TextInputStream.Open(self.mDataFile)
-		  self.textstream.Encoding = tmp_config.enc
-		  self.set_separator(tmp_config.field_separator)
-		  self.set_encoding(tmp_config.enc)
+		  self.textstream.Encoding = TempConfig.enc
+		  self.set_separator(TempConfig.FieldSeparator)
+		  self.set_encoding(TempConfig.enc)
 		  
 		  if has_header then
 		    var tmp() as variant = self.NextRow
@@ -56,7 +56,7 @@ Implements TableRowReaderInterface
 		    
 		  end if
 		  
-		  self.line_count = 0
+		  self.LineCount = 0
 		End Sub
 	#tag EndMethod
 
@@ -64,7 +64,7 @@ Implements TableRowReaderInterface
 		Function CurrentRowIndex() As integer
 		  // Part of the TableRowReaderInterface interface.
 		  
-		  Return line_count
+		  Return LineCount
 		End Function
 	#tag EndMethod
 
@@ -234,7 +234,7 @@ Implements TableRowReaderInterface
 		            
 		          else
 		            gotquote = False
-		            // will be pushed either by field_separator or end of line
+		            // will be pushed either by FieldSeparator or end of line
 		            
 		          end if
 		        else
@@ -245,7 +245,7 @@ Implements TableRowReaderInterface
 		        if charBuffer = kDoubleQuote then
 		          gotQuote = True
 		          
-		        elseif charBuffer = field_separator Then
+		        elseif charBuffer = FieldSeparator Then
 		          cellArray.add(cellBuffer)
 		          cellBuffer = ""
 		          
@@ -269,7 +269,7 @@ Implements TableRowReaderInterface
 		    
 		  wend 
 		  
-		  self.line_count = self.line_count +1
+		  self.LineCount = self.LineCount +1
 		  
 		  return cellArray
 		  
@@ -284,7 +284,7 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h21
 		Private Sub set_separator(prm_sep as string)
-		  field_separator = prm_sep
+		  FieldSeparator = prm_sep
 		  
 		End Sub
 	#tag EndMethod
@@ -295,11 +295,11 @@ Implements TableRowReaderInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected field_separator As String
+		Protected FieldSeparator As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected line_count As Integer
+		Protected LineCount As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -311,7 +311,7 @@ Implements TableRowReaderInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected quote_char As string
+		Protected QuoteCharacter As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

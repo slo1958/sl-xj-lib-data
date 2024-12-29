@@ -242,7 +242,7 @@ Protected Module clDataPool_tests
 		  
 		  fld_folder = fld_folder.Child("test-data")
 		  
-		  my_data_pool.save(new clTextWriter(fld_folder, True))
+		  my_data_pool.SaveEachTable(new clTextWriter(fld_folder, True))
 		  
 		  
 		  var loaded_table1 As New clDataTable(new clTextReader(fld_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
@@ -253,8 +253,8 @@ Protected Module clDataPool_tests
 		  
 		  
 		  var test_data_pool as new clDataPool
-		  test_data_pool.LoadTable(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
-		  test_data_pool.LoadTable(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
+		  test_data_pool.LoadOneTable(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
+		  test_data_pool.LoadOneTable(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
 		  
 		  
 		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1.csv"))
@@ -316,7 +316,7 @@ Protected Module clDataPool_tests
 		  
 		  
 		  
-		  my_data_pool.save(new clDBWriter(new clSqliteDBAccess(db)))
+		  my_data_pool.SaveEachTable(new clDBWriter(new clSqliteDBAccess(db)))
 		  
 		  
 		  var loaded_table1 as new clDataTable(new clDBReader(new clSqliteDBAccess(db),"PoolTable1"))
@@ -326,13 +326,13 @@ Protected Module clDataPool_tests
 		  call check_table(log,"table 2", loaded_table2, pool_table2)
 		  
 		  
-		  // var test_data_pool as new clDataPool
-		  // test_data_pool.LoadTable(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
-		  // test_data_pool.LoadTable(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
-		  // 
-		  // 
-		  // call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1.csv"))
-		  // call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2.csv"))
+		  var test_data_pool as new clDataPool
+		  
+		  test_data_pool.LoadOneTable(new clDBReader(new clSqliteDBAccess(db),"PoolTable1"))
+		  test_data_pool.LoadOneTable(new clDBReader(new clSqliteDBAccess(db),"PoolTable2"))
+		  
+		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1"))
+		  call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2"))
 		  
 		  log.end_exec(CurrentMethodName)
 		  

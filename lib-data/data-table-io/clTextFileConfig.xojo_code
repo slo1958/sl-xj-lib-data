@@ -2,11 +2,11 @@
 Class clTextFileConfig
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		  Self.field_separator = chr(9)
+		  Self.FieldSeparator = chr(9)
 		  
 		  self.enc = Encodings.UTF8
 		  
-		  self.quote_char = """"
+		  self.QuoteCharacter = """"
 		  
 		  self.DefaultNumberFormat = "-##########0.0##########"
 		  
@@ -18,11 +18,11 @@ Class clTextFileConfig
 
 	#tag Method, Flags = &h0
 		Sub Constructor(sep as string)
-		  Self.field_separator = sep
+		  Self.FieldSeparator = sep
 		  
 		  self.enc = Encodings.UTF8
 		  
-		  self.quote_char = """"
+		  self.QuoteCharacter = """"
 		  
 		  self.DefaultNumberFormat = "-##########0.0##########"
 		  
@@ -34,15 +34,15 @@ Class clTextFileConfig
 
 	#tag Method, Flags = &h0
 		Sub Constructor(sep as string, encoding as TextEncoding, quote_char as string = "")
-		  Self.field_separator = sep
+		  Self.FieldSeparator = sep
 		  
 		  self.enc = encoding
 		  
-		  if quote_char.Length>0 then
-		    self.quote_char = quote_char.Left(1)
+		  if QuoteCharacter.Length>0 then
+		    self.QuoteCharacter = QuoteCharacter.Left(1)
 		    
 		  else
-		    self.quote_char = """"
+		    self.QuoteCharacter = """"
 		    
 		  end if
 		  
@@ -61,8 +61,8 @@ Class clTextFileConfig
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub UpdateNumberFormat(new_format as string)
-		  DefaultNumberFormat = new_format
+		Sub UpdateNumberFormat(NewFormat as string)
+		  DefaultNumberFormat = NewFormat
 		  
 		End Sub
 	#tag EndMethod
@@ -77,7 +77,7 @@ Class clTextFileConfig
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		field_separator As String
+		FieldSeparator As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -85,7 +85,7 @@ Class clTextFileConfig
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		quote_char As String
+		QuoteCharacter As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -135,7 +135,7 @@ Class clTextFileConfig
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="field_separator"
+			Name="FieldSeparator"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
@@ -143,7 +143,7 @@ Class clTextFileConfig
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="quote_char"
+			Name="QuoteCharacter"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

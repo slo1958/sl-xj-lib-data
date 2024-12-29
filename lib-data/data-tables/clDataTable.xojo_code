@@ -492,7 +492,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRows(NewRowsSource() as clDataRow, CreateColumnsFlag as boolean = True)
+		Function AddRows(NewRowsSource() as clDataRow, CreateColumnsFlag as boolean = True) As integer
 		  //  
 		  //  Add  data rows to the table
 		  //  
@@ -501,18 +501,19 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - flag allow the creation of missing columns
 		  //  
 		  //  Returns:
-		  //  (nothing)
+		  //  - number of rows added
 		  //  
 		  for each row as clDataRow in NewRowsSource
 		    self.AddRow(row, CreateColumnsFlag)
 		    
 		  next
 		  
-		End Sub
+		  return NewRowsSource.Count
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRows(NewRowsSource() as Dictionary)
+		Function AddRows(NewRowsSource() as Dictionary) As integer
 		  //  
 		  //  Add  data rows to the table
 		  //  
@@ -520,18 +521,19 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - the data rows as an array of dictionaries
 		  //
 		  //  Returns:
-		  //  (nothing)
+		  //  - number of rows added
 		  //  
 		  for each dict as Dictionary in NewRowsSource
 		    self.AddRow(dict)
 		    
 		  next
 		  
-		End Sub
+		  return NewRowsSource.Count
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRows(source_objects() as object)
+		Function AddRows(source_objects() as object) As integer
 		  //  
 		  //  Add  data rows to the table
 		  //  
@@ -539,18 +541,19 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - the data rows as an array
 		  //
 		  //  Returns:
-		  //  (nothing)
+		  //  - number of rows added
 		  //  
 		  for each obj as object in source_objects
 		    self.AddRow(obj)
 		    
 		  next
 		  
-		End Sub
+		  return source_objects.Count
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRows(NewRowsSource as TableRowReaderInterface, CreateMissingColumns as boolean = True)
+		Function AddRows(NewRowsSource as TableRowReaderInterface, CreateMissingColumns as boolean = True) As integer
 		  //  
 		  //  Add  the data row from column source. New columns may be added to the current table
 		  //  
@@ -566,7 +569,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - flag allow the creation of missing columns
 		  //  
 		  //  Returns:
-		  //  (nothing)
+		  //  - number of rows added
 		  //  
 		  var length_before as integer = self.RowCount
 		  
@@ -591,22 +594,23 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  call self.internal_AddRows(NewRowsSource, tmp_columns, NewRowsSource.name)
+		  return self.internal_AddRows(NewRowsSource, tmp_columns, NewRowsSource.name)
 		  
 		  
 		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRows(NewRowsSource as TableRowReaderInterface, FieldMapping as dictionary)
+		Function AddRows(NewRowsSource as TableRowReaderInterface, FieldMapping as dictionary) As integer
 		  //  
 		  //  Add  the data row from column source. New columns may be added to the current table
 		  //  
 		  //  For example, 
 		  //  - with the current table containing columns A, B, C 
-		  //  - appending from the_source,  a table with columns X, Y, Z
+		  //  - appending from the_source,  a table with columns W, X, Y, Z
 		  //  - mapping dictionary X:A, Y:B, Z:D
+		  //  the values from W are ignored, since the column is not defined in the mapping dictionary
 		  //  the values from X, and Y are appended to the existing columns A and B
 		  //  a new column D is created to store the values from Z
 		  
@@ -615,7 +619,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - mapping dictionary, key is field name in the_source, value is the field name in the clDataTable
 		  //  
 		  //  Returns:
-		  //  (nothing)
+		  //  - number of rows added
 		  //  
 		  var length_before as integer = self.RowCount
 		  
@@ -641,11 +645,11 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  call self.internal_AddRows(NewRowsSource, tmp_columns, NewRowsSource.name)
+		  return self.internal_AddRows(NewRowsSource, tmp_columns, NewRowsSource.name)
 		  
 		  
 		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -2374,6 +2378,17 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h21
 		Private Function internal_AddRows(the_source as TableRowReaderInterface, tarGetColumns() as clAbstractDataSerie, source_name as string) As integer
+		  //
+		  //  Add rows from the received source
+		  //  
+		  //  Parameters:
+		  //  - the_source: source of data rows
+		  //  - targetColumns: list of colums to be populated, by position
+		  //  - Source_name: used to populate a 'data source name' column, name of the column is in the 'LoadedDataSourceColumn' constant
+		  //
+		  //  Returns:
+		  //  - 
+		  //
 		  var added_rows as integer
 		  
 		  var source_name_col as clAbstractDataSerie

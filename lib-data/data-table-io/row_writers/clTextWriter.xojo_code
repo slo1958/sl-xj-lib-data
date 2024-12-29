@@ -22,11 +22,11 @@ Implements TableRowWriterInterface
 		    
 		    if row_field.type = variant.TypeSingle or row_field.type= Variant.TypeDouble then
 		      
-		      if self.Use_locale_for_numbers then
-		        field = format(row_field,self.default_number_format)
+		      if self.UseLocaleForNumbers then
+		        field = format(row_field,self.DefaultNumberFormat)
 		        
 		      else
-		        field = str(row_field,self.default_number_format)
+		        field = str(row_field,self.DefaultNumberFormat)
 		        
 		      end if
 		    else 
@@ -35,7 +35,7 @@ Implements TableRowWriterInterface
 		    
 		    var reqQuotes as Boolean = False
 		    
-		    reqQuotes = reqQuotes or (field.IndexOf(field_separator)>0)
+		    reqQuotes = reqQuotes or (field.IndexOf(FieldSeparator)>0)
 		    
 		    reqQuotes = reqQuotes or ( field.IndexOf(chr(13))>0) 
 		    
@@ -54,9 +54,9 @@ Implements TableRowWriterInterface
 		    
 		  next
 		  
-		  textstream.WriteLine(join(tmpStr, field_separator))
+		  textstream.WriteLine(join(tmpStr, FieldSeparator))
 		  
-		  line_count = line_count + 1
+		  LineCount = LineCount + 1
 		  
 		  
 		End Sub
@@ -65,11 +65,11 @@ Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
 		Sub Constructor(the_destination_path as FolderItem, has_header as Boolean)
 		  self.DestinationPath = the_destination_path
-		  self.file_has_header = has_header
+		  self.FileHasHeader = has_header
 		  
 		  open_text_Stream(self.DestinationPath)
 		  
-		  self.internal_init_config(nil) 
+		  self.InternalInitConfiguration(nil) 
 		  
 		  
 		  
@@ -79,11 +79,11 @@ Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
 		Sub Constructor(the_destination_path as FolderItem, has_header as Boolean, config as clTextFileConfig)
 		  self.DestinationPath = the_destination_path
-		  self.file_has_header = has_header
+		  self.FileHasHeader = has_header
 		  
 		  open_text_Stream(self.DestinationPath)
 		  
-		  self.internal_init_config(config)
+		  self.InternalInitConfiguration(config)
 		  
 		  
 		  
@@ -95,7 +95,7 @@ Implements TableRowWriterInterface
 		Sub DefineMetadata(name as string, columns() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
-		  if header_written then return
+		  if HeaderWritten then return
 		  
 		  write_column_headers(columns)
 		  
@@ -107,7 +107,7 @@ Implements TableRowWriterInterface
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  
-		  if header_written then return
+		  if HeaderWritten then return
 		  
 		  write_column_headers(columns)
 		  
@@ -134,37 +134,37 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub internal_init_config(config as clTextFileConfig)
+		Private Sub InternalInitConfiguration(config as clTextFileConfig)
 		  
-		  var tmp_config as clTextFileConfig = config
+		  var TempConfig as clTextFileConfig = config
 		  
-		  if tmp_config = nil then tmp_config = new clTextFileConfig
+		  if TempConfig = nil then TempConfig = new clTextFileConfig
 		  
-		  self.field_separator = tmp_config.field_separator
-		  self.encoding = tmp_config.enc
-		  self.quote_char = tmp_config.quote_char
-		  self.default_number_format = tmp_config.DefaultNumberFormat
-		  self.default_extension = tmp_config.file_extension
-		  self.Use_locale_for_numbers = tmp_config.UseLocalFormatting
+		  self.FieldSeparator = TempConfig.FieldSeparator
+		  self.encoding = TempConfig.enc
+		  self.QuoteCharacter = TempConfig.QuoteCharacter
+		  self.DefaultNumberFormat = TempConfig.DefaultNumberFormat
+		  self.DefaultFileExtension = TempConfig.file_extension
+		  self.UseLocaleForNumbers = TempConfig.UseLocalFormatting
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub open_text_Stream(tmp_file as FolderItem)
 		  
-		  self.line_count = 0
+		  self.LineCount = 0
 		  
-		  self.current_file = tmp_file
+		  self.CurrentFIle = tmp_file
 		  
-		  if not self.current_file.IsFolder and self.current_file.IsWriteable then
-		    self.TextStream = TextOutputStream.Create(self.current_file)
+		  if not self.CurrentFIle.IsFolder and self.CurrentFIle.IsWriteable then
+		    self.TextStream = TextOutputStream.Create(self.CurrentFIle)
 		    
 		  else
 		    self.TextStream =  nil
 		    
 		  end if 
 		  
-		  self.header_written = not self.file_has_header
+		  self.HeaderWritten = not self.FileHasHeader
 		  
 		End Sub
 	#tag EndMethod
@@ -179,11 +179,11 @@ Implements TableRowWriterInterface
 		    return
 		    
 		  elseif self.DestinationPath.IsFolder then
-		    tmp_fld = self.DestinationPath.Child(new_name + self.default_extension)
+		    tmp_fld = self.DestinationPath.Child(new_name + self.DefaultFileExtension)
 		    open_text_Stream(tmp_fld)
 		    
 		  else
-		    tmp_fld = self.DestinationPath.Parent.Child(new_name + self.default_extension)
+		    tmp_fld = self.DestinationPath.Parent.Child(new_name + self.DefaultFileExtension)
 		    open_text_Stream(tmp_fld)
 		    
 		  end if
@@ -204,21 +204,21 @@ Implements TableRowWriterInterface
 		  
 		  self.AddRow(tmp)
 		  
-		  header_written = True
+		  HeaderWritten = True
 		End Sub
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h1
-		Protected current_file As FolderItem
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		default_extension As string
+		Protected CurrentFIle As FolderItem
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected default_number_format As string
+		Protected DefaultFileExtension As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected DefaultNumberFormat As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -230,23 +230,23 @@ Implements TableRowWriterInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected field_separator As String
+		Protected FieldSeparator As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected file_has_header As Boolean
+		Protected FileHasHeader As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected header_written As Boolean
+		Protected HeaderWritten As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected line_count As Integer
+		Protected LineCount As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected quote_char As string
+		Protected QuoteCharacter As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -254,7 +254,7 @@ Implements TableRowWriterInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected Use_locale_for_numbers As Boolean
+		Protected UseLocaleForNumbers As Boolean
 	#tag EndProperty
 
 
@@ -300,7 +300,7 @@ Implements TableRowWriterInterface
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="default_extension"
+			Name="DefaultFileExtension"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
