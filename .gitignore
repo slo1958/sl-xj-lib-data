@@ -9,3 +9,7 @@ Debug*/Debug*\ Libs
 *.rbuistate
 *.xojo_uistate
 *.obsolete*
+test-data/clDataPool_tests.test_io_001
+test-data/clDataPool_tests.test_io_003
+test-data/clDataTable_tests.test_io_001
+test-data/clDataPool_tests.test_io_004
