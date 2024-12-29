@@ -44,6 +44,15 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub LoadEachTable(NewTableSource as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
+		  
+		  var tmp() as string = NewTableSource.GetListOfExternalElements
+		  
+		  if NewTableSource.
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub LoadOneTable(NewTableSource as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
 		  var tmp_table as new clDataTable(NewTableSource, allocator)
 		  

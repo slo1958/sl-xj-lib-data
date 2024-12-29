@@ -314,8 +314,6 @@ Protected Module clDataPool_tests
 		  
 		  my_data_pool.SetTable(pool_table2)
 		  
-		  
-		  
 		  my_data_pool.SaveEachTable(new clDBWriter(new clSqliteDBAccess(db)))
 		  
 		  

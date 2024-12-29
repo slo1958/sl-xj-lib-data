@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clAbstractDataSerie
-Implements Xojo.Core.Iterable,itf_json_able
+Implements Xojo.Core.Iterable, itf_json_able
 	#tag Method, Flags = &h0
 		Sub AddAlias(alias as string)
 		  //  

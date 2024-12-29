@@ -3,6 +3,7 @@ Class clTextWriter
 Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
 		Sub AddRow(row_data as Dictionary)
+		  
 		  raise new clDataException("Unexpected call to addrow from dictionary.")
 		  
 		End Sub

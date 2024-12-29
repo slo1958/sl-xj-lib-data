@@ -168,7 +168,7 @@ Implements itf_json_able
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="display_title"
+			Name="DisplayTitle"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

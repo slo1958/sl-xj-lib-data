@@ -2,6 +2,19 @@
 Protected Class clAbstractDatabaseAccess
 	#tag Method, Flags = &h0
 		Sub AppendFields(table_name as string, field_names() as string, field_types() as string)
+		  //
+		  // Add fields to a table
+		  //
+		  //  
+		  //  Parameters:
+		  //  - name of the target table
+		  //  - list of fields
+		  //. - type of each field
+		  //  
+		  //  Returns:
+		  //  - (nothing)
+		  //  
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
@@ -82,6 +95,19 @@ Protected Class clAbstractDatabaseAccess
 
 	#tag Method, Flags = &h0
 		Sub CreateTable(table_name as string, field_names() as string, field_types() as string)
+		  //
+		  // Creates a new table
+		  //
+		  //  
+		  //  Parameters:
+		  //  - name of the new table
+		  //  - list of fields
+		  //. - type of each field
+		  //  
+		  //  Returns:
+		  //  - (nothing)
+		  //  
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
@@ -89,6 +115,16 @@ Protected Class clAbstractDatabaseAccess
 
 	#tag Method, Flags = &h0
 		Sub DropTable(table_name as string)
+		  //
+		  // Drop a table
+		  //
+		  //  
+		  //  Parameters:
+		  //  - name of the  table
+		  //  
+		  //  Returns:
+		  //  - (nothing)
+		  //  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
@@ -96,12 +132,35 @@ Protected Class clAbstractDatabaseAccess
 
 	#tag Method, Flags = &h0
 		Function GetDatabase() As Database
+		  //
+		  //  Get the db object
+		  //
+		  //  
+		  //  Parameters:
+		  //  - (none)
+		  //  
+		  //  Returns:
+		  //  - (nothing)
+		  //  
+		  
+		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetSQLType(source_type as string) As String
+		  //
+		  // Convert a source type to SQL type of the current db engine
+		  //
+		  //  
+		  //  Parameters:
+		  //  - type to be mapped
+		  //  
+		  //  Returns:
+		  //  - corresponding sql type
+		  //  
+		  
 		  return source_type
 		  
 		  

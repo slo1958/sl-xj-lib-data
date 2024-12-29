@@ -31,69 +31,9 @@ Implements TableRowReaderInterface
 		  
 		  var tmp_master as new JSONItem(self.JSONSource)
 		  
-		  
-		  if not tmp_master.HasKey(config.KeyForHeader) then
-		    raise new clDataException("Missing metadata in JSON file, looking for ["+config.KeyForHeader + "]")
-		    return
-		    
-		  end if
-		  
-		  if not tmp_master.HasKey(config.KeyForData) then
-		    raise new clDataException("Missing data in JSON file, looking for ["+config.KeyForData + "]")
-		    return
-		    
-		  end if
-		  
-		  try
-		    
-		    var JSONForHeader as JSONItem = tmp_master.Value(config.KeyForHeader)
-		    
-		    var tempa as Dictionary = ParseJSON(JSONForHeader.ToString)
-		    
-		    Self.MetaData = tempa
-		    
-		  catch
-		    raise new clDataException("Cannot process the JSON header")
-		    
-		  end try
-		  
-		  try
-		    var JSONForData as JSONItem = tmp_master.value(config.KeyForData)
-		    
-		    var tempb() as variant = ParseJSON(JSONForData.ToString)
-		    
-		    for each d as variant in tempb
-		      if d isa Dictionary then
-		        
-		        self.SourceData.Add(d)
-		      end if
-		    next
-		    
-		  catch
-		    raise new clDataException("Cannot process the JSON data")
-		    
-		  end try
-		  
-		  // Extract columns info
-		  
-		  var tmp_col() as variant = self.MetaData.value(config.KeyForListOfColumns)
-		  self.columnsType = new Dictionary
-		  self.columnsName.RemoveAll
-		  
-		  for each d as variant in tmp_col
-		    if d isa Dictionary then
-		      var fieldname as string = Dictionary(d).value(config.KeyforFieldName)
-		      self.columnsName.Add(fieldname)
-		      
-		      self.columnsType.value(fieldname) = Dictionary(d).Value(config.KeyForFieldType)
-		    end if
-		    
-		  next
-		  
-		  self.TempRowIndex = 0
+		  self.ProcessJSONData(tmp_master, TempConfig)
 		  
 		  return
-		  
 		End Sub
 	#tag EndMethod
 
@@ -177,6 +117,75 @@ Implements TableRowReaderInterface
 		  
 		  return cellArray
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ProcessJSONData(input as JSONItem, config as clJSONFileConfig)
+		  
+		  var tmp_master as JSONItem = input
+		  
+		  if not tmp_master.HasKey(config.KeyForHeader) then
+		    raise new clDataException("Missing metadata in JSON file, looking for ["+config.KeyForHeader + "]")
+		    return
+		    
+		  end if
+		  
+		  if not tmp_master.HasKey(config.KeyForData) then
+		    raise new clDataException("Missing data in JSON file, looking for ["+config.KeyForData + "]")
+		    return
+		    
+		  end if
+		  
+		  try
+		    
+		    var JSONForHeader as JSONItem = tmp_master.Value(config.KeyForHeader)
+		    
+		    var tempa as Dictionary = ParseJSON(JSONForHeader.ToString)
+		    
+		    Self.MetaData = tempa
+		    
+		  catch
+		    raise new clDataException("Cannot process the JSON header")
+		    
+		  end try
+		  
+		  try
+		    var JSONForData as JSONItem = tmp_master.value(config.KeyForData)
+		    
+		    var tempb() as variant = ParseJSON(JSONForData.ToString)
+		    
+		    for each d as variant in tempb
+		      if d isa Dictionary then
+		        
+		        self.SourceData.Add(d)
+		      end if
+		    next
+		    
+		  catch
+		    raise new clDataException("Cannot process the JSON data")
+		    
+		  end try
+		  
+		  // Extract columns info
+		  
+		  var tmp_col() as variant = self.MetaData.value(config.KeyForListOfColumns)
+		  self.columnsType = new Dictionary
+		  self.columnsName.RemoveAll
+		  
+		  for each d as variant in tmp_col
+		    if d isa Dictionary then
+		      var fieldname as string = Dictionary(d).value(config.KeyforFieldName)
+		      self.columnsName.Add(fieldname)
+		      
+		      self.columnsType.value(fieldname) = Dictionary(d).Value(config.KeyForFieldType)
+		    end if
+		    
+		  next
+		  
+		  self.TempRowIndex = 0
+		  
+		  return
+		End Sub
 	#tag EndMethod
 
 
