@@ -64,6 +64,12 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AllDone()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_destination_path as FolderItem, has_header as Boolean)
 		  self.DestinationPath = the_destination_path
 		  self.FileHasHeader = has_header
@@ -116,7 +122,7 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Done()
+		Sub DoneWithTable()
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  if textstream = nil then return

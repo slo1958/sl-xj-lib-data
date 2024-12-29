@@ -19,6 +19,8 @@ Protected Class clJSONFileConfig
 		  self.KeyforFieldName = DefaultKeyforFieldName
 		  self.KeyForFieldType = DefaultKeyForFieldType
 		  
+		  self.KeyForManifest = DefaultKeyForManifest
+		  self.KeyForTables = DefaultKeyForTables
 		End Sub
 	#tag EndMethod
 
@@ -47,6 +49,14 @@ Protected Class clJSONFileConfig
 		KeyForListOfColumns As string
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		KeyForManifest As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		KeyForTables As string
+	#tag EndProperty
+
 
 	#tag Constant, Name = DefaultKeyForData, Type = String, Dynamic = False, Default = \"data", Scope = Public
 	#tag EndConstant
@@ -64,6 +74,12 @@ Protected Class clJSONFileConfig
 	#tag EndConstant
 
 	#tag Constant, Name = DefaultKeyForListOfColumns, Type = String, Dynamic = False, Default = \"columns", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = DefaultKeyForManifest, Type = String, Dynamic = False, Default = \"manifest", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = DefaultKeyForTables, Type = String, Dynamic = False, Default = \"tables", Scope = Public
 	#tag EndConstant
 
 

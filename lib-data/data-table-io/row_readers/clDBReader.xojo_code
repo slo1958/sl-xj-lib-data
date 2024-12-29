@@ -152,6 +152,12 @@ Implements TableRowReaderInterface
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub UpdateExternalName(new_name as string)
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Description
 		Used to load data in a clDataTable from a database table or query

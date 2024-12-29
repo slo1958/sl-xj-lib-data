@@ -44,35 +44,45 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub LoadEachTable(NewTableSource as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
+		Sub LoadEachTable(ReadFrom as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
 		  
-		  var tmp() as string = NewTableSource.GetListOfExternalElements
+		  var tmp() as string = ReadFrom.GetListOfExternalElements
 		  
-		  if NewTableSource.
+		  for each table as string in tmp
+		    //NewTableSource.se
+		    ReadFrom.UpdateExternalName(table)
+		    
+		    var tmp_table as new clDataTable(ReadFrom, allocator)
+		    
+		    self.SetTable(tmp_table)
+		    
+		  next
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub LoadOneTable(NewTableSource as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
-		  var tmp_table as new clDataTable(NewTableSource, allocator)
+		Sub LoadOneTable(ReadFrom as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
+		  var tmp_table as new clDataTable(ReadFrom, allocator)
 		  
 		  self.SetTable(tmp_table)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SaveEachTable(write_to as TableRowWriterInterface, flag_empty_table as boolean = false)
+		Sub SaveEachTable(WriteTo as TableRowWriterInterface, flag_empty_table as boolean = false)
 		  
 		  for each table_name as String in DatatableDictionary.Keys
-		    call self.SaveOneTable(table_name, write_to, flag_empty_table)
+		    call self.SaveOneTable(table_name, WriteTo, flag_empty_table)
 		    
 		  next
+		  
+		  WriteTo.AllDone
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SaveOneTable(name as string, write_to as TableRowWriterInterface, flag_empty_table as boolean = false) As Boolean
+		Function SaveOneTable(name as string, WriteTo as TableRowWriterInterface, flag_empty_table as boolean = false) As Boolean
 		  
 		  var table as clDataTable = self.GetTable(name)
 		  
@@ -99,9 +109,9 @@ Implements Iterable
 		    
 		  end if
 		  
-		  write_to.UpdateExternalName(fullname)
+		  WriteTo.UpdateExternalName(fullname)
 		  
-		  table.save(write_to)
+		  table.save(WriteTo)
 		  
 		  return True
 		End Function

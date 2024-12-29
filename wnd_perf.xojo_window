@@ -1,5 +1,5 @@
-#tag Window
-Begin Window wnd_perf
+#tag DesktopWindow
+Begin DesktopWindow wnd_perf
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF00
    Composite       =   False
@@ -24,7 +24,7 @@ Begin Window wnd_perf
    Type            =   0
    Visible         =   True
    Width           =   600
-   Begin Label Label2
+   Begin DesktopLabel Label2
       AllowAutoDeactivate=   True
       Bold            =   False
       DataField       =   ""
@@ -59,7 +59,7 @@ Begin Window wnd_perf
       Visible         =   True
       Width           =   100
    End
-   Begin Label Label3
+   Begin DesktopLabel Label3
       AllowAutoDeactivate=   True
       Bold            =   False
       DataField       =   ""
@@ -94,7 +94,7 @@ Begin Window wnd_perf
       Visible         =   True
       Width           =   100
    End
-   Begin PushButton PushButton1
+   Begin DesktopButton PushButton1
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -126,7 +126,7 @@ Begin Window wnd_perf
       Visible         =   True
       Width           =   99
    End
-   Begin TextField tf_cols
+   Begin DesktopTextField tf_cols
       AllowAutoDeactivate=   True
       AllowFocusRing  =   True
       AllowSpellChecking=   False
@@ -169,7 +169,7 @@ Begin Window wnd_perf
       Visible         =   True
       Width           =   80
    End
-   Begin TextField tf_rows
+   Begin DesktopTextField tf_rows
       AllowAutoDeactivate=   True
       AllowFocusRing  =   True
       AllowSpellChecking=   False
@@ -212,7 +212,7 @@ Begin Window wnd_perf
       Visible         =   True
       Width           =   80
    End
-   Begin Listbox Listbox1
+   Begin DesktopListBox Listbox1
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
@@ -265,7 +265,7 @@ Begin Window wnd_perf
       _ScrollWidth    =   -1
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Method, Flags = &h0
@@ -370,7 +370,7 @@ End
 
 #tag Events PushButton1
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  
 		  writemessage "Starting insert tests"
 		  

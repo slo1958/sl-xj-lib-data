@@ -13,17 +13,49 @@ Implements TableRowWriterInterface
 		Sub AddRow(row_data() as variant)
 		  // Part of the TableRowWriterInterface interface.
 		  
-		  raise new clDataException("Unexpected call to addrow from dictionary.")
+		  raise new clDataException("Unexpected call to addrow from array.")
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AllDone()
+		  
+		  if self.Filelist.Count = 0 then return 
+		  
+		  var tempList as new JSONItem
+		  for each filename as string in self.Filelist
+		    tempList.add(filename)
+		    
+		  next
+		  
+		  OutputJSON = new JSONItem
+		  
+		  OutputJSON.Value(Configuration.KeyForManifest) = tempList
+		  OutputJSON.Value(Configuration.KeyForTables) = FormattedData
+		  
+		  OutputJSON.Compact = False
+		  
+		  if self.destination = nil then return 
+		  
+		  var txt as TextOutputStream = TextOutputStream.Create(self.destination) 
+		  txt.Write(OutputJSON.ToString)
+		  
+		  txt.close
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(the_destination_path as FolderItem, config as clJSONFileConfig)
-		  self.Destination = the_destination_path
-		  self.Configuration = config
 		  
 		  self.header =new Dictionary
+		  
+		  self.Destination = the_destination_path
+		  
+		  self.InternalInitConfiguration(config)
+		  
+		  self.FormattedData = new JSONItem
 		End Sub
 	#tag EndMethod
 
@@ -63,23 +95,55 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub done()
+		Sub DoneWithTable()
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  
-		  OutputJSON =  new JSONItem
 		  
-		  OutputJSON.Value(Configuration.KeyForHeader) = Header
-		  OutputJSON.value(Configuration.KeyForData) = rows
+		  if self.Filelist.Count = 0 then // single table
+		    
+		    OutputJSON = new JSONItem
+		    
+		    OutputJSON.Value(Configuration.KeyForHeader) = Header
+		    OutputJSON.Value(Configuration.KeyForData)  = rows
+		    
+		    OutputJSON.Compact = False
+		    
+		    if self.destination = nil then return 
+		    
+		    var txt as TextOutputStream = TextOutputStream.Create(self.destination) 
+		    txt.Write(OutputJSON.ToString)
+		    
+		    txt.close
+		    
+		    return 
+		    
+		  else
+		    var tempJSON as  new JSONItem
+		    var tempRows as new JSONItem
+		    
+		    // Need to copy the content of the array
+		    for each d as Dictionary in rows
+		      tempRows.add(d)
+		      
+		    next
+		    
+		    tempJSON.Value(Configuration.KeyForHeader) = Header
+		    tempJSON.value(Configuration.KeyForData) = tempRows
+		    
+		    var checks as String = tempJSON.ToString
+		    
+		    
+		    FormattedData.Add(tempJSON)
+		    
+		    self.Header = new Dictionary
+		    self.rows.RemoveAll
+		    
+		    return 
+		    
+		  end if
 		  
-		  OutputJSON.Compact = False
 		  
-		  if self.destination = nil then return 
-		  
-		  var txt as TextOutputStream = TextOutputStream.Create(self.destination) 
-		  txt.Write(OutputJSON.ToString)
-		  
-		  txt.close
 		  
 		End Sub
 	#tag EndMethod
@@ -96,10 +160,27 @@ Implements TableRowWriterInterface
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub InternalInitConfiguration(config as clJSONFileConfig)
+		  
+		  if config = nil then
+		    self.Configuration = new clJSONFileConfig
+		    
+		  else
+		    self.Configuration = config
+		    
+		  end if
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub UpdateExternalName(new_name as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
+		  Filelist.Add(new_name)
+		  
+		  self.Header = new Dictionary
+		  self.rows.RemoveAll
 		  
 		End Sub
 	#tag EndMethod
@@ -111,6 +192,14 @@ Implements TableRowWriterInterface
 
 	#tag Property, Flags = &h21
 		Private Destination As FolderItem
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Filelist() As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		FormattedData As JSONItem
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

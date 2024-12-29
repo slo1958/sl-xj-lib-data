@@ -1684,6 +1684,10 @@ Protected Module clDataTable_tests
 		  
 		  fld_file1 = fld_folder.Child("myfile3_10K_tab.txt")
 		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
+		  
+		  fld_folder = New FolderItem
+		  fld_folder = ClearFolder( fld_folder.Child("test-data").Child(CurrentMethodName))
+		  
 		  fld_file3Text  = fld_folder.Child("myfile3_10K_output.txt")
 		  fld_file3JSON  = fld_folder.Child("myfile3_10K_output.json")
 		  

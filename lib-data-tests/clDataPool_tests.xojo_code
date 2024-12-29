@@ -35,6 +35,8 @@ Protected Module clDataPool_tests
 		  
 		  test_io_001(logwriter) 
 		  test_io_002(logwriter) 
+		  test_io_003(logwriter)
+		  test_io_004(logwriter)
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		  
@@ -237,10 +239,8 @@ Protected Module clDataPool_tests
 		  
 		  my_data_pool.SetTable(pool_table2)
 		  
-		  
 		  var fld_folder As New FolderItem
-		  
-		  fld_folder = fld_folder.Child("test-data")
+		  fld_folder = ClearFolder( fld_folder.Child("test-data").Child(CurrentMethodName))
 		  
 		  my_data_pool.SaveEachTable(new clTextWriter(fld_folder, True))
 		  
@@ -329,6 +329,132 @@ Protected Module clDataPool_tests
 		  test_data_pool.LoadOneTable(new clDBReader(new clSqliteDBAccess(db),"PoolTable1"))
 		  test_data_pool.LoadOneTable(new clDBReader(new clSqliteDBAccess(db),"PoolTable2"))
 		  
+		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1"))
+		  call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2"))
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_io_003(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var my_data_pool as new clDataPool
+		  
+		  var rtst As clDataRow
+		  
+		  
+		  var pool_table1 as  New clDataTable("PoolTable1")
+		  
+		  for i as integer = 1 to 4
+		    rtst = New clDataRow
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","abcd")
+		    rtst.SetCell("ccc",123.456 * i) 
+		    
+		    pool_table1.AddRow(rtst)
+		    
+		  next
+		  
+		  my_data_pool.SetTable( pool_table1)
+		  
+		  
+		  var pool_table2 as New clDataTable("PoolTable2")
+		  for i as integer = 5 to 9
+		    rtst = New clDataRow
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","xyz")
+		    rtst.SetCell("ddd",567.89 * i)
+		    
+		    pool_table2.AddRow(rtst)
+		    
+		  next
+		  
+		  my_data_pool.SetTable(pool_table2)
+		  
+		  
+		  var fld_folder As New FolderItem
+		  fld_folder = ClearFolder( fld_folder.Child("test-data").Child(CurrentMethodName))
+		  
+		  my_data_pool.SaveEachTable(new clTextWriter(fld_folder, True))
+		  
+		  
+		  var loaded_table1 As New clDataTable(new clTextReader(fld_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
+		  var loaded_table2 As New clDataTable(new clTextReader(fld_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
+		  
+		  call check_table(log,"table 1", loaded_table1, pool_table1)
+		  call check_table(log,"table 2", loaded_table2, pool_table2)
+		  
+		  
+		  var test_data_pool as new clDataPool
+		  test_data_pool.LoadEachTable(new clTextReader(fld_folder, True, new clTextFileConfig(chr(9))))
+		  //test_data_pool.LoadOneTable(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
+		  //test_data_pool.LoadOneTable(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
+		  
+		  
+		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1.csv"))
+		  call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2.csv"))
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_io_004(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var my_data_pool as new clDataPool
+		  
+		  var rtst As clDataRow
+		  
+		  
+		  var pool_table1 as  New clDataTable("PoolTable1")
+		  
+		  for i as integer = 1 to 4
+		    rtst = New clDataRow
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","abcd")
+		    rtst.SetCell("ccc",123.456 * i) 
+		    
+		    pool_table1.AddRow(rtst)
+		    
+		  next
+		  
+		  my_data_pool.SetTable( pool_table1)
+		  
+		  
+		  var pool_table2 as New clDataTable("PoolTable2")
+		  for i as integer = 5 to 9
+		    rtst = New clDataRow
+		    rtst.SetCell("aaa",I*1000)
+		    rtst.SetCell("bbb","xyz")
+		    rtst.SetCell("ddd",567.89 * i)
+		    
+		    pool_table2.AddRow(rtst)
+		    
+		  next
+		  
+		  my_data_pool.SetTable(pool_table2)
+		  
+		  
+		  var fld_folder As New FolderItem
+		  fld_folder = ClearFolder( fld_folder.Child("test-data").Child(CurrentMethodName))
+		  fld_folder = fld_folder.child("myfile.json")
+		  
+		  my_data_pool.SaveEachTable(new clJSONWriter(fld_folder, nil))
+		  
+		  
+		  var test_data_pool as new clDataPool
+		  test_data_pool.LoadEachTable(new clJSONReader(fld_folder, nil))
+		  
+		   
 		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1"))
 		  call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2"))
 		  

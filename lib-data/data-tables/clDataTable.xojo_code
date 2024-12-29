@@ -2697,7 +2697,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  write_to.done
+		  write_to.DoneWithTable
 		  
 		End Sub
 	#tag EndMethod

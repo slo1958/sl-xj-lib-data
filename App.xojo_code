@@ -1,6 +1,6 @@
 #tag Class
 Protected Class App
-Inherits Application
+Inherits DesktopApplication
 	#tag Note, Name = License
 		MIT License
 		

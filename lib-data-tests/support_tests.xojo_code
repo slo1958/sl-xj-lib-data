@@ -22,6 +22,25 @@ Protected Module support_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ClearFolder(fld as FolderItem) As FolderItem
+		  if not fld.Exists then 
+		    fld.CreateFolder
+		    Return fld
+		    
+		  end if
+		  
+		  if not fld.IsFolder then return nil
+		  
+		  fld.RemoveFolderAndContents
+		  
+		  fld.CreateFolder
+		  
+		  Return fld
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub write_message(msg as string)
 		  system.DebugLog(msg)
 		End Sub

@@ -13,6 +13,12 @@ Protected Interface TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AllDone()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub DefineMetadata(name as string, columns() as string)
 		  
 		End Sub
@@ -25,7 +31,7 @@ Protected Interface TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub done()
+		Sub DoneWithTable()
 		  
 		End Sub
 	#tag EndMethod

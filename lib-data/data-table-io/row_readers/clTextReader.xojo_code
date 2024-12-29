@@ -32,7 +32,10 @@ Implements TableRowReaderInterface
 		  
 		  if TempConfig = nil then TempConfig = new clTextFileConfig
 		  
-		  self.mDataFile = fld
+		  self.SourcePath = fld
+		  self.RequiresHeader = has_header
+		  
+		  self.InternalInitConfig(TempConfig)
 		  
 		  if not fld.Exists or fld.IsFolder then
 		    self.textstream = nil
@@ -40,23 +43,8 @@ Implements TableRowReaderInterface
 		    
 		  end if
 		  
-		  self.textstream  = TextInputStream.Open(self.mDataFile)
-		  self.textstream.Encoding = TempConfig.enc
-		  self.set_separator(TempConfig.FieldSeparator)
-		  self.set_encoding(TempConfig.enc)
+		  OpenTextStream(fld)
 		  
-		  if has_header then
-		    var tmp() as variant = self.NextRow
-		    self.mheader.RemoveAll
-		    
-		    for each v as variant in tmp
-		      self.mheader.add(v)
-		      
-		    next
-		    
-		  end if
-		  
-		  self.LineCount = 0
 		End Sub
 	#tag EndMethod
 
@@ -70,12 +58,14 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h0
 		Function Datafile() As FolderItem
-		  return self.mDataFile
+		  return self.CurrentFIle
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function EndOfFile() As Boolean
+		Function EndOfTable() As boolean
+		  // Part of the TableRowReaderInterface interface.
+		  
 		  if textstream = nil then
 		    return True
 		    
@@ -90,14 +80,6 @@ Implements TableRowReaderInterface
 		    return false
 		    
 		  end if
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function EndOfTable() As boolean
-		  // Part of the TableRowReaderInterface interface.
-		  return EndOfFile
-		  
 		  
 		End Function
 	#tag EndMethod
@@ -141,16 +123,16 @@ Implements TableRowReaderInterface
 		  
 		  var tmp_fd as FolderItem
 		  
-		  if mDataFile = nil then
+		  if self.SourcePath = nil then
 		    return ret
 		    
 		  end if
 		  
-		  if mDataFile.IsFolder then
-		    tmp_fd = mDataFile
+		  if self.SourcePath.IsFolder then
+		    tmp_fd = self.SourcePath
 		    
 		  else 
-		    tmp_fd = mDataFile.Parent
+		    tmp_fd = self.SourcePath.Parent
 		    
 		  end if
 		  
@@ -160,7 +142,16 @@ Implements TableRowReaderInterface
 		  end if
 		  
 		  For Each file As FolderItem In tmp_fd.Children
-		    if not file.IsFolder then
+		    
+		    if file.IsFolder then
+		      
+		    elseif file.name.Length <= self.DefaultFileExtension.Length then
+		      ret.Add(file.name)
+		      
+		    elseif file.name.right(self.DefaultFileExtension.Length) = self.DefaultFileExtension then
+		      ret.add(file.name.left(file.name.Length - self.DefaultFileExtension.Length))
+		      
+		    else
 		      ret.Add(file.Name)
 		      
 		    end if
@@ -173,13 +164,22 @@ Implements TableRowReaderInterface
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub InternalInitConfig(config as clTextFileConfig)
+		  
+		  self.DefaultFileExtension = config.file_extension
+		  self.FieldSeparator = config.FieldSeparator
+		  self.encoding = config.enc
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function Name() As string
 		  // Part of the TableRowReaderInterface interface
 		  
-		  if self.mDataFile = nil then return ""
+		  if self.CurrentFIle = nil then return ""
 		  
-		  return self.mDataFile.Name
+		  return self.CurrentFIle.Name
 		  
 		  
 		End Function
@@ -277,18 +277,65 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub set_encoding(enc as TextEncoding)
-		  encoding = enc
+		Private Sub OpenTextStream(tmp_file as FolderItem)
+		  
+		  self.CurrentFIle = tmp_file
+		  
+		  if not self.CurrentFIle.IsFolder and self.CurrentFIle.Exists then
+		    self.textstream  = TextInputStream.Open(tmp_file)
+		    self.textstream.Encoding = self.encoding
+		  else
+		    self.TextStream =  nil
+		    
+		  end if
+		  
+		  if self.RequiresHeader then
+		    var tmp() as variant = self.NextRow
+		    self.mheader.RemoveAll
+		    
+		    for each v as variant in tmp
+		      self.mheader.add(v)
+		      
+		    next
+		    
+		  end if
+		  
+		  self.LineCount = 0
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Sub set_separator(prm_sep as string)
-		  FieldSeparator = prm_sep
+	#tag Method, Flags = &h0
+		Sub UpdateExternalName(new_name as string)
+		  
+		  var tmp_fld as new FolderItem  
+		  
+		  if self.SourcePath = nil then
+		    self.TextStream = nil
+		    return
+		    
+		  elseif self.SourcePath.IsFolder then
+		    tmp_fld = self.SourcePath.Child(new_name + self.DefaultFileExtension)
+		    OpenTextStream(tmp_fld)
+		    
+		  else
+		    tmp_fld = self.SourcePath.Parent.Child(new_name + self.DefaultFileExtension)
+		    OpenTextStream(tmp_fld)
+		    
+		  end if
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h1
+		Protected CurrentFIle As FolderItem
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected DefaultFileExtension As string
+	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected encoding As TextEncoding
@@ -303,10 +350,6 @@ Implements TableRowReaderInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected mDataFile As FolderItem
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
 		Protected mheader() As string
 	#tag EndProperty
 
@@ -314,8 +357,16 @@ Implements TableRowReaderInterface
 		Protected QuoteCharacter As string
 	#tag EndProperty
 
+	#tag Property, Flags = &h21
+		Private RequiresHeader As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private SourcePath As FolderItem
+	#tag EndProperty
+
 	#tag Property, Flags = &h1
-		Protected textstream As TextInputStream
+		Protected TextStream As TextInputStream
 	#tag EndProperty
 
 

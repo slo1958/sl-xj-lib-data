@@ -3,6 +3,7 @@ Class clDBWriter
 Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
 		Sub AddRow(row_data as Dictionary)
+		  
 		  raise new clDataException("Unexpected call to addrow from dictionary.")
 		  
 		End Sub
@@ -21,6 +22,12 @@ Implements TableRowWriterInterface
 		  next
 		  
 		  db.AddRow(self.table_name , dbrow)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AllDone()
+		  
 		End Sub
 	#tag EndMethod
 
@@ -74,7 +81,7 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Done()
+		Sub DoneWithTable()
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  

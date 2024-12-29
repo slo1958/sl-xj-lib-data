@@ -1,31 +1,30 @@
-#tag Window
-Begin Window main_window Implements support_tests.LogMessageInterface
-   BackColor       =   &cFFFFFF00
+#tag DesktopWindow
+Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
    Backdrop        =   0
-   CloseButton     =   True
+   BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   Frame           =   0
+   DefaultLocation =   0
    FullScreen      =   False
-   FullScreenButton=   False
-   HasBackColor    =   False
+   HasBackgroundColor=   False
+   HasCloseButton  =   True
+   HasFullScreenButton=   False
+   HasMaximizeButton=   True
+   HasMinimizeButton=   True
    Height          =   452
    ImplicitInstance=   True
-   LiveResize      =   "True"
    MacProcID       =   0
-   MaxHeight       =   32000
-   MaximizeButton  =   True
-   MaxWidth        =   32000
+   MaximumHeight   =   32000
+   MaximumWidth    =   32000
    MenuBar         =   1260443647
    MenuBarVisible  =   True
-   MinHeight       =   64
-   MinimizeButton  =   True
-   MinWidth        =   64
-   Placement       =   0
+   MinimumHeight   =   64
+   MinimumWidth    =   64
    Resizeable      =   True
    Title           =   "Untitled"
+   Type            =   0
    Visible         =   True
    Width           =   628
-   Begin Listbox Listbox1
+   Begin DesktopListBox Listbox1
       AutoDeactivate  =   True
       AutoHideScrollbars=   True
       Bold            =   False
@@ -77,7 +76,7 @@ Begin Window main_window Implements support_tests.LogMessageInterface
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
-   Begin PushButton pb_run_all_tests
+   Begin DesktopButton pb_run_all_tests
       AutoDeactivate  =   True
       Bold            =   False
       ButtonStyle     =   0
@@ -109,7 +108,7 @@ Begin Window main_window Implements support_tests.LogMessageInterface
       Visible         =   True
       Width           =   80
    End
-   Begin PushButton pb_run_examples
+   Begin DesktopButton pb_run_examples
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -141,7 +140,7 @@ Begin Window main_window Implements support_tests.LogMessageInterface
       Visible         =   True
       Width           =   107
    End
-   Begin PushButton pb_run_perf
+   Begin DesktopButton pb_run_perf
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -173,7 +172,7 @@ Begin Window main_window Implements support_tests.LogMessageInterface
       Visible         =   True
       Width           =   107
    End
-   Begin PushButton pb_run_all_io_tests
+   Begin DesktopButton pb_run_all_io_tests
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -205,7 +204,7 @@ Begin Window main_window Implements support_tests.LogMessageInterface
       Visible         =   True
       Width           =   80
    End
-   Begin CheckBox CheckBox1
+   Begin DesktopCheckBox CheckBox1
       AllowAutoDeactivate=   True
       Bold            =   False
       Caption         =   "log here"
@@ -239,11 +238,11 @@ Begin Window main_window Implements support_tests.LogMessageInterface
       Width           =   100
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  
 		End Sub
 	#tag EndEvent
@@ -298,7 +297,7 @@ End
 
 #tag Events pb_run_all_tests
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  writemessage "started"
 		  
 		  
@@ -334,21 +333,21 @@ End
 #tag EndEvents
 #tag Events pb_run_examples
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  run_exemple 
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events pb_run_perf
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  run_perf
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag Events pb_run_all_io_tests
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  writemessage "started"
 		  
 		  var logwriter as  LogMessageInterface = nil

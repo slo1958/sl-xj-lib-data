@@ -1,5 +1,5 @@
-#tag Window
-Begin Window wnd_examples
+#tag DesktopWindow
+Begin DesktopWindow wnd_examples
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF00
    Composite       =   False
@@ -24,7 +24,7 @@ Begin Window wnd_examples
    Type            =   0
    Visible         =   True
    Width           =   816
-   Begin Label Label1
+   Begin DesktopLabel Label1
       AllowAutoDeactivate=   True
       Bold            =   False
       DataField       =   ""
@@ -59,7 +59,7 @@ Begin Window wnd_examples
       Visible         =   True
       Width           =   445
    End
-   Begin Listbox Listbox1
+   Begin DesktopListBox Listbox1
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
@@ -111,7 +111,7 @@ Begin Window wnd_examples
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
-   Begin PushButton pb_run
+   Begin DesktopButton pb_run
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -144,11 +144,11 @@ Begin Window wnd_examples
       Width           =   131
    End
 End
-#tag EndWindow
+#tag EndDesktopWindow
 
 #tag WindowCode
 	#tag Event
-		Sub Open()
+		Sub Opening()
 		  var ex() as clLibDataExample = clLibDataExample.get_all_examples
 		  
 		  listbox1.RemoveAllRows
@@ -206,7 +206,7 @@ End
 
 #tag Events Listbox1
 	#tag Event
-		Sub Change()
+		Sub SelectionChanged()
 		  var idx as integer = me.SelectedRowIndex
 		  
 		  var tmp as clLibDataExample
@@ -232,7 +232,7 @@ End
 		End Sub
 	#tag EndEvent
 	#tag Event
-		Sub MouseMove(X As Integer, Y As Integer)
+		Sub MouseMove(x As Integer, y As Integer)
 		  
 		  var idx as integer = me.RowFromXY(x,y)
 		  
@@ -264,7 +264,7 @@ End
 #tag EndEvents
 #tag Events pb_run
 	#tag Event
-		Sub Action()
+		Sub Pressed()
 		  
 		  var tmp as clLibDataExample
 		  
