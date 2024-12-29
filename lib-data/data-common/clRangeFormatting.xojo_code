@@ -29,6 +29,10 @@ Protected Class clRangeFormatting
 	#tag Method, Flags = &h0
 		Sub Constructor(the_below_label as string, the_above_label as string)
 		  
+		  self.below_label = DefaultLowLabel
+		  self.above_label = DefaultHighLabel
+		  self.no_label = DefaultNoLabel
+		  
 		  if the_below_label.trim.len > 0 then self.below_label = the_below_label.trim
 		  if the_above_label.trim.len > 0 then self.above_label = the_above_label.trim
 		  
@@ -43,27 +47,25 @@ Protected Class clRangeFormatting
 		  
 		  if the_value > highest_value then return above_label
 		  
-		  for i as integer = 0 to range_max.LastIndex
-		    System.DebugLog(str(the_value)+" " +str(i)+ " "+ str(self.range_min(i)) + " " + str(self.range_max(i))+" " + self.range_label(i))
+		  for i as integer = 0 to range_max.LastIndex 
 		    if (self.range_min(i) <= the_value) and (the_value < self.range_max(i)) then 
-		      System.DebugLog("use " + self.range_label(i))
 		      return self.range_label(i)
 		    end if
 		    
 		  next
 		  
-		  return "no range"
+		  return self.no_label
 		  
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		above_label As string = """HIGH"""
+		above_label As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		below_label As string = "'LOW"""
+		below_label As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -75,16 +77,30 @@ Protected Class clRangeFormatting
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		range_label() As String
+		no_label As string
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		range_max() As double
+	#tag Property, Flags = &h21
+		Private range_label() As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		range_min() As double
+	#tag Property, Flags = &h21
+		Private range_max() As double
 	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private range_min() As double
+	#tag EndProperty
+
+
+	#tag Constant, Name = DefaultHighLabel, Type = String, Dynamic = False, Default = \"High", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = DefaultLowLabel, Type = String, Dynamic = False, Default = \"Low", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = DefaultNoLabel, Type = String, Dynamic = False, Default = \"No label", Scope = Public
+	#tag EndConstant
 
 
 	#tag ViewBehavior
@@ -132,7 +148,7 @@ Protected Class clRangeFormatting
 			Name="below_label"
 			Visible=false
 			Group="Behavior"
-			InitialValue="'LOW"""""
+			InitialValue="'LOW"""
 			Type="string"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
@@ -140,9 +156,9 @@ Protected Class clRangeFormatting
 			Name="above_label"
 			Visible=false
 			Group="Behavior"
-			InitialValue="""""HIGH"""""
+			InitialValue="""HIGH"""
 			Type="string"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="highest_value"

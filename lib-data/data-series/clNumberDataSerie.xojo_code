@@ -27,6 +27,30 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AddFormattingRanges(low_bound as clNumberDataSerie, high_bound as clNumberDataSerie, label as clDataSerie)
+		  if self.formatter = nil then Return
+		  
+		  for i as integer = 0 to label.LastIndex
+		    try
+		      self.formatter.AddRange( _
+		       low_bound.GetElementAsNumber(i) _
+		      , high_bound.GetElementAsNumber(i)_
+		      , label.GetElementAsString(i) _
+		      )
+		      
+		    catch OutOfBoundsException
+		      
+		    Catch
+		      
+		    end try
+		    
+		  next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Average() As double
 		  var c as new clBasicMath
 		  return c.average(items)

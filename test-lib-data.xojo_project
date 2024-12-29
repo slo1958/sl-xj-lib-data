@@ -113,6 +113,7 @@ Class=test_class_02;lib-data-tests/clDataTable_tests/test_class_02.xojo_code;&h0
 Class=test_class_01;lib-data-tests/clDataTable_tests/test_class_01.xojo_code;&h00000000128347FF;&h000000001A8B77FF;false
 Class=clJSONReader;lib-data/data-table-io/row_readers/clJSONReader.xojo_code;&h00000000286507FF;&h000000004ACDAFFF;false
 Class=clJSONWriter;lib-data/data-table-io/row_writers/clJSONWriter.xojo_code;&h00000000506C7FFF;&h0000000055D867FF;false
+Class=clLibDataExample_024;lib-data-examples/clLibDataExample_024.xojo_code;&h0000000071B2EFFF;&h0000000073919FFF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1
