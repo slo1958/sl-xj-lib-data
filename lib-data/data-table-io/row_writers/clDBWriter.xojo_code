@@ -41,23 +41,7 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DefineMetadata(name as string, columns() as string)
-		  // Part of the TableRowWriterInterface interface.
-		  
-		  var tmp_type() as string
-		  
-		  for i as integer = 0 to columns.LastIndex
-		    tmp_type.add(clDataType.StringValue)
-		    
-		  next
-		  
-		  DefineMetadata(name, columns, tmp_type)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub DefineMetadata(name as string, columns() as string, column_type() as string)
+		Sub DefineColumns(name as string, columns() as string, column_type() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  self.table_name = name

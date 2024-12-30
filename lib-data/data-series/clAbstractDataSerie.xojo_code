@@ -796,6 +796,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  var p as new clDataSerieProperties
 		  
 		  p.SerieTitle = self.serie_title
+		  p.DataType = self.GetType
 		  
 		  p.MetaData.RemoveAll
 		  for each s as string in self.meta_dict.AllFormattedData
@@ -1094,6 +1095,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		Sub SetProperties(properties as clDataSerieProperties)
 		  
 		  var p as  clDataSerieProperties = properties
+		  
 		  
 		  self.serie_title = p.SerieTitle
 		  

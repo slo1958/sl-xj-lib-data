@@ -99,18 +99,7 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DefineMetadata(name as string, columns() as string)
-		  // Part of the TableRowWriterInterface interface.
-		  
-		  if HeaderWritten then return
-		  
-		  write_column_headers(columns)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub DefineMetadata(name as string, columns() as string, column_type() as string)
+		Sub DefineColumns(name as string, columns() as string, column_type() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  
@@ -305,14 +294,6 @@ Implements TableRowWriterInterface
 			InitialValue="0"
 			Type="Integer"
 			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="DefaultFileExtension"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="string"
-			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

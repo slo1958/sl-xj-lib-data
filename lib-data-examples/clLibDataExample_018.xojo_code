@@ -35,8 +35,9 @@ Inherits clLibDataExample
 		  table0.GetColumn("Sales").DisplayTitle="Ventes" 
 		  
 		  var struc0 as clDataTable = table0.GetStructureAsTable
+		  var prop0 as clDataTable = table0.GetPropertiesAsTable
 		  
-		  return array(table0, struc0)
+		  return array(table0, struc0, prop0)
 		  
 		  
 		End Function

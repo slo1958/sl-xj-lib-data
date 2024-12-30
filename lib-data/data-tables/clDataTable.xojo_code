@@ -1884,6 +1884,36 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetPropertiesAsTable(NewTableName as string = "") As clDataTable
+		   
+		  var DataRows() as clDataRow
+		  
+		  for i as integer = 0 to columns.LastIndex
+		    var p as clDataSerieProperties = columns(i).GetProperties
+		    var r as new clDataRow(p)
+		    
+		    r.SetCell("name", columns(i).name)
+		    
+		    DataRows.Add(r)
+		    
+		  next
+		  
+		   
+		  
+		  var temp as string = NewTableName.trim
+		  
+		  if temp.Length < 1 then temp = self.PropertyTableNamePrefix.trim + " " + self.name
+		  
+		  var t as new clDataTable(temp)
+		  
+		  call t.AddRows(DataRows)
+		   
+		  return t 
+		   
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetRowAt(the_row_index as integer, include_index as Boolean) As clDataRow
 		  //  
 		  //  returns a specific data row
@@ -2666,7 +2696,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var ColumnNames() as string = self.GetColumnNames
 		  var ColumnTypes() as string = self.GetColumnTypes
 		  
-		  write_to.DefineMetadata(name, ColumnNames, ColumnTypes)
+		  write_to.DefineColumns(name, ColumnNames, ColumnTypes)
 		  
 		  for each row as clDataRow in self
 		    if write_to.ExpectsDictionary then
@@ -3005,6 +3035,9 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndConstant
 
 	#tag Constant, Name = LoadedDataSourceColumn, Type = String, Dynamic = False, Default = \"loaded_from", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = PropertyTableNamePrefix, Type = String, Dynamic = False, Default = \"Properties of ", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = RowNameColumn, Type = String, Dynamic = False, Default = \"row_type", Scope = Public

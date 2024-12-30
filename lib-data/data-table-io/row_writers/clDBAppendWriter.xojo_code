@@ -3,7 +3,7 @@ Class clDBAppendWriter
 Inherits clDBWriter
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub DefineMetadata(name as string, columns() as string, column_type() as string)
+		Sub DefineColumns(name as string, columns() as string, column_type() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  self.table_name = name

@@ -240,22 +240,22 @@ Protected Module clDataPool_tests
 		  
 		  my_data_pool.SetTable(pool_table2)
 		  
-		  var fld_folder As New FolderItem
-		  fld_folder = ClearFolder( fld_folder.Child("test-data").Child(CurrentMethodName))
+		  var main_folder As  FolderItem = GetTestBaseFolder()
+		  var sub_folder as FolderItem  = ClearFolder(main_folder.Child(CurrentMethodName))
+		   
+		  my_data_pool.SaveEachTable(new clTextWriter(sub_folder, True))
 		  
-		  my_data_pool.SaveEachTable(new clTextWriter(fld_folder, True))
 		  
-		  
-		  var loaded_table1 As New clDataTable(new clTextReader(fld_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
-		  var loaded_table2 As New clDataTable(new clTextReader(fld_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
+		  var loaded_table1 As New clDataTable(new clTextReader(sub_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
+		  var loaded_table2 As New clDataTable(new clTextReader(sub_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
 		  
 		  call check_table(log,"table 1", loaded_table1, pool_table1)
 		  call check_table(log,"table 2", loaded_table2, pool_table2)
 		  
 		  
 		  var test_data_pool as new clDataPool
-		  test_data_pool.LoadOneTable(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
-		  test_data_pool.LoadOneTable(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
+		  test_data_pool.LoadOneTable(new clTextReader(sub_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
+		  test_data_pool.LoadOneTable(new clTextReader(sub_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
 		  
 		  
 		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1.csv"))
@@ -378,21 +378,21 @@ Protected Module clDataPool_tests
 		  my_data_pool.SetTable(pool_table2)
 		  
 		  
-		  var fld_folder As New FolderItem
-		  fld_folder = ClearFolder( fld_folder.Child("test-data").Child(CurrentMethodName))
+		  var main_folder As  FolderItem = GetTestBaseFolder()
+		  var sub_folder as FolderItem  = ClearFolder(main_folder.Child(CurrentMethodName))
 		  
-		  my_data_pool.SaveEachTable(new clTextWriter(fld_folder, True))
+		  my_data_pool.SaveEachTable(new clTextWriter(sub_folder, True))
 		  
 		  
-		  var loaded_table1 As New clDataTable(new clTextReader(fld_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
-		  var loaded_table2 As New clDataTable(new clTextReader(fld_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
+		  var loaded_table1 As New clDataTable(new clTextReader(sub_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
+		  var loaded_table2 As New clDataTable(new clTextReader(sub_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
 		  
 		  call check_table(log,"table 1", loaded_table1, pool_table1)
 		  call check_table(log,"table 2", loaded_table2, pool_table2)
 		  
 		  
 		  var test_data_pool as new clDataPool
-		  test_data_pool.LoadEachTable(new clTextReader(fld_folder, True, new clTextFileConfig(chr(9))))
+		  test_data_pool.LoadEachTable(new clTextReader(sub_folder, True, new clTextFileConfig(chr(9))))
 		  //test_data_pool.LoadOneTable(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
 		  //test_data_pool.LoadOneTable(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
 		  
@@ -445,15 +445,16 @@ Protected Module clDataPool_tests
 		  my_data_pool.SetTable(pool_table2)
 		  
 		  
-		  var fld_folder As New FolderItem
-		  fld_folder = ClearFolder( fld_folder.Child("test-data").Child(CurrentMethodName))
-		  fld_folder = fld_folder.child("myfile.json")
+		  var main_folder As  FolderItem = GetTestBaseFolder()
+		  var sub_folder as FolderItem  = ClearFolder(main_folder.Child(CurrentMethodName))
 		  
-		  my_data_pool.SaveEachTable(new clJSONWriter(fld_folder, nil))
+		  var fld_file as FolderItem  = sub_folder.child("myfile.json")
+		  
+		  my_data_pool.SaveEachTable(new clJSONWriter(fld_file, nil))
 		  
 		  
 		  var test_data_pool as new clDataPool
-		  test_data_pool.LoadEachTable(new clJSONReader(fld_folder, nil))
+		  test_data_pool.LoadEachTable(new clJSONReader(fld_file, nil))
 		  
 		  
 		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1"))

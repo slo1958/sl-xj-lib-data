@@ -761,12 +761,10 @@ Protected Module clDataSerie_tests
 		  
 		  var k As Variant
 		  
-		  var fld_folder As New FolderItem
+		  var main_folder As  FolderItem = GetTestBaseFolder()
 		  var fld_file As FolderItem
 		  
-		  fld_folder = fld_folder.Child("test-data")
-		  
-		  fld_file = fld_folder.Child("myfile3_10K_tab.txt")
+		  fld_file = main_folder.Child("myfile3_10K_tab.txt")
 		  
 		  var ss1 As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file, new clDataSerie(""), true))
 		  
@@ -786,15 +784,14 @@ Protected Module clDataSerie_tests
 		  
 		  var k As Variant
 		  
-		  var fld_folder As New FolderItem
+		  var main_folder As  FolderItem = GetTestBaseFolder()
+		  
 		  var fld_file_in As FolderItem
 		  var fld_file_out As FolderItem
 		  
-		  fld_folder = fld_folder.Child("test-data")
+		  fld_file_in = main_folder.Child("myfile3_10K_tab.txt")
 		  
-		  fld_file_in = fld_folder.Child("myfile3_10K_tab.txt")
-		  
-		  fld_file_out =  fld_folder.Child("mytest.txt")
+		  fld_file_out =  main_folder.Child("mytest.txt")
 		  
 		  
 		  var ss1 As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file_in, new clDataSerie(""), true))

@@ -18,6 +18,10 @@ Protected Class clDataSerieProperties
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		DataType As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		DefaultValue As variant
 	#tag EndProperty
 
@@ -80,7 +84,15 @@ Protected Class clDataSerieProperties
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="FormatStr"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

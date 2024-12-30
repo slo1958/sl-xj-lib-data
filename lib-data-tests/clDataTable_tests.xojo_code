@@ -1674,22 +1674,21 @@ Protected Module clDataTable_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var fld_folder As New FolderItem
+		   
 		  var fld_file1 As FolderItem
 		  var fld_file2 As FolderItem
 		  var fld_file3Text As FolderItem
 		  var fld_file3JSON As FolderItem
 		  
-		  fld_folder = fld_folder.Child("test-data")
+		  var fld_folder As  FolderItem = GetTestBaseFolder()
+		  var sub_folder as FolderItem  = ClearFolder( fld_folder.Child(CurrentMethodName))
 		  
 		  fld_file1 = fld_folder.Child("myfile3_10K_tab.txt")
 		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
 		  
-		  fld_folder = New FolderItem
-		  fld_folder = ClearFolder( fld_folder.Child("test-data").Child(CurrentMethodName))
 		  
-		  fld_file3Text  = fld_folder.Child("myfile3_10K_output.txt")
-		  fld_file3JSON  = fld_folder.Child("myfile3_10K_output.json")
+		  fld_file3Text  = sub_folder.Child("myfile3_10K_output.txt")
+		  fld_file3JSON  = sub_folder.Child("myfile3_10K_output.json")
 		  
 		  var my_table3 As New clDataTable(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
@@ -1939,18 +1938,20 @@ Protected Module clDataTable_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var fld_folder As New FolderItem
+		   
 		  var fld_file1 As FolderItem
 		  var fld_file2 As FolderItem
 		  var fld_file3 As FolderItem
 		  var fld_fileX as FolderItem
 		  
-		  fld_folder = fld_folder.Child("test-data")
+		  var main_folder As  FolderItem = GetTestBaseFolder()
+		  var sub_folder as FolderItem  = ClearFolder(main_folder.Child(CurrentMethodName))
 		  
-		  fld_file1 = fld_folder.Child("myfile4_A_tab.txt")
-		  fld_file2  = fld_folder.Child("myfile4_B_tab.txt") 
-		  fld_file3  = fld_folder.Child("myfile4_C_tab.txt") 
-		  fld_fileX  = fld_folder.Child("myfile4_X_tab.txt") 
+		  
+		  fld_file1 = main_folder.Child("myfile4_A_tab.txt")
+		  fld_file2  = main_folder.Child("myfile4_B_tab.txt") 
+		  fld_file3  = main_folder.Child("myfile4_C_tab.txt") 
+		  fld_fileX  = main_folder.Child("myfile4_X_tab.txt") 
 		  
 		  
 		  var my_table as new clDataTable("calc")

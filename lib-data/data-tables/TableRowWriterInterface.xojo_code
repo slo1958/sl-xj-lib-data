@@ -19,13 +19,7 @@ Protected Interface TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DefineMetadata(name as string, columns() as string)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub DefineMetadata(name as string, columns() as string, column_type() as string)
+		Sub DefineColumns(name as string, columns() as string, column_type() as string)
 		  
 		End Sub
 	#tag EndMethod

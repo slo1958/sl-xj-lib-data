@@ -41,6 +41,13 @@ Protected Module support_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetTestBaseFolder() As FolderItem
+		  var fld_folder As New FolderItem
+		  return  fld_folder.Child("test-data")
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub write_message(msg as string)
 		  system.DebugLog(msg)
 		End Sub

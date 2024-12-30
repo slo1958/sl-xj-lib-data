@@ -232,6 +232,37 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
       VisualState     =   0
       Width           =   100
    End
+   Begin DesktopButton pb_run_perf1
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Open test folder"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "Verdana"
+      FontSize        =   11.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   412
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   412
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   107
+   End
 End
 #tag EndDesktopWindow
 
@@ -368,6 +399,17 @@ End
 		  
 		  writemessage "all tests done"
 		  
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events pb_run_perf1
+	#tag Event
+		Sub Pressed()
+		  
+		  var fld_folder As  FolderItem = GetTestBaseFolder()
+		  
+		  fld_folder.Open
 		  
 		End Sub
 	#tag EndEvent

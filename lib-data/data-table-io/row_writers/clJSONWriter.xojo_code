@@ -60,18 +60,18 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DefineMetadata(DatasetName as string, ColumnName() as string)
+		Sub DefineColumns(DatasetName as string, ColumnName() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  var temp() as string
 		  
-		  self.DefineMetadata(DatasetName, ColumnName, temp)
+		  self.DefineColumns(DatasetName, ColumnName, temp)
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DefineMetadata(DatasetName as string, ColumnName() as string, ColumnType() as string)
+		Sub DefineColumns(DatasetName as string, ColumnName() as string, ColumnType() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  var d() as Dictionary
