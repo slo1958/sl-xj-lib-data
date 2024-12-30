@@ -88,7 +88,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function GetDefaultValue() As variant
 		  
-		  return default_value
+		  return DefaultValue
 		  
 		End Function
 	#tag EndMethod
@@ -135,7 +135,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub SetDefaultValue(v as Variant)
 		  
-		  default_value = v
+		  DefaultValue = v
 		End Sub
 	#tag EndMethod
 
@@ -164,7 +164,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetLength(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  While items_index.LastIndex < the_length-1
 		    items_index.Append(-1)
@@ -176,7 +176,7 @@ Inherits clAbstractDataSerie
 
 
 	#tag Property, Flags = &h0
-		default_value As variant
+		DefaultValue As variant
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -194,7 +194,7 @@ Inherits clAbstractDataSerie
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="display_title"
+			Name="DisplayTitle"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

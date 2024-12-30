@@ -35,7 +35,7 @@ Inherits clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetLength(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  While items.LastIndex < the_length-1
 		    Self.last_index  = Self.last_index  +1
 		    items.Append(Str(Self.last_index ))
@@ -53,7 +53,7 @@ Inherits clDataSerie
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="display_title"
+			Name="DisplayTitle"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

@@ -1,42 +1,36 @@
 #tag Class
-Protected Class clMetadata
+Protected Class clDataSerieProperties
 	#tag Method, Flags = &h0
-		Sub AddFormattedMetaData(Entry as string)
-		  
-		  data_list.Append(Entry)
-		  
+		Sub Constructor()
 		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub AddMetaData(DataType as string, Message as string)
-		  
-		  var tmp_str as string = DataType.Trim.ReplaceAll(":","-") +":"+Message.Trim
-		  
-		  data_list.Append(tmp_str)
-		  
-		  
-		End Sub
-	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function AllFormattedData() As string()
-		  var ret() as string
-		  
-		  for each s as string in self.data_list
-		    ret.Add(s)
-		    
-		  next
-		  
-		  return ret
-		  
-		End Function
-	#tag EndMethod
+	#tag Note, Name = Untitled
+		
+		
+	#tag EndNote
 
 
-	#tag Property, Flags = &h21
-		Private data_list() As string
+	#tag Property, Flags = &h0
+		Aliases() As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		DefaultValue As variant
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		FormatStr As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		MetaData() As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		SerieTitle As String
 	#tag EndProperty
 
 
@@ -78,6 +72,14 @@ Protected Class clMetadata
 			Visible=true
 			Group="Position"
 			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="SerieTitle"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

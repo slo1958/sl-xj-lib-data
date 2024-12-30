@@ -32,7 +32,7 @@ Inherits clAbstractDataSerie
 		Protected Sub CloneInfo(target as clDateTimeDataSerie)
 		  super.CloneInfo(target)
 		  
-		  target.default_value = self.default_value
+		  target.DefaultValue = self.DefaultValue
 		  
 		End Sub
 	#tag EndMethod
@@ -64,7 +64,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetDefaultValue() As variant
-		  return default_value
+		  return DefaultValue
 		  
 		End Function
 	#tag EndMethod
@@ -184,6 +184,17 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetProperties() As clDataSerieProperties
+		  // Calling the overridden superclass method.
+		  Var p as clDataSerieProperties = Super.GetProperties()
+		  
+		  p.DefaultValue = self.DefaultValue
+		  
+		  return p
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function LastIndex() As integer
 		  Return items.LastIndex
 		  
@@ -258,7 +269,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub SetDefaultValue(v as variant)
-		  default_value = v
+		  DefaultValue = v
 		  
 		End Sub
 	#tag EndMethod
@@ -275,7 +286,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetLength(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  if items.LastIndex > the_length then
 		    Raise New clDataException("Column " + self.name + " contains more elements than expected")
@@ -283,11 +294,21 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  While items.LastIndex < the_length-1
-		    var v as DateTime = default_value.DateTimeValue
+		    var v as DateTime = DefaultValue.DateTimeValue
 		    
 		    items.Append(v)
 		    
 		  Wend
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetProperties(properties as clDataSerieProperties)
+		  // Calling the overridden superclass method.
+		  Super.SetProperties(properties)
+		  
+		  self.DefaultValue = properties.DefaultValue
 		  
 		End Sub
 	#tag EndMethod
@@ -629,7 +650,7 @@ Inherits clAbstractDataSerie
 
 
 	#tag Property, Flags = &h1
-		Protected default_value As Variant
+		Protected DefaultValue As Variant
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -639,7 +660,7 @@ Inherits clAbstractDataSerie
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="display_title"
+			Name="DisplayTitle"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

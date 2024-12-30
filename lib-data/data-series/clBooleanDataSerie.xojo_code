@@ -32,7 +32,7 @@ Inherits clAbstractDataSerie
 		Protected Sub CloneInfo(target as clBooleanDataSerie)
 		  super.CloneInfo(target)
 		  
-		  target.default_value = self.default_value
+		  target.DefaultValue = self.DefaultValue
 		  target.str_for_false = self.str_for_false
 		  target.str_for_true = self.str_for_true
 		End Sub
@@ -54,7 +54,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetDefaultValue() As variant
-		  return default_value
+		  return DefaultValue
 		  
 		End Function
 	#tag EndMethod
@@ -90,9 +90,21 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetElementAsString(the_element_index as integer) As string
-		   
+		  
 		  return if(self.GetElement(the_element_index),self.str_for_true,self.str_for_false)
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetProperties() As clDataSerieProperties
+		  // Calling the overridden superclass method.
+		  Var p as clDataSerieProperties = Super.GetProperties()
+		  
+		  p.DefaultValue = self.DefaultValue
+		  p.FormatStr = String.FromArray(array(str_for_false, str_for_true), chr(8))
+		  
+		  return p
 		End Function
 	#tag EndMethod
 
@@ -202,7 +214,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub SetDefaultValue(v as variant)
-		  default_value = v
+		  DefaultValue = v
 		  
 		End Sub
 	#tag EndMethod
@@ -239,7 +251,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetLength(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  if items.LastIndex > the_length then
 		    Raise New clDataException("Column " + self.name + " contains more elements than expected")
@@ -247,10 +259,30 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  While items.LastIndex < the_length-1
-		    var v as boolean = default_value.BooleanValue
+		    var v as boolean = DefaultValue.BooleanValue
 		    items.Append(v)
 		    
 		  Wend
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetProperties(properties as clDataSerieProperties)
+		  // Calling the overridden superclass method.
+		  Super.SetProperties(properties)
+		  
+		  self.DefaultValue = properties.DefaultValue
+		  
+		  var s() as string = properties.FormatStr.ToArray(chr(8))
+		  
+		  while s.LastIndex < 1
+		    s.Add("")
+		    
+		  wend
+		  
+		  self.str_for_false = s(0)
+		  self.str_for_true = s(1)
 		  
 		End Sub
 	#tag EndMethod
@@ -271,7 +303,7 @@ Inherits clAbstractDataSerie
 
 
 	#tag Property, Flags = &h1
-		Protected default_value As Variant
+		Protected DefaultValue As Variant
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -289,7 +321,7 @@ Inherits clAbstractDataSerie
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="display_title"
+			Name="DisplayTitle"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

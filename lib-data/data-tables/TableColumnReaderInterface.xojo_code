@@ -13,7 +13,7 @@ Protected Interface TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumn(the_column_name as String) As clAbstractDataSerie
+		Function GetColumn(the_column_name as String, include_alias as boolean = False) As clAbstractDataSerie
 		  
 		End Function
 	#tag EndMethod
@@ -54,7 +54,6 @@ Protected Interface TableColumnReaderInterface
 		Implemented on clDataTable
 		
 		Can also be used to present another structure as a table
-		
 		
 		The source is persistant if we can query it at will. 
 	#tag EndNote

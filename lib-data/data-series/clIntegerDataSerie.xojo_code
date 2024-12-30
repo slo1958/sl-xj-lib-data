@@ -75,8 +75,8 @@ Inherits clAbstractDataSerie
 		Protected Sub CloneInfo(target as clIntegerDataSerie)
 		  super.CloneInfo(target)
 		  
-		  target.default_value = self.default_value
-		  target.format_str = self.format_str
+		  target.DefaultValue = self.DefaultValue
+		  target.FormatStr = self.FormatStr
 		  
 		End Sub
 	#tag EndMethod
@@ -113,7 +113,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetDefaultValue() As variant
-		  return default_value
+		  return DefaultValue
 		  
 		End Function
 	#tag EndMethod
@@ -143,7 +143,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function GetElementAsString(the_element_index as integer) As string
 		  
-		  return format(self.GetElement(the_element_index), format_str)
+		  return format(self.GetElement(the_element_index), FormatStr)
 		  
 		End Function
 	#tag EndMethod
@@ -161,6 +161,18 @@ Inherits clAbstractDataSerie
 		  
 		  Return return_boolean
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetProperties() As clDataSerieProperties
+		  // Calling the overridden superclass method.
+		  Var p as clDataSerieProperties = Super.GetProperties()
+		  
+		  p.DefaultValue = self.DefaultValue
+		  p.FormatStr = self.FormatStr
+		  
+		  return p
 		End Function
 	#tag EndMethod
 
@@ -333,7 +345,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub SetDefaultValue(v as variant)
-		  default_value = v
+		  DefaultValue = v
 		  
 		End Sub
 	#tag EndMethod
@@ -351,12 +363,12 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub SetFormat(the_format as String)
-		  format_str = the_format
+		  FormatStr = the_format
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetLength(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  if items.LastIndex > the_length then
 		    Raise New clDataException("Column " + self.name + " contains more elements than expected")
@@ -364,11 +376,21 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  While items.LastIndex < the_length-1
-		    var v as integer = default_value.IntegerValue
+		    var v as integer = DefaultValue.IntegerValue
 		    items.Append(v)
 		    
 		  Wend
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetProperties(properties as clDataSerieProperties)
+		  // Calling the overridden superclass method.
+		  Super.SetProperties(properties)
+		  
+		  self.DefaultValue = properties.DefaultValue
+		  self.FormatStr = properties.FormatStr
 		End Sub
 	#tag EndMethod
 
@@ -402,11 +424,11 @@ Inherits clAbstractDataSerie
 
 
 	#tag Property, Flags = &h1
-		Protected default_value As integer
+		Protected DefaultValue As integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected format_str As string = "###,##0"
+		Protected FormatStr As string = "###,##0"
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -416,7 +438,7 @@ Inherits clAbstractDataSerie
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="display_title"
+			Name="DisplayTitle"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

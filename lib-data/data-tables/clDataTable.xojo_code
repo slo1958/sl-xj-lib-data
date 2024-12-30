@@ -81,7 +81,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddColumn(the_column_name as String, default_value as variant) As clAbstractDataSerie
+		Function AddColumn(the_column_name as String, DefaultValue as variant) As clAbstractDataSerie
 		  //  
 		  //  Add  an constant column to the table
 		  //  
@@ -110,12 +110,12 @@ Implements TableColumnReaderInterface,Iterable
 		  If not self.IsVirtual then
 		    tmp_column = New clDataSerie(tmp_column_name)
 		    tmp_column.SetLinkToTable(Self)
-		    tmp_column.SetLength(RowCount, default_value)
+		    tmp_column.SetLength(RowCount, DefaultValue)
 		    
 		  Elseif allow_local_columns Then
 		    tmp_column = New clDataSerie(tmp_column_name)
 		    tmp_column.SetLinkToTable(Self)
-		    tmp_column.SetLength(RowCount, default_value)
+		    tmp_column.SetLength(RowCount, DefaultValue)
 		    
 		  Else
 		    //  could be nil if the column exists in the parent datatable
@@ -1679,25 +1679,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumn(the_column_name as String) As clAbstractDataSerie
-		  //  
-		  //  returns a column
-		  //  
-		  //  Parameters:
-		  //  - the name of the column
-		  //  
-		  //  Returns:
-		  //  - the column matching the name or nil
-		  //  
-		  
-		  return self.GetColumn(the_column_name, false)
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetColumn(the_column_name as String, include_alias as boolean) As clAbstractDataSerie
+		Function GetColumn(the_column_name as String, include_alias as boolean = False) As clAbstractDataSerie
 		  //  
 		  //  returns a column
 		  //  

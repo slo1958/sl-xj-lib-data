@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clAbstractDataSerie
-Implements Xojo.Core.Iterable, itf_json_able
+Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Sub AddAlias(alias as string)
 		  //  
@@ -20,8 +20,8 @@ Implements Xojo.Core.Iterable, itf_json_able
 		  end if
 		  
 		  
-		  if aliases.IndexOf(alias) < 0 then
-		    aliases.Add(alias)
+		  if Aliases.IndexOf(alias) < 0 then
+		    Aliases.Add(alias)
 		    Return
 		  end if
 		  
@@ -792,6 +792,28 @@ Implements Xojo.Core.Iterable, itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetProperties() As clDataSerieProperties
+		  var p as new clDataSerieProperties
+		  
+		  p.SerieTitle = self.serie_title
+		  
+		  p.MetaData.RemoveAll
+		  for each s as string in self.meta_dict.AllFormattedData
+		    p.MetaData.Add(s)
+		    
+		  next
+		  
+		  p.Aliases.RemoveAll
+		  for each s as string in self.Aliases
+		    p.Aliases.Add(s)
+		    
+		  next
+		  
+		  return p
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetType() As string
 		  
 		  return  clDataType.TranslateFromSerieToType(self)
@@ -1048,7 +1070,7 @@ Implements Xojo.Core.Iterable, itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetLength(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
@@ -1064,6 +1086,30 @@ Implements Xojo.Core.Iterable, itf_json_able
 		    Raise New clDataException("Cannot redefine link to table for a serie")
 		    
 		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetProperties(properties as clDataSerieProperties)
+		  
+		  var p as  clDataSerieProperties = properties
+		  
+		  self.serie_title = p.SerieTitle
+		  
+		  self.Aliases.RemoveAll
+		  for each s as string in p.Aliases
+		    self.Aliases.Add(s)
+		    
+		  next
+		  
+		  self.meta_dict = new clMetadata
+		  for each s as string in p.MetaData
+		    self.meta_dict.AddFormattedMetaData(s)
+		    
+		  next
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -1297,7 +1343,7 @@ Implements Xojo.Core.Iterable, itf_json_able
 
 
 	#tag Property, Flags = &h0
-		aliases() As String
+		Aliases() As String
 	#tag EndProperty
 
 	#tag ComputedProperty, Flags = &h0

@@ -33,7 +33,7 @@ Implements itf_json_able
 		Protected Sub CloneInfo(target as clDataSerie)
 		  super.CloneInfo(target)
 		  
-		  target.default_value = self.default_value
+		  target.DefaultValue = self.DefaultValue
 		  
 		End Sub
 	#tag EndMethod
@@ -84,7 +84,7 @@ Implements itf_json_able
 
 	#tag Method, Flags = &h0
 		Function GetDefaultValue() As variant
-		  return default_value
+		  return DefaultValue
 		  
 		End Function
 	#tag EndMethod
@@ -101,6 +101,17 @@ Implements itf_json_able
 		  End If
 		  
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetProperties() As clDataSerieProperties
+		  // Calling the overridden superclass method.
+		  Var p as clDataSerieProperties = Super.GetProperties()
+		  
+		  p.DefaultValue = self.DefaultValue
+		  
+		  return p
 		End Function
 	#tag EndMethod
 
@@ -123,7 +134,7 @@ Implements itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub SetDefaultValue(v as variant)
-		  default_value = v
+		  DefaultValue = v
 		  
 		End Sub
 	#tag EndMethod
@@ -140,7 +151,7 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetLength(the_length as integer, default_value as variant)
+		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  if items.LastIndex > the_length then
 		    Raise New clDataException("Column " + self.name + " contains more elements than expected")
@@ -148,7 +159,7 @@ Implements itf_json_able
 		  
 		  
 		  While items.LastIndex < the_length-1
-		    var v as variant = default_value
+		    var v as variant = DefaultValue
 		    items.Append(v)
 		    
 		  Wend
@@ -156,9 +167,19 @@ Implements itf_json_able
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub SetProperties(properties as clDataSerieProperties)
+		  // Calling the overridden superclass method.
+		  Super.SetProperties(properties)
+		  
+		  self.DefaultValue = properties.DefaultValue
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h1
-		Protected default_value As Variant
+		Protected DefaultValue As Variant
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

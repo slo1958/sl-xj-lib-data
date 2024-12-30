@@ -9,8 +9,8 @@ Implements TableColumnReaderInterface
 		  r.value(row_index_output_column) =  row_index
 		  r.Value(message_output_column) =  message
 		  
-		  if results_table <> nil then
-		    self.results_table.AddRow(r)
+		  if OutputTable <> nil then
+		    self.OutputTable.AddRow(r)
 		    
 		  end if
 		  
@@ -36,19 +36,19 @@ Implements TableColumnReaderInterface
 
 	#tag Method, Flags = &h0
 		Sub Constructor(validation_name as string, columns() as clDataSerieValidation, allow_extra_columns as boolean = False)
-		  redim valid_columns(-1)
+		  redim ColumnsValidation(-1)
 		  
 		  if validation_name.trim.len = 0 then
-		    table_name = "Noname"
+		    TableName = "Noname"
 		    
 		  else
-		    table_name = validation_name.trim
+		    TableName = validation_name.trim
 		    
 		  end if
 		  
 		  
 		  for each column as clDataSerieValidation in columns
-		    valid_columns.Append(column)
+		    ColumnsValidation.Append(column)
 		    
 		  next
 		  
@@ -71,7 +71,7 @@ Implements TableColumnReaderInterface
 		  var col_type as new clDataSerie(field_type_input_column)
 		  
 		  
-		  for each column as clDataSerieValidation in valid_columns
+		  for each column as clDataSerieValidation in ColumnsValidation
 		    col_name.AddElement(column.name)
 		    col_input.AddElement(column.is_nullable)
 		    col_mandatory.AddElement(column.is_required)
@@ -84,12 +84,12 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumn(the_column_name as String) As clAbstractDataSerie
+		Function GetColumn(the_column_name as String, include_alias as boolean = False) As clAbstractDataSerie
 		  // Part of the TableColumnReaderInterface interface.
 		  
 		  var output as new clDataSerie(the_column_name)
 		  
-		  for each column as clDataSerieValidation in valid_columns
+		  for each column as clDataSerieValidation in ColumnsValidation
 		    
 		    select case the_column_name
 		    case  field_name_input_column 
@@ -131,7 +131,7 @@ Implements TableColumnReaderInterface
 		  end try
 		  
 		  
-		  for each column as clDataSerieValidation in valid_columns
+		  for each column as clDataSerieValidation in ColumnsValidation
 		    
 		    select case column_index
 		    case  0 
@@ -175,7 +175,7 @@ Implements TableColumnReaderInterface
 
 	#tag Method, Flags = &h0
 		Function GetResults() As clDataTable
-		  Return results_table
+		  Return OutputTable
 		End Function
 	#tag EndMethod
 
@@ -189,7 +189,7 @@ Implements TableColumnReaderInterface
 
 	#tag Method, Flags = &h0
 		Function Name() As String
-		  return table_name
+		  return TableName
 		End Function
 	#tag EndMethod
 
@@ -197,7 +197,7 @@ Implements TableColumnReaderInterface
 		Function RowCount() As integer
 		  // Part of the TableColumnReaderInterface interface.
 		  
-		  return valid_columns.LastIndex+1
+		  return ColumnsValidation.LastIndex+1
 		  
 		End Function
 	#tag EndMethod
@@ -205,11 +205,11 @@ Implements TableColumnReaderInterface
 	#tag Method, Flags = &h0
 		Sub Validate(table as clDataTable)
 		  
-		  self.results_table = new clDataTable("error_report", array(field_name_output_column ,  row_index_output_column, message_output_column))
+		  self.OutputTable = new clDataTable("error_report", array(field_name_output_column ,  row_index_output_column, message_output_column))
 		  
-		  var tmp_data_columns() as string = table.GetColumnNames
+		  var tmpColumnsToProcess() as string = table.GetColumnNames
 		  
-		  for each column as clDataSerieValidation in valid_columns
+		  for each column as clDataSerieValidation in ColumnsValidation
 		    
 		    if  table.GetColumnNames.IndexOf(column.name) >= 0 then
 		      var tmp() as clAbstractDataSerie = column.validate(table.GetColumn(column.name))
@@ -220,9 +220,9 @@ Implements TableColumnReaderInterface
 		      var tmp_table as new clDataTable("temp", tmp)
 		      call tmp_table.AddColumn(field_name_output_column, column.name)
 		      
-		      self.results_table.AddColumnsData(tmp_table)
+		      self.OutputTable.AddColumnsData(tmp_table)
 		      
-		      tmp_data_columns.RemoveAt(tmp_data_columns.IndexOf(column.name))
+		      tmpColumnsToProcess.RemoveAt(tmpColumnsToProcess.IndexOf(column.name))
 		      
 		    elseif column.is_required Then
 		      AddMessage(column.name, -1, "missing mandatory column ")
@@ -235,15 +235,17 @@ Implements TableColumnReaderInterface
 		    
 		  next
 		  
-		  if not opt_allow_extra_columns and tmp_data_columns.Count >0 then
-		    for each column as string in tmp_data_columns
+		  if not opt_allow_extra_columns and tmpColumnsToProcess.Count >0 then
+		    for each column as string in tmpColumnsToProcess
 		      AddMessage(column, -1, "unexpected extra column")
 		      
 		    next
 		    
 		  end if
 		  
-		  //return self.results_table
+		  return 
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -291,19 +293,19 @@ Implements TableColumnReaderInterface
 
 
 	#tag Property, Flags = &h1
+		Protected ColumnsValidation() As clDataSerieValidation
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected opt_allow_extra_columns As Boolean = False
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected results_table As clDataTable
+		Protected OutputTable As clDataTable
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected table_name As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected valid_columns() As clDataSerieValidation
+		Protected TableName As String
 	#tag EndProperty
 
 
