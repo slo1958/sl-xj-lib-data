@@ -2866,6 +2866,18 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var d as Dictionary = NewRow.GetCells
 		  
+		  self.UpdateRowAt(RowIndex, d)
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateRowAt(RowIndex as integer, NewRow as Dictionary)
+		  
+		  var d as Dictionary = NewRow
+		  
 		  for each name as string in d.Keys
 		    var temp as clAbstractDataSerie = self.GetColumn(name)
 		    
