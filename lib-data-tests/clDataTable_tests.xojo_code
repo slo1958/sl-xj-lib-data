@@ -559,6 +559,12 @@ Protected Module clDataTable_tests
 		  my_table3. AddColumnsData(my_table2, true)
 		  my_table4. AddColumnsData(my_table2, false)
 		  
+		  var dr as new clDataRow
+		  dr.SetCell("aaa",9010)
+		  dr.SetCell("zzz", 8888)
+		  
+		  my_table4.UpdateRowAt(8,dr)
+		  
 		  var col1 as new clDataSerie("aaa", 1000, 2000, 3000, 4000)
 		  var col2 as new clDataSerie("bbb","abcd","abcd","abcd","abcd")
 		  var col3 as new clDataSerie("ccc", 123.456, 123.456, 123.456, 123.456)
@@ -572,13 +578,14 @@ Protected Module clDataTable_tests
 		  var expected_t2 as new clDataTable("T2", SerieArray(col4, col5, col6))
 		  
 		  
-		  var col7 as new clDataSerie("aaa", 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000)
+		  var col7a as new clDataSerie("aaa", 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000)
+		  var col7b as new clDataSerie("aaa", 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9010)
 		  var col8 as new clDataSerie("bbb","abcd","abcd","abcd","abcd","xyz","xyz","xyz","xyz", "xyz")
 		  var col9 as new clDataSerie("ccc", 123.456, 123.456, 123.456, 123.456, nil, nil, nil, nil, nil)
 		  var col0 as new clDataSerie("ddd", nil, nil, nil, nil, 567.89, 567.89, 567.89, 567.89, 567.89)
-		  var expected_t3 as new clDataTable("T3", SerieArray(col7, col8, col9, col0))
+		  var expected_t3 as new clDataTable("T3", SerieArray(col7a, col8, col9, col0))
 		  
-		  var expected_t4 as new clDataTable("T4", SerieArray(col7, col8, col9), True)
+		  var expected_t4 as new clDataTable("T4", SerieArray(col7b, col8, col9), True)
 		  
 		  call check_table(log,"T1", expected_t1, my_table1)
 		  call check_table(log,"T2", expected_t2, my_table2)
@@ -1674,7 +1681,7 @@ Protected Module clDataTable_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		   
+		  
 		  var fld_file1 As FolderItem
 		  var fld_file2 As FolderItem
 		  var fld_file3Text As FolderItem
@@ -1938,7 +1945,7 @@ Protected Module clDataTable_tests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		   
+		  
 		  var fld_file1 As FolderItem
 		  var fld_file2 As FolderItem
 		  var fld_file3 As FolderItem

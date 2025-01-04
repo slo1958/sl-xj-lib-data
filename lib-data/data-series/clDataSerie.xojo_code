@@ -144,6 +144,9 @@ Implements itf_json_able
 		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
 		    items(the_element_index) = the_item
 		    
+		  else
+		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
+		    
 		  End If
 		  
 		  

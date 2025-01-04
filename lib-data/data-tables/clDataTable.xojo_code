@@ -1885,7 +1885,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function GetPropertiesAsTable(NewTableName as string = "") As clDataTable
-		   
+		  
 		  var DataRows() as clDataRow
 		  
 		  for i as integer = 0 to columns.LastIndex
@@ -1898,7 +1898,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		   
+		  
 		  
 		  var temp as string = NewTableName.trim
 		  
@@ -1907,9 +1907,9 @@ Implements TableColumnReaderInterface,Iterable
 		  var t as new clDataTable(temp)
 		  
 		  call t.AddRows(DataRows)
-		   
+		  
 		  return t 
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -2859,6 +2859,29 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub UpdateRowAt(RowIndex as integer, NewRow as clDataRow)
+		  
+		  var d as Dictionary = NewRow.GetCells
+		  
+		  for each name as string in d.Keys
+		    var temp as clAbstractDataSerie = self.GetColumn(name)
+		    
+		    if temp = nil then
+		      self.AddErrorMessage(CurrentMethodName, "Cannot find column %0 in table %1", name, self.Name)
+		      
+		    else
+		      temp.SetElement(RowIndex, d.value(name))
+		      
+		    end if
+		    
+		  next
+		  
+		  return
+		  
+		End Sub
 	#tag EndMethod
 
 

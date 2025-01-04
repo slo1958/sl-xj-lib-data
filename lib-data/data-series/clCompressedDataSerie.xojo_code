@@ -157,7 +157,12 @@ Inherits clAbstractDataSerie
 		    
 		    items_index(the_element_index) = item_entry
 		    
-		  End If
+		  else
+		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
+		    
+		  end if
+		  
+		  return
 		  
 		  
 		End Sub
