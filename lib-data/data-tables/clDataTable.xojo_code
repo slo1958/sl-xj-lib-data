@@ -2042,239 +2042,55 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function GroupBy(grouping_dimensions() as string, measures() as pair) As clDataTable
-		  //  
-		  //  returns a new data table with the results of the aggregation
-		  //  
-		  //  Parameters:
-		  //  - the list of columns to group by as an array of string
-		  //  - the list of columns to aggregat as an array of pair (fieldname: aggregate method)
-		  //  
-		  //  Returns:
-		  //  - aggregated data table
-		  //  
 		  
-		  var input_dimensions() As clAbstractDataSerie
-		  var input_measures() As clAbstractDataSerie
-		  var any_error as Boolean = false
+		  var GroupingColumns() as clAbstractDataSerie
+		  var MeasureColumns() as pair
 		  
-		  For Each item As String In grouping_dimensions
-		    If Len(Trim(item)) > 0 Then
-		      var tmp_serie as clAbstractDataSerie = self.GetColumn(item)
-		      if tmp_serie <> nil then
-		        input_dimensions.Append(tmp_serie)
+		  
+		  if grouping_dimensions.count = 0 and measures.count = 0 then return  nil
+		  
+		  if grouping_dimensions.count = 0 then
+		    var r as new clDataRow
+		    
+		    for each p as pair in measures
+		      var col as clNumberDataSerie = clNumberDataSerie(self.GetColumn(p.Right))
+		      
+		      if col = nil then
+		        r.SetCell(p.Right + " no found",0)
 		        
 		      else
-		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  item)
-		        any_error = True
-		      end if
-		      
-		    End If
-		  Next
-		  
-		  var InputMeasureDictOperations as new Dictionary
-		  
-		  
-		  For Each AggregationPair As pair In measures
-		    var item as string = AggregationPair.Left
-		    var aggreg as String  = AggregationPair.Right
-		    
-		    if not IsValidAggregation(aggreg)  then
-		      AddErrorMessage(CurrentMethodName, ErrMsgInvalidAggregation, str(aggreg))
-		      any_error = True
-		    end if
-		    
-		    If Len(Trim(item)) > 0 Then
-		      var tmp_serie as clAbstractDataSerie = self.GetColumn(item)
-		      
-		      if tmp_serie = nil then
-		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  item)
-		        any_error = True
 		        
-		      elseif InputMeasureDictOperations.HasKey(item) then
-		        var temp() as string = InputMeasureDictOperations.value(item) 
-		        if temp.IndexOf(aggreg)<0  then
-		          temp.Add(aggreg)
-		        end if
-		        
-		      else
-		        input_measures.Append(tmp_serie)
-		        InputMeasureDictOperations.value(item) = array(aggreg)
-		        
-		      End If
-		      
-		    else
-		      AddErrorMessage(CurrentMethodName,ErrMsgMissingMeasureColumnName)
-		      
-		    end if
-		  Next
-		  
-		  
-		  if any_error then
-		    return nil
-		    
-		  end if
-		  
-		  
-		  var has_grouping As Boolean = input_dimensions.LastIndex >=0
-		  var has_measures As Boolean = input_measures.LastIndex >= 0
-		  
-		  
-		  var dct_lookup As New Dictionary
-		  
-		  
-		  var output_RowCount As New clIntegerDataSerie("RowCount")
-		  
-		  //  
-		  //  Prepare output space for grouped dimensions
-		  //  
-		  var output_dimensions() As clDataSerie
-		  For idx_dim As Integer = 0 To input_dimensions.LastIndex
-		    output_dimensions.Append(New clDataSerie(input_dimensions(idx_dim).name))
-		    
-		  Next
-		  
-		  //  
-		  //  Prepare temporary space for aggregated measures
-		  //  
-		  var temp_measures() As clDataSerie
-		  
-		  For idx_mea As Integer = 0 To input_measures.LastIndex
-		    
-		    temp_measures.Append(New clDataSerie(input_measures(idx_mea).name))
-		    If Not has_grouping Then
-		      temp_measures(idx_mea).AddElement(New clDataSerie("x"))
-		      output_RowCount.AddElement(0)
-		    End If
-		    
-		  Next
-		  
-		  
-		  var cnt As Integer = Self.RowCount - 1
-		  
-		  
-		  For idx_row As Integer = 0 To cnt
-		    var idx_output As Integer = -1
-		    
-		    
-		    If has_grouping Then
-		      var tmp_key() As String
-		      
-		      For idx_dim As Integer = 0 To input_dimensions.LastIndex
-		        tmp_key.Append(input_dimensions(idx_dim).GetElement(idx_row))
-		        
-		      Next
-		      
-		      var tmp_key_flat As String = Join(tmp_key,Chr(4))
-		      
-		      
-		      If dct_lookup.HasKey(tmp_key_flat) Then
-		        idx_output = dct_lookup.Value(tmp_key_flat)
-		        
-		      Else
-		        For idx_dim As Integer = 0 To input_dimensions.LastIndex
-		          output_dimensions(idx_dim).AddElement(tmp_key(idx_dim))
-		          
-		        Next
-		        idx_output = output_dimensions(0).RowCount - 1
-		        
-		        output_RowCount.AddElement(0)
-		        
-		        For idx_mea As Integer = 0 To input_measures.LastIndex
-		          temp_measures(idx_mea).AddElement(New clDataSerie("x"))
-		          
-		        Next
-		        
-		        dct_lookup.Value(tmp_key_flat) = idx_output
-		        
-		        
-		      End If
-		    Else
-		      idx_output = 0
-		      
-		    End If
-		    
-		    output_RowCount.SetElement(idx_output, output_RowCount.GetElement(idx_output)+1)
-		    
-		    For idx_mea As Integer = 0 To input_measures.LastIndex
-		      var tmp_serie As clDataSerie = temp_measures(idx_mea).GetElementAsDataSerie(idx_output)
-		      tmp_serie.AddElement(input_measures(idx_mea).GetElement(idx_row))
-		      
-		    Next
-		    
-		  Next
-		  
-		  var output_series() As clAbstractDataSerie
-		  
-		  For idx_dim As Integer = 0 To output_dimensions.LastIndex
-		    output_series.Append(output_dimensions(idx_dim))
-		    
-		  Next
-		  
-		  
-		  For idx_mea As Integer = 0 To temp_measures.LastIndex
-		    var input_name as string = input_measures(idx_mea).name
-		    var operations() as string = InputMeasureDictOperations.value(input_name)
-		    
-		    for each operation as string in operations
-		      
-		      var tmp_serie As New clNumberDataSerie(operation + "_" + input_measures(idx_mea).name)
-		      
-		      For idx_item As Integer = 0 To temp_measures(idx_mea).RowCount-1
-		        
-		        select case operation
-		          
-		        Case aggSum
-		          tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).sum)
-		          
-		        Case aggMin
-		          tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).Minimum)
-		          
-		        Case aggMax
-		          tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).Maximum)
-		          
-		        case aggCount
-		          tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).Count)
-		          
-		        case else
-		          tmp_serie.AddElement(temp_measures(idx_mea).GetElementAsDataSerie(idx_item).sum)
-		          
-		        end Select
-		        
-		      Next
-		      
-		      output_series.Append(tmp_serie)
-		    next
-		    
-		  Next
-		  
-		  output_series.Append(output_RowCount)
-		  
-		  //  
-		  //  output table name
-		  //  
-		  var tmp_name as string = self.name.trim
-		  if tmp_name.len = 0 then
-		    tmp_name = "results"
-		    
-		  end if
-		  
-		  
-		  if grouping_dimensions.LastIndex < 0 then
-		    tmp_name = tmp_name + " total"
-		  else
-		    
-		    For Each item As String In grouping_dimensions
-		      If Len(Trim(item)) > 0 Then
-		        tmp_name = tmp_name + " " + item
-		        
+		        r.SetCell(p.Left + " of " + p.right, clGrouper.Aggregate(p.left, col))
 		      end if
 		      
 		    next
+		    
+		    var t as new clDataTable("Totals")
+		    t.AddRow(r)
+		    return t
+		    
 		  end if
 		  
-		  Return New clDataTable(tmp_name, output_series)
 		  
 		  
+		  for each name as string in grouping_dimensions
+		    GroupingColumns.add(self.GetColumn(name))
+		    
+		  next
+		  
+		  for each p as pair in measures
+		    var np as pair = self.GetColumn(p.Left) : p.Right
+		    MeasureColumns.Add(np)
+		    
+		  next
+		  
+		  var g as new clGrouper(GroupingColumns, MeasureColumns)
+		  
+		  var res() as clAbstractDataSerie = g.Flattened()
+		  
+		  return new clDataTable("Results", res)
+		  
+		   
 		  
 		End Function
 	#tag EndMethod

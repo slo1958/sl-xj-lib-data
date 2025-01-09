@@ -1,7 +1,7 @@
 #tag Module
 Protected Module datatable_to_list
 	#tag Method, Flags = &h0
-		Sub show_table_in_listbox(thetable as TableColumnReaderInterface, thelist as DesktopListBox)
+		Sub OLD_show_table_in_listbox(thetable as TableColumnReaderInterface, thelist as DesktopListBox)
 		  
 		  var tmp_listbox as DesktopListBox = thelist
 		  var tmp_tbl as TableColumnReaderInterface = thetable

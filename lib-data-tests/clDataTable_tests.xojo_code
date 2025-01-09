@@ -133,7 +133,8 @@ Protected Module clDataTable_tests
 		  test_031(logwriter)
 		  test_032(logwriter)
 		  test_033(logwriter)
-		  
+		  test_034(logwriter)
+		  test_035(logwriter)
 		  
 		  logwriter.end_exec(CurrentMethodName)
 		End Sub
@@ -1647,6 +1648,102 @@ Protected Module clDataTable_tests
 		  var table_expected As New clDataTable("mytable", SerieArray(col_country2, col_city2, col_combined2))
 		  
 		  call check_table(log,"use dict for creation", table_expected, table0)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_034(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var t as new clDataTable("t")
+		  
+		  var ccnt As clAbstractDataSerie =  t.AddColumn(new clStringDataSerie("Country"))
+		  var ccity As clAbstractDataSerie =  t.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  t.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = t.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 22))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 23))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 25))
+		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 26))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 27))
+		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 28))
+		  t.AddRow(new Dictionary("Country":"Italy", "City":"Rome","Quantity":10, "UnitPrice":9))
+		  
+		  var ctp as clAbstractDataSerie = t.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
+		  
+		  var g as new clGrouper(SerieArray(ccnt, ccity), array( _
+		  cqtt:clGrouper.aggSum, _
+		  cup:clGrouper.aggmin, _
+		  cup:clGrouper.aggmax, _
+		  ctp:clGrouper.aggSum, _
+		  cup:clGrouper.aggCount) _
+		  )
+		  
+		  var table0 as clDataTable = new clDataTable("group", g.Flattened)
+		  
+		  var table_expected As New clDataTable("mytable", SerieArray( _
+		  new clStringDataSerie("Country", array("Belgium","Belgium", "France", "Italy")), _
+		  new clStringDataSerie("City", array("Brussels","Liege", "Paris","Rome")),_
+		  new clNumberDataSerie("Sum of Quantity", array(36.00, 36.00, 24.00, 10.00)),_
+		  new clNumberDataSerie("Min of UnitPrice", array(21.0, 22.0, 26.0, 9.0)),_
+		  new clNumberDataSerie("Max of UnitPrice", array(24.0, 27.0, 28.0, 9.0)),_
+		  new clNumberDataSerie("Sum of Quantity*UnitPrice", array(816.0, 888.0, 648.0, 90.0)), _
+		  new clIntegerDataSerie("Count of UnitPrice", array( 3, 3, 2, 1)) _ 
+		  ))
+		  
+		  call check_table(log,"groupby and aggregate", table_expected, table0)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_035(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var t as new clDataTable("t")
+		  
+		  var ccnt As clAbstractDataSerie =  t.AddColumn(new clStringDataSerie("Country"))
+		  var ccity As clAbstractDataSerie =  t.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  t.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = t.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 22))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 23))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 25))
+		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 26))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 27))
+		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 28))
+		  
+		  var ctp as clAbstractDataSerie = t.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
+		  
+		  var g as new clGrouper(SerieArray(ccnt, ccity))
+		  
+		  var table0 as clDataTable = new clDataTable("group", g.Flattened)
+		  
+		  var table_expected As New clDataTable("mytable", SerieArray( _
+		  new clStringDataSerie("Country", array("Belgium","Belgium", "France")), _
+		  new clStringDataSerie("City", array("Brussels","Liege", "Paris")) _
+		  ))
+		  
+		  call check_table(log,"get distinct values", table_expected, table0)
 		  
 		  log.end_exec(CurrentMethodName)
 		  

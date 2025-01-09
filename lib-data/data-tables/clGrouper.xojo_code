@@ -1,37 +1,79 @@
 #tag Class
 Protected Class clGrouper
 	#tag Method, Flags = &h0
-		Sub Constructor(selected_columns() as clAbstractDataSerie)
-		  var usefull_columns(-1) as clAbstractDataSerie
+		Shared Function Aggregate(mode as string, values as clNumberDataSerie) As Double
 		  
-		  redim dimension_column_names(-1)
+		  select case mode
+		    
+		  case aggSum
+		    return values.Sum
+		    
+		  case aggCount
+		    return values.Count
+		    
+		  case aggMin
+		    return values.Minimum
+		    
+		  case aggMax
+		    return values.Maximum
+		    
+		  case else
+		    return 0
+		    
+		  end select
 		  
-		  for i as integer = 0 to selected_columns.LastIndex
-		    if selected_columns(i) <> nil then
-		      dimension_column_names.Add(selected_columns(i).name)
-		      usefull_columns.add(selected_columns(i))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub BuildGroups(Grouping_Columns() as clAbstractDataSerie, MeasureColumns() as pair)
+		  
+		  var usedDimensionColumns(-1) as clAbstractDataSerie
+		  var usedMeasureColumns(-1) as clNumberDataSerie
+		  
+		  redim titleOfDimensionColumns(-1)
+		  
+		  for i as integer = 0 to Grouping_Columns.LastIndex
+		    if Grouping_Columns(i) <> nil then
+		      TitleOfDimensionColumns.Add(Grouping_Columns(i).name)
+		      usedDimensionColumns.add(Grouping_Columns(i))
 		    end if
 		    
 		  next
 		  
-		  if dimension_column_names.LastIndex < 0 then return
 		  
-		  top_dictionary = new Dictionary
+		  for i as integer = 0 to MeasureColumns.LastIndex
+		    if MeasureColumns(i).Left <> nil  and MeasureColumns(i).Left isa clNumberDataSerie then
+		      //titleOfDimensionColumns.Add(Grouping_Columns(i).name)
+		      var tmp as string = MeasureColumns(i).Right
+		      TitleOfMeasureColumns.add(tmp  + " of "+ clAbstractDataSerie(MeasureColumns(i).Left).name)
+		      NameOfMeasureColumns.add(clAbstractDataSerie(MeasureColumns(i).Left).name)
+		      ActionOnMeasureColumns.Add(MeasureColumns(i).Right)
+		      usedMeasureColumns.add(MeasureColumns(i).Left)
+		      
+		    end if
+		    
+		  next
 		  
-		  for row as integer = 0 to usefull_columns(0).RowCount-1
+		  
+		  if titleOfDimensionColumns.LastIndex < 0 then return
+		  
+		  TopNode = new clGrouperElement
+		  
+		  for row as integer = 0 to usedDimensionColumns(0).RowCount-1
 		    
-		    var work_dict as Dictionary = top_dictionary
+		    var work_dict as clGrouperElement = TopNode
 		    
-		    var next_dict as Dictionary = nil
+		    var next_dict as clGrouperElement = nil
 		    
-		    for column_index as integer = 0 to usefull_columns.LastIndex
-		      var tmp_value as variant = usefull_columns(column_index).GetElement(row)
+		    for column_index as integer = 0 to usedDimensionColumns.LastIndex
+		      var tmp_value as variant = usedDimensionColumns(column_index).GetElement(row)
 		      
 		      if work_dict.HasKey(tmp_value) then
 		        next_dict = work_dict.value(tmp_value)
 		        
 		      else
-		        next_dict = new Dictionary
+		        next_dict = new clGrouperElement
 		        work_dict.value(tmp_value) = next_dict
 		        
 		      end if
@@ -40,10 +82,33 @@ Protected Class clGrouper
 		      
 		    next
 		    
+		    next_dict.MeasureCount = usedMeasureColumns.Count
+		    
+		    for column_index as integer = 0 to usedMeasureColumns.LastIndex
+		      var tmp_value as Double = usedMeasureColumns(column_index).GetElement(row)
+		      
+		      next_dict.AddMeasureValue(column_index, tmp_value)
+		      
+		      var n as integer = 0
+		    next
+		    
+		    
 		  next
 		  
 		  
-		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(GroupingColumns() as clAbstractDataSerie)
+		  var dummy() as pair
+		  BuildGroups(GroupingColumns, dummy)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(GroupingColumns() as clAbstractDataSerie, MeasureColumns() as Pair)
+		  BuildGroups(GroupingColumns, MeasureColumns)
 		End Sub
 	#tag EndMethod
 
@@ -61,7 +126,7 @@ Protected Class clGrouper
 		  //  
 		  
 		  
-		  if top_dictionary = nil then return nil
+		  if TopNode = nil then return nil
 		  
 		  
 		  var tmp_label() as string
@@ -71,51 +136,86 @@ Protected Class clGrouper
 		  //  Pre-allocate work array
 		  //  
 		  
-		  redim tmp_label(dimension_column_names.Count)
-		  redim tmp_value(dimension_column_names.Count)
+		  redim tmp_label(titleOfDimensionColumns.Count)
+		  redim tmp_value(titleOfDimensionColumns.Count)
 		  
 		  //  
 		  //  Prepare output space for grouped dimensions
 		  //  
-		  var output_dimensions() As clAbstractDataSerie
+		  var OutputColumns() As clAbstractDataSerie
 		  
-		  for each name as string in dimension_column_names
-		    output_dimensions.Add(new clDataSerie(name))
+		  for each name as string in TitleOfDimensionColumns
+		    OutputColumns.Add(new clDataSerie(name))
 		    
 		  Next
 		  
-		  FlattenNextDimension(tmp_label, tmp_value,  0, top_dictionary, output_dimensions)
+		  for each name as string in TitleOfMeasureColumns
+		    OutputColumns.Add(new clNumberDataSerie(name))
+		    
+		  next
 		  
-		  return output_dimensions
+		  FlattenNextDimension(tmp_label, tmp_value,  0, TopNode, OutputColumns)
+		  
+		  return OutputColumns
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub FlattenNextDimension(labels() as string, ColumnLatestValue() as variant, depth as integer, level_dict as Dictionary, output_cols() as clAbstractDataSerie)
-		  labels(depth) = dimension_column_names(depth)
+		Private Sub FlattenNextDimension(labels() as string, ColumnLatestValue() as variant, depth as integer, level_dict as clGrouperElement, OutputColumns() as clAbstractDataSerie)
+		  
+		  var NbrOfDimensions as integer = self.TitleOfDimensionColumns.Count
+		  
+		  labels(depth) = titleOfDimensionColumns(depth)
 		  
 		  for each k as variant in level_dict.keys
 		    
 		    ColumnLatestValue(depth) = k
 		    
-		    var d as Dictionary = Dictionary(level_dict.value(k))
+		    var d as clGrouperElement = clGrouperElement(level_dict.value(k))
 		    
 		    if d.keys.Count = 0 then // reached the end
 		      
-		      for col as integer = 0 to output_cols.LastIndex
-		        output_cols(col).AddElement(ColumnLatestValue(col))
+		      // Get all dimension values
+		      for col as integer = 0 to NbrOfDimensions - 1
+		        OutputColumns(col).AddElement(ColumnLatestValue(col))
 		        
+		      next
+		      
+		      // Get all measures
+		      
+		      for col as integer =0 to d.MeasureCount-1
+		        var item as clNumberDataSerie = d.MeasureValues(col)
+		        OutputColumns(col + NbrOfDimensions).AddElement(Aggregate(ActionOnMeasureColumns(col), item))
+		         
 		      next
 		      
 		      
 		    else
-		      FlattenNextDimension(labels, ColumnLatestValue, depth+1, d, output_cols)
+		      FlattenNextDimension(labels, ColumnLatestValue, depth+1, d, OutputColumns)
 		      
 		    end if
 		    
 		  next
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetTreeHead() As clGrouperElement
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function IsValidAggregation(Mode as String) As Boolean
+		  if mode = AggSum then return true
+		  if mode = AggCount then return true
+		  if mode = AggMin then return true
+		  if mode = AggMax then return true
+		  
+		  return false
+		  
+		End Function
 	#tag EndMethod
 
 
@@ -130,12 +230,37 @@ Protected Class clGrouper
 
 
 	#tag Property, Flags = &h0
-		dimension_column_names() As String
+		ActionOnMeasureColumns() As Variant
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		top_dictionary As dictionary
+		NameOfMeasureColumns() As String
 	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		TitleOfDimensionColumns() As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		TitleOfMeasureColumns() As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		TopNode As clGrouperElement
+	#tag EndProperty
+
+
+	#tag Constant, Name = aggCount, Type = String, Dynamic = False, Default = \"count", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = aggMax, Type = String, Dynamic = False, Default = \"max", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = aggMin, Type = String, Dynamic = False, Default = \"min", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = aggSum, Type = String, Dynamic = False, Default = \"sum", Scope = Public
+	#tag EndConstant
 
 
 	#tag ViewBehavior

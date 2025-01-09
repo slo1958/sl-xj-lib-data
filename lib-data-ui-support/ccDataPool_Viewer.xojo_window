@@ -73,7 +73,7 @@ Begin DesktopContainer ccDataPool_Viewer
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
-   Begin DesktopListBox lb_data
+   Begin DesktopListboxForTable lb_data
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
@@ -321,7 +321,8 @@ End
 		    
 		  end if
 		  
-		  show_table_in_listbox tbl, lb_data
+		  lb_data.ShowTable(tbl)
+		  //show_table_in_listbox tbl, lb_data
 		  
 		End Sub
 	#tag EndMethod
