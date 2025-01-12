@@ -113,7 +113,16 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h0
 		Function GetColumnTypes() As dictionary
-		  return nil
+		  // Part of the TableRowReaderInterface interface.
+		  var tmp as new Dictionary
+		  
+		  for each s as string in mheader
+		    tmp.value(s) = ""
+		    
+		  next
+		  
+		  return tmp
+		   
 		End Function
 	#tag EndMethod
 
