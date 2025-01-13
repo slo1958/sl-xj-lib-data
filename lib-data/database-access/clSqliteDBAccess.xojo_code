@@ -71,10 +71,27 @@ Inherits clAbstractDatabaseAccess
 
 	#tag Method, Flags = &h0
 		Function GetSQLType(source_type as string) As String
-		   
-		  if source_type = "string" then return "text"
 		  
-		  return source_type
+		  
+		  select case source_type
+		  case clDataType.BooleanValue
+		    return "BOOLEAN"
+		    
+		  case clDataType.IntegerValue
+		    return "INTEGER"
+		    
+		  case clDataType.NumberValue
+		    return "DOUBLE"
+		    
+		  case clDataType.StringValue
+		    return "TEXT"
+		    
+		  case else
+		    return "TEXT"
+		    
+		  end Select
+		  
+		  
 		End Function
 	#tag EndMethod
 

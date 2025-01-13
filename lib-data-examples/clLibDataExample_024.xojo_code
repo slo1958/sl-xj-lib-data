@@ -62,7 +62,7 @@ Inherits clLibDataExample
 		  rangeTable.AddRow(new Dictionary("min_value":1000, "max_value": 1999.999, "range_label":"Medium"))
 		  rangeTable.AddRow(new Dictionary("min_value":2000, "max_value": 2999.999, "range_label":"Big"))
 		  
-		  col_cloned_sales.ActiveRangeFormatting("","")
+		  col_cloned_sales.SetFormatter(new clRangeFormatting("",""))
 		  col_cloned_sales.AddFormattingRanges(colmin, colmax, collabel)
 		  
 		  

@@ -23,13 +23,21 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		  
-		  
 		  //  physical table and column not yet linked
 		  if not self.IsVirtual and not tmp_column.IsLinkedToTable then
-		    var max_RowCount as integer = self.IncreaseLength(tmp_column.RowCount)
-		    tmp_column.SetLength(max_RowCount)
+		    var max_RowCount as integer 
+		    
+		    if tmp_column.RowCount > 0 then
+		      max_RowCount = self.IncreaseLength(tmp_column.RowCount)
+		      
+		    else
+		      max_RowCount = self.RowCount
+		      
+		    end if
 		    
 		    tmp_column.SetLinkToTable(Self)
+		    tmp_column.SetLength(max_RowCount)
+		    
 		    Self.columns.Append(tmp_column)
 		    
 		    return tmp_column
@@ -38,10 +46,20 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  //  adding a physical column to a virtual table (when permitted)
 		  if self.IsVirtual and not tmp_column.IsLinkedToTable and self.allow_local_columns then
-		    var max_RowCount as integer = self.IncreaseLength(tmp_column.RowCount)
-		    tmp_column.SetLength(max_RowCount)
+		    
+		    var max_RowCount as integer 
+		    
+		    if tmp_column.RowCount > 0 then
+		      max_RowCount = self.IncreaseLength(tmp_column.RowCount)
+		      
+		    else
+		      max_RowCount = self.RowCount
+		      
+		    end if
 		    
 		    tmp_column.SetLinkToTable(Self)
+		    tmp_column.SetLength(max_RowCount)
+		    
 		    Self.columns.Append(tmp_column)
 		    
 		    return tmp_column
@@ -207,12 +225,15 @@ Implements TableColumnReaderInterface,Iterable
 		    var column_name As String = src_tmp_column.name
 		    
 		    var dst_tmp_column As  clAbstractDataSerie = Self.GetColumn(column_name)
-		    
+		     
 		    If dst_tmp_column <> Nil Then
 		      dst_tmp_column.AddSerie(src_tmp_column)
 		      
 		    elseif CreateMissingColumns then
-		      dst_tmp_column = Self.AddColumn(column_name)
+		      var vtype as string = src_tmp_column.GetType
+		      
+		      dst_tmp_column =   self.AddColumn(clDataType.CreateDataSerieFromType(column_name, vtype))
+		      
 		      dst_tmp_column.SetLength(length_before)
 		      
 		      dst_tmp_column.AddSerie(src_tmp_column)
@@ -221,8 +242,6 @@ Implements TableColumnReaderInterface,Iterable
 		      AddErrorMessage(CurrentMethodName, ErrMsgIgnoringColumn , column_name)
 		      
 		    End If
-		    
-		    
 		    
 		  Next
 		  
@@ -269,7 +288,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRow(NewRow as clDataRow, CreateColumnsFlag as boolean = True)
+		Sub AddRow(NewRow as clDataRow, CreateColumnsFlag as boolean = True, ImposeVariantType as boolean = False)
 		  //  
 		  //  Add  a data row to the table
 		  //  
@@ -282,6 +301,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  var tmp_RowCount As Integer = Self.RowCount
 		  
+		  // Handling row name
 		  if NewRow.name.Trim = "" or not row_name_as_column then
 		    
 		  else
@@ -299,19 +319,25 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		  
+		  //Handling data
 		  For Each column As String In NewRow
 		    var tmp_column As clAbstractDataSerie = Self.GetColumn(column)
+		    var tmp_item As variant = NewRow.GetCell(column)
 		    
 		    If tmp_column = Nil And CreateColumnsFlag Then
-		      tmp_column = AddColumn(column)
-		      
+		      if ImposeVariantType then
+		        tmp_column = AddColumn(column)
+		        
+		      else
+		        tmp_column = AddColumn(clDataType.CreateDataSerieFromVariantType(column, tmp_item))
+		        
+		      end if
 		    End If
 		    
 		    If tmp_column = Nil Then
 		      Raise New clDataException("Adding row with unexpected column " + column)
 		      
 		    Else
-		      var tmp_item As variant = NewRow.GetCell(column)
 		      tmp_column.AddElement(tmp_item)
 		      
 		    End If
@@ -331,7 +357,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Sub AddRow(NewCellsValue as Dictionary)
-		  
+		  //
 		  //  Add  a data row to the table using the passed dictionary. Does not create new columns.
 		  //  
 		  //  Parameters:
@@ -361,7 +387,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Sub AddRow(SourceObject as object)
-		  
+		  //
 		  //  Add  a data row to the table using the passed dictionary. Does not create new columns.
 		  //  
 		  //  Parameters:
@@ -409,7 +435,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Sub AddRow(firstEntry as Pair, ParamArray entries as Pair)
-		  
+		  //
 		  //  Add  a data row to the table using the passed list of pairs. Does not create new columns.
 		  //  
 		  //  Parameters:
@@ -431,8 +457,6 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  // Do not add missing columns
 		  self.AddRow(tempRow, false)
-		  
-		  // Self.row_index.AddElement("")
 		  
 		End Sub
 	#tag EndMethod
@@ -466,7 +490,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Sub AddRow(NewCellsValue() as variant)
-		  
+		  //
 		  //  Add  a data row to the table
 		  //  
 		  //  Parameters:
@@ -1070,6 +1094,9 @@ Implements TableColumnReaderInterface,Iterable
 		      
 		    else
 		      var tmp_column as clAbstractDataSerie = allocator.Invoke(tmp_column_name,"")
+		      
+		      if tmp_column = nil then tmp_column = new clDataSerie(tmp_column_name)
+		      
 		      tmp_column.AddElements(v)
 		      
 		      tmp_columns.Add(tmp_column)
@@ -1146,33 +1173,11 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  internal_new_table(tmp_table_name)
 		  
-		  // var columns() as clAbstractDataSerie
-		  
 		  var tmp_column_names() as string = NewTableSource.GetColumnNames
 		  var tmp_column_types as Dictionary = NewTableSource.GetColumnTypes
-		  var tmp_columns() as   clAbstractDataSerie
 		  
-		  for each tmp_column_name as string in tmp_column_names
-		    var c as  clAbstractDataSerie
-		    
-		    if allocator = nil and tmp_column_types = nil then
-		      c = new clDataSerie(tmp_column_name) 
-		      columns.Add(c)
-		      
-		    elseif allocator = nil then
-		      c = clDataType.CreateDataSerieFromType(tmp_column_name, tmp_column_types.Lookup(tmp_column_name, clDataType.VariantValue))
-		      columns.Add(c)
-		      
-		    else 
-		      c = allocator.Invoke(tmp_column_name, tmp_column_types.value(tmp_column_name))
-		      if c <> nil then columns.Add(c)
-		      
-		    end if
-		    
-		    // internal_addrows can handle nil values, to indicate columns in source to ignore
-		    tmp_columns.Add(c)
-		    
-		  next
+		  var tmp_columns() as clAbstractDataSerie = internal_MakeColumns (tmp_column_names, tmp_column_types, allocator)
+		  
 		  
 		  call internal_AddRows(NewTableSource, tmp_columns, "")
 		  
@@ -1277,38 +1282,12 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  AddMetadata("source", tmp_table_name)
 		  
-		  internal_new_table("from " + tmp_table_name)
-		  
-		  // var columns() as clAbstractDataSerie
+		  internal_new_table("from " + tmp_table_name) 
 		  
 		  var tmp_column_names() as string = NewTableSource.GetColumnNames
 		  var tmp_column_types as Dictionary = NewTableSource.GetColumnTypes
-		  var tmp_columns() as clAbstractDataSerie
 		  
-		  for each tmp_column_name as string in tmp_column_names
-		    var c as  clAbstractDataSerie
-		    
-		    if allocator = nil and tmp_column_types = nil then
-		      c  = new clDataSerie(tmp_column_name)
-		      columns.Add(c)
-		      
-		    elseif allocator = nil then
-		      var tmp_type as string =  tmp_column_types.Lookup(tmp_column_name, clDataType.VariantValue)
-		      c = clDataType.CreateDataSerieFromType(tmp_column_name, tmp_type)
-		      columns.Add(c)
-		      
-		    else
-		      c = allocator.Invoke(tmp_column_name, tmp_column_types.value(tmp_column_name))
-		      if c <> nil then  columns.Add(c)
-		      
-		    end if
-		    
-		    // internal_addrows can handle nil values, to indicate columns in source to ignore
-		    
-		    tmp_columns.add(c)
-		    
-		  next
-		  
+		  var tmp_columns() as clAbstractDataSerie = internal_MakeColumns (tmp_column_names, tmp_column_types, allocator)
 		  
 		  call self.internal_AddRows(NewTableSource, tmp_columns, "")
 		  
@@ -2051,6 +2030,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function GroupBy(grouping_dimensions() as string, measures() as pair) As clDataTable
 		  
+		  const OutputTableName = "Results"
 		  
 		  var GroupingColumns() as clAbstractDataSerie
 		  var MeasureColumns() as pair
@@ -2086,7 +2066,7 @@ Implements TableColumnReaderInterface,Iterable
 		      
 		    next
 		    
-		    var t as new clDataTable("Totals")
+		    var t as new clDataTable(OutputTableName)
 		    t.AddRow(r)
 		    return t
 		    
@@ -2102,7 +2082,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var res() as clAbstractDataSerie = g.Flattened()
 		  
-		  return new clDataTable("Results", res)
+		  return new clDataTable(OutputTableName, res)
 		  
 		  
 		  // 
@@ -2334,6 +2314,40 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h21
 		Private Function internal_join(the_table as clDataTable, own_keys() as string, alt_keys() as string) As Boolean
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function internal_MakeColumns(ColumnNames() as string, ColumnTypes as Dictionary, allocator as column_allocator = nil) As clAbstractDataSerie()
+		  
+		  
+		  var tmp_column_names() as string = ColumnNames
+		  var tmp_column_types as Dictionary = ColumnTypes
+		  var tmp_columns() as clAbstractDataSerie  
+		  
+		  if tmp_column_types = nil then tmp_column_types = new Dictionary
+		  
+		  for each tmp_column_name as string in tmp_column_names
+		    var c as  clAbstractDataSerie
+		    var t as string = tmp_column_types.Lookup(tmp_column_name, clDataType.VariantValue)
+		    
+		    if allocator = nil then
+		      c = clDataType.CreateDataSerieFromType(tmp_column_name, t)
+		      if c <> nil then  columns.Add(c)
+		      
+		    else
+		      c = allocator.Invoke(tmp_column_name, t)
+		      if c <> nil then  columns.Add(c)
+		      
+		    end if
+		    
+		    // internal_addrows can handle nil values, to indicate columns in source to ignore
+		    
+		    tmp_columns.add(c)
+		    
+		  next
+		  
+		  return tmp_columns
 		End Function
 	#tag EndMethod
 

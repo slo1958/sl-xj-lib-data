@@ -1,6 +1,79 @@
 #tag Class
 Protected Class clDataType
 	#tag Method, Flags = &h0
+		Shared Function ConvertSerieTypeToCommonType(serie as clAbstractDataSerie) As string
+		  
+		  Var t As Introspection.TypeInfo
+		  t = Introspection.GetType(serie)
+		  
+		  select case t.Name
+		    
+		  case "clBooleanDataSerie"
+		    return BooleanValue
+		    
+		  case  "clCompressedDataSerie"
+		    return StringValue
+		    
+		  case "clDateDataSerie"
+		    return DateValue
+		    
+		  case "clDateTimeDataSerie"
+		    return DateTimeValue
+		    
+		  case "clIntegerDataSerie"
+		    return IntegerValue
+		    
+		  case "clNumberDataSerie"
+		    return NumberValue
+		    
+		  case "clStringDataSerie" 
+		    return StringValue
+		    
+		  else
+		    return VariantValue
+		    
+		  end select
+		   
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function ConvertVariantTypeToCommonType(v as variant) As string
+		  select case v.Type
+		    
+		  case variant.TypeBoolean
+		    return BooleanValue
+		    
+		  case variant.TypeCurrency
+		    return NumberValue
+		    
+		  case variant.TypeDateTime
+		    return DateTimeValue
+		    
+		  case variant.TypeDouble
+		    return NumberValue
+		    
+		  case variant.TypeInt32
+		    return IntegerValue
+		    
+		  case variant.TypeInt64
+		    return IntegerValue
+		    
+		  case variant.TypeSingle
+		    return NumberValue
+		    
+		  case variant.TypeString 
+		    return StringValue
+		    
+		  else
+		    return VariantValue
+		    
+		  end select
+		   
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function CreateDataSerieFromClassName(SerieName as string, serie_type as String) As clAbstractDataSerie
 		  
 		  select case serie_type
@@ -74,6 +147,42 @@ Protected Class clDataType
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Shared Function CreateDataSerieFromVariantType(SerieName as string, v as Variant) As clAbstractDataSerie
+		  select case v.Type
+		    
+		  case variant.TypeBoolean
+		    return new clBooleanDataSerie(SerieName)
+		    
+		  case variant.TypeCurrency
+		    return new clNumberDataSerie(SerieName)
+		    
+		  case variant.TypeDateTime
+		    return new clDateTimeDataSerie(SerieName)
+		    
+		  case variant.TypeDouble
+		    return new clNumberDataSerie(SerieName)
+		    
+		  case variant.TypeInt32
+		    return new clIntegerDataSerie(SerieName)
+		    
+		  case variant.TypeInt64
+		    return new clIntegerDataSerie(SerieName)
+		    
+		  case variant.TypeSingle
+		    return new clNumberDataSerie(SerieName)
+		    
+		  case variant.TypeString 
+		    return new clStringDataSerie(SerieName)
+		    
+		  else
+		    return new clDataSerie(SerieName)
+		    
+		  end select
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function GetClassName(serie as clAbstractDataSerie) As string
 		  
 		  Var t As Introspection.TypeInfo
@@ -82,43 +191,6 @@ Protected Class clDataType
 		  return t.name
 		  
 		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Shared Function TranslateFromSerieToType(serie as clAbstractDataSerie) As string
-		  
-		  Var t As Introspection.TypeInfo
-		  t = Introspection.GetType(serie)
-		  
-		  select case t.Name
-		    
-		  case "clBooleanDataSerie"
-		    return BooleanValue
-		    
-		  case  "clCompressedDataSerie"
-		    return StringValue
-		    
-		  case "clDateDataSerie"
-		    return DateValue
-		    
-		  case "clDateTimeDataSerie"
-		    return DateTimeValue
-		    
-		  case "clIntegerDataSerie"
-		    return IntegerValue
-		    
-		  case "clNumberDataSerie"
-		    return NumberValue
-		    
-		  case "clStringDataSerie" 
-		    return StringValue
-		    
-		  else
-		    return VariantValue
-		    
-		  end select
-		   
 		End Function
 	#tag EndMethod
 

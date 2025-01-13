@@ -63,7 +63,7 @@ Protected Module clDataPool_tests
 		    rtst.SetCell("bbb","abcd")
 		    rtst.SetCell("ccc",123.456)
 		    
-		    table.AddRow(rtst)
+		    table.AddRow(rtst, True, True)
 		    
 		  next
 		  
@@ -77,7 +77,7 @@ Protected Module clDataPool_tests
 		    rtst.SetCell("bbb","xyz")
 		    rtst.SetCell("ddd",567.89)
 		    
-		    table.AddRow(rtst)
+		    table.AddRow(rtst, True, True)
 		    
 		  next
 		  
@@ -173,7 +173,7 @@ Protected Module clDataPool_tests
 		  var col2 as clDataSerie
 		  var col3 as clDataSerie
 		  var col4 as clDataSerie
-		  var v as variant
+		   
 		  
 		  col1 = new clDataSerie("aaa", 1000,2000,3000,4000)
 		  col2 = new clDataSerie("bbb","abcd","abcd","abcd","abcd")
@@ -188,7 +188,7 @@ Protected Module clDataPool_tests
 		  col1 = new clDataSerie("aaa",1000,2000,3000,4000,5000,6000,7000,8000)
 		  col2 = new clDataSerie("bbb","abcd","abcd","abcd","abcd","xyz","xyz","xyz","xyz")
 		  col3 = new clDataSerie("ccc",123.456, 123.456,123.456,123.456,v,v,v,v)
-		  col4 = new clDataSerie("ddd",v,v,v,v,567.89,567.89,567.89,567.89)
+		  col4 = new clDataSerie("ddd",0.0, 0.0, 0.0, 0.0, 567.89,567.89,567.89,567.89)
 		  var expected_res as new clDataTable("res", SerieArray(col1, col2, col3, col4))
 		  
 		  call check_table(log,"T1", expected_t1, my_data_pool.table("table_1"))
@@ -242,15 +242,15 @@ Protected Module clDataPool_tests
 		  
 		  var main_folder As  FolderItem = GetTestBaseFolder()
 		  var sub_folder as FolderItem  = ClearFolder(main_folder.Child(CurrentMethodName))
-		   
+		  
 		  my_data_pool.SaveEachTable(new clTextWriter(sub_folder, True))
 		  
 		  
 		  var loaded_table1 As New clDataTable(new clTextReader(sub_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
 		  var loaded_table2 As New clDataTable(new clTextReader(sub_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
 		  
-		  call check_table(log,"table 1", loaded_table1, pool_table1)
-		  call check_table(log,"table 2", loaded_table2, pool_table2)
+		  call check_table(log,"table 1", pool_table1, loaded_table1)
+		  call check_table(log,"table 2", pool_table2, loaded_table2)
 		  
 		  
 		  var test_data_pool as new clDataPool
@@ -321,8 +321,8 @@ Protected Module clDataPool_tests
 		  var loaded_table1 as new clDataTable(new clDBReader(new clSqliteDBAccess(db),"PoolTable1"))
 		  var loaded_table2 As New clDataTable(new clDBReader(db.SelectSql("select * from PoolTable2")))
 		  
-		  call check_table(log,"table 1", loaded_table1, pool_table1)
-		  call check_table(log,"table 2", loaded_table2, pool_table2)
+		  call check_table(log,"table 1", pool_table1, loaded_table1)
+		  call check_table(log,"table 2", pool_table2, loaded_table2)
 		  
 		  
 		  var test_data_pool as new clDataPool
@@ -387,8 +387,8 @@ Protected Module clDataPool_tests
 		  var loaded_table1 As New clDataTable(new clTextReader(sub_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
 		  var loaded_table2 As New clDataTable(new clTextReader(sub_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
 		  
-		  call check_table(log,"table 1", loaded_table1, pool_table1)
-		  call check_table(log,"table 2", loaded_table2, pool_table2)
+		  call check_table(log,"table 1", pool_table1, loaded_table1)
+		  call check_table(log,"table 2", pool_table2, loaded_table2)
 		  
 		  
 		  var test_data_pool as new clDataPool
@@ -520,8 +520,8 @@ Protected Module clDataPool_tests
 		  var loaded_table1 as new clDataTable(new clDBReader(new clSqliteDBAccess(db),"PoolTable1"))
 		  var loaded_table2 As New clDataTable(new clDBReader(db.SelectSql("select * from PoolTable2")))
 		  
-		  call check_table(log,"table 1", loaded_table1, pool_table1)
-		  call check_table(log,"table 2", loaded_table2, pool_table2)
+		  call check_table(log,"table 1", pool_table1, loaded_table1)
+		  call check_table(log,"table 2", pool_table2, loaded_table2)
 		  
 		  
 		  var test_data_pool as new clDataPool

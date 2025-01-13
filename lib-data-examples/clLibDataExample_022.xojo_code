@@ -50,7 +50,7 @@ Inherits clLibDataExample
 		  
 		  call table0.AddColumn(col_cloned_sales)
 		  
-		  col_cloned_sales.ActiveRangeFormatting("","")
+		  col_cloned_sales.SetFormatter(new clRangeFormatting("",""))
 		  col_cloned_sales.AddFormattingRange(0,999.99,"small")
 		  col_cloned_sales.AddFormattingRange(1000,1999.99,"medium")
 		  col_cloned_sales.AddFormattingRange(2000,2999.99,"big")

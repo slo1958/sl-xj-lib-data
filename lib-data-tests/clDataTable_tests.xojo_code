@@ -189,10 +189,10 @@ Protected Module clDataTable_tests
 		  
 		  my_table.AddRow(rtst)
 		  
-		  var col1 as new clDataSerie("aaa", 1234, 1235)
-		  var col2 as new clDataSerie("bbb", "abcd", "abce")
-		  var col3 as new clDataSerie("ccc", 123.456, nil)
-		  var col4 as new clDataSerie("ddd", nil, 987.654)
+		  var col1 as new clIntegerDataSerie("aaa", 1234, 1235)
+		  var col2 as new clStringDataSerie("bbb", "abcd", "abce")
+		  var col3 as new clNumberDataSerie("ccc", 123.456, nil)
+		  var col4 as new clNumberDataSerie("ddd", nil, 987.654)
 		  
 		  
 		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
@@ -330,10 +330,10 @@ Protected Module clDataTable_tests
 		  
 		  my_table.AddRow(rtst)
 		  
-		  var col1 as new clDataSerie("aaa", 1234, 1235)
-		  var col2 as new clDataSerie("bbb", "abcd", "abce")
-		  var col3 as new clDataSerie("ccc", 123.456, nil)
-		  var col4 as new clDataSerie("ddd", nil, 987.654)
+		  var col1 as new clIntegerDataSerie("aaa", 1234, 1235)
+		  var col2 as new clStringDataSerie("bbb", "abcd", "abce")
+		  var col3 as new clNumberDataSerie("ccc", 123.456, nil)
+		  var col4 as new clNumberDataSerie("ddd", nil, 987.654)
 		  
 		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
@@ -374,10 +374,10 @@ Protected Module clDataTable_tests
 		  
 		  cols(1).rename("bB1")
 		  
-		  var col1 as new clDataSerie("aaa", 1234, 1235)
-		  var col2 as new clDataSerie("bB1", "abcd", "abce")
-		  var col3 as new clDataSerie("ccc", 123.456, nil)
-		  var col4 as new clDataSerie("ddd", nil, 987.654)
+		  var col1 as new clIntegerDataSerie("aaa", 1234, 1235)
+		  var col2 as new clStringDataSerie("bB1", "abcd", "abce")
+		  var col3 as new clNumberDataSerie("ccc", 123.456, nil)
+		  var col4 as new clNumberDataSerie("ddd", nil, 987.654)
 		  
 		  
 		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
@@ -423,7 +423,9 @@ Protected Module clDataTable_tests
 		  t1.AddRow(r1)
 		  
 		  r1.SetCell("troisieme",True)
-		  t2.AddRow(r1)
+		  
+		  // allow creation of new columns, impose variant type
+		  t2.AddRow(r1, True, True)
 		  
 		  
 		  var col1 as new clDataSerie("premier","aaa","bbb","ccc",nil,"dddd")
@@ -539,7 +541,7 @@ Protected Module clDataTable_tests
 		    rtst.SetCell("bbb","abcd")
 		    rtst.SetCell("ccc",123.456)
 		    
-		    my_table1.AddRow(rtst)
+		    my_table1.AddRow(rtst, True, True)
 		    
 		  next
 		  
@@ -550,7 +552,7 @@ Protected Module clDataTable_tests
 		    rtst.SetCell("bbb","xyz")
 		    rtst.SetCell("ddd",567.89)
 		    
-		    my_table2.AddRow(rtst)
+		    my_table2.AddRow(rtst, True, True)
 		    
 		  next
 		  
@@ -878,15 +880,16 @@ Protected Module clDataTable_tests
 		  d.bbb =  "abcd"
 		  d.ccc =  "123.456"
 		  
-		  my_table.AddRow( New clDataRow(d))
+		  my_table.AddRow( New clDataRow(d), True, True)
+		  
 		  
 		  var c as new test_class_01
 		  c.aaa = 1235
 		  c.bbb = "abce"
 		  c.ddd = 987.654
 		  
+		  my_table.AddRow(New clDataRow(c), True, True)
 		  
-		  my_table.AddRow(New clDataRow(c))
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
@@ -1282,7 +1285,8 @@ Protected Module clDataTable_tests
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
 		  var col3 as new clDataSerie("ccc", 123.456, 0)
-		  var col4 as new clDataSerie("ddd", nil, 987.654)
+		  // col 'ddd' will be created as a clNumberDataSerie (since 'ImposeVariantType' is false)
+		  var col4 as new clDataSerie("ddd", 0, 987.654)
 		  
 		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
@@ -1805,11 +1809,12 @@ Protected Module clDataTable_tests
 		  var my_table5Text as new clDataTable(new clTextReader(fld_file3Text, True, new clTextFileConfig(";")))
 		  var my_table5JSON as new clDataTable(new clJSONReader(fld_file3JSON, new clJSONFileConfig()))
 		  
-		  call check_table(log,"T4/T5Text", my_table4, my_table5Text) 
-		  call check_table(log,"T4/T5JSON", my_table4, my_table5JSON) 
+		  call check_table(log,"my_table4/my_table5Text", my_table4, my_table5Text) 
+		  call check_table(log,"my_table4/my_table5JSON", my_table4, my_table5JSON) 
 		  
-		  var my_table6  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series_io1)
+		  var my_table6Compressed  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series_io1)
 		  
+		  call check_table(log,"my_table3/my_table6Compressed", my_table3, my_table6Compressed) 
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -2085,7 +2090,7 @@ Protected Module clDataTable_tests
 		  call expected_table.AddColumn(new clNumberDataSerie("Delta"))
 		  call expected_table.AddColumn(new clNumberDataSerie("Gamma"))
 		  call expected_table.AddColumn(new clIntegerDataSerie("Group"))
-		  call expected_table.AddColumn(new clStringDataSerie("New_col"))
+		  call expected_table.AddColumn(new clDataSerie("New_col"))
 		  
 		  call expected_table.AddRows(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
 		  

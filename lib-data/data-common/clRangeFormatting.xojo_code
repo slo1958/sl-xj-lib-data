@@ -1,5 +1,6 @@
 #tag Class
 Protected Class clRangeFormatting
+Implements NumberFormatInteraface
 	#tag Method, Flags = &h0
 		Sub AddRange(low_bound as double, high_bound as double, label as string)
 		  self.range_min.Add(low_bound)
@@ -41,7 +42,8 @@ Protected Class clRangeFormatting
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function RangeFormat(the_value as Double) As String
+		Function FormatNumber(the_value as Double) As String
+		  // Part of the NumberFormatInteraface interface.
 		  
 		  if the_value < lowest_value then return below_label
 		  
@@ -56,6 +58,12 @@ Protected Class clRangeFormatting
 		  
 		  return self.no_label
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetInfo() As string
+		  return "range formatting"
 		End Function
 	#tag EndMethod
 
@@ -148,7 +156,7 @@ Protected Class clRangeFormatting
 			Name="below_label"
 			Visible=false
 			Group="Behavior"
-			InitialValue="'LOW"""
+			InitialValue="'LOW"
 			Type="string"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
@@ -156,7 +164,7 @@ Protected Class clRangeFormatting
 			Name="above_label"
 			Visible=false
 			Group="Behavior"
-			InitialValue="""HIGH"""
+			InitialValue="HIGH"
 			Type="string"
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
@@ -174,6 +182,14 @@ Protected Class clRangeFormatting
 			Group="Behavior"
 			InitialValue=""
 			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="no_label"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="string"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

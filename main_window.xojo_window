@@ -263,6 +263,37 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
       Visible         =   True
       Width           =   107
    End
+   Begin DesktopButton pb_run_all_io_tests1
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Run IO tests"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "Verdana"
+      FontSize        =   11.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   153
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   334
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   80
+   End
 End
 #tag EndDesktopWindow
 
@@ -411,6 +442,19 @@ End
 		  
 		  fld_folder.Open
 		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events pb_run_all_io_tests1
+	#tag Event
+		Sub Pressed()
+		  writemessage "started"
+		  
+		  var logwriter as  LogMessageInterface = self
+		  
+		  
+		  
+		  clDataPool_tests.test_io_005(logwriter) 
 		End Sub
 	#tag EndEvent
 #tag EndEvents

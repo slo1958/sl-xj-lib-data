@@ -7,14 +7,35 @@ Protected Module support_tests
 		    var calculated_float as double = calculated.DoubleValue
 		    
 		    if abs(expected - calculated_float) < accepted_error_on_double then return true
-		    log.write_message("Invalid value for " + label + ", expecting " + str(expected) + " got " + str(calculated) + " dif. " + str(abs(expected - calculated_float) ))
+		    log.write_message("Invalid numeric value for " + label + ", expecting " + str(expected) + " got " + str(calculated) + " dif. " + str(abs(expected - calculated_float) ))
 		    return false
 		  end if
 		  
 		  
 		  if expected = calculated then return  True
 		  
-		  log.write_message("Invalid value for " + label + ", expecting " + str(expected) + " got " + str(calculated))
+		  var fmt_expected as string
+		  var fmt_calculated as string
+		  
+		  if expected.Type = Variant.TypeDouble or expected.type = variant.TypeSingle then
+		    fmt_expected = str(expected,  "-#####.#####")
+		    
+		  else
+		    fmt_expected = str(expected)
+		    
+		  end if
+		  
+		  if calculated.Type = Variant.TypeDouble or calculated.type = variant.TypeSingle then
+		    fmt_calculated = str(calculated, "-#####.#####")
+		    
+		  else
+		    fmt_calculated = str(calculated)
+		    
+		  end if
+		  
+		  
+		  log.write_message("Invalid value for " + label + ", expecting <" + fmt_expected + "> got <" + fmt_calculated+">")
+		  
 		  return False
 		  
 		  

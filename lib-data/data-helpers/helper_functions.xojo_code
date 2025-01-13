@@ -81,15 +81,6 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function StandardSerieAllocatorFromClass(NewColumnName as string, NewColumnClassInfo as string) As clAbstractDataSerie
-		  
-		  return clDataType.CreateDataSerieFromClassName(NewColumnName, NewColumnClassInfo)
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function StandardSerieAllocatorFromType(NewColumnName as string, NewColumnType as string) As clAbstractDataSerie
 		  
 		  return clDataType.CreateDataSerieFromType(NewColumnName, NewColumnType)

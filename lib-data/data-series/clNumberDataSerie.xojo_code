@@ -3,13 +3,6 @@ Protected Class clNumberDataSerie
 Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
-		Sub ActiveRangeFormatting(the_below_label as string, the_above_label as string)
-		  self.formatter = new clRangeFormatting(the_below_label, the_above_label)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
 		  
 		  if the_item.type = variant.TypeDouble then
@@ -19,17 +12,18 @@ Inherits clAbstractDataSerie
 		  end if
 		  
 		  items.Append(Internal_conversion(the_item))
-		  
-		  
-		  // items.Append(the_item)
+		   
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub AddFormattingRange(low_bound as double, high_bound as double, label as string)
-		  if self.formatter = nil then Return
+		  if self.Formatter = nil then Return
 		  
-		  self.formatter.AddRange(low_bound, high_bound, label)
+		  if self.Formatter isa clRangeFormatting then
+		    clRangeFormatting(self.Formatter).AddRange(low_bound, high_bound, label)
+		    
+		  end if
 		  
 		  
 		End Sub
@@ -37,24 +31,27 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub AddFormattingRanges(low_bound as clNumberDataSerie, high_bound as clNumberDataSerie, label as clDataSerie)
-		  if self.formatter = nil then Return
+		  if self.Formatter = nil then Return
 		  
-		  for i as integer = 0 to label.LastIndex
-		    try
-		      self.formatter.AddRange( _
-		      low_bound.GetElementAsNumber(i) _
-		      , high_bound.GetElementAsNumber(i)_
-		      , label.GetElementAsString(i) _
-		      )
-		      
-		    catch OutOfBoundsException
-		      
-		    Catch
-		      
-		    end try
+		  if self.Formatter isa NumberFormatInteraface then
 		    
-		  next
-		  
+		    for i as integer = 0 to label.LastIndex
+		      try
+		        self.AddFormattingRange( _
+		        low_bound.GetElementAsNumber(i) _
+		        , high_bound.GetElementAsNumber(i)_
+		        , label.GetElementAsString(i) _
+		        )
+		        
+		      catch OutOfBoundsException
+		        
+		      Catch
+		        
+		      end try
+		      
+		    next
+		    
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -144,7 +141,8 @@ Inherits clAbstractDataSerie
 		  super.CloneInfo(target)
 		  
 		  target.DefaultValue = self.DefaultValue
-		  target.FormatStr = self.FormatStr
+		  target.Formatter = self.Formatter
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -183,7 +181,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h1
 		Protected Sub DropRangeFormatting()
-		  self.formatter = nil
+		  self.Formatter = nil
 		End Sub
 	#tag EndMethod
 
@@ -220,10 +218,14 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function GetElementAsString(the_element_index as integer) As string
 		  
+		  if self.Formatter = nil then 
+		    return self.GetElementAsNumber(the_element_index).ToString
+		    
+		  else
+		    return self.Formatter.FormatNumber(self.GetElement(the_element_index))
+		    
+		  end if
 		  
-		  if self.formatter = nil then return format(self.GetElement(the_element_index), FormatStr)
-		  
-		  return self.formatter.RangeFormat(self.GetElement(the_element_index))
 		End Function
 	#tag EndMethod
 
@@ -249,7 +251,11 @@ Inherits clAbstractDataSerie
 		  Var p as clDataSerieProperties = Super.GetProperties()
 		  
 		  p.DefaultValue = self.DefaultValue
-		  p.FormatStr = self.FormatStr
+		  
+		  if self.Formatter <> nil then
+		    p.FormatStr = self.Formatter.GetInfo
+		    
+		  end if
 		  
 		  return p
 		End Function
@@ -257,6 +263,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h21
 		Private Function Internal_conversion(v as Variant) As double
+		  
 		  return v.DoubleValue
 		  
 		End Function
@@ -531,6 +538,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetFormatter(the_formatter as NumberFormatInteraface)
+		  
+		  self.Formatter = the_Formatter
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  if items.LastIndex > the_length then
@@ -553,13 +568,24 @@ Inherits clAbstractDataSerie
 		  Super.SetProperties(properties)
 		  
 		  self.DefaultValue = properties.DefaultValue
-		  self.FormatStr = properties.FormatStr
+		  
+		  if properties.FormatStr.Length = 0 then
+		    
+		  elseif properties.FormatStr ="Range formatting" then
+		    
+		  else
+		    self.Formatter = new clNumberFormatting(properties.FormatStr)
+		    
+		  end if
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetWriteFormat(the_format as String)
-		  FormatStr = the_format
+		  
+		  self.Formatter = new clNumberFormatting(the_format)
+		  
 		End Sub
 	#tag EndMethod
 
@@ -610,11 +636,7 @@ Inherits clAbstractDataSerie
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected FormatStr As string = "###,##0.00"
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected formatter As clRangeFormatting
+		Protected Formatter As NumberFormatInteraface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
