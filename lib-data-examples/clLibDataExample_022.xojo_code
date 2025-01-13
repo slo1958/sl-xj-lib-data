@@ -60,7 +60,7 @@ Inherits clLibDataExample
 		  call table0.AddColumn(new clBooleanDataSerie("is_belgium", table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")))
 		  
 		  
-		  clBooleanDataSerie(table0.GetColumn("is_france")).SetFormat("≠ France","= France")
+		  clBooleanDataSerie(table0.GetColumn("is_france")).SetWriteFormat("≠ France","= France")
 		  
 		  return array(table0)
 		  

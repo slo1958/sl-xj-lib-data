@@ -93,7 +93,26 @@ Implements TableRowReaderInterface
 		  for i as integer = 0 to rs.LastColumnIndex
 		    var tmp_name as string = rs.ColumnAt(i).name
 		    
-		    tmp.value(tmp_name) = clAbstractDatabaseAccess.conv_db_type(rs.ColumnAt(i).Type)
+		    tmp.value(tmp_name) = clAbstractDatabaseAccess.ConvertXojoDBTypesToCommonTypes(rs.ColumnAt(i).Type)
+		    
+		  next
+		  
+		  return tmp
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetDBColumnTypes() As dictionary
+		  
+		  var tmp as new Dictionary
+		  
+		  if rs = nil then return nil
+		  
+		  for i as integer = 0 to rs.LastColumnIndex
+		    var tmp_name as string = rs.ColumnAt(i).name
+		    
+		    tmp.value(tmp_name) = clAbstractDatabaseAccess.ConvertXojoDBTypesToDBTypes(rs.ColumnAt(i).Type)
 		    
 		  next
 		  

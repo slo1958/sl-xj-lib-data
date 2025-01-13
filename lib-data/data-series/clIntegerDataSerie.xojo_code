@@ -367,12 +367,6 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetFormat(the_format as String)
-		  FormatStr = the_format
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  if items.LastIndex > the_length then
@@ -396,6 +390,12 @@ Inherits clAbstractDataSerie
 		  
 		  self.DefaultValue = properties.DefaultValue
 		  self.FormatStr = properties.FormatStr
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetWriteFormat(the_format as String)
+		  FormatStr = the_format
 		End Sub
 	#tag EndMethod
 

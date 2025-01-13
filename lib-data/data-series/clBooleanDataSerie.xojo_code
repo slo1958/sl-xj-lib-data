@@ -255,15 +255,6 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetFormat(False_label as string, True_Label as string)
-		  
-		  self.str_for_false = False_label
-		  self.str_for_true = True_Label
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  if items.LastIndex > the_length then
@@ -296,6 +287,15 @@ Inherits clAbstractDataSerie
 		  
 		  self.str_for_false = s(0)
 		  self.str_for_true = s(1)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetWriteFormat(False_label as string, True_Label as string)
+		  
+		  self.str_for_false = False_label
+		  self.str_for_true = True_Label
 		  
 		End Sub
 	#tag EndMethod

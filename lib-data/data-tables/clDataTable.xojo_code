@@ -1155,11 +1155,15 @@ Implements TableColumnReaderInterface,Iterable
 		  for each tmp_column_name as string in tmp_column_names
 		    var c as  clAbstractDataSerie
 		    
-		    if allocator = nil or tmp_column_types = nil then
+		    if allocator = nil and tmp_column_types = nil then
 		      c = new clDataSerie(tmp_column_name) 
 		      columns.Add(c)
 		      
-		    else
+		    elseif allocator = nil then
+		      c = clDataType.CreateDataSerieFromType(tmp_column_name, tmp_column_types.Lookup(tmp_column_name, clDataType.VariantValue))
+		      columns.Add(c)
+		      
+		    else 
 		      c = allocator.Invoke(tmp_column_name, tmp_column_types.value(tmp_column_name))
 		      if c <> nil then columns.Add(c)
 		      
@@ -1171,23 +1175,6 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  call internal_AddRows(NewTableSource, tmp_columns, "")
-		  
-		  // while not NewTableSource.EndOfTable
-		  // var tmp_row() as variant
-		  // 
-		  // tmp_row  = NewTableSource.NextRow
-		  // 
-		  // if tmp_row <> nil then
-		  // 
-		  // for i as integer=0 to tmp_column_names.LastIndex
-		  // columns(i).AddElement(tmp_row(i))
-		  // 
-		  // next 
-		  // 
-		  // end if
-		  // 
-		  // wend
-		  
 		  
 		  self.AdjustLength()
 		  
@@ -1301,8 +1288,13 @@ Implements TableColumnReaderInterface,Iterable
 		  for each tmp_column_name as string in tmp_column_names
 		    var c as  clAbstractDataSerie
 		    
-		    if allocator = nil or tmp_column_types = nil then
+		    if allocator = nil and tmp_column_types = nil then
 		      c  = new clDataSerie(tmp_column_name)
+		      columns.Add(c)
+		      
+		    elseif allocator = nil then
+		      var tmp_type as string =  tmp_column_types.Lookup(tmp_column_name, clDataType.VariantValue)
+		      c = clDataType.CreateDataSerieFromType(tmp_column_name, tmp_type)
 		      columns.Add(c)
 		      
 		    else
@@ -2059,24 +2051,37 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function GroupBy(grouping_dimensions() as string, measures() as pair) As clDataTable
 		  
+		  
 		  var GroupingColumns() as clAbstractDataSerie
 		  var MeasureColumns() as pair
 		  
 		  
-		  if grouping_dimensions.count = 0 and measures.count = 0 then return  nil
+		  for each name as string in grouping_dimensions
+		    if name.trim.Length > 0 then
+		      var c as clAbstractDataSerie = self.GetColumn(name)
+		      
+		      if c = nil then
+		        AddErrorMessage(CurrentMethodName," Cannot find column %0", name)
+		        
+		        
+		      else
+		        GroupingColumns.add(c)
+		        
+		      end if
+		    end if
+		  next
 		  
-		  if grouping_dimensions.count = 0 then
+		  if GroupingColumns.count = 0 and measures.count = 0 then return  nil
+		  
+		  if GroupingColumns.count = 0 then
 		    var r as new clDataRow
 		    
 		    for each p as pair in measures
-		      var col as clNumberDataSerie = clNumberDataSerie(self.GetColumn(p.Right))
+		      var col as clNumberDataSerie = clNumberDataSerie(self.GetColumn(p.Left))
 		      
-		      if col = nil then
-		        r.SetCell(p.Right + " no found",0)
+		      if col <> nil then
+		        r.SetCell(p.Right + " of " + p.Left, clGrouper.Aggregate(p.Right, col))
 		        
-		      else
-		        
-		        r.SetCell(p.Left + " of " + p.right, clGrouper.Aggregate(p.left, col))
 		      end if
 		      
 		    next
@@ -2086,13 +2091,6 @@ Implements TableColumnReaderInterface,Iterable
 		    return t
 		    
 		  end if
-		  
-		  
-		  
-		  for each name as string in grouping_dimensions
-		    GroupingColumns.add(self.GetColumn(name))
-		    
-		  next
 		  
 		  for each p as pair in measures
 		    var np as pair = self.GetColumn(p.Left) : p.Right
@@ -2107,6 +2105,55 @@ Implements TableColumnReaderInterface,Iterable
 		  return new clDataTable("Results", res)
 		  
 		  
+		  // 
+		  // var GroupingColumns() as clAbstractDataSerie
+		  // var MeasureColumns() as pair
+		  // 
+		  // 
+		  // if grouping_dimensions.count = 0 and measures.count = 0 then return  nil
+		  // 
+		  // if grouping_dimensions.count = 0 then
+		  // var r as new clDataRow
+		  // 
+		  // for each p as pair in measures
+		  // var col as clNumberDataSerie = clNumberDataSerie(self.GetColumn(p.Right))
+		  // 
+		  // if col = nil then
+		  // r.SetCell(p.Right + " no found",0)
+		  // 
+		  // else
+		  // 
+		  // r.SetCell(p.Left + " of " + p.right, clGrouper.Aggregate(p.left, col))
+		  // end if
+		  // 
+		  // next
+		  // 
+		  // var t as new clDataTable("Totals")
+		  // t.AddRow(r)
+		  // return t
+		  // 
+		  // end if
+		  // 
+		  // 
+		  // 
+		  // for each name as string in grouping_dimensions
+		  // GroupingColumns.add(self.GetColumn(name))
+		  // 
+		  // next
+		  // 
+		  // for each p as pair in measures
+		  // var np as pair = self.GetColumn(p.Left) : p.Right
+		  // MeasureColumns.Add(np)
+		  // 
+		  // next
+		  // 
+		  // var g as new clGrouper(GroupingColumns, MeasureColumns)
+		  // 
+		  // var res() as clAbstractDataSerie = g.Flattened()
+		  // 
+		  // return new clDataTable("Results", res)
+		  // 
+		  // 
 		  
 		End Function
 	#tag EndMethod
@@ -2221,13 +2268,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_AddRows(the_source as TableRowReaderInterface, tarGetColumns() as clAbstractDataSerie, source_name as string) As integer
+		Private Function internal_AddRows(the_source as TableRowReaderInterface, TargetColumns() as clAbstractDataSerie, source_name as string) As integer
 		  //
 		  //  Add rows from the received source
 		  //  
 		  //  Parameters:
 		  //  - the_source: source of data rows
-		  //  - targetColumns: list of colums to be populated, by position
+		  //  - TargetColumns: list of colums to be populated, by position
 		  //  - Source_name: used to populate a 'data source name' column, name of the column is in the 'LoadedDataSourceColumn' constant
 		  //
 		  //  Returns:
@@ -2242,6 +2289,13 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		  
+		  var numericColumns() as Boolean
+		  
+		  for each c as clAbstractDataSerie in TargetColumns
+		    numericColumns.Add(c isa clNumberDataSerie)
+		    
+		  next
+		  
 		  while not the_source.EndOfTable
 		    var tmp_row() as variant
 		    added_rows = added_rows + 1
@@ -2250,13 +2304,14 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    if tmp_row <> nil then 
 		      
-		      for i as integer=0 to tarGetColumns.LastIndex
-		        if tarGetColumns(i) <> nil then
+		      for i as integer=0 to TargetColumns.LastIndex
+		        if TargetColumns(i) <> nil then
 		          if i <= tmp_row.LastIndex then
-		            tarGetColumns(i).AddElement(tmp_row(i))
+		            
+		            TargetColumns(i).AddElement(tmp_row(i))
 		            
 		          else
-		            tarGetColumns(i).AddElement(tarGetColumns(i).GetDefaultValue)
+		            TargetColumns(i).AddElement(TargetColumns(i).GetDefaultValue)
 		            
 		          end if
 		        end if

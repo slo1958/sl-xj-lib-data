@@ -12,7 +12,16 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
 		  
-		  items.Append(the_item)
+		  if the_item.type = variant.TypeDouble then
+		    items.Append(the_item.DoubleValue)
+		    return 
+		    
+		  end if
+		  
+		  items.Append(Internal_conversion(the_item))
+		  
+		  
+		  // items.Append(the_item)
 		End Sub
 	#tag EndMethod
 
@@ -243,6 +252,13 @@ Inherits clAbstractDataSerie
 		  p.FormatStr = self.FormatStr
 		  
 		  return p
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function Internal_conversion(v as Variant) As double
+		  return v.DoubleValue
+		  
 		End Function
 	#tag EndMethod
 
@@ -492,7 +508,16 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub SetElement(the_element_index as integer, the_item as Variant)
 		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
-		    items(the_element_index) = the_item
+		    // items(the_element_index) = the_item
+		    
+		    if the_item.type = variant.TypeDouble then
+		      
+		      items(the_element_index) = the_item
+		      
+		    else
+		      items(the_element_index) =Internal_conversion(the_item)
+		      
+		    end if
 		    
 		  else
 		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
@@ -502,12 +527,6 @@ Inherits clAbstractDataSerie
 		  return
 		  
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetFormat(the_format as String)
-		  FormatStr = the_format
 		End Sub
 	#tag EndMethod
 
@@ -535,6 +554,12 @@ Inherits clAbstractDataSerie
 		  
 		  self.DefaultValue = properties.DefaultValue
 		  self.FormatStr = properties.FormatStr
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetWriteFormat(the_format as String)
+		  FormatStr = the_format
 		End Sub
 	#tag EndMethod
 

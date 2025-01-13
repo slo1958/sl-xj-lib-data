@@ -21,7 +21,80 @@ Protected Class clAbstractDatabaseAccess
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function conv_db_type(db_type as integer) As String
+		Shared Function ConvertXojoDBTypesToCommonTypes(db_type as integer) As String
+		  
+		  select  case db_type
+		  case 0
+		    return clDataType.UndefinedType // DBType_Null
+		    
+		  case 1
+		    return clDataType.IntegerValue // DBType_Byte
+		    
+		  case 2
+		    return clDataType.IntegerValue // DBType_SmallInt
+		    
+		  case 3
+		    return clDataType.IntegerValue // DBType_Integer
+		    
+		  case 4
+		    return  clDataType.StringValue // DBType_FixChar
+		    
+		  case 5 
+		    return clDataType.StringValue // DBType_VarChar
+		    
+		  case 6 
+		    return clDataType.NumberValue // DBType_Float
+		    
+		  case 7
+		    return clDataType.NumberValue // DBType_Double
+		    
+		  case 8
+		    return clDataType.DateValue // DBType_SQLDate
+		    
+		  case 9
+		    return  clDataType.DateTimeValue // DBType_SQLTime
+		    
+		  case 10
+		    return clDataType.DateTimeValue // DBType_TimeStamp
+		    
+		  case 11
+		    return clDataType.NumberValue // DBType_Currency
+		    
+		  case 12
+		    return clDataType.BooleanValue // DBType_Boolean
+		    
+		  case 13
+		    return  clDataType.NumberValue // DBType_Decimal
+		    
+		  case 14
+		    return clDataType.BooleanValue // DBType_Binary
+		    
+		  case 15
+		    return clDataType.UndefinedType  // "BLOP"
+		    
+		  case 16
+		    return clDataType.UndefinedType // "OBJECT"
+		    
+		  case 17
+		    return clDataType.UndefinedType // "MACPICT"
+		    
+		  case 18
+		    return clDataType.StringValue // DBType_String
+		    
+		  case 19
+		    return clDataType.IntegerValue // DBType_Int64
+		    
+		  case else
+		    return DBType_Unknown
+		    
+		  end Select
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function ConvertXojoDBTypesToDBTypes(db_type as integer) As String
 		  
 		  select  case db_type
 		  case 0

@@ -5,20 +5,26 @@ Protected Class clDataType
 		  
 		  select case serie_type
 		    
-		  case  "clStringDataSerie"
-		    return new clStringDataSerie(SerieName)
+		  case "clBooleanDataSerie"
+		    return new clBooleanDataSerie(SerieName)
 		    
-		  case "clNumerDataSerie" 
-		    return new clNumberDataSerie(SerieName)
-		    
-		  case "clIntegerDataSerie"
-		    return new clIntegerDataSerie(SerieName)
+		  case "clCompressedDataSerie"
+		    return new clCompressedDataSerie(SerieName)
 		    
 		  case "clDateDataSerie"
 		    return new clDateDataSerie(SerieName)
 		    
 		  case "clDateTimeDataSerie"
 		    return new clDateTimeDataSerie(SerieName)
+		    
+		  case "clIntegerDataSerie"
+		    return new clIntegerDataSerie(SerieName)
+		    
+		  case "clNumerDataSerie" 
+		    return new clNumberDataSerie(SerieName)
+		    
+		  case  "clStringDataSerie"
+		    return new clStringDataSerie(SerieName)
 		    
 		  else
 		    return new clDataSerie(SerieName)
@@ -34,17 +40,26 @@ Protected Class clDataType
 		  
 		  select case serie_type
 		    
-		  case  StringValue
-		    return new clStringDataSerie(SerieName)
+		  case BooleanValue
+		    return new clBooleanDataSerie(SerieName)
 		    
-		  case NumberValue 
-		    return new clNumberDataSerie(SerieName)
+		  case DateValue
+		    return new clDateDataSerie(SerieName)
+		    
+		  case DateTimeValue
+		    return new clDateTimeDataSerie(SerieName)
 		    
 		  case IntegerValue
 		    return new clIntegerDataSerie(SerieName)
 		    
-		  case DateValue
-		    return new clDateDataSerie(SerieName)
+		  case NumberValue 
+		    return new clNumberDataSerie(SerieName)
+		    
+		  case  StringValue
+		    return new clStringDataSerie(SerieName)
+		    
+		  case UndefinedType
+		    return new clDataSerie(SerieName)
 		    
 		  case VariantValue
 		    return new clDataSerie(SerieName)
@@ -59,7 +74,7 @@ Protected Class clDataType
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function TranslateFromSerieToClassName(serie as clAbstractDataSerie) As string
+		Shared Function GetClassName(serie as clAbstractDataSerie) As string
 		  
 		  Var t As Introspection.TypeInfo
 		  t = Introspection.GetType(serie)
@@ -77,27 +92,42 @@ Protected Class clDataType
 		  t = Introspection.GetType(serie)
 		  
 		  select case t.Name
-		  case "clStringDataSerie"
+		    
+		  case "clBooleanDataSerie"
+		    return BooleanValue
+		    
+		  case  "clCompressedDataSerie"
 		    return StringValue
 		    
-		  case "clNumberDataSerie"
-		    return NumberValue
+		  case "clDateDataSerie"
+		    return DateValue
+		    
+		  case "clDateTimeDataSerie"
+		    return DateTimeValue
 		    
 		  case "clIntegerDataSerie"
 		    return IntegerValue
 		    
-		  case "clDateDataSerie"
-		    return DateValue
+		  case "clNumberDataSerie"
+		    return NumberValue
+		    
+		  case "clStringDataSerie" 
+		    return StringValue
 		    
 		  else
 		    return VariantValue
 		    
 		  end select
-		  
-		  
+		   
 		End Function
 	#tag EndMethod
 
+
+	#tag Constant, Name = BooleanValue, Type = String, Dynamic = False, Default = \"Boolean", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = DateTimeValue, Type = String, Dynamic = False, Default = \"DateTime", Scope = Public
+	#tag EndConstant
 
 	#tag Constant, Name = DateValue, Type = String, Dynamic = False, Default = \"Date", Scope = Public
 	#tag EndConstant
@@ -109,6 +139,9 @@ Protected Class clDataType
 	#tag EndConstant
 
 	#tag Constant, Name = StringValue, Type = String, Dynamic = False, Default = \"string", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = UndefinedType, Type = String, Dynamic = False, Default = \"Undefined", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = VariantValue, Type = String, Dynamic = False, Default = \"Generic", Scope = Public
