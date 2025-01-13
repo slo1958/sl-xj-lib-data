@@ -1,5 +1,5 @@
 #tag Class
-Protected Class test_class_03
+Class test_class_03
 	#tag Property, Flags = &h0
 		aaa As Integer
 	#tag EndProperty

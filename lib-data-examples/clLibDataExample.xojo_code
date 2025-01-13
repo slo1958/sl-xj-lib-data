@@ -13,7 +13,7 @@ Implements support_tests.LogMessageInterface
 
 	#tag Method, Flags = &h0
 		Sub end_exec(method as string)
-		  write_message("Done with " + method)
+		  WriteMessage("Done with " + method)
 		End Sub
 	#tag EndMethod
 
@@ -79,12 +79,12 @@ Implements support_tests.LogMessageInterface
 
 	#tag Method, Flags = &h0
 		Sub start_exec(method as string)
-		  write_message("Starting " + method)
+		  WriteMessage("Starting " + method)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub write_message(msg as string)
+		Sub WriteMessage(msg as string)
 		  // Part of the support_tests.LogMessageInterface interface.
 		  
 		  System.DebugLog(msg)

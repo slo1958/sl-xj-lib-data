@@ -7,7 +7,7 @@ Protected Module support_tests
 		    var calculated_float as double = calculated.DoubleValue
 		    
 		    if abs(expected - calculated_float) < accepted_error_on_double then return true
-		    log.write_message("Invalid numeric value for " + label + ", expecting " + str(expected) + " got " + str(calculated) + " dif. " + str(abs(expected - calculated_float) ))
+		    log.WriteMessage("Invalid numeric value for " + label + ", expecting " + str(expected) + " got " + str(calculated) + " dif. " + str(abs(expected - calculated_float) ))
 		    return false
 		  end if
 		  
@@ -34,7 +34,7 @@ Protected Module support_tests
 		  end if
 		  
 		  
-		  log.write_message("Invalid value for " + label + ", expecting <" + fmt_expected + "> got <" + fmt_calculated+">")
+		  log.WriteMessage("Invalid value for " + label + ", expecting <" + fmt_expected + "> got <" + fmt_calculated+">")
 		  
 		  return False
 		  
@@ -69,7 +69,7 @@ Protected Module support_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub write_message(msg as string)
+		Sub WriteMessage(msg as string)
 		  system.DebugLog(msg)
 		End Sub
 	#tag EndMethod

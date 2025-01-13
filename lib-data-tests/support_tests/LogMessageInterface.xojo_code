@@ -13,7 +13,7 @@ Interface LogMessageInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub write_message(msg as string)
+		Sub WriteMessage(msg as string)
 		  
 		End Sub
 	#tag EndMethod

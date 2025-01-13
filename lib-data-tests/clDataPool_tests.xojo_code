@@ -9,7 +9,6 @@ Protected Module clDataPool_tests
 		    logwriter = new clWriteToSystemLog
 		  end if
 		  
-		  
 		  logwriter.start_exec(CurrentMethodName)
 		  
 		  test_001(logwriter)
@@ -29,7 +28,6 @@ Protected Module clDataPool_tests
 		  if log = nil then
 		    logwriter = new clWriteToSystemLog
 		  end if
-		  
 		  
 		  logwriter.start_exec(CurrentMethodName)
 		  
@@ -163,7 +161,6 @@ Protected Module clDataPool_tests
 		  next
 		  
 		  my_data_pool.table = table
-		  
 		  
 		  my_data_pool.table("res") = my_data_pool.table("table_1").Clone()
 		  

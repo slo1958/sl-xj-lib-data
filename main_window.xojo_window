@@ -263,37 +263,6 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
       Visible         =   True
       Width           =   107
    End
-   Begin DesktopButton pb_run_all_io_tests1
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Run IO tests"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "Verdana"
-      FontSize        =   11.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   153
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   7
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   334
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   80
-   End
 End
 #tag EndDesktopWindow
 
@@ -310,7 +279,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub end_exec(method as string)
-		  write_message("Done with " + method)
+		  WriteMessage("Done with " + method)
 		End Sub
 	#tag EndMethod
 
@@ -330,24 +299,24 @@ End
 
 	#tag Method, Flags = &h0
 		Sub start_exec(method as string)
-		  write_message("Starting " + method)
+		  WriteMessage("Starting " + method)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub writemessage(Paramarray vprint as string)
+		Sub WriteMessage(msg as string)
+		  // Part of the support_tests.LogMessageInterface interface.
+		  WriteMessageToListbox(msg)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub WriteMessageToListbox(Paramarray vprint as string)
 		  var tmp As String
 		  tmp = join(vprint, " ")
 		  Listbox1.AddRow tmp
 		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub write_message(msg as string)
-		  // Part of the support_tests.LogMessageInterface interface.
-		  writemessage(msg)
 		  
 		End Sub
 	#tag EndMethod
@@ -368,16 +337,13 @@ End
 		    
 		  end if
 		  
-		  
-		  
-		  
 		  clDataSerie_tests.tests(logwriter)
 		  writemessage "data series tests done"
 		  
 		  clDataTable_tests.tests(logwriter)
 		  writemessage "data table tests done"
 		  
-		  clDataTable_tests.test_examples(logwriter)
+		  clDataTable_tests.tests_examples(logwriter)
 		  writemessage "test run example (no validaton)"
 		  
 		  clDataPool_tests.tests(logwriter)
@@ -442,19 +408,6 @@ End
 		  
 		  fld_folder.Open
 		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
-#tag Events pb_run_all_io_tests1
-	#tag Event
-		Sub Pressed()
-		  writemessage "started"
-		  
-		  var logwriter as  LogMessageInterface = self
-		  
-		  
-		  
-		  clDataPool_tests.test_io_005(logwriter) 
 		End Sub
 	#tag EndEvent
 #tag EndEvents
