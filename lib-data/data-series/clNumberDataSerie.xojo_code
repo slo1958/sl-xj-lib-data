@@ -12,7 +12,7 @@ Inherits clAbstractDataSerie
 		  end if
 		  
 		  items.Append(Internal_conversion(the_item))
-		   
+		  
 		End Sub
 	#tag EndMethod
 
@@ -522,7 +522,7 @@ Inherits clAbstractDataSerie
 		      items(the_element_index) = the_item
 		      
 		    else
-		      items(the_element_index) =Internal_conversion(the_item)
+		      items(the_element_index) = Internal_conversion(the_item)
 		      
 		    end if
 		    

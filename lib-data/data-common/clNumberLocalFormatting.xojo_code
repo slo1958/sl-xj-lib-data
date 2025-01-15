@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clNumberFormatting
+Protected Class clNumberLocalFormatting
 Implements NumberFormatInteraface
 	#tag Method, Flags = &h0
 		Sub Constructor(formatStr as string)
@@ -13,7 +13,7 @@ Implements NumberFormatInteraface
 		Function FormatNumber(the_value as double) As string
 		  // Part of the NumberFormatInteraface interface.
 		  
-		  return Str(the_value, self.FormatString)
+		  return format(the_value, self.FormatString)
 		  
 		End Function
 	#tag EndMethod

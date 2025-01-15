@@ -81,7 +81,7 @@ Inherits clAbstractDataSerie
 		    Return items(the_element_index)
 		    
 		  Else
-		    var v As integer
+		    var v As variant
 		    Return v
 		    
 		  End If

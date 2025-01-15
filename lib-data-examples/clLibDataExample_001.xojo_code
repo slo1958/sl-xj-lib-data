@@ -9,6 +9,7 @@ Inherits clLibDataExample
 		  
 		  returnValue.Add("- create an empty datatable")
 		  returnValue.Add("- add three rows")
+		  returnValue.add("- show the impact of the parameters passed to AddRow()")
 		  
 		  return returnValue
 		  
@@ -41,7 +42,7 @@ Inherits clLibDataExample
 		  row.SetCell("aaa",1235)
 		  row.SetCell("bbb","abce")
 		  row.SetCell("ddd",987.654)
-		  table.AddRow(row)
+		  table.AddRow(row,True, True)
 		  
 		  row = New clDataRow
 		  row.SetCell("aaa",1234)
@@ -50,6 +51,9 @@ Inherits clLibDataExample
 		  row.SetCell("ddd",789.2)
 		  table.AddRow(row)
 		  
+		  clIntegerDataSerie(table.GetColumn("aaa")).SetWriteFormat("###,##0", False)
+		  
+		  //var c as new clStringDataSerie(table.GetColumn("aaa"))
 		  
 		  return array(table)
 		End Function

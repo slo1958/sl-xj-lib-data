@@ -142,9 +142,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetElementAsString(the_element_index as integer) As string
-		  
-		  return format(self.GetElement(the_element_index), FormatStr)
-		  
+		  if FormatWithLocale then
+		    return format(self.GetElement(the_element_index), FormatStr)
+		  else
+		    return Str(self.GetElement(the_element_index), FormatStr)
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -394,8 +396,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetWriteFormat(the_format as String)
+		Sub SetWriteFormat(the_format as String, UseLocal as Boolean)
 		  FormatStr = the_format
+		  FormatWithLocale = UseLocal
 		End Sub
 	#tag EndMethod
 
@@ -434,6 +437,10 @@ Inherits clAbstractDataSerie
 
 	#tag Property, Flags = &h1
 		Protected FormatStr As string = "###,##0"
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected FormatWithLocale As Boolean = False
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

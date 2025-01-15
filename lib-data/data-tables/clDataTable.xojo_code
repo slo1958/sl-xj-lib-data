@@ -225,7 +225,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var column_name As String = src_tmp_column.name
 		    
 		    var dst_tmp_column As  clAbstractDataSerie = Self.GetColumn(column_name)
-		     
+		    
 		    If dst_tmp_column <> Nil Then
 		      dst_tmp_column.AddSerie(src_tmp_column)
 		      
