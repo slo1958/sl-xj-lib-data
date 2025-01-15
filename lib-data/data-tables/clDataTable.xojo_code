@@ -589,9 +589,11 @@ Implements TableColumnReaderInterface,Iterable
 		  var tmp_columns() as clAbstractDataSerie
 		  var columns_type as Dictionary = NewRowsSource.GetColumnTypes
 		  
+		  if columns_type = nil then columns_type = new Dictionary
+		  
 		  for each column_name as string in NewRowsSource.GetColumnNames
 		    
-		    var column_type as string = columns_type.value(column_name)
+		    var column_type as string = columns_type.lookup(column_name,  clDataType.VariantValue)
 		    var tmp_column as clAbstractDataSerie = self.GetColumn(column_name)
 		    
 		    var v as variant
@@ -641,9 +643,11 @@ Implements TableColumnReaderInterface,Iterable
 		  var tmp_columns() as clAbstractDataSerie
 		  var columns_type as Dictionary = NewRowsSource.GetColumnTypes
 		  
+		  if columns_type = nil then columns_type = new Dictionary
+		  
 		  for each source_column_name as string in NewRowsSource.GetColumnNames
 		    var tmp_col as clAbstractDataSerie = nil
-		    var column_type as string = columns_type.value(source_column_name)
+		    var column_type as string = columns_type.lookup(source_column_name,  clDataType.VariantValue)
 		    
 		    if FieldMapping.HasKey(source_column_name) then
 		      var TargetColumn_name as string = FieldMapping.value(source_column_name)
