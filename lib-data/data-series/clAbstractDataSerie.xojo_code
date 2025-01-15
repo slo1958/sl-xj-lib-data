@@ -759,6 +759,30 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetElements() As Variant()
+		  //  
+		  //  Returns all the elements of the data serie as variant
+		  //
+		  //  Parameters
+		  //  - none
+		  //  
+		  //  Returns:
+		  //  - an array of variant with all elements
+		  //
+		  
+		  var v() as variant
+		  for i as integer = 0 to self.LastIndex
+		    v.Add(self.GetElement(i))
+		    
+		  next
+		  
+		  return v
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetIterator() As Xojo.Core.Iterator
 		  // Part of the Xojo.Core.Iterable interface.
 		  

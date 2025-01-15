@@ -31,27 +31,35 @@ Inherits clLibDataExample
 		  
 		  var table As New clDataTable("mytable")
 		  
-		  
+		  // when this new row is added, new columns will be created with proper data type:
+		  // aaa will be a clIntegerDataSerie
+		  // bbb will be a clStringDataSerie
+		  // ccc will be a clNumberDataSerie
 		  row = New clDataRow
 		  row.SetCell("aaa",1234)
 		  row.SetCell("bbb","abcd")
 		  row.SetCell("ccc",123.4)
 		  table.AddRow(row)
 		  
+		  // when this new row is added, a new column will be added for ddd, but the type is forced to be clDataSerie
 		  row = New clDataRow
 		  row.SetCell("aaa",1235)
 		  row.SetCell("bbb","abce")
 		  row.SetCell("ddd",987.654)
-		  table.AddRow(row,True, True)
+		  table.AddRow(row, clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		  
+		  // when this new row is added, the value for eee is ignored, no new column are be added for eee
 		  row = New clDataRow
 		  row.SetCell("aaa",1234)
 		  row.SetCell("bbb","abcd")
 		  row.SetCell("ccc",456.1)
 		  row.SetCell("ddd",789.2)
-		  table.AddRow(row)
+		  row.SetCell("eee", 123)
+		  table.AddRow(row,  clDataTable.AddRowMode.ErrorOnNewColumn)
 		  
-		  clIntegerDataSerie(table.GetColumn("aaa")).SetWriteFormat("###,##0", False)
+		  call table.AddColumn(new clDataSerie("ccc copy", Table.GetColumn("ccc").GetElements))
+		  
+		  clIntegerDataSerie(table.GetColumn("aaa")).SetWriteFormat("-###,##0", False)
 		  
 		  //var c as new clStringDataSerie(table.GetColumn("aaa"))
 		  

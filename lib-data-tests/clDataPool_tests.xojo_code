@@ -61,7 +61,7 @@ Protected Module clDataPool_tests
 		    rtst.SetCell("bbb","abcd")
 		    rtst.SetCell("ccc",123.456)
 		    
-		    table.AddRow(rtst, True, True)
+		    table.AddRow(rtst, clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		    
 		  next
 		  
@@ -75,7 +75,7 @@ Protected Module clDataPool_tests
 		    rtst.SetCell("bbb","xyz")
 		    rtst.SetCell("ddd",567.89)
 		    
-		    table.AddRow(rtst, True, True)
+		    table.AddRow(rtst, clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		    
 		  next
 		  
@@ -170,7 +170,7 @@ Protected Module clDataPool_tests
 		  var col2 as clDataSerie
 		  var col3 as clDataSerie
 		  var col4 as clDataSerie
-		   
+		  
 		  
 		  col1 = new clDataSerie("aaa", 1000,2000,3000,4000)
 		  col2 = new clDataSerie("bbb","abcd","abcd","abcd","abcd")

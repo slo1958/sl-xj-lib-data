@@ -436,7 +436,7 @@ Inherits clAbstractDataSerie
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected FormatStr As string = "###,##0"
+		Protected FormatStr As string = "-###,##0"
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

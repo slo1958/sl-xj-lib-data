@@ -288,13 +288,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRow(NewRow as clDataRow, CreateColumnsFlag as boolean = True, ImposeVariantType as boolean = False)
+		Sub AddRow(NewRow as clDataRow, Mode as AddRowMode = AddRowMode.CreateNewColumn)
 		  //  
 		  //  Add  a data row to the table
 		  //  
 		  //  Parameters:
-		  //  - the data row
-		  //  - flag allow the creation of missing columns
+		  //  - NewRow: the data row
+		  // -  Mode: handling of missing columns in table
 		  //  
 		  //  Returns:
 		  //  (nothing)
@@ -307,7 +307,7 @@ Implements TableColumnReaderInterface,Iterable
 		  else
 		    var tmp_column as clAbstractDataSerie = self.GetColumn(RowNameColumn)
 		    
-		    If tmp_column = Nil And CreateColumnsFlag Then
+		    If tmp_column = Nil And (Mode = AddRowMode.CreateNewColumn or Mode = AddRowMode.CreateNewColumnAsVariant) Then
 		      tmp_column = AddColumn(RowNameColumn)
 		      
 		    End If
@@ -324,20 +324,11 @@ Implements TableColumnReaderInterface,Iterable
 		    var tmp_column As clAbstractDataSerie = Self.GetColumn(column)
 		    var tmp_item As variant = NewRow.GetCell(column)
 		    
-		    If tmp_column = Nil And CreateColumnsFlag Then
-		      if ImposeVariantType then
-		        tmp_column = AddColumn(column)
-		        
-		      else
-		        tmp_column = AddColumn(clDataType.CreateDataSerieFromVariantType(column, tmp_item))
-		        
-		      end if
-		    End If
+		    if tmp_column = nil then tmp_column = internal_HandleNewColumn(column, "", tmp_item, mode)
+		     
+		    if tmp_column <> nil then call AddColumn(tmp_column)
 		    
-		    If tmp_column = Nil Then
-		      Raise New clDataException("Adding row with unexpected column " + column)
-		      
-		    Else
+		    If tmp_column <> Nil Then 
 		      tmp_column.AddElement(tmp_item)
 		      
 		    End If
@@ -356,12 +347,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddRow(NewCellsValue as Dictionary)
+		Sub AddRow(NewCellsValue as Dictionary, Mode as AddRowMode = AddRowMode.CreateNewColumn)
 		  //
-		  //  Add  a data row to the table using the passed dictionary. Does not create new columns.
+		  //  Add  a data row to the table using the passed dictionary 
 		  //  
 		  //  Parameters:
 		  //  - dictionary with key(field name) / value (field value)
+		  // -  Mode: handling of missing columns in table
 		  //  
 		  //  Returns:
 		  //  (nothing)
@@ -369,18 +361,12 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  if NewCellsValue = nil then return
 		  
-		  for each column as clAbstractDataSerie in self.columns
-		    if NewCellsValue.HasKey(column.name) then
-		      column.AddElement(NewCellsValue.value(column.name))
-		      
-		    else
-		      column.AddElement(column.GetDefaultValue())
-		      
-		    end if
-		    
-		  next
+		  var tempRow as new clDataRow(NewCellsValue)
 		  
-		  Self.row_index.AddElement("")
+		  
+		  // Do not add missing columns
+		  self.AddRow(tempRow, mode)
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -436,7 +422,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Sub AddRow(firstEntry as Pair, ParamArray entries as Pair)
 		  //
-		  //  Add  a data row to the table using the passed list of pairs. Does not create new columns.
+		  //  Add  a data row to the table using the passed list of pairs. Add an error for new columns
 		  //  
 		  //  Parameters:
 		  //  - first (mandatory) pair
@@ -456,19 +442,20 @@ Implements TableColumnReaderInterface,Iterable
 		  var tempRow as new clDataRow(firstEntry, entries)
 		  
 		  // Do not add missing columns
-		  self.AddRow(tempRow, false)
+		  self.AddRow(tempRow, AddRowMode.ErrorOnNewColumn)
+		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub AddRow(NewCellsValue() as string)
-		  
+		  //
 		  //  Add  a data row to the table
 		  //  
 		  //  Parameters:
 		  //  - the data row (values as string), it is assumed the values are ordered according to the current column order in the table
-		  //  //  
+		  //  
 		  //  Returns:
 		  //  (nothing)
 		  //  
@@ -484,6 +471,7 @@ Implements TableColumnReaderInterface,Iterable
 		  Next
 		  
 		  Self.row_index.AddElement("")
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -516,19 +504,19 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddRows(NewRowsSource() as clDataRow, CreateColumnsFlag as boolean = True) As integer
+		Function AddRows(NewRowsSource() as clDataRow, mode as AddRowMode = AddRowMode.CreateNewColumn) As integer
 		  //  
 		  //  Add  data rows to the table
 		  //  
 		  //  Parameters:
 		  //  - the data rows as an array
-		  //  - flag allow the creation of missing columns
+		  // -  Mode: handling of missing columns in table
 		  //  
 		  //  Returns:
 		  //  - number of rows added
 		  //  
 		  for each row as clDataRow in NewRowsSource
-		    self.AddRow(row, CreateColumnsFlag)
+		    self.AddRow(row, mode)
 		    
 		  next
 		  
@@ -537,18 +525,19 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddRows(NewRowsSource() as Dictionary) As integer
+		Function AddRows(NewRowsSource() as Dictionary, mode as AddRowMode = AddRowMode.CreateNewColumn) As integer
 		  //  
 		  //  Add  data rows to the table
 		  //  
 		  //  Parameters:
 		  //  - the data rows as an array of dictionaries
+		  // -  Mode: handling of missing columns in table
 		  //
 		  //  Returns:
 		  //  - number of rows added
 		  //  
 		  for each dict as Dictionary in NewRowsSource
-		    self.AddRow(dict)
+		    self.AddRow(dict, mode)
 		    
 		  next
 		  
@@ -568,7 +557,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - number of rows added
 		  //  
 		  for each obj as object in source_objects
-		    self.AddRow(obj)
+		    self.AddRow(new clDataRow(obj))
 		    
 		  next
 		  
@@ -577,7 +566,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddRows(NewRowsSource as TableRowReaderInterface, CreateMissingColumns as boolean = True) As integer
+		Function AddRows(NewRowsSource as TableRowReaderInterface, Mode as AddRowMode = AddRowMode.CreateNewColumn) As integer
 		  //  
 		  //  Add  the data row from column source. New columns may be added to the current table
 		  //  
@@ -589,32 +578,33 @@ Implements TableColumnReaderInterface,Iterable
 		  //  a new column is created to store the values for D 
 		  
 		  //  Parameters:
-		  //  - the source , providing data column by column
-		  //  - flag allow the creation of missing columns
-		  //  
+		  //  - NewRowsSource:  the source , providing data column by column
+		  // -  Mode: handling of missing columns in table
+		  //
 		  //  Returns:
 		  //  - number of rows added
 		  //  
 		  var length_before as integer = self.RowCount
 		  
 		  var tmp_columns() as clAbstractDataSerie
+		  var columns_type as Dictionary = NewRowsSource.GetColumnTypes
 		  
 		  for each column_name as string in NewRowsSource.GetColumnNames
-		    var tmp_col as clAbstractDataSerie = self.GetColumn(column_name)
 		    
-		    if tmp_col = nil then
-		      if CreateMissingColumns then
-		        tmp_col = new clDataSerie(column_name)
-		        tmp_col.SetLength(length_before)
-		        call self.AddColumn(tmp_col)
-		        
-		      else
-		        AddErrorMessage(CurrentMethodName, ErrMsgIgnoringColumn, column_name)
-		        
-		      end if 
+		    var column_type as string = columns_type.value(column_name)
+		    var tmp_column as clAbstractDataSerie = self.GetColumn(column_name)
+		    
+		    var v as variant
+		    
+		    if tmp_column = nil then tmp_column = internal_HandleNewColumn(column_name, column_type, v, mode)
+		     
+		    if tmp_column <> nil then
+		      tmp_column.SetLength(length_before)
+		      call self.AddColumn(tmp_column)
+		      
 		    end if
 		    
-		    tmp_columns.add(tmp_col)
+		    tmp_columns.add(tmp_column)
 		    
 		  next
 		  
@@ -626,7 +616,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddRows(NewRowsSource as TableRowReaderInterface, FieldMapping as dictionary) As integer
+		Function AddRows(NewRowsSource as TableRowReaderInterface, FieldMapping as dictionary, Mode as AddRowMode = AddRowMode.CreateNewColumn) As integer
 		  //  
 		  //  Add  the data row from column source. New columns may be added to the current table
 		  //  
@@ -639,8 +629,9 @@ Implements TableColumnReaderInterface,Iterable
 		  //  a new column D is created to store the values from Z
 		  
 		  //  Parameters:
-		  //  - the source , providing data column by column
-		  //  - mapping dictionary, key is field name in the_source, value is the field name in the clDataTable
+		  //  - NewRowsSource:  the source , providing data column by column
+		  //  - FieldMapping: mapping dictionary, key is field name in the_source, value is the field name in the clDataTable
+		  // -  Mode: handling of missing columns in table
 		  //  
 		  //  Returns:
 		  //  - number of rows added
@@ -648,17 +639,21 @@ Implements TableColumnReaderInterface,Iterable
 		  var length_before as integer = self.RowCount
 		  
 		  var tmp_columns() as clAbstractDataSerie
+		  var columns_type as Dictionary = NewRowsSource.GetColumnTypes
 		  
 		  for each source_column_name as string in NewRowsSource.GetColumnNames
 		    var tmp_col as clAbstractDataSerie = nil
+		    var column_type as string = columns_type.value(source_column_name)
 		    
 		    if FieldMapping.HasKey(source_column_name) then
-		      var tarGetColumn_name as string = FieldMapping.value(source_column_name)
+		      var TargetColumn_name as string = FieldMapping.value(source_column_name)
+		      var v as variant
 		      
-		      tmp_col = self.GetColumn(tarGetColumn_name)
+		      tmp_col = self.GetColumn(TargetColumn_name)
 		      
-		      if tmp_col = nil then
-		        tmp_col = new clDataSerie(tarGetColumn_name)
+		      if tmp_col = nil then tmp_col = internal_HandleNewColumn(TargetColumn_name, column_type, v, mode)
+		      
+		      if tmp_col <> nil then
 		        tmp_col.SetLength(length_before)
 		        call self.AddColumn(tmp_col)
 		        
@@ -668,6 +663,7 @@ Implements TableColumnReaderInterface,Iterable
 		    tmp_columns.add(tmp_col)
 		    
 		  next
+		  
 		  
 		  return self.internal_AddRows(NewRowsSource, tmp_columns, NewRowsSource.name)
 		  
@@ -1176,7 +1172,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var tmp_column_names() as string = NewTableSource.GetColumnNames
 		  var tmp_column_types as Dictionary = NewTableSource.GetColumnTypes
 		  
-		  var tmp_columns() as clAbstractDataSerie = internal_MakeColumns (tmp_column_names, tmp_column_types, allocator)
+		  var tmp_columns() as clAbstractDataSerie = internal_CreateColumnsWithAllocator (tmp_column_names, tmp_column_types, allocator)
 		  
 		  
 		  call internal_AddRows(NewTableSource, tmp_columns, "")
@@ -1287,7 +1283,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var tmp_column_names() as string = NewTableSource.GetColumnNames
 		  var tmp_column_types as Dictionary = NewTableSource.GetColumnTypes
 		  
-		  var tmp_columns() as clAbstractDataSerie = internal_MakeColumns (tmp_column_names, tmp_column_types, allocator)
+		  var tmp_columns() as clAbstractDataSerie = internal_CreateColumnsWithAllocator (tmp_column_names, tmp_column_types, allocator)
 		  
 		  call self.internal_AddRows(NewTableSource, tmp_columns, "")
 		  
@@ -2312,13 +2308,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_join(the_table as clDataTable, own_keys() as string, alt_keys() as string) As Boolean
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Function internal_MakeColumns(ColumnNames() as string, ColumnTypes as Dictionary, allocator as column_allocator = nil) As clAbstractDataSerie()
+		Private Function internal_CreateColumnsWithAllocator(ColumnNames() as string, ColumnTypes as Dictionary, allocator as column_allocator = nil) As clAbstractDataSerie()
 		  
 		  
 		  var tmp_column_names() as string = ColumnNames
@@ -2348,6 +2338,48 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  return tmp_columns
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function internal_HandleNewColumn(ColumnName as string, ColumnType as string, v as variant, Mode as AddRowMode) As clAbstractDataSerie
+		  
+		  var tmp_column as clAbstractDataSerie
+		  
+		  select case Mode
+		  case AddRowMode.CreateNewColumn 
+		    if ColumnType = "" then
+		      tmp_column = clDataType.CreateDataSerieFromVariantType(ColumnName, v)
+		      
+		    else
+		      tmp_column = clDataType.CreateDataSerieFromType(ColumnName, ColumnType)
+		      
+		    end if
+		    
+		  case  AddRowMode.CreateNewColumnAsVariant  
+		    tmp_column =new clDataSerie(ColumnName)
+		    
+		  case AddRowMode.IgnoreNewColumn
+		    
+		  case AddRowMode.ErrorOnNewColumn
+		    self.AddErrorMessage(CurrentMethodName, ErrMsgIgnoringColumn, ColumnName)
+		    
+		  case AddRowMode.ExceptionOnNewColumn
+		    Raise New clDataException("Adding row with unexpected column " + ColumnName)
+		    
+		  case else
+		    Raise New clDataException("Unexpected value for AddRowMode " + str(mode))
+		    
+		    
+		  end select
+		  
+		  return tmp_column
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function internal_join(the_table as clDataTable, own_keys() as string, alt_keys() as string) As Boolean
+		  
 		End Function
 	#tag EndMethod
 
@@ -2763,6 +2795,12 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Untitled()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub UpdateRowAt(RowIndex as integer, NewRow as clDataRow)
 		  
 		  var d as Dictionary = NewRow.GetCells
@@ -3020,6 +3058,15 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Constant, Name = StructureTypeColumn, Type = String, Dynamic = False, Default = \"type", Scope = Public
 	#tag EndConstant
+
+
+	#tag Enum, Name = AddRowMode, Flags = &h0
+		IgnoreNewColumn
+		  ErrorOnNewColumn
+		  ExceptionOnNewColumn
+		  CreateNewColumn
+		CreateNewColumnAsVariant
+	#tag EndEnum
 
 
 	#tag ViewBehavior

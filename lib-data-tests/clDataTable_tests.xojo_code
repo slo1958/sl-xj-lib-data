@@ -355,7 +355,7 @@ Protected Module clDataTable_tests
 		  r1.SetCell("troisieme",True)
 		  
 		  // allow creation of new columns, impose variant type
-		  t2.AddRow(r1, True, True)
+		  t2.AddRow(r1, clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		  
 		  
 		  var col1 as new clDataSerie("premier","aaa","bbb","ccc",nil,"dddd")
@@ -471,7 +471,7 @@ Protected Module clDataTable_tests
 		    rtst.SetCell("bbb","abcd")
 		    rtst.SetCell("ccc",123.456)
 		    
-		    my_table1.AddRow(rtst, True, True)
+		    my_table1.AddRow(rtst, clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		    
 		  next
 		  
@@ -482,7 +482,7 @@ Protected Module clDataTable_tests
 		    rtst.SetCell("bbb","xyz")
 		    rtst.SetCell("ddd",567.89)
 		    
-		    my_table2.AddRow(rtst, True, True)
+		    my_table2.AddRow(rtst, clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		    
 		  next
 		  
@@ -810,7 +810,7 @@ Protected Module clDataTable_tests
 		  d.bbb =  "abcd"
 		  d.ccc =  "123.456"
 		  
-		  my_table.AddRow( New clDataRow(d), True, True)
+		  my_table.AddRow( New clDataRow(d), clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		  
 		  
 		  var c as new test_class_01
@@ -818,7 +818,7 @@ Protected Module clDataTable_tests
 		  c.bbb = "abce"
 		  c.ddd = 987.654
 		  
-		  my_table.AddRow(New clDataRow(c), True, True)
+		  my_table.AddRow(New clDataRow(c), clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		  
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
@@ -1129,7 +1129,7 @@ Protected Module clDataTable_tests
 		  var rs as new clListOfDictionariesReader(s, "actual")
 		  
 		  var t_actual  as new clDataTable("actual")
-		  call t_actual.AddRows(rs, true)
+		  call t_actual.AddRows(rs, clDataTable.AddRowMode.CreateNewColumn)
 		  
 		  
 		  call check_table(log,"list of dicts", t_expected, t_actual)
@@ -1179,7 +1179,7 @@ Protected Module clDataTable_tests
 		  var rs as new clListOfDictionariesReader(s, "actual", StringArray("field_a","field_c","field_d"))
 		  
 		  var t_actual  as new clDataTable("actual")
-		  call t_actual.AddRows(rs, true)
+		  call t_actual.AddRows(rs, clDataTable.AddRowMode.CreateNewColumn)
 		  
 		  
 		  call check_table(log,"list of dicts", t_expected, t_actual)
@@ -1202,7 +1202,7 @@ Protected Module clDataTable_tests
 		  d.bbb =  "abcd"
 		  d.ccc =  "123.456"
 		  
-		  my_table.AddRow( New clDataRow(d), false)
+		  my_table.AddRow( New clDataRow(d), clDataTable.AddRowMode.IgnoreNewColumn)
 		  
 		  var c as new test_class_01
 		  c.aaa = 1235
@@ -1210,12 +1210,12 @@ Protected Module clDataTable_tests
 		  c.ddd = 987.654
 		  
 		  
-		  my_table.AddRow(New clDataRow(c), True)
+		  my_table.AddRow(New clDataRow(c),  clDataTable.AddRowMode.CreateNewColumn)
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
 		  var col3 as new clDataSerie("ccc", 123.456, 0)
-		  // col 'ddd' will be created as a clNumberDataSerie (since 'ImposeVariantType' is false)
+		  // col 'ddd' will be created as a clNumberDataSerie 
 		  var col4 as new clDataSerie("ddd", 0, 987.654)
 		  
 		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
@@ -1239,14 +1239,14 @@ Protected Module clDataTable_tests
 		  r1.bbb =  "abcd"
 		  r1.ccc =  "123.456"
 		  
-		  my_table_1.AddRow( New clDataRow(r1), False)
+		  my_table_1.AddRow( New clDataRow(r1), clDataTable.AddRowMode.IgnoreNewColumn)
 		  
 		  var r2 as new test_class_02
 		  r2.aaa = 1235
 		  r2.bbb = "abce"
 		  r2.ccc = "987.654"
 		  
-		  my_table_1.AddRow(New clDataRow(r2), False)
+		  my_table_1.AddRow(New clDataRow(r2),  clDataTable.AddRowMode.IgnoreNewColumn)
 		  
 		  var res() as test_class_03
 		  
@@ -1265,7 +1265,7 @@ Protected Module clDataTable_tests
 		  var my_table_2 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb")))
 		  
 		  for each c as test_class_03 in res
-		    my_table_2.AddRow(new clDataRow(c), False)
+		    my_table_2.AddRow(new clDataRow(c),  clDataTable.AddRowMode.IgnoreNewColumn)
 		    
 		  next
 		  
@@ -1295,14 +1295,14 @@ Protected Module clDataTable_tests
 		  r1.bbb =  "abcd"
 		  r1.ccc =  "123.456"
 		  
-		  my_table_0.AddRow( New clDataRow(r1), True)
+		  my_table_0.AddRow( New clDataRow(r1),  clDataTable.AddRowMode.CreateNewColumn)
 		  
 		  var r2 as new test_class_02
 		  r2.aaa = 1235
 		  r2.bbb = "abce"
 		  r2.ccc = "987.654"
 		  
-		  my_table_0.AddRow(New clDataRow(r2), False)
+		  my_table_0.AddRow(New clDataRow(r2),  clDataTable.AddRowMode.IgnoreNewColumn)
 		  
 		  
 		  var res_1() as test_class_02
@@ -1987,6 +1987,7 @@ Protected Module clDataTable_tests
 		  dct_mapping_file3.value("Trois") = "Gamma"
 		  dct_mapping_file3.value("Quatre") = "Delta"
 		  dct_mapping_file3.value("Extra") = "New_col"
+		  
 		  
 		  call my_table.AddRows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
