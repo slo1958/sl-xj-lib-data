@@ -33,7 +33,7 @@ Protected Class clDataType
 		    return VariantValue
 		    
 		  end select
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -69,7 +69,7 @@ Protected Class clDataType
 		    return VariantValue
 		    
 		  end select
-		   
+		  
 		End Function
 	#tag EndMethod
 

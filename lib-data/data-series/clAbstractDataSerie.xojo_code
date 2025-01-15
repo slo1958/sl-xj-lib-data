@@ -557,7 +557,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function FilterColumnByRows(the_row_index as integer, the_RowCount as integer, the_column_name as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
+		Delegate Function FilterColumnByRows(the_row_index as integer, the_RowCount as integer, pColumnName as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0

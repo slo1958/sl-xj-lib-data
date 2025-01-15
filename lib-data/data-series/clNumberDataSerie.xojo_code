@@ -582,10 +582,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetWriteFormat(the_format as String)
-		  
-		  self.Formatter = new clNumberFormatting(the_format)
-		  
+		Sub SetWriteFormat(the_format as String, UseLocal as Boolean = False)
+		  if UseLocal then
+		    self.Formatter = new clNumberLocalFormatting(the_format)
+		    
+		  else
+		    self.Formatter = new clNumberFormatting(the_format)
+		    
+		  end if
 		End Sub
 	#tag EndMethod
 

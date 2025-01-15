@@ -119,7 +119,7 @@ Implements Iterable
 	#tag Method, Flags = &h0
 		Sub Constructor(firstEntry as Pair, entries() as Pair)
 		  //  
-		  //  Create a row based on a list of pairs
+		  //  Create a row based on a list of pairs of field name and field value
 		  //   
 		  //  
 		  //  Parameters:
@@ -155,7 +155,7 @@ Implements Iterable
 	#tag Method, Flags = &h0
 		Sub Constructor(firstEntry as pair, ParamArray entries as Pair)
 		  //  
-		  //  Create a row based on a list of pairs
+		  //  Create a row based on a list of pairs of field name and field value
 		  //  
 		  //  Parameters:
 		  //  - firstEntry: first (mandatory) pair
@@ -188,7 +188,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_row_label as string = "")
+		Sub Constructor(pRowLabel as string = "")
 		  //  
 		  //  Create a row based object
 		  //  
@@ -203,7 +203,7 @@ Implements Iterable
 		  
 		  my_storage = New Dictionary
 		  mutable_flag = False
-		  my_label = the_row_label
+		  my_label = pRowLabel
 		End Sub
 	#tag EndMethod
 

@@ -10,6 +10,7 @@ Inherits clLibDataExample
 		  returnValue.Add("- create an empty datatable")
 		  returnValue.Add("- add three rows")
 		  returnValue.add("- show the impact of the parameters passed to AddRow()")
+		  returnValue.add("- show impact of different format, extracted as clStringDataSerie")
 		  
 		  return returnValue
 		  
@@ -38,30 +39,38 @@ Inherits clLibDataExample
 		  row = New clDataRow
 		  row.SetCell("aaa",1234)
 		  row.SetCell("bbb","abcd")
-		  row.SetCell("ccc",123.4)
+		  row.SetCell("ccc",-1234.457)
 		  table.AddRow(row)
 		  
 		  // when this new row is added, a new column will be added for ddd, but the type is forced to be clDataSerie
 		  row = New clDataRow
 		  row.SetCell("aaa",1235)
 		  row.SetCell("bbb","abce")
-		  row.SetCell("ddd",987.654)
+		  row.SetCell("ddd",23987.654)
 		  table.AddRow(row, clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		  
 		  // when this new row is added, the value for eee is ignored, no new column are be added for eee
 		  row = New clDataRow
 		  row.SetCell("aaa",1234)
 		  row.SetCell("bbb","abcd")
-		  row.SetCell("ccc",456.1)
+		  row.SetCell("ccc",32456.1)
 		  row.SetCell("ddd",789.2)
 		  row.SetCell("eee", 123)
 		  table.AddRow(row,  clDataTable.AddRowMode.ErrorOnNewColumn)
 		  
 		  call table.AddColumn(new clDataSerie("ccc copy", Table.GetColumn("ccc").GetElements))
 		  
-		  clIntegerDataSerie(table.GetColumn("aaa")).SetWriteFormat("-###,##0", False)
+		  clNumberDataSerie(table.GetColumn("ccc")).SetWriteFormat("-###,##0.000", False)
 		  
-		  //var c as new clStringDataSerie(table.GetColumn("aaa"))
+		  call table.AddColumn(table.GetColumn("aaa").AsString())
+		  call table.AddColumn(table.GetColumn("ccc").AsString()) 
+		  
+		  clNumberDataSerie(table.GetColumn("ccc")).SetWriteFormat("-#####0.#", False)
+		  call table.AddColumn(table.GetColumn("ccc").AsString("ccc second format")) 
+		  
+		  clNumberDataSerie(table.GetColumn("ccc")).SetWriteFormat("-###,##0.0#", True)
+		  call table.AddColumn(table.GetColumn("ccc").AsString("ccc third format")) 
+		  
 		  
 		  return array(table)
 		End Function

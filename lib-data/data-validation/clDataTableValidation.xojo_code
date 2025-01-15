@@ -84,14 +84,14 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumn(the_column_name as String, include_alias as boolean = False) As clAbstractDataSerie
+		Function GetColumn(pColumnName as String, include_alias as boolean = False) As clAbstractDataSerie
 		  // Part of the TableColumnReaderInterface interface.
 		  
-		  var output as new clDataSerie(the_column_name)
+		  var output as new clDataSerie(pColumnName)
 		  
 		  for each column as clDataSerieValidation in ColumnsValidation
 		    
-		    select case the_column_name
+		    select case pColumnName
 		    case  field_name_input_column 
 		      output.AddElement(column.name)
 		      

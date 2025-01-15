@@ -2,18 +2,20 @@
 Protected Class clJSONWriter
 Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
-		Sub AddRow(row_data as Dictionary)
-		  
-		  self.Rows.Add(row_data)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub AddRow(row_data() as variant)
 		  // Part of the TableRowWriterInterface interface.
 		  
-		  raise new clDataException("Unexpected call to addrow from array.")
+		  // raise new clDataException("Unexpected call to addrow from array.")
+		  
+		  var d as new Dictionary
+		  
+		  for index as integer = 0 to self.ColumnNames.LastIndex
+		    d.value(self.ColumnNames(index)) = row_data(index)
+		    
+		  next
+		  
+		  self.Rows.Add(d)
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -71,24 +73,27 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub DefineColumns(DatasetName as string, ColumnName() as string, ColumnType() as string)
+		Sub DefineColumns(pDatasetName as string, pColumnName() as string, pColumnType() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
 		  var d() as Dictionary
 		  
-		  for i as integer = 0 to ColumnName.LastIndex
-		    var TempColumnName as String = ColumnName(i).Trim
+		  self.ColumnNames.RemoveAll
+		  
+		  for i as integer = 0 to pColumnName.LastIndex
+		    var TempColumnName as String = pColumnName(i).Trim
+		    self.ColumnNames.add(pColumnName(i).trim)
 		    
 		    var TempColumnType as string = clDataType.VariantValue
 		    
-		    if ColumnType.LastIndex < i then
-		      TempColumnType = ColumnType(i)
+		    if pColumnType.LastIndex < i then
+		      TempColumnType = pColumnType(i)
 		    end if
 		    
 		    d.Add(new Dictionary(self.Configuration.KeyforFieldName: TempColumnName, self.Configuration.KeyforFieldType:TempColumnType))
 		  next
 		  
-		  Header.value(self.Configuration.KeyForDatasetName)  = DatasetName
+		  Header.value(self.Configuration.KeyForDatasetName)  = pDatasetName
 		  Header.value(self.Configuration.KeyForListOfColumns) = d
 		  
 		End Sub
@@ -149,12 +154,6 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ExpectsDictionary() As Boolean
-		  return True
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetJSON() As JSONItem
 		  return OutputJSON
 		End Function
@@ -185,6 +184,10 @@ Implements TableRowWriterInterface
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h1
+		Protected ColumnNames() As string
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private Configuration As clJSONFileConfig

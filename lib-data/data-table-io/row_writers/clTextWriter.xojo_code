@@ -2,17 +2,8 @@
 Class clTextWriter
 Implements TableRowWriterInterface
 	#tag Method, Flags = &h0
-		Sub AddRow(row_data as Dictionary)
-		  
-		  raise new clDataException("Unexpected call to addrow from dictionary.")
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub AddRow(row_data() as variant)
 		  // Part of the TableRowWriterInterface interface.
-		  const kDoubleQuote = """"
 		  
 		  if textstream = nil then return
 		  
@@ -34,24 +25,9 @@ Implements TableRowWriterInterface
 		      field = row_field
 		    end if
 		    
-		    var reqQuotes as Boolean = False
+		    field = QuoteValue(field, FieldSeparator)
 		    
-		    reqQuotes = reqQuotes or (field.IndexOf(FieldSeparator)>0)
-		    
-		    reqQuotes = reqQuotes or ( field.IndexOf(chr(13))>0) 
-		    
-		    if field.IndexOf(kDoubleQuote)>0 then
-		      field = field.ReplaceAll(kDoubleQuote, kDoubleQuote+kDoubleQuote)
-		      reqQuotes = True
-		      
-		    end if
-		    
-		    if reqQuotes then
-		      tmpStr.Add kDoubleQuote + field + kDoubleQuote
-		      
-		    else
-		      tmpStr.Add field
-		    end if
+		    tmpStr.Add field
 		    
 		  next
 		  
@@ -70,21 +46,8 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_destination_path as FolderItem, has_header as Boolean)
-		  self.DestinationPath = the_destination_path
-		  self.FileHasHeader = has_header
+		Sub Constructor(the_destination_path as FolderItem, has_header as Boolean, config as clTextFileConfig = nil)
 		  
-		  open_text_Stream(self.DestinationPath)
-		  
-		  self.InternalInitConfiguration(nil) 
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(the_destination_path as FolderItem, has_header as Boolean, config as clTextFileConfig)
 		  self.DestinationPath = the_destination_path
 		  self.FileHasHeader = has_header
 		  
@@ -102,10 +65,19 @@ Implements TableRowWriterInterface
 		Sub DefineColumns(name as string, columns() as string, column_type() as string)
 		  // Part of the TableRowWriterInterface interface.
 		  
+		  ColumnNames.RemoveAll
+		  
+		  var k as integer= 0
+		  
+		  for each column as string in columns
+		    ColumnNames.add (column)
+		    
+		  next
 		  
 		  if HeaderWritten then return
 		  
 		  write_column_headers(columns)
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -121,12 +93,6 @@ Implements TableRowWriterInterface
 		  
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function ExpectsDictionary() As Boolean
-		  return false
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -163,6 +129,34 @@ Implements TableRowWriterInterface
 		  self.HeaderWritten = not self.FileHasHeader
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function QuoteValue(value as String, FieldSeparator as string) As string
+		  const kDoubleQuote = """"
+		  
+		  var field as string = value
+		  
+		  var reqQuotes as Boolean = False
+		  
+		  reqQuotes = reqQuotes or (field.IndexOf(FieldSeparator)>0)
+		  
+		  reqQuotes = reqQuotes or ( field.IndexOf(chr(13))>0) 
+		  
+		  if field.IndexOf(kDoubleQuote)>0 then
+		    field = field.ReplaceAll(kDoubleQuote, kDoubleQuote+kDoubleQuote)
+		    reqQuotes = True
+		    
+		  end if
+		  
+		  if reqQuotes then
+		    return kDoubleQuote + field + kDoubleQuote
+		    
+		  else
+		    return  field
+		    
+		  end if
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -204,6 +198,10 @@ Implements TableRowWriterInterface
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h1
+		Protected ColumnNames() As string
+	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected CurrentFIle As FolderItem

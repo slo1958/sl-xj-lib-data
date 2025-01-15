@@ -82,7 +82,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddColumn(the_column_name as String) As clAbstractDataSerie
+		Function AddColumn(pColumnName as String) As clAbstractDataSerie
 		  //  
 		  //  Add  an empty column to the table
 		  //  
@@ -94,12 +94,12 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  var v as variant
 		  
-		  return AddColumn(the_column_name, v)
+		  return AddColumn(pColumnName, v)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddColumn(the_column_name as String, DefaultValue as variant) As clAbstractDataSerie
+		Function AddColumn(pColumnName as String, DefaultValue as variant) As clAbstractDataSerie
 		  //  
 		  //  Add  an constant column to the table
 		  //  
@@ -110,7 +110,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - the new data serie
 		  //  
-		  var tmp_column_name As String = the_column_name.trim
+		  var tmp_column_name As String = pColumnName.trim
 		  
 		  if tmp_column_name.len() = 0 then
 		    tmp_column_name = ReplacePlaceHolders(DefaultColumnNamePattern,  str(self.ColumnCount))
@@ -602,11 +602,11 @@ Implements TableColumnReaderInterface,Iterable
 		  //  the values from W are ignored, since the column is not defined in the mapping dictionary
 		  //  the values from X, and Y are appended to the existing columns A and B
 		  //  a new column D is created to store the values from Z
-		  
+		  //
 		  //  Parameters:
 		  //  - NewRowsSource:  the source , providing data column by column
 		  //  - FieldMapping: mapping dictionary, key is field name in the_source, value is the field name in the clDataTable
-		  // -  Mode: handling of missing columns in table
+		  //  - Mode: handling of missing columns in table
 		  //  
 		  //  Returns:
 		  //  - number of rows added
@@ -862,7 +862,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As clDataTable
+		Function Clone(NewName as string = "") As clDataTable
 		  //
 		  //  Duplicate the table and all its columns
 		  //  
@@ -872,7 +872,17 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - Nothing
 		  //  
-		  var output_table as new clDataTable(self.name+" copy")
+		  var output_table as clDataTable
+		  
+		  if NewName.Trim.Length = 0 then
+		    output_table = new clDataTable(self.name+" copy")
+		    
+		  else
+		    output_table = new clDataTable(NewName.trim)
+		    
+		  end if
+		  
+		  output_table.AddMetaData("source", self.name)
 		  
 		  for each col as clAbstractDataSerie in self.columns
 		    var new_col as clAbstractDataSerie = col.Clone()
@@ -886,18 +896,52 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Column(the_column_name as string) As clAbstractDataSerie
-		  return self.GetColumn(the_column_name, false)
+		Function CloneStructure(NewName as string = "") As clDataTable
+		  //
+		  //  Duplicate the table and all its columns
+		  //  
+		  //  Parameters:
+		  //  - None
+		  //  
+		  //  Returns:
+		  //  - Nothing
+		  //  
+		  var output_table as clDataTable
+		  
+		  if NewName.Trim.Length = 0 then
+		    output_table = new clDataTable(self.name+" copy")
+		    
+		  else
+		    output_table = new clDataTable(NewName.trim)
+		    
+		  end if
+		  
+		  output_table.AddMetaData("source", self.name)
+		  
+		  for each col as clAbstractDataSerie in self.columns
+		    var new_col as clAbstractDataSerie = col.CloneStructure()
+		    
+		    call output_table.AddColumn(new_col)
+		    
+		  next
+		  
+		  Return output_table
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Column(the_column_name as string, assigns source_value as Variant)
+		Function Column(pColumnName as string) As clAbstractDataSerie
+		  return self.GetColumn(pColumnName, false)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Column(pColumnName as string, assigns source_value as Variant)
 		  
-		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
 		  if temp_column = nil then
-		    Raise New clDataException("Cannot find  column " + the_column_name)
+		    Raise New clDataException("Cannot find  column " + pColumnName)
 		    return 
 		    
 		  elseif source_value.Type = Variant.TypeObject then
@@ -909,10 +953,10 @@ Implements TableColumnReaderInterface,Iterable
 		      return
 		    end if
 		    
-		    Raise New clDataException("Assigned item is an object, when updating " + the_column_name)
+		    Raise New clDataException("Assigned item is an object, when updating " + pColumnName)
 		    
 		  elseif source_value.IsArray then
-		    Raise New clDataException("Assigned item is an array, when updating " + the_column_name)
+		    Raise New clDataException("Assigned item is an array, when updating " + pColumnName)
 		    
 		  else
 		    
@@ -1409,11 +1453,11 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function filter_row(the_row_index as integer, the_RowCount as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		Delegate Function filter_row(the_row_index as integer, the_RowCount as integer, pColumnNames() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
-		Function FindAllMatchingRowIndexes(the_column_names() as string, the_column_values() as string, limit as integer = -1) As integer()
+		Function FindAllMatchingRowIndexes(pColumnNames() as string, the_column_values() as string, limit as integer = -1) As integer()
 		  //  
 		  //  returns the index of the data rows where the value each columns matches the constants
 		  //  
@@ -1429,7 +1473,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var MatchingIndexes() as integer
 		  var tmp_columns() As clAbstractDataSerie
 		  
-		  for each name as string in the_column_names
+		  for each name as string in pColumnNames
 		    var tmp_column as clAbstractDataSerie = GetColumn(name)
 		    
 		    If tmp_column = Nil Then
@@ -1471,7 +1515,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FindAllMatchingRowIndexes(the_column_name as string, the_column_value as string, limit as integer = -1) As integer()
+		Function FindAllMatchingRowIndexes(pColumnName as string, the_column_value as string, limit as integer = -1) As integer()
 		  //  
 		  //  returns the index of the data rows where the value in column matches the constant
 		  //  
@@ -1488,7 +1532,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_column As clAbstractDataSerie
 		  
-		  tmp_column = GetColumn(the_column_name)
+		  tmp_column = GetColumn(pColumnName)
 		  
 		  If tmp_column = Nil Then
 		    Return nil
@@ -1514,7 +1558,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FindFirstMatchingRow(the_column_name as string, the_column_value as string, include_index as Boolean) As clDataRow
+		Function FindFirstMatchingRow(pColumnName as string, the_column_value as string, include_index as Boolean) As clDataRow
 		  //  
 		  //  returns the first data row where the value in column matches the constant
 		  //  
@@ -1525,7 +1569,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a data row if found or nil
 		  //  
-		  var tmp_row_index as integer = self.FindFirstMatchingRowIndex(the_column_name, the_column_value)
+		  var tmp_row_index as integer = self.FindFirstMatchingRowIndex(pColumnName, the_column_value)
 		  
 		  if tmp_row_index <0 then
 		    return nil
@@ -1540,7 +1584,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FindFirstMatchingRowIndex(the_column_names() as string, the_column_values() as string) As integer
+		Function FindFirstMatchingRowIndex(pColumnNames() as string, the_column_values() as string) As integer
 		  //  
 		  //  returns the index of the data row where the value each columns matches the constants
 		  //  
@@ -1554,7 +1598,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_columns() As clAbstractDataSerie
 		  
-		  for each name as string in the_column_names
+		  for each name as string in pColumnNames
 		    var tmp_column as clAbstractDataSerie = GetColumn(name)
 		    
 		    If tmp_column = Nil Then
@@ -1596,7 +1640,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FindFirstMatchingRowIndex(the_column_name as string, the_column_value as string) As integer
+		Function FindFirstMatchingRowIndex(pColumnName as string, the_column_value as string) As integer
 		  //  
 		  //  returns the index of the data row where the value in column matches the constant
 		  //  
@@ -1610,7 +1654,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_column As clAbstractDataSerie
 		  
-		  tmp_column = GetColumn(the_column_name)
+		  tmp_column = GetColumn(pColumnName)
 		  
 		  If tmp_column = Nil Then
 		    Return -2
@@ -1639,7 +1683,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumn(the_column_name as String, include_alias as boolean = False) As clAbstractDataSerie
+		Function GetColumn(pColumnName as String, include_alias as boolean = False) As clAbstractDataSerie
 		  //  
 		  //  returns a column
 		  //  
@@ -1651,7 +1695,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  
 		  For Each column As clAbstractDataSerie In Self.columns
-		    If column.name = the_column_name Then
+		    If column.name = pColumnName Then
 		      Return column
 		      
 		    End If
@@ -1661,7 +1705,7 @@ Implements TableColumnReaderInterface,Iterable
 		  if not include_alias then return nil
 		  
 		  For Each column As clAbstractDataSerie In Self.columns
-		    if column.HasAlias(the_column_name) then
+		    if column.HasAlias(pColumnName) then
 		      return column
 		      
 		    end if
@@ -1674,19 +1718,19 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumnAt(column_index as integer) As clAbstractDataSerie
+		Function GetColumnAt(pColumnIndex as integer) As clAbstractDataSerie
 		  //  
 		  //  returns a column
 		  //  
 		  //  Parameters:
-		  //  - the index of the column
+		  //  - pColumnIndex: the index of the column
 		  //  
 		  //  Returns:
 		  //  - the column at specified index
 		  //  
 		  
 		  try
-		    return self.columns(column_index)
+		    return self.columns(pColumnIndex)
 		    
 		  catch
 		    return nil
@@ -1776,6 +1820,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - a string array with the type of the columns
 		  //  
 		  var ret_str() As String
+		  
 		  For Each column As clAbstractDataSerie In columns
 		    ret_str.Add(column.GetType)
 		    
@@ -1807,7 +1852,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(the_column_name as String, the_element_index as integer) As variant
+		Function GetElement(pColumnName as String, the_element_index as integer) As variant
 		  //  
 		  //  returns a specific cell based on column name and row number
 		  //  
@@ -1818,12 +1863,18 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - the value of the matching cell or nil
 		  //  
-		  var tmp_col as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  var tmp_col as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
 		  if tmp_col = nil then return nil
 		  
 		  return tmp_col.GetElement(the_element_index)
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetIntegerColumn(pColumnName as string, include_alias as boolean = False) As clIntegerDataSerie
+		  return clIntegerDataSerie(self.GetColumn(pColumnName, include_alias))
 		End Function
 	#tag EndMethod
 
@@ -1834,12 +1885,8 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetNumberColumn(the_column_name as string) As clNumberDataSerie
-		  
-		  
-		  var tmp as clAbstractDataSerie =  self.GetColumn(the_column_name, false)
-		  
-		  return clNumberDataSerie(tmp)
+		Function GetNumberColumn(pColumnName as string, include_alias as boolean = False) As clNumberDataSerie
+		  return clNumberDataSerie(self.GetColumn(pColumnName, include_alias))
 		End Function
 	#tag EndMethod
 
@@ -1973,6 +2020,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetStringColumn(pColumnName as string, include_alias as boolean = False) As clStringDataSerie
+		  
+		  return clStringDataSerie(self.GetColumn(pColumnName, include_alias))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetStructureAsTable(NewTableName as string = "") As clDataTable
 		  
 		  var col_name() as string
@@ -1996,6 +2050,24 @@ Implements TableColumnReaderInterface,Iterable
 		  if temp.Length < 1 then temp = self.StructureTableNamePrefix.trim + " " + self.name
 		  
 		  return new clDataTable(temp, dct)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetUniqueColumnName(BaseColumnName as string) As string
+		  
+		  var tmp() as string = self.GetColumnNames
+		  
+		  if tmp.IndexOf(BaseColumnName) < 0 then return BaseColumnName
+		  
+		  for i as integer = 0 to 1000
+		    var tmp_name as string = BaseColumnName + " " + str(i)
+		    if tmp.IndexOf(tmp_name)  < 0 then return tmp_name
+		    
+		  next
+		  
+		  return "?"
 		  
 		End Function
 	#tag EndMethod
@@ -2166,18 +2238,12 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function IntegerColumn(the_column_name as string) As clIntegerDataSerie
-		  return clIntegerDataSerie(self.GetColumn(the_column_name, false))
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub IntegerColumn(the_column_name as string, assigns source_value as Variant)
+		Sub IntegerColumnK(pColumnName as string, assigns source_value as Variant)
 		  
-		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
 		  if temp_column = nil then
-		    Raise New clDataException("Cannot find  column " + the_column_name)
+		    Raise New clDataException("Cannot find  column " + pColumnName)
 		    return 
 		    
 		  elseif source_value.Type = Variant.TypeObject then
@@ -2189,10 +2255,10 @@ Implements TableColumnReaderInterface,Iterable
 		      return
 		    end if
 		    
-		    Raise New clDataException("Assigned item is an object, when updating " + the_column_name)
+		    Raise New clDataException("Assigned item is an object, when updating " + pColumnName)
 		    
 		  elseif source_value.IsArray then
-		    Raise New clDataException("Assigned item is an array, when updating " + the_column_name)
+		    Raise New clDataException("Assigned item is an array, when updating " + pColumnName)
 		    
 		  else
 		    
@@ -2467,18 +2533,12 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function NumberColumn(the_column_name as string) As clNumberDataSerie
-		  return clNumberDataSerie(self.GetColumn(the_column_name, false))
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub NumberColumn(the_column_name as string, assigns source_value as Variant)
+		Sub NumberColumnK(pColumnName as string, assigns source_value as Variant)
 		  
-		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
 		  if temp_column = nil then
-		    Raise New clDataException("Cannot find  column " + the_column_name)
+		    Raise New clDataException("Cannot find  column " + pColumnName)
 		    return 
 		    
 		  elseif source_value.Type = Variant.TypeObject then
@@ -2490,10 +2550,10 @@ Implements TableColumnReaderInterface,Iterable
 		      return
 		    end if
 		    
-		    Raise New clDataException("Assigned item is an object, when updating " + the_column_name)
+		    Raise New clDataException("Assigned item is an object, when updating " + pColumnName)
 		    
 		  elseif source_value.IsArray then
-		    Raise New clDataException("Assigned item is an array, when updating " + the_column_name)
+		    Raise New clDataException("Assigned item is an array, when updating " + pColumnName)
 		    
 		  else
 		    
@@ -2528,11 +2588,11 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RenameColumn(the_column_name as string, the_new_name as string)
+		Sub RenameColumn(pColumnName as string, the_new_name as string)
 		  
 		  For idx As Integer = 0 To columns.LastIndex
 		    
-		    If columns(idx).name = the_column_name Then
+		    If columns(idx).name = pColumnName Then
 		      columns(idx).rename(the_new_name)
 		      Return
 		      
@@ -2608,16 +2668,20 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  write_to.DefineColumns(name, ColumnNames, ColumnTypes)
 		  
-		  for each row as clDataRow in self
-		    if write_to.ExpectsDictionary then
-		      write_to.AddRow(row.GetCells)
+		  var columnValues() as variant
+		  
+		  for RowIndex as integer = 0 to self.RowCount-1
+		    columnValues.RemoveAll
+		    
+		    for ColumnIndex as integer = 0 to self.columns.LastIndex
+		      columnValues.Add(self.columns(ColumnIndex).GetElement(RowIndex))
 		      
-		    else
-		      write_to.AddRow(row.GetCells(ColumnNames))
-		      
-		    end if
+		    next
+		    
+		    Write_to.AddRow(columnValues)
 		    
 		  next
+		  
 		  
 		  write_to.DoneWithTable
 		  
@@ -2661,15 +2725,15 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SetColumnValues(the_column_name as string, source_column as clAbstractDataSerie, can_create as boolean) As clAbstractDataSerie
+		Function SetColumnValues(pColumnName as string, source_column as clAbstractDataSerie, can_create as boolean) As clAbstractDataSerie
 		  
-		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
 		  if temp_column = nil then
 		    
 		    if can_create then
 		      temp_column = source_column.clone()
-		      temp_column.rename(the_column_name)
+		      temp_column.rename(pColumnName)
 		      
 		      call self.AddColumn(temp_column)
 		      
@@ -2689,14 +2753,14 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SetColumnValues(the_column_name as string, the_values() as variant, can_create as boolean) As clAbstractDataSerie
+		Function SetColumnValues(pColumnName as string, the_values() as variant, can_create as boolean) As clAbstractDataSerie
 		  
-		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
 		  if temp_column = nil then
 		    
 		    if can_create then
-		      temp_column = new clDataSerie(the_column_name, the_values)
+		      temp_column = new clDataSerie(pColumnName, the_values)
 		      call self.AddColumn(temp_column)
 		      
 		      return temp_column
@@ -2715,18 +2779,18 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function StringColumn(the_column_name as string) As clStringDataSerie
-		  return clStringDataSerie(self.GetColumn(the_column_name, false))
+		Function StringColumn(pColumnName as string) As clStringDataSerie
+		  return clStringDataSerie(self.GetColumn(pColumnName, false))
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub StringColumn(the_column_name as string, assigns source_value as Variant)
+		Sub StringColumn(pColumnName as string, assigns source_value as Variant)
 		  
-		  var temp_column as clAbstractDataSerie = self.GetColumn(the_column_name)
+		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
 		  if temp_column = nil then
-		    Raise New clDataException("Cannot find  column " + the_column_name)
+		    Raise New clDataException("Cannot find  column " + pColumnName)
 		    return 
 		    
 		  elseif source_value.Type = Variant.TypeObject then
@@ -2738,10 +2802,10 @@ Implements TableColumnReaderInterface,Iterable
 		      return
 		    end if
 		    
-		    Raise New clDataException("Assigned item is an object, when updating " + the_column_name)
+		    Raise New clDataException("Assigned item is an object, when updating " + pColumnName)
 		    
 		  elseif source_value.IsArray then
-		    Raise New clDataException("Assigned item is an array, when updating " + the_column_name)
+		    Raise New clDataException("Assigned item is an array, when updating " + pColumnName)
 		    
 		  else
 		    

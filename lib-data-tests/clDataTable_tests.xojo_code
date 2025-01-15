@@ -1346,9 +1346,10 @@ Protected Module clDataTable_tests
 		  
 		  var my_table As New clDataTable("T1", array("aaa", "bbb", "ccc","ddd"))
 		  
+		  // This will use the existing columns, all created as clDataSerie
 		  my_table.AddRow(new Dictionary("aaa":1234, "bbb": "abcd", "ccc":123.456))
 		  
-		  my_table.AddRow(new Dictionary("aaa":1235, "bbb": "abce", "ddd":987.654, "eee":"to_ignore"))
+		  my_table.AddRow(new Dictionary("aaa":1235, "bbb": "abce", "ddd":987.654, "eee":"to_ignore"), clDataTable.AddRowMode.IgnoreNewColumn)
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
@@ -1494,7 +1495,7 @@ Protected Module clDataTable_tests
 		  mytable.AddRow("name": "alpha", "quantity":50, "unit_price": 6)
 		  mytable.AddRow("name": "alpha", "quantity":20, "unit_price": 8)
 		  
-		  call mytable.AddColumn(mytable.NumberColumn("unit_price") * mytable.NumberColumn("quantity"))
+		  call mytable.AddColumn(mytable.GetNumberColumn("unit_price") * mytable.GetNumberColumn("quantity"))
 		  
 		  var col1 as new clDataSerie("name", "alpha","alpha")
 		  var col2 as new clNumberDataSerie("quantity", 50, 20)
@@ -1539,7 +1540,7 @@ Protected Module clDataTable_tests
 		  call table0.SetColumnValues("is_belgium", is_belgium, false)
 		  
 		  // Set the flag to 0 or 2 for test purposes only
-		  table0.Column("is_europe") = (table0.IntegerColumn("is_france") +  table0.IntegerColumn("is_belgium")) * 2
+		  table0.Column("is_europe") = (table0.GetIntegerColumn("is_france") +  table0.GetIntegerColumn("is_belgium")) * 2
 		  
 		  
 		  var col1 as new clDataSerie("country", Array("France","France", "Belgique", "USA","Belgique","USA"))

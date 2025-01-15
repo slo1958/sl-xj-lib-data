@@ -1,14 +1,14 @@
 #tag Module
 Protected Module clDataTableFilterFunctions
 	#tag Method, Flags = &h0
-		Function BasicFieldFilter(the_row_index as integer, the_RowCount as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		Function BasicFieldFilter(the_row_index as integer, the_RowCount as integer, pColumnNames() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
 		  //  
 		  //  Implementation of basic filter_row to compare the value of a cell in a column (name as paramter #0) to a constant value (paramter #1)
 		  //  
 		  //  Parameters
 		  //  - the_row_index: index of the current row
 		  //  - the_RowCount: number of rows in the table
-		  //  - the_column_names(): list of columns in in the table
+		  //  - pColumnNames(): list of columns in in the table
 		  //  - the_cell_values(): values of the columns for the current row
 		  //  - function_param: additional paramters used to defined the bahaviour of the function
 		  //     In this implementation:
@@ -21,7 +21,7 @@ Protected Module clDataTableFilterFunctions
 		  var field_name as string = function_param(0)
 		  var field_value as variant = function_param(1)
 		  
-		  var idx as integer = the_column_names.IndexOf(field_name)
+		  var idx as integer = pColumnNames.IndexOf(field_name)
 		  
 		  return the_cell_values(idx) = field_value
 		End Function
@@ -35,7 +35,7 @@ Protected Module clDataTableFilterFunctions
 		  //  Parameters
 		  //  - the_row_index: index of the current row
 		  //  - the_RowCount: number of rows in the table
-		  //  - the_column_names(): list of columns in in the table
+		  //  - pColumnNames(): list of columns in in the table
 		  //  - the_cell_values(): values of the columns for the current row
 		  //  - function_param: additional paramters used to defined the bahaviour of the function
 		  //     In this implementation:
@@ -65,7 +65,7 @@ Protected Module clDataTableFilterFunctions
 		  //  Parameters
 		  //  - the_row_index: index of the current row
 		  //  - the_RowCount: number of rows in the table
-		  //  - the_column_names(): list of columns in in the table
+		  //  - pColumnNames(): list of columns in in the table
 		  //  - the_cell_values(): values of the columns for the current row
 		  //  - function_param: additional paramters used to defined the bahaviour of the function
 		  //     In this implementation:
@@ -95,12 +95,12 @@ Protected Module clDataTableFilterFunctions
 		
 		The prototype is:
 		
-		function xyz(the_row_index as integer, the_RowCount as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) as boolean
+		function xyz(the_row_index as integer, the_RowCount as integer, pColumnNames() as string, the_cell_values() as variant, paramarray function_param as variant) as boolean
 		
 		where
 		- the_row_index: index of the current row
 		- the_RowCount: number of rows in the table
-		- the_column_names(): list of columns in in the table
+		- pColumnNames(): list of columns in in the table
 		- the_cell_values(): values of the columns for the current row
 		- function_param: additional paramters used to defined the bahaviour of the function
 		

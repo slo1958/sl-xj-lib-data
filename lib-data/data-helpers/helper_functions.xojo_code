@@ -1,6 +1,28 @@
 #tag Module
 Protected Module helper_functions
 	#tag Method, Flags = &h0
+		Function AsString(extends c as clAbstractDataSerie, ColumnName as string = "") As clStringDataSerie
+		  var res as   clStringDataSerie
+		  
+		  if ColumnName.Length = 0 then
+		    res = new clStringDataSerie(c.name + " as string")
+		    
+		  else
+		    res = new clStringDataSerie(ColumnName)
+		    
+		  end if
+		  
+		  for index as integer = 0 to c.LastIndex
+		    res.AddElement(c.GetElementAsString(index))
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function MakeVariantArray(v as Variant) As variant()
 		  var res() as variant
 		  

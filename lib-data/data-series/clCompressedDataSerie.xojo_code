@@ -25,7 +25,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clCompressedDataSerie
+		Function Clone() As clAbstractDataSerie
 		  var tmp As New clCompressedDataSerie(Self.name)
 		  tmp.DisplayTitle = self.DisplayTitle
 		  
@@ -180,20 +180,20 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
-		DefaultValue As variant
+	#tag Property, Flags = &h1
+		Protected DefaultValue As variant
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		items_index() As Integer
+	#tag Property, Flags = &h1
+		Protected items_index() As Integer
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		items_value_dict As Dictionary
+	#tag Property, Flags = &h1
+		Protected items_value_dict As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		items_value_list() As Variant
+	#tag Property, Flags = &h1
+		Protected items_value_list() As Variant
 	#tag EndProperty
 
 

@@ -44,6 +44,10 @@ Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Function GetColumnTypes() As dictionary
 		  
+		  var d as new Dictionary
+		  // todo
+		  return d
+		  
 		End Function
 	#tag EndMethod
 
@@ -54,9 +58,9 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As string
+		Function Name() As string
 		  // Part of the TableRowReaderInterface interface.
-		  return table.name
+		  return table.Name
 		  
 		End Function
 	#tag EndMethod

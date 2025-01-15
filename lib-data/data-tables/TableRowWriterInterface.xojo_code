@@ -1,12 +1,6 @@
 #tag Interface
 Protected Interface TableRowWriterInterface
 	#tag Method, Flags = &h0
-		Sub AddRow(row_data as Dictionary)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub AddRow(row_data() as variant)
 		  
 		End Sub
@@ -28,12 +22,6 @@ Protected Interface TableRowWriterInterface
 		Sub DoneWithTable()
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function ExpectsDictionary() As Boolean
-		  
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

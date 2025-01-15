@@ -396,7 +396,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetWriteFormat(the_format as String, UseLocal as Boolean)
+		Sub SetWriteFormat(the_format as String, UseLocal as Boolean = False)
 		  FormatStr = the_format
 		  FormatWithLocale = UseLocal
 		End Sub
