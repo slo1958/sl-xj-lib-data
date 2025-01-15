@@ -652,7 +652,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_v = Nil
-		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(the_element_index) , "string")
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(the_element_index) , "clDataSerie()")
 		    
 		  End Try
 		  
