@@ -383,39 +383,12 @@ Implements TableColumnReaderInterface,Iterable
 		  //  (nothing)
 		  //  
 		  
-		  
-		  
 		  if SourceObject = nil then return
 		  
-		  var d as new Dictionary
-		  var t as Introspection.TypeInfo = Introspection.GetType(SourceObject)
+		  self.AddRow(new clDataRow(SourceObject), clDataTable.AddRowMode.IgnoreNewColumn)
 		  
 		  
-		  for each p as Introspection.PropertyInfo in t.GetProperties
-		    
-		    if  p.PropertyType.IsPrimitive and  p.IsPublic and p.CanRead then
-		      var name as string = p.Name
-		      
-		      d.value(name) = p.Value(SourceObject)
-		      
-		    end if
-		    
-		  next
-		  
-		  for each column as clAbstractDataSerie in self.columns
-		    if d.HasKey(column.name) then
-		      column.AddElement(d.value(column.name))
-		      
-		    else
-		      column.AddElement(column.GetDefaultValue())
-		      
-		    end if
-		    
-		  next
-		  
-		  Self.row_index.AddElement("")
-		  
-		  
+		   
 		End Sub
 	#tag EndMethod
 
@@ -557,7 +530,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - number of rows added
 		  //  
 		  for each obj as object in source_objects
-		    self.AddRow(new clDataRow(obj))
+		    self.AddRow(new clDataRow(obj), clDataTable.AddRowMode.IgnoreNewColumn)
 		    
 		  next
 		  
