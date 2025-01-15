@@ -25,6 +25,28 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ApplyFilterFunction(pFilterFunction as FilterColumnByRows, paramarray pFunctionParameters as variant) As variant()
+		  var return_boolean() As Variant
+		  
+		  For row_index As Integer=0 To items_index.LastIndex
+		    var item_index as integer = items_index(row_index)
+		    var v as Variant
+		    
+		    if item_index >=0 then
+		      v = self.items_value_list(item_index)
+		      
+		    end if
+		    
+		    return_boolean.Append(pFilterFunction.Invoke(row_index, items_index.LastIndex, name, v, pFunctionParameters))
+		    
+		  Next
+		  
+		  Return return_boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Clone() As clAbstractDataSerie
 		  var tmp As New clCompressedDataSerie(Self.name)
 		  tmp.DisplayTitle = self.DisplayTitle
@@ -59,28 +81,6 @@ Inherits clAbstractDataSerie
 		  
 		  Return tmp
 		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function FilterWithFunction(the_filter_function as FilterColumnByRows, paramarray function_param as variant) As variant()
-		  var return_boolean() As Variant
-		  
-		  For row_index As Integer=0 To items_index.LastIndex
-		    var item_index as integer = items_index(row_index)
-		    var v as Variant
-		    
-		    if item_index >=0 then
-		      v = self.items_value_list(item_index)
-		      
-		    end if
-		    
-		    return_boolean.Append(the_filter_function.Invoke(row_index, items_index.LastIndex, name, v, function_param))
-		    
-		  Next
-		  
-		  Return return_boolean
 		  
 		End Function
 	#tag EndMethod

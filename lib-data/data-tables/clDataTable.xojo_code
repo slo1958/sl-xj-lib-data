@@ -695,6 +695,48 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ApplyFilterFunction(pFilterFunction as RowFilter, paramarray pFunctionParameters as variant) As variant()
+		  //  
+		  //  Applies a filter function to each data row of the table, returns a boolean data serie
+		  //  
+		  //  Parameters:
+		  //  - the address of the filter function
+		  //  - the parameters to pass to the function
+		  //  
+		  //  Returns:
+		  //  - a boolean data serie
+		  //  
+		  
+		  var return_boolean() As Variant
+		  
+		  var column_names() As String
+		  var column_values() as Variant
+		  
+		  for each column as clAbstractDataSerie in self.columns
+		    column_names.Append(column.name)
+		    
+		  next
+		  
+		  var RowCount as integer = self.RowCount
+		  
+		  For i As Integer=0 To RowCount-1
+		    redim column_values(-1)
+		    
+		    for each column as clAbstractDataSerie in self.columns
+		      column_values.Append(column.GetElement(i))
+		      
+		    next
+		    
+		    return_boolean.Append(pFilterFunction.Invoke(i,  RowCount, column_names, column_values, pFunctionParameters))
+		    
+		  Next
+		  
+		  Return return_boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ClipByRange(column as clAbstractDataSerie, low_value_column as clAbstractDataSerie, high_value_column as clAbstractDataSerie) As integer
 		  
 		  if column = nil then return 0
@@ -929,47 +971,9 @@ Implements TableColumnReaderInterface,Iterable
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function Column(pColumnName as string) As clAbstractDataSerie
-		  return self.GetColumn(pColumnName, false)
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Column(pColumnName as string, assigns source_value as Variant)
-		  
-		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
-		  
-		  if temp_column = nil then
-		    Raise New clDataException("Cannot find  column " + pColumnName)
-		    return 
-		    
-		  elseif source_value.Type = Variant.TypeObject then
-		    
-		    var temp_obj as Object = source_value.ObjectValue
-		    
-		    if temp_obj isa clAbstractDataSerie then
-		      temp_column.SetElements(clAbstractDataSerie(temp_obj))
-		      return
-		    end if
-		    
-		    Raise New clDataException("Assigned item is an object, when updating " + pColumnName)
-		    
-		  elseif source_value.IsArray then
-		    Raise New clDataException("Assigned item is an array, when updating " + pColumnName)
-		    
-		  else
-		    
-		    for i as integer = 0 to temp_column.RowCount
-		      temp_column.SetElement(i, source_value)
-		      
-		    next
-		    return
-		    
-		  end if
-		  
-		End Sub
-	#tag EndMethod
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function ColumnAllocator(column_name as String, column_type_info as string) As clAbstractDataSerie
+	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
 		Function ColumnCount() As integer
@@ -983,6 +987,12 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - the number of columns as an integer
 		  //  
 		  Return columns.LastIndex + 1
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Columnk1(pColumnName as string) As clAbstractDataSerie
+		  return self.GetColumn(pColumnName, false)
 		End Function
 	#tag EndMethod
 
@@ -1008,9 +1018,41 @@ Implements TableColumnReaderInterface,Iterable
 		End Function
 	#tag EndMethod
 
-	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function column_allocator(column_name as String, column_type_info as string) As clAbstractDataSerie
-	#tag EndDelegateDeclaration
+	#tag Method, Flags = &h0
+		Sub ColumnValues(pColumnName as string, assigns pSourceValue as Variant)
+		  
+		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
+		  
+		  if temp_column = nil then
+		    Raise New clDataException("Cannot find  column " + pColumnName)
+		    return 
+		    
+		  elseif pSourceValue.Type = Variant.TypeObject then
+		    
+		    var temp_obj as Object = pSourceValue.ObjectValue
+		    
+		    if temp_obj isa clAbstractDataSerie then
+		      temp_column.SetElements(clAbstractDataSerie(temp_obj))
+		      return
+		    end if
+		    
+		    Raise New clDataException("Assigned item is an object, when updating " + pColumnName)
+		    
+		  elseif pSourceValue.IsArray then
+		    Raise New clDataException("Assigned item is an array, when updating " + pColumnName)
+		    
+		  else
+		    
+		    for i as integer = 0 to temp_column.RowCount
+		      temp_column.SetElement(i, pSourceValue)
+		      
+		    next
+		    return
+		    
+		  end if
+		  
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(NewTableName as string)
@@ -1029,7 +1071,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  tmp_table_name = NewTableName
 		  
-		  internal_new_table(tmp_table_name)
+		  internal_NewTable(tmp_table_name)
 		  
 		  
 		End Sub
@@ -1073,7 +1115,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Next
 		  
-		  internal_new_table(NewTableName)
+		  internal_NewTable(NewTableName)
 		  
 		  For Each c As clAbstractDataSerie In tmp_columns
 		    //  add column takes care of adjusting the length
@@ -1084,7 +1126,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(NewTableName as string, ColumnsSource as Dictionary, allocator as column_allocator = nil)
+		Sub Constructor(NewTableName as string, ColumnsSource as Dictionary, allocator as ColumnAllocator = nil)
 		  //
 		  // Creates a new data table from a set of columns. Columns are passed as a dictionary with column name as key and an array of values as value
 		  //  
@@ -1104,7 +1146,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var tmp_columns() as clAbstractDataSerie
 		  
 		  for each tmp_column_name as string in ColumnsSource.Keys
-		    var v() as variant = MakeVariantArray(ColumnsSource.value(tmp_column_name))
+		    var v() as variant = ExtractVariantArray(ColumnsSource.value(tmp_column_name))
 		    
 		    if allocator = nil then
 		      tmp_columns.Add(new clDataSerie(tmp_column_name, v))
@@ -1121,7 +1163,7 @@ Implements TableColumnReaderInterface,Iterable
 		    end if
 		  next
 		  
-		  internal_new_table(NewTableName)
+		  internal_NewTable(NewTableName)
 		  
 		  For Each c As clAbstractDataSerie In tmp_columns
 		    //  add column takes care of adjusting the length
@@ -1150,7 +1192,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  tmp_table_name = NewTableName
 		  
-		  internal_new_table(tmp_table_name)
+		  internal_NewTable(tmp_table_name)
 		  
 		  
 		  For Each name As string In ColumnNames
@@ -1164,7 +1206,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(NewTableName as string, NewTableSource as TableRowReaderInterface, allocator as column_allocator = nil)
+		Sub Constructor(NewTableName as string, NewTableSource as TableRowReaderInterface, allocator as ColumnAllocator = nil)
 		  //
 		  //  Creates a datatable from a table row reader
 		  //  
@@ -1188,7 +1230,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  AddMetadata("source", tmp_table_name)
 		  
-		  internal_new_table(tmp_table_name)
+		  internal_NewTable(tmp_table_name)
 		  
 		  var tmp_column_names() as string = NewTableSource.GetColumnNames
 		  var tmp_column_types as Dictionary = NewTableSource.GetColumnTypes
@@ -1231,7 +1273,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  AddMetadata("source", tmp_table_name)
 		  
-		  internal_new_table("from " + tmp_table_name)
+		  internal_NewTable("from " + tmp_table_name)
 		  
 		  if NewTableSource.IsPersistant and not materialize then
 		    // 
@@ -1275,7 +1317,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(NewTableSource as TableRowReaderInterface, allocator as column_allocator = nil)
+		Sub Constructor(NewTableSource as TableRowReaderInterface, allocator as ColumnAllocator = nil)
 		  //
 		  //  Creates a datatable from a table row reader
 		  //  
@@ -1299,7 +1341,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  AddMetadata("source", tmp_table_name)
 		  
-		  internal_new_table("from " + tmp_table_name) 
+		  internal_NewTable("from " + tmp_table_name) 
 		  
 		  var tmp_column_names() as string = NewTableSource.GetColumnNames
 		  var tmp_column_types as Dictionary = NewTableSource.GetColumnTypes
@@ -1409,52 +1451,6 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		End Function
 	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function FilterWithFunction(the_filter_function as filter_row, paramarray function_param as variant) As variant()
-		  //  
-		  //  Applies a filter function to each data row of the table, returns a boolean data serie
-		  //  
-		  //  Parameters:
-		  //  - the address of the filter function
-		  //  - the parameters to pass to the function
-		  //  
-		  //  Returns:
-		  //  - a boolean data serie
-		  //  
-		  
-		  var return_boolean() As Variant
-		  
-		  var column_names() As String
-		  var column_values() as Variant
-		  
-		  for each column as clAbstractDataSerie in self.columns
-		    column_names.Append(column.name)
-		    
-		  next
-		  
-		  var RowCount as integer = self.RowCount
-		  
-		  For i As Integer=0 To RowCount-1
-		    redim column_values(-1)
-		    
-		    for each column as clAbstractDataSerie in self.columns
-		      column_values.Append(column.GetElement(i))
-		      
-		    next
-		    
-		    return_boolean.Append(the_filter_function.Invoke(i,  RowCount, column_names, column_values, function_param))
-		    
-		  Next
-		  
-		  Return return_boolean
-		  
-		End Function
-	#tag EndMethod
-
-	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function filter_row(the_row_index as integer, the_RowCount as integer, pColumnNames() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
-	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
 		Function FindAllMatchingRowIndexes(pColumnNames() as string, the_column_values() as string, limit as integer = -1) As integer()
@@ -1688,7 +1684,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  returns a column
 		  //  
 		  //  Parameters:
-		  //  - the name of the column
+		  //  - pColumnName: the name of the column
 		  //  
 		  //  Returns:
 		  //  - the column matching the name or nil
@@ -1921,7 +1917,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetRowAt(the_row_index as integer, include_index as Boolean) As clDataRow
+		Function GetRowAt(pRowIndex as integer, include_index as Boolean) As clDataRow
 		  //  
 		  //  returns a specific data row
 		  //  
@@ -1936,16 +1932,16 @@ Implements TableColumnReaderInterface,Iterable
 		  if not include_index then
 		    
 		  elseif row_index = nil then
-		    tmp_row.SetCell("row_index",  the_row_index)
+		    tmp_row.SetCell("row_index",  pRowIndex)
 		    
 		  else
-		    tmp_row.SetCell("row_index",  row_index.GetElement(the_row_index))
+		    tmp_row.SetCell("row_index",  row_index.GetElement(pRowIndex))
 		    
 		  end if
 		  
 		  for each column as clAbstractDataSerie in self.columns
 		    var col_name as string = column.name
-		    var col_val as Auto = column.GetElement(the_row_index)
+		    var col_val as Auto = column.GetElement(pRowIndex)
 		    tmp_row.SetCell(col_name, col_val)
 		    
 		  next
@@ -1998,6 +1994,7 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  var series() as clAbstractDataSerie
+		  
 		  series.Add(new clDataSerie(StatisticsSerieNameColumn, col_name))
 		  series.add(new clIntegerDataSerie(StatisticsUboundColumn, col_ubound))
 		  series.Add(new clIntegerDataSerie(StatisticsCountColumn, col_count))
@@ -2238,7 +2235,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub IntegerColumnK(pColumnName as string, assigns source_value as Variant)
+		Sub IntegerColumnValues(pColumnName as string, assigns pSourceValue as Variant)
 		  
 		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
@@ -2246,9 +2243,9 @@ Implements TableColumnReaderInterface,Iterable
 		    Raise New clDataException("Cannot find  column " + pColumnName)
 		    return 
 		    
-		  elseif source_value.Type = Variant.TypeObject then
+		  elseif pSourceValue.Type = Variant.TypeObject then
 		    
-		    var temp_obj as Object = source_value.ObjectValue
+		    var temp_obj as Object = pSourceValue.ObjectValue
 		    
 		    if temp_obj isa clNumberDataSerie or temp_obj isa clIntegerDataSerie then
 		      temp_column.SetElements(clAbstractDataSerie(temp_obj))
@@ -2257,13 +2254,13 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    Raise New clDataException("Assigned item is an object, when updating " + pColumnName)
 		    
-		  elseif source_value.IsArray then
+		  elseif pSourceValue.IsArray then
 		    Raise New clDataException("Assigned item is an array, when updating " + pColumnName)
 		    
 		  else
 		    
 		    for i as integer = 0 to temp_column.RowCount
-		      temp_column.SetElement(i, source_value)
+		      temp_column.SetElement(i, pSourceValue)
 		      
 		    next
 		    return
@@ -2351,7 +2348,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_CreateColumnsWithAllocator(ColumnNames() as string, ColumnTypes as Dictionary, allocator as column_allocator = nil) As clAbstractDataSerie()
+		Private Function internal_CreateColumnsWithAllocator(ColumnNames() as string, ColumnTypes as Dictionary, allocator as ColumnAllocator = nil) As clAbstractDataSerie()
 		  
 		  
 		  var tmp_column_names() as string = ColumnNames
@@ -2421,25 +2418,24 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_join(the_table as clDataTable, own_keys() as string, alt_keys() as string) As Boolean
+		Private Function internal_Join(the_table as clDataTable, own_keys() as string, alt_keys() as string) As Boolean
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub internal_new_table(the_table_name as string)
+		Private Sub internal_NewTable(NewTableName as string)
 		  
 		  
-		  if the_table_name.trim.Length = 0 then 
+		  if NewTableName.trim.Length = 0 then 
 		    Self.TableName = "Unnamed"
 		    
 		  else
-		    self.TableName = the_table_name.Trim
+		    self.TableName = NewTableName.Trim
 		    
 		  end if
 		  
 		  row_index = New clDataSerieRowID("row_id")
-		  
 		  
 		  allow_local_columns =  False
 		  index_explicit_when_iterate = False
@@ -2501,7 +2497,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  return internal_join(table_to_join, tmp_key1, tmp_key2)
+		  return internal_Join(table_to_join, tmp_key1, tmp_key2)
 		  
 		  
 		End Function
@@ -2520,7 +2516,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  return internal_join(table_to_join, tmp_key1, tmp_key2)
+		  return internal_Join(table_to_join, tmp_key1, tmp_key2)
 		  
 		  
 		End Function
@@ -2533,7 +2529,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub NumberColumnK(pColumnName as string, assigns source_value as Variant)
+		Sub NumberColumnValues(pColumnName as string, assigns pSourceValue as Variant)
 		  
 		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
@@ -2541,9 +2537,9 @@ Implements TableColumnReaderInterface,Iterable
 		    Raise New clDataException("Cannot find  column " + pColumnName)
 		    return 
 		    
-		  elseif source_value.Type = Variant.TypeObject then
+		  elseif pSourceValue.Type = Variant.TypeObject then
 		    
-		    var temp_obj as Object = source_value.ObjectValue
+		    var temp_obj as Object = pSourceValue.ObjectValue
 		    
 		    if temp_obj isa clNumberDataSerie or temp_obj isa clIntegerDataSerie then
 		      temp_column.SetElements(clAbstractDataSerie(temp_obj))
@@ -2552,13 +2548,13 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    Raise New clDataException("Assigned item is an object, when updating " + pColumnName)
 		    
-		  elseif source_value.IsArray then
+		  elseif pSourceValue.IsArray then
 		    Raise New clDataException("Assigned item is an array, when updating " + pColumnName)
 		    
 		  else
 		    
 		    for i as integer = 0 to temp_column.RowCount
-		      temp_column.SetElement(i, source_value)
+		      temp_column.SetElement(i, pSourceValue)
 		      
 		    next
 		    return
@@ -2569,7 +2565,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function object_allocator(name as string) As object
+		Delegate Function ObjectAllocator(name as string) As object
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
@@ -2588,17 +2584,17 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RenameColumn(pColumnName as string, the_new_name as string)
+		Sub RenameColumn(OldColumnName as string, NewColumnName as string)
 		  
-		  For idx As Integer = 0 To columns.LastIndex
-		    
-		    If columns(idx).name = pColumnName Then
-		      columns(idx).rename(the_new_name)
-		      Return
-		      
-		    End If
-		    
-		  Next
+		  var col as clAbstractDataSerie = self.GetColumn(OldColumnName)
+		  
+		  if col = nil then return
+		  
+		  if self.GetColumn(NewColumnName) <> nil then return
+		  
+		  col.Rename(NewColumnName)
+		  
+		  Return
 		End Sub
 	#tag EndMethod
 
@@ -2659,6 +2655,10 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		End Function
 	#tag EndMethod
+
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function RowFilter(pRowIndex as integer, pRowCount as integer, pColumnNames() as string, pCellValues() as variant, paramarray pFunctionParameters as variant) As Boolean
+	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
 		Sub Save(write_to as TableRowWriterInterface)
@@ -2785,7 +2785,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub StringColumn(pColumnName as string, assigns source_value as Variant)
+		Sub StringColumn(pColumnName as string, assigns pSourceValue as Variant)
 		  
 		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
@@ -2793,9 +2793,9 @@ Implements TableColumnReaderInterface,Iterable
 		    Raise New clDataException("Cannot find  column " + pColumnName)
 		    return 
 		    
-		  elseif source_value.Type = Variant.TypeObject then
+		  elseif pSourceValue.Type = Variant.TypeObject then
 		    
-		    var temp_obj as Object = source_value.ObjectValue
+		    var temp_obj as Object = pSourceValue.ObjectValue
 		    
 		    if temp_obj isa clAbstractDataSerie then
 		      temp_column.SetElements(clAbstractDataSerie(temp_obj))
@@ -2804,13 +2804,13 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    Raise New clDataException("Assigned item is an object, when updating " + pColumnName)
 		    
-		  elseif source_value.IsArray then
+		  elseif pSourceValue.IsArray then
 		    Raise New clDataException("Assigned item is an array, when updating " + pColumnName)
 		    
 		  else
 		    
 		    for i as integer = 0 to temp_column.RowCount
-		      temp_column.SetElement(i, source_value)
+		      temp_column.SetElement(i, pSourceValue)
 		      
 		    next
 		    return

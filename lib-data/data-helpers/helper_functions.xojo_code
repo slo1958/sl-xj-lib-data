@@ -23,7 +23,7 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function MakeVariantArray(v as Variant) As variant()
+		Function ExtractVariantArray(v as Variant) As variant()
 		  var res() as variant
 		  
 		  if not v.IsArray then return res

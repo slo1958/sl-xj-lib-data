@@ -11,6 +11,20 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ApplyFilterFunction(pFilterFunction as FilterColumnByRows, paramarray pFunctionParameters as variant) As variant()
+		  var return_boolean() As Variant
+		  
+		  For row_index As Integer=0 To items.LastIndex
+		    return_boolean.Append(pFilterFunction.Invoke(row_index,  items.LastIndex, name, items(row_index), pFunctionParameters))
+		    
+		  Next
+		  
+		  Return return_boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Clone() As clDataSerie
 		  var tmp As New clDataSerie(Self.name)
 		  
@@ -60,20 +74,6 @@ Implements itf_json_able
 		  For row_index As Integer=0 To items.LastIndex
 		    my_item = items(row_index)
 		    return_boolean.Append(list_of_values.IndexOf(my_item)>=0)
-		    
-		  Next
-		  
-		  Return return_boolean
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function FilterWithFunction(the_filter_function as FilterColumnByRows, paramarray function_param as variant) As variant()
-		  var return_boolean() As Variant
-		  
-		  For row_index As Integer=0 To items.LastIndex
-		    return_boolean.Append(the_filter_function.Invoke(row_index,  items.LastIndex, name, items(row_index), function_param))
 		    
 		  Next
 		  

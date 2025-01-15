@@ -146,6 +146,15 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ApplyFilterFunction(pFilterFunction as FilterColumnByRows, paramarray pFunctionParameters as variant) As variant()
+		  var return_boolean() As Variant
+		  
+		  Return return_boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Average() As double
 		  var limit As Integer = RowCount - 1
 		  var i As Integer
@@ -410,7 +419,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  if the_values.LastIndex < 0 then return
 		  
 		  if the_values(0).IsArray and the_values.LastIndex = 0 then
-		    var tmp() as variant = MakeVariantArray(the_values(0))
+		    var tmp() as variant = ExtractVariantArray(the_values(0))
 		    
 		    self.AddElements(tmp)
 		    
@@ -557,17 +566,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function FilterColumnByRows(the_row_index as integer, the_RowCount as integer, pColumnName as string, the_cell_value as variant, paramarray function_param as variant) As Boolean
+		Delegate Function FilterColumnByRows(pRowIndex as integer, pRowCount as integer, pColumnName as string, the_cell_value as variant, paramarray pFunctionParameters as variant) As Boolean
 	#tag EndDelegateDeclaration
-
-	#tag Method, Flags = &h0
-		Function FilterWithFunction(the_filter_function as FilterColumnByRows, paramarray function_param as variant) As variant()
-		  var return_boolean() As Variant
-		  
-		  Return return_boolean
-		  
-		End Function
-	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function FindRowIndexForValue(the_find_value as Variant) As integer()
@@ -922,11 +922,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Rename(the_new_name as string)
+		Sub Rename(NewColumnName as string)
 		  //  
 		  //  use setter of computed property
 		  //  
-		  Self.name = the_new_name
+		  Self.name = NewColumnName
 		  
 		  
 		  
@@ -935,11 +935,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Rename(the_new_name as string) As clAbstractDataSerie
+		Function Rename(NewColumnName as string) As clAbstractDataSerie
 		  //  
 		  //  use setter of computed property
 		  //  
-		  Self.name = the_new_name
+		  Self.name = NewColumnName
 		  
 		  return self
 		  
@@ -1354,7 +1354,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		
 		clone 
 		
-		FilterWithFunction
+		ApplyFilterFunction
 		
 		get_element
 		

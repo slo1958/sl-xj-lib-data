@@ -27,23 +27,23 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter01(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function filter01(the_row as integer, pRowCount as integer, the_column as string, the_value as variant, paramarray pFunctionParameters as variant) As Boolean
 		  Return True
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_value_is_not_aaa(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function filter_value_is_not_aaa(the_row as integer, pRowCount as integer, the_column as string, the_value as variant, paramarray pFunctionParameters as variant) As Boolean
 		  Return the_value <> "aaa"
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_value_is_parameter(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function filter_value_is_parameter(the_row as integer, pRowCount as integer, the_column as string, the_value as variant, paramarray pFunctionParameters as variant) As Boolean
 		  try
-		    Return the_value = function_param(0)
+		    Return the_value = pFunctionParameters(0)
 		    
 		  Catch
 		    return False
@@ -186,11 +186,11 @@ Protected Module clDataSerie_tests
 		  // all boolean arrays have the same size
 		  //
 		  
-		  f1 = src.FilterWithFunction(AddressOf filter01)
+		  f1 = src.ApplyFilterFunction(AddressOf filter01)
 		  
-		  f2 = src.FilterWithFunction(AddressOf RetainSerieHead, 7)
+		  f2 = src.ApplyFilterFunction(AddressOf RetainSerieHead, 7)
 		  
-		  f3 = src.FilterWithFunction(AddressOf RetainSerieTail)
+		  f3 = src.ApplyFilterFunction(AddressOf RetainSerieTail)
 		  
 		  var c1 As New clDataSerie("test001", f1)
 		  var c2 As New clDataSerie("test002", f2)
@@ -335,9 +335,9 @@ Protected Module clDataSerie_tests
 		  var f1() As variant
 		  var f2() As variant 
 		  
-		  f1 = c1.FilterWithFunction(AddressOf filter_value_is_not_aaa)
+		  f1 = c1.ApplyFilterFunction(AddressOf filter_value_is_not_aaa)
 		  
-		  f2 = c2.FilterWithFunction(AddressOf filter_value_is_not_aaa)
+		  f2 = c2.ApplyFilterFunction(AddressOf filter_value_is_not_aaa)
 		  
 		  var r1 As New clDataSerie("test001", f1)
 		  var r2 As New clDataSerie("test002", f2)
@@ -541,9 +541,9 @@ Protected Module clDataSerie_tests
 		  var f1() As variant
 		  var f2() As variant 
 		  
-		  f1 = c1.FilterWithFunction(AddressOf filter_value_is_parameter,"aaa")
+		  f1 = c1.ApplyFilterFunction(AddressOf filter_value_is_parameter,"aaa")
 		  
-		  f2 = c2.FilterWithFunction(AddressOf filter_value_is_parameter,"aaa")
+		  f2 = c2.ApplyFilterFunction(AddressOf filter_value_is_parameter,"aaa")
 		  
 		  
 		  var r1 As New clDataSerie("test001", f1)

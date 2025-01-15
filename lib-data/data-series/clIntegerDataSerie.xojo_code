@@ -76,7 +76,7 @@ Inherits clAbstractDataSerie
 		  super.CloneInfo(target)
 		  
 		  target.DefaultValue = self.DefaultValue
-		  target.FormatStr = self.FormatStr
+		  target.Formatter = self.Formatter
 		  
 		End Sub
 	#tag EndMethod
@@ -142,11 +142,15 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetElementAsString(the_element_index as integer) As string
-		  if FormatWithLocale then
-		    return format(self.GetElement(the_element_index), FormatStr)
+		  
+		  if self.Formatter = nil then 
+		    return self.GetElementAsInteger(the_element_index).ToString
+		    
 		  else
-		    return Str(self.GetElement(the_element_index), FormatStr)
+		    return self.Formatter.FormatInteger(self.GetElement(the_element_index))
+		    
 		  end if
+		  
 		End Function
 	#tag EndMethod
 
@@ -172,7 +176,11 @@ Inherits clAbstractDataSerie
 		  Var p as clDataSerieProperties = Super.GetProperties()
 		  
 		  p.DefaultValue = self.DefaultValue
-		  p.FormatStr = self.FormatStr
+		  
+		  if self.Formatter <> nil then
+		    p.FormatStr = self.Formatter.GetInfo
+		    
+		  end if
 		  
 		  return p
 		End Function
@@ -391,14 +399,28 @@ Inherits clAbstractDataSerie
 		  Super.SetProperties(properties)
 		  
 		  self.DefaultValue = properties.DefaultValue
-		  self.FormatStr = properties.FormatStr
+		  
+		  if properties.FormatStr.Length = 0 then
+		    
+		  elseif properties.FormatStr ="Range formatting" then
+		    
+		  else
+		    self.Formatter = new clIntegerFormatting(properties.FormatStr)
+		    
+		  end if
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetWriteFormat(the_format as String, UseLocal as Boolean = False)
-		  FormatStr = the_format
-		  FormatWithLocale = UseLocal
+		  if UseLocal then
+		    self.Formatter = new clIntegerLocalFormatting(the_format)
+		    
+		  else
+		    self.Formatter = new clIntegerFormatting(the_format)
+		    
+		  end if
 		End Sub
 	#tag EndMethod
 
@@ -436,11 +458,7 @@ Inherits clAbstractDataSerie
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected FormatStr As string = "-###,##0"
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
-		Protected FormatWithLocale As Boolean = False
+		Protected Formatter As IntegerFormatInteraface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

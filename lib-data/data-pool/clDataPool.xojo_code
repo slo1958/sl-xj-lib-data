@@ -44,7 +44,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub LoadEachTable(ReadFrom as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
+		Sub LoadEachTable(ReadFrom as TableRowReaderInterface, allocator as clDataTable.ColumnAllocator = nil)
 		  
 		  var tmp() as string = ReadFrom.GetListOfExternalElements
 		  
@@ -61,7 +61,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub LoadOneTable(ReadFrom as TableRowReaderInterface, allocator as clDataTable.column_allocator = nil)
+		Sub LoadOneTable(ReadFrom as TableRowReaderInterface, allocator as clDataTable.ColumnAllocator = nil)
 		  var tmp_table as new clDataTable(ReadFrom, allocator)
 		  
 		  self.SetTable(tmp_table)

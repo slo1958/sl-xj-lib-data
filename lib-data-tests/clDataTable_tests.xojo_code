@@ -425,13 +425,13 @@ Protected Module clDataTable_tests
 		  
 		  //  The function is filtering on column cc2. The parameter is the value to look for
 		  
-		  var tmp1() as variant = my_table.FilterWithFunction(AddressOf filter_008,"bbb0")
+		  var tmp1() as variant = my_table.ApplyFilterFunction(AddressOf filter_008,"bbb0")
 		  
 		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb0", tmp1))
 		  
 		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb1", clDataSerie(my_table.GetColumn("cc2")).FilterValueInList(array("bbb1"))))
 		  
-		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb3",  my_table.FilterWithFunction(AddressOf filter_008, "bbb3")))
+		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb3",  my_table.ApplyFilterFunction(AddressOf filter_008, "bbb3")))
 		  
 		  
 		  var col1 as new clDataSerie("cc1", "aaa0","aaa1","aaa2","aaa3")
@@ -556,7 +556,7 @@ Protected Module clDataTable_tests
 		  temp_row.SetCell("unit_price",8)
 		  mytable.AddRow(temp_row)
 		  
-		  call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNumberDataSerie(mytable.GetColumn("quantity")))
+		  call mytable.AddColumn(mytable.GetNumberColumn("unit_price") * mytable.GetNumberColumn("quantity"))
 		  
 		  var col1 as new clDataSerie("name", "alpha","alpha")
 		  var col2 as new clNumberDataSerie("quantity", 50, 20)
@@ -1381,7 +1381,7 @@ Protected Module clDataTable_tests
 		  mytable.AddRow(new Dictionary("name": "alpha", "quantity":50, "unit_price": 6))
 		  mytable.AddRow(new Dictionary("name": "alpha", "quantity":20, "unit_price": 8))
 		  
-		  call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNumberDataSerie(mytable.GetColumn("quantity")))
+		  call mytable.AddColumn(mytable.GetNumberColumn("unit_price") * mytable.GetNumberColumn("quantity"))
 		  
 		  var col1 as new clDataSerie("name", "alpha","alpha")
 		  var col2 as new clNumberDataSerie("quantity", 50, 20)
@@ -1414,7 +1414,7 @@ Protected Module clDataTable_tests
 		  mytable.AddRow("name": "alpha", "quantity":50, "unit_price": 6)
 		  mytable.AddRow("name": "alpha", "quantity":20, "unit_price": 8)
 		  
-		  call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNumberDataSerie(mytable.GetColumn("quantity")))
+		  call mytable.AddColumn(mytable.GetNumberColumn("unit_price") * mytable.GetNumberColumn("quantity"))
 		  
 		  var col1 as new clDataSerie("name", "alpha","alpha")
 		  var col2 as new clNumberDataSerie("quantity", 50, 20)
@@ -1448,8 +1448,8 @@ Protected Module clDataTable_tests
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
-		  var is_france() as variant = table0.FilterWithFunction(AddressOf BasicFieldFilter,"country","France")
-		  var is_belgium() as variant =  table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")
+		  var is_france() as variant = table0.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")
+		  var is_belgium() as variant =  table0.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")
 		  
 		  call table0.AddColumn(new clIntegerDataSerie("is_france"))
 		  call table0.AddColumn(new clIntegerDataSerie("is_belgium"))
@@ -1459,7 +1459,7 @@ Protected Module clDataTable_tests
 		  call table0.SetColumnValues("is_belgium", is_belgium, false)
 		  
 		  // Set the flag to 0 or 2 for test purposes only
-		  table0.Column("is_europe") = ( clIntegerDataSerie(table0.Column("is_france")) +clIntegerDataSerie( table0.Column("is_belgium"))) * 2
+		  table0.ColumnValues("is_europe") = table0.GetIntegerColumn("is_france") + table0.GetIntegerColumn("is_belgium") * 2
 		  
 		  
 		  var col1 as new clDataSerie("country", Array("France","France", "Belgique", "USA","Belgique","USA"))
@@ -1529,8 +1529,8 @@ Protected Module clDataTable_tests
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
-		  var is_france() as variant = table0.FilterWithFunction(AddressOf BasicFieldFilter,"country","France")
-		  var is_belgium() as variant =  table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")
+		  var is_france() as variant = table0.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")
+		  var is_belgium() as variant =  table0.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")
 		  
 		  call table0.AddColumn(new clIntegerDataSerie("is_france"))
 		  call table0.AddColumn(new clIntegerDataSerie("is_belgium"))
@@ -1540,7 +1540,7 @@ Protected Module clDataTable_tests
 		  call table0.SetColumnValues("is_belgium", is_belgium, false)
 		  
 		  // Set the flag to 0 or 2 for test purposes only
-		  table0.Column("is_europe") = (table0.GetIntegerColumn("is_france") +  table0.GetIntegerColumn("is_belgium")) * 2
+		  table0.ColumnValues("is_europe") = (table0.GetIntegerColumn("is_france") +  table0.GetIntegerColumn("is_belgium")) * 2
 		  
 		  
 		  var col1 as new clDataSerie("country", Array("France","France", "Belgique", "USA","Belgique","USA"))

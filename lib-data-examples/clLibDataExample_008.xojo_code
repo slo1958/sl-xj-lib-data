@@ -43,8 +43,8 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
-		  var is_france() as variant = table0.FilterWithFunction(AddressOf BasicFieldFilter,"country","France")
-		  var is_belgium() as variant =  table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")
+		  var is_france() as variant = table0.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")
+		  var is_belgium() as variant =  table0.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")
 		  var is_europe() as variant
 		  
 		  call table0.AddColumn(new clIntegerDataSerie("is_france"))

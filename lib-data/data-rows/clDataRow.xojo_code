@@ -2,7 +2,7 @@
 Protected Class clDataRow
 Implements Iterable
 	#tag Method, Flags = &h0
-		Function AsObject(allocator as clDataTable.object_allocator = nil) As object
+		Function AsObject(allocator as clDataTable.ObjectAllocator = nil) As object
 		  var obj as Object
 		  
 		  if allocator = nil then return nil
@@ -19,7 +19,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AsObject(TypeFieldName as string, allocator as clDataTable.object_allocator = nil) As object
+		Function AsObject(TypeFieldName as string, allocator as clDataTable.ObjectAllocator = nil) As object
 		  var obj as Object
 		  
 		  if allocator = nil then return nil
@@ -318,13 +318,13 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetCell(the_cell_name as string, the_cell_value as Variant)
+		Sub SetCell(CellName as string, NewCellValue as Variant)
 		  //  
 		  //  Update the value of one field / cell
 		  //  
 		  //  Parameters:
-		  //  - the name of the cell
-		  // -  the value of the cell
+		  //  - CellName: the name of the cell
+		  // -  NewCellValue: the value of the cell
 		  //
 		  // An exception is generated if the row is flagged as 'non mutable'
 		  //  
@@ -333,11 +333,11 @@ Implements Iterable
 		  //  
 		  
 		  
-		  If my_storage.HasKey(the_cell_name) And Not mutable_flag Then
+		  If my_storage.HasKey(CellName) And Not mutable_flag Then
 		    Raise New clDataException("Cannot update a field in a non mutable row")
 		    
 		  Else
-		    my_storage.Value(the_cell_name) = the_cell_value
+		    my_storage.Value(CellName) = NewCellValue
 		    
 		  End If
 		  

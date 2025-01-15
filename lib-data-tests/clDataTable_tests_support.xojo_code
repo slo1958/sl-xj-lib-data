@@ -82,10 +82,10 @@ Protected Module clDataTable_tests_support
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function filter_008(the_row_index as integer, the_RowCount as integer, pColumnNames() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		Function filter_008(pRowIndex as integer, pRowCount as integer, pColumnNames() as string, pCellValues() as variant, paramarray pFunctionParameters as variant) As Boolean
 		  var idx as integer = pColumnNames.IndexOf("cc2")
 		  
-		  return the_cell_values(idx) = function_param(0)
+		  return pCellValues(idx) = pFunctionParameters(0)
 		End Function
 	#tag EndMethod
 

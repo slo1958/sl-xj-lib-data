@@ -1,16 +1,16 @@
 #tag Module
 Protected Module clDataTableFilterFunctions
 	#tag Method, Flags = &h0
-		Function BasicFieldFilter(the_row_index as integer, the_RowCount as integer, pColumnNames() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		Function BasicFieldFilter(pRowIndex as integer, pRowCount as integer, pColumnNames() as string, pCellValues() as variant, paramarray pFunctionParameters as variant) As Boolean
 		  //  
-		  //  Implementation of basic filter_row to compare the value of a cell in a column (name as paramter #0) to a constant value (paramter #1)
+		  //  Implementation of basic RowFilter to compare the value of a cell in a column (name as paramter #0) to a constant value (paramter #1)
 		  //  
 		  //  Parameters
-		  //  - the_row_index: index of the current row
-		  //  - the_RowCount: number of rows in the table
+		  //  - pRowIndex: index of the current row
+		  //  - pRowCount: number of rows in the table
 		  //  - pColumnNames(): list of columns in in the table
-		  //  - the_cell_values(): values of the columns for the current row
-		  //  - function_param: additional paramters used to defined the bahaviour of the function
+		  //  - pCellValues(): values of the columns for the current row
+		  //  - pFunctionParameters: additional paramters used to defined the bahaviour of the function
 		  //     In this implementation:
 		  //     - parameter #0 is the name of the column
 		  //    -  parameter #1 is the expected value
@@ -18,26 +18,39 @@ Protected Module clDataTableFilterFunctions
 		  //  Returns:
 		  //   - boolean: results of comparision, true if the value in the column matches the expected value
 		  //  
-		  var field_name as string = function_param(0)
-		  var field_value as variant = function_param(1)
+		  var FieldName as string = pFunctionParameters(0)
+		  var FieldValue as variant = pFunctionParameters(1)
 		  
-		  var idx as integer = pColumnNames.IndexOf(field_name)
+		  var idx as integer = pColumnNames.IndexOf(FieldName)
 		  
-		  return the_cell_values(idx) = field_value
+		  if FieldValue.IsArray then
+		    var va() as variant = ExtractVariantArray(FieldValue)
+		    
+		    for each v as variant in va
+		      if pCellValues(idx) = v then return true
+		      
+		    next
+		    return False
+		    
+		  else
+		    return pCellValues(idx) = FieldValue
+		    
+		  end if
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function RetainSerieHead(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function RetainSerieHead(the_row as integer, pRowCount as integer, the_column as string, the_value as variant, paramarray pFunctionParameters as variant) As Boolean
 		  //  
-		  //  Implementation of basic filter_row to return n top rows.
+		  //  Implementation of basic RowFilter to return n top rows.
 		  //  
 		  //  Parameters
-		  //  - the_row_index: index of the current row
-		  //  - the_RowCount: number of rows in the table
+		  //  - pRowIndex: index of the current row
+		  //  - pRowCount: number of rows in the table
 		  //  - pColumnNames(): list of columns in in the table
-		  //  - the_cell_values(): values of the columns for the current row
-		  //  - function_param: additional paramters used to defined the bahaviour of the function
+		  //  - pCellValues(): values of the columns for the current row
+		  //  - pFunctionParameters: additional paramters used to defined the bahaviour of the function
 		  //     In this implementation:
 		  //     - parameter #0 is the number of rows, with a default of 10
 		  //  
@@ -45,8 +58,8 @@ Protected Module clDataTableFilterFunctions
 		  //   - boolean: true for selected header rows
 		  //  
 		  
-		  If function_param.LastIndex >= 0 Then
-		    var tmp As Integer = function_param(0)
+		  If pFunctionParameters.LastIndex >= 0 Then
+		    var tmp As Integer = pFunctionParameters(0)
 		    Return the_row < tmp
 		    
 		  Else
@@ -58,16 +71,16 @@ Protected Module clDataTableFilterFunctions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function RetainSerieTail(the_row as integer, the_RowCount as integer, the_column as string, the_value as variant, paramarray function_param as variant) As Boolean
+		Function RetainSerieTail(the_row as integer, pRowCount as integer, the_column as string, the_value as variant, paramarray pFunctionParameters as variant) As Boolean
 		  //  
-		  //  Implementation of basic filter_row to return n last rows.
+		  //  Implementation of basic RowFilter to return n last rows.
 		  //  
 		  //  Parameters
-		  //  - the_row_index: index of the current row
-		  //  - the_RowCount: number of rows in the table
+		  //  - pRowIndex: index of the current row
+		  //  - pRowCount: number of rows in the table
 		  //  - pColumnNames(): list of columns in in the table
-		  //  - the_cell_values(): values of the columns for the current row
-		  //  - function_param: additional paramters used to defined the bahaviour of the function
+		  //  - pCellValues(): values of the columns for the current row
+		  //  - pFunctionParameters: additional paramters used to defined the bahaviour of the function
 		  //     In this implementation:
 		  //     - parameter #0 is the number of rows, with a default of 10
 		  //  
@@ -76,13 +89,13 @@ Protected Module clDataTableFilterFunctions
 		  //  
 		  
 		  
-		  If function_param.LastIndex >= 0 Then
+		  If pFunctionParameters.LastIndex >= 0 Then
 		    
-		    var tmp As Integer = function_param(0)
-		    Return the_row > the_RowCount - tmp
+		    var tmp As Integer = pFunctionParameters(0)
+		    Return the_row > pRowCount - tmp
 		    
 		  Else
-		    Return  the_row > the_RowCount - 10
+		    Return  the_row > pRowCount - 10
 		    
 		  End If
 		  
@@ -91,18 +104,18 @@ Protected Module clDataTableFilterFunctions
 
 
 	#tag Note, Name = About Table filter methods
-		A function can be used as a table filter if it matches the prototype of the 'filter_row' delegate defined in clDataTable.
+		A function can be used as a table filter if it matches the prototype of the 'RowFilter' delegate defined in clDataTable.
 		
 		The prototype is:
 		
-		function xyz(the_row_index as integer, the_RowCount as integer, pColumnNames() as string, the_cell_values() as variant, paramarray function_param as variant) as boolean
+		function xyz(pRowIndex as integer, pRowCount as integer, pColumnNames() as string, pCellValues() as variant, paramarray pFunctionParameters as variant) as boolean
 		
 		where
-		- the_row_index: index of the current row
-		- the_RowCount: number of rows in the table
+		- pRowIndex: index of the current row
+		- pRowCount: number of rows in the table
 		- pColumnNames(): list of columns in in the table
-		- the_cell_values(): values of the columns for the current row
-		- function_param: additional paramters used to defined the bahaviour of the function
+		- pCellValues(): values of the columns for the current row
+		- pFunctionParameters: additional paramters used to defined the bahaviour of the function
 		
 		
 		This module contains example table filter methods.
