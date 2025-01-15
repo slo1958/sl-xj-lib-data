@@ -389,10 +389,12 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  SerieName = the_label
 		  physical_table_link = Nil
 		  
-		  For i As Integer = 0 To the_values.LastIndex
-		    self.AddElement(the_values(i))
-		    
-		  Next
+		  self.AddElements(the_values)
+		  
+		  // For i As Integer = 0 To the_values.LastIndex
+		  // self.AddElement(the_values(i))
+		  // 
+		  // Next
 		  
 		End Sub
 	#tag EndMethod
@@ -410,20 +412,16 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  if the_values(0).IsArray and the_values.LastIndex = 0 then
 		    var tmp() as variant = MakeVariantArray(the_values(0))
 		    
-		    For i As Integer = 0 To tmp.LastIndex
-		      self.AddElement(tmp(i))
-		      
-		    Next
+		    self.AddElements(tmp)
 		    
-		    return
+		  else
+		    self.AddElements(the_values)
 		    
 		  end if
 		  
+		  Return
 		  
-		  For i As Integer = 0 To the_values.LastIndex
-		    self.AddElement(the_values(i))
-		    
-		  Next
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -1037,6 +1035,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub SetElement(the_element_index as integer, the_item as Variant)
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
@@ -1044,6 +1043,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Sub SetElements(the_values as clAbstractDataSerie)
+		  
 		  for i as integer = 0 to the_values.LastIndex
 		    self.SetElement(i, the_values.GetElement(i))
 		    
