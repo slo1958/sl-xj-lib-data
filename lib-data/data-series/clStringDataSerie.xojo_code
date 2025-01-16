@@ -407,7 +407,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToNumber() As clNumberDataSerie
-		  var res as new clNumberDataSerie(self.name+" as double")
+		  
+		  var res as new clNumberDataSerie(self.name+" as number")
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElementAsNumber(i))

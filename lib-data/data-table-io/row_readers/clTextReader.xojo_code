@@ -26,24 +26,27 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(fld as FolderItem, has_header as Boolean, config as clTextFileConfig)
+		Sub Constructor(SourceFileOrFolder as FolderItem, SourceHasHeader as Boolean, config as clTextFileConfig)
 		  
 		  var TempConfig as clTextFileConfig = config
 		  
 		  if TempConfig = nil then TempConfig = new clTextFileConfig
 		  
-		  self.SourcePath = fld
-		  self.RequiresHeader = has_header
+		  self.SourcePath = SourceFileOrFolder
+		  self.RequiresHeader = SourceHasHeader
 		  
 		  self.InternalInitConfig(TempConfig)
 		  
-		  if not fld.Exists or fld.IsFolder then
+		  if not SourceFileOrFolder.Exists or SourceFileOrFolder.IsFolder then
 		    self.textstream = nil
 		    Return
 		    
 		  end if
 		  
-		  OpenTextStream(fld)
+		  OpenTextStream(SourceFileOrFolder)
+		  
+		  return
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -117,12 +120,12 @@ Implements TableRowReaderInterface
 		  var tmp as new Dictionary
 		  
 		  for each s as string in mheader
-		    tmp.value(s) = ""
+		    tmp.value(s) = "string"
 		    
 		  next
 		  
 		  return tmp
-		   
+		  
 		End Function
 	#tag EndMethod
 

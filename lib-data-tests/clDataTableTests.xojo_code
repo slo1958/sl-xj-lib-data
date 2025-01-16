@@ -1905,7 +1905,7 @@ Protected Class clDataTableTests
 		  call expected_table.AddColumn(new clNumberDataSerie("Delta"))
 		  call expected_table.AddColumn(new clNumberDataSerie("Gamma"))
 		  call expected_table.AddColumn(new clIntegerDataSerie("Group"))
-		  call expected_table.AddColumn(new clDataSerie("New_col"))
+		  call expected_table.AddColumn(new clStringDataSerie("New_col"))
 		  
 		  call expected_table.AddRows(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
 		  

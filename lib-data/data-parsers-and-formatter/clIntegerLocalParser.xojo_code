@@ -6,7 +6,6 @@ Inherits clIntegerParser
 		  super.Constructor
 		  
 		  self.GroupingChar = Locale.Current.GroupingSeparator
-		  
 		End Sub
 	#tag EndMethod
 

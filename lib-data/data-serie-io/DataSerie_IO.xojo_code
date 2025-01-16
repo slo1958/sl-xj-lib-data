@@ -1,7 +1,7 @@
 #tag Module
 Protected Module DataSerie_IO
 	#tag Method, Flags = &h0
-		Function append_textfile_to_DataSerie(the_source as FolderItem, theDataSerie as clAbstractDataSerie, has_header as Boolean) As clAbstractDataSerie
+		Function append_textfile_to_DataSerie(SourceFIle as FolderItem, theDataSerie as clAbstractDataSerie, has_header as Boolean) As clAbstractDataSerie
 		  //
 		  // Load the serie from a text file, each line is loaded into one element, without further processing
 		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
@@ -11,13 +11,13 @@ Protected Module DataSerie_IO
 		  var text_file  As TextInputStream
 		  var return_header As String
 		  
-		  If the_source = Nil Then
+		  If SourceFIle = Nil Then
 		    Return nil
 		    
 		  End If
 		  
 		  
-		  text_file = TextInputStream.Open(the_source)
+		  text_file = TextInputStream.Open(SourceFIle)
 		  
 		  got_header = Not has_header
 		  
@@ -38,7 +38,7 @@ Protected Module DataSerie_IO
 		  
 		  text_file.close
 		  
-		  theDataSerie.AddMetadata("source",the_source.Name)
+		  theDataSerie.AddMetadata("source",SourceFIle.Name)
 		  
 		  return theDataSerie
 		  

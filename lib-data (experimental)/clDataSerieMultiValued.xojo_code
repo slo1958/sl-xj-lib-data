@@ -78,7 +78,7 @@ Inherits clDataSerie
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="display_title"
+			Name="DisplayTitle"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

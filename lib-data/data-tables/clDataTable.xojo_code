@@ -201,7 +201,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddColumnsData(the_source as TableColumnReaderInterface, CreateMissingColumns as boolean = True)
+		Sub AddColumnsData(RowSource as TableColumnReaderInterface, CreateMissingColumns as boolean = True)
 		  //  
 		  //  Add  the data row from column source. New columns may be added to the current table
 		  //  
@@ -221,7 +221,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  var length_before as integer = self.RowCount
 		  
-		  For Each src_tmp_column As clAbstractDataSerie In the_source.GetAllColumns
+		  For Each src_tmp_column As clAbstractDataSerie In RowSource.GetAllColumns
 		    var column_name As String = src_tmp_column.name
 		    
 		    var dst_tmp_column As  clAbstractDataSerie = Self.GetColumn(column_name)
@@ -245,7 +245,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Next
 		  
-		  var new_size As Integer = Self.RowCount + the_source.RowCount
+		  var new_size As Integer = Self.RowCount + RowSource.RowCount
 		  
 		  Self.row_index.SetLength(new_size)
 		  
@@ -597,7 +597,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  //  For example, 
 		  //  - with the current table containing columns A, B, C 
-		  //  - appending from the_source,  a table with columns W, X, Y, Z
+		  //  - appending from RowSource,  a table with columns W, X, Y, Z
 		  //  - mapping dictionary X:A, Y:B, Z:D
 		  //  the values from W are ignored, since the column is not defined in the mapping dictionary
 		  //  the values from X, and Y are appended to the existing columns A and B
@@ -605,7 +605,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //
 		  //  Parameters:
 		  //  - NewRowsSource:  the source , providing data column by column
-		  //  - FieldMapping: mapping dictionary, key is field name in the_source, value is the field name in the clDataTable
+		  //  - FieldMapping: mapping dictionary, key is field name in RowSource, value is the field name in the clDataTable
 		  //  - Mode: handling of missing columns in table
 		  //  
 		  //  Returns:
@@ -1237,7 +1237,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_columns() as clAbstractDataSerie = internal_CreateColumnsWithAllocator (tmp_column_names, tmp_column_types, allocator)
 		  
-		  call self.internal_AddRows(NewTableSource, tmp_columns, "")
+		  call internal_AddRows(NewTableSource, tmp_columns, "")
 		  
 		  self.AdjustLength()
 		  
@@ -2283,14 +2283,14 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_AddRows(the_source as TableRowReaderInterface, TargetColumns() as clAbstractDataSerie, source_name as string) As integer
+		Private Function internal_AddRows(RowSource as TableRowReaderInterface, TargetColumns() as clAbstractDataSerie, SourceName as string) As integer
 		  //
 		  //  Add rows from the received source
 		  //  
 		  //  Parameters:
-		  //  - the_source: source of data rows
+		  //  - RowSource: source of data rows
 		  //  - TargetColumns: list of colums to be populated, by position
-		  //  - Source_name: used to populate a 'data source name' column, name of the column is in the 'LoadedDataSourceColumn' constant
+		  //  - SourceName: used to populate a 'data source name' column, name of the column is in the 'LoadedDataSourceColumn' constant
 		  //
 		  //  Returns:
 		  //  - 
@@ -2299,7 +2299,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var source_name_col as clAbstractDataSerie
 		  
-		  if source_name.Length > 0 then
+		  if SourceName.Length > 0 then
 		    source_name_col = self.GetColumn(LoadedDataSourceColumn)
 		    
 		  end if
@@ -2311,11 +2311,11 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  while not the_source.EndOfTable
+		  while not RowSource.EndOfTable
 		    var tmp_row() as variant
 		    added_rows = added_rows + 1
 		    
-		    tmp_row  = the_source.NextRow
+		    tmp_row  = RowSource.NextRow
 		    
 		    if tmp_row <> nil then 
 		      
@@ -2332,7 +2332,7 @@ Implements TableColumnReaderInterface,Iterable
 		        end if
 		      next
 		      
-		      if source_name_col <> nil then source_name_col.AddElement(source_name)
+		      if source_name_col <> nil then source_name_col.AddElement(SourceName)
 		      
 		    end if
 		    
