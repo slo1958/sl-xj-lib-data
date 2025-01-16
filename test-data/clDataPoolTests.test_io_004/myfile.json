@@ -1,0 +1,95 @@
+{
+    "manifest": [
+        "PoolTable1",
+        "PoolTable2"
+    ],
+    "tables": [
+        {
+            "header": {
+                "name": "PoolTable1",
+                "columns": [
+                    {
+                        "name": "aaa",
+                        "type": "Generic"
+                    },
+                    {
+                        "name": "bbb",
+                        "type": "Generic"
+                    },
+                    {
+                        "name": "ccc",
+                        "type": "Generic"
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "aaa": 1000,
+                    "bbb": "abcd",
+                    "ccc": 123.456000000000003
+                },
+                {
+                    "aaa": 2000,
+                    "bbb": "abcd",
+                    "ccc": 246.912000000000006
+                },
+                {
+                    "aaa": 3000,
+                    "bbb": "abcd",
+                    "ccc": 370.367999999999995
+                },
+                {
+                    "aaa": 4000,
+                    "bbb": "abcd",
+                    "ccc": 493.824000000000012
+                }
+            ]
+        },
+        {
+            "header": {
+                "name": "PoolTable2",
+                "columns": [
+                    {
+                        "name": "aaa",
+                        "type": "Generic"
+                    },
+                    {
+                        "name": "bbb",
+                        "type": "Generic"
+                    },
+                    {
+                        "name": "ddd",
+                        "type": "Generic"
+                    }
+                ]
+            },
+            "data": [
+                {
+                    "aaa": 5000,
+                    "bbb": "xyz",
+                    "ddd": 2839.449999999999818
+                },
+                {
+                    "aaa": 6000,
+                    "bbb": "xyz",
+                    "ddd": 3407.340000000000146
+                },
+                {
+                    "aaa": 7000,
+                    "bbb": "xyz",
+                    "ddd": 3975.230000000000018
+                },
+                {
+                    "aaa": 8000,
+                    "bbb": "xyz",
+                    "ddd": 4543.119999999999891
+                },
+                {
+                    "aaa": 9000,
+                    "bbb": "xyz",
+                    "ddd": 5111.010000000000218
+                }
+            ]
+        }
+    ]
+}

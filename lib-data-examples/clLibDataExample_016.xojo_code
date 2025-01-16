@@ -49,7 +49,7 @@ Inherits clLibDataExample
 		  var flagged as clIntegerDataSerie = new clIntegerDataSerie("late-payment",delay.GetFilterColumnValuesInRange(15,9999))
 		  
 		  // calculate penalty and give a better name
-		  var total_penaty as clNumberDataSerie = col_sales * col_penalty * flagged.ToDouble()
+		  var total_penaty as clNumberDataSerie = col_sales * col_penalty * flagged.ToNumber()
 		  total_penaty.rename("penalty")
 		  
 		  // update table

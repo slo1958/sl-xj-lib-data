@@ -1,32 +1,16 @@
-#tag Class
-Protected Class clIntegerFormatting
-Implements  IntegerFormatInteraface
-	#tag Method, Flags = &h0
-		Sub Constructor(formatStr as string)
-		  
-		  self.FormatString = formatStr
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function FormatInteger(the_value as Integer) As string
-		  // Part of the IntegerFormatInteraface interface.
-		  
-		  return Str(the_value, self.FormatString)
-		End Function
-	#tag EndMethod
-
+#tag Interface
+Protected Interface NumberParserInterface
 	#tag Method, Flags = &h0
 		Function GetInfo() As string
-		  Return self.FormatString
+		  
 		End Function
 	#tag EndMethod
 
-
-	#tag Property, Flags = &h0
-		FormatString As String
-	#tag EndProperty
+	#tag Method, Flags = &h0
+		Function ParseToNumber(the_value as string) As double
+		  
+		End Function
+	#tag EndMethod
 
 
 	#tag ViewBehavior
@@ -70,14 +54,6 @@ Implements  IntegerFormatInteraface
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
-		#tag ViewProperty
-			Name="FormatString"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
 	#tag EndViewBehavior
-End Class
-#tag EndClass
+End Interface
+#tag EndInterface

@@ -120,6 +120,15 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetElement(the_element_index as integer) As variant
+		  
+		  return self.GetElementAsInteger(the_element_index)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElementAsInteger(the_element_index as integer) As integer
+		  
 		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    Return items(the_element_index)
 		    
@@ -134,20 +143,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsInteger(the_element_index as integer) As integer
-		  return self.GetElement(the_element_index)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetElementAsString(the_element_index as integer) As string
 		  
 		  if self.Formatter = nil then 
 		    return self.GetElementAsInteger(the_element_index).ToString
 		    
 		  else
-		    return self.Formatter.FormatInteger(self.GetElement(the_element_index))
+		    return self.Formatter.FormatInteger(self.GetElementAsInteger(the_element_index))
 		    
 		  end if
 		  
@@ -425,11 +427,11 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToDouble() As clNumberDataSerie
+		Function ToNumber() As clNumberDataSerie
 		  var res as new clNumberDataSerie(self.name + " to double")
 		  
 		  for i as integer =0 to self.LastIndex
-		    res.AddElement(self.GetElement(i))
+		    res.AddElement(self.GetElementAsNumber(i))
 		    
 		  next
 		  

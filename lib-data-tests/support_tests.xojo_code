@@ -69,6 +69,57 @@ Protected Module support_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetTestMethods(c as object, mask as string) As Dictionary
+		  
+		  Var t As Introspection.TypeInfo
+		  
+		  
+		  var d as new Dictionary
+		  t = Introspection.GetType(c)
+		  
+		  for each met as Introspection.MethodInfo in t.GetMethods
+		    if met.name.left(mask.Length) = mask then
+		      d.value(met.name) = met
+		      
+		    end if
+		    
+		  next
+		  
+		  return d
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RunTests(c as object, mask as string, logwriter as LogMessageInterface)
+		  
+		  Var t As Introspection.TypeInfo
+		  
+		  
+		  var d as   Dictionary = GetTestMethods(c, mask)
+		  
+		  var s() as string
+		  
+		  for each k as string in d.keys
+		    s.Add(k)
+		    
+		  next
+		  
+		  s.Sort
+		  
+		  t = Introspection.GetType(c)
+		  
+		  for each k as string in s
+		    var met as Introspection.MethodInfo  = Introspection.MethodInfo (d.value(k))
+		    var v() as Variant
+		    v.Add(logwriter)
+		    met.Invoke(c, v)
+		    
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub WriteMessage(msg as string)
 		  system.DebugLog(msg)
 		End Sub

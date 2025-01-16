@@ -325,7 +325,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var tmp_item As variant = NewRow.GetCell(column)
 		    
 		    if tmp_column = nil then tmp_column = internal_HandleNewColumn(column, "", tmp_item, mode)
-		     
+		    
 		    if tmp_column <> nil then call AddColumn(tmp_column)
 		    
 		    If tmp_column <> Nil Then 
@@ -388,7 +388,7 @@ Implements TableColumnReaderInterface,Iterable
 		  self.AddRow(new clDataRow(SourceObject), clDataTable.AddRowMode.IgnoreNewColumn)
 		  
 		  
-		   
+		  
 		End Sub
 	#tag EndMethod
 
@@ -572,7 +572,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var v as variant
 		    
 		    if tmp_column = nil then tmp_column = internal_HandleNewColumn(column_name, column_type, v, mode)
-		     
+		    
 		    if tmp_column <> nil then
 		      tmp_column.SetLength(length_before)
 		      call self.AddColumn(tmp_column)
@@ -1237,8 +1237,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_columns() as clAbstractDataSerie = internal_CreateColumnsWithAllocator (tmp_column_names, tmp_column_types, allocator)
 		  
-		  
-		  call internal_AddRows(NewTableSource, tmp_columns, "")
+		  call self.internal_AddRows(NewTableSource, tmp_columns, "")
 		  
 		  self.AdjustLength()
 		  

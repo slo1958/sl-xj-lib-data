@@ -1,37 +1,11 @@
-#tag Module
-Protected Module clDataPool_tests
+#tag Class
+Protected Class clIntegerLocalParser
+Inherits clIntegerParser
 	#tag Method, Flags = &h0
-		Sub tests(log as LogMessageInterface)
+		Sub Constructor()
+		  super.Constructor
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
-		  
-		  logwriter.start_exec(CurrentMethodName)
-		  
-		  RunTests(new clDataPoolTests, "test_ca", logwriter)
-		  
-		  logwriter.end_exec(CurrentMethodName)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub tests_io(log as LogMessageInterface)
-		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
-		  
-		  logwriter.start_exec(CurrentMethodName)
-		  
-		  RunTests(new clDataPoolTests, "test_io", logwriter)
-		  
-		  logwriter.end_exec(CurrentMethodName)
+		  self.GroupingChar = Locale.Current.GroupingSeparator
 		  
 		End Sub
 	#tag EndMethod
@@ -78,6 +52,14 @@ Protected Module clDataPool_tests
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
+		#tag ViewProperty
+			Name="GroupingChar"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
 	#tag EndViewBehavior
-End Module
-#tag EndModule
+End Class
+#tag EndClass

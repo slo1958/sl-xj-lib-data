@@ -195,6 +195,15 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetElement(the_element_index as integer) As variant
+		  
+		  return self.GetElementAsNumber(the_element_index)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElementAsNumber(the_element_index as integer) As double
+		  
 		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    Return items(the_element_index)
 		    
@@ -209,20 +218,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsNumber(the_element_index as integer) As double
-		  return self.GetElement(the_element_index)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetElementAsString(the_element_index as integer) As string
 		  
 		  if self.Formatter = nil then 
 		    return self.GetElementAsNumber(the_element_index).ToString
 		    
 		  else
-		    return self.Formatter.FormatNumber(self.GetElement(the_element_index))
+		    return self.Formatter.FormatNumber(self.GetElementAsNumber(the_element_index))
 		    
 		  end if
 		  

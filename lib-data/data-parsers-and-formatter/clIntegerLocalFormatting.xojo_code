@@ -1,40 +1,32 @@
-#tag Module
-Protected Module clDataPool_tests
+#tag Class
+Protected Class clIntegerLocalFormatting
+Implements IntegerFormatInteraface
 	#tag Method, Flags = &h0
-		Sub tests(log as LogMessageInterface)
+		Sub Constructor(formatStr as string)
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
-		  
-		  logwriter.start_exec(CurrentMethodName)
-		  
-		  RunTests(new clDataPoolTests, "test_ca", logwriter)
-		  
-		  logwriter.end_exec(CurrentMethodName)
+		  self.FormatString = formatStr
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests_io(log as LogMessageInterface)
+		Function FormatInteger(the_value as Integer) As string
+		  // Part of the IntegerFormatInteraface interface.
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
-		  
-		  logwriter.start_exec(CurrentMethodName)
-		  
-		  RunTests(new clDataPoolTests, "test_io", logwriter)
-		  
-		  logwriter.end_exec(CurrentMethodName)
-		  
-		End Sub
+		  return Format(the_value, self.FormatString)
+		End Function
 	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetInfo() As string
+		  Return self.FormatString
+		End Function
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h0
+		FormatString As String
+	#tag EndProperty
 
 
 	#tag ViewBehavior
@@ -78,6 +70,14 @@ Protected Module clDataPool_tests
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
+		#tag ViewProperty
+			Name="FormatString"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
 	#tag EndViewBehavior
-End Module
-#tag EndModule
+End Class
+#tag EndClass

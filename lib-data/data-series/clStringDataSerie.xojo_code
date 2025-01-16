@@ -77,6 +77,44 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetElement(the_element_index as integer) As variant
+		  
+		  return self.GetElementAsString(the_element_index)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElementAsInteger(the_element_index as integer) As integer
+		  // Calling the overridden superclass method.
+		  
+		  if self.IntegerParser = nil then
+		    return Super.GetElementAsInteger(the_element_index)
+		    
+		  end if
+		  
+		  return self.IntegerParser.ParseToInteger(self.GetElementAsString(the_element_index))
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElementAsNumber(the_element_index as integer) As double
+		  
+		  // Calling the overridden superclass method.
+		  
+		  if self.NumberParser = nil then
+		    return Super.GetElementAsNumber(the_element_index)
+		    
+		  end if
+		  
+		  return self.NumberParser.ParseToNumber(self.GetElementAsString(the_element_index))
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElementAsString(the_element_index as integer) As string
+		  
+		  
 		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    Return items(the_element_index)
 		    
@@ -86,13 +124,6 @@ Inherits clAbstractDataSerie
 		    
 		  End If
 		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetElementAsString(the_element_index as integer) As string
-		  return self.GetElement(the_element_index)
 		  
 		End Function
 	#tag EndMethod
@@ -254,6 +285,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetIntegerParser(parser as IntegerParserInterface)
+		  self.IntegerParser = parser
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  if items.LastIndex > the_length then
@@ -266,6 +304,13 @@ Inherits clAbstractDataSerie
 		    items.Append(v)
 		    
 		  Wend
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetNumberParser(parser as NumberParserInterface)
+		  self.NumberParser = parser
 		  
 		End Sub
 	#tag EndMethod
@@ -365,7 +410,7 @@ Inherits clAbstractDataSerie
 		  var res as new clNumberDataSerie(self.name+" as double")
 		  
 		  for i as integer = 0 to self.LastIndex
-		    res.AddElement(self.GetElementAsInteger(i))
+		    res.AddElement(self.GetElementAsNumber(i))
 		    
 		  next
 		  
@@ -409,8 +454,16 @@ Inherits clAbstractDataSerie
 		Protected DefaultValue As Variant
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		IntegerParser As IntegerParserInterface
+	#tag EndProperty
+
 	#tag Property, Flags = &h1
 		Protected items() As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		NumberParser As NumberParserInterface
 	#tag EndProperty
 
 

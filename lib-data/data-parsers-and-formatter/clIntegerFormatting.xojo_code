@@ -1,6 +1,6 @@
 #tag Class
-Protected Class clIntegerLocalFormatting
-Implements  IntegerFormatInteraface
+Protected Class clIntegerFormatting
+Implements IntegerFormatInteraface
 	#tag Method, Flags = &h0
 		Sub Constructor(formatStr as string)
 		  
@@ -13,7 +13,7 @@ Implements  IntegerFormatInteraface
 		Function FormatInteger(the_value as Integer) As string
 		  // Part of the IntegerFormatInteraface interface.
 		  
-		  return Format(the_value, self.FormatString)
+		  return Str(the_value, self.FormatString)
 		End Function
 	#tag EndMethod
 

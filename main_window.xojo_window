@@ -47,7 +47,7 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
       HasHorizontalScrollbar=   False
       HasVerticalScrollbar=   True
       HeadingIndex    =   -1
-      Height          =   243
+      Height          =   296
       Index           =   -2147483648
       InitialParent   =   ""
       InitialValue    =   ""
@@ -72,38 +72,6 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
       Width           =   588
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
-   End
-   Begin DesktopButton pb_run_all_tests
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Run tests"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   1
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   412
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   80
    End
    Begin DesktopButton pb_run_examples
       AllowAutoDeactivate=   True
@@ -169,38 +137,6 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
       Visible         =   True
       Width           =   107
    End
-   Begin DesktopButton pb_run_all_io_tests
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      Cancel          =   False
-      Caption         =   "Run IO tests"
-      Default         =   False
-      Enabled         =   True
-      FontName        =   "Verdana"
-      FontSize        =   11.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   20
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      MacButtonStyle  =   0
-      Scope           =   0
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      TabStop         =   True
-      Tooltip         =   ""
-      Top             =   380
-      Transparent     =   False
-      Underline       =   False
-      Visible         =   True
-      Width           =   80
-   End
    Begin DesktopCheckBox CheckBox1
       AllowAutoDeactivate=   True
       Bold            =   False
@@ -224,7 +160,7 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   284
+      Top             =   328
       Transparent     =   False
       Underline       =   False
       Value           =   False
@@ -262,6 +198,100 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
       Underline       =   False
       Visible         =   True
       Width           =   107
+   End
+   Begin DesktopButton Button1
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Test cases"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   7
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   412
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   92
+   End
+   Begin DesktopButton pb_test_examples
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Test examples"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   272
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   328
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   107
+   End
+   Begin DesktopButton pb_run_all_tests1
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Test all"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   134
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   8
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   328
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   109
    End
 End
 #tag EndDesktopWindow
@@ -324,39 +354,6 @@ End
 
 #tag EndWindowCode
 
-#tag Events pb_run_all_tests
-	#tag Event
-		Sub Pressed()
-		  writemessage "started"
-		  
-		  
-		  var logwriter as  LogMessageInterface = nil
-		  
-		  if CheckBox1.value then
-		    logwriter = self
-		    
-		  end if
-		  
-		  clDataSerie_tests.tests(logwriter)
-		  writemessage "data series tests done"
-		  
-		  clDataTable_tests.tests(logwriter)
-		  writemessage "data table tests done"
-		  
-		  clDataTable_tests.tests_examples(logwriter)
-		  writemessage "test run example (no validaton)"
-		  
-		  clDataPool_tests.tests(logwriter)
-		  writemessage "data pool tests done"
-		  
-		  
-		  
-		  writemessage "all tests done"
-		  
-		  
-		End Sub
-	#tag EndEvent
-#tag EndEvents
 #tag Events pb_run_examples
 	#tag Event
 		Sub Pressed()
@@ -371,10 +368,30 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events pb_run_all_io_tests
+#tag Events pb_run_perf1
+	#tag Event
+		Sub Pressed()
+		  
+		  var fld_folder As  FolderItem = GetTestBaseFolder()
+		  
+		  fld_folder.Open
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Button1
+	#tag Event
+		Sub Pressed()
+		  wnd_tests.Show
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events pb_test_examples
 	#tag Event
 		Sub Pressed()
 		  writemessage "started"
+		  
 		  
 		  var logwriter as  LogMessageInterface = nil
 		  
@@ -384,15 +401,9 @@ End
 		  end if
 		  
 		  
+		  clDataTable_tests.tests_examples(logwriter)
+		  writemessage "test run example (no validaton)"
 		  
-		  clDataSerie_tests.tests_io(logwriter)
-		  writemessage "data series tests done"
-		  
-		  clDataTable_tests.tests_io(logwriter)
-		  writemessage "data table tests io done"
-		  
-		  clDataPool_tests.tests_io(logwriter)
-		  writemessage "data pool tests done"
 		  
 		  writemessage "all tests done"
 		  
@@ -400,13 +411,37 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events pb_run_perf1
+#tag Events pb_run_all_tests1
 	#tag Event
 		Sub Pressed()
+		  writemessage "started"
 		  
-		  var fld_folder As  FolderItem = GetTestBaseFolder()
 		  
-		  fld_folder.Open
+		  var logwriter as  LogMessageInterface = nil
+		  
+		  if CheckBox1.value then
+		    logwriter = self
+		    
+		  end if
+		  
+		  writemessage "Run dataserie tests"
+		  clDataSerie_tests.tests(logwriter)
+		  clDataSerie_tests.tests_io(logwriter)
+		  
+		  
+		  writemessage "Run datatable tests"
+		  clDataTable_tests.tests(logwriter)
+		  clDataTable_tests.tests_io(logwriter)
+		  
+		  writemessage "Run datapool tests"
+		  clDataPool_tests.tests(logwriter)
+		  clDataPool_tests.tests_io(logwriter)
+		  
+		  writemessage "test run example (no validaton)"
+		  clDataTable_tests.tests_examples(logwriter)
+		  
+		  writemessage "all tests done"
+		  
 		  
 		End Sub
 	#tag EndEvent

@@ -1,39 +1,15 @@
-#tag Module
-Protected Module clDataPool_tests
+#tag Interface
+Protected Interface IntegerParserInterface
 	#tag Method, Flags = &h0
-		Sub tests(log as LogMessageInterface)
+		Function GetInfo() As string
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
-		  
-		  logwriter.start_exec(CurrentMethodName)
-		  
-		  RunTests(new clDataPoolTests, "test_ca", logwriter)
-		  
-		  logwriter.end_exec(CurrentMethodName)
-		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests_io(log as LogMessageInterface)
+		Function ParseToInteger(the_value as string) As integer
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
-		  
-		  logwriter.start_exec(CurrentMethodName)
-		  
-		  RunTests(new clDataPoolTests, "test_io", logwriter)
-		  
-		  logwriter.end_exec(CurrentMethodName)
-		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 
@@ -79,5 +55,5 @@ Protected Module clDataPool_tests
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
-End Module
-#tag EndModule
+End Interface
+#tag EndInterface

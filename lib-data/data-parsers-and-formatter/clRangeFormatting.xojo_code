@@ -190,7 +190,7 @@ Implements NumberFormatInteraface
 			Group="Behavior"
 			InitialValue=""
 			Type="string"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

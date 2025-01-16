@@ -61,11 +61,20 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetElement(the_element_index as integer) As variant
+		  
+		  return self.GetElementAsBoolean(the_element_index)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElementAsBoolean(the_element_index as integer) As boolean
+		  
 		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
 		    Return items(the_element_index)
 		    
 		  Else
-		    var v As integer
+		    var v As Boolean
 		    Return v
 		    
 		  End If
@@ -75,15 +84,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsBoolean(the_element_index as integer) As boolean
-		  return self.GetElement(the_element_index)
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetElementAsInteger(the_element_index as integer) As integer
-		  return if(self.GetElement(the_element_index),1,0)
+		  
+		  return if(self.GetElementAsBoolean(the_element_index),1,0)
 		  
 		End Function
 	#tag EndMethod
@@ -91,7 +94,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function GetElementAsString(the_element_index as integer) As string
 		  
-		  return if(self.GetElement(the_element_index),self.str_for_true,self.str_for_false)
+		  return if(self.GetElementAsBoolean(the_element_index),self.str_for_true,self.str_for_false)
 		  
 		End Function
 	#tag EndMethod
