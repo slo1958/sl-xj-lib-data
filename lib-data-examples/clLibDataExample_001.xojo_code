@@ -60,15 +60,15 @@ Inherits clLibDataExample
 		  
 		  call table.AddColumn(new clDataSerie("ccc copy", Table.GetColumn("ccc").GetElements))
 		  
-		  clNumberDataSerie(table.GetColumn("ccc")).SetWriteFormat("-###,##0.000", False)
+		  clNumberDataSerie(table.GetColumn("ccc")).SetStringFormat("-###,##0.000", False)
 		  
 		  call table.AddColumn(table.GetColumn("aaa").AsString())
 		  call table.AddColumn(table.GetColumn("ccc").AsString()) 
 		  
-		  clNumberDataSerie(table.GetColumn("ccc")).SetWriteFormat("-#####0.#", False)
+		  clNumberDataSerie(table.GetColumn("ccc")).SetStringFormat("-#####0.#", False)
 		  call table.AddColumn(table.GetColumn("ccc").AsString("ccc second format")) 
 		  
-		  clNumberDataSerie(table.GetColumn("ccc")).SetWriteFormat("-###,##0.0#", True)
+		  clNumberDataSerie(table.GetColumn("ccc")).SetStringFormat("-###,##0.0#", True)
 		  call table.AddColumn(table.GetColumn("ccc").AsString("ccc third format")) 
 		  
 		  

@@ -35,7 +35,7 @@ Inherits clLibDataExample
 		  var col_expiry as new clDateDataSerie("InvoiceDate", "2023-03-05","2023-03-07","2023-03-12","2023-03-19","2023-04-03")
 		  var col_pay as new clDateDataSerie("PaymentDate", "2023-03-08","2023-03-27","2023-03-20","2023-04-05","2023-05-12")
 		  
-		  col_penalty.SetWriteFormat("#%")
+		  col_penalty.SetStringFormat("#%")
 		  
 		  var table0 as new clDataTable("mytable", SerieArray(col_country, col_city, col_sales, col_expiry, col_pay, col_penalty))
 		  

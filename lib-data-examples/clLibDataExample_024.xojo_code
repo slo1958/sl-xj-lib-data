@@ -62,7 +62,7 @@ Inherits clLibDataExample
 		  rangeTable.AddRow(new Dictionary("min_value":1000, "max_value": 1999.999, "range_label":"Medium"))
 		  rangeTable.AddRow(new Dictionary("min_value":2000, "max_value": 2999.999, "range_label":"Big"))
 		  
-		  col_cloned_sales.SetFormatter(new clRangeFormatting("",""))
+		  col_cloned_sales.SetStringFormat(new clRangeFormatting("",""))
 		  col_cloned_sales.AddFormattingRanges(colmin, colmax, collabel)
 		  
 		  
@@ -70,7 +70,7 @@ Inherits clLibDataExample
 		  call table0.AddColumn(new clBooleanDataSerie("is_belgium", table0.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")))
 		  
 		  
-		  clBooleanDataSerie(table0.GetColumn("is_france")).SetWriteFormat("≠ France","= France")
+		  clBooleanDataSerie(table0.GetColumn("is_france")).SetStringFormat("≠ France","= France")
 		  
 		  return array(table0, rangeTable)
 		  

@@ -413,7 +413,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetWriteFormat(the_format as String, UseLocal as Boolean = False)
+		Sub SetStringFormat(the_format as String, UseLocal as Boolean = False)
 		  if UseLocal then
 		    self.Formatter = new clIntegerLocalFormatting(the_format)
 		    

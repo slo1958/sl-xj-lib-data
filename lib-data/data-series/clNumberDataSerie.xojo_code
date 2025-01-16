@@ -538,14 +538,6 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetFormatter(the_formatter as NumberFormatInteraface)
-		  
-		  self.Formatter = the_Formatter
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  if items.LastIndex > the_length then
@@ -582,7 +574,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetWriteFormat(the_format as String, UseLocal as Boolean = False)
+		Sub SetStringFormat(the_formatter as NumberFormatInteraface)
+		  
+		  self.Formatter = the_Formatter
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetStringFormat(the_format as String, UseLocal as Boolean = False)
 		  if UseLocal then
 		    self.Formatter = new clNumberLocalFormatting(the_format)
 		    

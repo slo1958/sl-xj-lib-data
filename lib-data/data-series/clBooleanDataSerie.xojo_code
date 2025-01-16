@@ -292,7 +292,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetWriteFormat(False_label as string, True_Label as string)
+		Sub SetStringFormat(False_label as string, True_Label as string)
 		  
 		  self.str_for_false = False_label
 		  self.str_for_true = True_Label
