@@ -428,7 +428,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToNumber() As clNumberDataSerie
-		  var res as new clNumberDataSerie(self.name + " to double")
+		  
+		  var res as new clNumberDataSerie(self.name + " to number")
 		  
 		  for i as integer =0 to self.LastIndex
 		    res.AddElement(self.GetElementAsNumber(i))
@@ -442,6 +443,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToString() As clStringDataSerie
+		  
 		  var res as new clStringDataSerie(self.name+" as string")
 		  
 		  for i as integer = 0 to self.LastIndex

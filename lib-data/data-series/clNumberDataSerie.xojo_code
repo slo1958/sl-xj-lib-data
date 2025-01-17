@@ -4,14 +4,8 @@ Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
-		  
-		  if the_item.type = variant.TypeDouble then
-		    items.Append(the_item.DoubleValue)
-		    return 
-		    
-		  end if
-		  
-		  items.Append(Internal_conversion(the_item))
+		   
+		  items.Append(Internal_ConversionToDouble(the_item))
 		  
 		End Sub
 	#tag EndMethod
@@ -264,9 +258,22 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function Internal_conversion(v as Variant) As double
+		Private Function Internal_ConversionToDouble(v as Variant) As double
 		  
-		  return v.DoubleValue
+		  
+		  if v.Type  = variant.TypeDouble then
+		    return v.DoubleValue
+		    
+		  elseif v.type <> variant.TypeString then
+		    return v.DoubleValue
+		    
+		  elseif self.NumberParser = nil Then
+		    return v.DoubleValue
+		    
+		  else
+		    return self.NumberParser.ParseToNumber(v.StringValue)
+		    
+		  end if
 		  
 		End Function
 	#tag EndMethod
@@ -516,17 +523,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub SetElement(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
-		    // items(the_element_index) = the_item
-		    
-		    if the_item.type = variant.TypeDouble then
-		      
-		      items(the_element_index) = the_item
-		      
-		    else
-		      items(the_element_index) = Internal_conversion(the_item)
-		      
-		    end if
+		  
+		  
+		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then 
+		    items(the_element_index) = Internal_ConversionToDouble(the_item)
+		     
 		    
 		  else
 		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
@@ -552,6 +553,13 @@ Inherits clAbstractDataSerie
 		    items.Append(v)
 		    
 		  Wend
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetNumberParser(parser as NumberParserInterface)
+		  self.NumberParser = parser
 		  
 		End Sub
 	#tag EndMethod
@@ -647,6 +655,10 @@ Inherits clAbstractDataSerie
 
 	#tag Property, Flags = &h1
 		Protected items() As double
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected NumberParser As NumberParserInterface
 	#tag EndProperty
 
 

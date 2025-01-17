@@ -455,16 +455,16 @@ Inherits clAbstractDataSerie
 		Protected DefaultValue As Variant
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		IntegerParser As IntegerParserInterface
+	#tag Property, Flags = &h1
+		Protected IntegerParser As IntegerParserInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected items() As string
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		NumberParser As NumberParserInterface
+	#tag Property, Flags = &h1
+		Protected NumberParser As NumberParserInterface
 	#tag EndProperty
 
 
