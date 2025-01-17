@@ -188,6 +188,26 @@ Inherits clAbstractDataSerie
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function Internal_ConversionToInteger(v as Variant) As integer
+		  
+		  if v.Type  = variant.TypeInt32 or v.Type = Variant.TypeInt64 then
+		    return v.IntegerValue
+		    
+		  elseif v.type <> variant.TypeString then
+		    return v.IntegerValue
+		    
+		  elseif self.IntegerParser = nil Then
+		    return v.DoubleValue
+		    
+		  else
+		    return self.IntegerParser.ParseToInteger(v.StringValue)
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function LastIndex() As integer
 		  Return items.LastIndex
@@ -379,6 +399,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetIntegerParser(parser as IntegerParserInterface)
+		  self.IntegerParser = parser
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  if items.LastIndex > the_length then
@@ -463,6 +490,10 @@ Inherits clAbstractDataSerie
 
 	#tag Property, Flags = &h1
 		Protected Formatter As IntegerFormatInteraface
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected IntegerParser As IntegerParserInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
