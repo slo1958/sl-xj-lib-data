@@ -464,7 +464,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Count() As double
+		Function CountDefined() As double
 		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
@@ -862,7 +862,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function IsLinkedToTable() As Boolean
+		Function IsLinkedToTable(expected_link as clDataTable = nil) As Boolean
 		  //  
 		  //  Checks if the current data serie is linked to a table
 		  //
@@ -872,7 +872,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  - True if the current data serie is linked to a table
 		  //
 		  
-		  Return physical_table_link <> Nil
+		  if expected_link = nil then
+		    Return physical_table_link <> Nil
+		    
+		  else
+		    return physical_table_link = expected_link
+		    
+		  end if
 		  
 		End Function
 	#tag EndMethod

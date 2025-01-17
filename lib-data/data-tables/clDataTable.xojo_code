@@ -38,7 +38,7 @@ Implements TableColumnReaderInterface,Iterable
 		    tmp_column.SetLinkToTable(Self)
 		    tmp_column.SetLength(max_RowCount)
 		    
-		    Self.columns.Append(tmp_column)
+		    Self.columns.Add(tmp_column)
 		    
 		    return tmp_column
 		    
@@ -733,6 +733,75 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  Return return_boolean
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function CheckIntegrity() As Boolean
+		  //
+		  // Check integrity of current table
+		  //
+		  
+		  var ReturnTableIsOk as boolean = True
+		  var baseLength as integer = -10
+		  
+		  for each col as clAbstractDataSerie in self.columns
+		    if baseLength < -1 then
+		      baseLength = col.LastIndex
+		      
+		    elseif baseLength <> col.LastIndex then
+		      AddErrorMessage(CurrentMethodName, "Invalid length for column " + col.name)
+		      ReturnTableIsOk = False
+		      
+		    end if
+		    
+		  next
+		  
+		  if self.link_to_parent = nil then // physical table
+		    
+		    
+		    
+		    for each col as clAbstractDataSerie in self.columns
+		      if not col.IsLinkedToTable() then
+		        AddErrorMessage(CurrentMethodName," Column not linked " + col.name)
+		        ReturnTableIsOk = False
+		        
+		      elseif not col.IsLinkedToTable(self) then
+		        AddErrorMessage(CurrentMethodName,"Wrong table link " + col.name)
+		        ReturnTableIsOk = False
+		        
+		      end if
+		      
+		    next
+		    
+		    
+		    
+		  elseif allow_local_columns then  // this is a view with some local columns
+		    for each col as clAbstractDataSerie in self.columns
+		      if not col.IsLinkedToTable() then
+		        AddErrorMessage(CurrentMethodName,"Mixed view, column not linked " + col.name)
+		        ReturnTableIsOk = False
+		      end if
+		      
+		    next
+		    
+		  else // this is a view without local columns
+		    for each col as clAbstractDataSerie in self.columns
+		      if not col.IsLinkedToTable() then
+		        AddErrorMessage(CurrentMethodName,"View, column not linked " + col.name)
+		        ReturnTableIsOk = False
+		        
+		      elseif not col.IsLinkedToTable(self.link_to_parent) then
+		        AddErrorMessage(CurrentMethodName,"View, wrong table link " + col.name)
+		        ReturnTableIsOk = False
+		        
+		      end if
+		      
+		    next
+		    
+		  end if
+		  
+		  return ReturnTableIsOk
 		End Function
 	#tag EndMethod
 
@@ -1981,7 +2050,8 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    col_ubound.Add(columns(i).LastIndex)
 		    
-		    col_count.Add(columns(i).count)
+		    // returns of non null items
+		    col_count.Add(columns(i).CountDefined)
 		    col_count_nz.Add(columns(i).CountNonZero)
 		    
 		    col_sum.add(columns(i).sum)
@@ -2363,11 +2433,17 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    if allocator = nil then
 		      c = clDataType.CreateDataSerieFromType(tmp_column_name, t)
-		      if c <> nil then  columns.Add(c)
+		      if c <> nil then  
+		        c.SetLinkToTable(Self)
+		        columns.Add(c)
+		      end if
 		      
 		    else
 		      c = allocator.Invoke(tmp_column_name, t)
-		      if c <> nil then  columns.Add(c)
+		      if c <> nil then 
+		        c.SetLinkToTable(Self)
+		        columns.Add(c)
+		      end if
 		      
 		    end if
 		    

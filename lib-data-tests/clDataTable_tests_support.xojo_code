@@ -52,17 +52,33 @@ Protected Module clDataTable_tests_support
 		  var cnt1 as integer  
 		  var cnt2 as integer  
 		  
+		  if calculated = nil then
+		    if log <> nil then log.WriteMessage(CurrentMethodName+": Missing or unknow calculated table.")
+		    return false
+		    
+		  end if
+		  
+		  if calculated.CheckIntegrity() then
+		    if expected = nil then return True
+		    
+		  else
+		    if log <> nil then log.WriteMessage(CurrentMethodName+": Integrity error calculated table.")
+		    if expected = nil then return False
+		    
+		  end if
+		  
 		  if expected = nil then
 		    if log <> nil then log.WriteMessage(CurrentMethodName+": Missing or unknow expected table.")
 		    return False
 		    
 		  end if
 		  
-		  if calculated = nil then
-		    if log <> nil then log.WriteMessage(CurrentMethodName+": Missing or unknow calculated table.")
-		    return false
+		  if expected.CheckIntegrity() then
+		  else
+		    if log <> nil then log.WriteMessage(CurrentMethodName+": Integrity error expected table.")
 		    
 		  end if
+		  
 		  
 		  cnt1 = expected.ColumnCount
 		  cnt2 = calculated.ColumnCount

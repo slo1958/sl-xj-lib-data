@@ -79,6 +79,7 @@ Protected Class clDataTableTests
 		  
 		  my_table1.AddColumnsData(my_table2)
 		  
+		  
 		  var my_table3 As clDataTable = my_table1.SelectColumns(Array("aaa","zccc"))
 		  
 		  
@@ -1622,6 +1623,8 @@ Protected Class clDataTableTests
 		  
 		  var my_table5Text as new clDataTable(new clTextReader(fld_file3Text, True, new clTextFileConfig(";")))
 		  var my_table5JSON as new clDataTable(new clJSONReader(fld_file3JSON, new clJSONFileConfig()))
+		  
+		  call check_table(log, "my_table 3 integrity", nil, my_table3)
 		  
 		  call check_table(log,"my_table4/my_table5Text", my_table4, my_table5Text) 
 		  call check_table(log,"my_table4/my_table5JSON", my_table4, my_table5JSON) 
