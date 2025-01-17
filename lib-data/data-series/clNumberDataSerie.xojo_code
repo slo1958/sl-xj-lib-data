@@ -112,8 +112,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As clNumberDataSerie
-		  var tmp As New clNumberDataSerie(Self.name)
+		Function Clone(NewName as string = "") As clNumberDataSerie
+		  
+		  var tmp As New clNumberDataSerie(StringWithDefault(NewName, self.name))
 		  
 		  self.CloneInfo(tmp)
 		  

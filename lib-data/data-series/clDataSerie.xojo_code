@@ -25,8 +25,9 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As clDataSerie
-		  var tmp As New clDataSerie(Self.name)
+		Function Clone(NewName as string = "") As clDataSerie
+		  
+		  var tmp As New clDataSerie(StringWithDefault(NewName, self.name))
 		  
 		  self.CloneInfo(tmp)
 		  

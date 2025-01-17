@@ -10,8 +10,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As clDateDataSerie
-		  var tmp As New clDateDataSerie(Self.name)
+		Function Clone(NewName as string = "") As clDateDataSerie
+		  
+		  var tmp As New clDateDataSerie(StringWithDefault(NewName, self.name))
 		  
 		  self.CloneInfo(tmp)
 		  
@@ -205,6 +206,21 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function operator_add(right_interval as DateInterval) As clDateDataSerie
+		  var res as new clDateDataSerie(self.name+" + interval ")
+		  
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsDate(i).AddInterval(right_interval.Years, right_interval.Months, right_interval.Days))
+		    
+		  next
+		  
+		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function operator_subtract(right_serie as clDateDataSerie) As clIntegerDataSerie
 		  var mx1 as integer = self.LastIndex
 		  var mx2 as integer = right_serie.LastIndex
@@ -228,6 +244,21 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
+		    
+		  next
+		  
+		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function operator_subtract(right_interval as DateInterval) As clDateDataSerie
+		  var res as new clDateDataSerie(self.name+" - interval ")
+		  
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsDate(i).SubtractInterval(right_interval.Years, right_interval.Months, right_interval.Days))
 		    
 		  next
 		  

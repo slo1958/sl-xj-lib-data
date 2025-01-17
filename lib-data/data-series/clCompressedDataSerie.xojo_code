@@ -47,8 +47,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As clAbstractDataSerie
-		  var tmp As New clCompressedDataSerie(Self.name)
+		Function Clone(NewName as string = "") As clAbstractDataSerie
+		  
+		  var tmp As New clCompressedDataSerie(StringWithDefault(NewName, self.name))
 		  tmp.DisplayTitle = self.DisplayTitle
 		  
 		  tmp.AddMetadata("source","clone from " + self.FullName)

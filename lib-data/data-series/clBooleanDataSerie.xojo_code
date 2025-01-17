@@ -10,8 +10,12 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As clBooleanDataSerie
-		  var tmp As New clBooleanDataSerie(Self.name)
+		Function Clone(NewName as string = "") As clBooleanDataSerie
+		  //
+		  // Clone the data serie
+		  //
+		  
+		  var tmp As New clBooleanDataSerie(StringWithDefault(NewName, self.name))
 		  
 		  self.CloneInfo(tmp)
 		  

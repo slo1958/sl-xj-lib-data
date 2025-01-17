@@ -10,8 +10,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As clStringDataSerie
-		  var tmp As New clStringDataSerie(Self.name)
+		Function Clone(NewName as string = "") As clStringDataSerie
+		  
+		  var tmp As New clStringDataSerie(StringWithDefault(NewName, self.name))
 		  
 		  self.CloneInfo(tmp)
 		  
@@ -30,6 +31,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h1
 		Protected Sub CloneInfo(target as clStringDataSerie)
+		  
 		  super.CloneInfo(target)
 		  
 		  target.DefaultValue = self.DefaultValue

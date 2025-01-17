@@ -78,8 +78,9 @@ Begin DesktopWindow wnd_examples
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      GridLinesHorizontalStyle=   0
-      GridLinesVerticalStyle=   0
+      GridLinesHorizontalStyle=   "0"
+      GridLineStyle   =   0
+      GridLinesVerticalStyle=   "0"
       HasBorder       =   True
       HasHeader       =   False
       HasHorizontalScrollbar=   False
@@ -173,16 +174,16 @@ End
 		  
 		  var wnd as new wnd_table_viewer
 		  
-		  wnd.Reset_viewer
+		  wnd.ResetViewer
 		  
 		  for each table as TableColumnReaderInterface in tables
-		    wnd.add_table(table)
+		    wnd.AddTable(table)
 		    
 		  next
 		  
 		  
 		  wnd.Show
-		  wnd.show_comments(item.describe)
+		  wnd.ShowComments(item.describe)
 		  
 		End Sub
 	#tag EndMethod
@@ -374,8 +375,7 @@ End
 			"6 - Rounded Window"
 			"7 - Global Floating Window"
 			"8 - Sheet Window"
-			"9 - Metal Window"
-			"11 - Modeless Dialog"
+			"9 - Modeless Dialog"
 		#tag EndEnumValues
 	#tag EndViewProperty
 	#tag ViewProperty
@@ -494,8 +494,8 @@ End
 		Visible=true
 		Group="Background"
 		InitialValue="&hFFFFFF"
-		Type="Color"
-		EditorType="Color"
+		Type="ColorGroup"
+		EditorType="ColorGroup"
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Backdrop"
@@ -510,7 +510,7 @@ End
 		Visible=true
 		Group="Menus"
 		InitialValue=""
-		Type="MenuBar"
+		Type="DesktopMenuBar"
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty

@@ -68,7 +68,7 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub add_table(mytable as TableColumnReaderInterface)
+		Sub AddTable(mytable as TableColumnReaderInterface)
 		  
 		  ccDataPool_Viewer1.add_table(mytable)
 		  
@@ -76,7 +76,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub add_tables_from_pool(data_pool as clDataPool)
+		Sub AddTablesFromPool(data_pool as clDataPool)
 		  
 		  ccDataPool_Viewer1.add_tables_from_pool(data_pool)
 		  
@@ -85,15 +85,38 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Reset_viewer()
+		Sub ResetViewer()
 		  ccDataPool_Viewer1.Reset_viewer
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub show_comments(comments() as string)
+		Sub ShowComments(comments() as string)
 		  
 		  ccDataPool_Viewer1.show_comments(comments)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ShowTableFromPool(data_pool as clDataPool)
+		  
+		  ccDataPool_Viewer1.reset_viewer
+		  ccDataPool_Viewer1.add_tables_from_pool(data_pool)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ShowTables(tables() as TableColumnReaderInterface)
+		  
+		  ccDataPool_Viewer1.reset_viewer
+		  
+		  for each table as TableColumnReaderInterface in tables
+		    ccDataPool_Viewer1.add_table(table)
+		    
+		  next
+		  
 		End Sub
 	#tag EndMethod
 

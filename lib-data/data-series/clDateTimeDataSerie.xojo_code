@@ -10,8 +10,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As clDateTimeDataSerie
-		  var tmp As New clDateTimeDataSerie(Self.name)
+		Function Clone(NewName as string = "") As clDateTimeDataSerie
+		  
+		  var tmp As New clDateTimeDataSerie(StringWithDefault(NewName, self.name))
 		  
 		  self.CloneInfo(tmp)
 		  

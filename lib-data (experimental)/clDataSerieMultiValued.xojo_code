@@ -8,7 +8,7 @@ Inherits clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function clone() As clDataSerie
+		Function clone(NewName as string = "") As clDataSerie
 		  
 		End Function
 	#tag EndMethod

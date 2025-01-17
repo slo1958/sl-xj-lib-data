@@ -347,7 +347,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As clAbstractDataSerie
+		Function Clone(NewName as string = "") As clAbstractDataSerie
 		  //  
 		  //  Clone the current data serie (only implemented at typed subclasses)
 		  //
@@ -367,6 +367,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h1
 		Protected Sub CloneInfo(target as clAbstractDataSerie)
+		  
 		  target.DisplayTitle = self.DisplayTitle
 		End Sub
 	#tag EndMethod
@@ -1218,6 +1219,18 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  end if
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function StringWithDefault(value as string, defaultValue as string) As string
+		  if value.Trim.Length = 0 then
+		    Return defaultValue.trim
+		    
+		  else
+		    return value.Trim
+		    
+		  end if
 		End Function
 	#tag EndMethod
 

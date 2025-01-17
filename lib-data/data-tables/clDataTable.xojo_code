@@ -87,7 +87,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Add  an empty column to the table
 		  //  
 		  //  Parameters:
-		  //  - the name of the column
+		  //  - pColumnName: the name of the column
 		  //  
 		  //  Returns:
 		  //  - the new data serie
@@ -104,7 +104,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Add  an constant column to the table
 		  //  
 		  //  Parameters:
-		  //  - the name of the column
+		  //  - pColumnName: the name of the column
 		  //  - the initial value for every cell
 		  //  
 		  //  Returns:
@@ -914,15 +914,16 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - Nothing
 		  //  
-		  var output_table as clDataTable
-		  
-		  if NewName.Trim.Length = 0 then
-		    output_table = new clDataTable(self.name+" copy")
-		    
-		  else
-		    output_table = new clDataTable(NewName.trim)
-		    
-		  end if
+		  var output_table as clDataTable = new clDataTable(StringWithDefault(NewName, self.Name+" copy"))
+		  // 
+		  // 
+		  // if NewName.Trim.Length = 0 then
+		  // output_table = new clDataTable(self.name+" copy")
+		  // 
+		  // else
+		  // output_table = new clDataTable(NewName.trim)
+		  // 
+		  // end if
 		  
 		  output_table.AddMetaData("source", self.name)
 		  
@@ -2817,6 +2818,18 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function StringWithDefault(value as string, defaultValue as string) As string
+		  if value.Trim.Length = 0 then
+		    Return defaultValue.trim
+		    
+		  else
+		    return value.Trim
+		    
+		  end if
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
