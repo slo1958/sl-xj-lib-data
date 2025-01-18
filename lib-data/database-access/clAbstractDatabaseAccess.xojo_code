@@ -12,7 +12,7 @@ Protected Class clAbstractDatabaseAccess
 		  //. - type of each field
 		  //  
 		  //  Returns:
-		  //  - (nothing)
+		  //   (nothing)
 		  //  
 		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
@@ -178,7 +178,7 @@ Protected Class clAbstractDatabaseAccess
 		  //. - type of each field
 		  //  
 		  //  Returns:
-		  //  - (nothing)
+		  //   (nothing)
 		  //  
 		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
@@ -196,7 +196,7 @@ Protected Class clAbstractDatabaseAccess
 		  //  - name of the  table
 		  //  
 		  //  Returns:
-		  //  - (nothing)
+		  //   (nothing)
 		  //  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
@@ -213,7 +213,7 @@ Protected Class clAbstractDatabaseAccess
 		  //  - (none)
 		  //  
 		  //  Returns:
-		  //  - (nothing)
+		  //   (nothing)
 		  //  
 		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)

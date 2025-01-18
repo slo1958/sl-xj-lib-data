@@ -84,7 +84,7 @@ Implements TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumn(pColumnName as String, include_alias as boolean = False) As clAbstractDataSerie
+		Function GetColumn(pColumnName as String, IncludeAlias as boolean = False) As clAbstractDataSerie
 		  // Part of the TableColumnReaderInterface interface.
 		  
 		  var output as new clDataSerie(pColumnName)
