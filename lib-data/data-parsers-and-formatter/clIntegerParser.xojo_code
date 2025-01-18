@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clIntegerParser
-Implements  IntegerParserInterface
+Implements IntegerParserInterface
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  
@@ -77,20 +77,6 @@ Implements  IntegerParserInterface
 		  
 		End Function
 	#tag EndMethod
-
-
-	#tag Note, Name = Untitled
-		
-		Var decimal As String
-		decimal = Locale.Current.DecimalSeparator
-		
-		var grouping as string
-		grouping = Locale.Current.GroupingSeparator
-		
-		
-		var tmp as string = Value
-		if DoTrim then tmp = tmp.trim
-	#tag EndNote
 
 
 	#tag Property, Flags = &h0

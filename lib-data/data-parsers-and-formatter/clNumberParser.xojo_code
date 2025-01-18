@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clNumberParser
-Implements  NumberParserInterface
+Implements NumberParserInterface
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  
@@ -19,7 +19,7 @@ Implements  NumberParserInterface
 	#tag Method, Flags = &h0
 		Function ParseToNumber(the_value as string) As double
 		  // Part of the NumberParserInterface interface.
-		   
+		  
 		  var tmp as string = the_value.trim
 		  
 		  var idx1 as integer = tmp.IndexOf(self.DecimalMarkChar)
@@ -98,20 +98,6 @@ Implements  NumberParserInterface
 		  
 		End Function
 	#tag EndMethod
-
-
-	#tag Note, Name = Untitled
-		
-		Var decimal As String
-		decimal = Locale.Current.DecimalSeparator
-		
-		var grouping as string
-		grouping = Locale.Current.GroupingSeparator
-		
-		
-		var tmp as string = Value
-		if DoTrim then tmp = tmp.trim
-	#tag EndNote
 
 
 	#tag Property, Flags = &h1

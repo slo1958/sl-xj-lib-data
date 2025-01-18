@@ -531,7 +531,7 @@ Inherits clAbstractDataSerie
 		    
 		    
 		  else
-		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(ElementIndex), self.name)
+		    self.AddErrorMessage(CurrentMethodName,ErrMsgIndexOutOfbounds, str(ElementIndex), self.name)
 		    
 		  end if
 		  

@@ -17,7 +17,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var tmp_column_name As String = tmp_column.name
 		  
 		  If Self.GetColumn(tmp_column_name) <> Nil Then
-		    self.AddWarningMessage(CurrentMethodName, ErrMsgColumnAlreadyDefined, tmp_column_name, self.TableName)
+		    self.AddWarningMessage(CurrentMethodName, ErrMsgColumnAlreadyDefined, self.TableName, tmp_column_name)
 		    Return Nil
 		    
 		  end if
@@ -118,7 +118,7 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		  If Self.GetColumn(tmp_column_name) <> Nil Then
-		    self.AddWarningMessage(CurrentMethodName, ErrMsgColumnAlreadyDefined, tmp_column_name, self.TableName)
+		    self.AddWarningMessage(CurrentMethodName, ErrMsgColumnAlreadyDefined, self.TableName, tmp_column_name)
 		    Return Nil
 		    
 		  end if
@@ -781,7 +781,7 @@ Implements TableColumnReaderInterface,Iterable
 		      baseLength = col.LastIndex
 		      
 		    elseif baseLength <> col.LastIndex then
-		      AddErrorMessage(CurrentMethodName, "Invalid length for column " + col.name)
+		      AddErrorMessage(CurrentMethodName,  ErrMsgInvalidColumnLength, self.Name, col.name, str(baseLength+1), str(col.LastIndex+1))
 		      ReturnTableIsOk = False
 		      
 		    end if
@@ -793,11 +793,11 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    for each col as clAbstractDataSerie in self.columns
 		      if not col.IsLinkedToTable() then
-		        AddErrorMessage(CurrentMethodName," Column not linked " + col.name)
+		        AddErrorMessage(CurrentMethodName, ErrMsgColumnNotLinked, self.Name,  col.name)
 		        ReturnTableIsOk = False
 		        
 		      elseif not col.IsLinkedToTable(self) then
-		        AddErrorMessage(CurrentMethodName,"Wrong table link " + col.name)
+		        AddErrorMessage(CurrentMethodName, ErrMsgColumnWrongLink, self.name, col.name, col.GetLinkedTableName)
 		        ReturnTableIsOk = False
 		        
 		      end if
@@ -809,7 +809,7 @@ Implements TableColumnReaderInterface,Iterable
 		  elseif allow_local_columns then  // this is a view with some local columns
 		    for each col as clAbstractDataSerie in self.columns
 		      if not col.IsLinkedToTable() then
-		        AddErrorMessage(CurrentMethodName,"Mixed view, column not linked " + col.name)
+		        AddErrorMessage(CurrentMethodName,ErrMsgColumnNotLinkedInMixedView, self.Name,  col.name)
 		        ReturnTableIsOk = False
 		      end if
 		      
@@ -818,11 +818,11 @@ Implements TableColumnReaderInterface,Iterable
 		  else // this is a view without local columns
 		    for each col as clAbstractDataSerie in self.columns
 		      if not col.IsLinkedToTable() then
-		        AddErrorMessage(CurrentMethodName,"View, column not linked " + col.name)
+		        AddErrorMessage(CurrentMethodName,ErrMsgColumnNotLinkedInView, self.Name,  col.name)
 		        ReturnTableIsOk = False
 		        
 		      elseif not col.IsLinkedToTable(self.link_to_parent) then
-		        AddErrorMessage(CurrentMethodName,"View, wrong table link " + col.name)
+		        AddErrorMessage(CurrentMethodName, ErrMsgColumnWrongLinkView, self.name, col.name, col.GetLinkedTableName)
 		        ReturnTableIsOk = False
 		        
 		      end if
@@ -1483,7 +1483,7 @@ Implements TableColumnReaderInterface,Iterable
 		        call self.AddColumn(tmp_column)
 		        
 		      else
-		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  column_name)
+		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn, self.Name, name)
 		        
 		      End If
 		      
@@ -1497,7 +1497,7 @@ Implements TableColumnReaderInterface,Iterable
 		        call self.AddColumn(tmp_column.clone)
 		        
 		      else
-		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  column_name)
+		        AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn, self.Name, name)
 		        
 		      End If
 		      
@@ -2380,7 +2380,7 @@ Implements TableColumnReaderInterface,Iterable
 		      var c as clAbstractDataSerie = self.GetColumn(name)
 		      
 		      if c = nil then
-		        AddErrorMessage(CurrentMethodName," Cannot find column %0", name)
+		        AddErrorMessage(CurrentMethodName,ErrMsgCannotFIndColumn, self.name, Name)
 		        
 		        
 		      else
@@ -3002,7 +3002,7 @@ Implements TableColumnReaderInterface,Iterable
 		      call res.AddColumn(tmp_column)
 		      
 		    else
-		      AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn,  column_name)
+		      AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn, self.Name, name)
 		      
 		    End If
 		    
@@ -3170,7 +3170,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var temp as clAbstractDataSerie = self.GetColumn(name)
 		    
 		    if temp = nil then
-		      self.AddErrorMessage(CurrentMethodName, "Cannot find column %0 in table %1", name, self.Name)
+		      self.AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn, self.Name, name)
 		      
 		    else
 		      temp.SetElement(RowIndex, d.value(name))
@@ -3342,16 +3342,34 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Constant, Name = DefaultTableName, Type = String, Dynamic = False, Default = \"Noname", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = ErrMsgCannotFIndColumn, Type = String, Dynamic = False, Default = \"Cannot find column %0", Scope = Public
+	#tag Constant, Name = ErrMsgCannotFIndColumn, Type = String, Dynamic = False, Default = \"Cannot find column [%1] in table [%0]", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = ErrMsgColumnAlreadyDefined, Type = String, Dynamic = False, Default = \"Column %0 already defined in table %1", Scope = Public
+	#tag Constant, Name = ErrMsgColumnAlreadyDefined, Type = String, Dynamic = False, Default = \"Column [%1] already defined in table [%0]", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgColumnNotLinked, Type = String, Dynamic = False, Default = \"Column [%1] in table [%0] is not linked", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgColumnNotLinkedInMixedView, Type = String, Dynamic = False, Default = \"Column [%1] in mixed view [%0] is not linked", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgColumnNotLinkedInView, Type = String, Dynamic = False, Default = \"Column [%1] in view [%0] is not linked", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgColumnWrongLink, Type = String, Dynamic = False, Default = \"Column [%1] in table [%0] linked to [%2]", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgColumnWrongLinkView, Type = String, Dynamic = False, Default = \"Column [%1] in view [%0] linked to [%2]", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = ErrMsgIgnoringColumn, Type = String, Dynamic = False, Default = \"Ignoring column %0", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = ErrMsgInvalidAggregation, Type = String, Dynamic = False, Default = \"Invalid aggregation mode %0", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgInvalidColumnLength, Type = String, Dynamic = False, Default = \"Invalid column length in table [%0]\x2C column [%1]\x2C expected %2\x2C observed  %3", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = ErrMsgMissingMeasureColumnName, Type = String, Dynamic = False, Default = \"Missing measure column name", Scope = Public

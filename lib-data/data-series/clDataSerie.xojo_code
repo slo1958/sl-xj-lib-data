@@ -146,7 +146,7 @@ Implements itf_json_able
 		    items(ElementIndex) = the_item
 		    
 		  else
-		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(ElementIndex), self.name)
+		    self.AddErrorMessage(CurrentMethodName,ErrMsgIndexOutOfbounds, str(ElementIndex), self.name)
 		    
 		  End If
 		  

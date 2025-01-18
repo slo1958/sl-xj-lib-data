@@ -2,6 +2,23 @@
 Protected Class clDataPool
 Implements Iterable
 	#tag Method, Flags = &h0
+		Function CheckIntegrity() As Boolean
+		  
+		  var Results as boolean = True
+		  
+		  for each key as string in DatatableDictionary.keys
+		    var table as clDataTable = clDataTable(self.DatatableDictionary.value(key))
+		    
+		    if not table.CheckIntegrity then results = False
+		    
+		  next
+		  
+		  
+		  return Results
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor()
 		  self.DatatableDictionary = new Dictionary
 		  

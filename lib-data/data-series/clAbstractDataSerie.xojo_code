@@ -433,7 +433,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  physical_table_link = Nil
 		  
 		  self.AddElements(the_values)
-		   
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -898,6 +898,29 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Function GetLastErrorMessage() As string
 		  return self.LastErrorMessage
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetLinkedTableName() As string
+		  //
+		  // Returns the name of table owning the column
+		  //
+		  // Parameters
+		  // (none)
+		  //
+		  // Returns
+		  // - name of the table (string)
+		  //
+		  
+		  
+		  if self.physical_table_link = nil then 
+		    return ""
+		    
+		  else
+		    return self.physical_table_link.Name
+		    
+		  end if
 		End Function
 	#tag EndMethod
 
@@ -1607,6 +1630,9 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndConstant
 
 	#tag Constant, Name = ErrMsgCannotConvertElement, Type = String, Dynamic = False, Default = \"Cannot convert element %0 to %1", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgIndexOutOfbounds, Type = String, Dynamic = False, Default = \"Element index %0 is out of range in column [%1]", Scope = Public
 	#tag EndConstant
 
 
