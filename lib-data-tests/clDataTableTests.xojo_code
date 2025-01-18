@@ -82,6 +82,9 @@ Protected Class clDataTableTests
 		  
 		  var my_table3 As clDataTable = my_table1.SelectColumns(Array("aaa","zccc"))
 		  
+		  call check_table(log, "my_table 1 integrity", nil, my_table1)
+		  call check_table(log, "my_table 2 integrity", nil, my_table2)
+		  
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235, 81234, 81235)
 		  var col2 as new clDataSerie("zccc", nil, nil, 8123.456, nil)
@@ -129,6 +132,8 @@ Protected Class clDataTableTests
 		  var col2 as new clDataSerie("xyz", nil, nil) 
 		  
 		  var texpected as new clDataTable("select T1", SerieArray(col1, col2))
+		  
+		  call check_table(log, "my_table 1 integrity", nil, my_table1)
 		  
 		  call check_table(log,"T1", texpected, my_table3)
 		  
@@ -307,6 +312,9 @@ Protected Class clDataTableTests
 		  call check_value(log, "tmp2", -1, tmp2) // value not found
 		  call check_value(log, "tmp3", -2, tmp3) // column not found
 		  
+		  call check_table(log, "mytable integrity", nil, my_table) 
+		  
+		  
 		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
@@ -484,22 +492,26 @@ Protected Class clDataTableTests
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  var table0 As New clDataTable("mytable")
+		  var my_table1 As New clDataTable("mytable")
 		  
-		  call table0.AddColumns(Array("country","city","sales"))
+		  call my_table1.AddColumns(Array("country","city","sales"))
 		  
-		  table0.AddRow(Array("France","Paris",1100))
-		  table0.AddRow(Array("","Marseille",1200))
-		  table0.AddRow(Array("Belgique","",1300))
-		  table0.AddRow(Array("USA","NewYork",1400))
-		  table0.AddRow(Array("Belgique","Bruxelles",1500))
-		  table0.AddRow(Array("USA","Chicago",1600))
+		  my_table1.AddRow(Array("France","Paris",1100))
+		  my_table1.AddRow(Array("","Marseille",1200))
+		  my_table1.AddRow(Array("Belgique","",1300))
+		  my_table1.AddRow(Array("USA","NewYork",1400))
+		  my_table1.AddRow(Array("Belgique","Bruxelles",1500))
+		  my_table1.AddRow(Array("USA","Chicago",1600))
 		  
-		  var tmp_row as clDataRow = table0.GetRowAt(2, False)
+		  var tmp_row as clDataRow = my_table1.GetRowAt(2, False)
+		  
+		  call check_table(log, "my_table1 integrity", nil, my_table1) 
+		  
 		  
 		  call check_value(log,"row 2, country", "Belgique", tmp_row.GetCell("country"))
 		  call check_value(log, "row 2, city", "", tmp_row.GetCell("city"))
 		  call check_value(log,"row 2, sales", 1300, tmp_row.GetCell("sales"))
+		  
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -525,6 +537,8 @@ Protected Class clDataTableTests
 		  var filterserie as new clBooleanDataSerie("mask",(False, False,True, False, True, False)) 
 		  
 		  call table0.AddColumn(filterserie)
+		  
+		  call check_table(log, "table0 integrity", nil, table0) 
 		  
 		  var tmp_row as clDataRow = table0.GetRowAt(3, False)
 		  
@@ -560,6 +574,9 @@ Protected Class clDataTableTests
 		  table0.AddRow(Array("USA","NewYork",1400))
 		  
 		  table0.IndexVisibleWhenIterating(True)
+		  
+		  call check_table(log, "table0 integrity", nil, table0) 
+		  
 		  
 		  var row_index as integer = 0 // required for validation
 		  
@@ -695,6 +712,7 @@ Protected Class clDataTableTests
 		    k = k+1
 		  next
 		  
+		  call check_table(log, "table0  integrity", nil, table0) 
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -761,6 +779,8 @@ Protected Class clDataTableTests
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
+		  
+		  call check_table(log, "table0 integrity", nil, table0) 
 		  
 		  var table1 As clDataTable = table0.unique(array("country", "city"))
 		  
@@ -896,6 +916,9 @@ Protected Class clDataTableTests
 		  table0.GetColumn("Country").DisplayTitle = "Pays"
 		  table0.GetColumn("Sales").DisplayTitle="Ventes" 
 		  
+		  call check_table(log, "table0  integrity", nil, table0) 
+		  
+		  
 		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  
 		  
@@ -906,8 +929,6 @@ Protected Class clDataTableTests
 		  
 		  var struc_expected as new clDataTable("exp_struct", dct)
 		  call check_table(log,"structure", struc_expected, struc0)
-		  
-		  
 		  
 		  //
 		  // Create table from structure description and check structure
@@ -964,6 +985,7 @@ Protected Class clDataTableTests
 		  
 		  call stat_table.GetColumn(clDataTable.StatisticsAverageColumn).RoundValues(2)
 		  
+		  call check_table(log, "data_table  integrity", nil, data_table) 
 		  
 		  //
 		  // Expected table
@@ -1152,6 +1174,8 @@ Protected Class clDataTableTests
 		  
 		  my_table_1.AddRow(New clDataRow(r2),  clDataTable.AddRowMode.IgnoreNewColumn)
 		  
+		  call check_table(log, "my_table_1 integrity", nil, my_table_1) 
+		  
 		  var res() as test_class_03
 		  
 		  for each r as clDataRow in my_table_1
@@ -1165,6 +1189,7 @@ Protected Class clDataTableTests
 		    c.bbb = "$" + c.bbb
 		    
 		  next
+		  
 		  
 		  var my_table_2 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb")))
 		  
@@ -1208,6 +1233,7 @@ Protected Class clDataTableTests
 		  
 		  my_table_0.AddRow(New clDataRow(r2),  clDataTable.AddRowMode.IgnoreNewColumn)
 		  
+		  call check_table(log, "my_table_0 integrity", nil, my_table_0) 
 		  
 		  var res_1() as test_class_02
 		  var res_2() as test_class_02
@@ -1458,7 +1484,6 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"T1", expected_t1, table0)
 		  
-		  
 		  log.end_exec(CurrentMethodName)
 		  
 		  
@@ -1528,6 +1553,8 @@ Protected Class clDataTableTests
 		  cup:clGrouper.aggCount) _
 		  )
 		  
+		  call check_table(log, "table integrity", nil, t) 
+		  
 		  var table0 as clDataTable = new clDataTable("group", g.Flattened)
 		  
 		  var table_expected As New clDataTable("mytable", SerieArray( _
@@ -1572,6 +1599,9 @@ Protected Class clDataTableTests
 		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 28))
 		  
 		  var ctp as clAbstractDataSerie = t.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
+		  
+		  call check_table(log, "table integrity", nil, t) 
+		  
 		  
 		  var g as new clGrouper(SerieArray(ccnt, ccity))
 		  
@@ -1624,7 +1654,7 @@ Protected Class clDataTableTests
 		  var my_table5Text as new clDataTable(new clTextReader(fld_file3Text, True, new clTextFileConfig(";")))
 		  var my_table5JSON as new clDataTable(new clJSONReader(fld_file3JSON, new clJSONFileConfig()))
 		  
-		  call check_table(log, "my_table 3 integrity", nil, my_table3)
+		  call check_table(log, "my_table3 integrity", nil, my_table3)
 		  
 		  call check_table(log,"my_table4/my_table5Text", my_table4, my_table5Text) 
 		  call check_table(log,"my_table4/my_table5JSON", my_table4, my_table5JSON) 
@@ -1707,9 +1737,13 @@ Protected Class clDataTableTests
 		  
 		  var my_table1 as new clDataTable(new clDBReader(db.SelectSql("select * from test1")))
 		  my_table1.rename("test2")
+		  call check_table(log, "my_table1 integrity", nil, my_table1) 
+		  
 		  my_table1.save(new clDBWriter(new clSqliteDBAccess(db)))
 		  
 		  var my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
+		  call check_table(log, "mytable2 integrity", nil, my_table2) 
+		  
 		  
 		  call check_table(log,"Test1/Test2", my_table1, my_table2)
 		  
@@ -1718,15 +1752,20 @@ Protected Class clDataTableTests
 		  var my_table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3")))
 		  my_table3.rename("test4")
 		  my_table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  call check_table(log, "mytable3 integrity", nil, my_table3) 
+		  
 		  
 		  var my_table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
+		  call check_table(log, "mytable4 integrity", nil, my_table4) 
 		  
 		  call check_table(log,"Test3/Test4", my_table3, my_table4)
 		  
 		  
 		  var my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
+		  call check_table(log, "mytable5 integrity", nil, my_table5) 
 		  
 		  var my_table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
+		  call check_table(log, "mytable6 integrity", nil, my_table6) 
 		  
 		  // create expected ds
 		  var my_table7 as clDataTable = my_table5.clone
@@ -1817,6 +1856,7 @@ Protected Class clDataTableTests
 		  
 		  
 		  var my_table1 as new clDataTable("test2", new clDBReader(new clSqliteDBAccess(db),"test1"))
+		  call check_table(log, "my_table1 integrity", nil, my_table1) 
 		  
 		  my_table1.save(new clDBWriter(new clSqliteDBAccess(db)))
 		  
@@ -1835,8 +1875,10 @@ Protected Class clDataTableTests
 		  
 		  
 		  var my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
+		  call check_table(log, "mytable5 integrity", nil, my_table5) 
 		  
 		  var my_table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
+		  call check_table(log, "mytable6 integrity", nil, my_table6) 
 		  
 		  // create expected ds
 		  var my_table7 as clDataTable = my_table5.clone
