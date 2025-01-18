@@ -157,6 +157,18 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function Average() As double
+		  // 
+		  // Calculate the average of the current column. Undefined values are ignored
+		  // Note that if the underlying column is a number column or an integer colums, values are always defined but could be zero
+		  //
+		  //
+		  // Parameters:
+		  // (none)
+		  //
+		  //
+		  // Returns:
+		  // - avergae value
+		  //
 		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
@@ -182,6 +194,19 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function AverageNonZero() As double
+		  // 
+		  // Calculate the average of the non zero values in the current column. Undefined values are ignored
+		  // Note that if the underlying column is a number column or an integer colums, values are always defined but could be zero
+		  //
+		  //
+		  // Parameters:
+		  // (none)
+		  //
+		  //
+		  // Returns:
+		  // - avergae value
+		  //
+		  
 		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
@@ -449,7 +474,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub CopyTo(target_data_serie as clAbstractDataSerie)
+		Sub CopyElementsTo(target_data_serie as clAbstractDataSerie)
 		  //  
 		  //  Copy the elements of the current data serie to another data serie, the other data serie is cleared before copy
 		  //.    if lower than low_value, element is replaced by low_value
@@ -477,6 +502,19 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function CountDefined() As double
+		  // 
+		  // Calculate the number of definted elemnts in the current column. 
+		  // Note that if the underlying column is a number column or an integer colums, values are always defined but could be zero
+		  //
+		  //
+		  // Parameters:
+		  // (none)
+		  //
+		  //
+		  // Returns:
+		  // - count
+		  //
+		  
 		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
@@ -497,6 +535,19 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function CountNonZero() As double
+		  // 
+		  // Calculate the number of definted non zero elemnts in the current column. 
+		  // Note that if the underlying column is a number column or an integer colums, values are always defined but could be zero
+		  //
+		  //
+		  // Parameters:
+		  // (none)
+		  //
+		  //
+		  // Returns:
+		  // - count
+		  //
+		  
 		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
@@ -572,8 +623,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ElementIsDefined(the_element_index As integer) As Boolean
-		  return self.GetElement(the_element_index) <> nil
+		Function ElementIsDefined(ElementIndex As integer) As Boolean
+		  return self.GetElement(ElementIndex) <> nil
 		  
 		End Function
 	#tag EndMethod
@@ -637,12 +688,12 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(the_element_index as integer) As Variant
+		Function GetElement(ElementIndex as integer) As Variant
 		  //  
 		  //  Returns the element at index (only implemented in type specific subclasses)
 		  //
 		  //  Parameters
-		  //  - the_element_index (integer) index of the element to be returned
+		  //  - ElementIndex (integer) index of the element to be returned
 		  //  
 		  //  Returns:
 		  //  - the selected element (variant)
@@ -656,16 +707,57 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsDataSerie(the_element_index as integer) As clDataSerie
+		Function GetElementAsBoolean(ElementIndex as integer) As boolean
+		  //  
+		  //  Returns the element at index as a string
+		  //
+		  //  Parameters
+		  //  - ElementIndex (integer) index of the element to be returned
+		  //  
+		  //  Returns:
+		  //  - the selected element (boolean)
+		  //
+		  // Note: this generic method is overloaded when the serie is natively using boolean
+		  
+		  var tmp_b As boolean
+		  var tmp_v As variant
+		  
+		  tmp_v = GetElement(ElementIndex)
+		  
+		  Try 
+		    tmp_b = tmp_v.BooleanValue
+		    
+		  Catch TypeMismatchException
+		    tmp_b = False
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(ElementIndex) , "boolean")
+		    
+		  End Try
+		  
+		  Return tmp_b
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElementAsDataSerie(ElementIndex as integer) As clDataSerie
+		  //  
+		  //  Returns the element at index as a double
+		  //
+		  //  Parameters
+		  //  - ElementIndex (integer) index of the element to be returned
+		  //  
+		  //  Returns:
+		  //  - the selected element as a data serie
+		  //
 		  
 		  var tmp_v As clDataSerie
 		  
 		  Try 
-		    tmp_v = GetElement(the_element_index)
+		    tmp_v = GetElement(ElementIndex)
 		    
 		  Catch TypeMismatchException
 		    tmp_v = Nil
-		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(the_element_index) , "clDataSerie()")
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(ElementIndex) , "clDataSerie()")
 		    
 		  End Try
 		  
@@ -674,30 +766,30 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsInteger(the_element_index as integer) As integer
+		Function GetElementAsInteger(ElementIndex as integer) As integer
 		  //  
 		  //  Returns the element at index as a double
 		  //
 		  //  Parameters
-		  //  - the_element_index (integer) index of the element to be returned
+		  //  - ElementIndex (integer) index of the element to be returned
 		  //  
 		  //  Returns:
 		  //  - the selected element (integer)
 		  //
-		  
 		  // Note: this generic method is overloaded when the serie is natively using integer
+		  //
 		  
 		  var tmp_d As integer
 		  var tmp_v As variant
 		  
-		  tmp_v = GetElement(the_element_index)
+		  tmp_v = GetElement(ElementIndex)
 		  
 		  Try 
 		    tmp_d = tmp_v.IntegerValue
 		    
 		  Catch TypeMismatchException
 		    tmp_d = 0
-		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(the_element_index) , "integer")
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(ElementIndex) , "integer")
 		    
 		  End Try
 		  
@@ -706,24 +798,23 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsNumber(the_element_index as integer) As double
+		Function GetElementAsNumber(ElementIndex as integer) As double
 		  //  
 		  //  Returns the element at index as a double
 		  //
 		  //  Parameters
-		  //  - the_element_index (integer) index of the element to be returned
+		  //  - ElementIndex (integer) index of the element to be returned
 		  //  
 		  //  Returns:
 		  //  - the selected element (double)
 		  //
-		  
 		  // Note: this generic method is overloaded when the serie is natively using double
 		  
 		  
 		  var tmp_d As Double
 		  var tmp_v As variant
 		  
-		  tmp_v = GetElement(the_element_index)
+		  tmp_v = GetElement(ElementIndex)
 		  
 		  Try 
 		    // some test cases will cause an exception here, this is expected
@@ -731,7 +822,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Catch TypeMismatchException
 		    tmp_d = 0
-		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(the_element_index) , "number")
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(ElementIndex) , "number")
 		    
 		  End Try
 		  
@@ -740,30 +831,29 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsString(the_element_index as integer) As string
+		Function GetElementAsString(ElementIndex as integer) As string
 		  //  
 		  //  Returns the element at index as a string
 		  //
 		  //  Parameters
-		  //  - the_element_index (integer) index of the element to be returned
+		  //  - ElementIndex (integer) index of the element to be returned
 		  //  
 		  //  Returns:
 		  //  - the selected element (string)
 		  //
-		  
 		  // Note: this generic method is overloaded when the serie is natively using string
 		  
 		  var tmp_s As String
 		  var tmp_v As variant
 		  
-		  tmp_v = GetElement(the_element_index)
+		  tmp_v = GetElement(ElementIndex)
 		  
 		  Try 
 		    tmp_s = tmp_v.StringValue
 		    
 		  Catch TypeMismatchException
 		    tmp_s = ""
-		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(the_element_index) , "string")
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(ElementIndex) , "string")
 		    
 		  End Try
 		  
@@ -1001,7 +1091,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Clear the list of values (implemented at type specific subclasses)
 		  //
 		  //  Parameters
-		  //  - the_element_index (integer) index of the element to be returned
+		  //  - ElementIndex (integer) index of the element to be returned
 		  //  
 		  //  Returns:
 		  //  - the selected element (double)
@@ -1077,7 +1167,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetElement(the_element_index as integer, the_item as Variant)
+		Sub SetElement(ElementIndex as integer, the_item as Variant)
 		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
@@ -1161,6 +1251,19 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function StandardDeviation(is_population as boolean = False) As double
+		  // 
+		  // Calculate the standard deviation of the current column. Undefined values are ignored
+		  // Note that if the underlying column is a number column or an integer colums, values are always defined but could be zero
+		  //
+		  //
+		  // Parameters:
+		  // (none)
+		  //
+		  //
+		  // Returns:
+		  // - value of standard deviation 
+		  //
+		  
 		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
@@ -1200,6 +1303,19 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function StandardDeviationNonZero(is_population as boolean = False) As double
+		  // 
+		  // Calculate the standard deviation of the non zero values in the current column. Undefined values are ignored
+		  // Note that if the underlying column is a number column or an integer colums, values are always defined but could be zero
+		  //
+		  //
+		  // Parameters:
+		  // (none)
+		  //
+		  //
+		  // Returns:
+		  // - value of standard deviation 
+		  //
+		  
 		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  
@@ -1254,6 +1370,19 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function Sum() As double
+		  // 
+		  // Calculate the sum of the elements in the current column. 
+		  //
+		  //
+		  // Parameters:
+		  // (none)
+		  //
+		  //
+		  // Returns:
+		  // - sum of elements
+		  //
+		  
+		  
 		  var limit As Integer = RowCount - 1
 		  var i As Integer
 		  

@@ -78,47 +78,47 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(the_element_index as integer) As variant
+		Function GetElement(ElementIndex as integer) As variant
 		  
-		  return self.GetElementAsString(the_element_index)
+		  return self.GetElementAsString(ElementIndex)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsInteger(the_element_index as integer) As integer
+		Function GetElementAsInteger(ElementIndex as integer) As integer
 		  // Calling the overridden superclass method.
 		  
 		  if self.IntegerParser = nil then
-		    return Super.GetElementAsInteger(the_element_index)
+		    return Super.GetElementAsInteger(ElementIndex)
 		    
 		  end if
 		  
-		  return self.IntegerParser.ParseToInteger(self.GetElementAsString(the_element_index))
+		  return self.IntegerParser.ParseToInteger(self.GetElementAsString(ElementIndex))
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsNumber(the_element_index as integer) As double
+		Function GetElementAsNumber(ElementIndex as integer) As double
 		  
 		  // Calling the overridden superclass method.
 		  
 		  if self.NumberParser = nil then
-		    return Super.GetElementAsNumber(the_element_index)
+		    return Super.GetElementAsNumber(ElementIndex)
 		    
 		  end if
 		  
-		  return self.NumberParser.ParseToNumber(self.GetElementAsString(the_element_index))
+		  return self.NumberParser.ParseToNumber(self.GetElementAsString(ElementIndex))
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsString(the_element_index as integer) As string
+		Function GetElementAsString(ElementIndex as integer) As string
 		  
 		  
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
-		    Return items(the_element_index)
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		    Return items(ElementIndex)
 		    
 		  Else
 		    var v As variant
@@ -276,9 +276,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetElement(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
-		    items(the_element_index) = the_item.StringValue
+		Sub SetElement(ElementIndex as integer, the_item as Variant)
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then
+		    items(ElementIndex) = the_item.StringValue
 		    
 		  End If
 		  

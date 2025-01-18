@@ -91,9 +91,9 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(the_element_index as integer) As Variant
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
-		    Return items(the_element_index)
+		Function GetElement(ElementIndex as integer) As Variant
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		    Return items(ElementIndex)
 		    
 		  Else
 		    var v As Variant
@@ -141,12 +141,12 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetElement(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
-		    items(the_element_index) = the_item
+		Sub SetElement(ElementIndex as integer, the_item as Variant)
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then
+		    items(ElementIndex) = the_item
 		    
 		  else
-		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
+		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(ElementIndex), self.name)
 		    
 		  End If
 		  

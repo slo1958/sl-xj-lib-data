@@ -50,7 +50,7 @@ Inherits clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetElement(the_element_index as integer, the_item as Variant)
+		Sub SetElement(ElementIndex as integer, the_item as Variant)
 		  
 		  var tmp() As String
 		  

@@ -64,18 +64,18 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(the_element_index as integer) As variant
+		Function GetElement(ElementIndex as integer) As variant
 		  
-		  return self.GetElementAsBoolean(the_element_index)
+		  return self.GetElementAsBoolean(ElementIndex)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsBoolean(the_element_index as integer) As boolean
+		Function GetElementAsBoolean(ElementIndex as integer) As boolean
 		  
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
-		    Return items(the_element_index)
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		    Return items(ElementIndex)
 		    
 		  Else
 		    var v As Boolean
@@ -88,17 +88,25 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsInteger(the_element_index as integer) As integer
+		Function GetElementAsInteger(ElementIndex as integer) As integer
 		  
-		  return if(self.GetElementAsBoolean(the_element_index),1,0)
+		  return if(self.GetElementAsBoolean(ElementIndex),1,0)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsString(the_element_index as integer) As string
+		Function GetElementAsNumber(ElementIndex as integer) As double
 		  
-		  return if(self.GetElementAsBoolean(the_element_index),self.str_for_true,self.str_for_false)
+		  return if(self.GetElementAsBoolean(ElementIndex),1,0)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElementAsString(ElementIndex as integer) As string
+		  
+		  return if(self.GetElementAsBoolean(ElementIndex),self.str_for_true,self.str_for_false)
 		  
 		End Function
 	#tag EndMethod
@@ -227,12 +235,12 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetElement(the_element_index as integer, the_item as String)
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
-		    items(the_element_index) = (the_item.Trim.Uppercase = "TRUE")
+		Sub SetElement(ElementIndex as integer, the_item as String)
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then
+		    items(ElementIndex) = (the_item.Trim.Uppercase = "TRUE")
 		    
 		  else
-		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
+		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(ElementIndex), self.name)
 		    
 		  end if
 		  
@@ -245,12 +253,12 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetElement(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
-		    items(the_element_index) = the_item.BooleanValue
+		Sub SetElement(ElementIndex as integer, the_item as Variant)
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then
+		    items(ElementIndex) = the_item.BooleanValue
 		    
 		  else
-		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
+		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(ElementIndex), self.name)
 		    
 		  end if
 		  

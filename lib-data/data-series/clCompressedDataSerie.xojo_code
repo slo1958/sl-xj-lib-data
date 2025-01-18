@@ -95,12 +95,12 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(the_element_index as integer) As variant
+		Function GetElement(ElementIndex as integer) As variant
 		  
 		  var v as Variant
 		  
-		  If 0 <= the_element_index And  the_element_index <= items_index.LastIndex then
-		    var item_index As Integer = Self.items_index(the_element_index)
+		  If 0 <= ElementIndex And  ElementIndex <= items_index.LastIndex then
+		    var item_index As Integer = Self.items_index(ElementIndex)
 		    
 		    if item_index >=0 then
 		      v = self.items_value_list(item_index)
@@ -141,8 +141,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetElement(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items_index.LastIndex Then
+		Sub SetElement(ElementIndex as integer, the_item as Variant)
+		  If 0 <= ElementIndex And  ElementIndex <= items_index.LastIndex Then
 		    
 		    var item_entry as Integer
 		    
@@ -156,10 +156,10 @@ Inherits clAbstractDataSerie
 		      
 		    end if
 		    
-		    items_index(the_element_index) = item_entry
+		    items_index(ElementIndex) = item_entry
 		    
 		  else
-		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
+		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(ElementIndex), self.name)
 		    
 		  end if
 		  

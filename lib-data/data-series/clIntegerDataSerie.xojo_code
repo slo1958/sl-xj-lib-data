@@ -120,18 +120,18 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(the_element_index as integer) As variant
+		Function GetElement(ElementIndex as integer) As variant
 		  
-		  return self.GetElementAsInteger(the_element_index)
+		  return self.GetElementAsInteger(ElementIndex)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsInteger(the_element_index as integer) As integer
+		Function GetElementAsInteger(ElementIndex as integer) As integer
 		  
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
-		    Return items(the_element_index)
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		    Return items(ElementIndex)
 		    
 		  Else
 		    var v As integer
@@ -144,13 +144,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsString(the_element_index as integer) As string
+		Function GetElementAsString(ElementIndex as integer) As string
 		  
 		  if self.Formatter = nil then 
-		    return self.GetElementAsInteger(the_element_index).ToString
+		    return self.GetElementAsInteger(ElementIndex).ToString
 		    
 		  else
-		    return self.Formatter.FormatInteger(self.GetElementAsInteger(the_element_index))
+		    return self.Formatter.FormatInteger(self.GetElementAsInteger(ElementIndex))
 		    
 		  end if
 		  
@@ -384,12 +384,12 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetElement(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
-		    items(the_element_index) = the_item.IntegerValue
+		Sub SetElement(ElementIndex as integer, the_item as Variant)
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then
+		    items(ElementIndex) = the_item.IntegerValue
 		    
 		  else
-		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
+		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(ElementIndex), self.name)
 		    
 		  end if
 		  

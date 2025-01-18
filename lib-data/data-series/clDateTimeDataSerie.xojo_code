@@ -71,9 +71,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(the_element_index as integer) As variant
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
-		    Return items(the_element_index)
+		Function GetElement(ElementIndex as integer) As variant
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		    Return items(ElementIndex)
 		    
 		  Else
 		    var v As integer
@@ -86,9 +86,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsDateTime(the_element_index as integer) As DateTime
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
-		    return self.GetElement(the_element_index)
+		Function GetElementAsDateTime(ElementIndex as integer) As DateTime
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		    return self.GetElement(ElementIndex)
 		    
 		  else
 		    return nil
@@ -99,9 +99,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsString(the_element_index as integer) As string
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
-		    var tmp as DateTime = items(the_element_index)
+		Function GetElementAsString(ElementIndex as integer) As string
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		    var tmp as DateTime = items(ElementIndex)
 		    if tmp = nil then return ""
 		    
 		    Return tmp.SQLDateTime
@@ -116,9 +116,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsString(the_element_index As integer, dateStyle As DateTime.FormatStyles) As String
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
-		    var tmp as DateTime = items(the_element_index)
+		Function GetElementAsString(ElementIndex As integer, dateStyle As DateTime.FormatStyles) As String
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		    var tmp as DateTime = items(ElementIndex)
 		    if tmp = nil then return ""
 		    
 		    Return tmp.ToString(datestyle, DateTime.FormatStyles.None)
@@ -133,9 +133,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsString(the_element_index as integer, format as string) As string
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
-		    var tmp as DateTime = items(the_element_index)
+		Function GetElementAsString(ElementIndex as integer, format as string) As string
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		    var tmp as DateTime = items(ElementIndex)
 		    if tmp = nil then return ""
 		    
 		    Return tmp.ToString(format)
@@ -276,12 +276,12 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetElement(the_element_index as integer, the_item as Variant)
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then
-		    items(the_element_index) = prep_date(the_item)
+		Sub SetElement(ElementIndex as integer, the_item as Variant)
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then
+		    items(ElementIndex) = prep_date(the_item)
 		    
 		  else
-		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
+		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(ElementIndex), self.name)
 		    
 		  end if
 		  

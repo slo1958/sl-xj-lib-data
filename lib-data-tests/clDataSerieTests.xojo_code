@@ -223,7 +223,7 @@ Protected Class clDataSerieTests
 		  c1.AddElement("cccc")
 		  c1.AddElement("cccc")
 		  
-		  c1.CopyTo(c2)
+		  c1.CopyElementsTo(c2)
 		  
 		  
 		  var f1() As variant
@@ -429,7 +429,7 @@ Protected Class clDataSerieTests
 		  c1.AddElement("cccc")
 		  c1.AddElement("cccc")
 		  
-		  c1.CopyTo(c2)
+		  c1.CopyElementsTo(c2)
 		  
 		  
 		  var f1() As variant

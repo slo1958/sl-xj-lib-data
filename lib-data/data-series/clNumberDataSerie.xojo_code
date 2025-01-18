@@ -4,7 +4,7 @@ Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
-		   
+		  
 		  items.Append(Internal_ConversionToDouble(the_item))
 		  
 		End Sub
@@ -189,18 +189,18 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(the_element_index as integer) As variant
+		Function GetElement(ElementIndex as integer) As variant
 		  
-		  return self.GetElementAsNumber(the_element_index)
+		  return self.GetElementAsNumber(ElementIndex)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsNumber(the_element_index as integer) As double
+		Function GetElementAsNumber(ElementIndex as integer) As double
 		  
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex then
-		    Return items(the_element_index)
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		    Return items(ElementIndex)
 		    
 		  Else
 		    var v As double
@@ -213,13 +213,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsString(the_element_index as integer) As string
+		Function GetElementAsString(ElementIndex as integer) As string
 		  
 		  if self.Formatter = nil then 
-		    return self.GetElementAsNumber(the_element_index).ToString
+		    return self.GetElementAsNumber(ElementIndex).ToString
 		    
 		  else
-		    return self.Formatter.FormatNumber(self.GetElementAsNumber(the_element_index))
+		    return self.Formatter.FormatNumber(self.GetElementAsNumber(ElementIndex))
 		    
 		  end if
 		  
@@ -523,15 +523,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetElement(the_element_index as integer, the_item as Variant)
+		Sub SetElement(ElementIndex as integer, the_item as Variant)
 		  
 		  
-		  If 0 <= the_element_index And  the_element_index <= items.LastIndex Then 
-		    items(the_element_index) = Internal_ConversionToDouble(the_item)
-		     
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then 
+		    items(ElementIndex) = Internal_ConversionToDouble(the_item)
+		    
 		    
 		  else
-		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(the_element_index), self.name)
+		    self.AddErrorMessage(CurrentMethodName,"Element index %0 out of range in column %1", str(ElementIndex), self.name)
 		    
 		  end if
 		  
