@@ -247,7 +247,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var new_size As Integer = Self.RowCount + RowSource.RowCount
 		  
-		  Self.row_index.SetLength(new_size)
+		  Self.RowIndexColumn.SetLength(new_size)
 		  
 		  For Each tmp_column As clAbstractDataSerie In Self.columns
 		    tmp_column.SetLength(new_size)
@@ -259,9 +259,21 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddErrorMessage(SourceFunctionName as string, ErrorMessage as string, paramarray item as string)
-		  
-		  var msg as string = ReplacePlaceHolders(ErrorMessage, item)
+		Sub AddErrorMessage(SourceFunctionName as string, ErrorMessageTemplate as string, paramarray item as string)
+		  //  
+		  //  Add  an error message:
+		  //.  - Update the LastErrorMessage property
+		  //.  - Send the messge to logging
+		  //  
+		  //  Parameters:
+		  //  - SourceFunctionName: the name of the method where the warning was generated
+		  // -  ErrorMessageTemplate: the message with placeholders
+		  // -  item: list of values to replace the placeholders in the template
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  var msg as string = ReplacePlaceHolders(ErrorMessageTemplate, item)
 		  
 		  self.LastErrorMessage = "In " + SourceFunctionName+": " + msg
 		  
@@ -335,7 +347,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Next
 		  
-		  Self.row_index.AddElement("")
+		  Self.RowIndexColumn.AddElement("")
 		  
 		  For Each column As clAbstractDataSerie In Self.columns
 		    column.SetLength(tmp_RowCount+1)
@@ -352,7 +364,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Add  a data row to the table using the passed dictionary 
 		  //  
 		  //  Parameters:
-		  //  - dictionary with key(field name) / value (field value)
+		  //  - NewCellsValue: dictionary with key(field name) / value (field value)
 		  // -  Mode: handling of missing columns in table
 		  //  
 		  //  Returns:
@@ -377,7 +389,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Add  a data row to the table using the passed dictionary. Does not create new columns.
 		  //  
 		  //  Parameters:
-		  //  - an instance of a class
+		  //  - SourceObject: an instance of a class
 		  //
 		  //  Returns:
 		  //  (nothing)
@@ -443,7 +455,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Next
 		  
-		  Self.row_index.AddElement("")
+		  Self.RowIndexColumn.AddElement("")
 		  
 		  
 		End Sub
@@ -471,7 +483,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Next
 		  
-		  Self.row_index.AddElement("")
+		  Self.RowIndexColumn.AddElement("")
 		  
 		End Sub
 	#tag EndMethod
@@ -482,7 +494,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Add  data rows to the table
 		  //  
 		  //  Parameters:
-		  //  - the data rows as an array
+		  //  - NewRowSource: the data rows as an array
 		  // -  Mode: handling of missing columns in table
 		  //  
 		  //  Returns:
@@ -503,7 +515,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Add  data rows to the table
 		  //  
 		  //  Parameters:
-		  //  - the data rows as an array of dictionaries
+		  //  - NewRowsSource: the data rows as an array of dictionaries
 		  // -  Mode: handling of missing columns in table
 		  //
 		  //  Returns:
@@ -519,22 +531,22 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddRows(source_objects() as object) As integer
+		Function AddRows(SourceObjects() as object) As integer
 		  //  
 		  //  Add  data rows to the table
 		  //  
 		  //  Parameters:
-		  //  - the data rows as an array
+		  //  - SourceObjects: the data rows as an array
 		  //
 		  //  Returns:
 		  //  - number of rows added
 		  //  
-		  for each obj as object in source_objects
+		  for each obj as object in SourceObjects
 		    self.AddRow(new clDataRow(obj), clDataTable.AddRowMode.IgnoreNewColumn)
 		    
 		  next
 		  
-		  return source_objects.Count
+		  return SourceObjects.Count
 		End Function
 	#tag EndMethod
 
@@ -650,9 +662,21 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddWarningMessage(SourceFunctionName as string, ErrorMessage as string, paramarray item as string)
-		  
-		  var msg as string = ReplacePlaceHolders(ErrorMessage, item)
+		Sub AddWarningMessage(SourceFunctionName as string, WarningMessageTemplate as string, paramarray item as string)
+		  //  
+		  //  Add  a warning message:
+		  //.  - Update the LastWarningMessage property
+		  //.  - Send the messge to logging
+		  //  
+		  //  Parameters:
+		  //  - SourceFunctionName: the name of the method where the warning was generated
+		  // -  WarningMessageTemplate: the message with placeholders
+		  // -  item: list of values to replace the placeholders in the template
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  var msg as string = ReplacePlaceHolders(WarningMessageTemplate, item)
 		  
 		  Self.LastWarningMessage = "In " + SourceFunctionName + ": " + msg
 		  
@@ -672,7 +696,7 @@ Implements TableColumnReaderInterface,Iterable
 		  // 
 		  //  
 		  //  Returns:
-		  //  - (nothing)
+		  //   (nothing)
 		  //  
 		  
 		  var max_RowCount as integer=-1
@@ -683,7 +707,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  row_index.SetLength(max_RowCount)
+		  RowIndexColumn.SetLength(max_RowCount)
 		  
 		  for each c as clAbstractDataSerie in self.columns
 		    c.SetLength(max_RowCount)
@@ -741,6 +765,13 @@ Implements TableColumnReaderInterface,Iterable
 		  //
 		  // Check integrity of current table
 		  //
+		  //  
+		  //  Parameters:
+		  // (none) 
+		  //  
+		  //  Returns:
+		  //  Boolean, set to false if error(s) are detected
+		  //
 		  
 		  var ReturnTableIsOk as boolean = True
 		  var baseLength as integer = -10
@@ -758,7 +789,6 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  if self.link_to_parent = nil then // physical table
-		    
 		    
 		    
 		    for each col as clAbstractDataSerie in self.columns
@@ -806,11 +836,25 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ClipByRange(column as clAbstractDataSerie, low_value_column as clAbstractDataSerie, high_value_column as clAbstractDataSerie) As integer
+		Function ClipByRange(column as clAbstractDataSerie, LowValueColumn as clAbstractDataSerie, HighValueColumn as clAbstractDataSerie) As integer
+		  //
+		  // Clip the values of the column to a given range:
+		  // - If the value of the cell is below the minimum, it is set to the minimum
+		  // - if the value of the cell is above the maximum, it is set to the maximum
+		  //
+		  //  
+		  //  Parameters:
+		  //  - Column: Column to be processed
+		  // - LowValueColumn: column with minimum value
+		  // - HighValueColumn: column with maximum value
+		  //  
+		  //  Returns:
+		  //  - number of cells updated
+		  //
 		  
 		  if column = nil then return 0
-		  if low_value_column = nil then return 0
-		  if high_value_column = nil then return 0
+		  if LowValueColumn = nil then return 0
+		  if HighValueColumn = nil then return 0
 		  
 		  var last_index as integer = column.RowCount
 		  var count_changes as integer = 0
@@ -818,8 +862,8 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  for index as integer = 0 to last_index
 		    var tmp as variant = column.GetElement(index)
-		    var low_value as Variant = low_value_column.GetElement(index)
-		    var high_value as Variant = high_value_column.GetElement(index)
+		    var low_value as Variant = LowValueColumn.GetElement(index)
+		    var high_value as Variant = HighValueColumn.GetElement(index)
 		    
 		    
 		    if low_value > tmp then
@@ -839,11 +883,25 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ClipByRange(column_name as string, low_value_column_name as string, high_value_column_name as String) As integer
+		Function ClipByRange(column_name as string, LowValueColumnName as string, HighValueColumnName as String) As integer
+		  //
+		  // Clip the values of the column to a given range:
+		  // - If the value of the cell is below the minimum, it is set to the minimum
+		  // - if the value of the cell is above the maximum, it is set to the maximum
+		  //
+		  //  
+		  //  Parameters:
+		  //  - Column_name: name of the column  to be processed
+		  // - LowValueColumnName: name of the column with minimum value
+		  // - HighValueColumnName: name of the column  with maximum value
+		  //  
+		  //  Returns:
+		  //  - number of cells updated
+		  //
 		  
 		  var column as clAbstractDataSerie = self.GetColumn(column_name)
-		  var high_column as clAbstractDataSerie = self.GetColumn(high_value_column_name)
-		  var low_column as clAbstractDataSerie = self.GetColumn(low_value_column_name)
+		  var high_column as clAbstractDataSerie = self.GetColumn(HighValueColumnName)
+		  var low_column as clAbstractDataSerie = self.GetColumn(LowValueColumnName)
 		  
 		  if column = nil then return 0
 		  if high_column = nil then return 0
@@ -857,6 +915,20 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function ClipByRange(column_name as string, low_value as variant, high_value as variant) As integer
+		  //
+		  // Clip the values of the column to a given range:
+		  // - If the value of the cell is below the minimum, it is set to the minimum
+		  // - if the value of the cell is above the maximum, it is set to the maximum
+		  //
+		  //  
+		  //  Parameters:
+		  //  - Column_name: Name of the column to be processed
+		  // - low_value: minimum value, applicable to all rows
+		  // - high_value: maximum value, applicable to all rows
+		  //  
+		  //  Returns:
+		  //  - number of cells updated
+		  //
 		  
 		  var column as clAbstractDataSerie = self.GetColumn(column_name)
 		  
@@ -869,17 +941,28 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ClipHighValues(column as clAbstractDataSerie, high_value_column as clAbstractDataSerie) As integer
-		  
+		Function ClipHighValues(column as clAbstractDataSerie, HighValueColumn as clAbstractDataSerie) As integer
+		  //
+		  // Clip the values of the column to a given range:
+		  // - if the value of the cell is above the maximum, it is set to the maximum
+		  //
+		  //  
+		  //  Parameters:
+		  //  - Column: Column to be processed
+		  // - HighValueColumn: column with maximum value
+		  //  
+		  //  Returns:
+		  //  - number of cells updated
+		  //
 		  if column = nil then return 0
-		  if high_value_column = nil then return 0
+		  if HighValueColumn = nil then return 0
 		  
 		  var last_index as integer = column.RowCount
 		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index
 		    var tmp as variant = column.GetElement(index)
-		    var high_value as Variant = high_value_column.GetElement(index)
+		    var high_value as Variant = HighValueColumn.GetElement(index)
 		    
 		    if  tmp > high_value then
 		      column.SetElement(index, high_value)
@@ -894,10 +977,21 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ClipHighValues(column_name as string, high_value_column_name as String) As integer
-		  
+		Function ClipHighValues(column_name as string, HighValueColumnName as String) As integer
+		  //
+		  // Clip the values of the column to a given range:
+		  // - if the value of the cell is above the maximum, it is set to the maximum
+		  //
+		  //  
+		  //  Parameters:
+		  //  - Column_name: name of the column  to be processed
+		  // - HighValueColumnName: name of the column  with maximum value
+		  //  
+		  //  Returns:
+		  //  - number of cells updated
+		  //
 		  var column as clAbstractDataSerie = self.GetColumn(column_name)
-		  var high_column as clAbstractDataSerie = self.GetColumn(high_value_column_name)
+		  var high_column as clAbstractDataSerie = self.GetColumn(HighValueColumnName)
 		  
 		  if column = nil then return 0
 		  if high_column = nil then return 0
@@ -910,7 +1004,18 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function ClipHighValues(column_name as string, high_value as variant) As integer
-		  
+		  //
+		  // Clip the values of the column to a given range:
+		  // - if the value of the cell is above the maximum, it is set to the maximum
+		  //
+		  //  
+		  //  Parameters:
+		  //  - Column_name: Name of the column to be processed
+		  // - high_value: maximum value, applicable to all rows
+		  //  
+		  //  Returns:
+		  //  - number of cells updated
+		  //
 		  var column as clAbstractDataSerie = self.GetColumn(column_name)
 		  
 		  if column = nil then return 0
@@ -921,17 +1026,28 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ClipLowValues(column as clAbstractDataSerie, low_value_column as clAbstractDataSerie) As integer
-		  
+		Function ClipLowValues(column as clAbstractDataSerie, LowValueColumn as clAbstractDataSerie) As integer
+		  //
+		  // Clip the values of the column to a given range:
+		  // - If the value of the cell is below the minimum, it is set to the minimum
+		  //
+		  //  
+		  //  Parameters:
+		  //  - Column: Column to be processed
+		  // - LowValueColumn: column with minimum value
+		  //  
+		  //  Returns:
+		  //  - number of cells updated
+		  //
 		  if column = nil then return 0
-		  if low_value_column = nil then return 0
+		  if LowValueColumn = nil then return 0
 		  
 		  var last_index as integer = column.RowCount
 		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index
 		    var tmp as variant = column.GetElement(index)
-		    var low_value as Variant = low_value_column.GetElement(index)
+		    var low_value as Variant = LowValueColumn.GetElement(index)
 		    
 		    if  tmp < low_value then
 		      column.SetElement(index, low_value)
@@ -946,10 +1062,21 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ClipLowValues(column_name as string, low_value_column_name as String) As integer
-		  
+		Function ClipLowValues(column_name as string, LowValueColumnName as String) As integer
+		  //
+		  // Clip the values of the column to a given range:
+		  // - If the value of the cell is below the minimum, it is set to the minimum
+		  //
+		  //  
+		  //  Parameters:
+		  //  - Column_name: name of the column  to be processed
+		  // - LowValueColumnName: name of the column with minimum value
+		  //  
+		  //  Returns:
+		  //  - number of cells updated
+		  //
 		  var column as clAbstractDataSerie = self.GetColumn(column_name)
-		  var low_column as clAbstractDataSerie = self.GetColumn(low_value_column_name)
+		  var low_column as clAbstractDataSerie = self.GetColumn(LowValueColumnName)
 		  
 		  if column = nil then return 0
 		  if low_column = nil then return 0
@@ -962,7 +1089,18 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function ClipLowValues(column_name as string, low_value as Variant) As integer
-		  
+		  //
+		  // Clip the values of the column to a given range:
+		  // - If the value of the cell is below the minimum, it is set to the minimum
+		  //
+		  //  
+		  //  Parameters:
+		  //  - Column_name: Name of the column to be processed
+		  // - low_value: minimum value, applicable to all rows
+		  //  
+		  //  Returns:
+		  //  - number of cells updated
+		  //
 		  var column as clAbstractDataSerie = self.GetColumn(column_name)
 		  
 		  if column = nil then return 0
@@ -978,21 +1116,13 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Duplicate the table and all its columns
 		  //  
 		  //  Parameters:
-		  //  - None
+		  //  - NewName (optional): name of the new table, default to name of current table followed by '...copy'
 		  //  
 		  //  Returns:
-		  //  - Nothing
+		  //  - New table 
 		  //  
 		  var output_table as clDataTable = new clDataTable(StringWithDefault(NewName, self.Name+" copy"))
-		  // 
-		  // 
-		  // if NewName.Trim.Length = 0 then
-		  // output_table = new clDataTable(self.name+" copy")
-		  // 
-		  // else
-		  // output_table = new clDataTable(NewName.trim)
-		  // 
-		  // end if
+		  
 		  
 		  output_table.AddMetaData("source", self.name)
 		  
@@ -1013,20 +1143,13 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Duplicate the table and all its columns
 		  //  
 		  //  Parameters:
-		  //  - None
+		  //  - NewName (optional): name of the new table, default to name of current table followed by '...copy'
 		  //  
 		  //  Returns:
-		  //  - Nothing
+		  //  - New table
 		  //  
-		  var output_table as clDataTable
 		  
-		  if NewName.Trim.Length = 0 then
-		    output_table = new clDataTable(self.name+" copy")
-		    
-		  else
-		    output_table = new clDataTable(NewName.trim)
-		    
-		  end if
+		  var output_table as clDataTable =  new clDataTable(StringWithDefault(NewName, self.Name+" copy"))
 		  
 		  output_table.AddMetaData("source", self.name)
 		  
@@ -1072,7 +1195,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  returns a column
 		  //  
 		  //  Parameters:
-		  //  - the index of the column
+		  //  - Index: the index of the column
 		  //  
 		  //  Returns:
 		  //  - the name if the column at specified index
@@ -1090,6 +1213,19 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Sub ColumnValues(pColumnName as string, assigns pSourceValue as Variant)
+		  //
+		  // Update the values in a given column
+		  // - If the source value is an array, each element are used, extra elements are ignored and missing elements are replaced by the 
+		  //.   default value for the specified columns
+		  //
+		  //  
+		  //  Parameters:
+		  //  - pColumnName: name of the column  to be processed
+		  // - pSourceValue: source used for update
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //
 		  
 		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
@@ -1426,6 +1562,15 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function CreateTableFromStructure(new_table_name as String) As clDataTable
+		  //
+		  // Create a new table assuming the current table contains a structure description
+		  // 
+		  // Paramters
+		  // - new_table_name: name of the new table
+		  //
+		  // Returns
+		  // - the new table
+		  //
 		  
 		  var tbl as new clDataTable(new_table_name)
 		  
@@ -1469,7 +1614,7 @@ Implements TableColumnReaderInterface,Iterable
 		  For row As Integer = 0 To RowCount-1
 		    redim tmp_item(-1)
 		    
-		    tmp_item.Append(Self.row_index.GetElement(row))
+		    tmp_item.Append(Self.RowIndexColumn.GetElement(row))
 		    
 		    For Each tmp_column As clAbstractDataSerie In columns
 		      tmp_item.Append(tmp_column.GetElement(row))
@@ -1485,18 +1630,18 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FilteredOn(BooleanSerie as clBooleanDataSerie) As clDataTableFilter
+		Function FilteredOn(pBooleanSerie as clBooleanDataSerie) As clDataTableFilter
 		  //  
 		  //  Creates a data table filter (iterable) using a column as a mask,  the column (data serie)  is passed as parameter. 
 		  //  The data serie does not need to belong to any data table
 		  //  
 		  //  Parameters:
-		  //  - a boolean data serie used as mask
+		  //  - pBooleanSerie: a boolean data serie used as mask
 		  //  
 		  //  Returns:
 		  //  - a data table filter
 		  //  
-		  var retval as new clDataTableFilter(self, BooleanSerie)
+		  var retval as new clDataTableFilter(self, pBooleanSerie)
 		  
 		  return retval
 		End Function
@@ -1748,12 +1893,33 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumn(pColumnName as String, include_alias as boolean = False) As clAbstractDataSerie
+		Function GetBooleanColumn(pColumnName as string, IncludeAlias as boolean = False) As clBooleanDataSerie
+		  //
+		  // Returns the selected column as an boolean data serie
+		  //
+		  //  Parameters:
+		  //  - pColumnName: the name of the column
+		  //  - IncludeAlias (optional) search the column aliases
+		  // 
+		  //  
+		  //  Returns:
+		  //  - the column matching the name or nil
+		  //  
+		  
+		  return clBooleanDataSerie(self.GetColumn(pColumnName, IncludeAlias))
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumn(pColumnName as String, IncludeAlias as boolean = False) As clAbstractDataSerie
 		  //  
 		  //  returns a column
 		  //  
 		  //  Parameters:
 		  //  - pColumnName: the name of the column
+		  //  - IncludeAlias (optional) search the column aliases
+		  // 
 		  //  
 		  //  Returns:
 		  //  - the column matching the name or nil
@@ -1767,7 +1933,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Next
 		  
-		  if not include_alias then return nil
+		  if not IncludeAlias then return nil
 		  
 		  For Each column As clAbstractDataSerie In Self.columns
 		    if column.HasAlias(pColumnName) then
@@ -1830,12 +1996,12 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumns(column_names() as string) As clAbstractDataSerie()
+		Function GetColumns(ColumnNames() as string) As clAbstractDataSerie()
 		  //  
 		  //  returns selected columns
 		  //  
 		  //  Parameters:
-		  //  - the name of the columns as an array of string
+		  //  - ColumnNames: the name of the columns as an array of string
 		  //  
 		  //  Returns:
 		  //  - the columns matching the name or nil, as an array
@@ -1843,7 +2009,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var ret() As clAbstractDataSerie
 		  
 		  
-		  For Each column_name As String In column_names
+		  For Each column_name As String In ColumnNames
 		    var tmp_column As clAbstractDataSerie = Self.GetColumn(column_name)
 		    
 		    ret.Append(tmp_column)
@@ -1857,18 +2023,18 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumns(paramarray column_names as string) As clAbstractDataSerie()
+		Function GetColumns(paramarray ColumnNames as string) As clAbstractDataSerie()
 		  
 		  //  returns selected columns
 		  //  
 		  //  Parameters:
-		  //  - the name of the columns as string parameters
+		  //  - ColumnNames: the name of the columns as string parameters
 		  //  
 		  //  Returns:
 		  //  - the columns matching the name or nil, as an array
 		  //  
 		  
-		  Return GetColumns(column_names)
+		  Return GetColumns(ColumnNames)
 		  
 		End Function
 	#tag EndMethod
@@ -1896,34 +2062,72 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(the_column_index as integer, the_element_index as integer) As variant
-		  //  
-		  //  returns a specific cell based on column name and row number
-		  //  
+		Function GetDateColumn(pColumnName as string, IncludeAlias as boolean = False) As clDateDataSerie
+		  //
+		  // Returns the selected column as an date data serie
+		  //
 		  //  Parameters:
-		  //  - the index of the column 
-		  //  - the row index
+		  //  - pColumnName: the name of the column
+		  //  - IncludeAlias (optional) search the column aliases
+		  // 
 		  //  
 		  //  Returns:
-		  //  - the value of the matching cell or nil
+		  //  - the column matching the name or nil
 		  //  
-		  var tmp_col as clAbstractDataSerie = self.GetColumnAt(the_column_index)
 		  
-		  if tmp_col = nil then return nil
-		  
-		  return tmp_col.GetElement(the_element_index)
+		  return clDateDataSerie(self.GetColumn(pColumnName, IncludeAlias))
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElement(pColumnName as String, the_element_index as integer) As variant
+		Function GetDateTimeColumn(pColumnName as string, IncludeAlias as boolean = False) As clDateTimeDataSerie
+		  //
+		  // Returns the selected column as an date-time  data serie
+		  //
+		  //  Parameters:
+		  //  - pColumnName: the name of the column
+		  //  - IncludeAlias (optional) search the column aliases
+		  // 
+		  //  
+		  //  Returns:
+		  //  - the column matching the name or nil
+		  //  
+		  
+		  return clDateTimeDataSerie(self.GetColumn(pColumnName, IncludeAlias))
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElement(ColumnIndex as integer, ElementIndex as integer) As variant
 		  //  
 		  //  returns a specific cell based on column name and row number
 		  //  
 		  //  Parameters:
-		  //  - the name of the columns 
-		  //  - the row index
+		  //  - ColumnIndex: the index of the column 
+		  //  - ElementIndex: the row index
+		  //  
+		  //  Returns:
+		  //  - the value of the matching cell or nil
+		  //  
+		  var tmp_col as clAbstractDataSerie = self.GetColumnAt(ColumnIndex)
+		  
+		  if tmp_col = nil then return nil
+		  
+		  return tmp_col.GetElement(ElementIndex)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElement(pColumnName as String, ElementIndex as integer) As variant
+		  //  
+		  //  returns a specific cell based on column name and row number
+		  //  
+		  //  Parameters:
+		  //  - pColumnName: the name of the columns 
+		  //  - ElementIndex: the row index
 		  //  
 		  //  Returns:
 		  //  - the value of the matching cell or nil
@@ -1932,14 +2136,26 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  if tmp_col = nil then return nil
 		  
-		  return tmp_col.GetElement(the_element_index)
+		  return tmp_col.GetElement(ElementIndex)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetIntegerColumn(pColumnName as string, include_alias as boolean = False) As clIntegerDataSerie
-		  return clIntegerDataSerie(self.GetColumn(pColumnName, include_alias))
+		Function GetIntegerColumn(pColumnName as string, IncludeAlias as boolean = False) As clIntegerDataSerie
+		  //
+		  // Returns the selected column as an integer data serie
+		  //
+		  //  Parameters:
+		  //  - pColumnName: the name of the column
+		  //  - IncludeAlias (optional) search the column aliases
+		  // 
+		  //  
+		  //  Returns:
+		  //  - the column matching the name or nil
+		  //  
+		  
+		  return clIntegerDataSerie(self.GetColumn(pColumnName, IncludeAlias))
 		End Function
 	#tag EndMethod
 
@@ -1950,13 +2166,34 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetNumberColumn(pColumnName as string, include_alias as boolean = False) As clNumberDataSerie
-		  return clNumberDataSerie(self.GetColumn(pColumnName, include_alias))
+		Function GetNumberColumn(pColumnName as string, IncludeAlias as boolean = False) As clNumberDataSerie
+		  //
+		  // Returns the selected column as an number data serie
+		  //
+		  //  Parameters:
+		  //  - pColumnName: the name of the column
+		  //  - IncludeAlias (optional) search the column aliases
+		  // 
+		  //  
+		  //  Returns:
+		  //  - the column matching the name or nil
+		  //  
+		  
+		  return clNumberDataSerie(self.GetColumn(pColumnName, IncludeAlias))
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetPropertiesAsTable(NewTableName as string = "") As clDataTable
+		  //
+		  // Get properties of each columns as a data table
+		  //
+		  // Parameters:
+		  // - NewTableName: name of the new table
+		  //
+		  // Returns
+		  // - new datatable
+		  //
 		  
 		  var DataRows() as clDataRow
 		  
@@ -1971,16 +2208,11 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  
+		  var NewTable as new clDataTable(StringWithDefault(NewTableName, self.PropertyTableNamePrefix.trim + " " + self.name))
 		  
-		  var temp as string = NewTableName.trim
+		  call NewTable.AddRows(DataRows)
 		  
-		  if temp.Length < 1 then temp = self.PropertyTableNamePrefix.trim + " " + self.name
-		  
-		  var t as new clDataTable(temp)
-		  
-		  call t.AddRows(DataRows)
-		  
-		  return t 
+		  return NewTable
 		  
 		End Function
 	#tag EndMethod
@@ -2000,11 +2232,11 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  if not include_index then
 		    
-		  elseif row_index = nil then
+		  elseif RowIndexColumn = nil then
 		    tmp_row.SetCell("row_index",  pRowIndex)
 		    
 		  else
-		    tmp_row.SetCell("row_index",  row_index.GetElement(pRowIndex))
+		    tmp_row.SetCell("row_index",  RowIndexColumn.GetElement(pRowIndex))
 		    
 		  end if
 		  
@@ -2087,9 +2319,19 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetStringColumn(pColumnName as string, include_alias as boolean = False) As clStringDataSerie
-		  
-		  return clStringDataSerie(self.GetColumn(pColumnName, include_alias))
+		Function GetStringColumn(pColumnName as string, IncludeAlias as boolean = False) As clStringDataSerie
+		  //
+		  // Returns the selected column as an string data serie
+		  //
+		  //  Parameters:
+		  //  - pColumnName: the name of the column
+		  //  - IncludeAlias (optional) search the column aliases
+		  // 
+		  //  
+		  //  Returns:
+		  //  - the column matching the name or nil
+		  //  
+		  return clStringDataSerie(self.GetColumn(pColumnName, IncludeAlias))
 		End Function
 	#tag EndMethod
 
@@ -2274,7 +2516,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - the new length
 		  //  
 		  //  Returns:
-		  //  - (nothing)
+		  //   (nothing)
 		  //  
 		  
 		  var max_RowCount as integer
@@ -2287,7 +2529,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		  
-		  row_index.SetLength(max_RowCount)
+		  RowIndexColumn.SetLength(max_RowCount)
 		  
 		  for each c as clAbstractDataSerie in self.columns
 		    c.SetLength(max_RowCount)
@@ -2511,7 +2753,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		  
-		  row_index = New clDataSerieRowID("row_id")
+		  RowIndexColumn = New clDataSerieRowID("row_id")
 		  
 		  allow_local_columns =  False
 		  index_explicit_when_iterate = False
@@ -2721,11 +2963,11 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function RowCount() As integer
-		  If Self.row_index = Nil Then
+		  If Self.RowIndexColumn = Nil Then
 		    Return -1
 		    
 		  Else
-		    Return Self.row_index.RowCount
+		    Return Self.RowIndexColumn.RowCount
 		    
 		  End If
 		  
@@ -2769,7 +3011,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var res As New clDataTable("select " + Self.Name)
 		  
 		  res.AddMetadata("source", self.Name)
-		  res.row_index = Self.row_index
+		  res.RowIndexColumn = Self.RowIndexColumn
 		  //  
 		  //  link to parent must be called BEFORE adding logical columns
 		  //  
@@ -3092,7 +3334,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected row_index As clDataSerieRowID
+		Protected RowIndexColumn As clDataSerieRowID
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
