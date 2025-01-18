@@ -56,7 +56,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  - the_items (array of variant) the values to add to the data serie
 		  //  
 		  //  Returns:
-		  //  
+		  //  (nothing)
+		  //
 		  
 		  for each item as variant in the_items
 		    self.AddElement(item)
@@ -392,29 +393,40 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_label as string, the_values() as variant)
+		Sub Constructor(NewColumnName as string, the_values() as variant)
+		  //
+		  // Creates a new column
+		  // 
+		  // Parameters:
+		  // - NewColumnName: name of the new column
+		  // - the_values: Values to add to the column
+		  //
 		  
 		  self.Reset
 		  
-		  SerieName = the_label
+		  SerieName = NewColumnName
 		  physical_table_link = Nil
 		  
 		  self.AddElements(the_values)
-		  
-		  // For i As Integer = 0 To the_values.LastIndex
-		  // self.AddElement(the_values(i))
-		  // 
-		  // Next
+		   
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_label as string, paramarray the_values() as variant)
+		Sub Constructor(NewColumnName as string, paramarray the_values() as variant)
+		  
+		  //
+		  // Creates a new column
+		  // 
+		  // Parameters:
+		  // - NewColumnName: name of the new column
+		  // - the_values: Values to add to the column
+		  //
 		  
 		  self.Reset
 		  
-		  SerieName = the_label
+		  SerieName = NewColumnName
 		  physical_table_link = Nil
 		  
 		  if the_values.LastIndex < 0 then return

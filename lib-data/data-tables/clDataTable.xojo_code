@@ -1427,12 +1427,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  self.allow_local_columns = False
 		  
-		  var tmp_table_name As String = NewTableName.Trim
-		  
-		  if tmp_table_name.Length = 0 then
-		    tmp_table_name = DefaultTableName
-		    
-		  end if 
+		  var tmp_table_name As String = StringWithDefault(NewTableName.Trim, DefaultTableName)
 		  
 		  AddMetadata("source", tmp_table_name)
 		  
@@ -1469,12 +1464,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  self.allow_local_columns = False
 		  
-		  var tmp_table_name As String = NewTableSource.name.Trim
-		  
-		  if tmp_table_name.Length = 0 then
-		    tmp_table_name = DefaultTableName
-		    
-		  end if 
+		  var tmp_table_name As String = StringWithDefault(NewTableSource.Name.Trim, DefaultTableName)
 		  
 		  AddMetadata("source", tmp_table_name)
 		  
@@ -1537,12 +1527,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  self.allow_local_columns = False
 		  
-		  var tmp_table_name As String = NewTableSource.name.Trim
-		  
-		  if tmp_table_name.Length = 0 then
-		    tmp_table_name = DefaultTableName
-		    
-		  end if 
+		  var tmp_table_name As String = StringWithDefault(NewTableSource.Name.Trim, DefaultTableName)
 		  
 		  AddMetadata("source", tmp_table_name)
 		  
@@ -2744,14 +2729,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h21
 		Private Sub internal_NewTable(NewTableName as string)
 		  
-		  
-		  if NewTableName.trim.Length = 0 then 
-		    Self.TableName = "Unnamed"
-		    
-		  else
-		    self.TableName = NewTableName.Trim
-		    
-		  end if
+		  Self.TableName = StringWithDefault(NewTableName.Trim, "Unnamed")
 		  
 		  RowIndexColumn = New clDataSerieRowID("row_id")
 		  
