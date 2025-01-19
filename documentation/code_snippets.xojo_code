@@ -62,7 +62,7 @@ Protected Module code_snippets
 		  
 		  // populate the series
 		  my_serie1.AddElement("aaa") // (...)
-		   
+		  
 		  my_serie3.AddElement(123.34) // (...)
 		  
 		  
@@ -482,19 +482,19 @@ Protected Module code_snippets
 		  
 		  var dtp as new clDataPool
 		  var table as clDataTable
-		  
-		  '
-		  ' Add a table to the pool
-		  '
-		  '.. create table as a clDataTable, with name T1
-		  '
+		  //
+		  // Add a table to the pool
+		  //
+		  // . create table as a clDataTable, with name T1
+		  //
 		  dtp.SetTable(table)
 		  
-		  '
-		  '
+		  //
+		  
 		  dtp.SetTable(dtp.GetTable("T1").clone(), "res")
-		  
-		  
+		  //
+		  // ...
+		  //
 		End Sub
 	#tag EndMethod
 
@@ -502,18 +502,21 @@ Protected Module code_snippets
 		Sub snippet_readme_025()
 		  // Snippet 025
 		  
-		  dim mytable as clDataTable
-		  dim dtp as new clDataPool
-		  '
-		  ' Add a table to the pool
-		  '
-		  '.. create table as a clDataTable, with name T1
-		  '
+		  var mytable as clDataTable
+		  var dtp as new clDataPool
+		  //
+		  // Add a table to the pool
+		  //
+		  // . create table as a clDataTable, with name T1
+		  //
 		  dtp.table = mytable
-		  '
-		  '
+		  
+		  //
+		  
 		  dtp.table("res") = dtp.table("T1").clone()
-		  '
+		  //
+		  // ...
+		  //
 		  
 		End Sub
 	#tag EndMethod

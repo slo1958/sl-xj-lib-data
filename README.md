@@ -52,7 +52,7 @@ my_serie.AddElement("efgh")
 
 Depending on your version of Xojp, you may need use the helper function make\_variant_array() as follow:
 
-```xoxo
+```xojo
 // Snippet 002
 
 dim my_serie As New clDataSerie("some_values", VariantArray("aaa",123,True))
@@ -491,6 +491,7 @@ For example, the function BasicFieldFilter() used before has the following imple
 		End Function
 
 ```
+
 The parameters the_row_index, the_row_count, the_column_names(), the_cell_values() are populated by FilterWithFunction() when it calls the filter_function().
 
 ### filtering using a masking column (boolean column)
@@ -699,19 +700,19 @@ A data pool is a collection of named clDataTable. By default, the name in the po
 
 var dtp as new clDataPool
 var table as clDataTable
-'
-' Add a table to the pool
-'
-'.. create table as a clDataTable, with name T1
-'
+//
+// Add a table to the pool
+//
+// . create table as a clDataTable, with name T1
+//
 dtp.SetTable(table)
 
-'
-'
+//
+
 dtp.SetTable(dtp.GetTable("T1").clone(), "res")
-'
-' ...
-'
+//
+// ...
+//
 ```
 
 
@@ -720,22 +721,23 @@ Alternate, simplified interface:
 ```xojo
 // Snippet 025
 
-dim mytable as clDataTable
-dim dtp as new clDataPool
-'
-' Add a table to the pool
-'
-'.. create table as a clDataTable, with name T1
-'
+var mytable as clDataTable
+var dtp as new clDataPool
+//
+// Add a table to the pool
+//
+// . create table as a clDataTable, with name T1
+//
 dtp.table = mytable
-'
-'
-dtp.table("res") = dtp.table("T1").clone()
-'
-'
-' ...
 
+//
+
+dtp.table("res") = dtp.table("T1").clone()
+//
+// ...
+//
 ```
+
 
 Saving all tables in the pool as data file
 
