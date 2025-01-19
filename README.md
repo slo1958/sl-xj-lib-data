@@ -5,7 +5,7 @@ Data handling classes
 - Description of source tree
 
 
-About Xojo version: tested with Xojo 2024 release 1.1 on Mac.
+About Xojo version: tested with Xojo 2024 release 4.1 on Mac.
 
 
 
@@ -36,6 +36,7 @@ You can create a data serie:
 ### Creating an empty data serie and adding values
 
 ```xojo
+// Snippet 001
 
 dim my_serie As New clDataSerie("some_values")
 
@@ -51,7 +52,8 @@ my_serie.AddElement("efgh")
 
 Depending on your version of Xojp, you may need use the helper function make\_variant_array() as follow:
 
-```xojo
+```xoxo
+// Snippet 002
 
 dim my_serie As New clDataSerie("some_values", VariantArray("aaa",123,True))
 
@@ -60,6 +62,7 @@ dim my_serie As New clDataSerie("some_values", VariantArray("aaa",123,True))
 In recent version of Xojo, you can directly write:
 
 ```xojo
+// Snippet 003
 
 dim my_serie As New clDataSerie("some_values", "aaa",123,True)
 
@@ -72,6 +75,7 @@ Note that one line in the source file creates one element in the data serie. The
 (see also loading a data table from a file)
 
 ```xojo
+// Snippet 004
 
 dim fld_file as FolderItem
 ...
@@ -139,6 +143,8 @@ dim my_table As New clDataTable("table_1")
 ### Create a table from a set of data series
 
 ```xojo
+// Snippet 005
+
 Dim my_serie1 As New clDataSerie("customer")
 Dim my_serie2 As New clDataSerie("product")
 Dim my_serie3 As New clDataSerie("region")
@@ -157,6 +163,7 @@ Dim my_table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 A shorter way to do it:
 
 ```xojo
+// Snippet 006
 
 Dim my_table As New clDataTable("mytable", SerieArray( _
 New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
@@ -172,6 +179,8 @@ If you need to create multiple tables from the same data series, remember that a
 
 
 ```xojo
+// Snippet 007
+
 Dim my_serie1 As New clDataSerie("customer")
 Dim my_serie2 As New clDataSerie("product")
 Dim my_serie3 As New clDataSerie("region")
@@ -196,6 +205,7 @@ Note the last parameter for the second call to the constructor: it is telling th
 This will create a new column, named 'unit_price*quantity':
 
 ```xojo
+// Snippet 008
 
 Dim mytable As New clDataTable("T1")
 
@@ -212,11 +222,13 @@ call mytable.AddColumn(clNumberDataSerie(mytable.GetColumn("unit_price")) * clNu
 
 
 // simplified syntax:
-mytable.AddColumn(mytable.NumberColumn("unit_price") * mytable.NumberColumn("quantity"))
+call mytable.AddColumn(mytable.GetNumberColumn("unit_price") * mytable.GetNumberColumn("quantity"))
+
 
 // If the target column exists in the table
-mytable.AddColumn(new clNumberDataSerie(“total”))
-mytable.NumberColumn(“total”) = mytable.NumberColumn("unit_price") * mytable.NumberColumn("quantity")
+call mytable.AddColumn(new clNumberDataSerie("total"))
+Call mytable.SetColumnValues("total", mytable.GetNumberColumn("unit_price") * mytable.GetNumberColumn("quantity"))
+
 
 ```
 
@@ -226,6 +238,8 @@ mytable.NumberColumn(“total”) = mytable.NumberColumn("unit_price") * mytable
 #### by position
 
 ```xojo
+// Snippet 009
+
 Dim mytable As New clDataTable("mytable")
 
 call mytable.AddColumns(Array("country","city","sales"))
@@ -242,6 +256,7 @@ Note that the constructor of the clDataTable receives the list of columns to cre
 This option is slower, but safer.
 
 ```xojo
+// Snippet 010
 
 var mytable As New clDataTable("T1")
 
@@ -249,7 +264,11 @@ call mytable.AddColumn(new clDataSerie("name"))
 call mytable.AddColumn(new clNumberDataSerie("quantity"))
 call mytable.AddColumn(new clNumberDataSerie("unit_price"))
 
+// ...
 
+var temp_row as clDataRow
+
+// ...
 temp_row = New clDataRow
 temp_row.SetCell("name","alpha")
 temp_row.SetCell("quantity",50)
@@ -267,6 +286,8 @@ mytable.AddRow(temp_row)
 You can also pass a dictionary:
 
 ```xojo
+// Snippet 011
+
 var mytable As New clDataTable("T1")
 
 call mytable.AddColumn(new clDataSerie("name"))
@@ -282,6 +303,8 @@ mytable.AddRow(new Dictionary("name": "alpha", "quantity":20, "unit_price": 8))
 Or directly define the values:
 
 ```xojo
+// Snippet 012
+
 var mytable As New clDataTable("T1")
 
 call mytable.AddColumn(new clDataSerie("name"))
@@ -300,10 +323,18 @@ mytable.AddRow("name": "alpha", "quantity":20, "unit_price": 8)
 Create a folder item pointing to the file, then create the data table. The flag causes the method to use the values in the first row as field names. By default, the reader assumes utf-8 encoded, tab separated file. We need to alter the default settings for a coma-separated file.
 
 ```xojo
+// Snippet 013
 
-my_file  = data_folder.Child("myfile3_10K_comma.txt”)
+var data_folder as FolderItem
+var my_file as FolderItem
 
-Dim my_table As New clDataTable(new clTextReader(my_file, True, new clTextFileConfig(“,”)))
+// Setup data_folder to point to the folder containing the data file
+
+my_file  = data_folder.Child("myfile3_10K_comma.txt")
+
+
+Dim my_table As New clDataTable(new clTextReader(my_file, True, new clTextFileConfig(",")))
+
 
 ```
 Note that you can override the default allocation of clDataSerie by providing a column allocator, a method receiving a column name and returning a subclass of clAbstractDataSerie.
@@ -313,23 +344,48 @@ Note that you can override the default allocation of clDataSerie by providing a 
 
 #### add a table to another table
 
-Assuming mytable1 contains 'name' and 'first-name', mytable2 contains 'name' and 'birthyear', mytable3 contains 'name' and 'phone-nbr'
+Assuming mytable1 contains
+
+- 'name'
+- ‘first-name'
+
+Assuming mytable2 contains 
+
+- ‘name'
+- ‘birthyear'
+
+Assuming mytable3 contains 
+
+- ‘name'
+- ‘phone-nbr'
 
 
 ```xojo
+// Snippet 014
 
-mytable1.AddTableData(mytable2, true)
+var myTable1, myTable2, myTable3 as clDataTable
 
-mytable1.AddTableData(mytable3, false)
+mytable1.AddTableData(mytable2, clDataTable.AddRowMode.CreateNewColumn)
+
+mytable1.AddTableData(mytable3, clDataTable.AddRowMode.IgnoreNewColumn)
+
+
 
 ```
 
-After those two calls: mytable1 contains all the rows from the three tables. The first import also adds the column 'birthyear' since the flag 'create\_missing_columns' is set to true. 
+After those two calls: mytable1 contains all the rows from the three tables. 
+The first import also adds the column 'birthyear' since the insert mode is set to ‘CreateNewColumn’.
 
 
 #### iterate a table row by row
 
 ```xojo
+// Snippet 015
+
+var mytable as clDataTable
+
+// add the table data
+
 for each row as clDataRow in mytable
   for each cell as string in row
     system.DebugLog("field " + cell + "value " + row.GetCell(cell))
@@ -337,13 +393,15 @@ for each row as clDataRow in mytable
   next
   
 next
+
 ```
 
 Remember that clDataTable maintains a distinct column that is a row index. You cannot access this column directly, but you can include its value in the clDataRow object returned by the row iterator:
 
 
 ```xojo
-mytable.index_visible_when_iterate(True)
+
+mytable.IndexVisibleWhenIterating(True)
 
 ```
 
@@ -351,9 +409,15 @@ mytable.index_visible_when_iterate(True)
 
 Assuming the table table_customer contains sales by customer, together with the customer country, the following statement returns the total sales per country:
 
-
 ```xojo
-Dim table_country As clDataTable = table_customer.groupby(StringArray("Country"), StringArray("Sales"), StringArray(""))
+// Snippet 016
+
+var table_Customers as clDataTable
+
+// Add data to table_customers 
+
+Dim table_country As clDataTable = table_customers.groupby(StringArray("Country"), StringArray("Sales"))
+
 ```
 
 ### filtering
@@ -361,19 +425,21 @@ Dim table_country As clDataTable = table_customer.groupby(StringArray("Country")
 Let's consider the following example:
 
 ```xojo
-Dim table0 As New clDataTable("mytable")
+// Snippet 017
 
-call table0.AddColumns(Array("country","city","sales"))
+Dim MyTable As New clDataTable("mytable")
 
-table0.AddRow(Array("France","Paris",1100))
-table0.AddRow(Array("France","Marseille",1200))
-table0.AddRow(Array("Belgique","Bruxelles",1300))
-table0.AddRow(Array("USA","NewYork",1400))
-table0.AddRow(Array("Belgique","Bruxelles",1500))
-table0.AddRow(Array("USA","Chicago",1600))
+call MyTable.AddColumns(Array("country","city","sales"))
 
-dim is_france() as variant = table0.FilterWithFunction(AddressOf BasicFieldFilter,"country","France")
-dim is_belgium() as variant =  table0.FilterWithFunction(AddressOf BasicFieldFilter, "country","Belgique")
+MyTable.AddRow(Array("France","Paris",1100))
+MyTable.AddRow(Array("France","Marseille",1200))
+MyTable.AddRow(Array("Belgique","Bruxelles",1300))
+MyTable.AddRow(Array("USA","NewYork",1400))
+MyTable.AddRow(Array("Belgique","Bruxelles",1500))
+MyTable.AddRow(Array("USA","Chicago",1600))
+
+dim is_france() as variant = MyTable.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")
+dim is_belgium() as variant =  MyTable.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")
 dim is_europe() as variant
 
 for i as integer = 0 to is_france.Ubound
@@ -381,13 +447,13 @@ for i as integer = 0 to is_france.Ubound
   
 next
 
-call table0.AddColumn(new clIntegerDataSerie("is_france"))
-call table0.AddColumn(new clIntegerDataSerie("is_belgium"))
-call table0.AddColumn(new clIntegerDataSerie("is_europe"))
+call MyTable.AddColumn(new clIntegerDataSerie("is_france"))
+call MyTable.AddColumn(new clIntegerDataSerie("is_belgium"))
+call MyTable.AddColumn(new clIntegerDataSerie("is_europe"))
 
-call table0.SetColumnValues("is_france", is_france, false)
-call table0.SetColumnValues("is_belgium", is_belgium, false)
-call table0.SetColumnValues("is_europe", is_europe, false)
+call MyTable.SetColumnValues("is_france", is_france, false)
+call MyTable.SetColumnValues("is_belgium", is_belgium, false)
+call MyTable.SetColumnValues("is_europe", is_europe, false)
 
 
 ```
@@ -405,6 +471,7 @@ The resulting arrays are then saved to new columns using the function 'set_colum
 A filter function has the following prototype:
 
 ```xojo
+
 Function xyz(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
 ```
 
@@ -432,41 +499,42 @@ Let's consider the following example:
 
 ```xojo
  
-Dim table0 As New clDataTable("mytable")
+// Snippet 018
 
-call table0.AddColumns(Array("country","city","sales","product"))
+Dim MyTable As New clDataTable("mytable")
 
-table0.AddRow(Array("France","Paris",1100,"AA"))
-table0.AddRow(Array("","Marseille",1200,"AA"))
-table0.AddRow(Array("Belgique","",1300,"AA"))
-table0.AddRow(Array("USA","NewYork",1400,"AA"))
-table0.AddRow(Array("Belgique","Bruxelles",1500,"BB"))
-table0.AddRow(Array("USA","Chicago",1600,"AA"))
+call MyTable.AddColumns(Array("country","city","sales","product"))
+
+MyTable.AddRow(Array("France","Paris",1100,"AA"))
+MyTable.AddRow(Array("","Marseille",1200,"AA"))
+MyTable.AddRow(Array("Belgique","",1300,"AA"))
+MyTable.AddRow(Array("USA","NewYork",1400,"AA"))
+MyTable.AddRow(Array("Belgique","Bruxelles",1500,"BB"))
+MyTable.AddRow(Array("USA","Chicago",1600,"AA"))
 
 dim filter_country as new clBooleanDataSerie("mask_country")
-for each cell as string in table0.GetColumn("Country")
+for each cell as string in MyTable.GetColumn("Country")
   filter_country.AddElement(cell = "Belgique")
   
 next
 
-call table0.AddColumn(filter_country)
+call MyTable.AddColumn(filter_country)
 
 dim filter_product as new clBooleanDataSerie("mask_product")
-for each cell as string in table0.GetColumn("product")
+for each cell as string in MyTable.GetColumn("product")
   filter_product.AddElement(cell = "BB")
   
 next
 
-call table0.AddColumn(not filter_product)
+call MyTable.AddColumn(not filter_product)
 
-table0.IndexVisibleWhenIterating(True)
+MyTable.IndexVisibleWhenIterating(True)
 
+// use the name of the boolean serie as parameter to 'filtered_on' 
 
-' use the name of the boolean serie as parameter to 'filtered_on' 
-for each row as clDataRow in table0.FilteredOn(“mask_country")
-  … do something
+for each row as clDataRow in MyTable.FilteredOn("mask_country")
+  // … do something
 next
-
 ```
 
 ### filtering using a masking data serie (boolean data serie)
@@ -475,14 +543,20 @@ The boolean data serie does not need to be a column in the table, see example be
 Note in this example the use of boolean operator between boolean data series.
 
 ```xojo
+/// Snippet 019
+
+var MyTable as clDataTable
+
+// add data to the table  ...
+
 dim filter_country as new clBooleanDataSerie("mask_country")
-for each cell as string in table0.GetColumn("Country")
+for each cell as string in MyTable.GetColumn("Country")
   filter_country.AddElement(cell = "Belgique")
   
 next 
 
 dim filter_product as new clBooleanDataSerie("mask_product")
-for each cell as string in table0.GetColumn("product")
+for each cell as string in MyTable.GetColumn("product")
   filter_product.AddElement(cell = "BB")
   
 next 
@@ -490,14 +564,13 @@ next
 '
 ' The filter series are not added to the table, but we can used them to filter the datatable
 
-table0.index_visible_when_iterate(True)
+MyTable.IndexVisibleWhenIterating(True)
 
 ' directly use the  boolean serie as parameter to ‘FilteredOn; and, or and not operator are overloaded for clBooleanDataSerie
 
-for each row as clDataRow in table0.FilteredOn(filter_country and filter_product)
- … do something
+for each row as clDataRow in MyTable.FilteredOn(filter_country and filter_product)
+  // … do something
 next
-
 ```
 
 
@@ -508,8 +581,7 @@ A virtual data table is returned by the data table method select_columns()
 
 ```xojo
 
-my_virtual_table = my_table.SelectColumns(array("customer","product"))
-
+var my_virtual_table as clDataTable = MyTable.SelectColumns(array("customer","product"))
 
 ```
 
@@ -530,8 +602,9 @@ We want to get:
 Creation of the test dataset
 
 ```xojo
+// Snippet 020
 
-dim col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
+Var col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
 dim col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
 
 dim table1 as new clDataTable("source table", SerieArray(col_source, col_sales))
@@ -541,17 +614,32 @@ dim table1 as new clDataTable("source table", SerieArray(col_source, col_sales))
 Creation of a new table, with split columns
 
 ```xojo
-dim table2 as new clDataTable("prepared", SerieArray( _
+// Snippet 021
+
+// defined in previous snippet:
+Var col_source as new clStringDataSerie("source")
+var col_sales as new clNumberDataSerie("Sales")
+
+var table2 as new clDataTable("prepared", SerieArray( _
 col_source, _
-col_source.TextBefore(“-“).Rename("country"), _
-col_source.TextAfter(“-“).Rename("city"), _
+col_source.TextBefore("-").Rename("country"), _
+col_source.TextAfter("-").Rename("city"), _
 col_sales),_
- true)
+true)
+
+
 ```
 Getting the total sales per country
 
 ```xojo
-Dim table4 As clDataTable = table2.GroupBy(StringArray("country"), StringArray("sales"), StringArray(""))
+// Snippet 022
+
+// defined in previous snippet:
+var table2 as clDataTable
+
+
+Dim table4 As clDataTable = table2.GroupBy(StringArray("country"), StringArray("sales"))
+
 ```
 
 ### Updating columns
@@ -563,36 +651,37 @@ Use simplified syntax for common cases.
 
 
 ```xojo
+// Snippet 023
 
-Var MyColumn as clAbstractDataColumn= MyTable.GetColumn(“name”)
+var MyTable as new clDataTable("mytable")
+
+Var MyColumn as clAbstractDataSerie = MyTable.GetColumn("name")
 
 // Create a new column if needed
-Var updated_column as clAbstractDataColumn =  MyTable.SetColumnValues(“another_column”, MyColumn, True)
+Var updated_column as clAbstractDataSerie =  MyTable.SetColumnValues("another_column", MyColumn, True)
 
 // Do not create a new column and ignore the returned value
-Call MyTable.SetColumnValues(“another_column”, MyColumn, False)
+Call MyTable.SetColumnValues("another_column", MyColumn, False)
 
 // Use simple syntax, target column must exist
-MyTable.Column(“another_column”) =  MyColumn
+MyTable.Column("another_column") =  MyColumn
 
 //
 // Another example
 // 
 
 // Create a column
-call MyTable.AddColumn(new clNumberDataSerie(“Total”))
+call MyTable.AddColumn(new clNumberDataSerie("Total"))
 
-// Update the column with 	a constant value
-MyTable.column(“Total”) = 0
+// Update the column with     a constant value
+MyTable.Column("Total") =  0
 
 // Update the column from other columns
-MyTable.column(“Total”) = clNumberDataSerie(MyTable.Column(“Total”)) + clNumberDataSerie(MyTable.Column(“something”))
-
+MyTable.column("Total") = clNumberDataSerie(MyTable.Column("Total")) + clNumberDataSerie(MyTable.Column("something"))
 
 
 // Add a column with unit_price x quantity
-new_column = mytable.AddColumn(mytable.NumberColumn("unit_price") * mytable.NumberColumn("quantity"))
-
+var new_column as clAbstractDataSerie = mytable.AddColumn(mytable.GetNumberColumn("unit_price") * mytable.GetNumberColumn("quantity"))
 
 
 ```
@@ -606,8 +695,10 @@ new_column = mytable.AddColumn(mytable.NumberColumn("unit_price") * mytable.Numb
 A data pool is a collection of named clDataTable. By default, the name in the pool is the name of the clDataTable, but an alternate name (key) can be provided without affecting the name of the table.
 
 ```xojo
-'
-dim dtp as new clDataPool
+// Snippet 024
+
+var dtp as new clDataPool
+var table as clDataTable
 '
 ' Add a table to the pool
 '
@@ -617,7 +708,7 @@ dtp.SetTable(table)
 
 '
 '
-dtp.SetTable(dtp.get_table("T1").clone(), "res")
+dtp.SetTable(dtp.GetTable("T1").clone(), "res")
 '
 ' ...
 '
@@ -625,24 +716,29 @@ dtp.SetTable(dtp.get_table("T1").clone(), "res")
 
 
 Alternate, simplified interface:
+
 ```xojo
-'
+// Snippet 025
+
+dim mytable as clDataTable
 dim dtp as new clDataPool
 '
 ' Add a table to the pool
 '
 '.. create table as a clDataTable, with name T1
 '
-dtp.table = table
+dtp.table = mytable
 '
 '
 dtp.table("res") = dtp.table("T1").clone()
+'
 '
 ' ...
 
 ```
 
 Saving all tables in the pool as data file
+
 ```xojo
 Todo
 

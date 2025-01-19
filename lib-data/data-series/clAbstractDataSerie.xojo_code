@@ -1218,6 +1218,16 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetElements(the_value as variant)
+		  
+		  for i as integer = 0 to self.LastIndex
+		    self.SetElement(i, the_value)
+		    
+		  next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetLength(the_length as integer)
 		  var v as variant = self.GetDefaultValue
 		  

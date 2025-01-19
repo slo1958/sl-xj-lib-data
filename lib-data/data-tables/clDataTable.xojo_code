@@ -510,6 +510,28 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function AddRows(SourceTable as clDataTable, Mode as AddRowMode = AddRowMode.CreateNewColumn) As integer
+		  //  
+		  //  Add  data rows to the table
+		  //  
+		  //  Parameters:
+		  //  - SourceTable: the table containing the data rows to be added
+		  // -  Mode: handling of missing columns in table
+		  //  
+		  //  Returns:
+		  //  - number of rows added
+		  //  
+		  for each row as clDataRow in SourceTable
+		    self.AddRow(row, mode)
+		    
+		  next
+		  
+		  return SourceTable.RowCount
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function AddRows(NewRowsSource() as Dictionary, mode as AddRowMode = AddRowMode.CreateNewColumn) As integer
 		  //  
 		  //  Add  data rows to the table
@@ -659,6 +681,25 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AddTableData(SourceTable as clDataTable, Mode as AddRowMode = AddRowMode.CreateNewColumn)
+		  //  
+		  //  Add  data rows to the table
+		  //  
+		  //  Parameters:
+		  //  - SourceTable: the table containing the data rows to be added
+		  // -  Mode: handling of missing columns in table
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //
+		  
+		  call self.AddRows(SourceTable, Mode)
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -1164,6 +1205,37 @@ Implements TableColumnReaderInterface,Iterable
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function Column(pColumnName as string) As clAbstractDataSerie
+		  return self.GetColumn(pColumnName, false)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Column(pColumnName as string, assigns SourceColumn as clAbstractDataSerie)
+		  
+		  call self.SetColumnValues(pColumnName, SourceColumn, True)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Column(pColumnName as string, assigns SourceValue as double)
+		   
+		  call self.SetColumnValues(pColumnName, SourceValue, False)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Column(pColumnName as string, assigns SourceValue as integer)
+		  
+		   
+		  call self.SetColumnValues(pColumnName, SourceValue, False)
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag DelegateDeclaration, Flags = &h0
 		Delegate Function ColumnAllocator(column_name as String, column_type_info as string) As clAbstractDataSerie
 	#tag EndDelegateDeclaration
@@ -1180,12 +1252,6 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - the number of columns as an integer
 		  //  
 		  Return columns.LastIndex + 1
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Columnk1(pColumnName as string) As clAbstractDataSerie
-		  return self.GetColumn(pColumnName, false)
 		End Function
 	#tag EndMethod
 
@@ -3021,7 +3087,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SetColumnValues(pColumnName as string, source_column as clAbstractDataSerie, can_create as boolean) As clAbstractDataSerie
+		Function SetColumnValues(pColumnName as string, source_column as clAbstractDataSerie, can_create as boolean = False) As clAbstractDataSerie
 		  
 		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
@@ -3042,6 +3108,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  else
 		    temp_column.SetElements(source_column)
+		    return temp_column
 		    
 		  end if
 		  
@@ -3049,7 +3116,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SetColumnValues(pColumnName as string, the_values() as variant, can_create as boolean) As clAbstractDataSerie
+		Function SetColumnValues(pColumnName as string, the_values as double, can_create as boolean = False) As clAbstractDataSerie
 		  
 		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
@@ -3068,6 +3135,34 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  else
 		    temp_column.SetElements(the_values)
+		    Return temp_column
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SetColumnValues(pColumnName as string, the_values() as variant, can_create as boolean = False) As clAbstractDataSerie
+		  
+		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
+		  
+		  if temp_column = nil then
+		    
+		    if can_create then
+		      temp_column = new clDataSerie(pColumnName, the_values)
+		      call self.AddColumn(temp_column)
+		      
+		      return temp_column
+		      
+		    else
+		      return nil
+		      
+		    end if
+		    
+		  else
+		    temp_column.SetElements(the_values)
+		    Return temp_column
 		    
 		  end if
 		  
