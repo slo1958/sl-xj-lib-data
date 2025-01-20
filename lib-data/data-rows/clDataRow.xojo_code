@@ -36,6 +36,57 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Cell(the_cell_name as String) As variant
+		  //  
+		  //  Get the value of one field / cell
+		  //  
+		  //  Parameters:
+		  //  - the name of the cell
+		  //  
+		  //  Returns:
+		  //   value of the cell or empty string
+		  //  
+		  
+		  
+		  If my_storage.HasKey(the_cell_name) Then
+		    Return  my_storage.Value(the_cell_name) 
+		    
+		  Else
+		    Return ""
+		    
+		  End If
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Cell(CellName as string, assigns NewCellValue as Variant)
+		  //  
+		  //  Update the value of one field / cell
+		  //  
+		  //  Parameters:
+		  //  - CellName: the name of the cell
+		  // -  NewCellValue: the value of the cell
+		  //
+		  // An exception is generated if the row is flagged as 'non mutable'
+		  //  
+		  //  Returns:
+		  //   (none)
+		  //  
+		  
+		  
+		  If my_storage.HasKey(CellName) And Not mutable_flag Then
+		    Raise New clDataException("Cannot update a field in a non mutable row")
+		    
+		  Else
+		    my_storage.Value(CellName) = NewCellValue
+		    
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub ClearTableLink()
 		  self.table_link = nil
 		End Sub

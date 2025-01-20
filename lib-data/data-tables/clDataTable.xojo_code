@@ -1221,7 +1221,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Sub Column(pColumnName as string, assigns SourceValue as double)
-		   
+		  
 		  call self.SetColumnValues(pColumnName, SourceValue, False)
 		  
 		End Sub
@@ -1230,7 +1230,15 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Sub Column(pColumnName as string, assigns SourceValue as integer)
 		  
-		   
+		  
+		  call self.SetColumnValues(pColumnName, SourceValue, False)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Column(pColumnName as string, assigns SourceValue as string)
+		  
 		  call self.SetColumnValues(pColumnName, SourceValue, False)
 		  
 		End Sub
@@ -3117,6 +3125,33 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function SetColumnValues(pColumnName as string, the_values as double, can_create as boolean = False) As clAbstractDataSerie
+		  
+		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
+		  
+		  if temp_column = nil then
+		    
+		    if can_create then
+		      temp_column = new clDataSerie(pColumnName, the_values)
+		      call self.AddColumn(temp_column)
+		      
+		      return temp_column
+		      
+		    else
+		      return nil
+		      
+		    end if
+		    
+		  else
+		    temp_column.SetElements(the_values)
+		    Return temp_column
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SetColumnValues(pColumnName as string, the_values as string, can_create as boolean = False) As clAbstractDataSerie
 		  
 		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
 		  
