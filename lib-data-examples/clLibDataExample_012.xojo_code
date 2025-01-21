@@ -50,7 +50,7 @@ Inherits clLibDataExample
 		  
 		  call table2.AddColumn(col_city.Uppercase.rename("City UC"))
 		  
-		  var table3 As clDataTable = table2.unique(array("country", "city"))
+		  var table3 As clDataTable = table2.Groupby(array("country", "city"))
 		  
 		  
 		  var table4 as clDataTable  = table2.groupby(array("country"), array("Sales":clDataTable.AggSum,"Sales":clDataTable.AggMax))

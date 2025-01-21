@@ -782,7 +782,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "table0 integrity", nil, table0) 
 		  
-		  var table1 As clDataTable = table0.unique(array("country", "city"))
+		  var table1 As clDataTable = table0.Groupby(array("country", "city"))
 		  
 		  var col1 as new clDataSerie("country", "France", "", "Belgique","Belgique","USA","USA")
 		  
@@ -1602,10 +1602,191 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "table integrity", nil, t) 
 		  
-		  
 		  var g as new clGrouper(SerieArray(ccnt, ccity))
 		  
 		  var table0 as clDataTable = new clDataTable("group", g.Flattened)
+		  
+		  var table_expected As New clDataTable("mytable", SerieArray( _
+		  new clStringDataSerie("Country", array("Belgium","Belgium", "France")), _
+		  new clStringDataSerie("City", array("Brussels","Liege", "Paris")) _
+		  ))
+		  
+		  call check_table(log,"get distinct values", table_expected, table0)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_036(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  var tcountries as new clDataTable("Countries")
+		  call  tcountries.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountries.AddColumn(new clStringDataSerie("City"))
+		  tcountries.AddRow(new Dictionary("Country":"Belgium","City":"Brussels"))
+		  tcountries.AddRow(new Dictionary("Country":"Belgium","City":"Liege"))
+		  tcountries.AddRow(new Dictionary("Country":"France","City":"Paris"))
+		  tcountries.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  
+		  call check_table(log, "tcountries table integrity", nil, tcountries) 
+		  
+		  
+		  var tsales as new clDataTable("Sales")
+		  
+		  var ccity As clAbstractDataSerie =  tsales.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  tsales.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = tsales.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28))
+		  
+		  var ctp as clAbstractDataSerie = tsales.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
+		  ctp.Rename("Sales")
+		  
+		  call check_table(log, "tsales table integrity", nil, tsales) 
+		  
+		  var join_results as Boolean = tsales.Lookup(tcountries, array("City"), array("Country"))
+		  
+		  var ccnty as clAbstractDataSerie = tsales.GetColumn("Country")
+		  
+		  var gDistinct as new clGrouper(Array(ccnty, ccity))
+		  
+		  var tDistinct  as clDataTable = new clDataTable("group", gDistinct.Flattened)
+		  
+		  var tDistinct_expected As New clDataTable("mytable", SerieArray( _
+		  new clStringDataSerie("Country", array("Belgium","Belgium", "France")), _
+		  new clStringDataSerie("City", array("Brussels","Liege", "Paris")) _
+		  ))
+		  
+		  call check_table(log,"get distinct values", tDistinct_expected, tDistinct )
+		   
+		  
+		  var tSumSales as clDataTable = tsales.GroupBy(StringArray("Country"), StringArray("Sales","Quantity"))
+		  
+		  var tSumSales_expected As New clDataTable("mytable", SerieArray( _
+		  new clStringDataSerie("Country", array("Belgium","France")), _
+		  new clNumberDataSerie("Sum of Sales", array(1704, 648)), _
+		  new clNumberDataSerie("Sum of Quantity", array (72,24)) _
+		  ))
+		  
+		  call check_table(log,"Check total sales", tSumSales_expected, tSumSales )
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_037(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  var tcountries as new clDataTable("Countries")
+		  call  tcountries.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountries.AddColumn(new clStringDataSerie("City"))
+		  tcountries.AddRow(new Dictionary("Country":"Belgium","City":"Brussels"))
+		  tcountries.AddRow(new Dictionary("Country":"Belgium","City":"Liege"))
+		  tcountries.AddRow(new Dictionary("Country":"France","City":"Paris"))
+		  tcountries.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  
+		  call check_table(log, "tcountries table integrity", nil, tcountries) 
+		  
+		  
+		  var tsales as new clDataTable("Sales")
+		  
+		  var ccity As clAbstractDataSerie =  tsales.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  tsales.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = tsales.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28))
+		  tsales.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
+		  
+		  var ctp as clAbstractDataSerie = tsales.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
+		  ctp.Rename("Sales")
+		  
+		  call check_table(log, "tsales table integrity", nil, tsales) 
+		  
+		  var join_results as Boolean = tsales.Lookup(tcountries, array("City"), array("Country"))
+		  
+		  var tDistinct  as clDataTable = tsales.GroupBy(StringArray("Country", "City"))
+		  
+		  var tDistinct_expected As New clDataTable("mytable", SerieArray( _
+		  new clStringDataSerie("Country", array("Belgium","Belgium", "France","")), _
+		  new clStringDataSerie("City", array("Brussels","Liege", "Paris","Rome")) _
+		  ))
+		  
+		  call check_table(log,"get distinct values", tDistinct_expected, tDistinct )
+		  
+		  var tSumSales as clDataTable = tsales.GroupBy(StringArray("Country"), StringArray("Sales","Quantity"))
+		  
+		  var tSumSales_expected As New clDataTable("mytable", SerieArray( _
+		  new clStringDataSerie("Country", array("Belgium","France","")), _
+		  new clNumberDataSerie("Sum of Sales", array(1704, 648,250)), _
+		  new clNumberDataSerie("Sum of Quantity", array (72,24, 10)) _
+		  ))
+		  
+		  call check_table(log,"Check total sales", tSumSales_expected, tSumSales )
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_038(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var t as new clDataTable("t")
+		  
+		  var ccnt As clAbstractDataSerie =  t.AddColumn(new clStringDataSerie("Country"))
+		  var ccity As clAbstractDataSerie =  t.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  t.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = t.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 22))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 23))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 25))
+		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 26))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 27))
+		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 28))
+		  
+		  var ctp as clAbstractDataSerie = t.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
+		  
+		  call check_table(log, "table integrity", nil, t) 
+		  
+		  var table0 as clDataTable = t.GroupBy(array("Country","City"))
 		  
 		  var table_expected As New clDataTable("mytable", SerieArray( _
 		  new clStringDataSerie("Country", array("Belgium","Belgium", "France")), _
