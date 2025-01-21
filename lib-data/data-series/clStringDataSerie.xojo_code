@@ -85,6 +85,20 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetElementAsBoolean(ElementIndex as integer) As boolean
+		  
+		  
+		  if self.BooleanParser = nil then
+		    return Super.GetElementAsBoolean(ElementIndex)
+		    
+		  end if
+		  
+		  return self.BooleanParser.ParseToBoolean(self.GetElementAsString(ElementIndex))
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetElementAsInteger(ElementIndex as integer) As integer
 		  // Calling the overridden superclass method.
 		  
@@ -452,6 +466,10 @@ Inherits clAbstractDataSerie
 		End Function
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h1
+		Protected BooleanParser As BooleanParserInterface
+	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected DefaultValue As Variant

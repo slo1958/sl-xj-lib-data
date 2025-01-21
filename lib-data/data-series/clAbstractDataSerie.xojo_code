@@ -148,7 +148,23 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function ApplyFilterFunction(pFilterFunction as FilterColumnByRows, paramarray pFunctionParameters as variant) As variant()
+		  //
+		  // Applies a filter function  for each row and returns the results as an array of variant
+		  //
+		  // Parameters:
+		  // - pFIlterFunction: the address of the filter function
+		  // - pFunctionParameters: parameters passed to the function
+		  //
+		  // Returns:
+		  // - results as an array of variant
+		  //
+		  
 		  var return_boolean() As Variant
+		  
+		  For row_index As Integer=0 To self.lastIndex // items.LastIndex
+		    return_boolean.Append(pFilterFunction.Invoke(row_index,  self.LastIndex, name, GetElement(row_index), pFunctionParameters))
+		    
+		  Next
 		  
 		  Return return_boolean
 		  

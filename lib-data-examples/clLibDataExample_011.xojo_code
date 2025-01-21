@@ -43,7 +43,7 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
 		  
-		  var table1 As clDataTable = table0.unique(array("country", "city"))
+		  var table1 As clDataTable = table0.GroupBy(array("country", "city"))
 		  
 		  var ret() as TableColumnReaderInterface
 		  ret.Add(table0)
