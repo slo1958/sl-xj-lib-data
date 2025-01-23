@@ -295,7 +295,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  (nothing)
 		  //  
 		  
-		  meta_dict.AddMetadata(type, message)
+		  Self.Metadata.Add(type, message)
 		End Sub
 	#tag EndMethod
 
@@ -891,6 +891,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - number of cells updated
 		  //
 		  
+		   
 		  if column = nil then return 0
 		  if LowValueColumn = nil then return 0
 		  if HighValueColumn = nil then return 0
@@ -898,6 +899,8 @@ Implements TableColumnReaderInterface,Iterable
 		  var last_index as integer = column.RowCount
 		  var count_changes as integer = 0
 		  
+		  
+		  self.AddMetadata("transformation", "Apply range clipping using " + LowValueColumn.name + " and " + HighValueColumn.name)
 		  
 		  for index as integer = 0 to last_index
 		    var tmp as variant = column.GetElement(index)
@@ -1011,6 +1014,10 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
+		  self.AddMetadata("transformation", "Clip high values using " + HighValueColumn.name)
+		  
+		  
+		  
 		  Return count_changes
 		End Function
 	#tag EndMethod
@@ -1096,6 +1103,8 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
+		  self.AddMetadata("transformation", "Clip low values using " + LowValueColumn.name)
+		  
 		  Return count_changes
 		End Function
 	#tag EndMethod
@@ -1163,7 +1172,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var output_table as clDataTable = new clDataTable(StringWithDefault(NewName, self.Name+" copy"))
 		  
 		  
-		  output_table.AddMetaData("source", self.name)
+		  output_table.addmetadata("source", self.name)
 		  
 		  for each col as clAbstractDataSerie in self.columns
 		    var new_col as clAbstractDataSerie = col.Clone()
@@ -1190,7 +1199,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var output_table as clDataTable =  new clDataTable(StringWithDefault(NewName, self.Name+" copy"))
 		  
-		  output_table.AddMetaData("source", self.name)
+		  output_table.addmetadata("source", self.name)
 		  
 		  for each col as clAbstractDataSerie in self.columns
 		    var new_col as clAbstractDataSerie = col.CloneStructure()
@@ -1343,7 +1352,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - 
 		  //
-		  meta_dict = new clMetadata
+		  self.Metadata = new clMetadata
 		  
 		  var tmp_table_name As String
 		  
@@ -1371,7 +1380,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  -  
 		  //
 		  
-		  meta_dict = new clMetadata
+		  self.Metadata = new clMetadata
 		  
 		  var tmp_columns() As clAbstractDataSerie = ColumnsSource
 		  
@@ -1417,7 +1426,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  -  
 		  //
 		  
-		  meta_dict = new clMetadata
+		  self.Metadata = new clMetadata
 		  
 		  if ColumnsSource = nil then return
 		  
@@ -1464,7 +1473,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  -  
 		  //  
-		  meta_dict = new clMetadata
+		  self.Metadata = new clMetadata
 		  
 		  var tmp_table_name As String
 		  
@@ -1495,13 +1504,13 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - 
 		  //
 		  
-		  meta_dict = new clMetadata
+		  self.Metadata = new clMetadata
 		  
 		  self.allow_local_columns = False
 		  
 		  var tmp_table_name As String = StringWithDefault(NewTableName.Trim, DefaultTableName)
 		  
-		  AddMetadata("source", tmp_table_name)
+		  addmetadata("source", tmp_table_name)
 		  
 		  internal_NewTable(tmp_table_name)
 		  
@@ -1532,13 +1541,13 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - 
 		  //
 		  
-		  meta_dict = new clMetadata 
+		  self.Metadata = new clMetadata 
 		  
 		  self.allow_local_columns = False
 		  
 		  var tmp_table_name As String = StringWithDefault(NewTableSource.Name.Trim, DefaultTableName)
 		  
-		  AddMetadata("source", tmp_table_name)
+		  addmetadata("source", tmp_table_name)
 		  
 		  internal_NewTable("from " + tmp_table_name)
 		  
@@ -1595,13 +1604,13 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - 
 		  //
 		  
-		  meta_dict = new clMetadata
+		  self.Metadata = new clMetadata
 		  
 		  self.allow_local_columns = False
 		  
 		  var tmp_table_name As String = StringWithDefault(NewTableSource.Name.Trim, DefaultTableName)
 		  
-		  AddMetadata("source", tmp_table_name)
+		  addmetadata("source", tmp_table_name)
 		  
 		  internal_NewTable("from " + tmp_table_name) 
 		  
@@ -2244,7 +2253,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Function GetMetadata() As clMetaData
-		  Return self.meta_dict
+		  Return self.Metadata
 		End Function
 	#tag EndMethod
 
@@ -2576,6 +2585,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub IncludeRowNameAsColumn(status as Boolean)
+		  
+		  self.row_name_as_column = status
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function IncreaseLength(the_length as integer) As integer
 		  //  
 		  //   increases the length of each data serie in the table. If the current length is greater than the parameter, the maximum current length is used
@@ -2889,12 +2905,12 @@ Implements TableColumnReaderInterface,Iterable
 		      var col  as clAbstractDataSerie = dataColumns(col_index)
 		      var sourcename as string = JoinTableDataFields(col_index)
 		      
-		       
+		      
 		      if col <> nil then
 		        col.SetElement(i, row.GetCell(sourcename))
 		        
 		      end if
-		       
+		      
 		      
 		    next
 		    
@@ -2902,7 +2918,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  return True
 		  
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -3189,7 +3205,7 @@ Implements TableColumnReaderInterface,Iterable
 		Function SelectColumns(column_names() as string) As clDataTable
 		  var res As New clDataTable("select " + Self.Name)
 		  
-		  res.AddMetadata("source", self.Name)
+		  res.addmetadata("source", self.Name)
 		  res.RowIndexColumn = Self.RowIndexColumn
 		  //  
 		  //  link to parent must be called BEFORE adding logical columns
@@ -3550,15 +3566,15 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected meta_dict As clMetadata
+		Protected Metadata As clMetadata
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected RowIndexColumn As clDataSerieRowID
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		row_name_as_column As Boolean
+	#tag Property, Flags = &h1
+		Protected row_name_as_column As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

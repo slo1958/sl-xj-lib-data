@@ -38,7 +38,7 @@ Protected Module DataSerie_IO
 		  
 		  text_file.close
 		  
-		  theDataSerie.AddMetadata("source",SourceFIle.Name)
+		  theDataSerie.addmetadata("source",SourceFIle.Name)
 		  
 		  return theDataSerie
 		  

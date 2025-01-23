@@ -101,7 +101,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Returns:
 		  //  
 		  
-		  meta_dict.AddMetadata(type, message)
+		  self.Metadata.Add(type, message)
 		End Sub
 	#tag EndMethod
 
@@ -123,6 +123,9 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  Next
 		  
+		  self.AddMetadata("transformation",  "add data from " + the_serie.name)
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -142,6 +145,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    target_data_serie.AddElement(self.GetElement(index))
 		    
 		  next
+		  
+		  target_data_serie.AddMetadata("transformation", "Add from " + self.name)
 		  
 		End Sub
 	#tag EndMethod
@@ -296,6 +301,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  next
 		  
+		  self.AddMetadata("transformation", "Apply range clipping")
+		  
 		  Return count_changes
 		End Function
 	#tag EndMethod
@@ -328,6 +335,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  next
 		  
+		  self.AddMetadata("transformation", "Clip  values above " + str(high_value))
+		  
 		  Return count_changes
 		End Function
 	#tag EndMethod
@@ -359,6 +368,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    end if
 		    
 		  next
+		  
+		  self.AddMetadata("transformation", "Clip  values below " + str(low_value))
 		  
 		  Return count_changes
 		End Function
@@ -410,7 +421,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h1
 		Protected Sub CloneInfo(target as clAbstractDataSerie)
 		  
-		  target.DisplayTitle = self.DisplayTitle
+		  target.serie_title = self.serie_title
+		  
 		End Sub
 	#tag EndMethod
 
@@ -506,7 +518,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  
 		  target_data_serie.Reset()
-		  target_data_serie.AddMetadata("source", self.name)
+		  target_data_serie.addmetadata("source", self.name)
 		  
 		  for index as Integer = 0 to self.LastIndex
 		    target_data_serie.AddElement(self.GetElement(index))
@@ -951,7 +963,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  - the meta data dictionary  (dictionary)
 		  //
 		  
-		  Return self.meta_dict
+		  Return self.Metadata
 		End Function
 	#tag EndMethod
 
@@ -962,11 +974,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  p.SerieTitle = self.serie_title
 		  p.DataType = self.GetType
 		  
-		  p.MetaData.RemoveAll
-		  for each s as string in self.meta_dict.AllFormattedData
-		    p.MetaData.Add(s)
-		    
-		  next
+		  p.MetaData = self.Metadata.Clone
 		  
 		  p.Aliases.RemoveAll
 		  for each s as string in self.Aliases
@@ -1074,6 +1082,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  
 		  //  use setter of computed property
 		  //  
+		  self.AddMetadata("transformation", "rename from " + self.name + " to " + NewColumnName)
+		  
 		  Self.name = NewColumnName
 		  
 		  
@@ -1087,6 +1097,9 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  
 		  //  use setter of computed property
 		  //  
+		  
+		  self.AddMetadata("transformation", "rename from " + self.name + " to " + NewColumnName)
+		  
 		  Self.name = NewColumnName
 		  
 		  return self
@@ -1151,7 +1164,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  Returns:
 		  //
 		  
-		  self.meta_dict = new clMetadata
+		  self.Metadata = new clMetadata
 		  
 		End Sub
 	#tag EndMethod
@@ -1187,6 +1200,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  next
 		  
+		  self.AddMetadata("transformation", "round values to "+str(nb_decimal) + " digit(s).")
+		  
 		  Return count_changes
 		End Function
 	#tag EndMethod
@@ -1220,6 +1235,12 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    self.SetElement(i, the_values.GetElement(i))
 		    
 		  next
+		  
+		  
+		  self.AddMetadata("transformation", "Set all elements to values from data serie " + the_values.name)
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1230,6 +1251,12 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    self.SetElement(i, the_values(i))
 		    
 		  next
+		  
+		  
+		  self.AddMetadata("transformation", "Set  elements to list of variants")
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1240,6 +1267,10 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    self.SetElement(i, the_value)
 		    
 		  next
+		  
+		  self.AddMetadata("transformation", "Set all elements to " +str(the_value))
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1278,7 +1309,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  var p as  clDataSerieProperties = properties
 		  
-		  
 		  self.serie_title = p.SerieTitle
 		  
 		  self.Aliases.RemoveAll
@@ -1287,14 +1317,9 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    
 		  next
 		  
-		  self.meta_dict = new clMetadata
-		  for each s as string in p.MetaData
-		    self.meta_dict.AddFormattedMetaData(s)
-		    
-		  next
+		  self.Metadata = p.MetaData.Clone
 		  
-		  
-		  
+		   
 		End Sub
 	#tag EndMethod
 
@@ -1609,7 +1634,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected meta_dict As clMetadata
+		Protected Metadata As clMetadata
 	#tag EndProperty
 
 	#tag ComputedProperty, Flags = &h0

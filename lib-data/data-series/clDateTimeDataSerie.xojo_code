@@ -21,7 +21,7 @@ Inherits clAbstractDataSerie
 		    
 		  Next
 		  
-		  tmp.AddMetadata("source","clone from " + self.FullName)
+		  tmp.addmetadata("source","clone from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -216,6 +216,9 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clIntegerDataSerie(self.name+"-"+right_serie.name)
 		  
+		  res.addmetadata("source", self.name)
+		  res.AddMetadata("transformation", "Subtract datetime from " + right_serie.name)
+		  
 		  for i as integer = 0 to mx0
 		    
 		    if i <= mx1 and i <= mx2 then
@@ -236,8 +239,29 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function operator_subtract(right_interval as DateInterval) As clDateTimeDataSerie
+		  var res as new clDateTimeDataSerie(self.name+" - interval ")
+		  
+		  res.addmetadata("source", self.name)
+		  res.AddMetadata("transformation", "Subtract interval")
+		  
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsDateTime(i).SubtractInterval(right_interval.Years, right_interval.Months, right_interval.Days))
+		    
+		  next
+		  
+		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function operator_subtract(right_value as DateTime) As clIntegerDataSerie
 		  var res as new clIntegerDataSerie(self.name+" - "+ right_value.SQLDateTime)
+		  
+		  res.addmetadata("source", self.name)
+		  res.AddMetadata("transformation", "Subtract datetime from " + right_value.SQLDateTime)
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(diff_to_integer(self.GetElementAsDateTime(i) , right_value))
@@ -261,7 +285,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub ResetElements()
 		  
-		  self.meta_dict.AddMetadata("type","datetime")
+		  self.Metadata.Add("type","datetime")
 		  
 		  redim items(-1)
 		  

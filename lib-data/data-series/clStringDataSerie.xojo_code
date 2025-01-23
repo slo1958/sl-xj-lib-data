@@ -21,7 +21,7 @@ Inherits clAbstractDataSerie
 		    
 		  Next
 		  
-		  tmp.AddMetadata("source","clone from " + self.FullName)
+		  tmp.addmetadata("source","clone from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -46,7 +46,7 @@ Inherits clAbstractDataSerie
 		  
 		  self.CloneInfo(tmp)
 		  
-		  tmp.AddMetadata("source","clone structure from " + self.FullName)
+		  tmp.addmetadata("source","clone structure from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -220,6 +220,11 @@ Inherits clAbstractDataSerie
 		  end if
 		  
 		  var res as new clStringDataSerie(self.name+"+"+right_serie.name)
+		  
+		  res.addmetadata("source", self.name)
+		  res.AddMetadata("transformation", "add string values from  " + right_serie.name)
+		  
+		  
 		  for i as integer = 0 to mx0
 		    var n as string
 		    
@@ -246,6 +251,9 @@ Inherits clAbstractDataSerie
 		Function operator_add(right_value as String) As clStringDataSerie
 		  var res as new clStringDataSerie(self.name+"+"+str(right_value))
 		  
+		  res.addmetadata("source", self.name)
+		  res.AddMetadata("transformation", "Append string " + right_value)
+		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElementAsString(i) + right_value)
 		    
@@ -260,7 +268,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub ResetElements()
 		  
-		  self.meta_dict.AddMetadata("type","string")
+		  self.Metadata.Add("type","string")
 		  
 		  redim items(-1)
 		  

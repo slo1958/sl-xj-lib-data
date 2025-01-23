@@ -30,7 +30,7 @@ Protected Class clDataSerieProperties
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		MetaData() As String
+		MetaData As clMetadata
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -89,6 +89,14 @@ Protected Class clDataSerieProperties
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="FormatStr"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="DataType"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

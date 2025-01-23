@@ -18,7 +18,7 @@ Implements itf_json_able
 		  
 		  self.CloneInfo(tmp)
 		  
-		  tmp.AddMetadata("source","clone from " + self.FullName)
+		  tmp.addmetadata("source","clone from " + self.FullName)
 		  
 		  For Each v As variant In Self.items
 		    tmp.AddElement(v)
@@ -46,7 +46,7 @@ Implements itf_json_able
 		  
 		  self.CloneInfo(tmp)
 		  
-		  tmp.AddMetadata("source","clone structure from " + self.FullName)
+		  tmp.addmetadata("source","clone structure from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -114,7 +114,7 @@ Implements itf_json_able
 	#tag Method, Flags = &h0
 		Sub ResetElements()
 		  
-		  self.meta_dict.AddMetadata("type","general")
+		  self.Metadata.Add("type","general")
 		  
 		  redim items(-1)
 		  
