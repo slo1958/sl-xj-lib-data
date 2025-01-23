@@ -1,6 +1,19 @@
 #tag Class
 Protected Class App
 Inherits DesktopApplication
+	#tag Event
+		Sub Opening()
+		  var log as new clLogWriterDebugLog
+		  
+		  var t as new clDataTableTests
+		  
+		  t.test_calc_039(log)
+		  
+		  
+		End Sub
+	#tag EndEvent
+
+
 	#tag Note, Name = Integration with your project
 		How to add the library to your project ?
 		

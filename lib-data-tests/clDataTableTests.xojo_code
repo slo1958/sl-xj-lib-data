@@ -1804,6 +1804,43 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_calc_039(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var t as new clDataTable("t")
+		  
+		  var ccnt As clAbstractDataSerie =  t.AddColumn(new clStringDataSerie("Country"))
+		  var ccity As clAbstractDataSerie =  t.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  t.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = t.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 22))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 23))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 25))
+		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 26))
+		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 27))
+		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 28))
+		  
+		  var ctp as clAbstractDataSerie = t.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
+		  
+		  call check_table(log, "table integrity", nil, t) 
+		  
+		  var s1 as clDataTable = t.Sort(array("Country","City"))
+		  
+		  // call check_table(log,"get distinct values", table_expected, table0)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)

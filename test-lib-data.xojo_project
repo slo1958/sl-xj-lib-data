@@ -147,6 +147,7 @@ DesktopWindow=main_window;lib-data-test and example windows/main_window.xojo_win
 DesktopWindow=wnd_examples;lib-data-test and example windows/wnd_examples.xojo_window;&h000000000B2097FF;&h000000005A7A8FFF;false
 DesktopWindow=wnd_perf;lib-data-test and example windows/wnd_perf.xojo_window;&h00000000266147FF;&h000000005A7A8FFF;false
 DesktopWindow=wnd_tests;lib-data-test and example windows/wnd_tests.xojo_window;&h0000000046DC47FF;&h000000005A7A8FFF;false
+Class=clLogWriterDebugLog;lib-data-tests/clLogWriterDebugLog.xojo_code;&h00000000395527FF;&h000000007AF38FFF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1
