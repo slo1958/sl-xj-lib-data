@@ -23,7 +23,7 @@ Begin DesktopWindow wnd_table_viewer
    Title           =   "Untitled"
    Type            =   0
    Visible         =   True
-   Width           =   600
+   Width           =   800
    Begin ccDataPool_Viewer ccDataPool_Viewer1
       AllowAutoDeactivate=   True
       AllowFocus      =   False
@@ -54,7 +54,7 @@ Begin DesktopWindow wnd_table_viewer
       Top             =   0
       Transparent     =   True
       Visible         =   True
-      Width           =   560
+      Width           =   760
    End
    Begin DesktopCheckBox ck_metadata
       AllowAutoDeactivate=   True

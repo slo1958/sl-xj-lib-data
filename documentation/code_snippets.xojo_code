@@ -541,6 +541,14 @@ Protected Module code_snippets
 	#tag EndMethod
 
 
+	#tag Note, Name = About code snippets
+		
+		Those code snippets are used in the readme file. Included here to detect any changes to the api which may prevent a code snippet to compile.
+		
+		
+	#tag EndNote
+
+
 	#tag ViewBehavior
 		#tag ViewProperty
 			Name="Name"

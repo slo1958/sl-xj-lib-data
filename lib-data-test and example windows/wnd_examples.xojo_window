@@ -27,8 +27,6 @@ Begin DesktopWindow wnd_examples
    Begin DesktopLabel Label1
       AllowAutoDeactivate=   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -70,17 +68,13 @@ Begin DesktopWindow wnd_examples
       Bold            =   False
       ColumnCount     =   1
       ColumnWidths    =   ""
-      DataField       =   ""
-      DataSource      =   ""
       DefaultRowHeight=   -1
       DropIndicatorVisible=   False
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
-      GridLinesHorizontalStyle=   "0"
       GridLineStyle   =   0
-      GridLinesVerticalStyle=   "0"
       HasBorder       =   True
       HasHeader       =   False
       HasHorizontalScrollbar=   False

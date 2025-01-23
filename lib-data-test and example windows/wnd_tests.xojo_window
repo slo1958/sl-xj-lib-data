@@ -69,6 +69,7 @@ Begin DesktopWindow wnd_tests Implements support_tests.LogMessageInterface
       Underline       =   False
       Visible         =   True
       Width           =   300
+      _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
    Begin DesktopListBox lb_tests
@@ -116,6 +117,7 @@ Begin DesktopWindow wnd_tests Implements support_tests.LogMessageInterface
       Underline       =   False
       Visible         =   True
       Width           =   300
+      _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
    Begin DesktopButton btn_calc
@@ -552,6 +554,7 @@ Begin DesktopWindow wnd_tests Implements support_tests.LogMessageInterface
       Underline       =   False
       Visible         =   True
       Width           =   300
+      _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
    Begin DesktopButton btn_calc
@@ -759,7 +762,7 @@ End
 		    source.add( support_tests.GetTestMethods(test_object, "test"))
 		    
 		  next
-		   
+		  
 		  dest.add(lb_tests(0))
 		  dest.add(lb_tests(1))
 		  dest.add(lb_tests(2))
@@ -960,11 +963,11 @@ End
 		    for row as integer = 0 to lb_tests(index).LastRowIndex
 		      if lb_tests(index).CellCheckBoxValueAt(row,0) then
 		        m.add(Introspection.MethodInfo(lb_tests(index).RowTagAt(row)))
-		         
+		        
 		        
 		      end if
 		      
-		     next
+		    next
 		    
 		    if   m.Count  > 0 then
 		      
