@@ -1808,27 +1808,61 @@ Protected Class clDataTableTests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var t as new clDataTable("t")
+		  var t1 as new clDataTable("Main")
 		  
-		  var ccnt As clAbstractDataSerie =  t.AddColumn(new clStringDataSerie("Country"))
-		  var ccity As clAbstractDataSerie =  t.AddColumn(new clStringDataSerie("City"))
-		  var cqtt as clAbstractDataSerie =  t.AddColumn(new clNumberDataSerie("Quantity"))
-		  var cup as clAbstractDataSerie = t.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  var ccnt As clAbstractDataSerie =  t1.AddColumn(new clStringDataSerie("Country"))
+		  var ccity As clAbstractDataSerie =  t1.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  t1.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = t1.AddColumn(new clNumberDataSerie("UnitPrice"))
 		  
-		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 21))
-		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 22))
-		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 23))
-		  t.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 24))
-		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 25))
-		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 26))
-		  t.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 27))
-		  t.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 28))
+		  t1.AddRow(new Dictionary("Country":"Italy","City":"Rome", "Quantity":12, "Unitprice": 23))
+		  t1.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  t1.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 5))
+		  t1.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 26))
+		  t1.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 4))
+		  t1.AddRow(new Dictionary("Country":"Belgium","City":"Liege", "Quantity":12, "Unitprice": 28))
+		  t1.AddRow(new Dictionary("Country":"Italy","City":"MIlano", "Quantity":12, "Unitprice": 29))
+		  t1.AddRow(new Dictionary("Country":"France","City":"Paris", "Quantity":12, "Unitprice": 30))
+		  t1.AddRow(new Dictionary("Country":"Belgium","City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  t1.AddRow(new Dictionary("Country":"Belgium","City":"Antwerpen", "Quantity":12, "Unitprice": 25))
 		  
-		  var ctp as clAbstractDataSerie = t.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
+		  t1.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup)).Rename("Sales")
 		  
-		  call check_table(log, "table integrity", nil, t) 
+		  var sort11 as clDataTable = t1.Sort(array("Country","City"))
+		  //sort1.Rename("Sorted on country and city")
 		  
-		  var s1 as clDataTable = t.Sort(array("Country","City"))
+		  var sort12 as clDataTable = t1.Sort(array("Country","UnitPrice"))
+		  //sort2.Rename("Sorted on country and unit price")
+		  
+		  var sort13 as clDataTable = t1.Sort(array("Sales"),clDataTable.SortOrder.Descending)
+		  //sort3.Rename("Sorted on Sales descending")
+		  
+		  var t2 as clDataTable = t1.Groupby(array("Country"), array("Sales"))
+		  
+		  var sort21 as clDataTable = t2.Sort(array("Sum of Sales"), clDataTable.SortOrder.Descending)
+		  
+		  var sort22 as clDataTable = t2.Sort(array("Country"))
+		  
+		  call check_table(log, "table integrity", nil, t1)
+		  call check_table(log, "table integrity", nil, t2)
+		  call check_table(log, "table integrity", nil, sort11)
+		  call check_table(log, "table integrity", nil, sort12)
+		  call check_table(log, "table integrity", nil, sort13)
+		  call check_table(log, "table integrity", nil, sort21)
+		  call check_table(log, "table integrity", nil, sort22)
+		  
+		  var expected_sort21 as new clDataTable("Country", SerieArray( _
+		  new clStringDataSerie("Country", "Belgium", "Italy", "France") _
+		  , new clNumberDataSerie("sum of Sales", 1548.0, 624.0,408.0) _
+		  ))
+		  
+		  var expected_sort22 as new clDataTable("Country", SerieArray( _
+		  new clStringDataSerie("Country","Belgium", "France", "Italy") _
+		  , new clNumberDataSerie("sum of Sales", 1548.0, 408.0, 624.0) _
+		  ))
+		  
+		  call check_table(log,"Sort 21", expected_sort21, sort21)
+		  call check_table(log,"Sort 22", expected_sort22, sort22)
 		  
 		  // call check_table(log,"get distinct values", table_expected, table0)
 		  

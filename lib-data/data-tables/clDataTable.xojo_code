@@ -2937,6 +2937,44 @@ Implements TableColumnReaderInterface,Iterable
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function internal_Sort_Terminate(ColumnNames() as string, SortArray() as pair, order as SortOrder = SortOrder.ascending) As clDataTable
+		  //
+		  // Use the SortArray prepared to generate the sorted output table
+		  //
+		  // - SortArray (array of pair): the rght of the element contains the row index 
+		  // - order: Sort order (ascending or descending), the order apply on the combined keys
+		  //
+		  // Returns:
+		  //  sorted table
+		  
+		  var SortTempArray() as pair = SortArray
+		  
+		  var NewTable as clDataTable = self.CloneStructure("Sorting " + self.Name +  " on " + String.FromArray(ColumnNames,","))
+		  
+		  if order = SortOrder.Ascending then
+		    
+		    for index as integer = 0 to SortTempArray.LastIndex  
+		      var r as clDataRow = self.GetRowAt(SortTempArray(index).Right.IntegerValue, false)
+		      
+		      NewTable.AddRow(r)
+		      
+		    next
+		    
+		  else
+		    for index as integer = SortTempArray.LastIndex downto 0
+		      var r as clDataRow = self.GetRowAt(SortTempArray(index).Right.IntegerValue, false)
+		      
+		      NewTable.AddRow(r)
+		      
+		    next
+		    
+		  end if
+		  
+		  return newtable
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function IsIndexVisibleWhenIterating() As Boolean
 		  return self.index_explicit_when_iterate 
@@ -2973,6 +3011,19 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  return new clDataTableIterator(self)
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function LastIndex() As integer
+		  If Self.RowIndexColumn = Nil Then
+		    Return -1
+		    
+		  Else
+		    Return Self.RowIndexColumn.LastIndex
+		    
+		  End If
 		  
 		End Function
 	#tag EndMethod
@@ -3350,7 +3401,23 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Sort(ColumnNames() as string) As clDataTable
+		Function Sort(ColumnNames() as string, order as SortOrder = SortOrder.ascending) As clDataTable
+		  //
+		  // Produces a new table with content of current table sorted on the value of the columns 
+		  //
+		  // Parameters:
+		  // - ColumnNames (array of string)  : name of columns used as sort key
+		  // - order: Sort order (ascending or descending), the order apply on the combined keys
+		  //
+		  // Returns:
+		  //  sorted table
+		  //
+		  
+		  var SortKeyColumns() as clAbstractDataSerie = self.GetColumns(ColumnNames)
+		  
+		  var srt as new clSorter(SortKeyColumns, order)
+		  
+		  return internal_Sort_Terminate(ColumnNames, srt.GetSortedListOfIndexes(), order)
 		  
 		End Function
 	#tag EndMethod
@@ -3699,6 +3766,11 @@ Implements TableColumnReaderInterface,Iterable
 		  ExceptionOnNewColumn
 		  CreateNewColumn
 		CreateNewColumnAsVariant
+	#tag EndEnum
+
+	#tag Enum, Name = SortOrder, Type = Integer, Flags = &h0
+		Ascending
+		Descending
 	#tag EndEnum
 
 

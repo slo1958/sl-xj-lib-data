@@ -122,6 +122,16 @@ Implements itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function RowCount() As integer
+		  
+		  return items.Count
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetDefaultValue(v as variant)
 		  DefaultValue = v
 		  

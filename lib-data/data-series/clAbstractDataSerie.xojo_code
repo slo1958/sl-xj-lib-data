@@ -1034,6 +1034,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function LastIndex() As integer
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Function
@@ -1208,7 +1209,9 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function RowCount() As integer
-		  return self.LastIndex+1
+		  
+		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		  
 		End Function
 	#tag EndMethod
 

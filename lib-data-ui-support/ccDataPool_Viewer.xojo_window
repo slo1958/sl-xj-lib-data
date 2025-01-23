@@ -387,8 +387,10 @@ End
 		  
 		  reset_Metadata
 		  
-		  lb_meta.addrow("Name",col.name)
-		  lb_meta.addrow("Title", col.DisplayTitle)
+		  lb_meta.ColumnWidths="25%,75%"
+		  
+		  lb_meta.addrow("name",col.name)
+		  lb_meta.addrow("title", col.DisplayTitle)
 		  
 		  var m as clMetadata = col.GetMetadata
 		  

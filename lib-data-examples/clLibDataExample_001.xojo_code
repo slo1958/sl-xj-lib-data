@@ -71,6 +71,7 @@ Inherits clLibDataExample
 		  clNumberDataSerie(table.GetColumn("ccc")).SetStringFormat("-###,##0.0#", True)
 		  call table.AddColumn(table.GetColumn("ccc").AsString("ccc third format")) 
 		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  //
 		  // Send the table to the viewer

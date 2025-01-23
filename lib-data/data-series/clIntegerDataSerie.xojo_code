@@ -211,6 +211,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function LastIndex() As integer
+		  
 		  Return items.LastIndex
 		  
 		End Function
@@ -395,6 +396,13 @@ Inherits clAbstractDataSerie
 		  redim items(-1)
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function RowCount() As integer
+		   
+		  return items.Count
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
