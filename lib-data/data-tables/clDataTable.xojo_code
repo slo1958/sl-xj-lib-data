@@ -332,13 +332,15 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		  //Handling data
-		  For Each column As String In NewRow
-		    var tmp_column As clAbstractDataSerie = Self.GetColumn(column)
-		    var tmp_item As variant = NewRow.GetCell(column)
+		  For Each column_name As String In NewRow
+		    var tmp_column As clAbstractDataSerie = Self.GetColumn(column_name)
+		    var tmp_item As variant = NewRow.GetCell(column_name)
 		    
-		    if tmp_column = nil then tmp_column = internal_HandleNewColumn(column, "", tmp_item, mode)
-		    
-		    if tmp_column <> nil then call AddColumn(tmp_column)
+		    if tmp_column = nil then 
+		      tmp_column = internal_HandleNewColumn(column_name, "", tmp_item, mode)
+		      
+		      if tmp_column <> nil then call AddColumn(tmp_column)
+		    end if
 		    
 		    If tmp_column <> Nil Then 
 		      tmp_column.AddElement(tmp_item)
@@ -3343,6 +3345,12 @@ Implements TableColumnReaderInterface,Iterable
 		    Return temp_column
 		    
 		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Sort(ColumnNames() as string) As clDataTable
 		  
 		End Function
 	#tag EndMethod
