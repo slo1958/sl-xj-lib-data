@@ -24,7 +24,7 @@ Begin DesktopContainer ccDataPool_Viewer
    Top             =   0
    Transparent     =   True
    Visible         =   True
-   Width           =   524
+   Width           =   780
    Begin DesktopListBox lb_list
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
@@ -69,7 +69,7 @@ Begin DesktopContainer ccDataPool_Viewer
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   223
+      Width           =   220
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
@@ -100,7 +100,7 @@ Begin DesktopContainer ccDataPool_Viewer
       Index           =   -2147483648
       InitialValue    =   ""
       Italic          =   False
-      Left            =   235
+      Left            =   230
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -117,7 +117,7 @@ Begin DesktopContainer ccDataPool_Viewer
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   271
+      Width           =   280
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
@@ -151,7 +151,7 @@ Begin DesktopContainer ccDataPool_Viewer
       Transparent     =   False
       Underline       =   False
       Visible         =   False
-      Width           =   271
+      Width           =   527
    End
    Begin DesktopLabel lbl_description
       AllowAutoDeactivate=   True
@@ -183,7 +183,54 @@ Begin DesktopContainer ccDataPool_Viewer
       Transparent     =   False
       Underline       =   False
       Visible         =   True
-      Width           =   289
+      Width           =   545
+   End
+   Begin DesktopListBox lb_meta
+      AllowAutoDeactivate=   True
+      AllowAutoHideScrollbars=   True
+      AllowExpandableRows=   False
+      AllowFocusRing  =   True
+      AllowResizableColumns=   False
+      AllowRowDragging=   False
+      AllowRowReordering=   False
+      Bold            =   False
+      ColumnCount     =   1
+      ColumnWidths    =   ""
+      DefaultRowHeight=   -1
+      DropIndicatorVisible=   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      GridLineStyle   =   0
+      HasBorder       =   True
+      HasHeader       =   True
+      HasHorizontalScrollbar=   False
+      HasVerticalScrollbar=   True
+      HeadingIndex    =   -1
+      Height          =   310
+      Index           =   -2147483648
+      InitialValue    =   ""
+      Italic          =   False
+      Left            =   520
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   True
+      RequiresSelection=   False
+      RowSelectionType=   0
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   242
+      _ScrollWidth    =   -1
    End
 End
 #tag EndDesktopWindow
@@ -193,6 +240,8 @@ End
 		Sub Opening()
 		  Reset_viewer
 		  allow_update_window_title = True
+		  
+		  reset_Metadata
 		  
 		  Opening
 		  
@@ -232,6 +281,16 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub HideMetaData()
+		  
+		  lb_meta.Visible = false
+		  
+		  lb_data.width = lb_data.width + lb_meta.width + 10
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub refresh_list()
 		  
 		  block_list_events = True
@@ -260,6 +319,19 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub reset_Metadata()
+		  lb_Meta.RemoveAllRows
+		  lb_meta.ColumnCount=2
+		  
+		  lb_meta.HasHeader = True
+		  lb_meta.HeaderAt(0) = "Metadata tag"
+		  lb_meta.HeaderAt(1) = "Value"
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub reset_viewer()
 		  lb_list.HasHeader = True
 		  lb_list.HeaderAt(0) = "Data table"
@@ -270,6 +342,17 @@ End
 		  lb_data.RemoveAllRows
 		  
 		  table_dict = new Dictionary
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ShowMetadata()
+		  
+		  lb_data.width = lb_data.width - lb_meta.width - 10
+		  
+		  lb_meta.Visible = True
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -294,6 +377,27 @@ End
 		Sub show_description(description as string)
 		  
 		  lbl_description.text = description
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub show_metadata(col as clAbstractDataSerie)
+		  
+		  reset_Metadata
+		  
+		  lb_meta.addrow("Name",col.name)
+		  lb_meta.addrow("Title", col.DisplayTitle)
+		  
+		  var m as clMetadata = col.GetMetadata
+		  
+		  for i as integer = 0 to m.LastIndex
+		    var r() as string = m.MetadataAt(i)
+		    
+		    lb_meta.addrow(r(0), r(1))
+		    
+		  next
 		  
 		  
 		End Sub
@@ -388,12 +492,15 @@ End
 		  end if
 		  
 		  show_description   col.FullName(true)
+		  show_metadata col
 		  
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
 		  show_description  ""
+		  
+		  lb_meta.RemoveAllRows
 		End Sub
 	#tag EndEvent
 #tag EndEvents

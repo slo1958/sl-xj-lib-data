@@ -10,7 +10,7 @@ Begin DesktopWindow wnd_table_viewer
    HasFullScreenButton=   False
    HasMaximizeButton=   True
    HasMinimizeButton=   True
-   Height          =   400
+   Height          =   432
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
@@ -37,7 +37,7 @@ Begin DesktopWindow wnd_table_viewer
       current_table   =   ""
       Enabled         =   True
       HasBackgroundColor=   False
-      Height          =   362
+      Height          =   380
       Index           =   -2147483648
       InitialParent   =   ""
       Left            =   20
@@ -51,10 +51,39 @@ Begin DesktopWindow wnd_table_viewer
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   20
+      Top             =   0
       Transparent     =   True
       Visible         =   True
-      Width           =   524
+      Width           =   560
+   End
+   Begin DesktopCheckBox ck_metadata
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "View metadata"
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   392
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      VisualState     =   1
+      Width           =   122
    End
 End
 #tag EndDesktopWindow
@@ -123,6 +152,20 @@ End
 
 #tag EndWindowCode
 
+#tag Events ck_metadata
+	#tag Event
+		Sub ValueChanged()
+		  if me.VisualState = DesktopCheckBox.VisualStates.Checked then
+		    ccDataPool_Viewer1.ShowMetadata
+		    
+		  else
+		    ccDataPool_Viewer1.HideMetaData
+		    
+		  end if
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="MinimumWidth"
