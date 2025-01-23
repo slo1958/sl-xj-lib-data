@@ -1217,7 +1217,7 @@ Protected Class clDataTableTests
 		  log.start_exec(CurrentMethodName)
 		  
 		  var my_table_0 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
-		  my_table_0.row_name_as_column = True
+		  my_table_0.IncludeRowNameAsColumn( True)
 		  
 		  var r1 as new test_class_02
 		  r1.aaa = 1234
@@ -1672,7 +1672,7 @@ Protected Class clDataTableTests
 		  ))
 		  
 		  call check_table(log,"get distinct values", tDistinct_expected, tDistinct )
-		   
+		  
 		  
 		  var tSumSales as clDataTable = tsales.GroupBy(StringArray("Country"), StringArray("Sales","Quantity"))
 		  
