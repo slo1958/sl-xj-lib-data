@@ -29,15 +29,19 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  
+		  //
+		  // Create two data series
+		  //
 		  var col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
 		  var col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
-		  
+		  //
+		  //  Create a table and add the data series
+		  //
 		  var table1 as new clDataTable("source table", SerieArray(col_source, col_sales))
 		  
-		  
+		  //
 		  // we split the "source" field to extract country and city
-		  
+		  //
 		  var table2 as new clDataTable("prepared", SerieArray( _
 		  col_source, _
 		  col_source.TextBefore("-").rename("country"), _
@@ -45,23 +49,31 @@ Inherits clLibDataExample
 		  col_sales),_
 		  true)
 		  
-		  
+		  //
+		  // Get a pointer to the city column
+		  //
 		  var col_city  as clStringDataSerie = clStringDataSerie(table2.GetColumn("city"))
 		  
+		  //
+		  // Convert to uppercase
+		  //
 		  call table2.AddColumn(col_city.Uppercase.rename("City UC"))
 		  
+		  
+		  //
+		  // Get list of distinct country and city
+		  //
 		  var table3 As clDataTable = table2.Groupby(array("country", "city"))
 		  
-		  
+		  //
+		  // Get the total sales and max sales per country
+		  //
 		  var table4 as clDataTable  = table2.groupby(array("country"), array("Sales":clDataTable.AggSum,"Sales":clDataTable.AggMax))
 		  
-		  var ret() as TableColumnReaderInterface
-		  ret.Add(table1)
-		  ret.Add(table2)
-		  ret.Add(table3)
-		  ret.add(table4)
-		  
-		  return ret
+		  //
+		  // Send the tables to the viewer
+		  //
+		  return array(table1, table2, table3, table4)
 		  
 		End Function
 	#tag EndMethod

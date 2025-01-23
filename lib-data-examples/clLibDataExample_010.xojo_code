@@ -28,10 +28,19 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
+		  //
+		  //  Create an empty table
+		  //
 		  var table0 As New clDataTable("mytable")
 		  
+		  //
+		  // Add columns
+		  //
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
+		  //
+		  // Add some data row by row
+		  //
 		  table0.AddRow(Array("France","Paris",1100))
 		  table0.AddRow(Array("","Marseille",1200))
 		  table0.AddRow(Array("Belgique","",1300))
@@ -39,16 +48,24 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
-		  
+		  //
+		  // Create another empty table
+		  //
 		  var table1 as new clDataTable("res")
 		  
+		  //
+		  // Copy the data from table0 row by row
+		  //
 		  for row_index as integer = 0 to table0.RowCount-1
 		    var tmp_row as clDataRow = table0.GetRowAt(row_index, True)
 		    table1.AddRow(tmp_row)
 		  next
 		  
-		  
+		  //
+		  // Send the table to the viewer
+		  //
 		  return array(table0, table1)
+		  
 		End Function
 	#tag EndMethod
 

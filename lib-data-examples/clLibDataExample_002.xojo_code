@@ -27,7 +27,9 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  
+		  //
+		  // Create a data table wih some data
+		  //
 		  var table0 As New clDataTable("mytable", SerieArray( _
 		  New clDataSerie("City",  "Paris","Lyon","Namur","Paris","Charleroi","Milan") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
@@ -36,20 +38,35 @@ Inherits clLibDataExample
 		  , New clNumberDataSerie("Quantity", 51, 52,53,54, 55,56) _
 		  ))
 		  
+		  //
+		  // Add a new column, calculated
+		  //
 		  var newcol as clAbstractDataSerie =  table0.AddColumn( table0.GetNumberColumn("Sales") / table0.GetNumberColumn("Quantity"))
 		  newcol.rename("PPU")
 		  
+		  //
+		  // Aggregate table0 per country, to get total sales, minimum unit price and maximum unit price
+		  //
 		  var table1 As clDataTable = table0.groupby(Array("Country"), Array( _
 		  "Sales": clDataTable.AggSum, _
 		  "PPU":clDataTable.AggMin, _
 		  "PPU":clDataTable.AggMax _
 		  ))
 		  
+		  //
+		  // Calculate total sales
+		  // 
 		  var table2 As clDataTable = table0.GroupBy(Array(""), Array("Sales"))
 		  table2.rename("Grand total")
 		  
+		  //
+		  // Get list of unique combinations of country and city
+		  //
 		  var table3 As clDataTable = table0.GroupBy(StringArray("Country","City"), StringArray)
 		  
+		  //
+		  // Send the tables to the viewer
+		  //
 		  return array(table0, table1, table2, table3)
 		End Function
 	#tag EndMethod

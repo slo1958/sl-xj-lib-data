@@ -38,6 +38,10 @@ Inherits clLibDataExample
 		  
 		  var view1 As clDataTable = table0.SelectColumns(array("Country", "City", "Sales"))
 		  
+		  
+		  //
+		  // Send the tables to the viewer
+		  //
 		  return array(table0, view1)
 		  
 		  

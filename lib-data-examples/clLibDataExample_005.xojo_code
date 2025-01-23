@@ -27,16 +27,27 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  
+		  //
+		  //  Create an empty table
+		  //
 		  var table0 As New clDataTable("T1")
 		  
+		  //
+		  // Add columns
+		  //
 		  call table0.AddColumns(Array("cc1","cc2","cc3"))
 		  
+		  //
+		  // Add some data row by row
+		  //
 		  table0.AddRow(Array("aaa0","bbb0","ccc0"))
 		  table0.AddRow(Array("aaa1","bbb1","ccc1"))
 		  table0.AddRow(Array("aaa2","bbb2","ccc2"))
 		  table0.AddRow(Array("aaa3","bbb3","ccc3"))
 		  
+		  //
+		  // Send the table to the viewer
+		  //
 		  return array(table0)
 		  
 		  

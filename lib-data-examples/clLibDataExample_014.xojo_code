@@ -8,9 +8,10 @@ Inherits clLibDataExample
 		  var returnValue() as string = Super.describe()
 		  
 		  returnValue.Add("- create a datatable")
-		  returnValue.Add("- calculate sales * 2  BFEORE sales is clipped")
-		  returnValue.Add("- apply ClipByRange 1000..2000 on the sales column")
-		  returnValue.Add("- created a new column using ClippedByRange 1100..1500 and multiply results by 2")
+		  returnValue.Add("- calculate sales * 20%  ")
+		  returnValue.Add("- Clone the sales column as 'sales base'")
+		  returnValue.Add("- apply ClipByRange 1000..2000 on the 'sales base' column")
+		  returnValue.Add("- created a new column using ClippedByRange 1100..1500")
 		  
 		  
 		  return returnValue
@@ -29,12 +30,21 @@ Inherits clLibDataExample
 		  log.start_exec(CurrentMethodName)
 		  
 		  
+		  //
+		  // Create three data series
+		  //
 		  var col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
 		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  var col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
+		  //
+		  //  Create a table and add the data series
+		  //
 		  var table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
 		  
+		  //
+		  // Add more data row by row
+		  //
 		  table0.AddRow(Array("France","Paris",1100))
 		  table0.AddRow(Array("","Marseille",1200))
 		  table0.AddRow(Array("Belgique","",1300))
@@ -42,16 +52,29 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("","Marseille",2200))
 		  table0.AddRow(Array("Belgique","",2300))
 		  
-		  call table0.AddColumn(col_sales *2 )
+		  // 
+		  // Add a calculated column as 20% of sales
+		  //
+		  call table0.AddColumn(col_sales * 0.2 )
 		  
-		  call table0.ClipByRange("sales",1000, 2000)
+		  //
+		  // Retain the original sales column 
+		  //
+		  call table0.AddColumn(col_sales.Clone("Sales base"))
 		  
-		  call table0.AddColumn(col_sales.ClippedByRange(1100, 1500) * 2)
+		  // 
+		  // clip the sales column
+		  //
+		  call table0.ClipByRange("Sales base",1000, 2000)
 		  
-		  var ret() as TableColumnReaderInterface
-		  ret.add(table0)
+		  //
+		  // Add a new column with clipped sales
+		  call table0.AddColumn(col_sales.ClippedByRange(1100, 1500) )
 		  
-		  return ret
+		  //
+		  // Send the tables to the viewer
+		  //
+		  return array(table0)
 		  
 		End Function
 	#tag EndMethod

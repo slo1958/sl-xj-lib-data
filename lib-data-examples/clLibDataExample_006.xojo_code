@@ -29,12 +29,19 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  
-		  
+		  //
+		  //  Create an empty table
+		  //
 		  var table0 As New clDataTable("mytable")
 		  
+		  //
+		  // Add columns
+		  //
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
+		  //
+		  // Add some data row by row
+		  //
 		  table0.AddRow(Array("France","Paris",1100))
 		  table0.AddRow(Array("France","Marseille",1200))
 		  table0.AddRow(Array("Belgique","Bruxelles",1300))
@@ -42,12 +49,17 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("Italy","Rome",1600))
 		  
+		  //
+		  // Apply filter functions to generate some boolean data
+		  //
 		  var tmp1() as variant = table0.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")
-		  
 		  call table0.AddColumn(new clDataSerie("is_france", tmp1))
 		  
-		  call table0.AddColumn(new clDataSerie("is_belgium",  table0.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")))
+		  call table0.AddColumn(new clBooleanDataSerie("is_belgium",  table0.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")))
 		  
+		  //
+		  // Send the table to the viewer
+		  //
 		  return array(table0)
 		  
 		  

@@ -25,10 +25,19 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
+		  //
+		  //  Create an empty table
+		  //
 		  var table0 As New clDataTable("mytable")
 		  
+		  //
+		  // Add columns
+		  //
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
+		  //
+		  // Add some data row by row
+		  //
 		  table0.AddRow(Array("France","Paris",1100))
 		  table0.AddRow(Array("","Marseille",1200))
 		  table0.AddRow(Array("Belgique","",1300))
@@ -42,13 +51,16 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
-		  
+		  //
+		  // Get the distinct combinations of country and city
+		  //
 		  var table1 As clDataTable = table0.GroupBy(array("country", "city"))
 		  
-		  var ret() as TableColumnReaderInterface
-		  ret.Add(table0)
-		  ret.Add(table1)
-		  return ret
+		  //
+		  // Send the tables to the viewer
+		  //
+		  return array(table0, table1)
+		  
 		  
 		End Function
 	#tag EndMethod

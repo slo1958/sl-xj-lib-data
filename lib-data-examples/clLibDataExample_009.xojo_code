@@ -26,10 +26,19 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
+		  //
+		  //  Create an empty table
+		  //
 		  var table0 As New clDataTable("mytable")
 		  
+		  //
+		  // Add columns
+		  //
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
+		  //
+		  // Add some data row by row
+		  //
 		  table0.AddRow(Array("France","Paris",1100))
 		  table0.AddRow(Array("","Marseille",1200))
 		  table0.AddRow(Array("Belgique","",1300))
@@ -37,18 +46,30 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
+		  //
+		  // Create validation rules
+		  //
 		  var tableValid as new clDataTableValidation("validation",array( _
 		  new clDataSerieValidation("country",  False, True) _
 		  , new clDataSerieValidation("city", True, true) _
 		  , new clDataSerieValidation("zip", True, True) _
 		  ))
 		  
+		  //
+		  // Apply the rules
+		  //
 		  tableValid.validate(table0)
 		  
+		  //
+		  // Obtain the validation results as a data table
+		  //
 		  var table1 As  clDataTable = tableValid.GetResults()
 		  
-		  
+		  //
+		  // Send the tables to the viewer
+		  //
 		  //  all types not the same, so need to explictely build the returned array
+		  //
 		  var ret() as TableColumnReaderInterface
 		  ret.append(table0)
 		  ret.append(table1)

@@ -72,6 +72,9 @@ Inherits clLibDataExample
 		  call table.AddColumn(table.GetColumn("ccc").AsString("ccc third format")) 
 		  
 		  
+		  //
+		  // Send the table to the viewer
+		  //
 		  return array(table)
 		End Function
 	#tag EndMethod

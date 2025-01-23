@@ -29,22 +29,35 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  
+		  //
+		  //  Create an empty table
+		  //
 		  var table0 As New clDataTable("mytable")
 		  
-		  
+		  //
+		  // Add columns
+		  //
 		  call table0.AddColumn(new clDataSerie("name"))
 		  call table0.AddColumn(new clNumberDataSerie("quantity"))
 		  call table0.AddColumn(new clNumberDataSerie("unit_price"))
 		  
+		  //
+		  // Add some data row by row
+		  //
 		  table0.AddRow(Array("alpha",50, 6.5))
 		  table0.AddRow(Array("beta", 20, 18))
 		  table0.AddRow(Array("gamma", 10, 50))
 		  
+		  //
+		  // Add calculated columns
+		  //
+		  table0.AddColumn(table0.GetNumberColumn("unit_price") * table0.GetNumberColumn("quantity")).rename("sales")
 		  
-		  var s1 as clAbstractDataSerie = table0.AddColumn(table0.GetNumberColumn("unit_price") * table0.GetNumberColumn("quantity")).rename("sales")
+		  call table0.AddColumn(clNumberDataSerie(table0.GetColumn("unit_price")) * clNumberDataSerie(table0.GetColumn("quantity")))
 		  
-		  var s2 as clAbstractDataSerie = table0.AddColumn(clNumberDataSerie(table0.GetColumn("unit_price")) * clNumberDataSerie(table0.GetColumn("quantity")))
+		  //
+		  // Send the table to the viewer
+		  //
 		  return Array(table0)
 		  
 		  

@@ -30,12 +30,19 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  
-		  
+		  //
+		  //  Create an empty table
+		  //
 		  var table0 As New clDataTable("mytable")
 		  
+		  //
+		  // Add columns
+		  //
 		  call table0.AddColumns(Array("country","city","sales"))
 		  
+		  //
+		  // Add some data row by row
+		  //
 		  table0.AddRow(Array("France","Paris",1100))
 		  table0.AddRow(Array("France","Marseille",1200))
 		  table0.AddRow(Array("Belgique","Bruxelles",1300))
@@ -43,18 +50,35 @@ Inherits clLibDataExample
 		  table0.AddRow(Array("Belgique","Bruxelles",1500))
 		  table0.AddRow(Array("USA","Chicago",1600))
 		  
+		  //
+		  // Apply filter functions to generate some boolean data
+		  //
 		  var is_france() as variant = table0.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")
 		  var is_belgium() as variant =  table0.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")
-		  var is_europe() as variant
 		  
+		  //
+		  // Add the results as integer data columns
+		  //
 		  call table0.AddColumn(new clIntegerDataSerie("is_france"))
 		  call table0.AddColumn(new clIntegerDataSerie("is_belgium"))
-		  call table0.AddColumn(new clIntegerDataSerie("is_europe"))
 		  
 		  call table0.SetColumnValues("is_france", is_france, false)
 		  call table0.SetColumnValues("is_belgium", is_belgium, false)
-		  call table0.SetColumnValues("is_europe", clIntegerDataSerie(table0.GetColumn("is_france")) +clIntegerDataSerie( table0.GetColumn("is_belgium")), false)
 		  
+		  //
+		  // Add a calculated integer column
+		  //
+		  call table0.AddColumn(new clIntegerDataSerie("is_europe"))
+		  
+		  //
+		  // Two different ways to get a column of required type, those as not conversion, only type casting, which will generate exception if the column type
+		  //  is not of the proper type
+		  //
+		  call table0.SetColumnValues("is_europe", table0.GetIntegerColumn("is_france") +clIntegerDataSerie( table0.GetColumn("is_belgium")), false)
+		  
+		  //
+		  // Send the table to the viewer
+		  //
 		  return array(table0)
 		  
 		End Function

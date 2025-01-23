@@ -25,7 +25,9 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  
+		  //
+		  // Create two tables with some data
+		  //
 		  var table1 As New clDataTable("table-1", SerieArray( _
 		  New clDataSerie("aaa",  123, 456, 789) _
 		  , New clDataSerie("bbb",  "abc", "def","ghi") _
@@ -38,14 +40,23 @@ Inherits clLibDataExample
 		  , New clDataSerie("zzz",  987.6,876.5, 765.4) _
 		  ))
 		  
+		  //
+		  // Clone table1 and add a column to the cloned table
+		  //
 		  var table3 as clDataTable = table1.clone
 		  table3. AddColumnsData(table2)
 		  table3.rename("Using column source")
 		  
+		  //
+		  // Clone table1 and add the rows from table2
+		  //
 		  var table4 as clDataTable = table1.clone
 		  call table4.AddRows(new clDataTableRowReader(table2))
 		  table4.rename("Using row source")
 		  
+		  //
+		  // Send the tables to the viewer
+		  //
 		  return array (table1, table2, table3, table4)
 		  
 		  
