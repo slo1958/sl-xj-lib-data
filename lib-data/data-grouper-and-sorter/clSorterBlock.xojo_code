@@ -16,7 +16,7 @@ Protected Class clSorterBlock
 
 	#tag Method, Flags = &h21
 		Private Function PairCompareForSort(value1 as Pair, value2 as Pair) As integer
-		   
+		  
 		  var v1() as variant = value1.left
 		  var v2() as variant = value2.left
 		  
@@ -30,7 +30,7 @@ Protected Class clSorterBlock
 		  If value1.Right.IntegerValue < value2.Right.IntegerValue Then Return -1
 		  
 		  Return 0
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -85,14 +85,6 @@ Protected Class clSorterBlock
 			Visible=true
 			Group="Position"
 			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="SortData()"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

@@ -34,10 +34,10 @@ Protected Class clGrouper
 		  redim titleOfDimensionColumns(-1)
 		  
 		  for i as integer = 0 to Grouping_Columns.LastIndex
-		    if Grouping_Columns(i) <> nil then
-		      TitleOfDimensionColumns.Add(Grouping_Columns(i).name)
-		      usedDimensionColumns.add(Grouping_Columns(i))
-		    end if
+		    //if Grouping_Columns(i) <> nil then
+		    TitleOfDimensionColumns.Add(Grouping_Columns(i).name)
+		    usedDimensionColumns.add(Grouping_Columns(i))
+		    //end if
 		    
 		  next
 		  
@@ -67,7 +67,12 @@ Protected Class clGrouper
 		    var next_dict as clGrouperElement = nil
 		    
 		    for column_index as integer = 0 to usedDimensionColumns.LastIndex
-		      var tmp_value as variant = usedDimensionColumns(column_index).GetElement(row)
+		      var tmp_value as variant
+		      
+		      if usedDimensionColumns(column_index) <> nil then
+		        tmp_value =  usedDimensionColumns(column_index).GetElement(row)
+		        
+		      end if
 		      
 		      if work_dict.HasKey(tmp_value) then
 		        next_dict = work_dict.value(tmp_value)
@@ -75,6 +80,7 @@ Protected Class clGrouper
 		      else
 		        next_dict = new clGrouperElement
 		        work_dict.value(tmp_value) = next_dict
+		        next_dict.MeasureCount = usedMeasureColumns.Count
 		        
 		      end if
 		      
@@ -82,7 +88,9 @@ Protected Class clGrouper
 		      
 		    next
 		    
-		    next_dict.MeasureCount = usedMeasureColumns.Count
+		    next_dict.AddRowIndex(row)
+		    
+		    
 		    
 		    for column_index as integer = 0 to usedMeasureColumns.LastIndex
 		      var tmp_value as Double = usedMeasureColumns(column_index).GetElement(row)
@@ -201,6 +209,42 @@ Protected Class clGrouper
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetRowIndexes(GroupingColumnValues() as variant) As integer()
+		  var ret() as integer
+		  
+		  if GroupingColumnValues.Count <> TitleOfDimensionColumns.Count then return ret
+		  
+		  var work_dict as clGrouperElement = self.TopNode
+		  
+		  
+		  for column_index as integer = 0 to TitleOfDimensionColumns.LastIndex
+		    var tmp_value as variant = GroupingColumnValues(column_index)
+		    var next_dict  as clGrouperElement
+		    
+		    if work_dict.HasKey(tmp_value) then
+		       next_dict = work_dict.value(tmp_value)
+		       
+		     else
+		      return ret
+		      
+		    end if
+		    
+		    work_dict = next_dict
+		    
+		   next
+		  
+		  if work_dict.Keys.count <> 0 then 
+		    System.DebugLog CurrentMethodName +": structure error"
+		    return ret
+		    
+		  end if
+		  
+		  return work_dict.RowIndexes
+		    
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetTreeHead() As clGrouperElement
 		  
 		End Function
@@ -229,24 +273,24 @@ Protected Class clGrouper
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		ActionOnMeasureColumns() As Variant
+	#tag Property, Flags = &h1
+		Protected ActionOnMeasureColumns() As Variant
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		NameOfMeasureColumns() As String
+	#tag Property, Flags = &h1
+		Protected NameOfMeasureColumns() As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		TitleOfDimensionColumns() As String
+	#tag Property, Flags = &h1
+		Protected TitleOfDimensionColumns() As String
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		TitleOfMeasureColumns() As string
+	#tag Property, Flags = &h1
+		Protected TitleOfMeasureColumns() As string
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		TopNode As clGrouperElement
+	#tag Property, Flags = &h1
+		Protected TopNode As clGrouperElement
 	#tag EndProperty
 
 

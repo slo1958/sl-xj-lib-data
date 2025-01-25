@@ -10,9 +10,9 @@ Inherits clLibDataExample
 		  
 		  returnValue.Add("- create a datatable with order quantity of unit price per city")
 		  returnValue.Add(" - calculate sales as unit price x quantity in a new column")
-		  returnValue.Add("- lookup the country name")
-		  returnValue.Add("- get list of distinct country/city")
-		  returnValue.Add("- get total sales and total quantity per country")
+		  returnValue.Add("- sort on country and city")
+		  returnValue.Add("- sort on city and unit price")
+		  returnValue.Add("- get total sales per country, sorted by total sales")
 		  
 		  return returnValue
 		  

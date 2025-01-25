@@ -1643,6 +1643,8 @@ Protected Class clDataTableTests
 		  var ccity As clAbstractDataSerie =  tsales.AddColumn(new clStringDataSerie("City"))
 		  var cqtt as clAbstractDataSerie =  tsales.AddColumn(new clNumberDataSerie("Quantity"))
 		  var cup as clAbstractDataSerie = tsales.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tsales.AddColumn(new clBooleanDataSerie("CountryFound"))
+		  
 		  
 		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21))
 		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22))
@@ -1658,7 +1660,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "tsales table integrity", nil, tsales) 
 		  
-		  var join_results as Boolean = tsales.Lookup(tcountries, array("City"), array("Country"))
+		  var join_results as Boolean = tsales.Lookup(tcountries, array("City"), array("Country"), "CountryFound")
 		  
 		  var ccnty as clAbstractDataSerie = tsales.GetColumn("Country")
 		  

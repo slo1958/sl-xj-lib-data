@@ -42,6 +42,7 @@ Inherits clLibDataExample
 		  tcountries.AddRow(new Dictionary("Country":"Belgium","City":"Liege"))
 		  tcountries.AddRow(new Dictionary("Country":"France","City":"Paris"))
 		  tcountries.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  tcountries.AddRow(new Dictionary("City":"London"))
 		  
 		  call check_table(log, "tcountries table integrity", nil, tcountries) 
 		  
@@ -52,6 +53,8 @@ Inherits clLibDataExample
 		  var cqtt as clAbstractDataSerie =  tsales.AddColumn(new clNumberDataSerie("Quantity"))
 		  var cup as clAbstractDataSerie = tsales.AddColumn(new clNumberDataSerie("UnitPrice"))
 		  
+		  call tsales.AddColumn(new clBooleanDataSerie("LookupStatus"))
+		  
 		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21))
 		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22))
 		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23))
@@ -60,14 +63,12 @@ Inherits clLibDataExample
 		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26))
 		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27))
 		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28))
+		  tsales.AddRow(new Dictionary("City":"London", "Quantity":14, "Unitprice": 30))
 		  tsales.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
 		  
-		  tsales.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup)).Rename("Sales")
-		   
+		  tsales.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup)).Rename("Sales") 
 		  
-		  call check_table(log, "tsales table integrity", nil, tsales) 
-		  
-		  var join_results as Boolean = tsales.Lookup(tcountries, array("City"), array("Country"))
+		  var join_results as Boolean = tsales.Lookup(tcountries, array("City"), array("Country"), "LookupStatus")
 		  
 		  var tdistinct as clDataTable = tsales.GroupBy(StringArray("Country", "City"))
 		  
@@ -76,23 +77,15 @@ Inherits clLibDataExample
 		  new clStringDataSerie("City", array("Brussels","Liege", "Paris","Rome")) _
 		  ))
 		  
-		  call check_table(log,"get distinct values", tDistinct_expected, tDistinct )
 		  
-		  var tSumSales as clDataTable = tsales.GroupBy(StringArray("Country"), StringArray("Sales","Quantity"))
-		  //var gSumSales as new clGrouper(tsales))
-		  
-		  //var tSumSales as clDataTable = new clDataTable("group", gSumSales.Flattened)
-		  
-		  var tSumSales_expected As New clDataTable("mytable", SerieArray( _
-		  new clStringDataSerie("Country", array("Belgium","France","")), _
-		  new clNumberDataSerie("Sum of Sales", array(1704, 648,250)), _
-		  new clNumberDataSerie("Sum of Quantity", array (72,24, 10)) _
-		  ))
-		  
-		  call check_table(log,"Check total sales", tSumSales_expected, tSumSales )
+		  var tSumSales1 as clDataTable = tsales.GroupBy(StringArray("Country"), StringArray("Sales","Quantity"))
 		  
 		  
-		  return array(tsales, tcountries, tDistinct, tSumSales)
+		  var tSumSales2 as clDataTable = tsales.GroupBy(StringArray("Country","Zorglub","City"), StringArray("Sales","Quantity"))
+		  tSumSales2.Rename("Sum sales 2")
+		  
+		  return array(tsales, tcountries, tDistinct, tSumSales1, tSumSales2)
+		  
 		  
 		  
 		End Function

@@ -893,7 +893,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - number of cells updated
 		  //
 		  
-		   
+		  
 		  if column = nil then return 0
 		  if LowValueColumn = nil then return 0
 		  if HighValueColumn = nil then return 0
@@ -1981,6 +1981,58 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function FullJoin(table_to_join as clDataTable, mode as JoinMode, KeyFields() as string) As clDataTable
+		  //
+		  // Executes a full join between the current table and the 'table_to_join'
+		  // Either an inner join or an outer join
+		  // Use Lookpu() function for a left join
+		  // All fields are included from both side, key fields are not replicateed
+		  //
+		  // Paramters
+		  // table_to_join  (clDataTable): table used as lookup source
+		  // Mode: indicates inner join or outer join
+		  // KeyFields: list of fields used as join keys, field names must match
+		  //
+		  //
+		  // Returns
+		  // Datatable with joined results
+		  //
+		  
+		  var mastertable as clDataTable = self
+		  var joinedtable as clDataTable = table_to_join
+		  
+		  var JoinKeyColumns() as clAbstractDataSerie = joinedtable.GetColumns(KeyFields)
+		  var JoinKeyColumnValues() as Variant
+		  
+		  var grp as new clGrouper(JoinKeyColumns)
+		  
+		  
+		  for each row as clDataRow in mastertable
+		    var rowindex as integer = -1 // here get row index
+		    JoinKeyColumnValues.RemoveAll
+		    
+		    for each col as clAbstractDataSerie  in JoinKeyColumns
+		      JoinKeyColumnValues.add(row.GetCell(col.name)) // to improve
+		      
+		      // here lookup in group by results
+		      var rowToMerge() as integer = grp.GetRowIndexes(JoinKeyColumnValues)
+		      
+		      // merge
+		      // repeat for each row to merge:
+		      // clone current row
+		      // add field from joined row
+		      // add to output table
+		      
+		    next
+		    
+		  next
+		  
+		  return nil
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetAllColumns() As clAbstractDataSerie()
 		  return columns
 		End Function
@@ -2350,6 +2402,22 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function GetRowReader() As clDataTableRowReader
 		  return new clDataTableRowReader(self)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function GetSelectedRowsAsTable(selectedrowindex() as integer) As clDataTable
+		  
+		  var return_table as new clDataTable("Extract from "+ self.Name)
+		  
+		  for each index as integer in selectedrowindex
+		    
+		    return_table.AddRow(self.GetRowAt(index, false))
+		    
+		  next
+		  
+		  return return_table
 		  
 		End Function
 	#tag EndMethod
@@ -2823,7 +2891,8 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_LeftJoin(the_table as clDataTable, OwnKeyFields() as string, JoinTabkeKeyFields() as string, OwnDataFields() as string, JoinTableDataFields() as string) As Boolean
+		Private Function internal_LeftJoin(the_table as clDataTable, OwnKeyFields() as string, JoinTabkeKeyFields() as string, OwnDataFields() as string, JoinTableDataFields() as string, JoinSuccessField as string) As Boolean
+		  const cstSuccessMark = "$$$M$$$"
 		  
 		  var buffer as new Dictionary
 		  
@@ -2832,6 +2901,8 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var sourceColumns() as clAbstractDataSerie
 		  
+		  var JoinSuccessColumn as clAbstractDataSerie = nil
+		  
 		  if OwnKeyFields.LastIndex <> JoinTableDataFields.LastIndex then return false
 		  if OwnDataFields.LastIndex <> JoinTableDataFields.LastIndex then return false
 		  
@@ -2839,6 +2910,9 @@ Implements TableColumnReaderInterface,Iterable
 		    keyColumns.Add(self.GetColumn(field, False))
 		    
 		  next
+		  
+		  if JoinSuccessField.Length > 0 then JoinSuccessColumn = self.GetColumn(JoinSuccessField, False)
+		  
 		  
 		  for i as integer = 0 to OwnDataFields.LastIndex
 		    var c as clAbstractDataSerie = self.GetColumn(OwnDataFields(i), false)
@@ -2878,10 +2952,12 @@ Implements TableColumnReaderInterface,Iterable
 		      lookupKeyParts.Add(c.GetElementAsString(i))
 		      
 		    next
+		    
 		    lookupkey = string.FromArray(Lookupkeyparts,chr(8))
 		    
 		    if buffer.HasKey(lookupkey) then
 		      row = clDataRow(buffer.Value(lookupkey))
+		      
 		      
 		    else
 		      row = the_table.FindFirstMatchingRow(JoinTabkeKeyFields, lookupKeyParts, false)
@@ -2896,6 +2972,11 @@ Implements TableColumnReaderInterface,Iterable
 		          end if
 		          
 		        next
+		        
+		        row.SetCell(cstSuccessMark, False)
+		        
+		      else
+		        row.SetCell(cstSuccessMark, True)
 		        
 		      end if
 		      
@@ -2916,7 +2997,10 @@ Implements TableColumnReaderInterface,Iterable
 		      
 		    next
 		    
+		    if JoinSuccessColumn <> nil then JoinSuccessColumn.SetElement(i, row.GetCell(cstSuccessMark))
+		    
 		  next
+		  
 		  
 		  return True
 		  
@@ -3029,8 +3113,17 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Lookup(table_to_join as clDataTable, KeyFieldMapping as Dictionary, LookupFieldMapping as Dictionary) As Boolean
-		  
+		Function Lookup(table_to_join As clDataTable, KeyFieldMapping As Dictionary, LookupFieldMapping As Dictionary, JoinSuccessField As string = "") As Boolean
+		  //
+		  // Lookup data
+		  // Similar to left join or an Excel Vlookup()
+		  //
+		  // Paramters
+		  // table_to_join  (clDataTable): table used as lookup source
+		  // KeyFieldapping: list of fields used as lookup keys as a dictionary. For each dictionary entry,  key is expected in the current table and value is expected in the joined table
+		  // LookUpFieldMaping: Field to 'bring back' from the lookup table as a dictionary. For each dictionary entry,  key is expected in the current table and value is expected in the joined table
+		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
+		  //
 		  var OwnKeyFields() as string
 		  var JoinTabkeKeyFields() as String
 		  
@@ -3054,14 +3147,24 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  
-		  return internal_LeftJoin(table_to_join, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields)
+		  return internal_LeftJoin(table_to_join, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields, JoinSuccessField)
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Lookup(table_to_join as clDataTable, KeyFields() as string, LookupFields() as string) As Boolean
+		Function Lookup(table_to_join as clDataTable, KeyFields() as string, LookupFields() as string, JoinSuccessField as string = "") As Boolean
+		  //
+		  // Lookup data
+		  // Similar to left join or an Excel Vlookup()
+		  //
+		  // Paramters
+		  // table_to_join  (clDataTable): table used as lookup source
+		  // KeyFields: list of fields used as lookup keys, field names must match
+		  // LookUpFields: Field to 'bring back' from the lookup table
+		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
+		  //
 		  
 		  var OwnKeyFields() as string
 		  var JoinTabkeKeyFields() as String
@@ -3082,7 +3185,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  return internal_LeftJoin(table_to_join, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields)
+		  return internal_LeftJoin(table_to_join, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields,JoinSuccessField)
 		  
 		  
 		End Function
@@ -3768,6 +3871,11 @@ Implements TableColumnReaderInterface,Iterable
 		CreateNewColumnAsVariant
 	#tag EndEnum
 
+	#tag Enum, Name = JoinMode, Type = Integer, Flags = &h0
+		OuterJoin
+		InnerJoin
+	#tag EndEnum
+
 	#tag Enum, Name = SortOrder, Type = Integer, Flags = &h0
 		Ascending
 		Descending
@@ -3813,14 +3921,6 @@ Implements TableColumnReaderInterface,Iterable
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="row_name_as_column"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

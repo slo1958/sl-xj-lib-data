@@ -9,6 +9,14 @@ Protected Class clGrouperElement
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AddRowIndex(RowIndex as integer)
+		  
+		  self.RowIndexes.Add(RowIndex)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor()
 		  
 		  
@@ -77,6 +85,7 @@ Protected Class clGrouperElement
 
 	#tag Method, Flags = &h0
 		Sub Value(Key as string, assigns v as variant)
+		  
 		  if node = nil then node = new Dictionary
 		  node.Value(key) = v
 		End Sub
@@ -89,6 +98,10 @@ Protected Class clGrouperElement
 
 	#tag Property, Flags = &h0
 		Node As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		RowIndexes() As Integer
 	#tag EndProperty
 
 
