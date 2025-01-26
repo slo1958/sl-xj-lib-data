@@ -43,8 +43,7 @@ Inherits clLibDataExample
 		  tcountries.AddRow(new Dictionary("Country":"France","City":"Paris"))
 		  tcountries.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
 		  tcountries.AddRow(new Dictionary("City":"London"))
-		  
-		  call check_table(log, "tcountries table integrity", nil, tcountries) 
+		   
 		  
 		  
 		  var tsales as new clDataTable("Sales")

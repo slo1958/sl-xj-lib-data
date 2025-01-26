@@ -1998,14 +1998,39 @@ Implements TableColumnReaderInterface,Iterable
 		  // Datatable with joined results
 		  //
 		  
+		  var joinModeStr as string
+		  if mode = JoinMode.InnerJoin then 
+		    joinModeStr = "Inner join"
+		    
+		  elseif mode = JoinMode.OuterJoin then
+		    joinModeStr = "Outer join"
+		    
+		  else
+		    joinModeStr = "Strange join"
+		    
+		  end if
+		  
 		  var mastertable as clDataTable = self
 		  var joinedtable as clDataTable = table_to_join
+		  var outputtable as new clDataTable(joinModeStr + " " + mastertable.Name + " and " + joinedtable.Name)
 		  
+		  var rowmap() as Boolean
 		  var JoinKeyColumns() as clAbstractDataSerie = joinedtable.GetColumns(KeyFields)
 		  var JoinKeyColumnValues() as Variant
 		  
 		  var grp as new clGrouper(JoinKeyColumns)
 		  
+		  if mode = JoinMode.OuterJoin then
+		    rowmap.RemoveAll
+		    
+		    for i as integer = 0 to joinedtable.LastIndex
+		      rowmap.Add(False)
+		      
+		    next 
+		    
+		  end if
+		  
+		  var FoundRowsInJoinedTable as Boolean = false
 		  
 		  for each row as clDataRow in mastertable
 		    var rowindex as integer = -1 // here get row index
@@ -2017,17 +2042,71 @@ Implements TableColumnReaderInterface,Iterable
 		      // here lookup in group by results
 		      var rowToMerge() as integer = grp.GetRowIndexes(JoinKeyColumnValues)
 		      
-		      // merge
-		      // repeat for each row to merge:
-		      // clone current row
-		      // add field from joined row
-		      // add to output table
+		      if rowToMerge.Count > 0 then
+		        for each index  as integer in rowToMerge
+		          var row_main as clDataRow = row.Clone
+		          
+		          var row_join as clDataRow = joinedtable.GetRowAt(index, False)
+		          row_main.AppendCellsFrom(row_join)
+		          outputtable.AddRow(row_main, AddRowMode.CreateNewColumn)
+		          
+		          if mode = JoinMode.OuterJoin then rowmap(index) = True
+		          FoundRowsInJoinedTable = True
+		          
+		        next
+		        
+		      end if
+		      
+		      if rowToMerge.Count = 0 and mode = JoinMode.OuterJoin then
+		        outputtable.AddRow(row.Clone(), AddRowMode.CreateNewColumn)
+		        
+		      end if
 		      
 		    next
 		    
 		  next
 		  
-		  return nil
+		  select case mode
+		  case JoinMode.InnerJoin
+		    // For inner join
+		    
+		    // Add empty columns from master table if output is empty
+		    if outputtable.RowCount = 0 then 
+		      for each col as clAbstractDataSerie in mastertable.columns
+		        call outputtable.AddColumn(col.CloneStructure)
+		        
+		      next
+		      
+		    end if
+		    
+		    // Add empty columns from joined table if there were no matching rows
+		    if not FoundRowsInJoinedTable then
+		      for each col as clAbstractDataSerie in joinedtable.columns
+		        call outputtable.AddColumn(col.CloneStructure)
+		        
+		      next
+		      
+		    end if
+		    
+		  case JoinMode.OuterJoin
+		    // For outer join, add missing rows from joined table
+		    // TODO
+		    
+		    for index as integer = 0 to rowmap.LastIndex
+		      if not rowmap(index) then 
+		        var row_join as clDataRow = joinedtable.GetRowAt(index, False)
+		        outputtable.AddRow(row_join, AddRowMode.CreateNewColumn)
+		        
+		      end if
+		      
+		      
+		    next
+		    
+		  case else
+		    
+		  end select
+		  
+		  return outputtable
 		  
 		End Function
 	#tag EndMethod

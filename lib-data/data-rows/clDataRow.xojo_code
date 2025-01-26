@@ -2,7 +2,47 @@
 Protected Class clDataRow
 Implements Iterable
 	#tag Method, Flags = &h0
+		Sub AppendCellsFrom(SourceRow as clDataRow)
+		  //
+		  // Append cells from the SourceRow to the current row
+		  // 
+		  //  Values in the sourcerow are ignored if the cell is already defined in the current row
+		  //
+		  // Parameters:
+		  // - Source row
+		  //
+		  // Returns:
+		  // - Nothing
+		  //
+		  
+		  for each CellName as string  in SourceRow
+		    
+		    if  my_storage.HasKey(CellName) Then
+		      
+		    else
+		      my_storage.Value(CellName) = SourceRow.GetCell(CellName)
+		      
+		    end if
+		    
+		  next
+		  
+		  return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function AsObject(allocator as clDataTable.ObjectAllocator = nil) As object
+		  //
+		  // Use the current datarow to allocate an object and set its properties.
+		  //  The object name (the parameter passed to the allocator) is taken from the row name column.
+		  //
+		  // Parameters:
+		  // - Object allocator
+		  //
+		  // Returns
+		  //  Allocated object
+		  //
+		  
 		  var obj as Object
 		  
 		  if allocator = nil then return nil
@@ -20,6 +60,18 @@ Implements Iterable
 
 	#tag Method, Flags = &h0
 		Function AsObject(TypeFieldName as string, allocator as clDataTable.ObjectAllocator = nil) As object
+		  //
+		  // Use the current datarow to allocate an object and set its properties. 
+		  // The parameter passed to the allocator is taken from the row name column.
+		  //
+		  // Parameters:
+		  // - TypeFieldName: name of the field containing the object type passed to the allocator
+		  // - Object allocator
+		  //
+		  // Returns
+		  //  Allocated object
+		  //
+		  
 		  var obj as Object
 		  
 		  if allocator = nil then return nil
@@ -90,6 +142,26 @@ Implements Iterable
 		Sub ClearTableLink()
 		  self.table_link = nil
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Clone() As clDataRow
+		  //
+		  // Clone the current data row
+		  //
+		  // Parameters: 
+		  // (nothing)
+		  //
+		  // Returns:
+		  // cloned data row
+		  //
+		  
+		  var ret as new clDataRow(self.my_storage,self.my_label)
+		  ret.mutable_flag = self.mutable_flag
+		  ret.table_link = self.table_link
+		  
+		  return ret
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -267,15 +339,15 @@ Implements Iterable
 		  //  - the name of the cell
 		  //  
 		  //  Returns:
-		  //   value of the cell or empty string
+		  //   value of the cell or unassigned variant
 		  //  
-		  
 		  
 		  If my_storage.HasKey(the_cell_name) Then
 		    Return  my_storage.Value(the_cell_name) 
 		    
 		  Else
-		    Return ""
+		    var v as variant
+		    Return v
 		    
 		  End If
 		  

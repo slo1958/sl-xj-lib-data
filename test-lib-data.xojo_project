@@ -149,6 +149,7 @@ DesktopWindow=wnd_perf;lib-data-test and example windows/wnd_perf.xojo_window;&h
 DesktopWindow=wnd_tests;lib-data-test and example windows/wnd_tests.xojo_window;&h0000000046DC47FF;&h000000005A7A8FFF;false
 Class=clLogWriterDebugLog;lib-data-tests/clLogWriterDebugLog.xojo_code;&h00000000395527FF;&h000000007AF38FFF;false
 Class=clLibDataExample_027;lib-data-examples/clLibDataExample_027.xojo_code;&h00000000707C3FFF;&h0000000073919FFF;false
+Class=clLibDataExample_028;lib-data-examples/clLibDataExample_028.xojo_code;&h000000007A35D7FF;&h0000000073919FFF;false
 Class=clSorter;lib-data/data-grouper-and-sorter/clSorter.xojo_code;&h000000000CFAE7FF;&h0000000029DCEFFF;false
 Class=clSorterBlock;lib-data/data-grouper-and-sorter/clSorterBlock.xojo_code;&h00000000664BF7FF;&h0000000029DCEFFF;false
 DefaultWindow=main_window

@@ -53,6 +53,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function CloneStructure() As clCompressedDataSerie
+		  
 		  var tmp As New clCompressedDataSerie(Self.name)
 		  tmp.DisplayTitle = self.DisplayTitle
 		  
