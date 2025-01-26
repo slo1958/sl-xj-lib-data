@@ -1884,10 +1884,6 @@ Protected Class clDataTableTests
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  log.start_exec(CurrentMethodName)
-		  
-		  
-		  
 		  var tcountries1 as new clDataTable("Countries1")
 		  call  tcountries1.AddColumn(new clStringDataSerie("Country"))
 		  call  tcountries1.AddColumn(new clStringDataSerie("City"))
