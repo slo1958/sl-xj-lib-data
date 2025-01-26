@@ -5,14 +5,14 @@ Inherits DesktopApplication
 		Sub Opening()
 		  
 		  var logwriter as  LogMessageInterface = new clWriteToSystemLog 
-		  
-		  logwriter.start_exec(CurrentMethodName)
-		  
-		  var t as new clDataTableTests
-		  
-		  t.test_calc_040(logwriter)
-		  
-		  logwriter.end_exec(CurrentMethodName)
+		  // 
+		  // logwriter.start_exec(CurrentMethodName)
+		  // 
+		  // var t as new clDataTableTests
+		  // 
+		  // t.test_calc_040(logwriter)
+		  // 
+		  // logwriter.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndEvent

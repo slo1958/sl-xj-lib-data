@@ -1990,6 +1990,7 @@ Protected Class clDataTableTests
 		  tjoin2_expected.AddRow(new Dictionary("City":"London"))
 		  
 		  
+		  
 		  var tjoin3_expected as new clDataTable("X3")
 		  call tjoin3_expected.AddColumn(new clStringDataSerie("City"))
 		  call tjoin3_expected.AddColumn(new clNumberDataSerie("Quantity"))
@@ -2015,6 +2016,55 @@ Protected Class clDataTableTests
 		  tjoin4_expected.AddRow(new Dictionary("Country":"France","City":"Lyon"))
 		  tjoin4_expected.AddRow(new Dictionary("Country":"Spain","City":"Madrid"))
 		  
+		  
+		  
+		  
+		  var tjoin5_expected as new clDataTable("X5")
+		  call tjoin5_expected.AddColumn(new clStringDataSerie("City"))
+		  call tjoin5_expected.AddColumn(new clNumberDataSerie("Quantity"))
+		  call tjoin5_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tjoin5_expected.AddColumn(new clNumberDataSerie("Country"))
+		  call tjoin5_expected.AddColumn(new clStringDataSerie("Something"))
+		    
+		  tjoin5_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21,"Country":"Belgium","Something":"Alpha"))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Beta"))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Gamma"))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23,"Country":"Belgium","Something":"Alpha"))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24,"Country":"Belgium","Something":"Alpha"))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","Something":"Beta"))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","Something":"Gamma"))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26,"Country":"France","Something":"Delta"))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","Something":"Beta"))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","Something":"Gamma"))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28,"Country":"France","Something":"Delta"))
+		  
+		  
+		  
+		  var tjoin6_expected as new clDataTable("X6")
+		  call tjoin6_expected.AddColumn(new clStringDataSerie("City"))
+		  call tjoin6_expected.AddColumn(new clNumberDataSerie("Quantity"))
+		  call tjoin6_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tjoin6_expected.AddColumn(new clNumberDataSerie("Country"))
+		  call tjoin6_expected.AddColumn(new clStringDataSerie("Something"))
+		  
+		  tjoin6_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21,"Country":"Belgium","Something":"Alpha"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Beta"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Gamma"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23,"Country":"Belgium","Something":"Alpha"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24,"Country":"Belgium","Something":"Alpha"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","Something":"Beta"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","Something":"Gamma"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26,"Country":"France","Something":"Delta"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","Something":"Beta"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","Something":"Gamma"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28,"Country":"France","Something":"Delta"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Lille", "Quantity":0, "Unitprice": 0,"Country":"Belgium","Something":"Omega"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"NewYork", "Quantity":0, "Unitprice": 0,"Country":"USA","Something":"Zeta"))
+		  tjoin6_expected.AddRow(new Dictionary("City":"London", "Quantity":0, "UnitPrice":0))
+		  
+		  
+		  
 		  call check_table(log, "Join1", tjoin1_expected, tjoin1)
 		  
 		  call check_table(log, "Join2", tjoin2_expected, tjoin2)
@@ -2022,6 +2072,11 @@ Protected Class clDataTableTests
 		  call check_table(log, "Join3", tjoin3_expected, tjoin3)
 		  
 		  call check_table(log, "Join4", tjoin4_expected, tjoin4)
+		  
+		  call check_table(log, "Join5", tjoin5_expected, tjoin5)
+		  
+		  call check_table(log, "Join6", tjoin6_expected, tjoin6)
+		  
 		  
 		  log.end_exec(CurrentMethodName)
 		  
