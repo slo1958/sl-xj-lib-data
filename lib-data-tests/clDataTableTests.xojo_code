@@ -984,7 +984,8 @@ Protected Class clDataTableTests
 		  var stat_table as clDataTable = data_table.GetStatisticsAsTable
 		  
 		  call stat_table.GetColumn(clDataTable.StatisticsAverageColumn).RoundValues(2)
-		  
+		  call stat_table.GetColumn(clDataTable.StatisticsStdDevColumn).RoundValues(5)
+		  call stat_table.GetColumn(clDataTable.StatisticsStdDevNZColumn).RoundValues(2)
 		  call check_table(log, "data_table  integrity", nil, data_table) 
 		  
 		  //
@@ -992,6 +993,7 @@ Protected Class clDataTableTests
 		  
 		  series.RemoveAll
 		  
+		  series.add(new clStringDataSerie(clDataTable.StatisticsTableNameColumn, array("data","data","data","data")))
 		  series.Add(new clDataSerie(clDataTable.StatisticsSerieNameColumn, array("DataSerie", "NumberDataSerie", "StringDataSerie", "IntegerDataSerie")))
 		  
 		  series.add(new clIntegerDataSerie(clDataTable.StatisticsUboundColumn, array(5,5,5,5)))
@@ -1002,8 +1004,8 @@ Protected Class clDataTableTests
 		  series.Add(new clNumberDataSerie(clDataTable.StatisticsAverageColumn, array(67.8, 56.5, 56.5, 56.5)))
 		  series.Add(new clNumberDataSerie(clDataTable.StatisticsAverageNZColumn, array(113, 113, 113, 113)))
 		  
-		  series.Add(new clNumberDataSerie(clDataTable.StatisticsStdDevColumn, array(62.4035, 62.3, 62.3, 62.3)))
-		  series.Add(new clNumberDataSerie(clDataTable.StatisticsStdDevNZColumn, array(11.27, 11.27, 11.27)))
+		  series.Add(new clNumberDataSerie(clDataTable.StatisticsStdDevColumn, array(62.40353, 62.30169,62.30169, 62.30169)))
+		  series.Add(new clNumberDataSerie(clDataTable.StatisticsStdDevNZColumn, array(11.27, 11.27, 11.27, 11.27)))
 		  
 		  var table_expected as clDataTable = new clDataTable("expected", series)
 		  
@@ -2025,7 +2027,7 @@ Protected Class clDataTableTests
 		  call tjoin5_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
 		  call tjoin5_expected.AddColumn(new clNumberDataSerie("Country"))
 		  call tjoin5_expected.AddColumn(new clStringDataSerie("Something"))
-		    
+		  
 		  tjoin5_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21,"Country":"Belgium","Something":"Alpha"))
 		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Beta"))
 		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Gamma"))

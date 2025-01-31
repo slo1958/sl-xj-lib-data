@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clAbstractDataSerie
-Implements Xojo.Core.Iterable,itf_json_able
+Implements Iterable
 	#tag Method, Flags = &h0
 		Sub AddAlias(alias as string)
 		  //  
@@ -35,6 +35,9 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  
 		  //  Add an element to the data serie
 		  //  Implemented in type specific subclass
+		  //  Adding an element to a dataserie linked to a table will NOT automatically align the size of the other dataseries linked to that table.
+		  //  Once elements have been added, call the method clDataTAble.AdjustLength() to make sure all dataseries have the same length.
+		  //  An exception will occur while iterating a datatable with columns of different lengrhs. 
 		  //  
 		  //  Parameters
 		  //  - the_item (variant) the value to add to the data serie
@@ -595,7 +598,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub debug_dump()
+		Sub debug_dump2()
 		  
 		  var tmp_item() As String
 		  
@@ -614,7 +617,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		    ok_convert = False
 		    
 		    If element IsA clDataSerie Then
-		      tmp_item.Append(itf_json_able(element).ToJSON.ToString)
+		      tmp_item.Append("Data serie: " + clDataSerie(element).FullName(true))
 		      ok_convert = True
 		      
 		    Else
@@ -627,19 +630,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		        
 		      End Try
 		    End If
-		    
-		    If Not ok_convert Then
-		      If element IsA itf_json_able Then
-		        tmp_item.Append(itf_json_able(element).ToJSON.ToString)
-		        ok_convert = True
-		      End If
-		      
-		    End If
-		    
-		    If Not ok_convert Then
-		      tmp_item.Append("")
-		      
-		    End If
+		     
+		     
 		    
 		    System.DebugLog(Join(tmp_item, ";"))
 		    
@@ -941,16 +933,6 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetIterator() As Xojo.Core.Iterator
-		  // Part of the Xojo.Core.Iterable interface.
-		  
-		  var tmp_serie_iterator As New clDataSerieIterator(self)
-		  
-		  Return tmp_serie_iterator 
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetLastErrorMessage() As string
 		  return self.LastErrorMessage
 		End Function
@@ -1041,7 +1023,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function IsLinkedToTable(expected_link as clDataTable = nil) As Boolean
+		Function IsLinkedToTable(ExpectedLink as clDataTable = nil) As Boolean
 		  //  
 		  //  Checks if the current data serie is linked to a table
 		  //
@@ -1060,16 +1042,25 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  end if
 		  
 		  
-		  if expected_link = nil then
+		  if ExpectedLink = nil then
 		    Return physical_table_link <> Nil
 		    
 		  elseif physical_table_link = nil then
 		    return false
 		    
 		  else
-		    return physical_table_link.value = expected_link
+		    return physical_table_link.value = ExpectedLink
 		    
 		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Iterator() As Iterator
+		  // Part of the Iterable interface.
+		  
+		  return new clDataSerieIterator(self)
 		  
 		End Function
 	#tag EndMethod
@@ -1529,19 +1520,13 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  For row As Integer = 0 To RowCount-1
 		    var element As variant = GetElement(row)
 		    
-		    If element IsA itf_json_able Then
-		      js_list.append(itf_json_able(element).ToJSON)
+		    Try
+		      js_list.Append(element.StringValue)
 		      
-		    Else
-		      Try
-		        js_list.Append(element.StringValue)
-		        
-		      Catch TypeMismatchExceptionvar  
-		        js_list.Append("Cannot convert")
-		        
-		      End Try
+		    Catch TypeMismatchExceptionvar  
+		      js_list.Append("Cannot convert")
 		      
-		    End If
+		    End Try
 		    
 		  Next
 		  

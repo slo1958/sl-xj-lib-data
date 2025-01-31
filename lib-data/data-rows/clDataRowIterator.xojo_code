@@ -12,7 +12,7 @@ Implements Iterator
 
 	#tag Method, Flags = &h0
 		Function MoveNext() As Boolean
-		  // Part of the Xojo.Core.Iterator interface.
+		  // Part of the Iterator interface.
 		  
 		  If iteration_keys.LastIndex>=0 Then
 		    iteration_next_key = iteration_keys(0)

@@ -63,7 +63,6 @@ Module=support_tests;lib-data-tests/support_tests.xojo_code;&h0000000017396FFF;&
 Class=clLibDataExample_011;lib-data-examples/clLibDataExample_011.xojo_code;&h00000000085E8FFF;&h0000000073919FFF;false
 Folder=data-helpers;lib-data/data-helpers;&h000000001B0A57FF;&h0000000020C837FF;false
 Module=helper_functions;lib-data/data-helpers/helper_functions.xojo_code;&h00000000087E47FF;&h000000001B0A57FF;false
-Interface=itf_json_able;lib-data/data-helpers/itf_json_able.xojo_code;&h000000007798FFFF;&h000000001B0A57FF;false
 Class=clStringDataSerie;lib-data/data-series/clStringDataSerie.xojo_code;&h00000000179B9FFF;&h00000000054067FF;false
 Class=clLibDataExample_012;lib-data-examples/clLibDataExample_012.xojo_code;&h0000000062DE77FF;&h0000000073919FFF;false
 Class=clLibDataExample_014;lib-data-examples/clLibDataExample_014.xojo_code;&h0000000020A9A7FF;&h0000000073919FFF;false

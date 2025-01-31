@@ -1981,15 +1981,15 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FullJoin(table_to_join as clDataTable, mode as JoinMode, KeyFields() as string) As clDataTable
+		Function FullJoin(TableToJoin as clDataTable, mode as JoinMode, KeyFields() as string) As clDataTable
 		  //
-		  // Executes a full join between the current table and the 'table_to_join'
+		  // Executes a full join between the current table and the 'TableToJoin'
 		  // Either an inner join or an outer join
 		  // Use Lookpu() function for a left join
 		  // All fields are included from both side, key fields are not replicateed
 		  //
 		  // Paramters
-		  // table_to_join  (clDataTable): table used as lookup source
+		  // TableToJoin  (clDataTable): table used as lookup source
 		  // Mode: indicates inner join or outer join
 		  // KeyFields: list of fields used as join keys, field names must match
 		  //
@@ -2011,7 +2011,7 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		  var mastertable as clDataTable = self
-		  var joinedtable as clDataTable = table_to_join
+		  var joinedtable as clDataTable = TableToJoin
 		  var outputtable as new clDataTable(joinModeStr + " " + mastertable.Name + " and " + joinedtable.Name)
 		  
 		  var rowmap() as Boolean
@@ -2485,12 +2485,12 @@ Implements TableColumnReaderInterface,Iterable
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Function GetSelectedRowsAsTable(selectedrowindex() as integer) As clDataTable
+	#tag Method, Flags = &h0
+		Function GetSelectedRowsAsTable(SelectedRowIndex() as integer) As clDataTable
 		  
 		  var return_table as new clDataTable("Extract from "+ self.Name)
 		  
-		  for each index as integer in selectedrowindex
+		  for each index as integer in SelectedRowIndex
 		    
 		    return_table.AddRow(self.GetRowAt(index, false))
 		    
@@ -2507,6 +2507,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //
 		  //
 		  
+		  var tbl_name() as string
 		  var col_name() as string
 		  var col_ubound() as integer
 		  var col_Count() as integer
@@ -2519,6 +2520,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		  for i as integer = 0 to columns.LastIndex
+		    tbl_name.add(self.name)
 		    col_name.Add(columns(i).name)
 		    
 		    col_ubound.Add(columns(i).LastIndex)
@@ -2538,7 +2540,8 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var series() as clAbstractDataSerie
 		  
-		  series.Add(new clDataSerie(StatisticsSerieNameColumn, col_name))
+		  series.Add(new clStringDataSerie(StatisticsTableNameColumn, tbl_name))
+		  series.Add(new clStringDataSerie(StatisticsSerieNameColumn, col_name))
 		  series.add(new clIntegerDataSerie(StatisticsUboundColumn, col_ubound))
 		  series.Add(new clIntegerDataSerie(StatisticsCountColumn, col_count))
 		  series.Add(new clIntegerDataSerie(StatisticsCountNZColumn, col_count_nz))
@@ -3192,13 +3195,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Lookup(table_to_join As clDataTable, KeyFieldMapping As Dictionary, LookupFieldMapping As Dictionary, JoinSuccessField As string = "") As Boolean
+		Function Lookup(TableToJoin As clDataTable, KeyFieldMapping As Dictionary, LookupFieldMapping As Dictionary, JoinSuccessField As string = "") As Boolean
 		  //
 		  // Lookup data
 		  // Similar to left join or an Excel Vlookup()
 		  //
 		  // Paramters
-		  // table_to_join  (clDataTable): table used as lookup source
+		  // TableToJoin  (clDataTable): table used as lookup source
 		  // KeyFieldapping: list of fields used as lookup keys as a dictionary. For each dictionary entry,  key is expected in the current table and value is expected in the joined table
 		  // LookUpFieldMaping: Field to 'bring back' from the lookup table as a dictionary. For each dictionary entry,  key is expected in the current table and value is expected in the joined table
 		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
@@ -3226,20 +3229,20 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  
-		  return internal_LeftJoin(table_to_join, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields, JoinSuccessField)
+		  return internal_LeftJoin(TableToJoin, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields, JoinSuccessField)
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Lookup(table_to_join as clDataTable, KeyFields() as string, LookupFields() as string, JoinSuccessField as string = "") As Boolean
+		Function Lookup(TableToJoin as clDataTable, KeyFields() as string, LookupFields() as string, JoinSuccessField as string = "") As Boolean
 		  //
 		  // Lookup data
 		  // Similar to left join or an Excel Vlookup()
 		  //
 		  // Paramters
-		  // table_to_join  (clDataTable): table used as lookup source
+		  // TableToJoin  (clDataTable): table used as lookup source
 		  // KeyFields: list of fields used as lookup keys, field names must match
 		  // LookUpFields: Field to 'bring back' from the lookup table
 		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
@@ -3264,7 +3267,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  return internal_LeftJoin(table_to_join, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields,JoinSuccessField)
+		  return internal_LeftJoin(TableToJoin, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields,JoinSuccessField)
 		  
 		  
 		End Function
@@ -3921,6 +3924,9 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndConstant
 
 	#tag Constant, Name = StatisticsSumColumn, Type = String, Dynamic = False, Default = \"sum", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = StatisticsTableNameColumn, Type = String, Dynamic = False, Default = \"table", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = StatisticsTableNamePrefix, Type = String, Dynamic = False, Default = \"statistics of", Scope = Public

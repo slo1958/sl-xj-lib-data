@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clDataSerieIterator
-Implements Xojo.Core.Iterator
+Implements  Iterator
 	#tag Method, Flags = &h0
 		Sub Constructor(the_serie as clAbstractDataSerie)
 		  current_index = -1
@@ -11,7 +11,7 @@ Implements Xojo.Core.Iterator
 
 	#tag Method, Flags = &h0
 		Function MoveNext() As Boolean
-		  // Part of the Xojo.Core.Iterator interface.
+		  // Part of iterator
 		  
 		  if temp_serie = nil then
 		    iteration_next_value = ""
@@ -35,10 +35,11 @@ Implements Xojo.Core.Iterator
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Value() As Auto
-		  // Part of the Xojo.Core.Iterator interface.
+		Function Value() As Variant
+		  // Part of the Iterator interface.
 		  
 		  Return iteration_next_value
+		  
 		End Function
 	#tag EndMethod
 
@@ -48,7 +49,7 @@ Implements Xojo.Core.Iterator
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		iteration_next_value As Auto
+		iteration_next_value As variant
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

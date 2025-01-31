@@ -716,7 +716,7 @@ Protected Class clDataSerieTests
 		  next
 		  System.DebugLog(join(rr, ", "))
 		  
-		  var expected_c3 as new clNumberDataSerie("Alpha as number", array(123.0, 123.0, 123.0, 123.0, 123.0, 123.0, 123.0, 123.0, 123.0, 123.0, 123.0, 123.0, 123.0, 123.0, 123.0, 0.0, 0.0, 0.0, 0.0, 0.0, 123.4, 123.4, 123.4, 123.4, 123.4, 0.0, 0.0, 0.0, 0.0, 0.0))
+		  var expected_c3 as new clNumberDataSerie("Alpha as number", array(123.0, -123.0, 123.0, -123.0, 123.0, 123.0, -123.0, 123.0, -123.0, 123.0, 123.0, -123.0, 123.0, -123.0, 123.0, 0.0, 0.0, 0.0, 0.0, 0.0, 123.4, -123.4, 123.4, -123.4, 123.4, 0.0, 0.0, 0.0, 0.0, 0.0))
 		  
 		  call check_serie(log, "c2", expected_c2, c2)
 		  call check_serie(log, "c3", expected_c3, c3)
