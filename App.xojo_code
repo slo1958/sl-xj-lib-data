@@ -15,24 +15,6 @@ Inherits DesktopApplication
 		  // logwriter.end_exec(CurrentMethodName)
 		  
 		  
-		  var w as WeakRef
-		  
-		  var k as integer
-		  
-		  k=1
-		  
-		  var t as new clDataTable("aa")
-		  call t.AddColumn("column")
-		  
-		  w = new WeakRef(t)
-		  
-		  k=2
-		  
-		  t = nil
-		  
-		  k=3
-		  
-		  
 		End Sub
 	#tag EndEvent
 

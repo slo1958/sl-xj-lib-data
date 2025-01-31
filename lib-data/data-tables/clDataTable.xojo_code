@@ -82,35 +82,35 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddColumn(pColumnName as String) As clAbstractDataSerie
+		Function AddColumn(NewColumnName as String) As clAbstractDataSerie
 		  //  
 		  //  Add  an empty column to the table
 		  //  
 		  //  Parameters:
-		  //  - pColumnName: the name of the column
+		  //  - NewColumnName: the name of the column
 		  //  
 		  //  Returns:
 		  //  - the new data serie
 		  //  
 		  var v as variant
 		  
-		  return AddColumn(pColumnName, v)
+		  return AddColumn(NewColumnName, v)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AddColumn(pColumnName as String, DefaultValue as variant) As clAbstractDataSerie
+		Function AddColumn(NewColumnName as String, DefaultValue as variant) As clAbstractDataSerie
 		  //  
 		  //  Add  an constant column to the table
 		  //  
 		  //  Parameters:
-		  //  - pColumnName: the name of the column
+		  //  - NewColumnName: the name of the column
 		  //  - the initial value for every cell
 		  //  
 		  //  Returns:
 		  //  - the new data serie
 		  //  
-		  var tmp_column_name As String = pColumnName.trim
+		  var tmp_column_name As String = NewColumnName.trim
 		  
 		  if tmp_column_name.len() = 0 then
 		    tmp_column_name = ReplacePlaceHolders(DefaultColumnNamePattern,  str(self.ColumnCount))

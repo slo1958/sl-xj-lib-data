@@ -11,9 +11,18 @@ Protected Module clDataTable_tests
 		  
 		  logwriter.start_exec(CurrentMethodName)
 		  
+		  var ms0 as clMemoryStats = GetMemoryStats
+		  
 		  RunTests(new clDataTableTests, "test_ca", logwriter)
 		  
+		  var ms1 as clMemoryStats = GetMemoryStats
+		  
+		  logwriter.WriteMessage("Tables in memory was: " + str(ms0.NumberOfTables)+", dataseries in memory was: " + str(ms0.NumberOfDataSeries))
+		  logwriter.WriteMessage("Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
+		  
 		  logwriter.end_exec(CurrentMethodName)
+		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
@@ -27,6 +36,9 @@ Protected Module clDataTable_tests
 		    logwriter = new clWriteToSystemLog
 		  end if
 		  
+		  logwriter.start_exec(CurrentMethodName)
+		  
+		  var ms0 as clMemoryStats = GetMemoryStats
 		  
 		  var ex() as clLibDataExample = clLibDataExample.get_all_examples
 		  
@@ -34,6 +46,16 @@ Protected Module clDataTable_tests
 		    call example.run(logwriter)
 		    
 		  next
+		  
+		  var ms1 as clMemoryStats = GetMemoryStats
+		  
+		  logwriter.WriteMessage("Tables in memory was: " + str(ms0.NumberOfTables)+", dataseries in memory was: " + str(ms0.NumberOfDataSeries))
+		  logwriter.WriteMessage("Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
+		  
+		  
+		  logwriter.end_exec(CurrentMethodName)
+		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
@@ -50,9 +72,20 @@ Protected Module clDataTable_tests
 		  
 		  logwriter.start_exec(CurrentMethodName)
 		  
+		  var ms0 as clMemoryStats = GetMemoryStats
+		  
 		  RunTests(new clDataTableTests, "test_io", logwriter)
 		  
+		  var ms1 as clMemoryStats = GetMemoryStats
+		  
+		  logwriter.WriteMessage("Tables in memory was: " + str(ms0.NumberOfTables)+", dataseries in memory was: " + str(ms0.NumberOfDataSeries))
+		  logwriter.WriteMessage("Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
+		  
+		  
 		  logwriter.end_exec(CurrentMethodName)
+		  
+		  return
+		  
 		End Sub
 	#tag EndMethod
 

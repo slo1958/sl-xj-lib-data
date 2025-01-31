@@ -74,6 +74,41 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetMemoryStats() As clMemoryStats
+		  
+		  var ms as new clMemoryStats
+		  
+		  Var o As Runtime.ObjectIterator = Runtime.IterateObjects
+		  o.Reset
+		  
+		  
+		  While o.MoveNext
+		    System.DebugLog(Introspection.GetType(o.Current).Name)
+		    ms.Add(o.Current)
+		    
+		    
+		  wend
+		  
+		  return ms
+		  
+		  // 
+		  // 
+		  // 
+		  // Var lastObjectIndex As Integer = Runtime.ObjectCount - 1
+		  // 
+		  // 
+		  // For i As Integer = 0 To lastObjectIndex
+		  // 
+		  // Listbox1.AddRow(Runtime.ObjectID(i).ToString)
+		  // Listbox1.CellTextAt(ListBox1.LastAddedRowIndex, 1) = Runtime.ObjectClass(i)
+		  // Listbox1.CellTextAt(ListBox1.LastAddedRowIndex, 2) = Runtime.ObjectRefs(i).ToString
+		  // Next
+		  // 
+		  // TextField1.Text = Runtime.MemoryUsed.ToString
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function PairArray(paramarray items as pair) As Pair()
 		  var ret() As pair
 		  

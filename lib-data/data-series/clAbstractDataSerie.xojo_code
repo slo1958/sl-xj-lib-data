@@ -682,16 +682,43 @@ Implements Xojo.Core.Iterable,itf_json_able
 
 	#tag Method, Flags = &h0
 		Function FullName(add_brackets as boolean = False) As string
-		  if self.physical_table_link = nil then
-		    return self.name
-		    
-		  elseif add_brackets then
-		    return "[" + self.physical_table_link.name + "]" + "." + "[" + self.name + "]"  
-		    
-		  else
-		    return self.physical_table_link.name + "." + self.name
+		  //
+		  // build the full name of the column, that is:
+		  // if the column is linked to a table:  table_name.column_name
+		  // if the column is not linked to table:  column_name
+		  // Add square brackets around each element
+		  //
+		  // Parameters:
+		  // - add_brackets : surroung element names with bracket if true
+		  //
+		  // Returns:
+		  // request name
+		  //
+		  
+		  var ret() as string
+		  
+		  // Extract table name
+		  if self.physical_table_link <> nil then
+		    if self.physical_table_link.value <> nil then
+		      ret.add( clDataTable(self.physical_table_link.value).name)
+		      
+		    end if
 		    
 		  end if
+		  
+		  // Add column name
+		  ret.add (self.name)
+		  
+		  
+		  if add_brackets then
+		    for i as integer = 0 to ret.LastIndex
+		      ret(i) = "[" + ret(i).trim + "]"
+		      
+		    next
+		    
+		  end if
+		  
+		  return string.FromArray(ret, ".")
 		  
 		End Function
 	#tag EndMethod
@@ -945,8 +972,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  if self.physical_table_link = nil then 
 		    return ""
 		    
+		  elseif self.physical_table_link = nil then
+		    return ""
+		    
 		  else
-		    return self.physical_table_link.Name
+		    return clDataTable(self.physical_table_link.Value).Name
 		    
 		  end if
 		End Function
@@ -1021,11 +1051,23 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  //  - True if the current data serie is linked to a table
 		  //
 		  
+		  if physical_table_link <> nil then
+		    if physical_table_link.value = nil then
+		      physical_table_link = nil
+		      
+		    end if
+		    
+		  end if
+		  
+		  
 		  if expected_link = nil then
 		    Return physical_table_link <> Nil
 		    
+		  elseif physical_table_link = nil then
+		    return false
+		    
 		  else
-		    return physical_table_link = expected_link
+		    return physical_table_link.value = expected_link
 		    
 		  end if
 		  
@@ -1296,8 +1338,11 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag Method, Flags = &h0
 		Sub SetLinkToTable(the_table as clDataTable)
 		  
-		  If physical_table_link = Nil Then
-		    physical_table_link = the_table
+		  if the_table = nil then
+		    physical_table_link = nil
+		    
+		  elseIf physical_table_link = Nil Then
+		    physical_table_link = new Weakref(the_table)
 		    
 		  Else
 		    Raise New clDataException("Cannot redefine link to table for a serie")
@@ -1322,7 +1367,7 @@ Implements Xojo.Core.Iterable,itf_json_able
 		  
 		  self.Metadata = p.MetaData.Clone
 		  
-		   
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1605,8 +1650,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		Aliases() As String
+	#tag Property, Flags = &h21
+		Private Aliases() As String
 	#tag EndProperty
 
 	#tag ComputedProperty, Flags = &h0
@@ -1661,8 +1706,8 @@ Implements Xojo.Core.Iterable,itf_json_able
 		name As string
 	#tag EndComputedProperty
 
-	#tag Property, Flags = &h1
-		Protected physical_table_link As clDataTable
+	#tag Property, Flags = &h21
+		Private physical_table_link As Weakref
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
