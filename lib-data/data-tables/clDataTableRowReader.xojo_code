@@ -66,7 +66,18 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function NextRow() As variant()
+		Function NextRow() As clDataRow
+		  // Part of the TableRowReaderInterface interface.
+		  
+		  if table  = nil then return nil
+		  
+		  return table.GetRowAt(current_row, false)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NextRowAsVariant() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  var row_value() as variant
 		  

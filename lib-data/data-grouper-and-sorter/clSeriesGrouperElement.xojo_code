@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clGrouperElement
+Protected Class clSeriesGrouperElement
 	#tag Method, Flags = &h0
 		Sub AddMeasureValue(Index as integer, value as double)
 		  

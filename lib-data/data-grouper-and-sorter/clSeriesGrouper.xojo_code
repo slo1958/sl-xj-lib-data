@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clGrouper
+Protected Class clSeriesGrouper
 	#tag Method, Flags = &h0
 		Shared Function Aggregate(mode as string, values as clNumberDataSerie) As Double
 		  
@@ -58,13 +58,13 @@ Protected Class clGrouper
 		  
 		  if titleOfDimensionColumns.LastIndex < 0 then return
 		  
-		  TopNode = new clGrouperElement
+		  TopNode = new clSeriesGrouperElement
 		  
 		  for row as integer = 0 to usedDimensionColumns(0).RowCount-1
 		    
-		    var work_dict as clGrouperElement = TopNode
+		    var work_dict as clSeriesGrouperElement = TopNode
 		    
-		    var next_dict as clGrouperElement = nil
+		    var next_dict as clSeriesGrouperElement = nil
 		    
 		    for column_index as integer = 0 to usedDimensionColumns.LastIndex
 		      var tmp_value as variant
@@ -78,7 +78,7 @@ Protected Class clGrouper
 		        next_dict = work_dict.value(tmp_value)
 		        
 		      else
-		        next_dict = new clGrouperElement
+		        next_dict = new clSeriesGrouperElement
 		        work_dict.value(tmp_value) = next_dict
 		        next_dict.MeasureCount = usedMeasureColumns.Count
 		        
@@ -170,7 +170,7 @@ Protected Class clGrouper
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub FlattenNextDimension(labels() as string, ColumnLatestValue() as variant, depth as integer, level_dict as clGrouperElement, OutputColumns() as clAbstractDataSerie)
+		Private Sub FlattenNextDimension(labels() as string, ColumnLatestValue() as variant, depth as integer, level_dict as clSeriesGrouperElement, OutputColumns() as clAbstractDataSerie)
 		  
 		  var NbrOfDimensions as integer = self.TitleOfDimensionColumns.Count
 		  
@@ -180,7 +180,7 @@ Protected Class clGrouper
 		    
 		    ColumnLatestValue(depth) = k
 		    
-		    var d as clGrouperElement = clGrouperElement(level_dict.value(k))
+		    var d as clSeriesGrouperElement = clSeriesGrouperElement(level_dict.value(k))
 		    
 		    if d.keys.Count = 0 then // reached the end
 		      
@@ -214,24 +214,24 @@ Protected Class clGrouper
 		  
 		  if GroupingColumnValues.Count <> TitleOfDimensionColumns.Count then return ret
 		  
-		  var work_dict as clGrouperElement = self.TopNode
+		  var work_dict as clSeriesGrouperElement = self.TopNode
 		  
 		  
 		  for column_index as integer = 0 to TitleOfDimensionColumns.LastIndex
 		    var tmp_value as variant = GroupingColumnValues(column_index)
-		    var next_dict  as clGrouperElement
+		    var next_dict  as clSeriesGrouperElement
 		    
 		    if work_dict.HasKey(tmp_value) then
-		       next_dict = work_dict.value(tmp_value)
-		       
-		     else
+		      next_dict = work_dict.value(tmp_value)
+		      
+		    else
 		      return ret
 		      
 		    end if
 		    
 		    work_dict = next_dict
 		    
-		   next
+		  next
 		  
 		  if work_dict.Keys.count <> 0 then 
 		    System.DebugLog CurrentMethodName +": structure error"
@@ -240,12 +240,12 @@ Protected Class clGrouper
 		  end if
 		  
 		  return work_dict.RowIndexes
-		    
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetTreeHead() As clGrouperElement
+		Function GetTreeHead() As clSeriesGrouperElement
 		  
 		End Function
 	#tag EndMethod
@@ -290,7 +290,7 @@ Protected Class clGrouper
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected TopNode As clGrouperElement
+		Protected TopNode As clSeriesGrouperElement
 	#tag EndProperty
 
 

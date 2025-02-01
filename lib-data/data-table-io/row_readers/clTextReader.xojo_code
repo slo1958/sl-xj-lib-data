@@ -198,7 +198,38 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function NextRow() As variant()
+		Function NextRow() As clDataRow
+		  // Part of the TableRowReaderInterface interface.
+		  //
+		  // NextRow returns the row as a clDataRow if the source file has a header, otherwise an emtpy data row is returned
+		  // Use NextRowAsVariant is the source file does not have a header
+		  //
+		  
+		  var data() as variant = self.NextRowAsVariant
+		  
+		  var d as new Dictionary
+		  
+		  for index as integer = 0 to mheader.LastIndex
+		    var v as variant
+		    
+		    if index <= data.LastIndex then
+		      d.value(mheader(index)) = data(index)
+		      
+		    else
+		      d.Value(mheader(index)) = v
+		      
+		    end if
+		    
+		  next
+		  
+		  return new clDataRow(d)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NextRowAsVariant() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  const kDoubleQuote = """"
@@ -302,7 +333,7 @@ Implements TableRowReaderInterface
 		  end if
 		  
 		  if self.RequiresHeader then
-		    var tmp() as variant = self.NextRow
+		    var tmp() as variant = self.NextRowAsVariant
 		    self.mheader.RemoveAll
 		    
 		    for each v as variant in tmp

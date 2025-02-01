@@ -1547,12 +1547,12 @@ Protected Class clDataTableTests
 		  
 		  var ctp as clAbstractDataSerie = t.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
 		  
-		  var g as new clGrouper(SerieArray(ccnt, ccity), array( _
-		  cqtt:clGrouper.aggSum, _
-		  cup:clGrouper.aggmin, _
-		  cup:clGrouper.aggmax, _
-		  ctp:clGrouper.aggSum, _
-		  cup:clGrouper.aggCount) _
+		  var g as new clSeriesGrouper(SerieArray(ccnt, ccity), array( _
+		  cqtt:clSeriesGrouper.aggSum, _
+		  cup:clSeriesGrouper.aggmin, _
+		  cup:clSeriesGrouper.aggmax, _
+		  ctp:clSeriesGrouper.aggSum, _
+		  cup:clSeriesGrouper.aggCount) _
 		  )
 		  
 		  call check_table(log, "table integrity", nil, t) 
@@ -1604,7 +1604,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "table integrity", nil, t) 
 		  
-		  var g as new clGrouper(SerieArray(ccnt, ccity))
+		  var g as new clSeriesGrouper(SerieArray(ccnt, ccity))
 		  
 		  var table0 as clDataTable = new clDataTable("group", g.Flattened)
 		  
@@ -1666,7 +1666,7 @@ Protected Class clDataTableTests
 		  
 		  var ccnty as clAbstractDataSerie = tsales.GetColumn("Country")
 		  
-		  var gDistinct as new clGrouper(Array(ccnty, ccity))
+		  var gDistinct as new clSeriesGrouper(Array(ccnty, ccity))
 		  
 		  var tDistinct  as clDataTable = new clDataTable("group", gDistinct.Flattened)
 		  
@@ -2081,6 +2081,82 @@ Protected Class clDataTableTests
 		  
 		  
 		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_041(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  var tcountries as new clDataTable("Countries")
+		  call  tcountries.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountries.AddColumn(new clStringDataSerie("City"))
+		  tcountries.AddRow(new Dictionary("Country":"Belgium","City":"Brussels"))
+		  tcountries.AddRow(new Dictionary("Country":"Belgium","City":"Liege"))
+		  tcountries.AddRow(new Dictionary("Country":"France","City":"Paris"))
+		  tcountries.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  
+		  call check_table(log, "tcountries table integrity", nil, tcountries) 
+		  
+		  
+		  var tsales as new clDataTable("Sales")
+		  
+		  var ccity As clAbstractDataSerie =  tsales.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  tsales.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = tsales.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28))
+		  tsales.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
+		  
+		  var ctp as clAbstractDataSerie = tsales.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
+		  ctp.Rename("Sales")
+		  
+		  call check_table(log, "tsales table integrity 1", nil, tsales) 
+		  
+		  var join_results as Boolean = tsales.Lookup(tcountries, array("City"), array("Country"), "CountryFound")
+		  
+		  call check_table(log, "tsales table integrity 2", nil, tsales) 
+		  
+		  
+		  var gTransformer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"))
+		  call gTransformer1.Transform
+		  var tDistinct  as clDataTable = gTransformer1.getTransformedTable()
+		  
+		  var tDistinct_expected As New clDataTable("mytable", SerieArray( _
+		  new clStringDataSerie("Country", array("Belgium","Belgium", "France","")), _
+		  new clStringDataSerie("City", array("Brussels","Liege", "Paris","Rome")) _
+		  ))
+		  
+		  call check_table(log,"get distinct values", tDistinct_expected, tDistinct )
+		  
+		  
+		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country"), StringArray("Sales","Quantity"))
+		  call gTransformer2.Transform
+		  var tSumSales as clDataTable = gTransformer2.getTransformedTable()
+		  
+		  var tSumSales_expected As New clDataTable("mytable", SerieArray( _
+		  new clStringDataSerie("Country", array("Belgium","France","")), _
+		  new clNumberDataSerie("Sum of Sales", array(1704, 648,250)), _
+		  new clNumberDataSerie("Sum of Quantity", array (72,24, 10)) _
+		  ))
+		  
+		  call check_table(log,"Check total sales", tSumSales_expected, tSumSales )
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod

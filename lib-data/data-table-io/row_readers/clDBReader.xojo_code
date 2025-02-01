@@ -173,7 +173,16 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function NextRow() As variant()
+		Function NextRow() As clDataRow
+		  // Part of the TableRowReaderInterface interface.
+		  
+		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NextRowAsVariant() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  
 		  var tmp() as variant

@@ -1597,7 +1597,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Sub Constructor(NewTableSource as TableRowReaderInterface, allocator as ColumnAllocator = nil)
 		  //
-		  //  Creates a datatable from a table row reader
+		  //  Creates a datatable from a table row reader. Note that the source must be able to provide a list of field names before scanning starts.
 		  //  
 		  //  Parameters:
 		  //  - the table reader
@@ -2015,10 +2015,10 @@ Implements TableColumnReaderInterface,Iterable
 		  var outputtable as new clDataTable(joinModeStr + " " + mastertable.Name + " and " + joinedtable.Name)
 		  
 		  var rowmap() as Boolean
-		  var JoinKeyColumns() as clAbstractDataSerie = joinedtable.GetColumns(KeyFields)
+		  var JoinKeyColumns() as clAbstractDataSerie = joinedtable.GetColumns(KeyFields, True)
 		  var JoinKeyColumnValues() as Variant
 		  
-		  var grp as new clGrouper(JoinKeyColumns)
+		  var grp as new clSeriesGrouper(JoinKeyColumns)
 		  
 		  if mode = JoinMode.OuterJoin then
 		    rowmap.RemoveAll
@@ -2221,29 +2221,40 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumns(ColumnNames() as string) As clAbstractDataSerie()
+		Function GetColumns(ColumnNames() as string, IncludeNilValue as boolean) As clAbstractDataSerie()
 		  //  
 		  //  returns selected columns
 		  //  
 		  //  Parameters:
 		  //  - ColumnNames: the name of the columns as an array of string
-		  //  
+		  //  - Flag to include a nil value for unknow columns in the results
+		  //
 		  //  Returns:
 		  //  - the columns matching the name or nil, as an array
 		  //  
+		  
+		  
 		  var ret() As clAbstractDataSerie
 		  
+		  for each name as string in ColumnNames
+		    if name.trim.Length > 0 then
+		      var c as clAbstractDataSerie = self.GetColumn(name)
+		      
+		      if c <> nil then
+		        ret.add(c)
+		        
+		      elseif IncludeNilValue then 
+		        ret.add(c)
+		        
+		      else
+		        AddErrorMessage(CurrentMethodName,ErrMsgCannotFIndColumn, self.name, Name)
+		        
+		        
+		      end if
+		    end if
+		  next
 		  
-		  For Each column_name As String In ColumnNames
-		    var tmp_column As clAbstractDataSerie = Self.GetColumn(column_name)
-		    
-		    ret.Append(tmp_column)
-		    
-		    
-		  Next
-		  
-		  Return ret
-		  
+		  return ret
 		End Function
 	#tag EndMethod
 
@@ -2259,7 +2270,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - the columns matching the name or nil, as an array
 		  //  
 		  
-		  Return GetColumns(ColumnNames)
+		  Return GetColumns(ColumnNames, True)
 		  
 		End Function
 	#tag EndMethod
@@ -2630,10 +2641,9 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  const OutputTableName = "Results"
 		  
+		  var selected_columns() as clAbstractDataSerie = self.GetColumns(column_names, False)
 		  
-		  var selected_columns() as clAbstractDataSerie = self.GetColumns(column_names)
-		  
-		  var grp as new clGrouper(selected_columns)
+		  var grp as new clSeriesGrouper(selected_columns)
 		  
 		  var res() as clAbstractDataSerie = grp.Flattened()
 		  
@@ -2684,7 +2694,7 @@ Implements TableColumnReaderInterface,Iterable
 		      var col as clNumberDataSerie = clNumberDataSerie(self.GetColumn(p.Left))
 		      
 		      if col <> nil then
-		        r.SetCell(p.Right + " of " + p.Left, clGrouper.Aggregate(p.Right, col))
+		        r.SetCell(p.Right + " of " + p.Left, clSeriesGrouper.Aggregate(p.Right, col))
 		        
 		      end if
 		      
@@ -2702,7 +2712,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  var g as new clGrouper(GroupingColumns, MeasureColumns)
+		  var g as new clSeriesGrouper(GroupingColumns, MeasureColumns)
 		  
 		  var res() as clAbstractDataSerie = g.Flattened()
 		  
@@ -2865,7 +2875,7 @@ Implements TableColumnReaderInterface,Iterable
 		    var tmp_row() as variant
 		    added_rows = added_rows + 1
 		    
-		    tmp_row  = RowSource.NextRow
+		    tmp_row  = RowSource.NextRowAsVariant
 		    
 		    if tmp_row <> nil then 
 		      
@@ -3598,7 +3608,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  sorted table
 		  //
 		  
-		  var SortKeyColumns() as clAbstractDataSerie = self.GetColumns(ColumnNames)
+		  var SortKeyColumns() as clAbstractDataSerie = self.GetColumns(ColumnNames, False)
 		  
 		  var srt as new clSorter(SortKeyColumns, order)
 		  
@@ -3663,6 +3673,12 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Sub Untitled()
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Untitled1()
 		  
 		End Sub
 	#tag EndMethod
