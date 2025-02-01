@@ -73,14 +73,14 @@ Inherits clLibDataExample
 		  
 		  call gTransfomer1.Transform
 		  
-		  var tDistinct as clDataTable = gTransfomer1.getTransformedTable()
+		  var tDistinct as clDataTable = gTransfomer1.GetOutputTable()
 		  
 		  
 		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country"), StringArray("Sales","Quantity"))
 		  
 		  call gTransformer2.Transform
 		  
-		  var tSumSales1 as clDataTable = gTransformer2.getTransformedTable(0)
+		  var tSumSales1 as clDataTable = gTransformer2.GetOutputTable()
 		  
 		  
 		  var tSumSales2 as clDataTable = tsales.GroupBy(StringArray("Country","Zorglub","City"), StringArray("Sales","Quantity"))

@@ -1,7 +1,40 @@
 #tag Class
 Protected Class clAbstractTransformer
+	#tag Method, Flags = &h1
+		Protected Sub AddInput(ConnectionName as string, table as clDataTable)
+		  
+		  self.InputConnections.add(ConnectionName)
+		  self.TableDict.Value(ConnectionName) = table
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub AddOutput(ConnectionName as string, table as clDataTable)
+		  
+		  self.OutputConnections.add(ConnectionName)
+		  self.TableDict.Value(ConnectionName) = table
+		  
+		  return 
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
-		Function getSourceTables() As clDataTable()
+		Sub Constructor()
+		  
+		  self.TableDict = new Dictionary
+		  
+		  self.TableNameDict = new Dictionary
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetInputTables() As clDataTable()
 		  //
 		  // Returns an array with the input tables
 		  //
@@ -11,12 +44,33 @@ Protected Class clAbstractTransformer
 		  // Returns:
 		  // Array of input tables
 		  //
-		  return self.InputTables
+		  var r() as clDataTable
+		  
+		  for each ConnectionName as string in self.InputConnections
+		    r.Add(self.TableDict.value(ConnectionName))
+		    
+		  next
+		  
+		  return r
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function getTransformedTable(TableIndex as integer = 0) As clDataTable
+		Function GetName(ConnectionName as string) As String
+		  
+		  if TableDict.HasKey(ConnectionName) then
+		    return  clDataTable(self.TableDict.Value(ConnectionName)).Name
+		    
+		  else
+		    return self.TableNameDict.Lookup(ConnectionName, "NoName")
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetOutputTable() As clDataTable
 		  //
 		  // Returns one output table
 		  //
@@ -26,18 +80,15 @@ Protected Class clAbstractTransformer
 		  // Returns:
 		  // selected output table
 		  //
-		  if TableIndex > self.OutputTables.LastIndex then
-		    return nil
-		    
-		  else
-		    return self.OutputTables(TableIndex)
-		    
-		  end if
+		  
+		  
+		  Return self.TableDict.Lookup(self.OutputConnections(0), nil)
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function getTransformedTables() As clDataTable()
+		Function GetOutputTables() As clDataTable()
 		  //
 		  // Returns an array with the output tables
 		  //
@@ -47,25 +98,60 @@ Protected Class clAbstractTransformer
 		  // Returns:
 		  // Array of output tables
 		  //
-		  return self.OutputTables
+		  
+		  var r() as clDataTable
+		  
+		  for each ConnectionName as string in self.OutputConnections
+		    r.Add(self.TableDict.value(ConnectionName))
+		    
+		  next
+		  
+		  return r
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetOutputName(OutputIndex as integer, OutputName as string)
+		Function GetTable(ConnectionName as string) As clDataTable
+		  
+		  return self.TableDict.Lookup(ConnectionName, nil)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function kOutputConnectionName() As string
+		  return "NoName"
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Reset()
+		  
+		  for each name as string in OutputConnections
+		    TableDict.Remove(name)
+		    
+		  next
+		  
+		  OutputConnections.RemoveAll
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetOutputName(ConnectionName as string, OutputName as string)
 		  //
 		  // Overwrite a default output name
-		  // Default output names are expected to be defined by the transformer constructpr
+		  // Default output names are expected to be defined by the transformer constructor
 		  //
 		  //
 		  // Parameters
-		  // - index of the output table to be renamed
+		  // - name of the connection
 		  // - new name
 		  //
 		  
-		  if OutputIndex > OutputNames.LastIndex then return
-		  
-		  self.OutputNames(OutputIndex) = OutputName
+		  self.TableNameDict.value(ConnectionName) = OutputName
 		  
 		  return
 		  
@@ -80,15 +166,19 @@ Protected Class clAbstractTransformer
 
 
 	#tag Property, Flags = &h1
-		Protected InputTables() As clDataTable
+		Protected InputConnections() As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected OutputNames() As string
+		Protected OutputConnections() As string
 	#tag EndProperty
 
-	#tag Property, Flags = &h1
-		Protected OutputTables() As clDataTable
+	#tag Property, Flags = &h21
+		Private TableDict As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private TableNameDict As Dictionary
 	#tag EndProperty
 
 

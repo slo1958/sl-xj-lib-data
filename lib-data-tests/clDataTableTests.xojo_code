@@ -2130,7 +2130,7 @@ Protected Class clDataTableTests
 		  
 		  var gTransformer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"))
 		  call gTransformer1.Transform
-		  var tDistinct  as clDataTable = gTransformer1.getTransformedTable()
+		  var tDistinct  as clDataTable = gTransformer1.GetOutputTable()
 		  
 		  var tDistinct_expected As New clDataTable("mytable", SerieArray( _
 		  new clStringDataSerie("Country", array("Belgium","Belgium", "France","")), _
@@ -2142,7 +2142,7 @@ Protected Class clDataTableTests
 		  
 		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country"), StringArray("Sales","Quantity"))
 		  call gTransformer2.Transform
-		  var tSumSales as clDataTable = gTransformer2.getTransformedTable()
+		  var tSumSales as clDataTable = gTransformer2.GetOutputTable()
 		  
 		  var tSumSales_expected As New clDataTable("mytable", SerieArray( _
 		  new clStringDataSerie("Country", array("Belgium","France","")), _

@@ -4,8 +4,10 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string)
 		  
-		  InputTables.add(MainTable)
-		  OutputNames.add( "Results")
+		  super.Constructor
+		  
+		  self.AddInput(cInputConnectionName, MainTable)
+		  self.SetOutputName(cOutputConnectionName, "Results")
 		  
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures.RemoveAll
@@ -21,14 +23,15 @@ Inherits clAbstractTransformer
 		  // Aggregate the number fields as defined the each pair, columnname:agg mode
 		  //
 		  // Parameters:
-		  // - source table
+		  // - Input table
 		  // - grouping_dimenions() list of columns to be used as grouping dimensions
 		  // - measures() pair of columnname : agg mode
 		  //
 		  
+		  super.Constructor
 		  
-		  InputTables.add(MainTable)
-		  OutputNames.add( "Results")
+		  self.AddInput(cInputConnectionName, MainTable)
+		  self.SetOutputName(cOutputConnectionName, "Results")
 		  
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures = measures
@@ -39,9 +42,21 @@ Inherits clAbstractTransformer
 
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string, measures() as String)
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // Aggregate the number fields as defined in the second array, aggregation mode is sum
+		  //
+		  // Parameters:
+		  // - Input table
+		  // - grouping_dimenions() list of columns to be used as grouping dimensions
+		  // - measures() list of columns to sum: agg mode
+		  //
 		  
-		  InputTables.add(MainTable)
-		  OutputNames.add( "Results")
+		  
+		  super.Constructor
+		  
+		  self.AddInput(cInputConnectionName, MainTable)
+		  self.SetOutputName(cOutputConnectionName, "Results")
 		  
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures.RemoveAll
@@ -57,26 +72,33 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Function Transform() As Boolean
 		  
+		  
+		  var source as clDataTable = self.GetTable(self.cInputConnectionName)
+		  
+		  
+		  var t as clDataTable
+		  
 		  if self.GroupingDimensions.Count = 0 and self.GroupingMeasures.Count = 0 then
-		    OutputTables.add(nil)
-		    return false
+		    t = nil
+		    
+		  elseif self.GroupingDimensions.Count = 0 then 
+		    t =  self.TransformToOneLiner(source)
+		    
+		  else
+		    t =  self.TransformWithGrouper(source)
 		    
 		  end if
 		  
-		  if self.GroupingDimensions.Count = 0 then 
-		    return self.TransformToOneLiner
-		    
-		  else
-		    return self.TransformWithGrouper
-		    
-		  end if
+		  AddOutput(cOutputConnectionName, t)
+		  
+		  return t <> nil
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function TransformToOneLiner() As Boolean
+		Private Function TransformToOneLiner(source as clDataTable) As clDataTable
 		  //
 		  // There are no grouping dimensions, so we aggregate all measures using the supported method from data series
 		  //
@@ -88,9 +110,7 @@ Inherits clAbstractTransformer
 		  // Success status
 		  //
 		  
-		  if self.GroupingDimensions.Count > 0 then return false
-		  
-		  var source as clDataTable = self.InputTables(0)
+		  if self.GroupingDimensions.Count > 0 then return nil
 		  
 		  var r as new clDataRow
 		  
@@ -104,22 +124,17 @@ Inherits clAbstractTransformer
 		    
 		  next
 		  
-		  var t as new clDataTable(OutputNames(0))
+		  var t as new clDataTable(self.GetName(cOutputConnectionName))
 		  t.AddRow(r)
 		  
-		  OutputTables.add(t)
-		  
-		  Return True
+		  return t
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function TransformWithGrouper() As Boolean
-		  
-		  var source as clDataTable = self.InputTables(0)
-		  
+		Private Function TransformWithGrouper(source as clDataTable) As clDataTable
 		  
 		  var GroupingDataSeries() as clAbstractDataSerie = source.GetColumns(GroupingDimensions, False)
 		  var MeasureColumns() as pair
@@ -135,11 +150,9 @@ Inherits clAbstractTransformer
 		  
 		  var res() as clAbstractDataSerie = grp.Flattened()
 		  
-		  OutputTables.add(new clDataTable(OutputNames(0), res))
+		  return new clDataTable(self.GetName(cOutputConnectionName), res)
 		  
 		   
-		  
-		  
 		End Function
 	#tag EndMethod
 
@@ -151,6 +164,13 @@ Inherits clAbstractTransformer
 	#tag Property, Flags = &h0
 		GroupingMeasures() As pair
 	#tag EndProperty
+
+
+	#tag Constant, Name = cInputConnectionName, Type = String, Dynamic = False, Default = \"Input", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = cOutputConnectionName, Type = String, Dynamic = False, Default = \"Output", Scope = Public
+	#tag EndConstant
 
 
 	#tag ViewBehavior
@@ -191,14 +211,6 @@ Inherits clAbstractTransformer
 			Visible=true
 			Group="Position"
 			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="GroupingDimensions()"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
