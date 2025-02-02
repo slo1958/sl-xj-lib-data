@@ -2168,6 +2168,86 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_calc_042(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  var temp_row As clDataRow
+		  var mytable As New clDataTable("T1")
+		  
+		  call mytable.AddColumn(new clStringDataSerie("name", array("2020Q1","2020Q2","2020Q3")))
+		  call mytable.AddColumn(new clNumberDataSerie("Sales_France", array(101.1, 101.2, 101.3)))
+		  call mytable.AddColumn(new clNumberDataSerie("Sales_Belgium", array(102.1, 102.2, 102.3)))
+		  call mytable.AddColumn(new clNumberDataSerie("Sales_Italy", array(103.1, 103.2, 103.3)))
+		  
+		  call check_table(log,"Consistency T1", nil, mytable)
+		  
+		  var uTransformer as new clUnpivotTransformer(mytable, array("name"), "Area","Sales")
+		  
+		  call uTransformer.Transform()
+		  
+		  var results as clDataTable  = uTransformer.GetOutputTable()
+		  
+		  call check_table(log,"Consistency results", nil, results)
+		  
+		  var expected_results as new clDataTable("Expected Results")
+		  call expected_results.AddColumn(new clStringDataSerie("name",array("2020Q1","2020Q1","2020Q1","2020Q2","2020Q2","2020Q2","2020Q3","2020Q3","2020Q3")))
+		  call expected_results.AddColumn(new clStringDataSerie("Area",array("Sales_France","Sales_Belgium","Sales_Italy","Sales_France","Sales_Belgium","Sales_Italy","Sales_France","Sales_Belgium","Sales_Italy")))
+		  call expected_results.AddColumn(new clNumberDataSerie("Sales",array(101.1, 102.1, 103.1, 101.2, 102.2, 103.2,101.3, 102.3, 103.3)))
+		  
+		  
+		  call check_table(log,"Results", expected_results, results)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_043(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  
+		  var temp_row As clDataRow
+		  var mytable As New clDataTable("T1")
+		  
+		  call mytable.AddColumn(new clStringDataSerie("name", array("2020Q1","2020Q2","2020Q3")))
+		  call mytable.AddColumn(new clNumberDataSerie("Sales_France", array(101.1, 101.2, 101.3)))
+		  call myTable.AddColumn(new clNumberDataSerie("col1", array(1.1, 2.1, 3.1)))
+		  call mytable.AddColumn(new clNumberDataSerie("Sales_Belgium", array(102.1, 102.2, 102.3)))
+		  call mytable.AddColumn(new clNumberDataSerie("Sales_Italy", array(103.1, 103.2, 103.3)))
+		  
+		  
+		  call check_table(log,"Consistency T1", nil, mytable)
+		  
+		  var uTransformer as new clUnpivotTransformer(mytable, array("name"), "Area","Sales", array("col1"))
+		  
+		  call uTransformer.Transform()
+		  
+		  var results as clDataTable  = uTransformer.GetOutputTable()
+		  
+		  call check_table(log,"Consistency results", nil, results)
+		  
+		  var expected_results as new clDataTable("Expected Results")
+		  call expected_results.AddColumn(new clStringDataSerie("name",array("2020Q1","2020Q1","2020Q1","2020Q2","2020Q2","2020Q2","2020Q3","2020Q3","2020Q3")))
+		  call expected_results.AddColumn(new clStringDataSerie("Area",array("Sales_France","Sales_Belgium","Sales_Italy","Sales_France","Sales_Belgium","Sales_Italy","Sales_France","Sales_Belgium","Sales_Italy")))
+		  call expected_results.AddColumn(new clNumberDataSerie("Sales",array(101.1, 102.1, 103.1, 101.2, 102.2, 103.2,101.3, 102.3, 103.3)))
+		  
+		  
+		  call check_table(log,"Results", expected_results, results)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)

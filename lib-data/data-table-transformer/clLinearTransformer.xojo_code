@@ -1,6 +1,36 @@
 #tag Class
-Protected Class clLInearTransformer
+Protected Class clLinearTransformer
 Inherits clAbstractTransformer
+	#tag Method, Flags = &h0
+		Sub Constructor(MainTable as clDataTable)
+		  // Calling the overridden superclass constructor.
+		  Super.Constructor
+		  
+		  
+		  self.AddInput(cInputConnectionName, MainTable)
+		  self.SetOutputName(cOutputConnectionName, "Results")
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function EmptyOutputTable() As clDataTable
+		  
+		  return new clDataTable(self.GetName(cOutputConnectionName))
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SourceTable() As clDataTable
+		  
+		  return   self.GetTable(self.cInputConnectionName)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+
 	#tag Constant, Name = cInputConnectionName, Type = String, Dynamic = False, Default = \"Input", Scope = Public
 	#tag EndConstant
 

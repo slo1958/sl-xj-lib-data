@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clGroupByTransformer
-Inherits clLInearTransformer
+Inherits clLinearTransformer
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string)
 		  //
@@ -12,11 +12,7 @@ Inherits clLInearTransformer
 		  // - grouping_dimenions() list of columns to be used as grouping dimensions
 		  //
 		  
-		  
-		  super.Constructor
-		  
-		  self.AddInput(cInputConnectionName, MainTable)
-		  self.SetOutputName(cOutputConnectionName, "Results")
+		  super.Constructor(MainTable)
 		  
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures.RemoveAll
@@ -37,10 +33,7 @@ Inherits clLInearTransformer
 		  // - measures() pair of columnname : agg mode
 		  //
 		  
-		  super.Constructor
-		  
-		  self.AddInput(cInputConnectionName, MainTable)
-		  self.SetOutputName(cOutputConnectionName, "Results")
+		  super.Constructor(MainTable)
 		  
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures = measures
@@ -61,11 +54,7 @@ Inherits clLInearTransformer
 		  // - measures() list of columns to sum
 		  //
 		  
-		  
-		  super.Constructor
-		  
-		  self.AddInput(cInputConnectionName, MainTable)
-		  self.SetOutputName(cOutputConnectionName, "Results")
+		  super.Constructor(MainTable)
 		  
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures.RemoveAll
@@ -82,7 +71,7 @@ Inherits clLInearTransformer
 		Function Transform() As Boolean
 		  
 		  
-		  var source as clDataTable = self.GetTable(self.cInputConnectionName)
+		  var source as clDataTable = self.SourceTable
 		  
 		  
 		  var t as clDataTable
@@ -133,7 +122,7 @@ Inherits clLInearTransformer
 		    
 		  next
 		  
-		  var t as new clDataTable(self.GetName(cOutputConnectionName))
+		  var t as  clDataTable = self.EmptyOutputTable()
 		  t.AddRow(r)
 		  
 		  return t
