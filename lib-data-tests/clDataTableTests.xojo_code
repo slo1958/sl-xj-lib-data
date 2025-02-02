@@ -1548,11 +1548,11 @@ Protected Class clDataTableTests
 		  var ctp as clAbstractDataSerie = t.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
 		  
 		  var g as new clSeriesGrouper(SerieArray(ccnt, ccity), array( _
-		  cqtt:clSeriesGrouper.aggSum, _
-		  cup:clSeriesGrouper.aggmin, _
-		  cup:clSeriesGrouper.aggmax, _
-		  ctp:clSeriesGrouper.aggSum, _
-		  cup:clSeriesGrouper.aggCount) _
+		  cqtt:AggMode.Sum, _
+		  cup:AggMode.Min, _
+		  cup:AggMode.Max, _
+		  ctp:AggMode.Sum, _
+		  cup:AggMode.Count) _
 		  )
 		  
 		  call check_table(log, "table integrity", nil, t) 
@@ -1838,12 +1838,12 @@ Protected Class clDataTableTests
 		  var sort12 as clDataTable = t1.Sort(array("Country","UnitPrice"))
 		  //sort2.Rename("Sorted on country and unit price")
 		  
-		  var sort13 as clDataTable = t1.Sort(array("Sales"),clDataTable.SortOrder.Descending)
+		  var sort13 as clDataTable = t1.Sort(array("Sales"),SortOrder.Descending)
 		  //sort3.Rename("Sorted on Sales descending")
 		  
 		  var t2 as clDataTable = t1.Groupby(array("Country"), array("Sales"))
 		  
-		  var sort21 as clDataTable = t2.Sort(array("Sum of Sales"), clDataTable.SortOrder.Descending)
+		  var sort21 as clDataTable = t2.Sort(array("Sum of Sales"), SortOrder.Descending)
 		  
 		  var sort22 as clDataTable = t2.Sort(array("Country"))
 		  
@@ -1943,17 +1943,17 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "tsales table integrity", nil, tsales) 
 		  
-		  var tjoin1 as clDataTable = tsales.FullJoin(tcountries1, clDataTable.JoinMode.InnerJoin, array("City"))
+		  var tjoin1 as clDataTable = tsales.FullJoin(tcountries1, JoinMode.InnerJoin, array("City"))
 		  
-		  var tjoin2 as clDataTable = tsales.FullJoin(tcountries1, clDataTable.JoinMode.OuterJoin, array("City"))
+		  var tjoin2 as clDataTable = tsales.FullJoin(tcountries1, JoinMode.OuterJoin, array("City"))
 		  
-		  var tjoin3 as clDataTable = tsales.FullJoin(tcountries2, clDataTable.JoinMode.InnerJoin, array("City"))
+		  var tjoin3 as clDataTable = tsales.FullJoin(tcountries2, JoinMode.InnerJoin, array("City"))
 		  
-		  var tjoin4 as clDataTable = tsales.FullJoin(tcountries2, clDataTable.JoinMode.OuterJoin, array("City"))
+		  var tjoin4 as clDataTable = tsales.FullJoin(tcountries2, JoinMode.OuterJoin, array("City"))
 		  
-		  var tjoin5 as clDataTable = tsales.FullJoin(tcountries3, clDataTable.JoinMode.InnerJoin, array("City"))
+		  var tjoin5 as clDataTable = tsales.FullJoin(tcountries3, JoinMode.InnerJoin, array("City"))
 		  
-		  var tjoin6 as clDataTable = tsales.FullJoin(tcountries3, clDataTable.JoinMode.OuterJoin, array("City"))
+		  var tjoin6 as clDataTable = tsales.FullJoin(tcountries3, JoinMode.OuterJoin, array("City"))
 		  
 		  
 		  var tjoin1_expected as new clDataTable("X1")
@@ -2142,7 +2142,7 @@ Protected Class clDataTableTests
 		  
 		  
 		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country") _
-		  , PairArray("Sales":clSeriesGrouper.aggSum,"Quantity":clSeriesGrouper.aggSum, "UnitPrice":clSeriesGrouper.aggMin, "UnitPrice":clSeriesGrouper.aggMax) _
+		  , PairArray("Sales":aggMode.Sum,"Quantity":aggMode.Sum, "UnitPrice":aggMode.Min, "UnitPrice":aggMode.Max) _
 		  )
 		  
 		  call gTransformer2.Transform

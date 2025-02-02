@@ -37,7 +37,7 @@ Protected Interface TableColumnReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function name() As String
+		Function Name() As String
 		  
 		End Function
 	#tag EndMethod

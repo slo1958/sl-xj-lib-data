@@ -193,6 +193,29 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function MaxLength() As integer
+		  //
+		  // Returns the maximum length of the strings in the serie
+		  //
+		  // Parameters:
+		  // (nothing)
+		  // 
+		  // Returns:
+		  //  Maximum of length
+		  //
+		  
+		  var temp() as integer
+		  for each item as string in items
+		    if item.Length > 0 then temp.Add(item.Length)
+		    
+		  next
+		  
+		  return clBasicMath.Maximum(temp)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Middle(from_char as integer, length as integer) As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " Middle " + str(length) + " char. from "  + str(from_char) )
 		  
@@ -203,6 +226,29 @@ Inherits clAbstractDataSerie
 		  
 		  return res
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function MiinLength() As integer
+		  //
+		  // Returns the minimum length of the non empty strings in the serie
+		  //
+		  // Parameters:
+		  // (nothing)
+		  // 
+		  // Returns:
+		  //  Minimum of length
+		  //
+		  
+		  var temp() as integer
+		  for each item as string in items
+		    if item.Length > 0 then temp.Add(item.Length)
+		    
+		  next
+		  
+		  return clBasicMath.Minimum(temp)
 		  
 		End Function
 	#tag EndMethod
@@ -292,7 +338,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function RowCount() As integer
-		   
+		  
 		  return items.Count
 		End Function
 	#tag EndMethod

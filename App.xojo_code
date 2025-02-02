@@ -15,7 +15,20 @@ Inherits DesktopApplication
 		  // logwriter.end_exec(CurrentMethodName)
 		  // 
 		   
-		   
+		  
+		  var d1 as DateTime = DateTime.Now
+		  
+		  d1 = d1.AddInterval(0,0,1)
+		  var d2 as DateTime = DateTime.Now
+		  var k as integer
+		  
+		  if d1 > d2 then
+		    k=1
+		  else
+		    k=2
+		  end if
+		  
+		  
 		  return
 		End Sub
 	#tag EndEvent

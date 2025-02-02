@@ -206,6 +206,24 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Maximum() As DateTime
+		  
+		  
+		  return clBasicMath.Maximum(items)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Minimum() As DateTime
+		  
+		  
+		  return clBasicMath.Minimum(items)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function operator_add(right_interval as DateInterval) As clDateDataSerie
 		  var res as new clDateDataSerie(self.name+" + interval ")
 		  
@@ -316,7 +334,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function RowCount() As integer
-		   
+		  
 		  return items.Count
 		End Function
 	#tag EndMethod

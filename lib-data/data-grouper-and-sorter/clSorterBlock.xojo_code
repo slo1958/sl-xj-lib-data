@@ -35,7 +35,7 @@ Protected Class clSorterBlock
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Sort(order as clDatatable.SortOrder)
+		Sub Sort(order as SortOrder)
 		  
 		  SortData.sort(AddressOf PairCompareForSort)
 		End Sub

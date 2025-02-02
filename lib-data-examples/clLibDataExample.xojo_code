@@ -1623,12 +1623,12 @@ Protected Class clLibDataExample
 		  var sort12 as clDataTable = t1.Sort(array("Country","UnitPrice"))
 		  //sort2.Rename("Sorted on country and unit price")
 		  
-		  var sort13 as clDataTable = t1.Sort(array("Sales"),clDataTable.SortOrder.Descending)
+		  var sort13 as clDataTable = t1.Sort(array("Sales"),SortOrder.Descending)
 		  //sort3.Rename("Sorted on Sales descending")
 		  
 		  var t2 as clDataTable = t1.Groupby(array("Country"), array("Sales"))
 		  
-		  var sort21 as clDataTable = t2.Sort(array("Sum of Sales"), clDataTable.SortOrder.Descending)
+		  var sort21 as clDataTable = t2.Sort(array("Sum of Sales"), SortOrder.Descending)
 		  
 		  var sort22 as clDataTable = t2.Sort(array("Country"))
 		  
@@ -1707,17 +1707,17 @@ Protected Class clLibDataExample
 		  tsales.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
 		  
 		  
-		  var tjoin1 as clDataTable = tsales.FullJoin(tcountries1, clDataTable.JoinMode.InnerJoin, array("City"))
+		  var tjoin1 as clDataTable = tsales.FullJoin(tcountries1, JoinMode.InnerJoin, array("City"))
 		  
-		  var tjoin2 as clDataTable = tsales.FullJoin(tcountries1, clDataTable.JoinMode.OuterJoin, array("City"))
+		  var tjoin2 as clDataTable = tsales.FullJoin(tcountries1, JoinMode.OuterJoin, array("City"))
 		  
-		  var tjoin3 as clDataTable = tsales.FullJoin(tcountries2, clDataTable.JoinMode.InnerJoin, array("City"))
+		  var tjoin3 as clDataTable = tsales.FullJoin(tcountries2, JoinMode.InnerJoin, array("City"))
 		  
-		  var tjoin4 as clDataTable = tsales.FullJoin(tcountries2, clDataTable.JoinMode.OuterJoin, array("City"))
+		  var tjoin4 as clDataTable = tsales.FullJoin(tcountries2, JoinMode.OuterJoin, array("City"))
 		  
-		  var tjoin5 as clDataTable = tsales.FullJoin(tcountries3, clDataTable.JoinMode.InnerJoin, array("City"))
+		  var tjoin5 as clDataTable = tsales.FullJoin(tcountries3, JoinMode.InnerJoin, array("City"))
 		  
-		  var tjoin6 as clDataTable = tsales.FullJoin(tcountries3, clDataTable.JoinMode.OuterJoin, array("City"))
+		  var tjoin6 as clDataTable = tsales.FullJoin(tcountries3, JoinMode.OuterJoin, array("City"))
 		  
 		  log.end_exec(CurrentMethodName)
 		  

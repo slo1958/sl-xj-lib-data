@@ -1,30 +1,5 @@
 #tag Class
 Protected Class clSeriesGrouper
-	#tag Method, Flags = &h0
-		Shared Function Aggregate(mode as string, values as clNumberDataSerie) As Double
-		  
-		  select case mode
-		    
-		  case aggSum
-		    return values.Sum
-		    
-		  case aggCount
-		    return values.Count
-		    
-		  case aggMin
-		    return values.Minimum
-		    
-		  case aggMax
-		    return values.Maximum
-		    
-		  case else
-		    return 0
-		    
-		  end select
-		  
-		End Function
-	#tag EndMethod
-
 	#tag Method, Flags = &h21
 		Private Sub BuildGroups(Grouping_Columns() as clAbstractDataSerie, MeasureColumns() as pair)
 		  
@@ -45,7 +20,7 @@ Protected Class clSeriesGrouper
 		  for i as integer = 0 to MeasureColumns.LastIndex
 		    if MeasureColumns(i).Left <> nil  and MeasureColumns(i).Left isa clNumberDataSerie then
 		      //titleOfDimensionColumns.Add(Grouping_Columns(i).name)
-		      var tmp as string = MeasureColumns(i).Right
+		      var tmp as string = clBasicMath.AggLabel(MeasureColumns(i).Right)
 		      TitleOfMeasureColumns.add(tmp  + " of "+ clAbstractDataSerie(MeasureColumns(i).Left).name)
 		      NameOfMeasureColumns.add(clAbstractDataSerie(MeasureColumns(i).Left).name)
 		      ActionOnMeasureColumns.Add(MeasureColumns(i).Right)
@@ -194,7 +169,7 @@ Protected Class clSeriesGrouper
 		      
 		      for col as integer =0 to d.MeasureCount-1
 		        var item as clNumberDataSerie = d.MeasureValues(col)
-		        OutputColumns(col + NbrOfDimensions).AddElement(Aggregate(ActionOnMeasureColumns(col), item))
+		        OutputColumns(col + NbrOfDimensions).AddElement( item.Aggregate(ActionOnMeasureColumns(col)))
 		        
 		      next
 		      
@@ -252,13 +227,7 @@ Protected Class clSeriesGrouper
 
 	#tag Method, Flags = &h0
 		Shared Function IsValidAggregation(Mode as String) As Boolean
-		  if mode = AggSum then return true
-		  if mode = AggCount then return true
-		  if mode = AggMin then return true
-		  if mode = AggMax then return true
-		  
-		  return false
-		  
+		  return True
 		End Function
 	#tag EndMethod
 
@@ -274,7 +243,7 @@ Protected Class clSeriesGrouper
 
 
 	#tag Property, Flags = &h1
-		Protected ActionOnMeasureColumns() As Variant
+		Protected ActionOnMeasureColumns() As AggMode
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -292,19 +261,6 @@ Protected Class clSeriesGrouper
 	#tag Property, Flags = &h1
 		Protected TopNode As clSeriesGrouperElement
 	#tag EndProperty
-
-
-	#tag Constant, Name = aggCount, Type = String, Dynamic = False, Default = \"count", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = aggMax, Type = String, Dynamic = False, Default = \"max", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = aggMin, Type = String, Dynamic = False, Default = \"min", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = aggSum, Type = String, Dynamic = False, Default = \"sum", Scope = Public
-	#tag EndConstant
 
 
 	#tag ViewBehavior

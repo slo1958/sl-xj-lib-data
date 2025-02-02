@@ -114,9 +114,10 @@ Inherits clLinearTransformer
 		  
 		  for each p as pair in GroupingMeasures
 		    var col as clNumberDataSerie = clNumberDataSerie(source.GetColumn(p.Left))
+		    var mode as AggMode = p.Right
 		    
 		    if col <> nil then
-		      r.SetCell(p.Right + " of " + p.Left, clSeriesGrouper.Aggregate(p.Right, col))
+		      r.SetCell(clBasicMath.AggLabel(mode) + " of " + p.Left, col.Aggregate(mode))
 		      
 		    end if
 		    

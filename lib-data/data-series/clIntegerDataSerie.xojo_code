@@ -218,6 +218,24 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Maximum() As integer
+		  
+		  return clBasicMath.Maximum(items)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Minimum() As double
+		   
+		  
+		  return clBasicMath.Minimum(items)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function operator_add(right_serie as clIntegerDataSerie) As clIntegerDataSerie
 		  var mx1 as integer = self.LastIndex
 		  var mx2 as integer = right_serie.LastIndex
@@ -400,7 +418,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function RowCount() As integer
-		   
+		  
 		  return items.Count
 		End Function
 	#tag EndMethod

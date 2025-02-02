@@ -51,18 +51,33 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Average() As double
-		  var c as new clBasicMath
-		  return c.average(items)
+		Function Aggregate(mode as AggMode) As Double
+		  //
+		  // Apply aggregation to array of tiems
+		  //
+		  // Parameters:
+		  // - type of aggregation (aggMode)
+		  //
+		  // Returns
+		  // Aggregation results
+		  //
 		  
+		  return clBasicMath.Aggregate(mode, items)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Average() As double
+		  
+		  return clBasicMath.Average(items)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function AverageNonZero() As double
-		  var c as new clBasicMath
-		  return c.AverageNonZero(items)
+		  
+		  return clBasicMath.AverageNonZero(items)
 		  
 		  
 		End Function
@@ -160,16 +175,15 @@ Inherits clAbstractDataSerie
 		Function Count() As double
 		  
 		  var c as new clBasicMath
-		  return c.Count(items)
+		  return clBasicMath.Count(items)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function CountNonZero() As double
-		  
-		  var c as new clBasicMath
-		  return c.CountNonZero(items)
+		   
+		  return clBasicMath.CountNonZero(items)
 		  
 		End Function
 	#tag EndMethod
@@ -290,6 +304,24 @@ Inherits clAbstractDataSerie
 		Function LastIndex() As integer
 		  
 		  Return items.LastIndex
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Maximum() As Double
+		  
+		  return clBasicMath.Maximum(items)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Minimum() As double
+		  // Calling the overridden superclass method.
+		  
+		  return clBasicMath.Minimum(items)
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -636,8 +668,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function StandardDeviation(is_population as boolean = False) As double
-		  var c as new clBasicMath
-		  return c.StandardDeviation(items, is_population)
+		   
+		  return clBasicMath.StandardDeviation(items, is_population)
 		  
 		  
 		End Function
@@ -645,8 +677,8 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function StandardDeviationNonZero(is_population as boolean = False) As double
-		  var c as new clBasicMath
-		  return c.StandardDeviationNonZero(items, is_population)
+		   
+		  return clBasicMath.StandardDeviationNonZero(items, is_population)
 		  
 		  
 		End Function

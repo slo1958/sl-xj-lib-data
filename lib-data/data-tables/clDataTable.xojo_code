@@ -3960,16 +3960,6 @@ Implements TableColumnReaderInterface,Iterable
 		CreateNewColumnAsVariant
 	#tag EndEnum
 
-	#tag Enum, Name = JoinMode, Type = Integer, Flags = &h0
-		OuterJoin
-		InnerJoin
-	#tag EndEnum
-
-	#tag Enum, Name = SortOrder, Type = Integer, Flags = &h0
-		Ascending
-		Descending
-	#tag EndEnum
-
 
 	#tag ViewBehavior
 		#tag ViewProperty

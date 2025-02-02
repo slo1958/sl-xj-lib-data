@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clSorter
 	#tag Method, Flags = &h0
-		Sub Constructor(SortColumns() as clAbstractDataSerie, order as clDatatable.SortOrder)
+		Sub Constructor(SortColumns() as clAbstractDataSerie, order as SortOrder)
 		  
 		  var b as new clSorterBlock()
 		  
@@ -36,7 +36,7 @@ Protected Class clSorter
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub SortMergeBlocks(order as clDatatable.SortOrder)
+		Protected Sub SortMergeBlocks(order as SortOrder)
 		  //
 		  // Sort each block, then do sorted merge
 		  //
