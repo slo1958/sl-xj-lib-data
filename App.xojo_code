@@ -14,8 +14,9 @@ Inherits DesktopApplication
 		  // 
 		  // logwriter.end_exec(CurrentMethodName)
 		  // 
-		  
-		  
+		   
+		   
+		  return
 		End Sub
 	#tag EndEvent
 

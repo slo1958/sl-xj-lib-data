@@ -40,10 +40,10 @@ Protected Module clDataTable_tests
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats
 		  
-		  var ex() as clLibDataExample = clLibDataExample.get_all_examples
+		  var ex as Dictionary = clLibDataExample.GetAllExamples
 		  
-		  for each example as clLibDataExample in ex
-		    call example.run(logwriter)
+		  for each example as string in ex.keys
+		    call clLibDataExample.RunExample(logwriter, ex.value(example))
 		    
 		  next
 		  

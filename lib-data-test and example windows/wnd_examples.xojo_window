@@ -144,13 +144,14 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
-		  var ex() as clLibDataExample = clLibDataExample.get_all_examples
+		  var ex as Dictionary = clLibDataExample.GetAllExamples
 		  
 		  listbox1.RemoveAllRows
 		  
-		  for each example as clLibDataExample in ex
-		    listbox1.AddRow(example.name)
-		    Listbox1.RowTagAt(listbox1.LastAddedRowIndex) = example
+		  for each Name as string in ex.keys
+		    listbox1.AddRow(Name)
+		    Listbox1.RowTagAt(listbox1.LastAddedRowIndex) = ex.value(Name)
+		    
 		    
 		  next
 		  
@@ -159,12 +160,12 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub run_exemple(item as clLibDataExample)
+		Sub run_exemple(item as Introspection.MethodInfo)
 		  
 		  
 		  if item = nil then return
 		  
-		  var tables() as TableColumnReaderInterface = item.run(item)
+		  var tables() as TableColumnReaderInterface = clLibDataExample.RunExample(nil, item)
 		  
 		  var wnd as new wnd_table_viewer
 		  
@@ -175,19 +176,20 @@ End
 		    
 		  next
 		  
+		  var description() as string = clLibDataExample.GetDescription(item)
 		  
 		  wnd.Show
-		  wnd.ShowComments(item.describe)
+		  wnd.ShowComments(description)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub show_example_description(item as clLibDataExample)
+		Sub show_example_description(item as introspection.methodinfo)
 		  var msg() as string
 		  
 		  if item <> nil then
-		    msg = item.describe
+		    msg = clLibDataExample.GetDescription(item)
 		    
 		  end if
 		  
@@ -204,12 +206,12 @@ End
 		Sub SelectionChanged()
 		  var idx as integer = me.SelectedRowIndex
 		  
-		  var tmp as clLibDataExample
+		  var tmp as Introspection.MethodInfo
 		  
 		  
 		  if idx >= 0 then
 		    try
-		      tmp = clLibDataExample(me.RowTagAt(idx))
+		      tmp = me.RowTagAt(idx)
 		      
 		    catch
 		      tmp = nil
@@ -231,11 +233,11 @@ End
 		  
 		  var idx as integer = me.RowFromXY(x,y)
 		  
-		  var tmp as clLibDataExample
+		  var tmp as Introspection.MethodInfo
 		  
 		  if idx >= 0 then
 		    try
-		      tmp = clLibDataExample(me.RowTagAt(idx))
+		      tmp = me.RowTagAt(idx)
 		      
 		    catch
 		      tmp = nil
@@ -261,12 +263,12 @@ End
 	#tag Event
 		Sub Pressed()
 		  
-		  var tmp as clLibDataExample
+		  var tmp as Introspection.MethodInfo
 		  
 		  var idx as integer = Listbox1.SelectedRowIndex
 		  
 		  try
-		    tmp = clLibDataExample(Listbox1.RowTagAt(idx))
+		    tmp = Listbox1.RowTagAt(idx)
 		    
 		  catch
 		    tmp = nil
