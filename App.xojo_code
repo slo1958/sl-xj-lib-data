@@ -10,9 +10,10 @@ Inherits DesktopApplication
 		  // 
 		  // var t as new clDataTableTests
 		  // 
-		  // t.test_calc_040(logwriter)
+		  // t.test_calc_042(logwriter)
 		  // 
 		  // logwriter.end_exec(CurrentMethodName)
+		  // 
 		  
 		  
 		End Sub
