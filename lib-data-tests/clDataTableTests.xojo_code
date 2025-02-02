@@ -2140,14 +2140,20 @@ Protected Class clDataTableTests
 		  call check_table(log,"get distinct values", tDistinct_expected, tDistinct )
 		  
 		  
-		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country"), StringArray("Sales","Quantity"))
+		  
+		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country") _
+		  , PairArray("Sales":clSeriesGrouper.aggSum,"Quantity":clSeriesGrouper.aggSum, "UnitPrice":clSeriesGrouper.aggMin, "UnitPrice":clSeriesGrouper.aggMax) _
+		  )
+		  
 		  call gTransformer2.Transform
 		  var tSumSales as clDataTable = gTransformer2.GetOutputTable()
 		  
 		  var tSumSales_expected As New clDataTable("mytable", SerieArray( _
-		  new clStringDataSerie("Country", array("Belgium","France","")), _
-		  new clNumberDataSerie("Sum of Sales", array(1704, 648,250)), _
-		  new clNumberDataSerie("Sum of Quantity", array (72,24, 10)) _
+		  new clStringDataSerie("Country", array("Belgium","France","")) _
+		  , new clNumberDataSerie("Sum of Sales", array(1704, 648,250)) _
+		  , new clNumberDataSerie("Sum of Quantity", array (72,24, 10)) _
+		  , new clNumberDataSerie("Min of UnitPrice", array( 21, 26 , 25)) _
+		  , new clNumberDataSerie("Max of UnitPrice", array( 27, 28 , 25)) _
 		  ))
 		  
 		  call check_table(log,"Check total sales", tSumSales_expected, tSumSales )

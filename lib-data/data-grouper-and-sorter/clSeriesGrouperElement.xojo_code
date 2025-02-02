@@ -24,6 +24,14 @@ Protected Class clSeriesGrouperElement
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetRowIndexes() As integer()
+		  
+		  return self.RowIndexes
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function HasKey(Key as string) As Boolean
 		  
 		  if Node = nil then return False
@@ -96,12 +104,12 @@ Protected Class clSeriesGrouperElement
 		Private intMeasures() As clNumberDataSerie
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		Node As Dictionary
+	#tag Property, Flags = &h21
+		Private Node As Dictionary
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		RowIndexes() As Integer
+	#tag Property, Flags = &h21
+		Private RowIndexes() As Integer
 	#tag EndProperty
 
 

@@ -49,6 +49,7 @@ Implements support_tests.LogMessageInterface
 		  ex.Add(new clLibDataExample_027)
 		  ex.Add(new clLibDataExample_028)
 		  ex.Add(new clLibDataExample_029)
+		  ex.Add(new clLibDataExample_030)
 		  
 		  return ex
 		  

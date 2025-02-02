@@ -72,10 +72,10 @@ Protected Class clAbstractTransformer
 	#tag Method, Flags = &h0
 		Function GetOutputTable() As clDataTable
 		  //
-		  // Returns one output table
+		  // Returns the output table related to the first output connection
 		  //
 		  // Parameters:
-		  // - index of output table
+		  // (nothing)
 		  //
 		  // Returns:
 		  // selected output table
@@ -118,15 +118,14 @@ Protected Class clAbstractTransformer
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Function kOutputConnectionName() As string
-		  return "NoName"
-		  
-		End Function
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
 		Sub Reset()
+		  //
+		  // Prepare the transformer for another run with the same configuration
+		  //
+		  // Remove all output tables
+		  // Clean output connections
+		  //
 		  
 		  for each name as string in OutputConnections
 		    TableDict.Remove(name)

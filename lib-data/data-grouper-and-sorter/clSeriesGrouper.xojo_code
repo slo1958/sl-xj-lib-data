@@ -62,9 +62,9 @@ Protected Class clSeriesGrouper
 		  
 		  for row as integer = 0 to usedDimensionColumns(0).RowCount-1
 		    
-		    var work_dict as clSeriesGrouperElement = TopNode
+		    var WorkElement as clSeriesGrouperElement = TopNode
 		    
-		    var next_dict as clSeriesGrouperElement = nil
+		    var NextElement as clSeriesGrouperElement = nil
 		    
 		    for column_index as integer = 0 to usedDimensionColumns.LastIndex
 		      var tmp_value as variant
@@ -74,28 +74,28 @@ Protected Class clSeriesGrouper
 		        
 		      end if
 		      
-		      if work_dict.HasKey(tmp_value) then
-		        next_dict = work_dict.value(tmp_value)
+		      if WorkElement.HasKey(tmp_value) then
+		        NextElement = WorkElement.value(tmp_value)
 		        
 		      else
-		        next_dict = new clSeriesGrouperElement
-		        work_dict.value(tmp_value) = next_dict
-		        next_dict.MeasureCount = usedMeasureColumns.Count
+		        NextElement = new clSeriesGrouperElement
+		        WorkElement.value(tmp_value) = NextElement
+		        NextElement.MeasureCount = usedMeasureColumns.Count
 		        
 		      end if
 		      
-		      work_dict = next_dict
+		      WorkElement = NextElement
 		      
 		    next
 		    
-		    next_dict.AddRowIndex(row)
+		    NextElement.AddRowIndex(row)
 		    
 		    
 		    
 		    for column_index as integer = 0 to usedMeasureColumns.LastIndex
 		      var tmp_value as Double = usedMeasureColumns(column_index).GetElement(row)
 		      
-		      next_dict.AddMeasureValue(column_index, tmp_value)
+		      NextElement.AddMeasureValue(column_index, tmp_value)
 		      
 		      var n as integer = 0
 		    next
@@ -214,32 +214,32 @@ Protected Class clSeriesGrouper
 		  
 		  if GroupingColumnValues.Count <> TitleOfDimensionColumns.Count then return ret
 		  
-		  var work_dict as clSeriesGrouperElement = self.TopNode
+		  var WorkElement as clSeriesGrouperElement = self.TopNode
 		  
 		  
 		  for column_index as integer = 0 to TitleOfDimensionColumns.LastIndex
 		    var tmp_value as variant = GroupingColumnValues(column_index)
-		    var next_dict  as clSeriesGrouperElement
+		    var NextElement  as clSeriesGrouperElement
 		    
-		    if work_dict.HasKey(tmp_value) then
-		      next_dict = work_dict.value(tmp_value)
+		    if WorkElement.HasKey(tmp_value) then
+		      NextElement = WorkElement.value(tmp_value)
 		      
 		    else
 		      return ret
 		      
 		    end if
 		    
-		    work_dict = next_dict
+		    WorkElement = NextElement
 		    
 		  next
 		  
-		  if work_dict.Keys.count <> 0 then 
+		  if WorkElement.Keys.count <> 0 then 
 		    System.DebugLog CurrentMethodName +": structure error"
 		    return ret
 		    
 		  end if
 		  
-		  return work_dict.RowIndexes
+		  return WorkElement.GetRowIndexes
 		  
 		End Function
 	#tag EndMethod

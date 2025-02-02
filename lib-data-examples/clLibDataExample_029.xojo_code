@@ -22,7 +22,7 @@ Inherits clLibDataExample
 	#tag Method, Flags = &h0
 		Function run(log as LogMessageInterface) As TableColumnReaderInterface()
 		  
-		  //  Example_026
+		  //  Example_029
 		  //  - create an empty table
 		  //  - fast append data
 		  //  - apply filter function to create a dataserie 
@@ -31,9 +31,7 @@ Inherits clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  
-		  log.start_exec(CurrentMethodName)
-		  
+		   
 		  
 		  var tcountries as new clDataTable("Countries")
 		  call  tcountries.AddColumn(new clStringDataSerie("Country"))

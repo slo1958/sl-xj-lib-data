@@ -177,6 +177,30 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function AddColumns(paramarray NewColumns as clAbstractDataSerie) As clAbstractDataSerie()
+		  //  
+		  //  Add  a set of  empty columns to the table
+		  //  
+		  //  Parameters:
+		  //  - the list  of  columns
+		  //  
+		  //  Returns:
+		  //  - an array with the new data series
+		  //  
+		  
+		  var return_array() As clAbstractDataSerie
+		  
+		  for each col as clAbstractDataSerie in NewColumns
+		    return_array.add( self.AddColumn(col))
+		    
+		  next
+		  
+		  return return_array
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function AddColumns(NewColumnNames() as string) As clAbstractDataSerie()
 		  //  
 		  //  Add  a set of  empty columns to the table
@@ -2637,18 +2661,25 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Groupby(column_names() as string) As clDataTable
+		Function Groupby(grouping_dimensions() as string) As clDataTable
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // This is typically used to get a list of distinct combinations
+		  //
+		  // Parameters:
+		  // - Input table
+		  // - grouping_dimenions() list of columns to be used as grouping dimensions
+		  //
 		  
-		  const OutputTableName = "Results"
+		  var gTransform as new clGroupByTransformer(self, grouping_dimensions)
 		  
-		  var selected_columns() as clAbstractDataSerie = self.GetColumns(column_names, False)
-		  
-		  var grp as new clSeriesGrouper(selected_columns)
-		  
-		  var res() as clAbstractDataSerie = grp.Flattened()
-		  
-		  return new clDataTable(OutputTableName, res)
-		  
+		  if gTransform.Transform() then
+		    return gTransform.GetOutputTable
+		    
+		  else
+		    return nil
+		    
+		  end if
 		  
 		End Function
 	#tag EndMethod
@@ -2664,61 +2695,19 @@ Implements TableColumnReaderInterface,Iterable
 		  // - measures() pair of columnname : agg mode
 		  //
 		  
-		  const OutputTableName = "Results"
-		  
-		  var GroupingColumns() as clAbstractDataSerie
-		  var MeasureColumns() as pair
 		  
 		  
-		  for each name as string in grouping_dimensions
-		    if name.trim.Length > 0 then
-		      var c as clAbstractDataSerie = self.GetColumn(name)
-		      
-		      if c = nil then
-		        AddErrorMessage(CurrentMethodName,ErrMsgCannotFIndColumn, self.name, Name)
-		        
-		        
-		      else
-		        GroupingColumns.add(c)
-		        
-		      end if
-		    end if
-		  next
+		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures)
 		  
-		  if GroupingColumns.count = 0 and measures.count = 0 then return  nil
-		  
-		  if GroupingColumns.count = 0 then
-		    var r as new clDataRow
+		  if gTransform.Transform() then
+		    return gTransform.GetOutputTable
 		    
-		    for each p as pair in measures
-		      var col as clNumberDataSerie = clNumberDataSerie(self.GetColumn(p.Left))
-		      
-		      if col <> nil then
-		        r.SetCell(p.Right + " of " + p.Left, clSeriesGrouper.Aggregate(p.Right, col))
-		        
-		      end if
-		      
-		    next
+		  else
+		    return nil
 		    
-		    var t as new clDataTable(OutputTableName)
-		    t.AddRow(r)
-		    return t
-		    
-		  end if
+		  end if 
 		  
-		  for each p as pair in measures
-		    var np as pair = self.GetColumn(p.Left) : p.Right
-		    MeasureColumns.Add(np)
-		    
-		  next
-		  
-		  var g as new clSeriesGrouper(GroupingColumns, MeasureColumns)
-		  
-		  var res() as clAbstractDataSerie = g.Flattened()
-		  
-		  return new clDataTable(OutputTableName, res)
-		  
-		  
+		   
 		End Function
 	#tag EndMethod
 
@@ -2733,16 +2722,15 @@ Implements TableColumnReaderInterface,Iterable
 		  // - measures() list of columns to sum: agg mode
 		  //
 		  
+		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures)
 		  
-		  var temp() as pair
-		  
-		  for each measure as string in measures
-		    temp.Add(measure: clDataTable.AggSum)
+		  if gTransform.Transform() then
+		    return gTransform.GetOutputTable
 		    
-		  next
-		  
-		  return self.GroupBy(grouping_dimensions, temp)
-		  
+		  else
+		    return nil
+		    
+		  end if 
 		End Function
 	#tag EndMethod
 

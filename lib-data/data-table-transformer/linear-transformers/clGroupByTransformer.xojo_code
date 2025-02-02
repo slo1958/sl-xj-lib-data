@@ -1,8 +1,17 @@
 #tag Class
 Protected Class clGroupByTransformer
-Inherits clAbstractTransformer
+Inherits clLInearTransformer
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string)
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // This is typically used to get a list of distinct combinations
+		  //
+		  // Parameters:
+		  // - Input table
+		  // - grouping_dimenions() list of columns to be used as grouping dimensions
+		  //
+		  
 		  
 		  super.Constructor
 		  
@@ -49,7 +58,7 @@ Inherits clAbstractTransformer
 		  // Parameters:
 		  // - Input table
 		  // - grouping_dimenions() list of columns to be used as grouping dimensions
-		  // - measures() list of columns to sum: agg mode
+		  // - measures() list of columns to sum
 		  //
 		  
 		  
@@ -152,7 +161,7 @@ Inherits clAbstractTransformer
 		  
 		  return new clDataTable(self.GetName(cOutputConnectionName), res)
 		  
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -164,13 +173,6 @@ Inherits clAbstractTransformer
 	#tag Property, Flags = &h0
 		GroupingMeasures() As pair
 	#tag EndProperty
-
-
-	#tag Constant, Name = cInputConnectionName, Type = String, Dynamic = False, Default = \"Input", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = cOutputConnectionName, Type = String, Dynamic = False, Default = \"Output", Scope = Public
-	#tag EndConstant
 
 
 	#tag ViewBehavior
