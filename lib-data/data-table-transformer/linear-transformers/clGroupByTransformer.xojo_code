@@ -73,7 +73,6 @@ Inherits clLinearTransformer
 		  
 		  var source as clDataTable = self.SourceTable
 		  
-		  
 		  var t as clDataTable
 		  
 		  if self.GroupingDimensions.Count = 0 and self.GroupingMeasures.Count = 0 then

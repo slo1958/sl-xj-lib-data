@@ -3101,44 +3101,6 @@ Implements TableColumnReaderInterface,Iterable
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h21
-		Private Function internal_Sort_Terminate(ColumnNames() as string, SortArray() as pair, order as SortOrder = SortOrder.ascending) As clDataTable
-		  //
-		  // Use the SortArray prepared to generate the sorted output table
-		  //
-		  // - SortArray (array of pair): the rght of the element contains the row index 
-		  // - order: Sort order (ascending or descending), the order apply on the combined keys
-		  //
-		  // Returns:
-		  //  sorted table
-		  
-		  var SortTempArray() as pair = SortArray
-		  
-		  var NewTable as clDataTable = self.CloneStructure("Sorting " + self.Name +  " on " + String.FromArray(ColumnNames,","))
-		  
-		  if order = SortOrder.Ascending then
-		    
-		    for index as integer = 0 to SortTempArray.LastIndex  
-		      var r as clDataRow = self.GetRowAt(SortTempArray(index).Right.IntegerValue, false)
-		      
-		      NewTable.AddRow(r)
-		      
-		    next
-		    
-		  else
-		    for index as integer = SortTempArray.LastIndex downto 0
-		      var r as clDataRow = self.GetRowAt(SortTempArray(index).Right.IntegerValue, false)
-		      
-		      NewTable.AddRow(r)
-		      
-		    next
-		    
-		  end if
-		  
-		  return newtable
-		End Function
-	#tag EndMethod
-
 	#tag Method, Flags = &h0
 		Function IsIndexVisibleWhenIterating() As Boolean
 		  return self.index_explicit_when_iterate 
@@ -3596,11 +3558,15 @@ Implements TableColumnReaderInterface,Iterable
 		  //  sorted table
 		  //
 		  
-		  var SortKeyColumns() as clAbstractDataSerie = self.GetColumns(ColumnNames, False)
+		  var sortTransformer as new clSortTransformer(self, ColumnNames,  order)
 		  
-		  var srt as new clSorter(SortKeyColumns, order)
-		  
-		  return internal_Sort_Terminate(ColumnNames, srt.GetSortedListOfIndexes(), order)
+		  if sortTransformer.Transform() then
+		    return sortTransformer.GetOutputTable()
+		    
+		  else
+		    return nil
+		    
+		  end if
 		  
 		End Function
 	#tag EndMethod
@@ -3657,18 +3623,6 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Untitled()
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Untitled1()
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
