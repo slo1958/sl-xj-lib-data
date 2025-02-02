@@ -1954,7 +1954,15 @@ Protected Class clLibDataExample
 
 	#tag Method, Flags = &h0
 		Shared Function GetAllExamples() As Dictionary
-		  
+		  // 
+		  //. Get the list of 'example_xxx' methods
+		  //
+		  // Parameters:
+		  // (nohting)
+		  //
+		  // Returns:
+		  // Dictionary with key == method name as string , value methodinfo
+		  //
 		  
 		  Var t As Introspection.TypeInfo
 		  
@@ -1982,19 +1990,19 @@ Protected Class clLibDataExample
 		  // Invoke the example method to get the description
 		  //
 		  
-		  var t1() as string
+		  var Description() as string
 		  
 		  var vParams() as Variant
 		  
 		  vParams.Add(nil)
-		  vParams.Add(True)
-		  vParams.Add(t1)
+		  vParams.Add(True) // Request description
+		  vParams.Add(Description)
 		  
-		  var v1 as variant
+		  var vResults as variant
 		  
-		  v1 = m.Invoke(new clLibDataExample, vParams)
+		  vResults = m.Invoke(new clLibDataExample, vParams)
 		  
-		  return t1
+		  return Description
 		  
 		End Function
 	#tag EndMethod
@@ -2006,38 +2014,38 @@ Protected Class clLibDataExample
 		  // Run the example method 
 		  //
 		  
-		  var t1() as string
+		  var tParam() as string
 		  
 		  var vParams() as Variant
 		  
 		  if log = nil then
-		    vParams.add(new clLibDataExample)
+		    vParams.add(new clLogWriterDebugLog)
 		    
 		  else
 		    vParams.Add(log)
 		    
 		  end if
 		  
-		  vParams.Add(False)
-		  vParams.Add(t1)
+		  vParams.Add(False) // Request execution (== do not request description)
+		  vParams.Add(tParam)
 		  
-		  var v1 as variant
+		  var vResults as variant
 		  
-		  v1 = m.Invoke(new clLibDataExample, vParams)
+		  vResults = m.Invoke(new clLibDataExample, vParams)
 		  
 		  
 		  var results() as TableColumnReaderInterface
 		  
-		  if v1 = nil then return results
+		  if vResults = nil then return results
 		  
-		  var r() as  clDataTable
-		  r = v1
+		  // Convert type to keep Xojo happy 
+		  var vTables() as  clDataTable
+		  vTables = vResults
 		  
-		  for each item as clDataTable in r
+		  for each item as clDataTable in vTables
 		    results.Add(item)
 		    
 		  next
-		  
 		  
 		  return results
 		  

@@ -146,14 +146,25 @@ End
 		Sub Opening()
 		  var ex as Dictionary = clLibDataExample.GetAllExamples
 		  
+		  var listToSort() as string
+		  
 		  listbox1.RemoveAllRows
 		  
 		  for each Name as string in ex.keys
+		    listToSort.add(Name)
+		    
+		  next
+		  
+		  listToSort.Sort()
+		  
+		  for each name as string in listToSort
 		    listbox1.AddRow(Name)
 		    Listbox1.RowTagAt(listbox1.LastAddedRowIndex) = ex.value(Name)
 		    
-		    
 		  next
+		  
+		  return
+		  
 		  
 		End Sub
 	#tag EndEvent
