@@ -46,9 +46,9 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_destination_path as FolderItem, has_header as Boolean, config as clTextFileConfig = nil)
+		Sub Constructor(DestinationFileOrFolder as FolderItem, has_header as Boolean, config as clTextFileConfig = nil)
 		  
-		  self.DestinationPath = the_destination_path
+		  self.DestinationPath = DestinationFileOrFolder
 		  self.FileHasHeader = has_header
 		  
 		  open_text_Stream(self.DestinationPath)
@@ -112,11 +112,11 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub open_text_Stream(tmp_file as FolderItem)
+		Private Sub open_text_Stream(DestinationFileOrFolder as FolderItem)
 		  
 		  self.LineCount = 0
 		  
-		  self.CurrentFIle = tmp_file
+		  self.CurrentFIle = DestinationFileOrFolder
 		  
 		  if not self.CurrentFIle.IsFolder and self.CurrentFIle.IsWriteable then
 		    self.TextFile = TextOutputStream.Create(self.CurrentFIle)

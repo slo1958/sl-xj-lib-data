@@ -10,7 +10,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(fld as FolderItem, config as clJSONFileConfig)
+		Sub Constructor(SourceFile as FolderItem, config as clJSONFileConfig)
 		  
 		  if config = nil then 
 		    self.Configuration = new clJSONFileConfig
@@ -20,10 +20,10 @@ Implements TableRowReaderInterface
 		    
 		  end if
 		  
-		  self.mDataFile = fld
-		  self.CurrentName = fld.Name
+		  self.mDataFile = SourceFile
+		  self.CurrentName = SourceFile.Name
 		  
-		  if not fld.Exists or fld.IsFolder then
+		  if not SourceFile.Exists or SourceFile.IsFolder then
 		    Return
 		    
 		  end if

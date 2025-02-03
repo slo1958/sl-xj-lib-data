@@ -1,7 +1,7 @@
 #tag Module
 Protected Module DataSerie_IO
 	#tag Method, Flags = &h0
-		Sub AppendDataSerieToTextfile(the_destination as FolderItem, theDataSerie as clAbstractDataSerie, name_as_header as boolean)
+		Sub AppendDataSerieToTextfile(DestinationFile as FolderItem, theDataSerie as clAbstractDataSerie, name_as_header as boolean)
 		  //
 		  // Load the serie from a text file, each line is loaded into one element, without further processing
 		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
@@ -9,14 +9,14 @@ Protected Module DataSerie_IO
 		  
 		  var TextFile  As TextOutputStream
 		  
-		  If the_destination = Nil Then
+		  If DestinationFile = Nil Then
 		    Return
 		    
 		  End If
 		  
-		  TextFile = TextOutputStream.Open(the_destination)
+		  TextFile = TextOutputStream.Open(DestinationFile)
 		  
-		  If name_as_header and the_destination.Length = 0 then 
+		  If name_as_header and DestinationFile.Length = 0 then 
 		    TextFile.WriteLine theDataSerie.name
 		    
 		  End If
@@ -79,7 +79,7 @@ Protected Module DataSerie_IO
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SaveDataSerieToTextfile(the_destination as FolderItem, theDataSerie as clAbstractDataSerie, name_as_header as boolean)
+		Sub SaveDataSerieToTextfile(DestinationFile as FolderItem, theDataSerie as clAbstractDataSerie, name_as_header as boolean)
 		  //
 		  // Load the serie from a text file, each line is loaded into one element, without further processing
 		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
@@ -87,12 +87,12 @@ Protected Module DataSerie_IO
 		  
 		  var TextFile  As TextOutputStream
 		  
-		  If the_destination = Nil Then
+		  If DestinationFile = Nil Then
 		    Return
 		    
 		  End If
 		  
-		  TextFile = TextOutputStream.Create(the_destination)
+		  TextFile = TextOutputStream.Create(DestinationFile)
 		  
 		  If name_as_header Then
 		    TextFile.WriteLine theDataSerie.name

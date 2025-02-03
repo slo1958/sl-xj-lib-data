@@ -49,11 +49,11 @@ Implements TableRowWriterInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(the_destination_path as FolderItem, config as clJSONFileConfig)
+		Sub Constructor(DestinationFileOrFolder as FolderItem, config as clJSONFileConfig)
 		  
 		  self.header =new Dictionary
 		  
-		  self.Destination = the_destination_path
+		  self.Destination = DestinationFileOrFolder
 		  
 		  self.InternalInitConfiguration(config)
 		  
