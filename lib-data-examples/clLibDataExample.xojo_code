@@ -120,9 +120,9 @@ Protected Class clLibDataExample
 		  // Aggregate table0 per country, to get total sales, minimum unit price and maximum unit price
 		  //
 		  var table1 As clDataTable = table0.groupby(Array("Country"), Array( _
-		  "Sales": clDataTable.AggSum, _
-		  "PPU":clDataTable.AggMin, _
-		  "PPU":clDataTable.AggMax _
+		  "Sales": AggMode.Sum _
+		  ,"PPU":aggMode.Min _
+		  ,"PPU":aggMode.Max _
 		  ))
 		  
 		  //
@@ -282,7 +282,7 @@ Protected Class clLibDataExample
 		  //
 		  return array(table0)
 		  
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -716,7 +716,7 @@ Protected Class clLibDataExample
 		  //
 		  // Get the total sales and max sales per country
 		  //
-		  var table4 as clDataTable  = table2.groupby(array("country"), array("Sales":clDataTable.AggSum,"Sales":clDataTable.AggMax))
+		  var table4 as clDataTable  = table2.groupby(array("country"), array("Sales":aggMode.Sum,"Sales":aggMode.Max))
 		  
 		  //
 		  // Send the tables to the viewer
@@ -908,7 +908,7 @@ Protected Class clLibDataExample
 		  
 		  // update table
 		  call table0.AddColumns(SerieArray(delay, flagged, total_penaty))
-		   
+		  
 		  return array(table0)
 		  
 		  
@@ -2049,7 +2049,7 @@ Protected Class clLibDataExample
 		  
 		  return results
 		  
-		   
+		  
 		End Function
 	#tag EndMethod
 

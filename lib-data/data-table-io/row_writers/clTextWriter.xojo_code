@@ -5,7 +5,7 @@ Implements TableRowWriterInterface
 		Sub AddRow(row_data() as variant)
 		  // Part of the TableRowWriterInterface interface.
 		  
-		  if textstream = nil then return
+		  if TextFile = nil then return
 		  
 		  var tmpStr() as string
 		  
@@ -31,7 +31,7 @@ Implements TableRowWriterInterface
 		    
 		  next
 		  
-		  textstream.WriteLine(join(tmpStr, FieldSeparator))
+		  TextFile.WriteLine(join(tmpStr, FieldSeparator))
 		  
 		  LineCount = LineCount + 1
 		  
@@ -86,10 +86,10 @@ Implements TableRowWriterInterface
 		Sub DoneWithTable()
 		  // Part of the TableRowWriterInterface interface.
 		  
-		  if textstream = nil then return
+		  if TextFile = nil then return
 		  
-		  TextStream.close
-		  TextStream = nil
+		  TextFile.close
+		  TextFile = nil
 		  
 		  
 		End Sub
@@ -119,10 +119,10 @@ Implements TableRowWriterInterface
 		  self.CurrentFIle = tmp_file
 		  
 		  if not self.CurrentFIle.IsFolder and self.CurrentFIle.IsWriteable then
-		    self.TextStream = TextOutputStream.Create(self.CurrentFIle)
+		    self.TextFile = TextOutputStream.Create(self.CurrentFIle)
 		    
 		  else
-		    self.TextStream =  nil
+		    self.TextFile =  nil
 		    
 		  end if 
 		  
@@ -165,7 +165,7 @@ Implements TableRowWriterInterface
 		  var tmp_fld as new FolderItem  
 		  
 		  if self.DestinationPath = nil then
-		    self.TextStream = nil
+		    self.TextFile = nil
 		    return
 		    
 		  elseif self.DestinationPath.IsFolder then
@@ -244,7 +244,7 @@ Implements TableRowWriterInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected TextStream As TextOutputStream
+		Protected TextFile As TextOutputStream
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

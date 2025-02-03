@@ -1,11 +1,20 @@
 #tag Class
-Protected Class cl2
+Protected Class clMemoryStatEntry
+	#tag Method, Flags = &h0
+		Sub Constructor(ItemType as string, ItemName as string)
+		  self.objType = ItemType
+		  self.objName = ItemName
+		  
+		End Sub
+	#tag EndMethod
+
+
 	#tag Property, Flags = &h0
-		v As Integer
+		objName As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		w As Integer
+		objType As string
 	#tag EndProperty
 
 
@@ -51,19 +60,19 @@ Protected Class cl2
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="v"
+			Name="objType"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
-			EditorType=""
+			Type="string"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="w"
+			Name="objName"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
+			Type="string"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

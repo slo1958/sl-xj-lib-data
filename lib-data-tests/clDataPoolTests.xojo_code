@@ -89,6 +89,7 @@ Protected Class clDataPoolTests
 		  var my_data_pool as new clDataPool
 		  
 		  var rtst As clDataRow
+		  var v as integer
 		  
 		  var table as clDataTable
 		  

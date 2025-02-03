@@ -40,10 +40,10 @@ Implements TableRowWriterInterface
 		  
 		  if self.destination = nil then return 
 		  
-		  var txt as TextOutputStream = TextOutputStream.Create(self.destination) 
-		  txt.Write(OutputJSON.ToString)
+		  var TextFile as TextOutputStream = TextOutputStream.Create(self.destination) 
+		  TextFile.Write(OutputJSON.ToString)
 		  
-		  txt.close
+		  TextFile.close
 		  
 		End Sub
 	#tag EndMethod
@@ -116,10 +116,10 @@ Implements TableRowWriterInterface
 		    
 		    if self.destination = nil then return 
 		    
-		    var txt as TextOutputStream = TextOutputStream.Create(self.destination) 
-		    txt.Write(OutputJSON.ToString)
+		    var TextFile as TextOutputStream = TextOutputStream.Create(self.destination) 
+		    TextFile.Write(OutputJSON.ToString)
 		    
-		    txt.close
+		    TextFile.close
 		    
 		    return 
 		    

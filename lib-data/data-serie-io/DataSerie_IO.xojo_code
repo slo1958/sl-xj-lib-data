@@ -1,14 +1,47 @@
 #tag Module
 Protected Module DataSerie_IO
 	#tag Method, Flags = &h0
-		Function append_textfile_to_DataSerie(SourceFIle as FolderItem, theDataSerie as clAbstractDataSerie, has_header as Boolean) As clAbstractDataSerie
+		Sub AppendDataSerieToTextfile(the_destination as FolderItem, theDataSerie as clAbstractDataSerie, name_as_header as boolean)
+		  //
+		  // Load the serie from a text file, each line is loaded into one element, without further processing
+		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
+		  //
+		  
+		  var TextFile  As TextOutputStream
+		  
+		  If the_destination = Nil Then
+		    Return
+		    
+		  End If
+		  
+		  TextFile = TextOutputStream.Open(the_destination)
+		  
+		  If name_as_header and the_destination.Length = 0 then 
+		    TextFile.WriteLine theDataSerie.name
+		    
+		  End If
+		  
+		  For i As Integer = 0 To theDataSerie.LastIndex
+		    TextFile.WriteLine theDataSerie.GetElement(i)
+		    
+		  Next
+		  
+		  TextFile.close
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function AppendTextfileToDataSerie(SourceFIle as FolderItem, theDataSerie as clAbstractDataSerie, has_header as Boolean) As clAbstractDataSerie
 		  //
 		  // Load the serie from a text file, each line is loaded into one element, without further processing
 		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
 		  //
 		  
 		  var got_header As Boolean
-		  var text_file  As TextInputStream
+		  var TextFile  As TextInputStream
 		  var return_header As String
 		  
 		  If SourceFIle = Nil Then
@@ -17,12 +50,12 @@ Protected Module DataSerie_IO
 		  End If
 		  
 		  
-		  text_file = TextInputStream.Open(SourceFIle)
+		  TextFile = TextInputStream.Open(SourceFIle)
 		  
 		  got_header = Not has_header
 		  
-		  While Not text_file.EOF
-		    var tmp_source_line As String = text_file.ReadLine
+		  While Not TextFile.EOF
+		    var tmp_source_line As String = TextFile.ReadLine
 		    
 		    If got_header Then
 		      theDataSerie.AddElement(tmp_source_line)
@@ -36,7 +69,7 @@ Protected Module DataSerie_IO
 		    
 		  Wend
 		  
-		  text_file.close
+		  TextFile.close
 		  
 		  theDataSerie.addmetadata("source",SourceFIle.Name)
 		  
@@ -46,32 +79,32 @@ Protected Module DataSerie_IO
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub save_DataSerie_to_textfile(the_destination as FolderItem, theDataSerie as clAbstractDataSerie, name_as_header as boolean)
+		Sub SaveDataSerieToTextfile(the_destination as FolderItem, theDataSerie as clAbstractDataSerie, name_as_header as boolean)
 		  //
 		  // Load the serie from a text file, each line is loaded into one element, without further processing
 		  // The method returns the header if the 'has_header"  flag is set to true, otherwise it returns an empty string
 		  //
 		  
-		  var text_file  As TextOutputStream
+		  var TextFile  As TextOutputStream
 		  
 		  If the_destination = Nil Then
 		    Return
 		    
 		  End If
 		  
-		  text_file = TextOutputStream.Create(the_destination)
+		  TextFile = TextOutputStream.Create(the_destination)
 		  
 		  If name_as_header Then
-		    text_file.WriteLine theDataSerie.name
+		    TextFile.WriteLine theDataSerie.name
 		    
 		  End If
 		  
 		  For i As Integer = 0 To theDataSerie.LastIndex
-		    text_file.WriteLine theDataSerie.GetElement(i)
+		    TextFile.WriteLine theDataSerie.GetElement(i)
 		    
 		  Next
 		  
-		  text_file.close
+		  TextFile.close
 		  
 		  
 		  

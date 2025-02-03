@@ -60,7 +60,7 @@ Inherits clLinearTransformer
 		  self.GroupingMeasures.RemoveAll
 		  
 		  for each measure as string in measures
-		    self.GroupingMeasures.Add(measure: clDataTable.AggSum)
+		    self.GroupingMeasures.Add(measure: aggMode.Sum)
 		    
 		  next
 		  

@@ -738,7 +738,7 @@ Protected Class clDataSerieTests
 		  
 		  fld_file = main_folder.Child("myfile3_10K_tab.txt")
 		  
-		  var ss1 As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file, new clDataSerie(""), true))
+		  var ss1 As  clDataSerie = clDataSerie(AppendTextfileToDataSerie(fld_file, new clDataSerie(""), true))
 		  
 		  var k2 As Integer = 1
 		  
@@ -766,9 +766,9 @@ Protected Class clDataSerieTests
 		  fld_file_out =  main_folder.Child("mytest.txt")
 		  
 		  
-		  var ss1 As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file_in, new clDataSerie(""), true))
+		  var ss1 As  clDataSerie = clDataSerie(AppendTextfileToDataSerie(fld_file_in, new clDataSerie(""), true))
 		  
-		  save_DataSerie_to_textfile(fld_file_out, ss1, True)
+		  SaveDataSerieToTextfile(fld_file_out, ss1, True)
 		  
 		  
 		  

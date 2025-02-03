@@ -2707,7 +2707,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if 
 		  
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -3110,18 +3110,6 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function IsPersistant() As boolean
 		  return not IsVirtual
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function IsValidAggregation(Mode as String) As Boolean
-		  if mode = AggSum then return true
-		  if mode = AggCount then return true
-		  if mode = AggMin then return true
-		  if mode = AggMax then return true
-		  
-		  return false
-		  
 		End Function
 	#tag EndMethod
 
@@ -3799,18 +3787,6 @@ Implements TableColumnReaderInterface,Iterable
 		Protected TableName As String
 	#tag EndProperty
 
-
-	#tag Constant, Name = aggCount, Type = String, Dynamic = False, Default = \"count", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = aggMax, Type = String, Dynamic = False, Default = \"max", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = aggMin, Type = String, Dynamic = False, Default = \"min", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = aggSum, Type = String, Dynamic = False, Default = \"sum", Scope = Public
-	#tag EndConstant
 
 	#tag Constant, Name = DefaultColumnNamePattern, Type = String, Dynamic = False, Default = \"Untitled %0", Scope = Public
 	#tag EndConstant

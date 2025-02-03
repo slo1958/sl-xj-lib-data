@@ -14,7 +14,7 @@ Class clMemoryStats
 		    Introspection.GetType(obj).name _
 		    ,clAbstractDataSerie(obj).FullName(true)) _
 		    )
-		     
+		    
 		    
 		  else
 		    
@@ -85,14 +85,6 @@ Class clMemoryStats
 			Visible=true
 			Group="Position"
 			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Tables()"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

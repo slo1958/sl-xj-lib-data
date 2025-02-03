@@ -21,6 +21,35 @@ Protected Class clAbstractDatabaseAccess
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Shared Function ConvertCommonTypesToXojoDBTypes(CommonType as string) As integer
+		  select case CommonType
+		    
+		  case clDataType.BooleanValue
+		    return 12 // Boolean
+		    
+		  case clDataType.DateTimeValue
+		    return 10 // Time stamp
+		    
+		  case clDataType.DateValue
+		    return 8 // Date
+		    
+		  case clDataType.IntegerValue 
+		    return 3 // Integer
+		    
+		  case clDataType.NumberValue
+		    return 7 // Double
+		    
+		  case clDataType.StringValue
+		    return 5 // Varchar
+		    
+		  case else
+		    return 255 // Unrecognized
+		    
+		  end select
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function ConvertXojoDBTypesToCommonTypes(db_type as integer) As String
 		  
 		  select  case db_type

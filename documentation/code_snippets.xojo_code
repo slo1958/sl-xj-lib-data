@@ -45,7 +45,7 @@ Protected Module code_snippets
 		  
 		  dim fld_file as FolderItem
 		  
-		  dim my_serie  As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file, new clDataSerie(""), true))
+		  dim my_serie  As  clDataSerie = clDataSerie(AppendTextfileToDataSerie(fld_file, new clDataSerie(""), true))
 		  
 		  
 		End Sub
