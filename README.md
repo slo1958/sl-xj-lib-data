@@ -1,6 +1,16 @@
 # sl-xj-lib-data
 Data handling classes
 
+The library is a in-memory column store, designed for convenience, not speed. 
+
+The typical use cases are:
+- caching UI data before committing to a database
+- caching query results, which are then sliced and diced locally
+
+The library is provided as is for free and it is available in a github repo. Please give credit to the author when applicable. 
+In the unlikely case someone finds a bug ;), please use github to report the issue.
+
+
 - About series and tables
 - Description of source tree
 
