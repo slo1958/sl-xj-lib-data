@@ -38,7 +38,6 @@ Inherits clLinearTransformer
 		  
 		  var SortTempArray() as pair = SortArray
 		  
-		  
 		  var NewTable as clDataTable = source.CloneStructure(self.GetName(cOutputConnectionName))
 		  
 		  NewTable.AddMetaData("Transformation","Sorting " + source.Name + " on " + String.FromArray(ColumnNames,","))
@@ -137,11 +136,11 @@ Inherits clLinearTransformer
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="SortColumnsNames()"
+			Name="Order"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
+			Type="SortOrder"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

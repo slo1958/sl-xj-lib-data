@@ -13,7 +13,7 @@ Inherits clLinearTransformer
 		  
 		  self.ColumnsToRetain = prmColumnsToRetain
 		  self.ColumnsToPivot = prmColumnsToPivot
-		  self.PivotColumn = prmPivotColumn
+		  self.PivotColumnName = prmPivotColumn
 		  self.PivotValues = prmPivotValues
 		  
 		  self.ColumnNameFunction = AddressOf GenerateDefaultColumnName
@@ -28,7 +28,7 @@ Inherits clLinearTransformer
 		  
 		  self.ColumnsToRetain = prmColumnsToRetain
 		  self.ColumnsToPivot = prmColumnsToPivot
-		  self.PivotColumn = prmPivotColumn
+		  self.PivotColumnName = prmPivotColumn
 		  self.PivotValues = prmPivotValues
 		  
 		  self.ColumnNameFunction = prmColumnNameFunction
@@ -38,6 +38,13 @@ Inherits clLinearTransformer
 
 	#tag Method, Flags = &h0
 		Shared Function GenerateDefaultColumnName(SourceColumnName as String, PivotValue as String) As String
+		  if PivotValue = "" then
+		    return "Other_" + SourceColumnName.trim
+		    
+		  else
+		    return PivotValue.Trim + "_" + SourceColumnName.Trim
+		    
+		  end if
 		  
 		End Function
 	#tag EndMethod
@@ -47,10 +54,39 @@ Inherits clLinearTransformer
 		  // Calling the overridden superclass method.
 		  
 		  var source as clDataTable = self.GetTable(self.cInputConnectionName)
-		  
-		  var distinctTable as clDataTable = source.Groupby(self.ColumnsToRetain)
-		  
 		   
+		   var dimensionColumns() as clAbstractDataSerie = source.GetColumns(ColumnsToRetain, false)
+		  var pivotColumn as clAbstractDataSerie = source.GetColumn(PivotColumnName)
+		  
+		  var tempMeasureColumns() as clAbstractDataSerie = source.GetColumns(ColumnsToPivot, false)
+		  
+		  var measurePairs() as pair
+		  var measureMapping() as Dictionary
+		  
+		  for each col as clAbstractDataSerie in tempMeasureColumns
+		    var d as new Dictionary
+		    
+		    for each pvl as string in PivotValues
+		      d.value(pvl) = ColumnNameFunction.Invoke(col.name, pvl)
+		      
+		    next
+		    
+		    measurePairs.Add(col:mdEnumerations.AggMode.Sum)
+		    measureMapping.add(d)
+		    
+		  next
+		  
+		  var cg1 as new clSeriesGroupAndPivot(dimensionColumns, measurePairs, pivotColumn, measureMapping)
+		  
+		  var t as new clDataTable(self.GetName(cOutputConnectionName), cg1.Flattened)
+		  
+		  t.AddMetaData("Transformation","Pivotting  " + source.Name + " on " + String.FromArray(ColumnsToRetain,","))
+		  
+		  
+		  AddOutput(cOutputConnectionName, t)
+		  
+		  return t <> nil
+		  
 		End Function
 	#tag EndMethod
 
@@ -68,7 +104,7 @@ Inherits clLinearTransformer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		PivotColumn As string
+		PivotColumnName As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
