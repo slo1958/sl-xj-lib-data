@@ -1,98 +1,98 @@
 #tag Class
-Protected Class clSeriesGrouper
+Protected Class clSeriesGroupAndAggregate
+Inherits clSeriesGroupBy
 	#tag Method, Flags = &h21
-		Private Sub BuildGroups(Grouping_Columns() as clAbstractDataSerie, MeasureColumns() as pair)
+		Private Sub BuildGroups_OUT(Grouping_Columns() as clAbstractDataSerie, MeasureColumns() as pair)
 		  
-		  var usedDimensionColumns(-1) as clAbstractDataSerie
-		  var usedMeasureColumns(-1) as clNumberDataSerie
+		  usedDimensionColumns.RemoveAll
 		  
-		  redim titleOfDimensionColumns(-1)
+		  usedMeasureColumns.RemoveAll
 		  
-		  for i as integer = 0 to Grouping_Columns.LastIndex
-		    //if Grouping_Columns(i) <> nil then
-		    TitleOfDimensionColumns.Add(Grouping_Columns(i).name)
-		    usedDimensionColumns.add(Grouping_Columns(i))
-		    //end if
+		  titleOfDimensionColumns.RemoveAll
+		  
+		  for each DimensionColumn as clAbstractDataSerie in Grouping_Columns
+		    TitleOfDimensionColumns.Add(DimensionColumn.name)
+		    usedDimensionColumns.add(DimensionColumn)
 		    
 		  next
 		  
+		  usedMeasureColumns.RemoveAll
 		  
-		  for i as integer = 0 to MeasureColumns.LastIndex
-		    if MeasureColumns(i).Left <> nil  and MeasureColumns(i).Left isa clNumberDataSerie then
-		      //titleOfDimensionColumns.Add(Grouping_Columns(i).name)
-		      var tmp as string = clBasicMath.AggLabel(MeasureColumns(i).Right)
-		      TitleOfMeasureColumns.add(tmp  + " of "+ clAbstractDataSerie(MeasureColumns(i).Left).name)
-		      NameOfMeasureColumns.add(clAbstractDataSerie(MeasureColumns(i).Left).name)
-		      ActionOnMeasureColumns.Add(MeasureColumns(i).Right)
-		      usedMeasureColumns.add(MeasureColumns(i).Left)
+		  for each ColumnInfo as pair in MeasureColumns 
+		    if ColumnInfo.Left <> nil  and ColumnInfo.Left isa clNumberDataSerie then
+		      
+		      var aggregateType as mdEnumerations.AggMode = ColumnInfo.Right
+		      var aggregLabel as  string = clBasicMath.AggLabel(aggregateType)
+		      
+		      var data as clNumberDataSerie =  clNumberDataSerie(ColumnInfo.Left)
+		      
+		      TitleOfMeasureColumns.add(aggregLabel  + " of "+ data.name)
+		      NameOfMeasureColumns.add(data.name)
+		      ActionOnMeasureColumns.Add(aggregateType)
+		      usedMeasureColumns.add(data)
 		      
 		    end if
 		    
 		  next
 		  
-		  
 		  if titleOfDimensionColumns.LastIndex < 0 then return
 		  
-		  TopNode = new clSeriesGrouperElement
+		  self.TopNode = new clSeriesGrouperElement
 		  
-		  for row as integer = 0 to usedDimensionColumns(0).RowCount-1
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(GroupingColumns() as clAbstractDataSerie, MeasureColumns() as Pair, PrepareOutput as Boolean = True)
+		  
+		  super.Constructor(GroupingColumns, false)
+		  
+		  PrepareMeasures(MeasureColumns)
+		  
+		  if PrepareOutput then ProcessRows
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function FindLeafGrouperElement(DimensionValues() as string, addIfMissing as Boolean = false) As clSeriesGrouperElement
+		  // 
+		  // Navigate the tree of grouperElements to find the leaf node corresponding to the passed dimension values
+		  //
+		  
+		  var WorkElement as clSeriesGrouperElement = TopNode
+		  
+		  var NextElement as clSeriesGrouperElement = nil
+		  
+		  if DimensionValues.Count <> self.TitleOfDimensionColumns.count then return nil
+		  
+		  
+		  for column_index as integer = 0 to DimensionValues.LastIndex
+		    var tmp_value as variant = DimensionValues(column_index)
 		    
-		    var WorkElement as clSeriesGrouperElement = TopNode
-		    
-		    var NextElement as clSeriesGrouperElement = nil
-		    
-		    for column_index as integer = 0 to usedDimensionColumns.LastIndex
-		      var tmp_value as variant
+		    if WorkElement.HasKey(tmp_value) then
+		      NextElement = WorkElement.value(tmp_value)
 		      
-		      if usedDimensionColumns(column_index) <> nil then
-		        tmp_value =  usedDimensionColumns(column_index).GetElement(row)
-		        
-		      end if
+		    elseif not addIfMissing then 
+		      return nil
 		      
-		      if WorkElement.HasKey(tmp_value) then
-		        NextElement = WorkElement.value(tmp_value)
-		        
-		      else
-		        NextElement = new clSeriesGrouperElement
-		        WorkElement.value(tmp_value) = NextElement
-		        NextElement.MeasureCount = usedMeasureColumns.Count
-		        
-		      end if
+		    else
+		      NextElement = new clSeriesGrouperElement
+		      WorkElement.value(tmp_value) = NextElement
+		      NextElement.MeasureCount = TopNode.MeasureCount
 		      
-		      WorkElement = NextElement
-		      
-		    next
+		    end if
 		    
-		    NextElement.AddRowIndex(row)
-		    
-		    
-		    
-		    for column_index as integer = 0 to usedMeasureColumns.LastIndex
-		      var tmp_value as Double = usedMeasureColumns(column_index).GetElement(row)
-		      
-		      NextElement.AddMeasureValue(column_index, tmp_value)
-		      
-		      var n as integer = 0
-		    next
-		    
+		    WorkElement = NextElement
 		    
 		  next
 		  
+		  return NextElement
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(GroupingColumns() as clAbstractDataSerie)
-		  var dummy() as pair
-		  BuildGroups(GroupingColumns, dummy)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(GroupingColumns() as clAbstractDataSerie, MeasureColumns() as Pair)
-		  BuildGroups(GroupingColumns, MeasureColumns)
-		End Sub
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -221,6 +221,7 @@ Protected Class clSeriesGrouper
 
 	#tag Method, Flags = &h0
 		Function GetTreeHead() As clSeriesGrouperElement
+		  return self.TopNode
 		  
 		End Function
 	#tag EndMethod
@@ -229,6 +230,89 @@ Protected Class clSeriesGrouper
 		Shared Function IsValidAggregation(Mode as String) As Boolean
 		  return True
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub PrepareMeasures(MeasureColumns() as pair)
+		  
+		  usedMeasureColumns.RemoveAll
+		  TitleOfMeasureColumns.RemoveAll
+		  NameOfMeasureColumns.RemoveAll
+		  ActionOnMeasureColumns.RemoveAll
+		  
+		  for each ColumnInfo as pair in MeasureColumns 
+		    if ColumnInfo.Left <> nil  and ColumnInfo.Left isa clNumberDataSerie then
+		      
+		      var aggregateType as mdEnumerations.AggMode = ColumnInfo.Right
+		      var aggregLabel as  string = clBasicMath.AggLabel(aggregateType)
+		      
+		      var data as clNumberDataSerie =  clNumberDataSerie(ColumnInfo.Left)
+		      
+		      TitleOfMeasureColumns.add(aggregLabel  + " of "+ data.name)
+		      NameOfMeasureColumns.add(data.name)
+		      ActionOnMeasureColumns.Add(aggregateType)
+		      usedMeasureColumns.add(data)
+		      
+		    end if
+		    
+		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ProcessRows()
+		  
+		  //
+		  // Process each row, handle dimensions and measures
+		  //
+		  
+		  // Do NOT call the overloaded method
+		  
+		  for row_index as integer = 0 to usedDimensionColumns(0).RowCount-1
+		    
+		    var WorkElement as clSeriesGrouperElement = TopNode
+		    
+		    var NextElement as clSeriesGrouperElement = nil
+		    
+		    for column_index as integer = 0 to usedDimensionColumns.LastIndex
+		      var tmp_value as variant
+		      
+		      if usedDimensionColumns(column_index) <> nil then
+		        tmp_value =  usedDimensionColumns(column_index).GetElement(row_index)
+		        
+		      end if
+		      
+		      if WorkElement.HasKey(tmp_value) then
+		        NextElement = WorkElement.value(tmp_value)
+		        
+		      else
+		        NextElement = new clSeriesGrouperElement
+		        WorkElement.value(tmp_value) = NextElement
+		        NextElement.MeasureCount = usedMeasureColumns.Count
+		        
+		      end if
+		      
+		      WorkElement = NextElement
+		      
+		    next
+		    
+		    NextElement.AddRowIndex(row_index)
+		    
+		    
+		    for column_index as integer = 0 to usedMeasureColumns.LastIndex
+		      var tmp_value as Double = usedMeasureColumns(column_index).GetElement(row_index)
+		      
+		      NextElement.AddMeasureValue(column_index, tmp_value)
+		      
+		      
+		    next
+		    
+		    
+		  next
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 
@@ -251,15 +335,11 @@ Protected Class clSeriesGrouper
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected TitleOfDimensionColumns() As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h1
 		Protected TitleOfMeasureColumns() As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected TopNode As clSeriesGrouperElement
+		Protected usedMeasureColumns() As clAbstractDataSerie
 	#tag EndProperty
 
 

@@ -1547,7 +1547,7 @@ Protected Class clDataTableTests
 		  
 		  var ctp as clAbstractDataSerie = t.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup))
 		  
-		  var g as new clSeriesGrouper(SerieArray(ccnt, ccity), array( _
+		  var g as new clSeriesGroupAndAggregate(SerieArray(ccnt, ccity), array( _
 		  cqtt:AggMode.Sum, _
 		  cup:AggMode.Min, _
 		  cup:AggMode.Max, _
@@ -1604,7 +1604,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "table integrity", nil, t) 
 		  
-		  var g as new clSeriesGrouper(SerieArray(ccnt, ccity))
+		  var g as new clSeriesGroupBy(SerieArray(ccnt, ccity))
 		  
 		  var table0 as clDataTable = new clDataTable("group", g.Flattened)
 		  
@@ -1666,7 +1666,7 @@ Protected Class clDataTableTests
 		  
 		  var ccnty as clAbstractDataSerie = tsales.GetColumn("Country")
 		  
-		  var gDistinct as new clSeriesGrouper(Array(ccnty, ccity))
+		  var gDistinct as new clSeriesGroupBy(Array(ccnty, ccity))
 		  
 		  var tDistinct  as clDataTable = new clDataTable("group", gDistinct.Flattened)
 		  

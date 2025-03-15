@@ -75,10 +75,12 @@ Inherits clLinearTransformer
 		  
 		  var t as clDataTable
 		  
-		  if self.GroupingDimensions.Count = 0 and self.GroupingMeasures.Count = 0 then
+		  self.GroupingDataSeries = source.GetColumns(GroupingDimensions, False)
+		  
+		  if self.GroupingDataSeries.Count = 0 and self.GroupingMeasures.Count = 0 then
 		    t = nil
 		    
-		  elseif self.GroupingDimensions.Count = 0 then 
+		  elseif self.GroupingDataSeries.Count = 0 then 
 		    t =  self.TransformToOneLiner(source)
 		    
 		  else
@@ -107,7 +109,7 @@ Inherits clLinearTransformer
 		  // Success status
 		  //
 		  
-		  if self.GroupingDimensions.Count > 0 then return nil
+		  if self.GroupingDataSeries.Count > 0 then return nil
 		  
 		  var r as new clDataRow
 		  
@@ -133,8 +135,7 @@ Inherits clLinearTransformer
 
 	#tag Method, Flags = &h21
 		Private Function TransformWithGrouper(source as clDataTable) As clDataTable
-		  
-		  var GroupingDataSeries() as clAbstractDataSerie = source.GetColumns(GroupingDimensions, False)
+		   
 		  var MeasureColumns() as pair
 		  
 		  
@@ -144,7 +145,7 @@ Inherits clLinearTransformer
 		    
 		  next
 		  
-		  var grp as new clSeriesGrouper(GroupingDataSeries,MeasureColumns)
+		  var grp as new clSeriesGroupAndAggregate(GroupingDataSeries,MeasureColumns)
 		  
 		  var res() as clAbstractDataSerie = grp.Flattened()
 		  
@@ -154,6 +155,10 @@ Inherits clLinearTransformer
 		End Function
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h21
+		Private GroupingDataSeries() As clAbstractDataSerie
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		GroupingDimensions() As string

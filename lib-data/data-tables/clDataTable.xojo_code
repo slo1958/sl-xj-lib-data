@@ -2042,7 +2042,8 @@ Implements TableColumnReaderInterface,Iterable
 		  var JoinKeyColumns() as clAbstractDataSerie = joinedtable.GetColumns(KeyFields, True)
 		  var JoinKeyColumnValues() as Variant
 		  
-		  var grp as new clSeriesGrouper(JoinKeyColumns)
+		  var grp as new clSeriesGroupBy(JoinKeyColumns)
+		  
 		  
 		  if mode = JoinMode.OuterJoin then
 		    rowmap.RemoveAll

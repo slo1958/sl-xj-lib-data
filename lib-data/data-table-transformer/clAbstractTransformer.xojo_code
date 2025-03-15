@@ -159,6 +159,7 @@ Protected Class clAbstractTransformer
 
 	#tag Method, Flags = &h0
 		Function Transform() As Boolean
+		  return False
 		  
 		End Function
 	#tag EndMethod
