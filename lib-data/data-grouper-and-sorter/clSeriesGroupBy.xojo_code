@@ -7,6 +7,8 @@ Protected Class clSeriesGroupBy
 		  
 		  self.TopNode = new clSeriesGrouperElement
 		  
+		  self.ExpectedMeasureCount = 0
+		  
 		  if PrepareOutput then self.ProcessRows()
 		End Sub
 	#tag EndMethod
@@ -36,7 +38,7 @@ Protected Class clSeriesGroupBy
 		    else
 		      NextElement = new clSeriesGrouperElement
 		      WorkElement.value(tmp_value) = NextElement
-		      NextElement.MeasureCount = TopNode.MeasureCount
+		      NextElement.MeasureCount = self.ExpectedMeasureCount
 		      
 		    end if
 		    
@@ -183,6 +185,15 @@ Protected Class clSeriesGroupBy
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub ProcessRow(RowTarget as clSeriesGrouperElement, row_Index as integer)
+		  
+		  rowTarget.AddRowIndex(row_index)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub ProcessRows()
 		  
@@ -207,7 +218,13 @@ Protected Class clSeriesGroupBy
 		      else
 		        NextElement = new clSeriesGrouperElement
 		        WorkElement.value(tmp_value) = NextElement
-		        NextElement.MeasureCount = 0
+		        if column_index = usedDimensionColumns.LastIndex then
+		          NextElement.MeasureCount = ExpectedMeasureCount
+		          
+		        else
+		          NextElement.MeasureCount = 0
+		          
+		        end if
 		        
 		      end if
 		      
@@ -215,9 +232,8 @@ Protected Class clSeriesGroupBy
 		      
 		    next
 		    
-		    NextElement.AddRowIndex(row_index)
+		    self.ProcessRow(NextElement, row_index)
 		    
-		     
 		  next
 		  
 		  
@@ -234,6 +250,10 @@ Protected Class clSeriesGroupBy
 		
 	#tag EndNote
 
+
+	#tag Property, Flags = &h1
+		Protected ExpectedMeasureCount As Integer
+	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected TitleOfDimensionColumns() As String

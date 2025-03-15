@@ -1,12 +1,23 @@
 #tag Class
-Protected Class clSeriesGroupAndAggregate
+Protected Class clSeriesGroupAndPivot
 Inherits clSeriesGroupBy
 	#tag Method, Flags = &h0
-		Sub Constructor(GroupingColumns() as clAbstractDataSerie, MeasureColumns() as Pair, PrepareOutput as Boolean = True)
+		Sub Constructor(GroupingColumns() as clAbstractDataSerie, MeasureColumns() as Pair, PivotingColumn as clAbstractDataSerie, PivotMapping() as Dictionary, PrepareOutput as Boolean = True)
+		  //
+		  //
+		  // Parameters
+		  //
+		  //
+		  // Pivoting column: Value from this column are used to pivot the measures
+		  // Pivot Mapping: a list of pairs, the left value is the number data serie, the right value is a dictionary with name of output measure
+		  // using the pivot value as key. If the pivot value does not exist, we look for an entry with key == ""
+		  //
 		  
 		  super.Constructor(GroupingColumns, false)
 		  
-		  PrepareMeasures(MeasureColumns)
+		  self.PivotColumn = PivotingColumn
+		  
+		  PrepareMeasures(MeasureColumns, PivotMapping)
 		  
 		  if PrepareOutput then ProcessRows
 		  
@@ -108,31 +119,43 @@ Inherits clSeriesGroupBy
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub PrepareMeasures(MeasureColumns() as pair)
+		Protected Sub PrepareMeasures(MeasureColumns() as pair, PivotMapping() as Dictionary)
 		  
-		  usedMeasureColumns.RemoveAll
+		  InputMeasureColumns().RemoveAll
 		  TitleOfMeasureColumns.RemoveAll
 		   
 		  ActionOnMeasureColumns.RemoveAll
 		  
-		  for each ColumnInfo as pair in MeasureColumns 
-		    if ColumnInfo.Left <> nil  and ColumnInfo.Left isa clNumberDataSerie then
+		  self.PivotDefinition = PivotMapping
+		  self.OutputColumnIndex = new Dictionary
+		  
+		  var running_column_index as integer = 0
+		  
+		  for idx as integer = 0 to MeasureColumns.LastIndex
+		    var aggregateType as mdEnumerations.AggMode = MeasureColumns(idx).Right
+		    var data as clNumberDataSerie =  clNumberDataSerie(MeasureColumns(idx).Left)
+		    var mapping as Dictionary = PivotMapping(idx)
+		    
+		    InputMeasureColumns().add(data)
+		    
+		    
+		    for each k as string in mapping.Keys
+		      OutputColumnIndex.value(mapping.value(k)) = running_column_index
+		      TitleOfMeasureColumns.Add(mapping.value(k))
+		      ActionOnMeasureColumns.add(aggregateType)
 		      
-		      var aggregateType as mdEnumerations.AggMode = ColumnInfo.Right
-		      var aggregLabel as  string = clBasicMath.AggLabel(aggregateType)
+		      running_column_index = running_column_index + 1
 		      
-		      var data as clNumberDataSerie =  clNumberDataSerie(ColumnInfo.Left)
-		      
-		      TitleOfMeasureColumns.add(aggregLabel  + " of "+ data.name)
-		       
-		      ActionOnMeasureColumns.Add(aggregateType)
-		      usedMeasureColumns.add(data)
-		      
-		    end if
+		    next
+		    
 		    
 		  next
 		  
-		  self.ExpectedMeasureCount = usedMeasureColumns.Count
+		  self.ExpectedMeasureCount = running_column_index
+		  
+		  
+		  return
+		  
 		End Sub
 	#tag EndMethod
 
@@ -141,14 +164,30 @@ Inherits clSeriesGroupBy
 		  // Calling the overridden superclass method.
 		  Super.ProcessRow(RowTarget, row_Index)
 		  
+		  var pivotValue as variant = self.PivotColumn.GetElement(row_Index)
 		  
-		  for column_index as integer = 0 to usedMeasureColumns.LastIndex
-		    var tmp_value as Double = usedMeasureColumns(column_index).GetElement(row_index)
+		  
+		  for column_index as integer = 0 to InputMeasureColumns.LastIndex
+		    var tmp_value as Double = InputMeasureColumns(column_index).GetElement(row_index)
+		    var mapping_dict as Dictionary = self.PivotDefinition(column_index)
 		    
-		    RowTarget.AddMeasureValue(column_index, tmp_value)
+		    var output_index as integer
+		    
+		    if mapping_dict.HasKey(pivotValue) then
+		      output_index = OutputColumnIndex.value(mapping_dict.Value(pivotValue))
+		      
+		    elseif mapping_dict.HasKey("") then
+		      output_index = OutputColumnIndex.value(mapping_dict.Value(""))
+		      
+		    else
+		      output_index = -1
+		    end if
+		    
+		    if output_index >= 0 then RowTarget.AddMeasureValue(output_index, tmp_value)
 		    
 		  next
 		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
@@ -169,11 +208,23 @@ Inherits clSeriesGroupBy
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected TitleOfMeasureColumns() As string
+		Protected InputMeasureColumns() As clAbstractDataSerie
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected usedMeasureColumns() As clAbstractDataSerie
+		Protected OutputColumnIndex As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected PivotColumn As clAbstractDataSerie
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected PivotDefinition() As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected TitleOfMeasureColumns() As string
 	#tag EndProperty
 
 

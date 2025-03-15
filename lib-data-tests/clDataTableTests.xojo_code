@@ -2247,6 +2247,65 @@ Protected Class clDataTableTests
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub test_calc_044(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var table0 As New clDataTable("mytable")
+		  
+		  call table0.AddColumns(Array("country","product"))
+		  
+		  call table0.AddColumn(new clNumberDataSerie("sales"))
+		  call table0.AddColumn(new clNumberDataSerie("quantity"))
+		  
+		  
+		  table0.AddRow(Array("France","P1",1100, 50))
+		  table0.AddRow(Array("France","P2",1200, 60))
+		  table0.AddRow(Array("Belgique","P1",1300, 70))
+		  table0.AddRow(Array("USA","P3",1400, 80))
+		  table0.AddRow(Array("Belgique","P3",1500, 90))
+		  table0.AddRow(Array("USA","P2",1600, 100))
+		  table0.AddRow(Array("France","P2",1700, 95))
+		  
+		  
+		  
+		  var g1() as clAbstractDataSerie = array(table0.GetColumn("country"))
+		  var pv as clAbstractDataSerie = table0.GetColumn("product")
+		  
+		  var pr() as pair = array(table0.GetColumn("sales"): mdEnumerations.AggMode.Sum, table0.GetColumn("quantity"): mdEnumerations.AggMode.Sum)
+		  
+		  var mp() as Dictionary
+		  mp.add(new Dictionary("P1":"P1_Sales", "P2":"P2_Sales", "":"Other_sales"))
+		  mp.add(new Dictionary("P1":"P1_Qtty", "P2":"P2_Qtty", "":"Other_Qtty"))
+		  
+		  var cg1 as new clSeriesGroupAndPivot(g1, pr, pv, mp)
+		  
+		  
+		  var table1 as new clDataTable("outptu", cg1.Flattened)
+		  
+		  var expected_t1 as new clDataTable("results", SerieArray( _
+		  new clDataSerie("Country") _
+		  ,new clNumberDataSerie("P1_Sales") _
+		  ,new clNumberDataSerie("P2_Sales") _
+		  ,new clNumberDataSerie("Other_Sales") _
+		  ,new clNumberDataSerie("P1_Qtty") _
+		  ,new clNumberDataSerie("P2_Qtty") _
+		  ,new clNumberDataSerie("Other_Qtty") _
+		  ))
+		  
+		  expected_t1.AddRow(array("France", 1100,2900,0,50,155,0))
+		  expected_t1.AddRow(array("Belgique", 1300,0,1500,70,0,90))
+		  expected_t1.AddRow(array("USA", 0,1600,1400,0,100,80))
+		  
+		  call check_table(log,"T1", expected_t1, table1)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  

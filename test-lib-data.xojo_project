@@ -106,6 +106,7 @@ Folder=data-grouper-and-sorter;lib-data/data-grouper-and-sorter;&h0000000029DCEF
 Class=clSeriesGrouperElement;lib-data/data-grouper-and-sorter/clSeriesGrouperElement.xojo_code;&h000000001E0FDFFF;&h0000000029DCEFFF;false
 Class=clSeriesGroupBy;lib-data/data-grouper-and-sorter/clSeriesGroupBy.xojo_code;&h00000000703BB7FF;&h0000000029DCEFFF;false
 Class=clSeriesGroupAndAggregate;lib-data/data-grouper-and-sorter/clSeriesGroupAndAggregate.xojo_code;&h000000003D5877FF;&h0000000029DCEFFF;false
+Class=clSeriesGroupAndPivot;lib-data/data-grouper-and-sorter/clSeriesGroupAndPivot.xojo_code;&h0000000074367FFF;&h0000000029DCEFFF;false
 Folder=data-parsers-and-formatter;lib-data/data-parsers-and-formatter;&h0000000013951FFF;&h0000000020C837FF;false
 Interface=IntegerParserInterface;lib-data/data-series/IntegerParserInterface.xojo_code;&h000000006A94A7FF;&h00000000054067FF;false
 Interface=NumberParserInterface;lib-data/data-series/NumberParserInterface.xojo_code;&h000000006A6627FF;&h00000000054067FF;false
