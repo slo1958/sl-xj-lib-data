@@ -8,7 +8,7 @@ Inherits clLinearTransformer
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, prmColumnsToRetain() as string, prmPivotColumn as string, prmPivotValues() as string, prmColumnsToPivot() as string)
 		  // Calling the overridden superclass constructor.
-		   
+		  
 		  super.Constructor(MainTable)
 		  
 		  self.ColumnsToRetain = prmColumnsToRetain
@@ -23,7 +23,7 @@ Inherits clLinearTransformer
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, prmColumnsToRetain() as string, prmPivotColumn as string, prmPivotValues() as string, prmColumnsToPivot() as string, prmColumnNameFunction as ColumnNameGenerator)
 		  // Calling the overridden superclass constructor.
-		   
+		  
 		  super.Constructor(MainTable)
 		  
 		  self.ColumnsToRetain = prmColumnsToRetain
@@ -54,8 +54,8 @@ Inherits clLinearTransformer
 		  // Calling the overridden superclass method.
 		  
 		  var source as clDataTable = self.GetTable(self.cInputConnectionName)
-		   
-		   var dimensionColumns() as clAbstractDataSerie = source.GetColumns(ColumnsToRetain, false)
+		  
+		  var dimensionColumns() as clAbstractDataSerie = source.GetColumns(ColumnsToRetain, false)
 		  var pivotColumn as clAbstractDataSerie = source.GetColumn(PivotColumnName)
 		  
 		  var tempMeasureColumns() as clAbstractDataSerie = source.GetColumns(ColumnsToPivot, false)
@@ -154,11 +154,11 @@ Inherits clLinearTransformer
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="ColumnsToRetain()"
+			Name="PivotColumnName"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
+			Type="string"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

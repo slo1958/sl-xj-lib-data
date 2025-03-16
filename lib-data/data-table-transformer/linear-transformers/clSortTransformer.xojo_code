@@ -141,7 +141,11 @@ Inherits clLinearTransformer
 			Group="Behavior"
 			InitialValue=""
 			Type="SortOrder"
-			EditorType=""
+			EditorType="Enum"
+			#tag EnumValues
+				"0 - Ascending"
+				"1 - Descending"
+			#tag EndEnumValues
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

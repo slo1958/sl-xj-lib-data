@@ -1722,6 +1722,62 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ExtractColumns(ColumnNames() as string) As clDataTable
+		  //
+		  // Create a new table with cloned columns from source table
+		  // Use SelectColumns() method to create a logical table
+		  //
+		  // Paramters:
+		  // - ColumnNames() : name of columns to duplicate in new table
+		  //
+		  // Returns
+		  // - New table
+		  //
+		  
+		  var res As New clDataTable("extract " + Self.Name)
+		  
+		  res.addmetadata("source", self.Name)
+		  res.RowIndexColumn = Self.RowIndexColumn.Clone
+		  
+		  res.link_to_parent = nil
+		  
+		  For Each column_name As String In ColumnNames
+		    var tmp_column As clAbstractDataSerie = Self.GetColumn(column_name)
+		    
+		    If tmp_column <> Nil Then
+		      call res.AddColumn(tmp_column.Clone())
+		      
+		    else
+		      AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn, self.Name, name)
+		      
+		    End If
+		    
+		  Next
+		  
+		  Return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ExtractColumns(paramarray ColumnNames as string) As clDataTable
+		  //
+		  // Create a new table with cloned columns from source table
+		  // Use SelectColumns() method to create a logical table
+		  //
+		  // Paramters:
+		  // - ColumnNames() : name of columns to duplicate in new table
+		  //
+		  // Returns
+		  // - New table
+		  //
+		  
+		  Return ExtractColumns(ColumnNames)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function FilteredOn(pBooleanSerie as clBooleanDataSerie) As clDataTableFilter
 		  //  
 		  //  Creates a data table filter (iterable) using a column as a mask,  the column (data serie)  is passed as parameter. 
@@ -2115,7 +2171,6 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  case JoinMode.OuterJoin
 		    // For outer join, add missing rows from joined table
-		    // TODO
 		    
 		    for index as integer = 0 to rowmap.LastIndex
 		      if not rowmap(index) then 
@@ -3144,13 +3199,13 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Lookup(TableToJoin As clDataTable, KeyFieldMapping As Dictionary, LookupFieldMapping As Dictionary, JoinSuccessField As string = "") As Boolean
+		Function Lookup(LookupSourceTable As clDataTable, KeyFieldMapping As Dictionary, LookupFieldMapping As Dictionary, JoinSuccessField As string = "") As Boolean
 		  //
 		  // Lookup data
 		  // Similar to left join or an Excel Vlookup()
 		  //
 		  // Paramters
-		  // TableToJoin  (clDataTable): table used as lookup source
+		  // LookupSourceTable  (clDataTable): table used as lookup source
 		  // KeyFieldapping: list of fields used as lookup keys as a dictionary. For each dictionary entry,  key is expected in the current table and value is expected in the joined table
 		  // LookUpFieldMaping: Field to 'bring back' from the lookup table as a dictionary. For each dictionary entry,  key is expected in the current table and value is expected in the joined table
 		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
@@ -3178,20 +3233,20 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  
-		  return internal_LeftJoin(TableToJoin, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields, JoinSuccessField)
+		  return internal_LeftJoin(LookupSourceTable, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields, JoinSuccessField)
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Lookup(TableToJoin as clDataTable, KeyFields() as string, LookupFields() as string, JoinSuccessField as string = "") As Boolean
+		Function Lookup(LookupSourceTable as clDataTable, KeyFields() as string, LookupFields() as string, JoinSuccessField as string = "") As Boolean
 		  //
 		  // Lookup data
 		  // Similar to left join or an Excel Vlookup()
 		  //
 		  // Paramters
-		  // TableToJoin  (clDataTable): table used as lookup source
+		  // LookupSourceTable  (clDataTable): table used as lookup source
 		  // KeyFields: list of fields used as lookup keys, field names must match
 		  // LookUpFields: Field to 'bring back' from the lookup table
 		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
@@ -3216,7 +3271,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  return internal_LeftJoin(TableToJoin, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields,JoinSuccessField)
+		  return internal_LeftJoin(LookupSourceTable, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields,JoinSuccessField)
 		  
 		  
 		End Function
@@ -3389,7 +3444,19 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SelectColumns(column_names() as string) As clDataTable
+		Function SelectColumns(ColumnNames() as string) As clDataTable
+		  //
+		  // Create a new logical table (view) with  columns from source table
+		  // Use ExtractColumns() method to create a new table with cloned columns
+		  //
+		  // Paramters:
+		  // - ColumnNames() : name of columns to show in new table
+		  //
+		  // Returns
+		  // - New table
+		  //
+		  
+		  
 		  var res As New clDataTable("select " + Self.Name)
 		  
 		  res.addmetadata("source", self.Name)
@@ -3399,7 +3466,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  res.link_to_parent = Self
 		  
-		  For Each column_name As String In column_names
+		  For Each column_name As String In ColumnNames
 		    var tmp_column As clAbstractDataSerie = Self.GetColumn(column_name)
 		    
 		    If tmp_column <> Nil Then
@@ -3419,8 +3486,19 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SelectColumns(paramarray column_names as string) As clDataTable
-		  Return SelectColumns(column_names)
+		Function SelectColumns(paramarray ColumnNames as string) As clDataTable
+		  //
+		  // Create a new logical table (view) with  columns from source table
+		  // Use ExtractColumns() method to create a new table with cloned columns
+		  //
+		  // Paramters:
+		  // - ColumnNames() as paramarray : name of columns to show in new table
+		  //
+		  // Returns
+		  // - New table
+		  //
+		  
+		  Return SelectColumns(ColumnNames)
 		End Function
 	#tag EndMethod
 
@@ -3659,47 +3737,6 @@ Implements TableColumnReaderInterface,Iterable
 		
 		Available on: https://github.com/slo1958/sl-xj-lib-data.git
 		
-	#tag EndNote
-
-	#tag Note, Name = Group by
-		
-		option 1
-		
-		creates a data table with n+1 column, where n is the number of fields to group by 
-		
-		
-		the elements in column n+1 are Data serie
-		
-		for each data serie
-		
-		the name of the dataserie is the serialized json from fieldname/fieldvalue from the group by fields
-		the elements of the dataserie are record indexes in the parent dataset where we have matching key fields
-		!! need to retain the source table and source table structure in order to do operations on the other fields
-		
-		
-		option 2
-		creates a data table with n + m columns, where n is the number of fields to group by and m is the number of fields to retain
-		
-		
-		the elements in columns n+1 to n+m are data series
-		the name of the dataseries is tdb 
-		the elements of the dataserie are values from the fields to retain related to the grouping fields
-		
-		
-		
-		
-		option 3
-		creates a data table with n + m columns, where n is the number of fields to group by and m is the number of results 
-		passing four arguments:
-		
-		- fields to group by
-		- fields to count
-		- fields to sum
-		- fields to average
-		
-		
-		
-		 
 	#tag EndNote
 
 	#tag Note, Name = License

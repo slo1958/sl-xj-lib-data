@@ -15,6 +15,26 @@ Inherits clDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Clone(NewName as string = "") As clDataSerieRowID
+		  
+		  var tmp As New clDataSerieRowID(StringWithDefault(NewName, self.name))
+		  
+		  self.CloneInfo(tmp)
+		  
+		  tmp.addmetadata("source","clone from " + self.FullName)
+		  
+		  For Each v As variant In Self.items
+		    tmp.AddElement(v)
+		    
+		  Next
+		  
+		  Return tmp
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(the_label as string)
 		  // Calling the overridden superclass constructor.
 		  Super.Constructor(the_label)

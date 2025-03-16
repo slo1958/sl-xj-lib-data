@@ -2247,8 +2247,11 @@ Protected Class clDataTableTests
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Sub test_calc_044(log as LogMessageInterface)
+	#tag Method, Flags = &h0
+		Sub test_calc_044(log as LogMessageInterface)
+		  //
+		  // Test clGroupAndPivot, direct calls
+		  //
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -2306,8 +2309,11 @@ Protected Class clDataTableTests
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h1
-		Protected Sub test_calc_045(log as LogMessageInterface)
+	#tag Method, Flags = &h0
+		Sub test_calc_045(log as LogMessageInterface)
+		  //
+		  // Test the pivot transformer
+		  //
 		  
 		  log.start_exec(CurrentMethodName)
 		  
@@ -2328,11 +2334,11 @@ Protected Class clDataTableTests
 		  table0.AddRow(Array("France","P2",1700, 95))
 		  
 		  
-		  var cg1 as new clPivotTransformer(table0, array("country"), "product", array("P1","P2",""), array("sales","quantity"))
+		  var pTransformer as new clPivotTransformer(table0, array("country"), "product", array("P1","P2",""), array("sales","quantity"))
 		  
-		  call cg1.Transform()
+		  call pTransformer.Transform()
 		  
-		  var table1 as clDataTable  = cg1.GetOutputTable()
+		  var table1 as clDataTable  = pTransformer.GetOutputTable()
 		  
 		  var expected_t1 as new clDataTable("results", SerieArray( _
 		  new clDataSerie("Country") _
@@ -2349,6 +2355,67 @@ Protected Class clDataTableTests
 		  expected_t1.AddRow(array("USA", 0,1600,1400,0,100,80))
 		  
 		  call check_table(log,"T1", expected_t1, table1)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_046(log as LogMessageInterface)
+		  //
+		  // Test select columns and extract columns
+		  //
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var rtst As clDataRow
+		  
+		  var my_table1 As New clDataTable("T1")
+		  
+		  rtst = New clDataRow
+		  rtst.SetCell("aaa",1234)
+		  rtst.SetCell("bbb","abcd")
+		  rtst.SetCell("ccc",123.456)
+		  
+		  my_table1.AddRow(rtst)
+		  
+		  rtst = New clDataRow
+		  rtst.SetCell("aaa",1235)
+		  rtst.SetCell("bbb","abce")
+		  rtst.SetCell("ddd",987.654)
+		  
+		  my_table1.AddRow(rtst)
+		  
+		  var my_table2 As clDataTable  = my_table1.SelectColumns("aaa","bbb","ddd")
+		  
+		  var my_table3 As clDataTable  = my_table1.ExtractColumns("aaa","bbb","ddd")
+		  
+		  var v() as variant =  VariantArray(123, 456)
+		  call my_table1.SetColumnValues("ddd",v)
+		  
+		  call check_table(log, "my_table 1 integrity", nil, my_table1)
+		  call check_table(log, "my_table 2 integrity", nil, my_table2)
+		  call check_table(log, "my_table 2 integrity", nil, my_table3)
+		  
+		  var exp_table1  as new clDataTable("EXP1")
+		  exp_table1.AddRow(New Dictionary("aaa":1234, "bbb":"abcd","ccc":123.456,"ddd":123))
+		  exp_table1.AddRow(New Dictionary("aaa":1235, "bbb":"abce","ccc":nil,"ddd":456))
+		  
+		  var exp_table2 as new clDataTable("EXP2")
+		  exp_table2.AddRow(New Dictionary("aaa":1234, "bbb":"abcd","ddd":123))
+		  exp_table2.AddRow(New Dictionary("aaa":1235, "bbb":"abce","ddd":456))
+		  
+		  var exp_table3 as new clDataTable("EXP2")
+		  exp_table3.AddRow(New Dictionary("aaa":1234, "bbb":"abcd","ddd":nil))
+		  exp_table3.AddRow(New Dictionary("aaa":1235, "bbb":"abce","ddd":987.654))
+		  
+		  
+		  call check_table(log, "T1", my_table1, exp_table1)
+		  call check_table(log, "T1", my_table2, exp_table2)
+		  call check_table(log, "T1", my_table3, exp_table3)
+		  
 		  
 		  log.end_exec(CurrentMethodName)
 		  
