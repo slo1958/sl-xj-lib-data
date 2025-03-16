@@ -136,6 +136,8 @@ Protected Class clLibDataExample
 		  //
 		  var table3 As clDataTable = table0.GroupBy(StringArray("Country","City"), StringArray)
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  //
 		  // Send the tables to the viewer
 		  //
@@ -192,6 +194,8 @@ Protected Class clLibDataExample
 		  call table4.AddRows(new clDataTableRowReader(table2))
 		  table4.rename("Using row source")
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  //
 		  // Send the tables to the viewer
 		  //
@@ -230,6 +234,7 @@ Protected Class clLibDataExample
 		  
 		  var view1 As clDataTable = table0.SelectColumns(array("Country", "City", "Sales"))
 		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  //
 		  // Send the tables to the viewer
@@ -276,6 +281,8 @@ Protected Class clLibDataExample
 		  table0.AddRow(Array("aaa1","bbb1","ccc1"))
 		  table0.AddRow(Array("aaa2","bbb2","ccc2"))
 		  table0.AddRow(Array("aaa3","bbb3","ccc3"))
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  //
 		  // Send the table to the viewer
@@ -333,6 +340,8 @@ Protected Class clLibDataExample
 		  
 		  call table0.AddColumn(new clBooleanDataSerie("is_belgium",  table0.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")))
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  //
 		  // Send the table to the viewer
 		  //
@@ -387,6 +396,8 @@ Protected Class clLibDataExample
 		  table0.AddColumn(table0.GetNumberColumn("unit_price") * table0.GetNumberColumn("quantity")).rename("sales")
 		  
 		  call table0.AddColumn(clNumberDataSerie(table0.GetColumn("unit_price")) * clNumberDataSerie(table0.GetColumn("quantity")))
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  //
 		  // Send the table to the viewer
@@ -461,6 +472,8 @@ Protected Class clLibDataExample
 		  //
 		  call table0.SetColumnValues("is_europe", table0.GetIntegerColumn("is_france") +clIntegerDataSerie( table0.GetColumn("is_belgium")), false)
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  //
 		  // Send the table to the viewer
 		  //
@@ -525,6 +538,8 @@ Protected Class clLibDataExample
 		  // Obtain the validation results as a data table
 		  //
 		  var table1 As  clDataTable = tableValid.GetResults()
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  //
 		  // Send the tables to the viewer
@@ -591,6 +606,8 @@ Protected Class clLibDataExample
 		    table1.AddRow(tmp_row)
 		  next
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  //
 		  // Send the table to the viewer
 		  //
@@ -646,6 +663,8 @@ Protected Class clLibDataExample
 		  // Get the distinct combinations of country and city
 		  //
 		  var table1 As clDataTable = table0.GroupBy(array("country", "city"))
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  //
 		  // Send the tables to the viewer
@@ -718,6 +737,8 @@ Protected Class clLibDataExample
 		  //
 		  var table4 as clDataTable  = table2.groupby(array("country"), array("Sales":aggMode.Sum,"Sales":aggMode.Max))
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  //
 		  // Send the tables to the viewer
 		  //
@@ -741,6 +762,7 @@ Protected Class clLibDataExample
 		    return nil
 		    
 		  end if
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -809,6 +831,8 @@ Protected Class clLibDataExample
 		  // Add a new column with clipped sales
 		  call table0.AddColumn(col_sales.ClippedByRange(1100, 1500) )
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  //
 		  // Send the tables to the viewer
 		  //
@@ -855,6 +879,8 @@ Protected Class clLibDataExample
 		  var c7 as clStringDataSerie = c1.ToString("yyyy-MM")
 		  
 		  var table0 as new clDataTable("output", SerieArray(c1, c2, c3, c4, c5, c6, c7))
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  return array(table0)
 		  
@@ -909,6 +935,8 @@ Protected Class clLibDataExample
 		  // update table
 		  call table0.AddColumns(SerieArray(delay, flagged, total_penaty))
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  return array(table0)
 		  
 		  
@@ -931,8 +959,8 @@ Protected Class clLibDataExample
 		    return nil
 		    
 		  end if
-		  log.start_exec(CurrentMethodName)
 		  
+		  log.start_exec(CurrentMethodName)
 		  
 		  var db as new SQLiteDatabase
 		  
@@ -994,51 +1022,53 @@ Protected Class clLibDataExample
 		  db.AddRow("test3", dbrow)
 		  
 		  
-		  var my_table1 as new clDataTable(new clDBReader(db.SelectSql("select * from test1")))
-		  my_table1.rename("test2")
-		  my_table1.save(new clDBWriter(new clSqliteDBAccess(db)))
+		  var table1 as new clDataTable(new clDBReader(db.SelectSql("select * from test1")))
+		  table1.rename("test2")
+		  table1.save(new clDBWriter(new clSqliteDBAccess(db)))
 		  
-		  var my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
+		  var table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
 		  
-		  call check_table(log,"Test1/Test2", my_table1, my_table2)
-		  
-		  
-		  
-		  var my_table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3")))
-		  my_table3.rename("test4")
-		  my_table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
-		  
-		  var my_table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
-		  
-		  call check_table(log,"Test3/Test4", my_table3, my_table4)
+		  call check_table(log,"Test1/Test2", table1, table2)
 		  
 		  
-		  var my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
 		  
-		  var my_table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
+		  var table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3")))
+		  table3.rename("test4")
+		  table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  
+		  var table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
+		  
+		  call check_table(log,"Test3/Test4", table3, table4)
+		  
+		  
+		  var table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
+		  
+		  var table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
 		  
 		  // create expected ds
-		  var my_table7 as clDataTable = my_table5.clone
-		  my_table7. AddColumnsData(my_table6)
+		  var table7 as clDataTable = table5.clone
+		  table7. AddColumnsData(table6)
 		  
 		  
 		  // add rows from test3 to test2
-		  my_table6.rename("test2")
-		  my_table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  table6.rename("test2")
+		  table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
 		  
-		  var my_table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
+		  var table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
 		  
-		  call check_table(log,"Test7/Test8", my_table7, my_table8)
+		  call check_table(log,"Test7/Test8", table7, table8)
 		  
-		  my_table2.rename("test2:after save/load test1")
-		  my_table4.rename("test4:after save/load test3")
+		  table2.rename("test2:after save/load test1")
+		  table4.rename("test4:after save/load test3")
 		  
-		  my_table7.rename("loaded from merged in memory data tables")
-		  my_table8.rename("loaded from merged db tables")
+		  table7.rename("loaded from merged in memory data tables")
+		  table8.rename("loaded from merged db tables")
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  
-		  return array(my_table1, my_table2, my_table3, my_table4, my_table7, my_table8)
+		  return array(table1, table2, table3, table4, table7, table8)
 		  
 		  
 		End Function
@@ -1078,6 +1108,8 @@ Protected Class clLibDataExample
 		  
 		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  var prop0 as clDataTable = table0.GetPropertiesAsTable
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  return array(table0, struc0, prop0)
 		  
@@ -1132,6 +1164,8 @@ Protected Class clLibDataExample
 		  var view0 As clDataTable = table0.SelectColumns(array("Country", "City", "Sales"))
 		  
 		  var view1 As clDataTable = table1.SelectColumns(array("Country", "City", "Sales"))
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  return array(table0, table1, view0, view1)
 		  
@@ -1199,6 +1233,8 @@ Protected Class clLibDataExample
 		    
 		  next
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  return ret_tables
 		  
 		  
@@ -1251,6 +1287,8 @@ Protected Class clLibDataExample
 		  ret_tables.Add(data_table)
 		  ret_tables.add(stat_table)
 		  ret_tables.Add(struc_table)
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  return ret_tables
 		  
@@ -1310,6 +1348,8 @@ Protected Class clLibDataExample
 		  
 		  clBooleanDataSerie(table0.GetColumn("is_france")).SetStringFormat("≠ France","= France")
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  return array(table0)
 		  
 		End Function
@@ -1347,13 +1387,13 @@ Protected Class clLibDataExample
 		  fld_file2  = fld_folder.Child("myfile4_B_tab.txt") 
 		  fld_file3  = fld_folder.Child("myfile4_C_tab.txt") 
 		  
-		  var my_table as new clDataTable("consolidated")
-		  call my_table.AddColumn(new clStringDataSerie("Alpha"))
-		  call my_table.AddColumn(new clIntegerDataSerie("Beta"))
-		  call my_table.AddColumn(new clNumberDataSerie("Delta"))
-		  call my_table.AddColumn(new clNumberDataSerie("Gamma"))
-		  call my_table.AddColumn(new clIntegerDataSerie("Group"))
-		  call my_table.AddColumn(new clStringDataSerie(clDataTable.LoadedDataSourceColumn))
+		  var table as new clDataTable("consolidated")
+		  call table.AddColumn(new clStringDataSerie("Alpha"))
+		  call table.AddColumn(new clIntegerDataSerie("Beta"))
+		  call table.AddColumn(new clNumberDataSerie("Delta"))
+		  call table.AddColumn(new clNumberDataSerie("Gamma"))
+		  call table.AddColumn(new clIntegerDataSerie("Group"))
+		  call table.AddColumn(new clStringDataSerie(clDataTable.LoadedDataSourceColumn))
 		  
 		  var dct_mapping_file3 as new Dictionary
 		  dct_mapping_file3.value("Un") = "Alpha"
@@ -1366,15 +1406,15 @@ Protected Class clLibDataExample
 		  var source_table2 as new clDataTable(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
 		  var source_table3 as new clDataTable(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))))
 		  
-		  call my_table.AddRows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  call table.AddRows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
-		  call my_table.AddRows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
+		  call table.AddRows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
 		  
-		  call my_table.AddRows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
+		  call table.AddRows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
-		  return array(my_table, source_table1, source_table2, source_table3)
+		  return array(table, source_table1, source_table2, source_table3)
 		  
 		End Function
 	#tag EndMethod
@@ -1442,6 +1482,8 @@ Protected Class clLibDataExample
 		  
 		  clBooleanDataSerie(table0.GetColumn("is_france")).SetStringFormat("≠ France","= France")
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  return array(table0, rangeTable)
 		  
 		End Function
@@ -1494,6 +1536,7 @@ Protected Class clLibDataExample
 		  
 		  var table0 as new clDataTable("Example", SerieArray(c1, c2, expected_c2, c3, expected_c3))
 		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  return array(table0)
 		  
@@ -1568,6 +1611,8 @@ Protected Class clLibDataExample
 		  
 		  var tSumSales2 as clDataTable = tsales.GroupBy(StringArray("Country","Zorglub","City"), StringArray("Sales","Quantity"))
 		  tSumSales2.Rename("Sum sales 2")
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  return array(tsales, tcountries, tDistinct, tSumSales1, tSumSales2)
 		  
@@ -1805,6 +1850,8 @@ Protected Class clLibDataExample
 		  var tSumSales2 as clDataTable = tsales.GroupBy(StringArray("Country","Zorglub","City"), StringArray("Sales","Quantity"))
 		  tSumSales2.Rename("Sum sales 2")
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  return array(tsales, tcountries, tDistinct, tSumSales1, tSumSales2)
 		  
 		  
@@ -1842,6 +1889,8 @@ Protected Class clLibDataExample
 		    System.DebugLog("CategoryGroup=" + row.GetCell("Category") + " Sales = " + format(row.GetCell("Sum of Sales").DoubleValue, "-####0.###"))
 		    
 		  next
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  return array(SourceTable, GroupedTable)
 		  
@@ -1890,6 +1939,8 @@ Protected Class clLibDataExample
 		    
 		  next
 		  
+		  log.end_exec(CurrentMethodName)
+		  
 		  return array(SourceTable, GroupedTable)
 		End Function
 	#tag EndMethod
@@ -1929,6 +1980,8 @@ Protected Class clLibDataExample
 		  
 		  var GroupedTable as clDataTable = SourceTable.Groupby(array("Category"), array("Sales", "Taxes"))
 		  GroupedTable.Rename("Sales per category")
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		  return array(SourceTable, GroupedTable)
 		End Function

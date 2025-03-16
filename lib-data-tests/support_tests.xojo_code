@@ -96,11 +96,12 @@ Protected Module support_tests
 		  Var t As Introspection.TypeInfo
 		  
 		  
-		  var d as   Dictionary = GetTestMethods(c, mask)
+		  
+		  var MethodInfoDict as   Dictionary = GetTestMethods(c, mask)
 		  
 		  var s() as string
 		  
-		  for each k as string in d.keys
+		  for each k as string in MethodInfoDict.keys
 		    s.Add(k)
 		    
 		  next
@@ -110,7 +111,7 @@ Protected Module support_tests
 		  t = Introspection.GetType(c)
 		  
 		  for each k as string in s
-		    var met as Introspection.MethodInfo  = Introspection.MethodInfo (d.value(k))
+		    var met as Introspection.MethodInfo  = Introspection.MethodInfo (MethodInfoDict.value(k))
 		    var v() as Variant
 		    v.Add(logwriter)
 		    met.Invoke(c, v)

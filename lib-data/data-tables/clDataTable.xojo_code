@@ -2114,7 +2114,6 @@ Implements TableColumnReaderInterface,Iterable
 		  var FoundRowsInJoinedTable as Boolean = false
 		  
 		  for each row as clDataRow in mastertable
-		    var rowindex as integer = -1 // here get row index
 		    JoinKeyColumnValues.RemoveAll
 		    
 		    for each col as clAbstractDataSerie  in JoinKeyColumns
@@ -3081,8 +3080,6 @@ Implements TableColumnReaderInterface,Iterable
 		    var lookupKeyParts() as string 
 		    var lookupkey as string
 		    var row as clDataRow
-		    
-		    var datavalues() as variant
 		    
 		    for each c as clAbstractDataSerie in keyColumns
 		      lookupKeyParts.Add(c.GetElementAsString(i))

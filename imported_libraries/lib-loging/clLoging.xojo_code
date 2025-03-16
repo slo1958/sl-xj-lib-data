@@ -1,6 +1,6 @@
 #tag Class
 Protected Class clLoging
-Implements itfLogingWriter,  itfLogingInterface
+Implements itfLogingWriter,itfLogingInterface
 	#tag Method, Flags = &h21
 		Private Sub AddLogEntry(MessageSeverity as string, MessageTime as string, MessageSource as string, MessageText as string)
 		  //
@@ -230,26 +230,6 @@ Implements itfLogingWriter,  itfLogingInterface
 		  Return tmp_return
 		  
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub internal_writeitem_old2(MessageSeverity as string, MessageSource as string, MessageText as string)
-		  
-		  if self.AcceptedSeverity.Value(MessageSeverity) then
-		    
-		    var TimeStamp As String  = DateTime.Now.SQLDateTime
-		    
-		    For Each Writer As  internals.clLogingWriterEntry In writers
-		      If Writer.enabled Then
-		        Writer.log_writer.AddLogEntry(MessageSeverity, TimeStamp, MessageSource, MessageText)
-		        
-		      End If
-		      
-		    Next
-		    
-		  end if
-		  
-		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21

@@ -165,6 +165,19 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 
+	#tag Note, Name = Description
+		
+		A  transformer is a transformer that takes a set of tables as input and produces a set of tables.
+		
+		Two specific variants:
+		
+		- linear transformer: one input and one output, for example sorting, grouping, ...
+		- TwoToOne and TwoToTwo transformers: two inputs and one or two outputs, for example joins, table based filter, lookup, ... 
+		
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h1
 		Protected InputConnections() As string
 	#tag EndProperty

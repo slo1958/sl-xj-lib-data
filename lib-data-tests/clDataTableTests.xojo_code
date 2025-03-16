@@ -5,7 +5,7 @@ Protected Class clDataTableTests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var my_table As New clDataTable("T1")
+		  var table As New clDataTable("T1")
 		  
 		  var rtst As clDataRow
 		  
@@ -14,14 +14,14 @@ Protected Class clDataTableTests
 		  rtst.SetCell("bbb","abcd")
 		  rtst.SetCell("ccc",123.456)
 		  
-		  my_table.AddRow(rtst)
+		  table.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",1235)
 		  rtst.SetCell("bbb","abce")
 		  rtst.SetCell("ddd",987.654)
 		  
-		  my_table.AddRow(rtst)
+		  table.AddRow(rtst)
 		  
 		  var col1 as new clIntegerDataSerie("aaa", 1234, 1235)
 		  var col2 as new clStringDataSerie("bbb", "abcd", "abce")
@@ -29,9 +29,9 @@ Protected Class clDataTableTests
 		  var col4 as new clNumberDataSerie("ddd", nil, 987.654)
 		  
 		  
-		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
+		  var expected_table as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
-		  call check_table(log, "T1", texpected, my_table)
+		  call check_table(log, "T1", expected_table, table)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -45,52 +45,52 @@ Protected Class clDataTableTests
 		  
 		  var rtst As clDataRow
 		  
-		  var my_table1 As New clDataTable("T1")
+		  var table1 As New clDataTable("T1")
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",1234)
 		  rtst.SetCell("bbb","abcd")
 		  rtst.SetCell("ccc",123.456)
 		  
-		  my_table1.AddRow(rtst)
+		  table1.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",1235)
 		  rtst.SetCell("bbb","abce")
 		  rtst.SetCell("ddd",987.654)
 		  
-		  my_table1.AddRow(rtst)
+		  table1.AddRow(rtst)
 		  
-		  var my_table2 As New clDataTable("T2")
+		  var table2 As New clDataTable("T2")
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",81234)
 		  rtst.SetCell("bbb","zabcd")
 		  rtst.SetCell("zccc",8123.456)
 		  
-		  my_table2.AddRow(rtst)
+		  table2.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",81235)
 		  rtst.SetCell("bbb","zabce")
 		  rtst.SetCell("zddd",8987.654)
 		  
-		  my_table2.AddRow(rtst)
+		  table2.AddRow(rtst)
 		  
-		  my_table1.AddColumnsData(my_table2)
+		  table1.AddColumnsData(table2)
 		  
 		  
-		  var my_table3 As clDataTable = my_table1.SelectColumns(Array("aaa","zccc"))
+		  var table3 As clDataTable = table1.SelectColumns(Array("aaa","zccc"))
 		  
-		  call check_table(log, "my_table 1 integrity", nil, my_table1)
-		  call check_table(log, "my_table 2 integrity", nil, my_table2)
+		  call check_table(log, "table 1 integrity", nil, table1)
+		  call check_table(log, "table 2 integrity", nil, table2)
 		  
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235, 81234, 81235)
-		  var col2 as new clDataSerie("zccc", nil, nil, 8123.456, nil)
-		  var texpected as new clDataTable("select T1", SerieArray(col1, col2))
+		  var col2 as new clNumberDataSerie("zccc", nil, nil, 8123.456, nil)
+		  var expected_table3 as new clDataTable("select T1", SerieArray(col1, col2))
 		  
-		  call check_table(log, "T1", my_table3, texpected)
+		  call check_table(log, "T1", expected_table3, table3)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -105,7 +105,7 @@ Protected Class clDataTableTests
 		  
 		  
 		  var rtst As clDataRow
-		  var my_table1 As New clDataTable("T1")
+		  var table1 As New clDataTable("T1")
 		  
 		  
 		  rtst = New clDataRow
@@ -113,29 +113,29 @@ Protected Class clDataTableTests
 		  rtst.SetCell("bbb","abcd")
 		  rtst.SetCell("ccc",123.456)
 		  
-		  my_table1.AddRow(rtst)
+		  table1.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",1235)
 		  rtst.SetCell("bbb","abce")
 		  rtst.SetCell("ddd",987.654)
 		  
-		  my_table1.AddRow(rtst) 
+		  table1.AddRow(rtst) 
 		  
 		  var my_col As clAbstractDataSerie
-		  var my_table3 As clDataTable = my_table1.SelectColumns(Array("aaa","zccc")) // zccc does not exist, not included in my_table3
+		  var table3 As clDataTable = table1.SelectColumns(Array("aaa","zccc")) // zccc does not exist, not included in table3
 		  
 		  
-		  my_col = my_table3.AddColumn("xyz") 
+		  my_col = table3.AddColumn("xyz") 
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("xyz", nil, nil) 
 		  
-		  var texpected as new clDataTable("select T1", SerieArray(col1, col2))
+		  var expected_table3 as new clDataTable("select T1", SerieArray(col1, col2))
 		  
-		  call check_table(log, "my_table 1 integrity", nil, my_table1)
+		  call check_table(log, "table 1 integrity", nil, table1)
 		  
-		  call check_table(log,"T1", texpected, my_table3)
+		  call check_table(log,"T1", expected_table3, table3)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -150,7 +150,7 @@ Protected Class clDataTableTests
 		  
 		  var rtst As clDataRow
 		  
-		  var my_table As New clDataTable("T1")
+		  var table As New clDataTable("T1")
 		  
 		  var d as new Dictionary
 		  d.value("aaa") = 1234
@@ -158,7 +158,7 @@ Protected Class clDataTableTests
 		  d.value("ccc") =  123.456
 		  rtst = New clDataRow(d)
 		  
-		  my_table.AddRow(rtst)
+		  table.AddRow(rtst)
 		  
 		  var c as new test_class_01
 		  c.aaa = 1235
@@ -167,16 +167,16 @@ Protected Class clDataTableTests
 		  
 		  rtst = New clDataRow(c)
 		  
-		  my_table.AddRow(rtst)
+		  table.AddRow(rtst)
 		  
 		  var col1 as new clIntegerDataSerie("aaa", 1234, 1235)
 		  var col2 as new clStringDataSerie("bbb", "abcd", "abce")
 		  var col3 as new clNumberDataSerie("ccc", 123.456, nil)
 		  var col4 as new clNumberDataSerie("ddd", nil, 987.654)
 		  
-		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
+		  var expected_table as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
-		  call check_table(log, "T1", texpected, my_table)
+		  call check_table(log, "T1", expected_table, table)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -191,25 +191,25 @@ Protected Class clDataTableTests
 		  
 		  var rtst As clDataRow
 		  
-		  var my_table As New clDataTable("T1")
+		  var table As New clDataTable("T1")
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",1234)
 		  rtst.SetCell("bbb","abcd")
 		  rtst.SetCell("ccc",123.456)
 		  
-		  my_table.AddRow(rtst)
+		  table.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",1235)
 		  rtst.SetCell("bbb","abce")
 		  rtst.SetCell("ddd",987.654)
 		  
-		  my_table.AddRow(rtst)
+		  table.AddRow(rtst)
 		  
 		  var cols() As clAbstractDataSerie
 		  
-		  cols = my_table.GetColumns("aaa","bbb","ddd")
+		  cols = table.GetColumns("aaa","bbb","ddd")
 		  
 		  cols(1).rename("bB1")
 		  
@@ -219,9 +219,9 @@ Protected Class clDataTableTests
 		  var col4 as new clNumberDataSerie("ddd", nil, 987.654)
 		  
 		  
-		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
+		  var expected_table as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
-		  call check_table(log,"T1", texpected, my_table)
+		  call check_table(log,"T1", expected_table, table)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -295,24 +295,24 @@ Protected Class clDataTableTests
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  var my_table As New clDataTable("T1")
+		  var table As New clDataTable("T1")
 		  
-		  call my_table.AddColumns(Array("cc1","cc2","cc3"))
+		  call table.AddColumns(Array("cc1","cc2","cc3"))
 		  
-		  my_table.AddRow(Array("aaa0","bbb0","ccc0"))
-		  my_table.AddRow(Array("aaa1","bbb1","ccc1"))
-		  my_table.AddRow(Array("aaa2","bbb2","ccc2"))
-		  my_table.AddRow(Array("aaa3","bbb3","ccc3"))
+		  table.AddRow(Array("aaa0","bbb0","ccc0"))
+		  table.AddRow(Array("aaa1","bbb1","ccc1"))
+		  table.AddRow(Array("aaa2","bbb2","ccc2"))
+		  table.AddRow(Array("aaa3","bbb3","ccc3"))
 		  
-		  var tmp1 As Integer = my_table.FindFirstMatchingRowIndex("cc2","bbb2")
-		  var tmp2 As Integer = my_table.FindFirstMatchingRowIndex("cc2","zzz2")
-		  var tmp3 As Integer = my_table.FindFirstMatchingRowIndex("zz2","bbb2")
+		  var tmp1 As Integer = table.FindFirstMatchingRowIndex("cc2","bbb2")
+		  var tmp2 As Integer = table.FindFirstMatchingRowIndex("cc2","zzz2")
+		  var tmp3 As Integer = table.FindFirstMatchingRowIndex("zz2","bbb2")
 		  
 		  call check_value(log, "tmp1", 2, tmp1)
 		  call check_value(log, "tmp2", -1, tmp2) // value not found
 		  call check_value(log, "tmp3", -2, tmp3) // column not found
 		  
-		  call check_table(log, "mytable integrity", nil, my_table) 
+		  call check_table(log, "mytable integrity", nil, table) 
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -326,24 +326,24 @@ Protected Class clDataTableTests
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  var my_table As New clDataTable("T1")
+		  var table As New clDataTable("T1")
 		  
-		  call my_table.AddColumns(Array("cc1","cc2","cc3"))
+		  call table.AddColumns(Array("cc1","cc2","cc3"))
 		  
-		  my_table.AddRow(Array("aaa0","bbb0","ccc0"))
-		  my_table.AddRow(Array("aaa1","bbb1","ccc1"))
-		  my_table.AddRow(Array("aaa2","bbb0","ccc2"))
-		  my_table.AddRow(Array("aaa3","bbb3","ccc3"))
+		  table.AddRow(Array("aaa0","bbb0","ccc0"))
+		  table.AddRow(Array("aaa1","bbb1","ccc1"))
+		  table.AddRow(Array("aaa2","bbb0","ccc2"))
+		  table.AddRow(Array("aaa3","bbb3","ccc3"))
 		  
 		  //  The function is filtering on column cc2. The parameter is the value to look for
 		  
-		  var tmp1() as variant = my_table.ApplyFilterFunction(AddressOf filter_008,"bbb0")
+		  var tmp1() as variant = table.ApplyFilterFunction(AddressOf filter_008,"bbb0")
 		  
-		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb0", tmp1))
+		  call table.AddColumn(new clBooleanDataSerie("is_bbb0", tmp1))
 		  
-		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb1", clDataSerie(my_table.GetColumn("cc2")).FilterValueInList(array("bbb1"))))
+		  call table.AddColumn(new clBooleanDataSerie("is_bbb1", clDataSerie(table.GetColumn("cc2")).FilterValueInList(array("bbb1"))))
 		  
-		  call my_table.AddColumn(new clBooleanDataSerie("is_bbb3",  my_table.ApplyFilterFunction(AddressOf filter_008, "bbb3")))
+		  call table.AddColumn(new clBooleanDataSerie("is_bbb3",  table.ApplyFilterFunction(AddressOf filter_008, "bbb3")))
 		  
 		  
 		  var col1 as new clDataSerie("cc1", "aaa0","aaa1","aaa2","aaa3")
@@ -355,9 +355,9 @@ Protected Class clDataTableTests
 		  var col5 as new clDataSerie("is_bbb1", False, True, False, False)
 		  var col6 as new clDataSerie("is_bbb3", False, False, False, True)
 		  
-		  var expected as new clDataTable("T1", SerieArray(col1, col2, col3, col4, col5, col6))
+		  var expected_table as new clDataTable("T1", SerieArray(col1, col2, col3, col4, col5, col6))
 		  
-		  call check_table(log,"t1", expected, my_table)
+		  call check_table(log,"t1", expected_table, table)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -374,8 +374,8 @@ Protected Class clDataTableTests
 		  
 		  var rtst As clDataRow
 		  
-		  var my_table1 As New clDataTable("T1")
-		  var my_table2 as New clDataTable("T2")
+		  var table1 As New clDataTable("T1")
+		  var table2 as New clDataTable("T2")
 		  
 		  for i as integer = 1 to 4
 		    rtst = New clDataRow
@@ -383,7 +383,7 @@ Protected Class clDataTableTests
 		    rtst.SetCell("bbb","abcd")
 		    rtst.SetCell("ccc",123.456)
 		    
-		    my_table1.AddRow(rtst, clDataTable.AddRowMode.CreateNewColumnAsVariant)
+		    table1.AddRow(rtst, clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		    
 		  next
 		  
@@ -394,33 +394,33 @@ Protected Class clDataTableTests
 		    rtst.SetCell("bbb","xyz")
 		    rtst.SetCell("ddd",567.89)
 		    
-		    my_table2.AddRow(rtst, clDataTable.AddRowMode.CreateNewColumnAsVariant)
+		    table2.AddRow(rtst, clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		    
 		  next
 		  
-		  var my_table3 as clDataTable = my_table1.Clone()
-		  var my_table4 as clDataTable = my_table1.Clone()
+		  var table3 as clDataTable = table1.Clone()
+		  var table4 as clDataTable = table1.Clone()
 		  
-		  my_table3. AddColumnsData(my_table2, true)
-		  my_table4. AddColumnsData(my_table2, false)
+		  table3. AddColumnsData(table2, true)
+		  table4. AddColumnsData(table2, false)
 		  
 		  var dr as new clDataRow
 		  dr.SetCell("aaa",9010)
 		  dr.SetCell("zzz", 8888)
 		  
-		  my_table4.UpdateRowAt(8,dr)
+		  table4.UpdateRowAt(8,dr)
 		  
 		  var col1 as new clDataSerie("aaa", 1000, 2000, 3000, 4000)
 		  var col2 as new clDataSerie("bbb","abcd","abcd","abcd","abcd")
 		  var col3 as new clDataSerie("ccc", 123.456, 123.456, 123.456, 123.456)
 		  
-		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3))
+		  var expected_table1 as new clDataTable("T1", SerieArray(col1, col2, col3))
 		  
 		  var col4 as new clDataSerie("aaa", 5000, 6000, 7000, 8000, 9000)
 		  var col5 as new clDataSerie("bbb","xyz","xyz","xyz","xyz", "xyz")
 		  var col6 as new clDataSerie("ddd", 567.89, 567.89, 567.89, 567.89, 567.89)
 		  
-		  var expected_t2 as new clDataTable("T2", SerieArray(col4, col5, col6))
+		  var expected_table2 as new clDataTable("T2", SerieArray(col4, col5, col6))
 		  
 		  
 		  var col7a as new clDataSerie("aaa", 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000)
@@ -428,14 +428,14 @@ Protected Class clDataTableTests
 		  var col8 as new clDataSerie("bbb","abcd","abcd","abcd","abcd","xyz","xyz","xyz","xyz", "xyz")
 		  var col9 as new clDataSerie("ccc", 123.456, 123.456, 123.456, 123.456, nil, nil, nil, nil, nil)
 		  var col0 as new clDataSerie("ddd", nil, nil, nil, nil, 567.89, 567.89, 567.89, 567.89, 567.89)
-		  var expected_t3 as new clDataTable("T3", SerieArray(col7a, col8, col9, col0))
+		  var expected_table3 as new clDataTable("T3", SerieArray(col7a, col8, col9, col0))
 		  
-		  var expected_t4 as new clDataTable("T4", SerieArray(col7b, col8, col9), True)
+		  var expected_table4 as new clDataTable("T4", SerieArray(col7b, col8, col9), True)
 		  
-		  call check_table(log,"T1", expected_t1, my_table1)
-		  call check_table(log,"T2", expected_t2, my_table2)
-		  call check_table(log,"T3", expected_t3, my_table3)
-		  call check_table(log,"T4", expected_t4, my_table4)
+		  call check_table(log,"T1", expected_table1, table1)
+		  call check_table(log,"T2", expected_table2, table2)
+		  call check_table(log,"T3", expected_table3, table3)
+		  call check_table(log,"T4", expected_table4, table4)
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -450,34 +450,34 @@ Protected Class clDataTableTests
 		  
 		  
 		  var temp_row As clDataRow
-		  var mytable As New clDataTable("T1")
+		  var table1 As New clDataTable("T1")
 		  
-		  call mytable.AddColumn(new clDataSerie("name"))
-		  call mytable.AddColumn(new clNumberDataSerie("quantity"))
-		  call mytable.AddColumn(new clNumberDataSerie("unit_price"))
+		  call table1.AddColumn(new clDataSerie("name"))
+		  call table1.AddColumn(new clNumberDataSerie("quantity"))
+		  call table1.AddColumn(new clNumberDataSerie("unit_price"))
 		  
 		  temp_row = New clDataRow
 		  temp_row.SetCell("name","alpha")
 		  temp_row.SetCell("quantity",50)
 		  temp_row.SetCell("unit_price",6)
-		  mytable.AddRow(temp_row)
+		  table1.AddRow(temp_row)
 		  
 		  temp_row = New clDataRow
 		  temp_row.SetCell("name","alpha")
 		  temp_row.SetCell("quantity",20)
 		  temp_row.SetCell("unit_price",8)
-		  mytable.AddRow(temp_row)
+		  table1.AddRow(temp_row)
 		  
-		  call mytable.AddColumn(mytable.GetNumberColumn("unit_price") * mytable.GetNumberColumn("quantity"))
+		  call table1.AddColumn(table1.GetNumberColumn("unit_price") * table1.GetNumberColumn("quantity"))
 		  
 		  var col1 as new clDataSerie("name", "alpha","alpha")
 		  var col2 as new clNumberDataSerie("quantity", 50, 20)
 		  var col3 as new clNumberDataSerie("unit_price", 6, 8)
 		  var col4 as new clNumberDataSerie("unit_price*quantity", 300, 160)
 		  
-		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4))
+		  var expected_table1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4))
 		  
-		  call check_table(log,"T1", expected_t1, mytable)
+		  call check_table(log,"T1", expected_table1, table1)
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -492,20 +492,20 @@ Protected Class clDataTableTests
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  var my_table1 As New clDataTable("mytable")
+		  var table1 As New clDataTable("mytable")
 		  
-		  call my_table1.AddColumns(Array("country","city","sales"))
+		  call table1.AddColumns(Array("country","city","sales"))
 		  
-		  my_table1.AddRow(Array("France","Paris",1100))
-		  my_table1.AddRow(Array("","Marseille",1200))
-		  my_table1.AddRow(Array("Belgique","",1300))
-		  my_table1.AddRow(Array("USA","NewYork",1400))
-		  my_table1.AddRow(Array("Belgique","Bruxelles",1500))
-		  my_table1.AddRow(Array("USA","Chicago",1600))
+		  table1.AddRow(Array("France","Paris",1100))
+		  table1.AddRow(Array("","Marseille",1200))
+		  table1.AddRow(Array("Belgique","",1300))
+		  table1.AddRow(Array("USA","NewYork",1400))
+		  table1.AddRow(Array("Belgique","Bruxelles",1500))
+		  table1.AddRow(Array("USA","Chicago",1600))
 		  
-		  var tmp_row as clDataRow = my_table1.GetRowAt(2, False)
+		  var tmp_row as clDataRow = table1.GetRowAt(2, False)
 		  
-		  call check_table(log, "my_table1 integrity", nil, my_table1) 
+		  call check_table(log, "table1 integrity", nil, table1) 
 		  
 		  
 		  call check_value(log,"row 2, country", "Belgique", tmp_row.GetCell("country"))
@@ -725,14 +725,14 @@ Protected Class clDataTableTests
 		  log.start_exec(CurrentMethodName)
 		  
 		  
-		  var my_table As New clDataTable("T1")
+		  var table As New clDataTable("T1")
 		  
 		  var d as new test_class_02
 		  d.aaa = 1234
 		  d.bbb =  "abcd"
 		  d.ccc =  "123.456"
 		  
-		  my_table.AddRow( New clDataRow(d), clDataTable.AddRowMode.CreateNewColumnAsVariant)
+		  table.AddRow( New clDataRow(d), clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		  
 		  
 		  var c as new test_class_01
@@ -740,7 +740,7 @@ Protected Class clDataTableTests
 		  c.bbb = "abce"
 		  c.ddd = 987.654
 		  
-		  my_table.AddRow(New clDataRow(c), clDataTable.AddRowMode.CreateNewColumnAsVariant)
+		  table.AddRow(New clDataRow(c), clDataTable.AddRowMode.CreateNewColumnAsVariant)
 		  
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
@@ -748,9 +748,9 @@ Protected Class clDataTableTests
 		  var col3 as new clDataSerie("ccc", 123.456, nil)
 		  var col4 as new clDataSerie("ddd", nil, 987.654)
 		  
-		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
+		  var expected_table as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
-		  call check_table(log, "T1", texpected, my_table)
+		  call check_table(log, "T1", expected_table, table)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -788,7 +788,8 @@ Protected Class clDataTableTests
 		  
 		  var col2 as new clDataSerie("city", "Paris", "Marseille", "","Bruxelles","NewYork","Chicago")
 		  
-		  call check_table(log,"unique", new clDataTable("mytable", SerieArray(col1, col2)), table1)
+		  var expected_table1 as new clDataTable("mytable", SerieArray(col1, col2))
+		  call check_table(log,"unique", expected_table1, table1)
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -827,7 +828,9 @@ Protected Class clDataTableTests
 		  columns.Add  new clNumberDataSerie("clip sales*2", 2200.0, 2400.0, 2800.0, 3000.0, 3000.0)
 		  columns.Add new clIntegerDataSerie("clip something", 2500,2500, 3000, 4000, 4500)
 		  
-		  call check_table(log,"clipping fct", new clDataTable("mytable", Columns), table0)
+		  var expected_table0 as new clDataTable("mytable", Columns)
+		  
+		  call check_table(log,"clipping fct", expected_table0, table0)
 		  
 		  call check_value(log, "nb clipped", 3, nb)
 		  
@@ -869,7 +872,7 @@ Protected Class clDataTableTests
 		  dct.Value("type") = array("Generic","Generic","Generic")
 		  dct.Value("title") = array("Pays","Ville","Ventes")
 		  
-		  var struc_expected as new clDataTable("exp_struct", dct)
+		  var struc_expected as new clDataTable("expected_struct", dct)
 		  
 		  call check_table(log,"structure", struc_expected, struc0)
 		  
@@ -927,7 +930,7 @@ Protected Class clDataTableTests
 		  dct.Value("type") = array("Generic","Generic","Number")
 		  dct.Value("title") = array("Pays","Ville","Ventes")
 		  
-		  var struc_expected as new clDataTable("exp_struct", dct)
+		  var struc_expected as new clDataTable("expected_struct", dct)
 		  call check_table(log,"structure", struc_expected, struc0)
 		  
 		  //
@@ -1123,14 +1126,14 @@ Protected Class clDataTableTests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var my_table As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  var table As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
 		  
 		  var d as new test_class_02
 		  d.aaa = 1234
 		  d.bbb =  "abcd"
 		  d.ccc =  "123.456"
 		  
-		  my_table.AddRow( New clDataRow(d), clDataTable.AddRowMode.IgnoreNewColumn)
+		  table.AddRow( New clDataRow(d), clDataTable.AddRowMode.IgnoreNewColumn)
 		  
 		  var c as new test_class_01
 		  c.aaa = 1235
@@ -1138,7 +1141,7 @@ Protected Class clDataTableTests
 		  c.ddd = 987.654
 		  
 		  
-		  my_table.AddRow(New clDataRow(c),  clDataTable.AddRowMode.CreateNewColumn)
+		  table.AddRow(New clDataRow(c),  clDataTable.AddRowMode.CreateNewColumn)
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
@@ -1146,9 +1149,9 @@ Protected Class clDataTableTests
 		  // col 'ddd' will be created as a clNumberDataSerie 
 		  var col4 as new clDataSerie("ddd", 0, 987.654)
 		  
-		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
+		  var expected_table as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
-		  call check_table(log, "T1", texpected, my_table)
+		  call check_table(log, "T1", expected_table, table)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -1160,27 +1163,27 @@ Protected Class clDataTableTests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var my_table_1 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  var table_1 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
 		  
 		  var r1 as new test_class_02
 		  r1.aaa = 1234
 		  r1.bbb =  "abcd"
 		  r1.ccc =  "123.456"
 		  
-		  my_table_1.AddRow( New clDataRow(r1), clDataTable.AddRowMode.IgnoreNewColumn)
+		  table_1.AddRow( New clDataRow(r1), clDataTable.AddRowMode.IgnoreNewColumn)
 		  
 		  var r2 as new test_class_02
 		  r2.aaa = 1235
 		  r2.bbb = "abce"
 		  r2.ccc = "987.654"
 		  
-		  my_table_1.AddRow(New clDataRow(r2),  clDataTable.AddRowMode.IgnoreNewColumn)
+		  table_1.AddRow(New clDataRow(r2),  clDataTable.AddRowMode.IgnoreNewColumn)
 		  
-		  call check_table(log, "my_table_1 integrity", nil, my_table_1) 
+		  call check_table(log, "table_1 integrity", nil, table_1) 
 		  
 		  var res() as test_class_03
 		  
-		  for each r as clDataRow in my_table_1
+		  for each r as clDataRow in table_1
 		    res.Add(new test_class_03)
 		    r.UpdateObject(res(res.LastIndex))
 		    
@@ -1193,10 +1196,10 @@ Protected Class clDataTableTests
 		  next
 		  
 		  
-		  var my_table_2 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb")))
+		  var table_2 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb")))
 		  
 		  for each c as test_class_03 in res
-		    my_table_2.AddRow(new clDataRow(c),  clDataTable.AddRowMode.IgnoreNewColumn)
+		    table_2.AddRow(new clDataRow(c),  clDataTable.AddRowMode.IgnoreNewColumn)
 		    
 		  next
 		  
@@ -1204,9 +1207,9 @@ Protected Class clDataTableTests
 		  var col1 as new clDataSerie("aaa", 2468, 2470)
 		  var col2 as new clDataSerie("bbb", "$abcd", "$abce")
 		  
-		  var texpected as new clDataTable("T1", SerieArray(col1, col2))
+		  var expected_table as new clDataTable("T1", SerieArray(col1, col2))
 		  
-		  call check_table(log, "T1", texpected, my_table_2)
+		  call check_table(log, "T1", expected_table, table_2)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -1218,42 +1221,42 @@ Protected Class clDataTableTests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var my_table_0 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
-		  my_table_0.IncludeRowNameAsColumn( True)
+		  var table_0 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  table_0.IncludeRowNameAsColumn( True)
 		  
 		  var r1 as new test_class_02
 		  r1.aaa = 1234
 		  r1.bbb =  "abcd"
 		  r1.ccc =  "123.456"
 		  
-		  my_table_0.AddRow( New clDataRow(r1),  clDataTable.AddRowMode.CreateNewColumn)
+		  table_0.AddRow( New clDataRow(r1),  clDataTable.AddRowMode.CreateNewColumn)
 		  
 		  var r2 as new test_class_02
 		  r2.aaa = 1235
 		  r2.bbb = "abce"
 		  r2.ccc = "987.654"
 		  
-		  my_table_0.AddRow(New clDataRow(r2),  clDataTable.AddRowMode.IgnoreNewColumn)
+		  table_0.AddRow(New clDataRow(r2),  clDataTable.AddRowMode.IgnoreNewColumn)
 		  
-		  call check_table(log, "my_table_0 integrity", nil, my_table_0) 
+		  call check_table(log, "table_0 integrity", nil, table_0) 
 		  
 		  var res_1() as test_class_02
 		  var res_2() as test_class_02
 		  
 		  
-		  for each r as clDataRow in my_table_0
+		  for each r as clDataRow in table_0
 		    res_1.Add(test_class_02(r.AsObject("row_type", AddressOf alloc_obj)))
 		    
 		    res_2.Add(test_class_02(r.AsObject(AddressOf alloc_obj)))
 		    
 		  next
 		  
-		  var my_table_1 as new clDataTable("T2",SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
-		  call my_table_1.AddRows(res_1)
+		  var table_1 as new clDataTable("T2",SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  call table_1.AddRows(res_1)
 		  
 		  
-		  var my_table_2 as new clDataTable("T2",SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
-		  call my_table_2.AddRows(res_2)
+		  var table_2 as new clDataTable("T2",SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  call table_2.AddRows(res_2)
 		  
 		  
 		  
@@ -1261,10 +1264,10 @@ Protected Class clDataTableTests
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
 		  var col3 as new clNumberDataSerie("ccc", 123.456, 987.654)
 		  
-		  var texpected as new clDataTable("T2", SerieArray(col1, col2,col3))
+		  var expected_table as new clDataTable("T2", SerieArray(col1, col2,col3))
 		  
-		  call check_table(log, "T2a", texpected, my_table_1)
-		  call check_table(log, "T2b", texpected, my_table_2)
+		  call check_table(log, "T2a", expected_table, table_1)
+		  call check_table(log, "T2b", expected_table, table_2)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -1276,12 +1279,12 @@ Protected Class clDataTableTests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var my_table As New clDataTable("T1", array("aaa", "bbb", "ccc","ddd"))
+		  var table As New clDataTable("T1", array("aaa", "bbb", "ccc","ddd"))
 		  
 		  // This will use the existing columns, all created as clDataSerie
-		  my_table.AddRow(new Dictionary("aaa":1234, "bbb": "abcd", "ccc":123.456))
+		  table.AddRow(new Dictionary("aaa":1234, "bbb": "abcd", "ccc":123.456))
 		  
-		  my_table.AddRow(new Dictionary("aaa":1235, "bbb": "abce", "ddd":987.654, "eee":"to_ignore"), clDataTable.AddRowMode.IgnoreNewColumn)
+		  table.AddRow(new Dictionary("aaa":1235, "bbb": "abce", "ddd":987.654, "eee":"to_ignore"), clDataTable.AddRowMode.IgnoreNewColumn)
 		  
 		  var col1 as new clDataSerie("aaa", 1234, 1235)
 		  var col2 as new clDataSerie("bbb", "abcd", "abce")
@@ -1289,9 +1292,9 @@ Protected Class clDataTableTests
 		  var col4 as new clDataSerie("ddd", nil, 987.654)
 		  
 		  
-		  var texpected as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
+		  var expected_table as new clDataTable("T1", SerieArray(col1, col2, col3 ,col4))
 		  
-		  call check_table(log, "T1", texpected, my_table)
+		  call check_table(log, "T1", expected_table, table)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -1401,9 +1404,9 @@ Protected Class clDataTableTests
 		  var col5 as new clIntegerDataSerie("is_belgium",0,0,1,0,1,0)
 		  var col6 as new clIntegerDataSerie("is_europe",2,2,2,0,2,0)
 		  
-		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4, col5, col6))
+		  var expected_table0 as new clDataTable("T1", SerieArray(col1, col2, col3, col4, col5, col6))
 		  
-		  call check_table(log,"T1", expected_t1, table0)
+		  call check_table(log,"T1", expected_table0, table0)
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -2365,56 +2368,66 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_046(log as LogMessageInterface)
 		  //
-		  // Test select columns and extract columns
+		  // Test select columns (creating a view)  and extract columns (cloning the columns)
+		  // Updating the data in the orignal table once selectColumns() and ExtractColumns are called will also update the values
+		  // in the table created by selectColumns (since this is a view on original columns) but not in the table created by extractColumns.
+		  //
 		  //
 		  
 		  log.start_exec(CurrentMethodName)
 		  
 		  var rtst As clDataRow
 		  
-		  var my_table1 As New clDataTable("T1")
+		  var table1 As New clDataTable("T1")
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",1234)
 		  rtst.SetCell("bbb","abcd")
 		  rtst.SetCell("ccc",123.456)
 		  
-		  my_table1.AddRow(rtst)
+		  table1.AddRow(rtst)
 		  
 		  rtst = New clDataRow
 		  rtst.SetCell("aaa",1235)
 		  rtst.SetCell("bbb","abce")
 		  rtst.SetCell("ddd",987.654)
 		  
-		  my_table1.AddRow(rtst)
+		  table1.AddRow(rtst)
 		  
-		  var my_table2 As clDataTable  = my_table1.SelectColumns("aaa","bbb","ddd")
+		  var table2 As clDataTable  = table1.SelectColumns("aaa","bbb","ddd")
 		  
-		  var my_table3 As clDataTable  = my_table1.ExtractColumns("aaa","bbb","ddd")
+		  var table3 As clDataTable  = table1.ExtractColumns("aaa","bbb","ddd")
 		  
 		  var v() as variant =  VariantArray(123, 456)
-		  call my_table1.SetColumnValues("ddd",v)
+		  call table1.SetColumnValues("ddd",v)
 		  
-		  call check_table(log, "my_table 1 integrity", nil, my_table1)
-		  call check_table(log, "my_table 2 integrity", nil, my_table2)
-		  call check_table(log, "my_table 2 integrity", nil, my_table3)
+		  call check_table(log, "table 1 integrity", nil, table1)
+		  call check_table(log, "table 2 integrity", nil, table2)
+		  call check_table(log, "table 2 integrity", nil, table3)
 		  
-		  var exp_table1  as new clDataTable("EXP1")
-		  exp_table1.AddRow(New Dictionary("aaa":1234, "bbb":"abcd","ccc":123.456,"ddd":123))
-		  exp_table1.AddRow(New Dictionary("aaa":1235, "bbb":"abce","ccc":nil,"ddd":456))
+		  var expected_table1  as new clDataTable("EXP1")
+		  expected_table1.AddRow(New Dictionary("aaa":1234, "bbb":"abcd","ccc":123.456,"ddd":123))
+		  expected_table1.AddRow(New Dictionary("aaa":1235, "bbb":"abce","ccc":nil,"ddd":456))
 		  
-		  var exp_table2 as new clDataTable("EXP2")
-		  exp_table2.AddRow(New Dictionary("aaa":1234, "bbb":"abcd","ddd":123))
-		  exp_table2.AddRow(New Dictionary("aaa":1235, "bbb":"abce","ddd":456))
+		  //
+		  // Table2 was. produced by SelectColumns() which retains the original column, so updating Table1 also updates 
+		  // the values seen in Table2.
+		  //
+		  var expected_table2 as new clDataTable("EXP2")
+		  expected_table2.AddRow(New Dictionary("aaa":1234, "bbb":"abcd","ddd":123))
+		  expected_table2.AddRow(New Dictionary("aaa":1235, "bbb":"abce","ddd":456))
 		  
-		  var exp_table3 as new clDataTable("EXP2")
-		  exp_table3.AddRow(New Dictionary("aaa":1234, "bbb":"abcd","ddd":nil))
-		  exp_table3.AddRow(New Dictionary("aaa":1235, "bbb":"abce","ddd":987.654))
+		  //
+		  // Table3 was. produced by ExtractColumns() which clones the column values
+		  //
+		  var expected_table3 as new clDataTable("EXP3")
+		  expected_table3.AddRow(New Dictionary("aaa":1234, "bbb":"abcd","ddd":nil))
+		  expected_table3.AddRow(New Dictionary("aaa":1235, "bbb":"abce","ddd":987.654))
 		  
 		  
-		  call check_table(log, "T1", my_table1, exp_table1)
-		  call check_table(log, "T1", my_table2, exp_table2)
-		  call check_table(log, "T1", my_table3, exp_table3)
+		  call check_table(log, "T1", table1, expected_table1)
+		  call check_table(log, "T1", table2, expected_table2)
+		  call check_table(log, "T1", table3, expected_table3)
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -2444,25 +2457,25 @@ Protected Class clDataTableTests
 		  fld_file3Text  = sub_folder.Child("myfile3_10K_output.txt")
 		  fld_file3JSON  = sub_folder.Child("myfile3_10K_output.json")
 		  
-		  var my_table3 As New clDataTable(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  var table3 As New clDataTable(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
-		  var my_table4 As New clDataTable(new clTextReader(fld_file2, True, New clTextFileConfig(",")))
+		  var table4 As New clDataTable(new clTextReader(fld_file2, True, New clTextFileConfig(",")))
 		  
-		  my_table4.save(new clTextWriter(fld_file3Text, True, new clTextFileConfig(";")))
+		  table4.save(new clTextWriter(fld_file3Text, True, new clTextFileConfig(";")))
 		  
-		  my_table4.save(new clJSONWriter(fld_file3JSON, new clJSONFileConfig()))
+		  table4.save(new clJSONWriter(fld_file3JSON, new clJSONFileConfig()))
 		  
-		  var my_table5Text as new clDataTable(new clTextReader(fld_file3Text, True, new clTextFileConfig(";")))
-		  var my_table5JSON as new clDataTable(new clJSONReader(fld_file3JSON, new clJSONFileConfig()))
+		  var table5Text as new clDataTable(new clTextReader(fld_file3Text, True, new clTextFileConfig(";")))
+		  var table5JSON as new clDataTable(new clJSONReader(fld_file3JSON, new clJSONFileConfig()))
 		  
-		  call check_table(log, "my_table3 integrity", nil, my_table3)
+		  call check_table(log, "table3 integrity", nil, table3)
 		  
-		  call check_table(log,"my_table4/my_table5Text", my_table4, my_table5Text) 
-		  call check_table(log,"my_table4/my_table5JSON", my_table4, my_table5JSON) 
+		  call check_table(log,"table4/table5Text", table4, table5Text) 
+		  call check_table(log,"table4/table5JSON", table4, table5JSON) 
 		  
-		  var my_table6Compressed  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series_io1)
+		  var table6Compressed  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series_io1)
 		  
-		  call check_table(log,"my_table3/my_table6Compressed", my_table3, my_table6Compressed) 
+		  call check_table(log,"table3/table6Compressed", table3, table6Compressed) 
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -2536,52 +2549,52 @@ Protected Class clDataTableTests
 		  db.AddRow("test3", dbrow)
 		  
 		  
-		  var my_table1 as new clDataTable(new clDBReader(db.SelectSql("select * from test1")))
-		  my_table1.rename("test2")
-		  call check_table(log, "my_table1 integrity", nil, my_table1) 
+		  var table1 as new clDataTable(new clDBReader(db.SelectSql("select * from test1")))
+		  table1.rename("test2")
+		  call check_table(log, "table1 integrity", nil, table1) 
 		  
-		  my_table1.save(new clDBWriter(new clSqliteDBAccess(db)))
+		  table1.save(new clDBWriter(new clSqliteDBAccess(db)))
 		  
-		  var my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
-		  call check_table(log, "mytable2 integrity", nil, my_table2) 
-		  
-		  
-		  call check_table(log,"Test1/Test2", my_table1, my_table2)
+		  var table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
+		  call check_table(log, "mytable2 integrity", nil, table2) 
 		  
 		  
-		  
-		  var my_table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3")))
-		  my_table3.rename("test4")
-		  my_table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
-		  call check_table(log, "mytable3 integrity", nil, my_table3) 
+		  call check_table(log,"Test1/Test2", table1, table2)
 		  
 		  
-		  var my_table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
-		  call check_table(log, "mytable4 integrity", nil, my_table4) 
 		  
-		  call check_table(log,"Test3/Test4", my_table3, my_table4)
+		  var table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3")))
+		  table3.rename("test4")
+		  table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  call check_table(log, "mytable3 integrity", nil, table3) 
 		  
 		  
-		  var my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
-		  call check_table(log, "mytable5 integrity", nil, my_table5) 
+		  var table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
+		  call check_table(log, "mytable4 integrity", nil, table4) 
 		  
-		  var my_table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
-		  call check_table(log, "mytable6 integrity", nil, my_table6) 
+		  call check_table(log,"Test3/Test4", table3, table4)
+		  
+		  
+		  var table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
+		  call check_table(log, "mytable5 integrity", nil, table5) 
+		  
+		  var table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
+		  call check_table(log, "mytable6 integrity", nil, table6) 
 		  
 		  // create expected ds
-		  var my_table7 as clDataTable = my_table5.clone
-		  my_table7. AddColumnsData(my_table6)
+		  var table7 as clDataTable = table5.clone
+		  table7. AddColumnsData(table6)
 		  
 		  
 		  // add rows from test3 to test2
-		  my_table6.rename("test2")
-		  my_table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  table6.rename("test2")
+		  table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
 		  
-		  var my_table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
+		  var table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
 		  
 		  
-		  call check_table(log,"Test7/Test8", my_table7, my_table8)
+		  call check_table(log,"Test7/Test8", table7, table8)
 		  
 		  
 		  log.end_exec(CurrentMethodName)
@@ -2656,44 +2669,44 @@ Protected Class clDataTableTests
 		  db.AddRow("test3", dbrow)
 		  
 		  
-		  var my_table1 as new clDataTable("test2", new clDBReader(new clSqliteDBAccess(db),"test1"))
-		  call check_table(log, "my_table1 integrity", nil, my_table1) 
+		  var table1 as new clDataTable("test2", new clDBReader(new clSqliteDBAccess(db),"test1"))
+		  call check_table(log, "table1 integrity", nil, table1) 
 		  
-		  my_table1.save(new clDBWriter(new clSqliteDBAccess(db)))
+		  table1.save(new clDBWriter(new clSqliteDBAccess(db)))
 		  
-		  var my_table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
+		  var table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
 		  
-		  call check_table(log,"Test1/Test2", my_table1, my_table2)
-		  
-		  
-		  var my_table3 as new clDataTable("test4", new clDBReader(new clSqliteDBAccess(db),"test3"))
-		  
-		  my_table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
-		  
-		  var my_table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
-		  
-		  call check_table(log,"Test3/Test4", my_table3, my_table4)
+		  call check_table(log,"Test1/Test2", table1, table2)
 		  
 		  
-		  var my_table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
-		  call check_table(log, "mytable5 integrity", nil, my_table5) 
+		  var table3 as new clDataTable("test4", new clDBReader(new clSqliteDBAccess(db),"test3"))
 		  
-		  var my_table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
-		  call check_table(log, "mytable6 integrity", nil, my_table6) 
+		  table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  
+		  var table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
+		  
+		  call check_table(log,"Test3/Test4", table3, table4)
+		  
+		  
+		  var table5 as new clDataTable(new clDBReader(db.SelectSQL("select * from test1")))
+		  call check_table(log, "mytable5 integrity", nil, table5) 
+		  
+		  var table6 as new clDataTable(new clDBReader(db.SelectSQL("select * from test3")))
+		  call check_table(log, "mytable6 integrity", nil, table6) 
 		  
 		  // create expected ds
-		  var my_table7 as clDataTable = my_table5.clone
-		  my_table7. AddColumnsData(my_table6)
+		  var table7 as clDataTable = table5.clone
+		  table7. AddColumnsData(table6)
 		  
 		  
 		  // add rows from test3 to test2
-		  my_table6.rename("test2")
-		  my_table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  table6.rename("test2")
+		  table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
 		  
-		  var my_table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
+		  var table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
 		  
-		  call check_table(log,"Test7/Test8", my_table7, my_table8)
+		  call check_table(log,"Test7/Test8", table7, table8)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -2723,12 +2736,12 @@ Protected Class clDataTableTests
 		  fld_fileX  = main_folder.Child("myfile4_X_tab.txt") 
 		  
 		  
-		  var my_table as new clDataTable("calc")
-		  call my_table.AddColumn(new clStringDataSerie("Alpha"))
-		  call my_table.AddColumn(new clIntegerDataSerie("Beta"))
-		  call my_table.AddColumn(new clNumberDataSerie("Delta"))
-		  call my_table.AddColumn(new clNumberDataSerie("Gamma"))
-		  call my_table.AddColumn(new clIntegerDataSerie("Group"))
+		  var table as new clDataTable("calc")
+		  call table.AddColumn(new clStringDataSerie("Alpha"))
+		  call table.AddColumn(new clIntegerDataSerie("Beta"))
+		  call table.AddColumn(new clNumberDataSerie("Delta"))
+		  call table.AddColumn(new clNumberDataSerie("Gamma"))
+		  call table.AddColumn(new clIntegerDataSerie("Group"))
 		  
 		  
 		  var dct_mapping_file3 as new Dictionary
@@ -2739,11 +2752,11 @@ Protected Class clDataTableTests
 		  dct_mapping_file3.value("Extra") = "New_col"
 		  
 		  
-		  call my_table.AddRows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  call table.AddRows(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
-		  call my_table.AddRows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
+		  call table.AddRows(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9))))
 		  
-		  call my_table.AddRows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
+		  call table.AddRows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
 		  
 		  var expected_table as new clDataTable("calc")
 		  call expected_table.AddColumn(new clStringDataSerie("Alpha"))
@@ -2755,7 +2768,7 @@ Protected Class clDataTableTests
 		  
 		  call expected_table.AddRows(new clTextReader(fld_fileX, True, new clTextFileConfig(chr(9))))
 		  
-		  call check_table(log,"T4/T5", expected_table, my_table, 0.0001) 
+		  call check_table(log,"T4/T5", expected_table, table, 0.0001) 
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -2769,23 +2782,23 @@ Protected Class clDataTableTests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var v1 as new clDBReader(nil, "my_table")
+		  var v1 as new clDBReader(nil, "table")
 		  var v1_name as string = v1.name
 		  
 		  
-		  var v2 as new clDBReader(nil, "select alpha, beta from my_table")
+		  var v2 as new clDBReader(nil, "select alpha, beta from table")
 		  var v2_name as string = v2.name
 		  
-		  var v3 as new clDBReader(nil, "select alpha, beta from my_table left join something on ")
+		  var v3 as new clDBReader(nil, "select alpha, beta from table left join something on ")
 		  var v3_name as string = v3.name
 		  
-		  var v4 as new clDBReader(nil, "select alpha, beta  from   my_table")
+		  var v4 as new clDBReader(nil, "select alpha, beta  from   table")
 		  var v4_name as string = v4.name
 		  
-		  call check_value(log, "name v1", "my_table", v1_name)
-		  call check_value(log, "name v2", "my_table", v2_name)
-		  call check_value(log, "name v3", "my_table", v3_name)
-		  call check_value(log, "name v3", "my_table", v4_name)
+		  call check_value(log, "name v1", "table", v1_name)
+		  call check_value(log, "name v2", "table", v2_name)
+		  call check_value(log, "name v3", "table", v3_name)
+		  call check_value(log, "name v3", "table", v4_name)
 		  
 		  log.end_exec(CurrentMethodName)
 		  

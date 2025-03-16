@@ -22,12 +22,14 @@ Implements itfLogingWriter
 		  // Part of the itfLogingWriter interface.
 		  
 		  // Should be implemented in child classes
+		  
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor()
-		   
+		  
 		  self.AcceptedSeverity = new Dictionary
 		  
 		  Self.AcceptedSeverity.Value(cstSeverityFatalError) = true

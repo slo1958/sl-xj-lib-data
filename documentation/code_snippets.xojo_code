@@ -66,7 +66,7 @@ Protected Module code_snippets
 		  my_serie3.AddElement(123.34) // (...)
 		  
 		  
-		  Dim my_table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
+		  Dim table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 		  
 		End Sub
 	#tag EndMethod
@@ -75,7 +75,7 @@ Protected Module code_snippets
 		Sub snippet_readme_006()
 		  // Snippet 006
 		  
-		  Dim my_table As New clDataTable("mytable", SerieArray( _
+		  Dim table As New clDataTable("mytable", SerieArray( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -99,9 +99,9 @@ Protected Module code_snippets
 		  my_serie1.AddElement("abc") // (...)
 		  
 		  
-		  Dim my_table1 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
+		  Dim table1 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 		  
-		  Dim my_table2 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie3), True)
+		  Dim table2 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie3), True)
 		  
 		End Sub
 	#tag EndMethod
@@ -228,7 +228,7 @@ Protected Module code_snippets
 		  my_file  = data_folder.Child("myfile3_10K_comma.txt")
 		  
 		  
-		  Dim my_table As New clDataTable(new clTextReader(my_file, True, new clTextFileConfig(",")))
+		  Dim table As New clDataTable(new clTextReader(my_file, True, new clTextFileConfig(",")))
 		  
 		End Sub
 	#tag EndMethod

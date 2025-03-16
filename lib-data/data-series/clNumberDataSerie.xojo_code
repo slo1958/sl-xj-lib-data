@@ -173,8 +173,15 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Count() As double
-		  
-		  var c as new clBasicMath
+		  //
+		  // Count items in the dataserie
+		  //
+		  // Paramters
+		  // (none)
+		  //
+		  // Returns:
+		  // - number of items as integer
+		  //
 		  return clBasicMath.Count(items)
 		  
 		End Function
@@ -182,7 +189,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function CountNonZero() As double
-		   
+		  
 		  return clBasicMath.CountNonZero(items)
 		  
 		End Function
@@ -668,7 +675,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function StandardDeviation(is_population as boolean = False) As double
-		   
+		  
 		  return clBasicMath.StandardDeviation(items, is_population)
 		  
 		  
@@ -677,7 +684,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function StandardDeviationNonZero(is_population as boolean = False) As double
-		   
+		  
 		  return clBasicMath.StandardDeviationNonZero(items, is_population)
 		  
 		  

@@ -31,6 +31,13 @@ Inherits clAbstractTransformer
 	#tag EndMethod
 
 
+	#tag Note, Name = Description
+		
+		A linear transformer is a transformer that takes exactly one table as input and produces exactly one table.
+		
+	#tag EndNote
+
+
 	#tag Constant, Name = cInputConnectionName, Type = String, Dynamic = False, Default = \"Input", Scope = Public
 	#tag EndConstant
 
