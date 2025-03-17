@@ -2061,7 +2061,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FullJoin(TableToJoin as clDataTable, mode as JoinMode, KeyFields() as string) As clDataTable
+		Function FullJoin(TableToJoin as clDataTable, mode as JoinMode, KeyFields() as string, JoinSuccessField as string = "") As clDataTable
 		  //
 		  // Executes a full join between the current table and the 'TableToJoin'
 		  // Either an inner join or an outer join
@@ -2077,6 +2077,11 @@ Implements TableColumnReaderInterface,Iterable
 		  // Returns
 		  // Datatable with joined results
 		  //
+		  
+		  // const JoinSuccessBoth = "Both"
+		  // const JoinSuccessMainOnly = "Main"
+		  // const JoinSuccessJoinedOnly= "Joined"
+		  
 		  
 		  var joinModeStr as string
 		  if mode = JoinMode.InnerJoin then 
@@ -2127,7 +2132,11 @@ Implements TableColumnReaderInterface,Iterable
 		          var row_main as clDataRow = row.Clone
 		          
 		          var row_join as clDataRow = joinedtable.GetRowAt(index, False)
+		          
+		          if JoinSuccessField.Length>0 then row_main.SetCell(JoinSuccessField, JoinSuccessBoth)
+		          
 		          row_main.AppendCellsFrom(row_join)
+		          
 		          outputtable.AddRow(row_main, AddRowMode.CreateNewColumn)
 		          
 		          if mode = JoinMode.OuterJoin then rowmap(index) = True
@@ -2138,7 +2147,11 @@ Implements TableColumnReaderInterface,Iterable
 		      end if
 		      
 		      if rowToMerge.Count = 0 and mode = JoinMode.OuterJoin then
-		        outputtable.AddRow(row.Clone(), AddRowMode.CreateNewColumn)
+		        var row_main as clDataRow = row.Clone()
+		        
+		        if JoinSuccessField.Length>0 then row_main.SetCell(JoinSuccessField, JoinSuccessMainOnly)
+		        
+		        outputtable.AddRow(row_main, AddRowMode.CreateNewColumn)
 		        
 		      end if
 		      
@@ -2146,34 +2159,38 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
+		  // Add empty columns from master table and joined table if output is empty
+		  if outputtable.RowCount = 0 then 
+		    for each col as clAbstractDataSerie in mastertable.columns
+		      call outputtable.AddColumn(col.CloneStructure)
+		      
+		    next
+		    
+		    if  JoinSuccessField.Length > 0  then call outputtable.AddColumn(new clDataSerie(JoinSuccessField))
+		    
+		    for each col as clAbstractDataSerie in joinedtable.columns
+		      call outputtable.AddColumn(col.CloneStructure)
+		      
+		    next
+		    
+		  end if
+		  
+		  
+		  
 		  select case mode
 		  case JoinMode.InnerJoin
-		    // For inner join
-		    
-		    // Add empty columns from master table if output is empty
-		    if outputtable.RowCount = 0 then 
-		      for each col as clAbstractDataSerie in mastertable.columns
-		        call outputtable.AddColumn(col.CloneStructure)
-		        
-		      next
-		      
-		    end if
-		    
-		    // Add empty columns from joined table if there were no matching rows
-		    if not FoundRowsInJoinedTable then
-		      for each col as clAbstractDataSerie in joinedtable.columns
-		        call outputtable.AddColumn(col.CloneStructure)
-		        
-		      next
-		      
-		    end if
+		     
 		    
 		  case JoinMode.OuterJoin
+		    
 		    // For outer join, add missing rows from joined table
 		    
 		    for index as integer = 0 to rowmap.LastIndex
 		      if not rowmap(index) then 
 		        var row_join as clDataRow = joinedtable.GetRowAt(index, False)
+		        
+		        if JoinSuccessField.Length>0 then row_join.SetCell(JoinSuccessField, JoinSuccessJoinedOnly)
+		        
 		        outputtable.AddRow(row_join, AddRowMode.CreateNewColumn)
 		        
 		      end if
@@ -3026,7 +3043,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_LeftJoin(the_table as clDataTable, OwnKeyFields() as string, JoinTabkeKeyFields() as string, OwnDataFields() as string, JoinTableDataFields() as string, JoinSuccessField as string) As Boolean
+		Private Function internal_LeftJoin(the_table as clDataTable, OwnKeyFields() as string, JoinTableKeyFields() as string, OwnDataFields() as string, JoinTableDataFields() as string, JoinSuccessField as string) As Boolean
 		  const cstSuccessMark = "$$$M$$$"
 		  
 		  var buffer as new Dictionary
@@ -3093,7 +3110,7 @@ Implements TableColumnReaderInterface,Iterable
 		      
 		      
 		    else
-		      row = the_table.FindFirstMatchingRow(JoinTabkeKeyFields, lookupKeyParts, false)
+		      row = the_table.FindFirstMatchingRow(JoinTableKeyFields, lookupKeyParts, false)
 		      
 		      if row = nil then
 		        row = new clDataRow()
@@ -3208,7 +3225,7 @@ Implements TableColumnReaderInterface,Iterable
 		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
 		  //
 		  var OwnKeyFields() as string
-		  var JoinTabkeKeyFields() as String
+		  var JoinTableKeyFields() as String
 		  
 		  var OwnDataFields() as string
 		  var JoinTableDataFields() as string
@@ -3219,7 +3236,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		    OwnKeyFields.Add(key)
 		    
-		    JoinTabkeKeyFields.Add(KeyFieldMapping.Value(key))
+		    JoinTableKeyFields.Add(KeyFieldMapping.Value(key))
 		    
 		  next
 		  
@@ -3230,7 +3247,7 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  
-		  return internal_LeftJoin(LookupSourceTable, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields, JoinSuccessField)
+		  return internal_LeftJoin(LookupSourceTable, OwnKeyFields, JoinTableKeyFields,OwnDataFields, JoinTableDataFields, JoinSuccessField)
 		  
 		  
 		End Function
@@ -3250,7 +3267,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //
 		  
 		  var OwnKeyFields() as string
-		  var JoinTabkeKeyFields() as String
+		  var JoinTableKeyFields() as String
 		  
 		  var OwnDataFields() as string
 		  var JoinTableDataFields() as string
@@ -3258,7 +3275,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  for each key as string in KeyFields
 		    OwnKeyFields.Add(key)
-		    JoinTabkeKeyFields.Add(key)
+		    JoinTableKeyFields.Add(key)
 		    
 		  next
 		  
@@ -3268,7 +3285,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  return internal_LeftJoin(LookupSourceTable, OwnKeyFields, JoinTabkeKeyFields,OwnDataFields, JoinTableDataFields,JoinSuccessField)
+		  return internal_LeftJoin(LookupSourceTable, OwnKeyFields, JoinTableKeyFields,OwnDataFields, JoinTableDataFields,JoinSuccessField)
 		  
 		  
 		End Function
@@ -3860,6 +3877,15 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndConstant
 
 	#tag Constant, Name = ErrMsgMissingMeasureColumnName, Type = String, Dynamic = False, Default = \"Missing measure column name", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = JoinSuccessBoth, Type = String, Dynamic = False, Default = \" Both", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = JoinSuccessJoinedOnly, Type = String, Dynamic = False, Default = \" Joined", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = JoinSuccessMainOnly, Type = String, Dynamic = False, Default = \" Main", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = LoadedDataSourceColumn, Type = String, Dynamic = False, Default = \"loaded_from", Scope = Public

@@ -2437,6 +2437,221 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_calc_047(log as LogMessageInterface)
+		  //
+		  // Test full joins with join success column
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  // First join table: with a match with some cities, only row per city
+		  var tcountries1 as new clDataTable("Countries1")
+		  call  tcountries1.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountries1.AddColumn(new clStringDataSerie("City"))
+		  tcountries1.AddRow(new Dictionary("Country":"Belgium","City":"Brussels"))
+		  tcountries1.AddRow(new Dictionary("Country":"Belgium","City":"Liege"))
+		  tcountries1.AddRow(new Dictionary("Country":"France","City":"Paris"))
+		  tcountries1.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  tcountries1.AddRow(new Dictionary("City":"London"))
+		  
+		  call check_table(log, "tcountries table integrity", nil, tcountries1) 
+		  
+		  // Second join table; no matching cities
+		  var tcountries2 as new clDataTable("Countries2")
+		  call  tcountries2.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountries2.AddColumn(new clStringDataSerie("City"))
+		  tcountries2.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  tcountries2.AddRow(new Dictionary("Country":"France","City":"Lyon"))
+		  tcountries2.AddRow(new Dictionary("Country":"Spain","City":"Madrid"))
+		  
+		  call check_table(log, "tcountries table integrity", nil, tcountries2) 
+		  
+		  
+		  // Third join table, with mutlitple matching rows for some cities
+		  var tcountries3 as new clDataTable("Countries3")
+		  call  tcountries3.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountries3.AddColumn(new clStringDataSerie("City"))
+		  call tcountries3.AddColumn(new clStringDataSerie("Something"))
+		  
+		  tcountries3.AddRow(new Dictionary("Country":"Belgium","City":"Brussels","Something":"Alpha"))
+		  tcountries3.AddRow(new Dictionary("Country":"Belgium","City":"Liege","Something":"Beta"))
+		  tcountries3.AddRow(new Dictionary("Country":"Belgium","City":"Liege","Something":"Gamma"))
+		  tcountries3.AddRow(new Dictionary("Country":"France","City":"Paris","Something":"Delta"))
+		  tcountries3.AddRow(new Dictionary("Country":"France","City":"Lille","Something":"Omega"))
+		  tcountries3.AddRow(new Dictionary("Country":"USA","City":"NewYork","Something":"Zeta"))
+		  tcountries3.AddRow(new Dictionary("City":"London"))
+		  
+		  call check_table(log, "tcountries table integrity", nil, tcountries3) 
+		  
+		  
+		  
+		  var tsales as new clDataTable("Sales")
+		  
+		  var ccity As clAbstractDataSerie =  tsales.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  tsales.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = tsales.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28))
+		  tsales.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
+		  
+		  call check_table(log, "tsales table integrity", nil, tsales) 
+		  
+		  var tjoin1 as clDataTable = tsales.FullJoin(tcountries1, JoinMode.InnerJoin, array("City"), "JoinStatus")
+		  
+		  var tjoin2 as clDataTable = tsales.FullJoin(tcountries1, JoinMode.OuterJoin, array("City"), "JoinStatus")
+		  
+		  var tjoin3 as clDataTable = tsales.FullJoin(tcountries2, JoinMode.InnerJoin, array("City"), "JoinStatus")
+		  
+		  var tjoin4 as clDataTable = tsales.FullJoin(tcountries2, JoinMode.OuterJoin, array("City"), "JoinStatus")
+		  
+		  var tjoin5 as clDataTable = tsales.FullJoin(tcountries3, JoinMode.InnerJoin, array("City"), "JoinStatus")
+		  
+		  var tjoin6 as clDataTable = tsales.FullJoin(tcountries3, JoinMode.OuterJoin, array("City"), "JoinStatus")
+		  
+		  
+		  var tjoin1_expected as new clDataTable("X1")
+		  call tjoin1_expected.AddColumn(new clStringDataSerie("City"))
+		  call tjoin1_expected.AddColumn(new clNumberDataSerie("Quantity"))
+		  call tjoin1_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tjoin1_expected.AddColumn(new clStringDataSerie("JoinStatus"))
+		  call tjoin1_expected.AddColumn(new clStringDataSerie("Country"))
+		  
+		  
+		  tjoin1_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin1_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin1_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin1_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin1_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin1_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26,"Country":"France","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin1_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin1_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28,"Country":"France","JoinStatus":clDataTable.JoinSuccessBoth))
+		  
+		  
+		  //
+		  var tjoin2_expected as new clDataTable("X2")
+		  call tjoin2_expected.AddColumn(new clStringDataSerie("City"))
+		  call tjoin2_expected.AddColumn(new clNumberDataSerie("Quantity"))
+		  call tjoin2_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tjoin2_expected.AddColumn(new clStringDataSerie("JoinStatus"))
+		  call tjoin2_expected.AddColumn(new clStringDataSerie("Country"))
+		  
+		  tjoin2_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin2_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin2_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin2_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin2_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin2_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26,"Country":"France","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin2_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin2_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28,"Country":"France","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin2_expected.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin2_expected.AddRow(new Dictionary("Country":"USA","City":"NewYork","JoinStatus":clDataTable.JoinSuccessJoinedOnly))
+		  tjoin2_expected.AddRow(new Dictionary("City":"London","JoinStatus":clDataTable.JoinSuccessJoinedOnly))
+		  
+		  
+		  
+		  var tjoin3_expected as new clDataTable("X3")
+		  call tjoin3_expected.AddColumn(new clStringDataSerie("City"))
+		  call tjoin3_expected.AddColumn(new clNumberDataSerie("Quantity"))
+		  call tjoin3_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tjoin3_expected.AddColumn(new clStringDataSerie("JoinStatus"))
+		  call tjoin3_expected.AddColumn(new clStringDataSerie("Country"))
+		  
+		  var tjoin4_expected as new clDataTable("X4")
+		  call tjoin4_expected.AddColumn(new clStringDataSerie("City"))
+		  call tjoin4_expected.AddColumn(new clNumberDataSerie("Quantity"))
+		  call tjoin4_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tjoin4_expected.AddColumn(new clStringDataSerie("JoinStatus"))
+		  call tjoin4_expected.AddColumn(new clStringDataSerie("Country"))
+		  
+		  tjoin4_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin4_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin4_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin4_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin4_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin4_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin4_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin4_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin4_expected.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin4_expected.AddRow(new Dictionary("Country":"USA","City":"NewYork","JoinStatus":clDataTable.JoinSuccessJoinedOnly))
+		  tjoin4_expected.AddRow(new Dictionary("Country":"France","City":"Lyon","JoinStatus":clDataTable.JoinSuccessJoinedOnly))
+		  tjoin4_expected.AddRow(new Dictionary("Country":"Spain","City":"Madrid","JoinStatus":clDataTable.JoinSuccessJoinedOnly))
+		  
+		  
+		  
+		  
+		  var tjoin5_expected as new clDataTable("X5")
+		  call tjoin5_expected.AddColumn(new clStringDataSerie("City"))
+		  call tjoin5_expected.AddColumn(new clNumberDataSerie("Quantity"))
+		  call tjoin5_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tjoin5_expected.AddColumn(new clStringDataSerie("JoinStatus"))
+		  call tjoin5_expected.AddColumn(new clNumberDataSerie("Country"))
+		  call tjoin5_expected.AddColumn(new clStringDataSerie("Something"))
+		  
+		  tjoin5_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21,"Country":"Belgium","Something":"Alpha","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Beta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Gamma","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23,"Country":"Belgium","Something":"Alpha","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24,"Country":"Belgium","Something":"Alpha","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","Something":"Beta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","Something":"Gamma","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26,"Country":"France","Something":"Delta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","Something":"Beta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","Something":"Gamma","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin5_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28,"Country":"France","Something":"Delta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  
+		  
+		  
+		  var tjoin6_expected as new clDataTable("X6")
+		  call tjoin6_expected.AddColumn(new clStringDataSerie("City"))
+		  call tjoin6_expected.AddColumn(new clNumberDataSerie("Quantity"))
+		  call tjoin6_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tjoin6_expected.AddColumn(new clStringDataSerie("JoinStatus"))
+		  call tjoin6_expected.AddColumn(new clNumberDataSerie("Country"))
+		  call tjoin6_expected.AddColumn(new clStringDataSerie("Something"))
+		  
+		  tjoin6_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21,"Country":"Belgium","Something":"Alpha","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Beta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Gamma","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23,"Country":"Belgium","Something":"Alpha","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24,"Country":"Belgium","Something":"Alpha","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","Something":"Beta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","Something":"Gamma","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26,"Country":"France","Something":"Delta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","Something":"Beta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","Something":"Gamma","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28,"Country":"France","Something":"Delta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  tjoin6_expected.AddRow(new Dictionary("City":"Lille", "Quantity":0, "Unitprice": 0,"Country":"Belgium","Something":"Omega","JoinStatus":clDataTable.JoinSuccessJoinedOnly))
+		  tjoin6_expected.AddRow(new Dictionary("City":"NewYork", "Quantity":0, "Unitprice": 0,"Country":"USA","Something":"Zeta","JoinStatus":clDataTable.JoinSuccessJoinedOnly))
+		  tjoin6_expected.AddRow(new Dictionary("City":"London", "Quantity":0, "UnitPrice":0,"JoinStatus":clDataTable.JoinSuccessJoinedOnly))
+		  
+		  
+		  
+		  call check_table(log, "Join1", tjoin1_expected, tjoin1)
+		  
+		  call check_table(log, "Join2", tjoin2_expected, tjoin2)
+		  
+		  call check_table(log, "Join3", tjoin3_expected, tjoin3)
+		  
+		  call check_table(log, "Join4", tjoin4_expected, tjoin4)
+		  
+		  call check_table(log, "Join5", tjoin5_expected, tjoin5)
+		  
+		  call check_table(log, "Join6", tjoin6_expected, tjoin6)
+		  
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
