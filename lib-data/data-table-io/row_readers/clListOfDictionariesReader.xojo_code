@@ -25,7 +25,7 @@ Implements TableRowReaderInterface
 		  
 		  if lastIndex > source.LastIndex then lastIndex = source.LastIndex
 		  
-		  redim self.column_names(-1)
+		  column_names.RemoveAll  
 		  
 		  for index as integer = 0 to lastIndex
 		    var d as Dictionary = source(index)
@@ -61,7 +61,7 @@ Implements TableRowReaderInterface
 		  
 		  if lastIndex > source.LastIndex then lastIndex = source.LastIndex
 		  
-		  redim self.column_names(-1)
+		  column_names.RemoveAll  
 		  
 		  for each column_name as string in retainColumns
 		    if self.column_names.IndexOf(column_name.Trim) < 0 then self.column_names.Add(column_name.trim)

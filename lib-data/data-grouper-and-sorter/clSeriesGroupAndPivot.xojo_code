@@ -48,8 +48,8 @@ Inherits clSeriesGroupBy
 		  //  Pre-allocate work array
 		  //  
 		  
-		  redim tmp_label(titleOfDimensionColumns.Count)
-		  redim tmp_value(titleOfDimensionColumns.Count)
+		  tmp_label.ResizeTo(titleOfDimensionColumns.Count)
+		  tmp_value.ResizeTo(titleOfDimensionColumns.Count)
 		  
 		  //  
 		  //  Prepare output space for grouped dimensions
@@ -123,7 +123,7 @@ Inherits clSeriesGroupBy
 		  
 		  InputMeasureColumns().RemoveAll
 		  TitleOfMeasureColumns.RemoveAll
-		   
+		  
 		  ActionOnMeasureColumns.RemoveAll
 		  
 		  self.PivotDefinition = PivotMapping

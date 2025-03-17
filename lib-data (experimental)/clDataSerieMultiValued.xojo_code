@@ -24,7 +24,8 @@ Inherits clDataSerie
 		  
 		  serie_value_separator = Chr(9)
 		  
-		  redim Self.serie_headers(-1)
+		  self.serie_headers.RemoveAll
+		  
 		  For Each element As String In the_labels
 		    Self.serie_headers.Append(element)
 		    

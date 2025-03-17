@@ -105,10 +105,8 @@ Inherits clAbstractDataSerie
 		  
 		  items_value_dict = new Dictionary
 		  
-		  redim items_index(-1)
-		  redim items_value_list(-1)
-		  
-		  
+		  items_index.RemoveAll
+		  items_value_list.RemoveAll
 		End Sub
 	#tag EndMethod
 

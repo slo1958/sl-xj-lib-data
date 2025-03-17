@@ -305,7 +305,7 @@ Inherits clAbstractDataSerie
 		  
 		  self.Metadata.Add("type","datetime")
 		  
-		  redim items(-1)
+		  items.RemoveAll
 		  
 		End Sub
 	#tag EndMethod

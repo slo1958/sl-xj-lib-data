@@ -113,9 +113,11 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub ResetElements()
 		  
+		  // Cleanup meta data
 		  self.Metadata.Add("type","general")
 		  
-		  redim items(-1)
+		  // Cleanup values
+		  items.RemoveAll
 		  
 		End Sub
 	#tag EndMethod

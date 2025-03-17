@@ -236,14 +236,14 @@ Inherits clAbstractDataSerie
 		  
 		  self.Metadata.Add("type","boolean")
 		  
-		  redim items(-1)
+		  items.RemoveAll
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function RowCount() As integer
-		   
+		  
 		  return items.Count
 		End Function
 	#tag EndMethod

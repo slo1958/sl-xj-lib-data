@@ -809,7 +809,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var RowCount as integer = self.RowCount
 		  
 		  For i As Integer=0 To RowCount-1
-		    redim column_values(-1)
+		    column_values.RemoveAll
 		    
 		    for each column as clAbstractDataSerie in self.columns
 		      column_values.Append(column.GetElement(i))
@@ -1704,7 +1704,7 @@ Implements TableColumnReaderInterface,Iterable
 		  System.DebugLog(Join(tmp_item, ";"))
 		  
 		  For row As Integer = 0 To RowCount-1
-		    redim tmp_item(-1)
+		    tmp_item.RemoveAll
 		    
 		    tmp_item.Append(Self.RowIndexColumn.GetElement(row))
 		    

@@ -610,7 +610,7 @@ Implements Iterable
 		  For row As Integer = 0 To RowCount-1
 		    var element As variant = GetElement(row)
 		    var ok_convert As Boolean
-		    redim tmp_item(-1)
+		    tmp_item.RemoveAll
 		    
 		    tmp_item.Append(Str(row))
 		    
@@ -863,6 +863,8 @@ Implements Iterable
 		  
 		  tmp_v = GetElement(ElementIndex)
 		  
+		  #pragma BreakOnExceptions false
+		  
 		  Try 
 		    // some test cases will cause an exception here, this is expected
 		    tmp_d = tmp_v.DoubleValue
@@ -872,6 +874,8 @@ Implements Iterable
 		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(ElementIndex) , "number")
 		    
 		  End Try
+		  
+		  #pragma BreakOnExceptions Default
 		  
 		  Return tmp_d
 		End Function

@@ -227,7 +227,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Minimum() As double
-		   
+		  
 		  
 		  return clBasicMath.Minimum(items)
 		  
@@ -411,7 +411,7 @@ Inherits clAbstractDataSerie
 		  
 		  self.Metadata.Add("type","integer")
 		  
-		  redim items(-1)
+		  items.RemoveAll
 		  
 		End Sub
 	#tag EndMethod

@@ -36,7 +36,8 @@ Implements TableColumnReaderInterface
 
 	#tag Method, Flags = &h0
 		Sub Constructor(validation_name as string, columns() as clDataSerieValidation, allow_extra_columns as boolean = False)
-		  redim ColumnsValidation(-1)
+		  
+		  ColumnsValidation.RemoveAll
 		  
 		  if validation_name.trim.len = 0 then
 		    TableName = "Noname"
