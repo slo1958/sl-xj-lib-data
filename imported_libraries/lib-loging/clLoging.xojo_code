@@ -146,6 +146,63 @@ Implements itfLogingWriter,itfLogingInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub EndTask(pTaskId As String)
+		  //
+		  // Register the end of a task. This causes a message to be send to the writers, with execution time.
+		  //
+		  // Parameters:
+		  // - name of the task
+		  //
+		  // Returns:
+		  // (nothing)
+		  //
+		  var tmp As internals.clLogingTaskTimer =  internals.clLogingTaskTimer(RunningTasks.Lookup(pTaskId, nil))
+		  
+		  if tmp = nil then
+		    WriteError cstInternalSource, cstMsgTaskNotFound, pTaskId, CurrentMethodName
+		    
+		  else
+		    tmp.Done
+		    
+		    RunningTasks.Remove(pTaskId)
+		    
+		    WriteInfo cstInternalSource, cstMsgEndTask, pTaskId, Format(tmp.GetExecutionTime, FormatForExecutionTime) 
+		    
+		  end if
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub EndTaskAll()
+		  //
+		  // End all registered tasks
+		  //
+		  // Parameters:
+		  // (nothing)
+		  //
+		  // Returns:
+		  // (nothing)
+		  //
+		  
+		  var key_store() As String
+		  
+		  // cannot alter a Dictionary while iterating, so take a copy of the keys
+		  For Each item As  string In RunningTasks.keys
+		    key_store.Append(item)
+		    
+		  Next
+		  
+		  For Each task_id As String In key_store
+		    EndTask task_id
+		    
+		  Next
+		  
+		  Return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub EnterMethod(MethodName as string)
 		  //
 		  // Register entry in a method
@@ -230,6 +287,26 @@ Implements itfLogingWriter,itfLogingInterface
 		  Return tmp_return
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub internal_writeitem_old2(MessageSeverity as string, MessageSource as string, MessageText as string)
+		  
+		  if self.AcceptedSeverity.Value(MessageSeverity) then
+		    
+		    var TimeStamp As String  = DateTime.Now.SQLDateTime
+		    
+		    For Each Writer As  internals.clLogingWriterEntry In writers
+		      If Writer.enabled Then
+		        Writer.log_writer.AddLogEntry(MessageSeverity, TimeStamp, MessageSource, MessageText)
+		        
+		      End If
+		      
+		    Next
+		    
+		  end if
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
@@ -413,64 +490,7 @@ Implements itfLogingWriter,itfLogingInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub TaskEnd(pTaskId As String)
-		  //
-		  // Register the end of a task. This causes a message to be send to the writers, with execution time.
-		  //
-		  // Parameters:
-		  // - name of the task
-		  //
-		  // Returns:
-		  // (nothing)
-		  //
-		  var tmp As internals.clLogingTaskTimer =  internals.clLogingTaskTimer(RunningTasks.Lookup(pTaskId, nil))
-		  
-		  if tmp = nil then
-		    WriteError cstInternalSource, cstMsgTaskNotFound, pTaskId, CurrentMethodName
-		    
-		  else
-		    tmp.Done
-		    
-		    RunningTasks.Remove(pTaskId)
-		    
-		    WriteInfo cstInternalSource, cstMsgTaskEnd, pTaskId, Format(tmp.GetExecutionTime, FormatForExecutionTime) 
-		    
-		  end if
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub TaskEndAll()
-		  //
-		  // End all registered tasks
-		  //
-		  // Parameters:
-		  // (nothing)
-		  //
-		  // Returns:
-		  // (nothing)
-		  //
-		  
-		  var key_store() As String
-		  
-		  // cannot alter a Dictionary while iterating, so take a copy of the keys
-		  For Each item As  string In RunningTasks.keys
-		    key_store.Append(item)
-		    
-		  Next
-		  
-		  For Each task_id As String In key_store
-		    TaskEnd task_id
-		    
-		  Next
-		  
-		  Return
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub TaskStart(pTaskId As String)
+		Sub StartTask(pTaskId As String)
 		  //
 		  // Register the start of a task. This causes a message to be send to the writers.
 		  //
@@ -483,7 +503,7 @@ Implements itfLogingWriter,itfLogingInterface
 		  var tmp As New  internals.clLogingTaskTimer(pTaskId)
 		  RunningTasks.value(pTaskId) = tmp
 		  
-		  WriteInfo cstInternalSource, cstMsgTaskStart, pTaskId
+		  WriteInfo cstInternalSource, cstMsgStartTask, pTaskId
 		  
 		  
 		End Sub

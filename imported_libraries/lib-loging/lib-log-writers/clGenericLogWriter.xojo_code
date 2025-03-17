@@ -22,8 +22,6 @@ Implements itfLogingWriter
 		  // Part of the itfLogingWriter interface.
 		  
 		  // Should be implemented in child classes
-		  
-		  
 		End Sub
 	#tag EndMethod
 

@@ -16,7 +16,7 @@ Implements itfLogingWriter
 		    System.DebugLog MessageTime+". " +MessageSeverity + " " +  MessageText
 		    
 		  end if
-		   
+		  
 		  
 		End Sub
 	#tag EndMethod

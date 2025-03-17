@@ -59,6 +59,9 @@ Protected Module lib_loging_constants
 	#tag Constant, Name = cstInternalWriterId, Type = String, Dynamic = False, Default = \"DEFAULT", Scope = Public
 	#tag EndConstant
 
+	#tag Constant, Name = cstMsgEndTask, Type = String, Dynamic = False, Default = \"Ending task %0 after %1 second(s).", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = cstMsgErrorMsgDisabled, Type = String, Dynamic = False, Default = \"Error messages disabled.", Scope = Public
 	#tag EndConstant
 
@@ -80,16 +83,13 @@ Protected Module lib_loging_constants
 	#tag Constant, Name = cstMsgSetWarningLimit, Type = String, Dynamic = False, Default = \"Set warning limit to %0.", Scope = Public
 	#tag EndConstant
 
+	#tag Constant, Name = cstMsgStartTask, Type = String, Dynamic = False, Default = \"Starting task %0.", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = cstMsgStatusMessage, Type = String, Dynamic = False, Default = \"Found %0 warning(s)\x2C %1 error(s).", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = cstMsgTaskEnd, Type = String, Dynamic = False, Default = \"Ending task %0 after %1 second(s).", Scope = Public
-	#tag EndConstant
-
 	#tag Constant, Name = cstMsgTaskNotFound, Type = String, Dynamic = False, Default = \"Cannot find task %0\x2C called from %1.", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = cstMsgTaskStart, Type = String, Dynamic = False, Default = \"Starting task %0.", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = cstMsgWarningMsgDisabled, Type = String, Dynamic = False, Default = \"Warning messages disabled.", Scope = Public
