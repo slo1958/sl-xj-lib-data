@@ -5,7 +5,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
 		  
-		  items.Append(the_item.StringValue)
+		  items.Add(the_item.StringValue)
 		End Sub
 	#tag EndMethod
 
@@ -61,7 +61,7 @@ Inherits clAbstractDataSerie
 		  
 		  For row_index As Integer=0 To items.LastIndex
 		    my_item = items(row_index)
-		    return_boolean.Append(list_of_values.IndexOf(my_item)>=0)
+		    return_boolean.Add(list_of_values.IndexOf(my_item)>=0)
 		    
 		  Next
 		  
@@ -378,7 +378,7 @@ Inherits clAbstractDataSerie
 		  
 		  While items.LastIndex < the_length-1
 		    var v as string = DefaultValue.StringValue
-		    items.Append(v)
+		    items.Add(v)
 		    
 		  Wend
 		  

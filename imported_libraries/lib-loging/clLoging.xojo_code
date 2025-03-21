@@ -42,7 +42,7 @@ Implements itfLogingWriter,itfLogingInterface
 		  
 		  var tmp As New  internals.clLogingWriterEntry(prmWriterId, prmWriter)
 		  
-		  writers.Append(tmp)
+		  writers.Add(tmp)
 		End Sub
 	#tag EndMethod
 
@@ -189,7 +189,7 @@ Implements itfLogingWriter,itfLogingInterface
 		  
 		  // cannot alter a Dictionary while iterating, so take a copy of the keys
 		  For Each item As  string In RunningTasks.keys
-		    key_store.Append(item)
+		    key_store.Add(item)
 		    
 		  Next
 		  

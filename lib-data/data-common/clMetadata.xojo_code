@@ -15,7 +15,7 @@ Protected Class clMetadata
 		  
 		  var p as pair = (dtp:msg)
 		  
-		  DataList.Append(p)
+		  DataList.Add(p)
 		  
 		  
 		End Sub

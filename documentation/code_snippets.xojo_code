@@ -10,7 +10,7 @@ Protected Module code_snippets
 		Sub snippet_readme_001()
 		  // Snippet 001
 		  
-		  dim my_serie As New clDataSerie("some_values")
+		  Var my_serie As New clDataSerie("some_values")
 		  
 		  my_serie.AddElement("abcd")
 		  my_serie.AddElement("efgh") 
@@ -23,7 +23,7 @@ Protected Module code_snippets
 		Sub snippet_readme_002()
 		  // Snippet 002
 		  
-		  dim my_serie As New clDataSerie("some_values", VariantArray("aaa",123,True))
+		  Var my_serie As New clDataSerie("some_values", VariantArray("aaa",123,True))
 		  
 		  
 		End Sub
@@ -33,7 +33,7 @@ Protected Module code_snippets
 		Sub snippet_readme_003()
 		  // Snippet 003
 		  
-		  dim my_serie As New clDataSerie("some_values", "aaa",123,True)
+		  Var my_serie As New clDataSerie("some_values", "aaa",123,True)
 		  
 		  
 		End Sub
@@ -43,9 +43,9 @@ Protected Module code_snippets
 		Sub snippet_readme_004()
 		  // Snippet 004
 		  
-		  dim fld_file as FolderItem
+		  var fld_file as FolderItem
 		  
-		  dim my_serie  As  clDataSerie = clDataSerie(AppendTextfileToDataSerie(fld_file, new clDataSerie(""), true))
+		  Var my_serie  As  clDataSerie = clDataSerie(AppendTextfileToDataSerie(fld_file, new clDataSerie(""), true))
 		  
 		  
 		End Sub
@@ -55,9 +55,9 @@ Protected Module code_snippets
 		Sub snippet_readme_005()
 		  // Snippet 005
 		  
-		  Dim my_serie1 As New clDataSerie("customer")
-		  Dim my_serie2 As New clDataSerie("product")
-		  Dim my_serie3 As New clDataSerie("region")
+		  Var my_serie1 As New clDataSerie("customer")
+		  Var my_serie2 As New clDataSerie("product")
+		  Var my_serie3 As New clDataSerie("region")
 		  
 		  
 		  // populate the series
@@ -66,7 +66,7 @@ Protected Module code_snippets
 		  my_serie3.AddElement(123.34) // (...)
 		  
 		  
-		  Dim table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
+		  var table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 		  
 		End Sub
 	#tag EndMethod
@@ -75,7 +75,7 @@ Protected Module code_snippets
 		Sub snippet_readme_006()
 		  // Snippet 006
 		  
-		  Dim table As New clDataTable("mytable", SerieArray( _
+		  var table As New clDataTable("mytable", SerieArray( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -90,18 +90,18 @@ Protected Module code_snippets
 		Sub snippet_readme_007()
 		  // Snippet 007
 		  
-		  Dim my_serie1 As New clDataSerie("customer")
-		  Dim my_serie2 As New clDataSerie("product")
-		  Dim my_serie3 As New clDataSerie("region")
+		  Var my_serie1 As New clDataSerie("customer")
+		  Var my_serie2 As New clDataSerie("product")
+		  Var my_serie3 As New clDataSerie("region")
 		  
 		  
 		  // populate the series
 		  my_serie1.AddElement("abc") // (...)
 		  
 		  
-		  Dim table1 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
+		  var table1 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 		  
-		  Dim table2 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie3), True)
+		  var table2 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie3), True)
 		  
 		End Sub
 	#tag EndMethod
@@ -110,7 +110,7 @@ Protected Module code_snippets
 		Sub snippet_readme_008()
 		  // Snippet 008
 		  
-		  Dim mytable As New clDataTable("T1")
+		  Var Mytable As New clDataTable("T1")
 		  
 		  call mytable.AddColumn(new clDataSerie("name"))
 		  call mytable.AddColumn(new clNumberDataSerie("quantity"))
@@ -142,7 +142,7 @@ Protected Module code_snippets
 		Sub snippet_readme_009()
 		  // Snippet 009
 		  
-		  Dim mytable As New clDataTable("mytable")
+		  Var Mytable As New clDataTable("mytable")
 		  
 		  call mytable.AddColumns(Array("country","city","sales"))
 		  
@@ -228,7 +228,7 @@ Protected Module code_snippets
 		  my_file  = data_folder.Child("myfile3_10K_comma.txt")
 		  
 		  
-		  Dim table As New clDataTable(new clTextReader(my_file, True, new clTextFileConfig(",")))
+		  var table As New clDataTable(new clTextReader(my_file, True, new clTextFileConfig(",")))
 		  
 		End Sub
 	#tag EndMethod
@@ -274,7 +274,7 @@ Protected Module code_snippets
 		  
 		  // Add data to table_customers 
 		  
-		  Dim table_country As clDataTable = table_customers.groupby(StringArray("Country"), StringArray("Sales"))
+		  var table_country As clDataTable = table_customers.groupby(StringArray("Country"), StringArray("Sales"))
 		  
 		  
 		End Sub
@@ -284,7 +284,7 @@ Protected Module code_snippets
 		Sub snippet_readme_017()
 		  // Snippet 017
 		  
-		  Dim MyTable As New clDataTable("mytable")
+		  Var MyTable As New clDataTable("mytable")
 		  
 		  call MyTable.AddColumns(Array("country","city","sales"))
 		  
@@ -295,12 +295,12 @@ Protected Module code_snippets
 		  MyTable.AddRow(Array("Belgique","Bruxelles",1500))
 		  MyTable.AddRow(Array("USA","Chicago",1600))
 		  
-		  dim is_france() as variant = MyTable.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")
-		  dim is_belgium() as variant =  MyTable.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")
-		  dim is_europe() as variant
+		  var is_france() as variant = MyTable.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")
+		  var is_belgium() as variant =  MyTable.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")
+		  var is_europe() as variant
 		  
 		  for i as integer = 0 to is_france.Ubound
-		    is_europe.Append(is_france(i).integerValue + is_belgium(i).integerValue)
+		    is_europe.Add(is_france(i).integerValue + is_belgium(i).integerValue)
 		    
 		  next
 		  
@@ -321,7 +321,7 @@ Protected Module code_snippets
 		  
 		  // Snippet 018
 		  
-		  Dim MyTable As New clDataTable("mytable")
+		  Var MyTable As New clDataTable("mytable")
 		  
 		  call MyTable.AddColumns(Array("country","city","sales","product"))
 		  
@@ -332,7 +332,7 @@ Protected Module code_snippets
 		  MyTable.AddRow(Array("Belgique","Bruxelles",1500,"BB"))
 		  MyTable.AddRow(Array("USA","Chicago",1600,"AA"))
 		  
-		  dim filter_country as new clBooleanDataSerie("mask_country")
+		  var filter_country as new clBooleanDataSerie("mask_country")
 		  for each cell as string in MyTable.GetColumn("Country")
 		    filter_country.AddElement(cell = "Belgique")
 		    
@@ -340,7 +340,7 @@ Protected Module code_snippets
 		  
 		  call MyTable.AddColumn(filter_country)
 		  
-		  dim filter_product as new clBooleanDataSerie("mask_product")
+		  var filter_product as new clBooleanDataSerie("mask_product")
 		  for each cell as string in MyTable.GetColumn("product")
 		    filter_product.AddElement(cell = "BB")
 		    
@@ -367,13 +367,13 @@ Protected Module code_snippets
 		  
 		  // add data to the table  ...
 		  
-		  dim filter_country as new clBooleanDataSerie("mask_country")
+		  var filter_country as new clBooleanDataSerie("mask_country")
 		  for each cell as string in MyTable.GetColumn("Country")
 		    filter_country.AddElement(cell = "Belgique")
 		    
 		  next 
 		  
-		  dim filter_product as new clBooleanDataSerie("mask_product")
+		  var filter_product as new clBooleanDataSerie("mask_product")
 		  for each cell as string in MyTable.GetColumn("product")
 		    filter_product.AddElement(cell = "BB")
 		    
@@ -397,10 +397,10 @@ Protected Module code_snippets
 		Sub snippet_readme_020()
 		  // Snippet 020
 		  
-		  dim col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
-		  dim col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
+		  var col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
+		  var col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
 		  
-		  dim table1 as new clDataTable("source table", SerieArray(col_source, col_sales))
+		  var table1 as new clDataTable("source table", SerieArray(col_source, col_sales))
 		  
 		End Sub
 	#tag EndMethod
@@ -431,7 +431,7 @@ Protected Module code_snippets
 		  var table2 as clDataTable
 		  
 		  
-		  Dim table4 As clDataTable = table2.GroupBy(StringArray("country"), StringArray("sales"))
+		  var table4 As clDataTable = table2.GroupBy(StringArray("country"), StringArray("sales"))
 		  
 		  
 		End Sub

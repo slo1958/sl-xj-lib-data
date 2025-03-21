@@ -27,7 +27,7 @@ Inherits clDataSerie
 		  self.serie_headers.RemoveAll
 		  
 		  For Each element As String In the_labels
-		    Self.serie_headers.Append(element)
+		    Self.serie_headers.Add(element)
 		    
 		  Next
 		  

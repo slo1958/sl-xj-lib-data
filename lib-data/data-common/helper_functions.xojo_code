@@ -97,7 +97,7 @@ Protected Module helper_functions
 		  var ret() As pair
 		  
 		  For Each item As variant In items
-		    ret.append(item)
+		    ret.Add(item)
 		    
 		  Next
 		  
@@ -111,7 +111,7 @@ Protected Module helper_functions
 		  var tmp() As clAbstractDataSerie
 		  
 		  For Each c As clAbstractDataSerie In series
-		    tmp.Append(c)
+		    tmp.Add(c)
 		    
 		  Next
 		  
@@ -135,7 +135,7 @@ Protected Module helper_functions
 		  var ret() As String
 		  
 		  For Each item As String In items
-		    ret.append(item)  
+		    ret.Add(item)  
 		    
 		  Next
 		  
@@ -149,7 +149,7 @@ Protected Module helper_functions
 		  var ret() As variant
 		  
 		  For Each item As variant In items
-		    ret.append(item)
+		    ret.Add(item)
 		    
 		  Next
 		  

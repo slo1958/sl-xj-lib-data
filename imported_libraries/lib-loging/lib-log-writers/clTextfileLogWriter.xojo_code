@@ -80,10 +80,10 @@ Implements itfLogingWriter
 		    var output As TextOutputStream = TextOutputStream.Open(file_path)
 		    
 		    var field_names() as string
-		    field_names.Append(kWhen)
-		    field_names.Append(kWho)
-		    field_names.Append(kSeverity)
-		    field_names.Append(kMessage)
+		    field_names.Add(kWhen)
+		    field_names.Add(kWho)
+		    field_names.Add(kSeverity)
+		    field_names.Add(kMessage)
 		    
 		    output.WriteLine(string.FromArray(field_names, field_separator))
 		    

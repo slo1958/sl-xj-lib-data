@@ -62,7 +62,7 @@ Inherits clDataSerie
 		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  While items.LastIndex < the_length-1
 		    Self.last_index  = Self.last_index  +1
-		    items.Append(Str(Self.last_index ))
+		    items.Add(Str(Self.last_index ))
 		    
 		  Wend
 		  

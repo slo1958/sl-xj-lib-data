@@ -5,7 +5,9 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
 		  
-		  items.Append(the_item.IntegerValue)
+		  //items.Add(the_item.IntegerValue)
+		  
+		  items.Add(Internal_ConversionToInteger(the_item))
 		End Sub
 	#tag EndMethod
 
@@ -103,7 +105,7 @@ Inherits clAbstractDataSerie
 		  
 		  For row_index As Integer=0 To items.LastIndex
 		    my_item = items(row_index)
-		    return_boolean.Append(list_of_values.IndexOf(my_item)>=0)
+		    return_boolean.Add(list_of_values.IndexOf(my_item)>=0)
 		    
 		  Next
 		  
@@ -164,7 +166,7 @@ Inherits clAbstractDataSerie
 		  
 		  For row_index As Integer=0 To items.LastIndex
 		    my_item = items(row_index)
-		    return_boolean.Append((minimum_value <= my_item) and (my_item <= maximum_value))
+		    return_boolean.Add((minimum_value <= my_item) and (my_item <= maximum_value))
 		    
 		  Next
 		  
@@ -433,7 +435,8 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub SetElement(ElementIndex as integer, the_item as Variant)
 		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then
-		    items(ElementIndex) = the_item.IntegerValue
+		    //items(ElementIndex) = the_item.IntegerValue
+		    items(ElementIndex) = Internal_ConversionToInteger(the_item)
 		    
 		  else
 		    self.AddErrorMessage(CurrentMethodName,ErrMsgIndexOutOfbounds, str(ElementIndex), self.name)
@@ -463,7 +466,7 @@ Inherits clAbstractDataSerie
 		  
 		  While items.LastIndex < the_length-1
 		    var v as integer = DefaultValue.IntegerValue
-		    items.Append(v)
+		    items.Add(v)
 		    
 		  Wend
 		  

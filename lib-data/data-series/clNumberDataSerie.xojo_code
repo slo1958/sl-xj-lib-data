@@ -5,7 +5,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
 		  
-		  items.Append(Internal_ConversionToDouble(the_item))
+		  items.Add(Internal_ConversionToDouble(the_item))
 		  
 		End Sub
 	#tag EndMethod
@@ -254,7 +254,7 @@ Inherits clAbstractDataSerie
 		  
 		  For row_index As Integer=0 To items.LastIndex
 		    my_item = items(row_index)
-		    return_boolean.Append((minimum_value <= my_item) and (my_item <= maximum_value))
+		    return_boolean.Add((minimum_value <= my_item) and (my_item <= maximum_value))
 		    
 		  Next
 		  
@@ -598,7 +598,6 @@ Inherits clAbstractDataSerie
 		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then 
 		    items(ElementIndex) = Internal_ConversionToDouble(the_item)
 		    
-		    
 		  else
 		    self.AddErrorMessage(CurrentMethodName,ErrMsgIndexOutOfbounds, str(ElementIndex), self.name)
 		    
@@ -620,7 +619,7 @@ Inherits clAbstractDataSerie
 		  
 		  While items.LastIndex < the_length-1
 		    var v as double = DefaultValue.DoubleValue
-		    items.Append(v)
+		    items.Add(v)
 		    
 		  Wend
 		  

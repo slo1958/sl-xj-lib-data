@@ -186,7 +186,7 @@ Implements Iterable
 		  var return_boolean() As Variant
 		  
 		  For row_index As Integer=0 To self.lastIndex // items.LastIndex
-		    return_boolean.Append(pFilterFunction.Invoke(row_index,  self.LastIndex, name, GetElement(row_index), pFunctionParameters))
+		    return_boolean.Add(pFilterFunction.Invoke(row_index,  self.LastIndex, name, GetElement(row_index), pFunctionParameters))
 		    
 		  Next
 		  
@@ -628,17 +628,17 @@ Implements Iterable
 		    var ok_convert As Boolean
 		    tmp_item.RemoveAll
 		    
-		    tmp_item.Append(Str(row))
+		    tmp_item.Add(Str(row))
 		    
 		    ok_convert = False
 		    
 		    If element IsA clDataSerie Then
-		      tmp_item.Append("Data serie: " + clDataSerie(element).FullName(true))
+		      tmp_item.Add("Data serie: " + clDataSerie(element).FullName(true))
 		      ok_convert = True
 		      
 		    Else
 		      Try
-		        tmp_item.Append(element.StringValue)
+		        tmp_item.Add(element.StringValue)
 		        ok_convert = True
 		        
 		      Catch TypeMismatchException
@@ -678,7 +678,7 @@ Implements Iterable
 		  
 		  For i As Integer = 0 To self.LastIndex
 		    if self.GetElement(i) = the_find_value Then
-		      ret.Append(i)
+		      ret.Add(i)
 		      
 		    End If
 		    
@@ -1503,10 +1503,10 @@ Implements Iterable
 		    var element As variant = GetElement(row)
 		    
 		    Try
-		      js_list.Append(element.StringValue)
+		      js_list.Add(element.StringValue)
 		      
 		    Catch TypeMismatchExceptionvar  
-		      js_list.Append("Cannot convert")
+		      js_list.Add("Cannot convert")
 		      
 		    End Try
 		    

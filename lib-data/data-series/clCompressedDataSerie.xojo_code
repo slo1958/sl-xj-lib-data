@@ -11,13 +11,13 @@ Inherits clAbstractDataSerie
 		    item_entry = self.items_value_dict.Value(the_item)
 		    
 		  else
-		    items_value_list.Append(the_item)
+		    items_value_list.Add(the_item)
 		    item_entry = items_value_list.LastIndex
 		    self.items_value_dict.Value(the_item) = item_entry
 		    
 		  end if
 		  
-		  items_index.Append(item_entry)
+		  items_index.Add(item_entry)
 		  
 		  
 		  
@@ -134,7 +134,7 @@ Inherits clAbstractDataSerie
 		      item_entry = self.items_value_dict.Value(the_item)
 		      
 		    else
-		      items_value_list.Append(the_item)
+		      items_value_list.Add(the_item)
 		      item_entry = items_value_list.LastIndex
 		      self.items_value_dict.Value(the_item) = item_entry
 		      
@@ -157,7 +157,7 @@ Inherits clAbstractDataSerie
 		Sub SetLength(the_length as integer, DefaultValue as variant)
 		  
 		  While items_index.LastIndex < the_length-1
-		    items_index.Append(-1)
+		    items_index.Add(-1)
 		    
 		  Wend
 		  

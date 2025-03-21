@@ -42,7 +42,7 @@ Implements Iterable
 		  var tmp() as string
 		  
 		  for each k as String in DatatableDictionary.Keys
-		    tmp.Append(k)
+		    tmp.Add(k)
 		    
 		  next
 		  

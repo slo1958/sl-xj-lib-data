@@ -230,6 +230,7 @@ Begin DesktopContainer ccDataPool_Viewer
       Underline       =   False
       Visible         =   True
       Width           =   242
+      _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
 End
@@ -298,7 +299,7 @@ End
 		  var tmp() as String
 		  
 		  for each v as variant in table_dict.keys()
-		    tmp.Append(v)
+		    tmp.Add(v)
 		    
 		  next
 		  

@@ -5,7 +5,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
 		  
-		  items.Append(the_item.BooleanValue)
+		  items.Add(the_item.BooleanValue)
 		End Sub
 	#tag EndMethod
 
@@ -300,7 +300,7 @@ Inherits clAbstractDataSerie
 		  
 		  While items.LastIndex < the_length-1
 		    var v as boolean = DefaultValue.BooleanValue
-		    items.Append(v)
+		    items.Add(v)
 		    
 		  Wend
 		  

@@ -48,7 +48,7 @@ You can create a data serie:
 ```xojo
 // Snippet 001
 
-dim my_serie As New clDataSerie("some_values")
+var my_serie As New clDataSerie("some_values")
 
 my_serie.AddElement("abcd")
 my_serie.AddElement("efgh")
@@ -65,7 +65,7 @@ Depending on your version of Xojp, you may need use the helper function make\_va
 ```xojo
 // Snippet 002
 
-dim my_serie As New clDataSerie("some_values", VariantArray("aaa",123,True))
+var my_serie As New clDataSerie("some_values", VariantArray("aaa",123,True))
 
  
 ```
@@ -74,7 +74,7 @@ In recent version of Xojo, you can directly write:
 ```xojo
 // Snippet 003
 
-dim my_serie As New clDataSerie("some_values", "aaa",123,True)
+var my_serie As New clDataSerie("some_values", "aaa",123,True)
 
  
 ```
@@ -87,14 +87,14 @@ Note that one line in the source file creates one element in the data serie. The
 ```xojo
 // Snippet 004
 
-dim fld_file as FolderItem
+var fld_file as FolderItem
 ...
 
-dim my_serie  As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file, new clDataSerie(""), true))
+var my_serie  As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_file, new clDataSerie(""), true))
 
 ```
 ### Typed data series
-The default data series stores values as variant.
+The default data series is a child class of clAbstractDataSerie and stores values as variant. The following type specific data series are provided by the library:
 
 - data series index
 - integer data serie
@@ -103,7 +103,19 @@ The default data series stores values as variant.
 - string data serie
 - compressed data serie
 
-#### About data serie index clDataSerieIndex
+When you convert an element to/from a number or to a string:
+
+- clDataSerie only provide an element as a variant, it is the caller responsibility to handle the conversion
+
+- clIntegerDataSerie(), clNumberDataSerie() to string: the library uses the default conversion provided by Xojo, unless you define a corresponding formatter
+
+- clIntegerDataSerie(), clNumberDataSerie() from string: the library uses the default conversion provided by Xojo, unless you define a corresponding parser
+
+- clStringDataSerie() to integer or number: the library uses the default conversion provided by Xojo, unless you define a corresponding parser
+
+- clStringDataSerie() from integer or number: the library uses the default conversion provided by Xojo
+
+#### about data serie index clDataSerieIndex
 (subclass of clDataSerie)
 This class is only used to maintain the record index stored in tables. The value is automatically set to the next value of a counter. 
 
@@ -145,7 +157,7 @@ You can create a data table in any of the following ways:
 
 ```xojo
 
-dim my_table As New clDataTable("table_1")
+var my_table As New clDataTable("table_1")
 
 ```
 
@@ -155,9 +167,9 @@ dim my_table As New clDataTable("table_1")
 ```xojo
 // Snippet 005
 
-Dim my_serie1 As New clDataSerie("customer")
-Dim my_serie2 As New clDataSerie("product")
-Dim my_serie3 As New clDataSerie("region")
+var my_serie1 As New clDataSerie("customer")
+var my_serie2 As New clDataSerie("product")
+var my_serie3 As New clDataSerie("region")
 
 
 // populate the series
@@ -166,7 +178,7 @@ my_serie1.AddElement(...)
 my_serie3.AddElement(...)
 
 
-Dim my_table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
+var my_table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 
 ```
 
@@ -175,7 +187,7 @@ A shorter way to do it:
 ```xojo
 // Snippet 006
 
-Dim my_table As New clDataTable("mytable", SerieArray( _
+var my_table As New clDataTable("mytable", SerieArray( _
 New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
 , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -191,18 +203,18 @@ If you need to create multiple tables from the same data series, remember that a
 ```xojo
 // Snippet 007
 
-Dim my_serie1 As New clDataSerie("customer")
-Dim my_serie2 As New clDataSerie("product")
-Dim my_serie3 As New clDataSerie("region")
+var my_serie1 As New clDataSerie("customer")
+var my_serie2 As New clDataSerie("product")
+var my_serie3 As New clDataSerie("region")
 
 
 // populate the series
 my_serie1.AddElement(...)
 ...
 
-Dim my_table1 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
+var my_table1 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 
-Dim my_table2 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie3), True)
+var my_table2 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie3), True)
 ```
 
 Note the last parameter for the second call to the constructor: it is telling the constructor to clone the data serie if it belongs to another table. In the example, my_serie1 will be cloned.
@@ -217,7 +229,7 @@ This will create a new column, named 'unit_price*quantity':
 ```xojo
 // Snippet 008
 
-Dim mytable As New clDataTable("T1")
+var mytable As New clDataTable("T1")
 
 call mytable.AddColumn(new clDataSerie("name"))
 call mytable.AddColumn(new clNumberDataSerie("quantity"))
@@ -250,7 +262,7 @@ Call mytable.SetColumnValues("total", mytable.GetNumberColumn("unit_price") * my
 ```xojo
 // Snippet 009
 
-Dim mytable As New clDataTable("mytable")
+var mytable As New clDataTable("mytable")
 
 call mytable.AddColumns(Array("country","city","sales"))
 
@@ -343,7 +355,7 @@ var my_file as FolderItem
 my_file  = data_folder.Child("myfile3_10K_comma.txt")
 
 
-Dim my_table As New clDataTable(new clTextReader(my_file, True, new clTextFileConfig(",")))
+var my_table As New clDataTable(new clTextReader(my_file, True, new clTextFileConfig(",")))
 
 
 ```
@@ -426,7 +438,7 @@ var table_Customers as clDataTable
 
 // Add data to table_customers 
 
-Dim table_country As clDataTable = table_customers.groupby(StringArray("Country"), StringArray("Sales"))
+var table_country As clDataTable = table_customers.groupby(StringArray("Country"), StringArray("Sales"))
 
 ```
 
@@ -437,7 +449,7 @@ Let's consider the following example:
 ```xojo
 // Snippet 017
 
-Dim MyTable As New clDataTable("mytable")
+var MyTable As New clDataTable("mytable")
 
 call MyTable.AddColumns(Array("country","city","sales"))
 
@@ -448,9 +460,9 @@ MyTable.AddRow(Array("USA","NewYork",1400))
 MyTable.AddRow(Array("Belgique","Bruxelles",1500))
 MyTable.AddRow(Array("USA","Chicago",1600))
 
-dim is_france() as variant = MyTable.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")
-dim is_belgium() as variant =  MyTable.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")
-dim is_europe() as variant
+var is_france() as variant = MyTable.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")
+var is_belgium() as variant =  MyTable.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")
+var is_europe() as variant
 
 for i as integer = 0 to is_france.Ubound
   is_europe.Append(is_france(i).integerValue + is_belgium(i).integerValue)
@@ -492,10 +504,10 @@ For example, the function BasicFieldFilter() used before has the following imple
 ```xojo
 
 		Function BasicFieldFilter(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
-		  dim field_name as string = function_param(0)
-		  dim field_value as variant = function_param(1)
+		  var field_name as string = function_param(0)
+		  var field_value as variant = function_param(1)
 		  
-		  dim idx as integer = the_column_names.IndexOf(field_name)
+		  var idx as integer = the_column_names.IndexOf(field_name)
 		  
 		  return the_cell_values(idx) = field_value
 		End Function
@@ -512,7 +524,7 @@ Let's consider the following example:
  
 // Snippet 018
 
-Dim MyTable As New clDataTable("mytable")
+var MyTable As New clDataTable("mytable")
 
 call MyTable.AddColumns(Array("country","city","sales","product"))
 
@@ -523,7 +535,7 @@ MyTable.AddRow(Array("USA","NewYork",1400,"AA"))
 MyTable.AddRow(Array("Belgique","Bruxelles",1500,"BB"))
 MyTable.AddRow(Array("USA","Chicago",1600,"AA"))
 
-dim filter_country as new clBooleanDataSerie("mask_country")
+var filter_country as new clBooleanDataSerie("mask_country")
 for each cell as string in MyTable.GetColumn("Country")
   filter_country.AddElement(cell = "Belgique")
   
@@ -531,7 +543,7 @@ next
 
 call MyTable.AddColumn(filter_country)
 
-dim filter_product as new clBooleanDataSerie("mask_product")
+var filter_product as new clBooleanDataSerie("mask_product")
 for each cell as string in MyTable.GetColumn("product")
   filter_product.AddElement(cell = "BB")
   
@@ -560,13 +572,13 @@ var MyTable as clDataTable
 
 // add data to the table  ...
 
-dim filter_country as new clBooleanDataSerie("mask_country")
+var filter_country as new clBooleanDataSerie("mask_country")
 for each cell as string in MyTable.GetColumn("Country")
   filter_country.AddElement(cell = "Belgique")
   
 next 
 
-dim filter_product as new clBooleanDataSerie("mask_product")
+var filter_product as new clBooleanDataSerie("mask_product")
 for each cell as string in MyTable.GetColumn("product")
   filter_product.AddElement(cell = "BB")
   
@@ -616,9 +628,9 @@ Creation of the test dataset
 // Snippet 020
 
 Var col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
-dim col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
+var col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
 
-dim table1 as new clDataTable("source table", SerieArray(col_source, col_sales))
+var table1 as new clDataTable("source table", SerieArray(col_source, col_sales))
 
 ```
 
@@ -649,7 +661,7 @@ Getting the total sales per country
 var table2 as clDataTable
 
 
-Dim table4 As clDataTable = table2.GroupBy(StringArray("country"), StringArray("sales"))
+var table4 As clDataTable = table2.GroupBy(StringArray("country"), StringArray("sales"))
 
 ```
 

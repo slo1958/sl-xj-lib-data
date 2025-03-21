@@ -60,7 +60,7 @@ Implements TableColumnReaderInterface,Iterable
 		    tmp_column.SetLinkToTable(Self)
 		    tmp_column.SetLength(max_RowCount)
 		    
-		    Self.columns.Append(tmp_column)
+		    Self.columns.Add(tmp_column)
 		    
 		    return tmp_column
 		    
@@ -69,7 +69,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  we add a column from another table to a virtual table
 		  if self.IsVirtual and tmp_column.IsLinkedToTable then
 		    tmp_column.SetLength(RowCount)
-		    Self.columns.Append(tmp_column)
+		    Self.columns.Add(tmp_column)
 		    return tmp_column
 		    
 		  end if
@@ -142,7 +142,7 @@ Implements TableColumnReaderInterface,Iterable
 		  End If
 		  
 		  If tmp_column <> Nil Then
-		    Self.columns.Append(tmp_column)
+		    Self.columns.Add(tmp_column)
 		    
 		  End If
 		  
@@ -216,7 +216,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var return_array() As clAbstractDataSerie
 		  var v as variant 
 		  For Each name As String In NewColumnNames
-		    return_array.append(AddColumn(name, v))
+		    return_array.Add(AddColumn(name, v))
 		    
 		  Next
 		  
@@ -818,7 +818,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var column_values() as Variant
 		  
 		  for each column as clAbstractDataSerie in self.columns
-		    column_names.Append(column.name)
+		    column_names.Add(column.name)
 		    
 		  next
 		  
@@ -828,11 +828,11 @@ Implements TableColumnReaderInterface,Iterable
 		    column_values.RemoveAll
 		    
 		    for each column as clAbstractDataSerie in self.columns
-		      column_values.Append(column.GetElement(i))
+		      column_values.Add(column.GetElement(i))
 		      
 		    next
 		    
-		    return_boolean.Append(pFilterFunction.Invoke(i,  RowCount, column_names, column_values, pFunctionParameters))
+		    return_boolean.Add(pFilterFunction.Invoke(i,  RowCount, column_names, column_values, pFunctionParameters))
 		    
 		  Next
 		  
@@ -1711,9 +1711,9 @@ Implements TableColumnReaderInterface,Iterable
 		  System.DebugLog("#rows : " + str(self.RowCount))
 		  System.DebugLog("#columns : " + str(self.columns.LastIndex+1))
 		  
-		  tmp_item.Append("index")
+		  tmp_item.Add("index")
 		  For Each tmp_column As clAbstractDataSerie In columns
-		    tmp_item.Append(tmp_column.name)
+		    tmp_item.Add(tmp_column.name)
 		    
 		  Next
 		  
@@ -1722,10 +1722,10 @@ Implements TableColumnReaderInterface,Iterable
 		  For row As Integer = 0 To RowCount-1
 		    tmp_item.RemoveAll
 		    
-		    tmp_item.Append(Self.RowIndexColumn.GetElement(row))
+		    tmp_item.Add(Self.RowIndexColumn.GetElement(row))
 		    
 		    For Each tmp_column As clAbstractDataSerie In columns
-		      tmp_item.Append(tmp_column.GetElement(row))
+		      tmp_item.Add(tmp_column.GetElement(row))
 		      
 		    Next
 		    System.DebugLog(Join(tmp_item, ";"))
@@ -1855,7 +1855,7 @@ Implements TableColumnReaderInterface,Iterable
 		      
 		    End If
 		    
-		    tmp_columns.Append(tmp_column)
+		    tmp_columns.Add(tmp_column)
 		  next
 		  
 		  
@@ -2006,7 +2006,7 @@ Implements TableColumnReaderInterface,Iterable
 		      
 		    End If
 		    
-		    tmp_columns.Append(tmp_column)
+		    tmp_columns.Add(tmp_column)
 		  next
 		  
 		  
@@ -2324,7 +2324,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  var ret_str() As String
 		  For Each column As clAbstractDataSerie In columns
-		    ret_str.Append(column.name)
+		    ret_str.Add(column.name)
 		    
 		  Next
 		  

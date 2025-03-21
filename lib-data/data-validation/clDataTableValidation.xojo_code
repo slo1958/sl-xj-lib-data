@@ -49,7 +49,7 @@ Implements TableColumnReaderInterface
 		  
 		  
 		  for each column as clDataSerieValidation in columns
-		    ColumnsValidation.Append(column)
+		    ColumnsValidation.Add(column)
 		    
 		  next
 		  
@@ -164,10 +164,10 @@ Implements TableColumnReaderInterface
 		  
 		  var tmp() as string
 		  
-		  tmp.Append(field_name_input_column)
-		  tmp.Append(field_type_input_column)
-		  tmp.Append(field_nullable_input_column)
-		  tmp.Append(field_mandatory_input_column)
+		  tmp.Add(field_name_input_column)
+		  tmp.Add(field_type_input_column)
+		  tmp.Add(field_nullable_input_column)
+		  tmp.Add(field_mandatory_input_column)
 		  
 		  return tmp
 		  

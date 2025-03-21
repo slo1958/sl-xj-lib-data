@@ -415,7 +415,7 @@ Implements Iterable
 		  var iteration_keys() As String
 		  
 		  For Each s As String In my_storage.Keys
-		    iteration_keys.Append(s)
+		    iteration_keys.Add(s)
 		    
 		  Next
 		  
