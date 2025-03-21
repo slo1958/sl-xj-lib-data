@@ -24,7 +24,7 @@ Inherits clAbstractDataSerie
 		    
 		  Next
 		  
-		  tmp.addmetadata("source","clone from " + self.FullName)
+		  tmp. AddSourceToMetadata("clone from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -48,7 +48,7 @@ Inherits clAbstractDataSerie
 		  
 		  self.CloneInfo(tmp)
 		  
-		  tmp.addmetadata("source","clone structure from " + self.FullName)
+		  tmp. AddSourceToMetadata("clone structure from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -145,7 +145,7 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clBooleanDataSerie(self.name+" and "+right_serie.name)
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "And values from  " + right_serie.name)
 		  
 		  
@@ -177,7 +177,7 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clBooleanDataSerie("not " + self.name)
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "complement")
 		  
 		  for i as integer = 0 to mx0
@@ -205,7 +205,7 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clBooleanDataSerie(self.name+" or "+right_serie.name)
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "Or values from  " + right_serie.name)
 		  
 		  

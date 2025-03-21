@@ -64,7 +64,7 @@ Inherits clAbstractDataSerie
 		    
 		  Next
 		  
-		  tmp.addmetadata("source","clone from " + self.FullName)
+		  tmp. AddSourceToMetadata("clone from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -88,7 +88,7 @@ Inherits clAbstractDataSerie
 		  
 		  self.CloneInfo(tmp)
 		  
-		  tmp.addmetadata("source","clone structure from " + self.FullName)
+		  tmp. AddSourceToMetadata("clone structure from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -250,7 +250,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+"+"+right_serie.name)
 		  
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "add values from  " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
@@ -279,7 +279,7 @@ Inherits clAbstractDataSerie
 		Function operator_add(right_value as integer) As clIntegerDataSerie
 		  var res as new clIntegerDataSerie(self.name+"+"+str(right_value))
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "add constant " + str(right_value))
 		  
 		  for i as integer = 0 to self.LastIndex
@@ -306,7 +306,7 @@ Inherits clAbstractDataSerie
 		  end if
 		  
 		  var res as new clIntegerDataSerie(self.name+"*"+right_serie.name)
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "Multiply by values from  " + right_serie.name)
 		  
 		  
@@ -336,7 +336,7 @@ Inherits clAbstractDataSerie
 		Function operator_multiply(right_value as integer) As clIntegerDataSerie
 		  var res as new clIntegerDataSerie(self.name+"*"+str(right_value))
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "Multiply by   " + str(right_value))
 		  
 		  for i as integer = 0 to self.LastIndex
@@ -363,7 +363,7 @@ Inherits clAbstractDataSerie
 		  end if
 		  
 		  var res as new clIntegerDataSerie(self.name+"-"+right_serie.name)
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "Subtract values from  " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
@@ -392,7 +392,7 @@ Inherits clAbstractDataSerie
 		Function operator_subtract(right_value as integer) As clIntegerDataSerie
 		  var res as new clIntegerDataSerie(self.name+"-"+str(right_value))
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "Subtract " + str(right_value))
 		  
 		  for i as integer = 0 to self.LastIndex

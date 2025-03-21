@@ -21,7 +21,7 @@ Inherits clAbstractDataSerie
 		    
 		  Next
 		  
-		  tmp.addmetadata("source","clone from " + self.FullName)
+		  tmp. AddSourceToMetadata("clone from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -46,7 +46,7 @@ Inherits clAbstractDataSerie
 		  
 		  self.CloneInfo(tmp)
 		  
-		  tmp.addmetadata("source","clone structure from " + self.FullName)
+		  tmp. AddSourceToMetadata("clone structure from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -267,7 +267,7 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clStringDataSerie(self.name+"+"+right_serie.name)
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "add string values from  " + right_serie.name)
 		  
 		  
@@ -297,7 +297,7 @@ Inherits clAbstractDataSerie
 		Function operator_add(right_value as String) As clStringDataSerie
 		  var res as new clStringDataSerie(self.name+"+"+str(right_value))
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "Append string " + right_value)
 		  
 		  for i as integer = 0 to self.LastIndex

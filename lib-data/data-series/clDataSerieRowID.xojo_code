@@ -21,7 +21,7 @@ Inherits clDataSerie
 		  
 		  self.CloneInfo(tmp)
 		  
-		  tmp.addmetadata("source","clone from " + self.FullName)
+		  tmp. AddSourceToMetadata("clone from " + self.FullName)
 		  
 		  For Each v As variant In Self.items
 		    tmp.AddElement(v)

@@ -71,7 +71,7 @@ Protected Module DataSerie_IO
 		  
 		  TextFile.close
 		  
-		  theDataSerie.addmetadata("source",SourceFIle.Name)
+		  theDataSerie. AddSourceToMetadata(SourceFIle.Name)
 		  
 		  return theDataSerie
 		  

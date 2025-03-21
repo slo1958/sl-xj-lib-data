@@ -708,6 +708,22 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AddSourceToMetadata(source as string)
+		  //  
+		  //  Add meta data
+		  //  
+		  //  Parameters
+		  // - type (string) the key for the meta data
+		  //  - message (string) the associated message
+		  //  
+		  //  Returns:
+		  //  
+		  
+		  self.Metadata.AddSource(source)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub AddTableData(SourceTable as clDataTable, Mode as AddRowMode = AddRowMode.CreateNewColumn)
 		  //  
 		  //  Add  data rows to the table
@@ -1198,7 +1214,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var output_table as clDataTable = new clDataTable(StringWithDefault(NewName, self.Name+" copy"))
 		  
 		  
-		  output_table.addmetadata("source", self.name)
+		  output_table. AddSourceToMetadata( self.name)
 		  
 		  for each col as clAbstractDataSerie in self.columns
 		    var new_col as clAbstractDataSerie = col.Clone()
@@ -1225,7 +1241,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var output_table as clDataTable =  new clDataTable(StringWithDefault(NewName, self.Name+" copy"))
 		  
-		  output_table.addmetadata("source", self.name)
+		  output_table. AddSourceToMetadata( self.name)
 		  
 		  for each col as clAbstractDataSerie in self.columns
 		    var new_col as clAbstractDataSerie = col.CloneStructure()
@@ -1536,7 +1552,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_table_name As String = StringWithDefault(NewTableName.Trim, DefaultTableName)
 		  
-		  addmetadata("source", tmp_table_name)
+		  AddSourceToMetadata(tmp_table_name)
 		  
 		  internal_NewTable(tmp_table_name)
 		  
@@ -1573,7 +1589,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_table_name As String = StringWithDefault(NewTableSource.Name.Trim, DefaultTableName)
 		  
-		  addmetadata("source", tmp_table_name)
+		  AddSourceToMetadata(tmp_table_name)
 		  
 		  internal_NewTable("from " + tmp_table_name)
 		  
@@ -1636,7 +1652,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_table_name As String = StringWithDefault(NewTableSource.Name.Trim, DefaultTableName)
 		  
-		  addmetadata("source", tmp_table_name)
+		  AddSourceToMetadata(tmp_table_name)
 		  
 		  internal_NewTable("from " + tmp_table_name) 
 		  
@@ -1736,7 +1752,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var res As New clDataTable("extract " + Self.Name)
 		  
-		  res.addmetadata("source", self.Name)
+		  res. AddSourceToMetadata( self.Name)
 		  res.RowIndexColumn = Self.RowIndexColumn.Clone
 		  
 		  res.link_to_parent = nil
@@ -2179,7 +2195,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  select case mode
 		  case JoinMode.InnerJoin
-		     
+		    
 		    
 		  case JoinMode.OuterJoin
 		    
@@ -2593,9 +2609,21 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetSelectedRowsAsTable(SelectedRowIndex() as integer) As clDataTable
+		Function GetSelectedRowsAsTable(SelectedRowIndex() as integer, NameOfNewTable as string = "") As clDataTable
+		  //
+		  // Create a new table containing the rows of the current of which index is in the array passed as parameter
+		  //
+		  // Parameters:
+		  // - SelectedRowIndex(): list of row index to include in generated table
+		  //
+		  // Returns:
+		  // - new table with copy of the selected rows
+		  //
 		  
-		  var return_table as new clDataTable("Extract from "+ self.Name)
+		  
+		  var return_table as new clDataTable(StringWithDefault(NameOfNewTable, "Extract from "+ self.Name))
+		  
+		  return_table.Metadata.AddSource("Extract from " + self.name)
 		  
 		  for each index as integer in SelectedRowIndex
 		    
@@ -3473,7 +3501,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var res As New clDataTable("select " + Self.Name)
 		  
-		  res.addmetadata("source", self.Name)
+		  res. AddSourceToMetadata( self.Name)
 		  res.RowIndexColumn = Self.RowIndexColumn
 		  //  
 		  //  link to parent must be called BEFORE adding logical columns

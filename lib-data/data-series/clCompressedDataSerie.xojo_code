@@ -30,7 +30,7 @@ Inherits clAbstractDataSerie
 		  var tmp As New clCompressedDataSerie(StringWithDefault(NewName, self.name))
 		  tmp.DisplayTitle = self.DisplayTitle
 		  
-		  tmp.addmetadata("source","clone from " + self.FullName)
+		  tmp. AddSourceToMetadata("clone from " + self.FullName)
 		  
 		  For Each item_index As Integer In Self.items_index
 		    var v as Variant 
@@ -57,7 +57,7 @@ Inherits clAbstractDataSerie
 		  var tmp As New clCompressedDataSerie(Self.name)
 		  tmp.DisplayTitle = self.DisplayTitle
 		  
-		  tmp.addmetadata("source","clone structure from " + self.FullName)
+		  tmp. AddSourceToMetadata("clone structure from " + self.FullName)
 		  
 		  Return tmp
 		  

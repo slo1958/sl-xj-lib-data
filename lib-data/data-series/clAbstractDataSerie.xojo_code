@@ -133,6 +133,22 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AddSourceToMetadata(source as string)
+		  //  
+		  //  Add meta data
+		  //  
+		  //  Parameters
+		  // - type (string) the key for the meta data
+		  //  - message (string) the associated message
+		  //  
+		  //  Returns:
+		  //  
+		  
+		  self.Metadata.AddSource(source)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub AddToTarget(target_data_serie as clAbstractDataSerie)
 		  //  
 		  //  Add all elements of the current data serie to  another data serie
@@ -521,7 +537,7 @@ Implements Iterable
 		  
 		  
 		  target_data_serie.Reset()
-		  target_data_serie.addmetadata("source", self.name)
+		  target_data_serie. AddSourceToMetadata( self.name)
 		  
 		  for index as Integer = 0 to self.LastIndex
 		    target_data_serie.AddElement(self.GetElement(index))

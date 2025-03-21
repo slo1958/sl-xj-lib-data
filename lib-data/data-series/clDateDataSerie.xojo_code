@@ -21,7 +21,7 @@ Inherits clAbstractDataSerie
 		    
 		  Next
 		  
-		  tmp.addmetadata("source","clone from " + self.FullName)
+		  tmp. AddSourceToMetadata("clone from " + self.FullName)
 		  
 		  Return tmp
 		  
@@ -227,7 +227,7 @@ Inherits clAbstractDataSerie
 		Function operator_add(right_interval as DateInterval) As clDateDataSerie
 		  var res as new clDateDataSerie(self.name+" + interval ")
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "add interval")
 		  
 		  for i as integer = 0 to self.LastIndex
@@ -255,7 +255,7 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clIntegerDataSerie(self.name+"-"+right_serie.name)
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "Subtract date from " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
@@ -281,7 +281,7 @@ Inherits clAbstractDataSerie
 		Function operator_subtract(right_interval as DateInterval) As clDateDataSerie
 		  var res as new clDateDataSerie(self.name+" - interval ")
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "Subtract interval")
 		  
 		  for i as integer = 0 to self.LastIndex
@@ -299,7 +299,7 @@ Inherits clAbstractDataSerie
 		Function operator_subtract(right_value as DateTime) As clIntegerDataSerie
 		  var res as new clIntegerDataSerie(self.name+" - "+ right_value.SQLDate)
 		  
-		  res.addmetadata("source", self.name)
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "Subtract date from " + right_value.SQLDate)
 		  
 		  for i as integer = 0 to self.LastIndex

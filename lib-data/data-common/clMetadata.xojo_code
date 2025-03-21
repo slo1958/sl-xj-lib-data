@@ -22,6 +22,22 @@ Protected Class clMetadata
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AddSource(DataSource as string)
+		  //
+		  // Add an entry to the metadata, with key indicating source
+		  //
+		  // Parameters:
+		  // - Datasource (string) : source of the data
+		  //
+		  
+		  
+		  self.Add(self.KeyForSource, DataSource.trim)
+		  
+		  return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function AllFormattedData(Sep as String, filterOn as string = "") As string()
 		  //
 		  // Returns all metadata as an array of string
@@ -148,6 +164,10 @@ Protected Class clMetadata
 	#tag Property, Flags = &h21
 		Private DataList() As pair
 	#tag EndProperty
+
+
+	#tag Constant, Name = KeyForSource, Type = String, Dynamic = False, Default = \"source", Scope = Public
+	#tag EndConstant
 
 
 	#tag ViewBehavior
