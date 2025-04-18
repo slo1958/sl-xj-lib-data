@@ -1642,7 +1642,7 @@ Protected Class clLibDataExample
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  var t1 as new clDataTable("t")
+		  var t1 as new clDataTable("transactions")
 		  
 		  var ccnt As clAbstractDataSerie =  t1.AddColumn(new clStringDataSerie("Country"))
 		  var ccity As clAbstractDataSerie =  t1.AddColumn(new clStringDataSerie("City"))
@@ -2139,11 +2139,18 @@ Protected Class clLibDataExample
 		  people.AddRow(new Dictionary("gender":"F","Size":190.0, "Weight": 80.7))
 		  
 		  
-		  var v as clDataTable = people.Groupby(array("gender"), "CountPeople")
+		  var countPerGender as clDataTable = people.Groupby(array("gender"), "CountPeople")
+		  
+		  var fmtcol as clNumberDataSerie = clNumberDataSerie(people.AddColumn(people.GetColumn("Size").Clone("FormattedSize")))
+		  
+		  fmtcol.SetStringFormat(new clRangeFormatting("",""))
+		  fmtcol.AddFormattingRange(0,150.0,"small")
+		  fmtcol.AddFormattingRange(150.1,195.0,"average")
+		  fmtcol.AddFormattingRange(195.1,999.99,"tall")
 		  
 		  log.end_exec(CurrentMethodName)
 		  
-		  return  array(people, v)
+		  return  array(people, countPerGender)
 		End Function
 	#tag EndMethod
 
