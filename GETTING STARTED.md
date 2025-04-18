@@ -1,9 +1,9 @@
-# sl-xj-lib-data
+# Getting started with sl-xj-lib-data
 Data handling classes
 
 About Xojo version: tested with Xojo 2024 release 4.1 on Mac.
 
-Latest update this document: 2025-02-02
+Latest update this document: 2025-04-18
 
 
 ## Adding the library to your project
@@ -52,7 +52,10 @@ next
 - run a groupby operation, the first array indicates the columns to group, the second array indicates the columns to sum
 - iterate thru the rows of the calculated table
 
-The method AddColumn() returns the column as a, clAbstractDataSerie. We do not use this returned value, so we use a ‘call’ to tell that to the compiler.
+The method AddColumn() returns the column as a clAbstractDataSerie. We do not use this returned value, so we use a ‘call’ to tell that to the compiler.
+
+The code is available in the source tree as Example_030.
+
 
 ## What if we have a column for quantity and another column for unit price
 
@@ -73,7 +76,7 @@ var GroupedTable as clDataTable = SourceTable.Groupby(array("Category"), array(�
 
 for each row as clDataRow in GroupedTable
   
-  System.DebugLog("CategoryGroup=" + row.GetCell("Category") + " Sales = " + format(row.GetCell("Sum of Sales").DoubleValue, "-####0.###"))
+  System.DebugLog("CategoryGroup=" + row.GetCell("Category") + " Sales = " + format(row.GetCell("Sum of Quantity*UnitPrice").DoubleValue, "-####0.###"))
   
 next
 ```
@@ -86,6 +89,8 @@ next
 - add a column with the sales data calculated from quantity and price
 - run a groupby operation, the first array indicates the columns to group, the second array indicates the columns to sum
 - iterate thru the rows of the calculated table
+
+The code is available in the source tree as Example_031.
 
 Note that the sales column is named ‘Quantity*UnitPrice’. This column is the result of the product of quantity and price, its name is generated automatically. To update its name, change the code to:
 
@@ -103,12 +108,22 @@ SourceTable.AddColumn(qtt  * price).Rename("Sales")
 
 ### What if we do not have a reference to the qtt or price columns ?
 
+We can use the GetColumn() method and type case as required, since GetColumn() returns a clAbstractDataSerie:
+
 ```xojo
 var qtt as clNumberDataSerie = clNumberDataSerie(SourceTable.GetColumn("Quantity"))
 var price as clNumberDataSerie = clNumberDataSerie(SourceTable.GetColumn("UnitPrice"))
 ```
 
-Note that GetColumn() returns a clAbstractDataSerie(), so we need to type cast the value to the proper type (clNumberDataSerie in this case)
+Or we can request a column with the required type, in this case using GetNumberColumn():
+
+```xojo
+var qtt as clNumberDataSerie =SourceTable.GetNumberColumn("Quantity")
+var price as clNumberDataSerie =SourceTable.GetNumberColumn("UnitPrice")
+```
+
+Note that if we use GetColumn(), we can control the conversion in case a simple type casting is not enough while GetNumberColumn() will raise a runtime exception if the type casting fails.
+
 
 
 ## Adding some taxes
@@ -141,6 +156,7 @@ var GroupedTable as clDataTable = SourceTable.Groupby(array("Category"), array("
 GroupedTable.Rename("Sales per category")
 
 ```
+The code is available in the source tree as Example_032.
 
 ## Time for some background information
 

@@ -1,16 +1,29 @@
 
 # About data conversion
 
-The clDataSerie stores its data as variant. Methods like AddElement() and SetElement() expect a variant as parameter and the method GetElement() returns a variant.
+(Update 2025-04-18)
 
-Type specific data serie classes, like clNumberDataSerie, clBooleanDataSerie, … store their values using the native type (double, boolean, …) Methods like AddElement() and SetElement() expect a variant as parameter and the method GetElement() returns a variant.
 
-When AddElement() or SetElement() from type specific data series receive a string (a variant of which type is string), they will use the optional parser defined by the user or left Xojo do the conversion if no parser is defined.
+## clDataSerie
+
+The clDataSerie stores its data as variant. 
+
+- methods like AddElement() and SetElement() expect a variant as parameter 
+- the method GetElement() returns a variant.
+
+## Type specific data series
+
+Type specific data serie classes, like clNumberDataSerie, clBooleanDataSerie, … store their values using the native type (double, boolean, …) 
+
+- methods like AddElement() and SetElement() expect a variant as parameter 
+-  the method GetElement() returns a variant.
+
+When AddElement() or SetElement() from type specific data series receive a string (a variant of which type is string), they will use the optional parser defined by the user or let Xojo do the conversion if no parser is defined.
 
 When GetElementAsString() from type specific data series is called, it will use the optional formatter defined by the user or let Xojo do the conversion if no formatter is defined.
 
 
-Obtaining a value with a given type
+## Obtaining a value with a given type
 
 The library provides the following methods
 
@@ -30,7 +43,7 @@ The library provides default conversions implemented as follows
 
 ## clIntegerDataSerie
 
-### Behaviour of GetElementXXX()
+### Behaviour of GetElementAsXxx()
 
 GetElementAsInteger() returns the value without any conversion since values are stored as integer
 
@@ -41,8 +54,9 @@ GetElementAsString() returns the value converted to a string as follow:
 	if there are no integer formatter, v.ToString provided by Xojo is used
 
 There are two formatter classed provided by the library for integer:
-clIntegerFormatting() which uses the format string passed to its constructor to format numbers, using the Xojo str() method
-clIntegerLocalFormatting() which uses the format string passed to its constructor to format numbers, using the Xojo Format() method (using local settings)
+
+- clIntegerFormatting() which uses the format string passed to its constructor to format numbers, using the Xojo str() method
+- clIntegerLocalFormatting() which uses the format string passed to its constructor to format numbers, using the Xojo Format() method (using local settings)
 
 Custom formatter are expected to implement two methods:
 
@@ -52,7 +66,7 @@ Custom formatter are expected to implement two methods:
 
 ## clNumberDataSerie
 
-### Behaviour of GetElementXXX()
+### Behaviour of GetElementAsXxx()
 
 GetElementAsInteger() returns the value converted to a integer, using Xojo type conversion
 
@@ -63,9 +77,10 @@ GetElementAsString() returns the value converted to a string as follow:
 	if there are no number formatter, v.ToString provided by Xojo is used
 
 There are two formatter classed provided by the library for number:
-clNumberFormatting() which uses the format string passed to its constructor to format numbers, using the Xojo str() method
-clNumberLocalFormatting() which uses the format string passed to its constructor to format numbers, using the Xojo Format() method (using local settings)
-clNumberRangeFormatting() which format the number based on ranges. 
+
+-  clNumberFormatting() which uses the format string passed to its constructor to format numbers, using the Xojo str() method
+- clNumberLocalFormatting() which uses the format string passed to its constructor to format numbers, using the Xojo Format() method (using local settings)
+- clNumberRangeFormatting() which format the number based on ranges. 
 
 Custom formatter are expected to implement two methods:
 
