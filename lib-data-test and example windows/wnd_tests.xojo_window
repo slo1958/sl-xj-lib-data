@@ -20,7 +20,7 @@ Begin DesktopWindow wnd_tests Implements support_tests.LogMessageInterface
    MinimumHeight   =   64
    MinimumWidth    =   64
    Resizeable      =   True
-   Title           =   "Untitled"
+   Title           =   "Running tests"
    Type            =   0
    Visible         =   True
    Width           =   980

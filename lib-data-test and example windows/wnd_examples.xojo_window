@@ -20,7 +20,7 @@ Begin DesktopWindow wnd_examples
    MinimumHeight   =   64
    MinimumWidth    =   64
    Resizeable      =   True
-   Title           =   "Untitled"
+   Title           =   "Example picker"
    Type            =   0
    Visible         =   True
    Width           =   816

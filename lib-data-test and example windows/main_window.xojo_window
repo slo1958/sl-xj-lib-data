@@ -20,7 +20,7 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
    MinimumHeight   =   64
    MinimumWidth    =   64
    Resizeable      =   True
-   Title           =   "Untitled"
+   Title           =   "sl-xj-data Main window"
    Type            =   0
    Visible         =   True
    Width           =   628

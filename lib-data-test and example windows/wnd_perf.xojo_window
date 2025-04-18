@@ -20,15 +20,13 @@ Begin DesktopWindow wnd_perf
    MinimumHeight   =   64
    MinimumWidth    =   64
    Resizeable      =   True
-   Title           =   "Untitled"
+   Title           =   "Performances"
    Type            =   0
    Visible         =   True
    Width           =   600
    Begin DesktopLabel Label2
       AllowAutoDeactivate=   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -62,8 +60,6 @@ Begin DesktopWindow wnd_perf
    Begin DesktopLabel Label3
       AllowAutoDeactivate=   True
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -133,8 +129,6 @@ Begin DesktopWindow wnd_perf
       AllowTabs       =   False
       BackgroundColor =   &cFFFFFF00
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -176,8 +170,6 @@ Begin DesktopWindow wnd_perf
       AllowTabs       =   False
       BackgroundColor =   &cFFFFFF00
       Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -223,17 +215,13 @@ Begin DesktopWindow wnd_perf
       Bold            =   False
       ColumnCount     =   1
       ColumnWidths    =   ""
-      DataField       =   ""
-      DataSource      =   ""
       DefaultRowHeight=   -1
       DropIndicatorVisible=   False
       Enabled         =   True
       FontName        =   "Verdana"
       FontSize        =   11.0
       FontUnit        =   0
-      GridLinesHorizontalStyle=   "0"
       GridLineStyle   =   0
-      GridLinesVerticalStyle=   "0"
       HasBorder       =   True
       HasHeader       =   False
       HasHorizontalScrollbar=   False
