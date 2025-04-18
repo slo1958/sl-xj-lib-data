@@ -88,12 +88,15 @@ Protected Class clSeriesGroupBy
 		    
 		  Next
 		  
+		  var rowCountColumnIndex as integer = -1
+		  
 		  if RowCountColumnName.Trim.Length > 0 then
 		    OutputColumns.Add(new clIntegerDataSerie(RowCountColumnName))
+		    rowCountColumnIndex = OutputColumns.LastIndex
 		    
 		  end if
 		  
-		  FlattenNextDimension(tmp_label, tmp_value,  0, TopNode, OutputColumns, OutputColumns.LastIndex)
+		  FlattenNextDimension(tmp_label, tmp_value,  0, TopNode, OutputColumns, rowCountColumnIndex)
 		  
 		  return OutputColumns
 		  
@@ -123,10 +126,10 @@ Protected Class clSeriesGroupBy
 		      
 		      if RowCountColumnIndex >= 0 then
 		        var v as Variant = d.GetRowIndexCount
-		         OutputColumns(RowCountColumnIndex).AddElement(v)
+		        OutputColumns(RowCountColumnIndex).AddElement(v)
 		        
 		      end if
-		       
+		      
 		    else
 		      FlattenNextDimension(labels, ColumnLatestValue, depth+1, d, OutputColumns, RowCountColumnIndex)
 		      

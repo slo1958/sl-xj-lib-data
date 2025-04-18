@@ -1609,7 +1609,8 @@ Protected Class clDataTableTests
 		  
 		  var g as new clSeriesGroupBy(SerieArray(ccnt, ccity))
 		  
-		  var table0 as clDataTable = new clDataTable("group", g.Flattened(""))
+		  var gf() as clAbstractDataSerie = g.Flattened("")
+		  var table0 as clDataTable = new clDataTable("group", gf)
 		  
 		  var table_expected As New clDataTable("mytable", SerieArray( _
 		  new clStringDataSerie("Country", array("Belgium","Belgium", "France")), _

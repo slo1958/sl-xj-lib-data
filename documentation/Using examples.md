@@ -166,7 +166,7 @@ wnd.Show
 
 ### About the TableColumnReaderInterface
 
-It is an interface implemented by clDataTable but also some date readers showing the data as data columns. If a data reader implements the TableColumnReaderInterface, it can be added to the ‘tables’ shown in the viewer without the need to explicitly load the data in actual data table. 
+It is an interface implemented by clDataTable but also some date readers presenting the data as data columns. If a data reader implements the TableColumnReaderInterface, it can be added to the ‘tables’ shown in the viewer without the need to explicitly load the data in actual data table. 
 
 clDataTable implements the TableColumnReaderInterface.
 

@@ -2710,7 +2710,24 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - the column matching the name or nil
 		  //  
-		  return clStringDataSerie(self.GetColumn(pColumnName, IncludeAlias))
+		  
+		  var tmp as clAbstractDataSerie = self.GetColumn(pColumnName, IncludeAlias)
+		  if tmp = nil then return nil
+		  
+		  if tmp isa clStringDataSerie then
+		    return clStringDataSerie(tmp)
+		    
+		  elseif tmp isa clNumberDataSerie then 
+		    return clNumberDataSerie(tmp).ToString
+		    
+		  elseif tmp isa clIntegerDataSerie then
+		    return clIntegerDataSerie(tmp).ToString
+		    
+		  else
+		    Return new clStringDataSerie(tmp.name, tmp.GetElements)
+		    
+		  end if
+		  
 		End Function
 	#tag EndMethod
 

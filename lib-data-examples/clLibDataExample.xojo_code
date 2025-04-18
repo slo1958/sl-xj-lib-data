@@ -2203,16 +2203,24 @@ Protected Class clLibDataExample
 		  
 		  var countPerGender as clDataTable = people.Groupby(array("gender"), "CountPeople")
 		  
+		  countPerGender.Rename("Count Per Gender")
+		  
 		  var fmtcol as clNumberDataSerie = clNumberDataSerie(people.AddColumn(people.GetColumn("Size").Clone("FormattedSize")))
 		  
 		  fmtcol.SetStringFormat(new clRangeFormatting("",""))
 		  fmtcol.AddFormattingRange(0,150.0,"small")
-		  fmtcol.AddFormattingRange(150.1,195.0,"average")
-		  fmtcol.AddFormattingRange(195.1,999.99,"tall")
+		  fmtcol.AddFormattingRange(150.0,195.0,"average")
+		  fmtcol.AddFormattingRange(195.0,999.99,"tall")
+		  
+		  call people.AddColumn(people.GetStringColumn("FormattedSize").Rename("Categ"))
+		  
+		  
+		  var countPerCategory as clDataTable = people.Groupby(array("gender","Categ"), "CountPeople")
 		  
 		  log.end_exec(CurrentMethodName)
 		  
-		  return  array(people, countPerGender)
+		  return  array(people, countPerGender, countPerCategory)
+		  
 		End Function
 	#tag EndMethod
 

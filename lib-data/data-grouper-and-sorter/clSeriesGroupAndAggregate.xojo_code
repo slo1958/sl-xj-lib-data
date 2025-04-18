@@ -58,6 +58,7 @@ Inherits clSeriesGroupBy
 		  if RowCountColumnName.Trim.Length > 0 then
 		    OutputColumns.Add(new clIntegerDataSerie(RowCountColumnName))
 		    rowCountColumnIndex = OutputColumns.LastIndex
+		    
 		  end if
 		  
 		  for each name as string in TitleOfMeasureColumns
@@ -101,6 +102,11 @@ Inherits clSeriesGroupBy
 		        
 		      next
 		      
+		      if RowCountColumnIndex >= 0 then
+		        var v as Variant = d.GetRowIndexCount
+		        OutputColumns(RowCountColumnIndex).AddElement(v)
+		        
+		      end if
 		      
 		    else
 		      FlattenNextDimension(labels, ColumnLatestValue, depth+1, d, OutputColumns, RowCountColumnIndex)
