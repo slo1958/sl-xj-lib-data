@@ -238,9 +238,31 @@ End
 
 #tag WindowCode
 	#tag Event
+		Function KeyDown(key As String) As Boolean
+		  if key = "F" then
+		    FreezeMetaData = not FreezeMetaData
+		    
+		    if lb_meta.Visible then 
+		      
+		      lb_meta.HeaderAt(1) = if(FreezeMetaData,"Value (frozen)", "Value")
+		      
+		    end if
+		    
+		    return True
+		    
+		  else 
+		    
+		    return false
+		    
+		  end if
+		End Function
+	#tag EndEvent
+
+	#tag Event
 		Sub Opening()
 		  Reset_viewer
 		  allow_update_window_title = True
+		  FreezeMetaData = False
 		  
 		  reset_Metadata
 		  
@@ -453,6 +475,10 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		FreezeMetaData As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		table_dict As Dictionary
 	#tag EndProperty
 
@@ -463,6 +489,12 @@ End
 	#tag Event
 		Sub SelectionChanged()
 		  var tmp_table as string = me.SelectedRowValue
+		  
+		  if lb_meta.Visible then 
+		    FreezeMetaData = False
+		    lb_meta.HeaderAt(1) =  "Value"
+		    
+		  end if
 		  
 		  show_table tmp_table
 		  
@@ -495,15 +527,24 @@ End
 		  end if
 		  
 		  show_description   col.FullName(true)
-		  show_metadata col
 		  
+		  if not FreezeMetaData then
+		    show_metadata col
+		    
+		  end if
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
 		  show_description  ""
 		  
-		  lb_meta.RemoveAllRows
+		  if FreezeMetaData then
+		    
+		  else
+		    lb_meta.RemoveAllRows
+		    
+		  end if
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -742,6 +783,14 @@ End
 	#tag EndViewProperty
 	#tag ViewProperty
 		Name="allow_update_window_title"
+		Visible=false
+		Group="Behavior"
+		InitialValue=""
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="FreezeMetaData"
 		Visible=false
 		Group="Behavior"
 		InitialValue=""
