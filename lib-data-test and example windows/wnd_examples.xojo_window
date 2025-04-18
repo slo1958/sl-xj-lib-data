@@ -188,9 +188,10 @@ End
 		  next
 		  
 		  var description() as string = clLibDataExample.GetDescription(item)
+		  wnd.ShowComments(description)
 		  
 		  wnd.Show
-		  wnd.ShowComments(description)
+		  
 		  
 		End Sub
 	#tag EndMethod

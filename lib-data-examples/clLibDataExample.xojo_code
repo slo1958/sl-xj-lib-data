@@ -1,6 +1,68 @@
 #tag Class
 Protected Class clLibDataExample
 	#tag Method, Flags = &h0
+		Function Example_000(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		  
+		  //
+		  //  Example_000
+		  //
+		  
+		  if Describe then
+		    Description.RemoveAll
+		    
+		    Description.Add(CurrentMethodName)
+		    
+		    Description.Add("- create an empty datatable")
+		    Description.Add("- add three rows")
+		    Description.add("- show impact of different format, extracted as clStringDataSerie")
+		    
+		    return nil
+		    
+		  end if
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var row As clDataRow
+		  
+		  var table As New clDataTable("mytable")
+		  
+		  // when this new row is added, new columns will be created with proper data type:
+		  // aaa will be a clIntegerDataSerie
+		  // bbb will be a clStringDataSerie
+		  // ccc will be a clNumberDataSerie
+		  row = New clDataRow
+		  row.SetCell("aaa",1234)
+		  row.SetCell("bbb","abcd")
+		  row.SetCell("ccc",-1234.457)
+		  table.AddRow(row)
+		  
+		  // when this new row is added, a new column will be added for ddd, but the type is forced to be clDataSerie
+		  row = New clDataRow(new Dictionary("aaa":1235, "bbb":"abce","ddd":23987.6))
+		  table.AddRow(row, clDataTable.AddRowMode.CreateNewColumnAsVariant)
+		  
+		  // when this new row is added, the value for eee is ignored, no new column are be added for eee, an error is logged, execution continues
+		  row = New clDataRow(new Dictionary("aaa":1234, "bbb":"abcd","ccc":4321.9, "ddd":678.9,"eee":123))
+		  table.AddRow(row,  clDataTable.AddRowMode.ErrorOnNewColumn)
+		  
+		  call table.AddColumn(Table.GetColumn("ccc").Clone("ccc with format"))
+		  
+		  clNumberDataSerie(table.GetColumn("ccc with format")).SetStringFormat("-###,##0.000", False) 
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  //
+		  // Send the table to the viewer
+		  //
+		  return array(table)
+		  
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Example_001(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  //
