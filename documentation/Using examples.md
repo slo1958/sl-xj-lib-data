@@ -1,4 +1,5 @@
 # Running example from  sl-xj-lib-data
+
 Data handling classes
 
 About Xojo version: tested with Xojo 2024 release 4.1 on Mac.
@@ -22,24 +23,26 @@ When you run an example, the test program opens a table viewer populated with al
 
 ![Alt text](assets/Example_027.png?raw=true "")
 
-The list on the list contains the name of all the tables.
+The listbox on the left contains the name of all the tables.
 
 The listbox in the middle shows the content of the selected table. Since we need strings, numbers are formatted either using the default format provided by the library or custom format defined by your application. The column headers contain the display name of the selected column. This is a DesktopListboxForTable, which can be used independently.
 
 The listbox on the left shows the metadata of the column under the mouse. At least, the metadata contains the name of the column, the title or display name of the column and the type of the column. Most transformations on a column will add information to the metadata. This is done automatically by the library.
 
 
-## Using the UI elements used in the examples
+## Using the UI elements from the examples in your application
 
 The following assets defined in “Lib-data-ui-support” are used to build this window and can be used in an application:
 
-- The window wnd_table_viewer
+- The window wnd\_table\_viewer
 - The container control ccDataPool_Viewer used display the tables in a data pool.
 - The Listbox DesktopListForTable used to display the data in a table
 
 Each example method returns an array of clDataTable.
 
-### Simple example method
+### Simple method from the examples 
+
+The code is available in example_000.
 
 ```xojo
 
@@ -78,9 +81,9 @@ return array(table)
 
 ```
 
-### How its results are moved to the table viewer
+### Moving the results from the example to wnd\_table\_viewer
 
-The method calling the example method, retrieves the table and pass their reference to the wnd_table_viewer:
+The reference of each table from the list returned by the example method is passed to  wnd\_table\_viewer using the AddTable() method, as follow:
 
 ```xojo
 
@@ -96,12 +99,21 @@ for each table as TableColumnReaderInterface in tables
   
 next
 
-var description() as string = clLibDataExample.GetDescription(item)
-
 wnd.Show
-wnd.ShowComments(description)
 
 ```
+The description of the example is passed to  wnd\_table\_viewer as follow before the call to wnd.show():
+
+```xojo
+
+var description() as string = clLibDataExample.GetDescription(item)
+
+wnd.ShowComments(description)
+
+wnd.Show
+
+```
+
 
 ### Using in your code
 
@@ -109,14 +121,14 @@ If you plan to reuse the code, do as follow:
 
 ```xojo
 
-var tables() as TableColumnReaderInterface = clLibDataExample.RunExample(nil, item)
+var tables() as TableColumnReaderInterface
 
 // Create an instance of the window
 var wnd as new wnd_table_viewer
 
 wnd.ResetViewer
 
-// Add your table (or any other TableColumnReaderInterface)
+// Add your tables (or any other TableColumnReaderInterface)
 
 wnd.AddTable(table1)
 wnd.AddTable(table2)
@@ -151,9 +163,13 @@ wnd.Show
 
 
 
-### What is a TableColumnReaderInterface ?
+### About the TableColumnReaderInterface
 
 It is an interface implemented by clDataTable but also some date readers showing the data as data columns. If a data reader implements the TableColumnReaderInterface, it can be added to the ‘tables’ shown in the viewer without the need to explicitly load the data in actual data table. 
+
+clDataTable implements the TableColumnReaderInterface.
+
+
 
 
 
