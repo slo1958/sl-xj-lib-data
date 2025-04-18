@@ -53,7 +53,7 @@ Protected Class clSeriesGroupBy
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Flattened() As clAbstractDataSerie()
+		Function Flattened(RowCountColumnName as string) As clAbstractDataSerie()
 		  //  
 		  //  Flatten the tree, creating one row for each unique combination of keys
 		  //  Used to get unique values from the columns passed to the constructor
@@ -88,7 +88,12 @@ Protected Class clSeriesGroupBy
 		    
 		  Next
 		  
-		  FlattenNextDimension(tmp_label, tmp_value,  0, TopNode, OutputColumns)
+		  if RowCountColumnName.Trim.Length > 0 then
+		    OutputColumns.Add(new clIntegerDataSerie(RowCountColumnName))
+		    
+		  end if
+		  
+		  FlattenNextDimension(tmp_label, tmp_value,  0, TopNode, OutputColumns, OutputColumns.LastIndex)
 		  
 		  return OutputColumns
 		  
@@ -96,7 +101,7 @@ Protected Class clSeriesGroupBy
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub FlattenNextDimension(labels() as string, ColumnLatestValue() as variant, depth as integer, level_dict as clSeriesGrouperElement, OutputColumns() as clAbstractDataSerie)
+		Private Sub FlattenNextDimension(labels() as string, ColumnLatestValue() as variant, depth as integer, level_dict as clSeriesGrouperElement, OutputColumns() as clAbstractDataSerie, RowCountColumnIndex as integer)
 		  
 		  var NbrOfDimensions as integer = self.TitleOfDimensionColumns.Count
 		  
@@ -116,8 +121,14 @@ Protected Class clSeriesGroupBy
 		        
 		      next
 		      
+		      if RowCountColumnIndex >= 0 then
+		        var v as Variant = d.GetRowIndexCount
+		         OutputColumns(RowCountColumnIndex).AddElement(v)
+		        
+		      end if
+		       
 		    else
-		      FlattenNextDimension(labels, ColumnLatestValue, depth+1, d, OutputColumns)
+		      FlattenNextDimension(labels, ColumnLatestValue, depth+1, d, OutputColumns, RowCountColumnIndex)
 		      
 		    end if
 		    
@@ -235,7 +246,7 @@ Protected Class clSeriesGroupBy
 		    
 		  next
 		  
-		  
+		  return
 		End Sub
 	#tag EndMethod
 

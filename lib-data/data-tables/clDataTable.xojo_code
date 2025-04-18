@@ -2771,7 +2771,7 @@ Implements TableColumnReaderInterface,Iterable
 		  // - grouping_dimenions() list of columns to be used as grouping dimensions
 		  //
 		  
-		  var gTransform as new clGroupByTransformer(self, grouping_dimensions)
+		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, "")
 		  
 		  if gTransform.Transform() then
 		    return gTransform.GetOutputTable
@@ -2797,7 +2797,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		  
-		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures)
+		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, "")
 		  
 		  if gTransform.Transform() then
 		    return gTransform.GetOutputTable
@@ -2822,7 +2822,81 @@ Implements TableColumnReaderInterface,Iterable
 		  // - measures() list of columns to sum: agg mode
 		  //
 		  
-		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures)
+		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, "")
+		  
+		  if gTransform.Transform() then
+		    return gTransform.GetOutputTable
+		    
+		  else
+		    return nil
+		    
+		  end if 
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Groupby(grouping_dimensions() as string, rowCountColumnName as string) As clDataTable
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // This is typically used to get a list of distinct combinations
+		  //
+		  // Parameters:
+		  // - Input table
+		  // - grouping_dimenions() list of columns to be used as grouping dimensions
+		  //
+		  
+		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, rowCountColumnName)
+		  
+		  if gTransform.Transform() then
+		    return gTransform.GetOutputTable
+		    
+		  else
+		    return nil
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GroupBy(grouping_dimensions() as string, rowCountColumnName as string, measures() as pair) As clDataTable
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // Aggregate the number fields as defined the each pair, columnname:agg mode
+		  //
+		  // Parameters:
+		  // - grouping_dimenions() list of columns to be used as grouping dimensions
+		  // - measures() pair of columnname : agg mode
+		  //
+		  
+		  
+		  
+		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, rowCountColumnName)
+		  
+		  if gTransform.Transform() then
+		    return gTransform.GetOutputTable
+		    
+		  else
+		    return nil
+		    
+		  end if 
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GroupBy(grouping_dimensions() as string, rowCountColumnName as string, measures() as String) As clDataTable
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // Aggregate the number fields as defined in the second array, aggregation mode is sum
+		  //
+		  // Parameters:
+		  // - grouping_dimenions() list of columns to be used as grouping dimensions
+		  // - measures() list of columns to sum: agg mode
+		  //
+		  
+		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, rowCountColumnName)
 		  
 		  if gTransform.Transform() then
 		    return gTransform.GetOutputTable

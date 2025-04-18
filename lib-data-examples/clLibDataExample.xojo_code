@@ -1834,14 +1834,14 @@ Protected Class clLibDataExample
 		  
 		  Call tsales.Lookup(tcountries, array("City"), array("Country"), "LookupStatus")
 		  
-		  var gTransfomer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"))
+		  var gTransfomer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"), "")
 		  
 		  call gTransfomer1.Transform
 		  
 		  var tDistinct as clDataTable = gTransfomer1.GetOutputTable()
 		  
 		  
-		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country"), StringArray("Sales","Quantity"))
+		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country"),  StringArray("Sales","Quantity"), "")
 		  
 		  call gTransformer2.Transform
 		  
@@ -2091,6 +2091,59 @@ Protected Class clLibDataExample
 		  
 		  
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Example_035(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		  
+		  if Describe then
+		    Description.RemoveAll
+		    
+		    Description.Add(CurrentMethodName)
+		    
+		    Description.Add("- Apply range formatting to a column")
+		    Description.Add(" - Count occurence of each category")
+		    
+		    return nil
+		    
+		  end if
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var people as new clDataTable("people")
+		  call  people.AddColumn(new clStringDataSerie("Gender"))
+		  call  people.AddColumn(new clNumberDataSerie("Size"))
+		  call people.AddColumn(new clNumberDataSerie("Weight"))
+		  
+		  people.AddRow(new Dictionary("gender":"M", "Size":175.0, "Weight": 82.5))
+		  people.AddRow(new Dictionary("gender":"F","Size":162.0, "Weight": 65.7))
+		  people.AddRow(new Dictionary("gender":"F","Size":158.0, "Weight": 55.8))
+		  people.AddRow(new Dictionary("gender":"F","Size":152.0, "Weight": 49.5))
+		  people.AddRow(new Dictionary("gender":"M","Size":165.0, "Weight": 62.9))
+		  people.AddRow(new Dictionary("gender":"M","Size":168.0, "Weight": 58.7))
+		  people.AddRow(new Dictionary("gender":"M","Size":173.0, "Weight": 64.6))
+		  people.AddRow(new Dictionary("gender":"F","Size":150.0, "Weight": 53.9))
+		  people.AddRow(new Dictionary("gender":"F","Size":155.0, "Weight": 58.0))
+		  people.AddRow(new Dictionary("gender":"M","Size":185.0, "Weight": 82.9))
+		  people.AddRow(new Dictionary("gender":"F","Size":178.0, "Weight": 71.3))
+		  people.AddRow(new Dictionary("gender":"F","Size":195.0, "Weight": 80.3))
+		  people.AddRow(new Dictionary("gender":"M","Size":148.0, "Weight": 50.4))
+		  people.AddRow(new Dictionary("gender":"F","Size":188.0, "Weight": 79.0))
+		  people.AddRow(new Dictionary("gender":"F","Size":160.0, "Weight": 55.8))
+		  people.AddRow(new Dictionary("gender":"M","Size":175.0, "Weight": 64.8))
+		  people.AddRow(new Dictionary("gender":"M","Size":206.0, "Weight": 84.8))
+		  people.AddRow(new Dictionary("gender":"F","Size":183.0, "Weight": 69.1))
+		  people.AddRow(new Dictionary("gender":"M","Size":180.0, "Weight": 69.8))
+		  people.AddRow(new Dictionary("gender":"F","Size":193.0, "Weight": 79.0))
+		  people.AddRow(new Dictionary("gender":"F","Size":190.0, "Weight": 80.7))
+		  
+		  
+		  var v as clDataTable = people.Groupby(array("gender"), "CountPeople")
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  return  array(people, v)
 		End Function
 	#tag EndMethod
 

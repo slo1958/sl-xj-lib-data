@@ -4,6 +4,9 @@ Inherits clSeriesGroupBy
 	#tag Method, Flags = &h0
 		Sub Constructor(GroupingColumns() as clAbstractDataSerie, MeasureColumns() as Pair, PrepareOutput as Boolean = True)
 		  
+		  
+		  //Top node is assigned by parent constructor
+		  
 		  super.Constructor(GroupingColumns, false)
 		  
 		  PrepareMeasures(MeasureColumns)
@@ -14,7 +17,7 @@ Inherits clSeriesGroupBy
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Flattened() As clAbstractDataSerie()
+		Function Flattened(RowCountColumnName as string) As clAbstractDataSerie()
 		  //  
 		  //  Flatten the tree, creating one row for each unique combination of keys
 		  //  Used to get unique values from the columns passed to the constructor
@@ -50,12 +53,19 @@ Inherits clSeriesGroupBy
 		    
 		  Next
 		  
+		  var rowCountColumnIndex as integer = -1
+		  
+		  if RowCountColumnName.Trim.Length > 0 then
+		    OutputColumns.Add(new clIntegerDataSerie(RowCountColumnName))
+		    rowCountColumnIndex = OutputColumns.LastIndex
+		  end if
+		  
 		  for each name as string in TitleOfMeasureColumns
 		    OutputColumns.Add(new clNumberDataSerie(name))
 		    
 		  next
 		  
-		  FlattenNextDimension(tmp_label, tmp_value,  0, TopNode, OutputColumns)
+		  FlattenNextDimension(tmp_label, tmp_value,  0, TopNode, OutputColumns, rowCountColumnIndex)
 		  
 		  return OutputColumns
 		  
@@ -63,7 +73,7 @@ Inherits clSeriesGroupBy
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub FlattenNextDimension(labels() as string, ColumnLatestValue() as variant, depth as integer, level_dict as clSeriesGrouperElement, OutputColumns() as clAbstractDataSerie)
+		Private Sub FlattenNextDimension(labels() as string, ColumnLatestValue() as variant, depth as integer, level_dict as clSeriesGrouperElement, OutputColumns() as clAbstractDataSerie, RowCountColumnIndex as integer)
 		  
 		  var NbrOfDimensions as integer = self.TitleOfDimensionColumns.Count
 		  
@@ -93,7 +103,7 @@ Inherits clSeriesGroupBy
 		      
 		      
 		    else
-		      FlattenNextDimension(labels, ColumnLatestValue, depth+1, d, OutputColumns)
+		      FlattenNextDimension(labels, ColumnLatestValue, depth+1, d, OutputColumns, RowCountColumnIndex)
 		      
 		    end if
 		    
@@ -149,6 +159,7 @@ Inherits clSeriesGroupBy
 		    
 		  next
 		  
+		  return
 		  
 		End Sub
 	#tag EndMethod

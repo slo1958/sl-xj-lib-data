@@ -1560,7 +1560,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "table integrity", nil, t) 
 		  
-		  var table0 as clDataTable = new clDataTable("group", g.Flattened)
+		  var table0 as clDataTable = new clDataTable("group", g.Flattened(""))
 		  
 		  var table_expected As New clDataTable("mytable", SerieArray( _
 		  new clStringDataSerie("Country", array("Belgium","Belgium", "France", "Italy")), _
@@ -1609,7 +1609,7 @@ Protected Class clDataTableTests
 		  
 		  var g as new clSeriesGroupBy(SerieArray(ccnt, ccity))
 		  
-		  var table0 as clDataTable = new clDataTable("group", g.Flattened)
+		  var table0 as clDataTable = new clDataTable("group", g.Flattened(""))
 		  
 		  var table_expected As New clDataTable("mytable", SerieArray( _
 		  new clStringDataSerie("Country", array("Belgium","Belgium", "France")), _
@@ -1671,7 +1671,7 @@ Protected Class clDataTableTests
 		  
 		  var gDistinct as new clSeriesGroupBy(Array(ccnty, ccity))
 		  
-		  var tDistinct  as clDataTable = new clDataTable("group", gDistinct.Flattened)
+		  var tDistinct  as clDataTable = new clDataTable("group", gDistinct.Flattened(""))
 		  
 		  var tDistinct_expected As New clDataTable("mytable", SerieArray( _
 		  new clStringDataSerie("Country", array("Belgium","Belgium", "France")), _
@@ -2131,7 +2131,7 @@ Protected Class clDataTableTests
 		  call check_table(log, "tsales table integrity 2", nil, tsales) 
 		  
 		  
-		  var gTransformer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"))
+		  var gTransformer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"), "")
 		  call gTransformer1.Transform
 		  var tDistinct  as clDataTable = gTransformer1.GetOutputTable()
 		  
@@ -2146,6 +2146,7 @@ Protected Class clDataTableTests
 		  
 		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country") _
 		  , PairArray("Sales":aggMode.Sum,"Quantity":aggMode.Sum, "UnitPrice":aggMode.Min, "UnitPrice":aggMode.Max) _
+		  ,"" _
 		  )
 		  
 		  call gTransformer2.Transform

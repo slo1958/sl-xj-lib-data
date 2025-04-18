@@ -2,27 +2,7 @@
 Protected Class clGroupByTransformer
 Inherits clLinearTransformer
 	#tag Method, Flags = &h0
-		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string)
-		  //
-		  // Group records per distinct values in the grouping_dimensions
-		  // This is typically used to get a list of distinct combinations
-		  //
-		  // Parameters:
-		  // - Input table
-		  // - grouping_dimenions() list of columns to be used as grouping dimensions
-		  //
-		  
-		  super.Constructor(MainTable)
-		  
-		  self.GroupingDimensions= grouping_dimensions
-		  self.GroupingMeasures.RemoveAll
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string, measures() as pair)
+		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string, measures() as pair, rowCountColumnName as string)
 		  //
 		  // Group records per distinct values in the grouping_dimensions
 		  // Aggregate the number fields as defined the each pair, columnname:agg mode
@@ -35,6 +15,7 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor(MainTable)
 		  
+		  self.GroupingCountColumn = rowCountColumnName
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures = measures
 		  
@@ -43,7 +24,7 @@ Inherits clLinearTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string, measures() as String)
+		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string, measures() as String, rowCountColumnName as string)
 		  //
 		  // Group records per distinct values in the grouping_dimensions
 		  // Aggregate the number fields as defined in the second array, aggregation mode is sum
@@ -56,6 +37,7 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor(MainTable)
 		  
+		  self.GroupingCountColumn = rowCountColumnName
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures.RemoveAll
 		  
@@ -63,6 +45,27 @@ Inherits clLinearTransformer
 		    self.GroupingMeasures.Add(measure: aggMode.Sum)
 		    
 		  next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string, rowCountColumnName as string)
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // This is typically used to get a list of distinct combinations
+		  //
+		  // Parameters:
+		  // - Input table
+		  // - grouping_dimenions() list of columns to be used as grouping dimensions
+		  //
+		  
+		  super.Constructor(MainTable)
+		  
+		  self.GroupingCountColumn = rowCountColumnName
+		  self.GroupingDimensions= grouping_dimensions
+		  self.GroupingMeasures.RemoveAll
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -135,7 +138,7 @@ Inherits clLinearTransformer
 
 	#tag Method, Flags = &h21
 		Private Function TransformWithGrouper(source as clDataTable) As clDataTable
-		   
+		  
 		  var MeasureColumns() as pair
 		  
 		  
@@ -147,7 +150,7 @@ Inherits clLinearTransformer
 		  
 		  var grp as new clSeriesGroupAndAggregate(GroupingDataSeries,MeasureColumns)
 		  
-		  var res() as clAbstractDataSerie = grp.Flattened()
+		  var res() as clAbstractDataSerie = grp.Flattened(self.GroupingCountColumn)
 		  
 		  return new clDataTable(self.GetName(cOutputConnectionName), res)
 		  
@@ -155,6 +158,10 @@ Inherits clLinearTransformer
 		End Function
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h0
+		GroupingCountColumn As string
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private GroupingDataSeries() As clAbstractDataSerie

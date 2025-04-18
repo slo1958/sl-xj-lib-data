@@ -24,6 +24,13 @@ Protected Class clSeriesGrouperElement
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetRowIndexCount() As integer
+		  return self.RowIndexes.Count
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetRowIndexes() As integer()
 		  
 		  return self.RowIndexes
