@@ -137,10 +137,11 @@ wnd.AddTable(tablen)
 
 // create a string array where you can put any relevant info
 var description() as string 
+wnd.ShowComments(description)
 
 // Show the window
 wnd.Show
-wnd.ShowComments(description)
+
 
 ```
 ### Using a data pool
