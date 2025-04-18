@@ -10,5 +10,5 @@ Latest update this document: 2025-04-18
 
 Run the test project and select the “see examples” button at the bottom of the main window.
  
-![image]MainWindow.png
 
+![Alt text](/assets/MainWindow.png?raw=true "")
