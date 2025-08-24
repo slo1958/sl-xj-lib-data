@@ -118,6 +118,47 @@ Protected Class clMetadata
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function CountDataType(DataType as string) As integer
+		  //
+		  // Count the number of occurence of the passed datatype exists in the metadata
+		  //
+		  // Parameters:
+		  // - datatype (string) : type of information searched
+		  //
+		  
+		  var ret as integer
+		  for each p as pair in self.DataList
+		    
+		    if p.left = DataType then ret = ret + 1
+		    
+		  next
+		  
+		  return ret
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function HasDataType(DataType as string) As boolean
+		  //
+		  // Check if the passed datatype exists in the metadata
+		  //
+		  // Parameters:
+		  // - datatype (string) : type of information searched
+		  //
+		  
+		  for each p as pair in self.DataList
+		    
+		    if p.left = DataType then return true
+		    
+		  next
+		  
+		  return false
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function LastIndex() As integer
 		  
 		  //
