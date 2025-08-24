@@ -29,9 +29,10 @@ Protected Module datatable_to_list
 		  //  show data
 		  //  
 		  var tmp_last_row as integer = tmp_tbl.RowCount
+		  var tmp_index_format as string = left("0000000", tmp_last_row.ToString.Length)
 		  
 		  for row_index as integer = 0 to tmp_last_row - 1
-		    tmp_listbox.AddRow(str(row_index))
+		    tmp_listbox.AddRow(format(row_index, tmp_index_format))
 		    
 		  next
 		  
