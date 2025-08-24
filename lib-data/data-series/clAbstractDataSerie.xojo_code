@@ -503,7 +503,11 @@ Implements Iterable
 		  
 		  if the_values.LastIndex < 0 then return
 		  
-		  if the_values(0).IsArray and the_values.LastIndex = 0 then
+		  // Accepts a data serie as first parameter
+		  if the_values(0) isa clAbstractDataSerie and the_values.LastIndex = 0 then
+		    self.AddElements(clAbstractDataSerie(the_values(0)).GetElements)
+		    
+		  elseif the_values(0).IsArray and the_values.LastIndex = 0 then
 		    var tmp() as variant = ExtractVariantArray(the_values(0))
 		    
 		    self.AddElements(tmp)
@@ -1254,10 +1258,9 @@ Implements Iterable
 		    
 		  next
 		  
-		  
 		  self.AddMetadata("transformation", "Set all elements to values from data serie " + the_values.name)
 		  
-		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
@@ -1270,10 +1273,9 @@ Implements Iterable
 		    
 		  next
 		  
-		  
 		  self.AddMetadata("transformation", "Set  elements to list of variants")
 		  
-		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
@@ -1288,6 +1290,7 @@ Implements Iterable
 		  
 		  self.AddMetadata("transformation", "Set all elements to " +str(the_value))
 		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
