@@ -66,6 +66,42 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function FindRowIndexForValue(the_find_value as Variant) As integer()
+		  //
+		  // returns row index of rows matching the value
+		  //
+		  var ret() As Integer
+		  var item_entry as Integer
+		  
+		  if self.items_value_dict.HasKey(the_find_value) then
+		    item_entry = self.items_value_dict.Value(the_find_value)
+		    
+		    for i as integer = 0 to self.LastIndex
+		      if self.items_index(i) = item_entry then
+		        ret.add(i)
+		        
+		      end if
+		    next
+		    return ret
+		    
+		  else // Value does not exist
+		    return ret
+		    
+		  end if
+		  
+		  // For i As Integer = 0 To self.LastIndex
+		  // if self.GetElement(i) = the_find_value Then
+		  // ret.Add(i)
+		  // 
+		  // End If
+		  // 
+		  // Next
+		  // 
+		  // Return ret
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetDefaultValue() As variant
 		  
 		  return DefaultValue
