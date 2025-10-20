@@ -58,11 +58,13 @@ Protected Module clDataTable_tests_support
 		    
 		  end if
 		  
+		  var calcTableName as string = calculated.Name
+		  
 		  if calculated.CheckIntegrity() then
 		    if expected = nil then return True
 		    
 		  else
-		    if log <> nil then log.WriteMessage(CurrentMethodName+": Integrity error calculated table.")
+		    if log <> nil then log.WriteMessage(CurrentMethodName+": Integrity error calculated table ["+calcTableName+ "].")
 		    if expected = nil then return False
 		    
 		  end if
@@ -73,9 +75,12 @@ Protected Module clDataTable_tests_support
 		    
 		  end if
 		  
+		  var expectName as string = expected.Name
+		  
+		  
 		  if expected.CheckIntegrity() then
 		  else
-		    if log <> nil then log.WriteMessage(CurrentMethodName+": Integrity error expected table.")
+		    if log <> nil then log.WriteMessage(CurrentMethodName+": Integrity error expected table [" + expectName+"].")
 		    
 		  end if
 		  
@@ -83,7 +88,7 @@ Protected Module clDataTable_tests_support
 		  cnt1 = expected.ColumnCount
 		  cnt2 = calculated.ColumnCount
 		  
-		  if not check_value(log,"column count", cnt1, cnt2) then return False
+		  if not check_value(log,"column count in tables [" + calcTableName+"] vs ["+expectName+"]", cnt1, cnt2) then return False
 		  
 		  var col_ok as boolean = True
 		  for col as integer = 0 to expected.ColumnCount-1

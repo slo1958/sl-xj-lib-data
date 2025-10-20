@@ -6,9 +6,12 @@ Inherits clAbstractTransformer
 		  // Calling the overridden superclass constructor.
 		  Super.Constructor
 		  
+		  self.AddInput(new clTransformerConnection(cInputConnectionName, MainTable))
 		  
-		  self.AddInput(cInputConnectionName, MainTable)
-		  self.SetOutputName(cOutputConnectionName, "Results")
+		  self.AddOutput(new clTransformerConnection(cOutputConnectionName, "Results"))
+		  
+		  return
+		  
 		  
 		  
 		End Sub
@@ -17,14 +20,20 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h1
 		Protected Function EmptyOutputTable() As clDataTable
 		  
-		  return new clDataTable(self.GetName(cOutputConnectionName))
+		  var c  as clTransformerConnection = OutputConnections.lookup(cOutputConnectionName, nil)
+		  
+		  if c = nil then return nil
+		  
+		  return c.GetEmptyTable()
+		  
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function SourceTable() As clDataTable
 		  
-		  return   self.GetTable(self.cInputConnectionName)
+		  return   self.GetInputTable(self.cInputConnectionName)
 		  
 		  
 		End Function

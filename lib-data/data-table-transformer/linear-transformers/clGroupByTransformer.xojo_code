@@ -91,7 +91,7 @@ Inherits clLinearTransformer
 		    
 		  end if
 		  
-		  AddOutput(cOutputConnectionName, t)
+		  Self.SetOutputTable(cOutputConnectionName, t)
 		  
 		  return t <> nil
 		  
@@ -152,7 +152,8 @@ Inherits clLinearTransformer
 		  
 		  var res() as clAbstractDataSerie = grp.Flattened(self.GroupingCountColumn)
 		  
-		  return new clDataTable(self.GetName(cOutputConnectionName), res)
+		  return new clDataTable(self.GetOutputTableName(cOutputConnectionName), res)
+		  
 		  
 		  
 		End Function
@@ -215,6 +216,14 @@ Inherits clLinearTransformer
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="GroupingCountColumn"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="string"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

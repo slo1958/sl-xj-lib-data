@@ -2118,13 +2118,13 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var trsf as new clJoinTransformer(mastertable, joinedtable, mode, KeyFields, JoinSuccessField)
 		  
-		  trsf.SetJoinSuccessLeft( JoinSuccessMainOnly)
-		  trsf.SetJoinSuccessRight(JoinSuccessJoinedOnly)
-		  trsf.SetJoinSuccessBoth(JoinSuccessBoth)
+		  trsf.SetJoinStatusLeft( JoinSuccessMainOnly)
+		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
+		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
 		  call trsf.Transform()
 		  
-		  return trsf.GetTable(trsf.cOutputConnectionJoined)
+		  return trsf.GetOutputTable(trsf.cOutputConnectionJoined)
 		  
 		  
 		End Function
@@ -2913,6 +2913,48 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function InnerJoin(TableToJoin as clDataTable, KeyFields() as string) As clDataTable
+		  //
+		  // Executes a inner join between the current table and the 'TableToJoin'
+		  // Use Lookpu() function for a left join
+		  // Use $$ to get a list of unmatched records $$$
+		  // All fields are included from both side, key fields are not replicateed
+		  //
+		  // Paramters
+		  // TableToJoin  (clDataTable): table used as lookup source
+		  // KeyFields: list of fields used as join keys, field names must match
+		  //
+		  //
+		  // Returns
+		  // Datatable with joined results
+		  //
+		  
+		  // const JoinSuccessBoth = "Both"
+		  // const JoinSuccessMainOnly = "Main"
+		  // const JoinSuccessJoinedOnly= "Joined"
+		  
+		   
+		  
+		  var mastertable as clDataTable = self
+		  var joinedtable as clDataTable = TableToJoin
+		  var outputtable as new clDataTable("Inner join " + mastertable.Name + " and " + joinedtable.Name)
+		  
+		  
+		  var trsf as new clJoinTransformer(mastertable, joinedtable, joinmode.InnerJoin, KeyFields, "")
+		  
+		  trsf.SetJoinStatusLeft( JoinSuccessMainOnly)
+		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
+		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
+		  
+		  call trsf.Transform()
+		  
+		  return trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub IntegerColumnValues(pColumnName as string, assigns pSourceValue as Variant)
 		  
 		  var temp_column as clAbstractDataSerie = self.GetColumn(pColumnName)
@@ -3395,6 +3437,46 @@ Implements TableColumnReaderInterface,Iterable
 	#tag DelegateDeclaration, Flags = &h0
 		Delegate Function ObjectAllocator(name as string) As object
 	#tag EndDelegateDeclaration
+
+	#tag Method, Flags = &h0
+		Function OuterJoin(TableToJoin as clDataTable, KeyFields() as string, JoinSuccessField as string = "") As clDataTable
+		  //
+		  // Executes a outer join between the current table and the 'TableToJoin'
+		  // Use Lookpu() function for a left join
+		  // All fields are included from both side, key fields are not replicateed
+		  //
+		  // Paramters
+		  // TableToJoin  (clDataTable): table used as lookup source
+		  // KeyFields: list of fields used as join keys, field names must match
+		  //
+		  //
+		  // Returns
+		  // Datatable with joined results
+		  //
+		  
+		  // const JoinSuccessBoth = "Both"
+		  // const JoinSuccessMainOnly = "Main"
+		  // const JoinSuccessJoinedOnly= "Joined"
+		  
+		  
+		  var mastertable as clDataTable = self
+		  var joinedtable as clDataTable = TableToJoin
+		  var outputtable as new clDataTable("Outer join  " + mastertable.Name + " and " + joinedtable.Name)
+		  
+		  
+		  var trsf as new clJoinTransformer(mastertable, joinedtable, JoinMode.OuterJoin , KeyFields, JoinSuccessField)
+		  
+		  trsf.SetJoinStatusLeft( JoinSuccessMainOnly)
+		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
+		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
+		  
+		  call trsf.Transform()
+		  
+		  return trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		  
+		  
+		End Function
+	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Rename(the_new_name as string)

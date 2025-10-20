@@ -2225,6 +2225,95 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Example_036(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		  
+		  if Describe then
+		    Description.RemoveAll
+		    
+		    Description.Add(CurrentMethodName)
+		    
+		    Description.Add("- create a datatable with order quantity of unit price per city")
+		    Description.Add(" - inner and outer full join with a country table")
+		    Description.Add(" - no join status")
+		    
+		    return nil
+		    
+		  end if
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var tcountries1 as new clDataTable("Countries1")
+		  call  tcountries1.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountries1.AddColumn(new clStringDataSerie("City"))
+		  tcountries1.AddRow(new Dictionary("Country":"Belgium","City":"Brussels"))
+		  tcountries1.AddRow(new Dictionary("Country":"Belgium","City":"Liege"))
+		  tcountries1.AddRow(new Dictionary("Country":"France","City":"Paris"))
+		  tcountries1.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  tcountries1.AddRow(new Dictionary("City":"London"))
+		  
+		  
+		  var tcountries2 as new clDataTable("Countries2")
+		  call  tcountries2.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountries2.AddColumn(new clStringDataSerie("City"))
+		  tcountries2.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  tcountries2.AddRow(new Dictionary("Country":"France","City":"Lyon"))
+		  tcountries2.AddRow(new Dictionary("Country":"Spain","City":"Madrid"))
+		  
+		  var tcountries3 as new clDataTable("Countries3")
+		  call  tcountries3.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountries3.AddColumn(new clStringDataSerie("City"))
+		  call tcountries3.AddColumn(new clStringDataSerie("Something"))
+		  
+		  tcountries3.AddRow(new Dictionary("Country":"Belgium","City":"Brussels","Something":"Alpha"))
+		  tcountries3.AddRow(new Dictionary("Country":"Belgium","City":"Liege","Something":"Beta"))
+		  tcountries3.AddRow(new Dictionary("Country":"Belgium","City":"Liege","Something":"Gamma"))
+		  tcountries3.AddRow(new Dictionary("Country":"France","City":"Paris","Something":"Delta"))
+		  tcountries3.AddRow(new Dictionary("Country":"France","City":"Lille","Something":"Omega"))
+		  tcountries3.AddRow(new Dictionary("Country":"USA","City":"NewYork","Something":"Zeta"))
+		  tcountries3.AddRow(new Dictionary("City":"London"))
+		  
+		  var tsales as new clDataTable("Sales")
+		  
+		  var ccity As clAbstractDataSerie =  tsales.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  tsales.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = tsales.AddColumn(new clNumberDataSerie("UnitPrice")) 
+		  
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28))
+		  tsales.AddRow(new Dictionary("City":"London", "Quantity":14, "Unitprice": 30))
+		  tsales.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
+		  
+		  
+		  var tjoin1 as clDataTable = tsales.InnerJoin(tcountries1,  array("City"))
+		  
+		  var tjoin2 as clDataTable = tsales.OuterJoin(tcountries1,  array("City"))
+		  
+		  var tjoin3 as clDataTable = tsales.InnerJoin(tcountries2, array("City"))
+		  
+		  var tjoin4 as clDataTable = tsales.OuterJoin(tcountries2, array("City"))
+		  
+		  var tjoin5 as clDataTable = tsales.InnerJoin(tcountries3, array("City"))
+		  
+		  var tjoin6 as clDataTable = tsales.OuterJoin(tcountries3 , array("City"))
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  return  array(tsales, tcountries1, tcountries2, tcountries3, tjoin1, tjoin2, tjoin3, tjoin4, tjoin5, tjoin6)
+		  
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function GetAllExamples() As Dictionary
 		  // 
 		  //. Get the list of 'example_xxx' methods

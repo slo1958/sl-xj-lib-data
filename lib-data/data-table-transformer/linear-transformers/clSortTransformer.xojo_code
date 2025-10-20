@@ -38,7 +38,7 @@ Inherits clLinearTransformer
 		  
 		  var SortTempArray() as pair = SortArray
 		  
-		  var NewTable as clDataTable = source.CloneStructure(self.GetName(cOutputConnectionName))
+		  var NewTable as clDataTable = source.CloneStructure(self.GetOutputTableName(cOutputConnectionName))
 		  
 		  NewTable.AddMetaData("Transformation","Sorting " + source.Name + " on " + String.FromArray(ColumnNames,","))
 		  
@@ -76,7 +76,7 @@ Inherits clLinearTransformer
 		  
 		  var t as clDataTable = TerminateSort(self.SortColumnsNames, srt.GetSortedListOfIndexes(), self.order)
 		  
-		  AddOutput(cOutputConnectionName, t)
+		  Self.SetOutputTable(cOutputConnectionName, t)
 		  
 		  return t <> nil
 		  

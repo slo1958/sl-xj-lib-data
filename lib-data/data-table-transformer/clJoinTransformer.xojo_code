@@ -2,64 +2,73 @@
 Protected Class clJoinTransformer
 Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
-		Sub Constructor(LeftTable as clDataTable, RightTable as clDataTable, mode as JoinMode, KeyFields() as string, JoinSuccessField as string = "")
+		Sub Constructor(LeftTable as clDataTable, RightTable as clDataTable, mode as JoinMode, KeyFields() as string, JoinStatusField as string = "")
 		  // Calling the overridden superclass constructor.
 		  Super.Constructor
 		  
 		  
-		  self.AddInput(cInputConnectionLeft, LeftTable)
-		  self.AddInput(cInputConnectionRight, RightTable)
+		  self.AddInput(new clTransformerConnection(cInputConnectionLeft, LeftTable))
+		  self.AddInput(new clTransformerConnection(cInputConnectionRight, RightTable))
+		  
 		  
 		  select case mode
 		    
 		  case  JoinMode.OuterJoin 
-		    self.SetOutputName(cOutputConnectionJoined, "Results")
+		    self.AddOutput(new clTransformerConnection(cOutputConnectionJoined, "Results"))
 		    
-		    self.JoinSuccessBoth = "JOIN"
+		    self.JoinStatusBoth = "JOIN"
 		    
 		  case JoinMode.InnerJoin
-		    self.SetOutputName(cOutputConnectionJoined, "JoinedResults")
-		    self.SetOutputName(cOutputConnectionLeft,"LeftResults")
-		    self.SetOutputName(cOutputConnectionRight,"RightResults")
+		    self.AddOutput(new clTransformerConnection(cOutputConnectionJoined, "JoinedResults"))
 		    
-		    self.JoinSuccessBoth = "JOIN"
-		    self.JoinSuccessLeftOnly = "LEFT"
-		    self.JoinSuccessRightOnly = "RIGHT"
+		    // by default, we only generated the main output (joined results)
+		    
+		    self.JoinStatusBoth = "JOIN"
+		    self.JoinStatusLeftOnly = "LEFT"
+		    self.JoinStatusRightOnly = "RIGHT"
 		    
 		  case else
 		    
 		    
 		  end Select
 		  
-		  
 		  self.mode = mode
 		  self.joinKeyFields = KeyFields
-		  self.JoinSuccessField = JoinSuccessField
+		  self.JoinStatusFieldName = JoinStatusField
 		  
 		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub FullJoin(MasterTable as clDataTable, SecondaryTable as clDataTable, JoinSuccessMasterOnly as string, JoinSuccessSecondaryOnly as string)
+	#tag Method, Flags = &h1
+		Protected Sub FullJoin(MasterTable as clDataTable, SecondaryTable as clDataTable, JoinStatusMasterOnly as string, JoinStatusSecondaryOnly as string, MasterOnlyOutputConnectionName as string, SecondaryOnlyOutputConnectionName as String)
 		  //
 		  // Executes a full join between the Master table and the secondary table
 		  //
 		  
 		  
-		  //var leftOutputTable as clDataTable = self.GetTable(cOutputConnectionLeft)
-		  var outputTable as clDataTable = new clDataTable(self.GetName(cOutputConnectionJoined))
+		  var outputTable as clDataTable = new clDataTable(self.GetOutputTableName(cOutputConnectionJoined))
+		  var masterOnlyOutputTable as clDataTable = nil
+		  var secondaryOnlyOutputTable as clDataTable = nil
 		  
-		  //var rightOutputTable as clDataTable = self.GetTable(cOutputConnectionRight)
+		  if MasterOnlyOutputConnectionName.trim <> "" then
+		    masterOnlyOutputTable = new clDataTable(self.GetOutputTableName(MasterOnlyOutputConnectionName))
+		    
+		  end if
+		  
+		  if SecondaryOnlyOutputConnectionName.trim <> "" then
+		    secondaryOnlyOutputTable = new clDataTable(self.GetOutputTableName(SecondaryOnlyOutputConnectionName))
+		    
+		  end if
 		  
 		  
 		  var rowmap() as Boolean
 		  var JoinKeyColumns() as clAbstractDataSerie = SecondaryTable.GetColumns(joinKeyFields, True)
-		  var JoinKeyColumnValues() as Variant
 		  
+		  // Build list of record id in secondary table for each combination of key values
 		  var grp as new clSeriesGroupBy(JoinKeyColumns)
 		  
-		  
+		  // build boolean map of records in secondary table, used later to add unused record when doing an outer join
 		  if mode = JoinMode.OuterJoin then
 		    rowmap.RemoveAll
 		    
@@ -70,6 +79,7 @@ Inherits clAbstractTransformer
 		    
 		  end if
 		  
+		  var JoinKeyColumnValues() as Variant
 		  var FoundRowsInJoinedTable as Boolean = false
 		  
 		  for each row as clDataRow in mastertable
@@ -87,7 +97,7 @@ Inherits clAbstractTransformer
 		          
 		          var row_join as clDataRow = SecondaryTable.GetRowAt(index, False)
 		          
-		          if JoinSuccessField.Length>0 then row_main.SetCell(JoinSuccessField, JoinSuccessBoth)
+		          if JoinStatusFieldName.Length>0 then row_main.SetCell(JoinStatusFieldName, JoinStatusBoth)
 		          
 		          row_main.AppendCellsFrom(row_join)
 		          
@@ -103,11 +113,17 @@ Inherits clAbstractTransformer
 		      if rowToMerge.Count = 0 and mode = JoinMode.OuterJoin then
 		        var row_main as clDataRow = row.Clone()
 		        
-		        if JoinSuccessField.Length>0 then row_main.SetCell(JoinSuccessField, JoinSuccessMasterOnly)
+		        if JoinStatusFieldName.Length>0 then row_main.SetCell(JoinStatusFieldName, JoinStatusMasterOnly)
 		        
 		        outputtable.AddRow(row_main, clDataTable.AddRowMode.CreateNewColumn)
 		        
 		      end if
+		      
+		      if rowToMerge.Count = 0 and mode = JoinMode.InnerJoin and masterOnlyOutputTable <> nil then
+		        masterOnlyOutputTable.AddRow(row, clDataTable.AddRowMode.CreateNewColumn)
+		        
+		      end if
+		      
 		      
 		    next
 		    
@@ -120,7 +136,7 @@ Inherits clAbstractTransformer
 		      
 		    next
 		    
-		    if  JoinSuccessField.Length > 0  then call outputtable.AddColumn(new clDataSerie(JoinSuccessField))
+		    if  JoinStatusFieldName.Length > 0  then call outputtable.AddColumn(new clDataSerie(JoinStatusFieldName))
 		    
 		    for each col as clAbstractDataSerie in SecondaryTable.GetAllColumns
 		      call outputtable.AddColumn(col.CloneStructure)
@@ -143,7 +159,7 @@ Inherits clAbstractTransformer
 		      if not rowmap(index) then 
 		        var row_join as clDataRow = SecondaryTable.GetRowAt(index, False)
 		        
-		        if JoinSuccessField.Length>0 then row_join.SetCell(JoinSuccessField, JoinSuccessSecondaryOnly)
+		        if JoinStatusFieldName.Length>0 then row_join.SetCell(JoinStatusFieldName, JoinStatusSecondaryOnly)
 		        
 		        outputtable.AddRow(row_join, clDataTable.AddRowMode.CreateNewColumn)
 		        
@@ -156,29 +172,72 @@ Inherits clAbstractTransformer
 		    
 		  end select
 		  
-		  self.AddOutput(cOutputConnectionJoined, outputTable)
+		  // if masterOnlyOutputTable <> nil Then self.AddOutput(cOutputConnectionLeft, masterOnlyOutputTable)
+		  
+		  self.SetOutputTable(cOutputConnectionJoined, outputTable)
+		  
+		  return
 		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetJoinSuccessBoth(label as string)
-		  self.JoinSuccessBoth = label
+		Sub GenerateNonMatchingDatasets(GenerateNonMatchingLeft as Boolean, GenerateNonMatchingRight as Boolean)
+		  
+		  if mode = JoinMode.OuterJoin then return
+		  
+		  
+		  If GenerateNonMatchingLeft then 
+		    self.AddOutput(new clTransformerConnection(cOutputConnectionLeft, "LeftResults"))
+		    
+		  elseif self.OutputConnections.HasKey(cOutputConnectionLeft) then 
+		    self.OutputConnections.Remove(cOutputConnectionLeft)
+		    
+		  end if
+		  
+		  
+		  
+		  If GenerateNonMatchingRight then 
+		    self.AddOutput(new clTransformerConnection(cOutputConnectionRight, "RightResults"))
+		    
+		  elseif self.OutputConnections.HasKey(cOutputConnectionRight) then 
+		    self.OutputConnections.Remove(cOutputConnectionRight)
+		    
+		  end if
+		  
+		  return
+		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetJoinSuccessLeft(label as string)
-		  self.JoinSuccessLeftOnly = label
+		Sub SetJoinStatusBoth(label as string)
+		  
+		  self.JoinStatusBoth = label
+		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetJoinSuccessRight(label as string)
-		  self.JoinSuccessRightOnly = label
+		Sub SetJoinStatusLeft(label as string)
+		  
+		  self.JoinStatusLeftOnly = label
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetJoinStatusRight(label as string)
+		  
+		  self.JoinStatusRightOnly = label
+		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
@@ -186,19 +245,24 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Function Transform() As Boolean
 		  
-		  var tblleft as clDataTable = self.GetTable(cInputConnectionLeft)
-		  var tblright as clDataTable = self.GetTable(cInputConnectionRight)
+		  var tblleft as clDataTable = self.GetInputTable(cInputConnectionLeft)
+		  var tblright as clDataTable = self.GetInputTable(cInputConnectionRight)
 		  
 		  var cntleft as integer = tblleft.RowCount
 		  var cntright as integer = tblright.RowCount
 		  
+		  var outputLeftConnection as string = ""
+		  var outputRightConnection as string = ""
 		  
-		  if cntleft < cntright then
+		  if self.GetOutputTableName(cOutputConnectionLeft).trim.Length > 0 then outputLeftConnection = cOutputConnectionLeft
+		  if self.GetOutputTableName(cOutputConnectionRight).trim.Length > 0 then outputRightConnection = cOutputConnectionRight
+		  
+		   if cntleft < cntright then
 		    
-		    FullJoin(tblright, tblleft, self.JoinSuccessRightOnly, self.JoinSuccessLeftOnly)
+		    FullJoin(tblright, tblleft, self.JoinStatusRightOnly, self.JoinStatusLeftOnly, cOutputConnectionRight, outputLeftConnection)
 		    
 		  else
-		    FullJoin(tblleft, tblright, self.JoinSuccessLeftOnly, self.JoinSuccessRightOnly)
+		    FullJoin(tblleft, tblright, self.JoinStatusLeftOnly, self.JoinStatusRightOnly, outputLeftConnection, cOutputConnectionRight)
 		    
 		  end if
 		  
@@ -206,25 +270,6 @@ Inherits clAbstractTransformer
 		  return true
 		  
 		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub zCodeToRetainInTable()
-		  
-		  var joinModeStr as string
-		  if mode = JoinMode.InnerJoin then 
-		    joinModeStr = "Inner join"
-		    
-		  elseif mode = JoinMode.OuterJoin then
-		    joinModeStr = "Outer join"
-		    
-		  else
-		    joinModeStr = "Strange join"
-		    
-		  end if
-		  
-		  //var outputtable as new clDataTable(joinModeStr + " " + mastertable.Name + " and " + joinedtable.Name)
-		End Sub
 	#tag EndMethod
 
 
@@ -240,19 +285,19 @@ Inherits clAbstractTransformer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		JoinSuccessBoth As string
+		JoinStatusBoth As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		JoinSuccessField As String
+		JoinStatusFieldName As String
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		JoinSuccessLeftOnly As string
+		JoinStatusLeftOnly As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		JoinSuccessRightOnly As string
+		JoinStatusRightOnly As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -330,7 +375,7 @@ Inherits clAbstractTransformer
 			#tag EndEnumValues
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="JoinSuccessBoth"
+			Name="JoinStatusBoth"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
@@ -338,7 +383,7 @@ Inherits clAbstractTransformer
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="JoinSuccessLeftOnly"
+			Name="JoinStatusLeftOnly"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
@@ -346,7 +391,7 @@ Inherits clAbstractTransformer
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="JoinSuccessRightOnly"
+			Name="JoinStatusRightOnly"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
@@ -354,7 +399,7 @@ Inherits clAbstractTransformer
 			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="JoinSuccessField"
+			Name="JoinStatusFieldName"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

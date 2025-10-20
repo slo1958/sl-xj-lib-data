@@ -127,6 +127,7 @@ Class=clSorterBlock;lib-data/data-grouper-and-sorter/clSorterBlock.xojo_code;&h0
 Class=clMemoryStats;lib-data/data-common/helper_functions/clMemoryStats.xojo_code;&h0000000016F8EFFF;&h00000000087E47FF;false
 Class=clMemoryStatEntry;lib-data/data-common/helper_functions/clMemoryStatEntry.xojo_code;&h0000000024DAC7FF;&h00000000087E47FF;false
 Folder=data-table-transformer;lib-data/data-table-transformer;&h0000000072FDA7FF;&h0000000020C837FF;false
+Class=clTransformerConnection;lib-data/data-table-transformer/clTransformerConnection.xojo_code;&h0000000033BF5FFF;&h0000000072FDA7FF;false
 Class=clAbstractTransformer;lib-data/data-table-transformer/clAbstractTransformer.xojo_code;&h0000000051974FFF;&h0000000072FDA7FF;false
 Class=clJoinTransformer;lib-data/data-table-transformer/clJoinTransformer.xojo_code;&h00000000787677FF;&h0000000072FDA7FF;false
 Class=clLinearTransformer;lib-data/data-table-transformer/clLinearTransformer.xojo_code;&h0000000031E397FF;&h0000000072FDA7FF;false
