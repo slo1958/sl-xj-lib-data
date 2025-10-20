@@ -183,7 +183,7 @@ You can create a data table in any of the following ways:
 
 - create an empty table, add columns then add rows one by one
 - create a table from a set of data series
-- load from a text file
+- load from a text file or a database select query
 
 ### Create an empty table, adding columns then adding rows
 
