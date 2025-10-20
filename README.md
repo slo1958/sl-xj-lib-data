@@ -1,9 +1,10 @@
 # sl-xj-lib-data
 Data handling classes
 
-The library is a in-memory column store, designed for convenience, not speed. 
+The library is a in-memory column store, designed for convenience, not speed, inspired by the Pandas library available in Python. The data are stored in columns, so a table is an array of columns and a column is an array of values. The table object is responsible for maintaining a consistent number of elements across columns. Finally, a damapool is a set of tables and a data pool can be loaded or saved (persisted) with a single call.
 
 The typical use cases are:
+
 - caching UI data before committing to a database
 - caching query results, which are then sliced and diced locally
 
@@ -11,11 +12,8 @@ The library is provided as is for free and it is available in a github repo. Ple
 In the unlikely case someone finds a bug ;), please use github to report the issue.
 
 
-- About series and tables
-- Description of source tree
-
-
-About Xojo version: tested with Xojo 2024 release 4.1 on Mac.
+## About Xojo version
+Tested with Xojo 2025 release 2.1 on Mac.
 
 
 
@@ -34,7 +32,7 @@ To ease handling of data row, we also have:
 Note that the library handle data by columns, any use of clDataRow means the called method need to transpose some data, which is time consuming.
 
 ## About clDataSerie
-A serie is mainly a named one-dimension array. Elements of the array are 'variant'. The main purpose of this class is to store column data for clDataTable. 
+A serie is mainly a named one-dimension array. Elements of the array are 'variant' in the untype version of the data serie (clDataSerie), see below for more information about type data series. The main purpose of this class is to store column data for clDataTable. 
 
 ### How to create a data serie ?
 You can create a data serie:
@@ -101,7 +99,9 @@ The default data series is a child class of clAbstractDataSerie and stores value
 - double data serie
 - boolean data serie
 - string data serie
-- compressed data serie
+- compressed string data serie
+- date date serie
+- datetime data serie
 
 When you convert an element to/from a number or to a string:
 
@@ -115,6 +115,9 @@ When you convert an element to/from a number or to a string:
 
 - clStringDataSerie() from integer or number: the library uses the default conversion provided by Xojo
 
+Please also refer to the file ‘README-Conversion.md’ in the documentation folder in the source tree.
+
+
 #### about data serie index clDataSerieIndex
 (subclass of clDataSerie)
 This class is only used to maintain the record index stored in tables. The value is automatically set to the next value of a counter. 
@@ -124,26 +127,55 @@ The value passed as parameter to methods like AddElement(), set_element() are ig
 #### integer data serie clIntegerDataSerie
 Elements of the data serie are integer. A type specific get_element_as_integer() function returns an integer instead of a variant.
 Arithmetic operators (+, _, - ) have been overloaded.
+Operators +, - and * are overloaded using a constant or another integer data serie as second operanda
 
 #### double data serie clNumberDataSerie
 Elements of the data serie are double. A type specific get_element_as_number() function returns a double instead of a variant.
 Arithmetic operators (+, _, - ) have been overloaded.
 Functions like count(), count_non_zero(), average(), average_non_zero(), standard_deviation(), standard_deviation_non_zero()  are reimplemented for clNumberDataSerie to exclude invalid numbers and infinite numbers.
+Operators +, - and * are overloaded using a constant or another number data serie as second operand.
 
 
 #### boolean data serie clBooleanDataSerie
 Elements of the data serie are boolean. A type specific get_element_as_boolean() function returns a boolean instead of a variant.
 Boolean operators (and, or, not ) have been overloaded.
+Operators ‘or’, ‘and’ and ‘not’ are overloaded using another boolean data serie as second operand.
 
 
 #### string data serie clStringDataSerie
 Elements of the data serie are string. The data serie exposes basic string handling functions (left, right, mid, text_before, text_after, trim,…)
 
-#### compressed data serie clCompressedDataSerie
-The data serie stores it value in a string compressed form. Each cell in the column is an integer, an index to an array of values. Use this data serie instead of the standard data serie when a large number of rows contains only a few distinct values, for example a country name in a large invoice dataset.
+#### compressed string data serie clCompressedDataSerie
+The data serie stores it value in a string compressed form. Each cell in the column is an integer, an index to an array of values. Use this data serie instead of the standard data serie when a large number of rows contains only a few distinct values, for example a country name in a large invoice dataset. Those operations are totally transparent. You add strings to the compressed data serie and the clCompressedDataSerie handles the conversion behind the scene. 
+
+
+#### date data serie clDateDataSerie
+This data series stores its value as DateTime, but the time part is not used. The data serie provide date related method to extract day, month, year…. Value as integer data serie.
+
+#### dateTime data serie clDateTimeDataSerie
+This data series stores its value as DateTime. The data serie provide date related method to extract day, month, year…. Value as integer data serie, and time related methods to extract hours, minutes, …. Values as integer data serie.
 
 ## About clDataTable
 A data table is a collection of data series. 
+
+The library support common basic operations on a data table:
+
+- add column
+- add row
+- filter rows
+- iterate over rows
+-  iterate over rows with filter
+- grouping
+- sorting
+- pivot and unpivot
+- loopup
+- inner joins
+- outer joins
+-  …
+
+Some operations are implemented using transformers available as a set of distinct classes.
+
+A table can be a view on another table, we means we use a subset of the columns of the underlying table without data duplication. 
 
 
 ### How to create a data table ?
@@ -773,6 +805,8 @@ Todo
 
 The repo contains the following folders:
 
+- documentation
+- imported libraries
 - lib-data
 - lib-data (experimental)
 - lib-data-examples
@@ -780,6 +814,20 @@ The repo contains the following folders:
 - lib-data-tests
 - lib-data-ui-support
 - test-data
+
+
+### folder documentation
+The folder contains more information about 
+
+- conversion from and to string 
+- range formatting (for example format the values in a clNumberDataColumn as ‘HIGH’, ‘MEDIUM’, ‘LOW’ based on ranges of values)
+- how to use the example viewer integrated in the test program
+
+
+### folder imported_libraries
+Libraries I imported from other projects, currently
+
+- lib-loving imported from ‘sl-xj-lib-loging’ (also available on github)
 
 
 ### folder lib-data
@@ -791,15 +839,37 @@ This folder contains experimental components.
 
 Subfolders of lib-data:
 
-- data-helpers
+- data-common
+- data-grouper-and-sorter
+- date-parsers-and-formatters
 - data-pool
 - data-rows
 - data-series
+- data-series-io
 - data-tables
+- data-table-transformer
+- data-table-io
 - data-validation
+- database-access
 
-### subfolder data-helpers
-Contains helper classes and methods
+### subfolder data-common
+The folder contains
+
+- enumerations used in the source tree
+- basic math functions
+- metadata handling (used for data series and data tables)
+- helper functions
+
+### subfolder data-grouper-and-sorter
+Contains classes used to sort and group values.
+
+### subfolder date-parsers-and-formatters
+The folder contains
+
+- parser and formatter for boolean values
+- parser and formatter for integer values
+- parser and formatter for double values
+
 
 ### subfolder  data-pool
 Handling of data pool
@@ -807,21 +877,31 @@ Handling of data pool
 ###  subfolder  data-rows
 Handling of data row. Remember using data rows when iterating over a data table is convenient but slow.
 
+
+### subfolder  data-series-io
+The folder contains methods to read and write data series to text file.
+
 ### subfolder  data-series
-Handling of data series
+Handling of data series (clAbstractDataSerie and al its child classes)
+
 
 ### subfolder  data-tables
 Handling of data tables
+
+### subfolder  data-table-transformer
+Classes reading data from one or multiple data table, applying a transformation and producing one or more output data tables. Used internally by clDataTable to group, sort, join, …
+
+There are examples showing how to use a transformer directly.
+
+
+### subfolder  data-table-io
+Reading and writing the content of a data table to text files, database table, …
 
 ### subfolder  data-validation
 Experimental components to support data validation
 
 ## folder lib-data-examples
 Examples used in the main test program. Each example can be launched from the example window. A generic window designed to display the content of an array of data table is used to show the results.
-
-## folder lib-data-io
-All IO support for data series and data tables will utimately move here in future versions.
-
 
 ## folder lib-data-tests
 The folder contains the test cases for data series and data tables
@@ -832,6 +912,4 @@ This folder contains ‘data table’ aware components.
 
 ## folder test-data
 Test files used by some test cases
-
-
-GetCell
+ 
