@@ -2923,11 +2923,11 @@ Implements TableColumnReaderInterface,Iterable
 		  // const JoinSuccessMainOnly = "Main"
 		  // const JoinSuccessJoinedOnly= "Joined"
 		  
-		   
+		  
 		  var mastertable as clDataTable = self
 		  var joinedtable as clDataTable = TableToJoin
 		  var OutputTable as clDataTable
-		   
+		  
 		  var trsf as new clJoinTransformer(mastertable, joinedtable, joinmode.InnerJoin, KeyFields, "")
 		  
 		  trsf.SetJoinStatusLeft(JoinSuccessMainOnly)
@@ -3134,7 +3134,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_LeftJoin(the_table as clDataTable, OwnKeyFields() as string, JoinTableKeyFields() as string, OwnDataFields() as string, JoinTableDataFields() as string, JoinSuccessField as string) As Boolean
+		Private Function internal_LookUp(the_table as clDataTable, OwnKeyFields() as string, JoinTableKeyFields() as string, OwnDataFields() as string, JoinTableDataFields() as string, JoinSuccessField as string) As Boolean
 		  const cstSuccessMark = "$$$M$$$"
 		  
 		  var buffer as new Dictionary
@@ -3304,6 +3304,45 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function LeftJoin(TableToJoin as clDataTable, KeyFields() as string, JoinSuccessField as string = "") As clDataTable
+		  //
+		  // Executes a outer join between the current table and the 'TableToJoin'
+		  // Use Lookpu() function for a left join
+		  // All fields are included from both side, key fields are not replicateed
+		  //
+		  // Paramters
+		  // TableToJoin  (clDataTable): table used as lookup source
+		  // KeyFields: list of fields used as join keys, field names must match
+		  //
+		  //
+		  // Returns
+		  // Datatable with joined results
+		  //
+		  
+		  // const JoinSuccessBoth = "Both"
+		  // const JoinSuccessMainOnly = "Main"
+		  // const JoinSuccessJoinedOnly= "Joined"
+		  
+		  
+		  var mastertable as clDataTable = self
+		  var joinedtable as clDataTable = TableToJoin
+		  var OutputTable as   clDataTable
+		  
+		  var trsf as new clJoinTransformer(mastertable, joinedtable, JoinMode.LeftJoin , KeyFields, JoinSuccessField)
+		  
+		  trsf.SetJoinStatusLeft( JoinSuccessMainOnly)
+		  //trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
+		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
+		  
+		  call trsf.Transform()
+		  
+		  OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		  
+		  return OutputTable
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Lookup(LookupSourceTable As clDataTable, KeyFieldMapping As Dictionary, LookupFieldMapping As Dictionary, JoinSuccessField As string = "") As Boolean
 		  //
 		  // Lookup data
@@ -3338,7 +3377,7 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  
-		  return internal_LeftJoin(LookupSourceTable, OwnKeyFields, JoinTableKeyFields,OwnDataFields, JoinTableDataFields, JoinSuccessField)
+		  return internal_LookUp(LookupSourceTable, OwnKeyFields, JoinTableKeyFields,OwnDataFields, JoinTableDataFields, JoinSuccessField)
 		  
 		  
 		End Function
@@ -3376,7 +3415,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  return internal_LeftJoin(LookupSourceTable, OwnKeyFields, JoinTableKeyFields,OwnDataFields, JoinTableDataFields,JoinSuccessField)
+		  return internal_LookUp(LookupSourceTable, OwnKeyFields, JoinTableKeyFields,OwnDataFields, JoinTableDataFields,JoinSuccessField)
 		  
 		  
 		End Function

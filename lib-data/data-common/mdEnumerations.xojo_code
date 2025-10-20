@@ -17,7 +17,8 @@ Protected Module mdEnumerations
 
 	#tag Enum, Name = JoinMode, Flags = &h0
 		OuterJoin
-		InnerJoin
+		  InnerJoin
+		LeftJoin
 	#tag EndEnum
 
 	#tag Enum, Name = SortOrder, Flags = &h0

@@ -2516,6 +2516,8 @@ Protected Class clDataTableTests
 		  
 		  var tjoin6 as clDataTable = tsales.FullJoin(tcountries3, JoinMode.OuterJoin, array("City"), "JoinStatus")
 		  
+		  var tjoin7 as clDataTable = tsales.LeftJoin(tcountries3, array("City"), "JoinStatus")
+		  
 		  
 		  var tjoin1_expected as new clDataTable("X1")
 		  call tjoin1_expected.AddColumn(new clStringDataSerie("City"))
@@ -2634,6 +2636,27 @@ Protected Class clDataTableTests
 		  tjoin6_expected.AddRow(new Dictionary("City":"London", "Quantity":0, "UnitPrice":0,"JoinStatus":clDataTable.JoinSuccessJoinedOnly))
 		  
 		  
+		  var tjoin7_expected as new clDataTable("X7")
+		  call tjoin7_expected.AddColumn(new clStringDataSerie("City"))
+		  call tjoin7_expected.AddColumn(new clNumberDataSerie("Quantity"))
+		  call tjoin7_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tjoin7_expected.AddColumn(new clStringDataSerie("JoinStatus"))
+		  call tjoin7_expected.AddColumn(new clNumberDataSerie("Country"))
+		  call tjoin7_expected.AddColumn(new clStringDataSerie("Something"))
+		  
+		  tjoin7_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21,"Country":"Belgium","Something":"Alpha","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Beta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22,"Country":"Belgium","Something":"Gamma","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23,"Country":"Belgium","Something":"Alpha","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24,"Country":"Belgium","Something":"Alpha","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","Something":"Beta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25,"Country":"Belgium","Something":"Gamma","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26,"Country":"France","Something":"Delta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","Something":"Beta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27,"Country":"Belgium","Something":"Gamma","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28,"Country":"France","Something":"Delta","JoinStatus":clDataTable.JoinSuccessBoth))
+		  tjoin7_expected.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25,"JoinStatus":clDataTable.JoinSuccessMainOnly))
+		  
 		  
 		  call check_table(log, "Join1", tjoin1_expected, tjoin1)
 		  
@@ -2647,6 +2670,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "Join6", tjoin6_expected, tjoin6)
 		  
+		  call check_table(log, "Join7", tjoin7_expected, tjoin7)
 		  
 		  log.end_exec(CurrentMethodName)
 		  

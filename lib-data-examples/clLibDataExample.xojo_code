@@ -2233,8 +2233,8 @@ Protected Class clLibDataExample
 		    Description.Add(CurrentMethodName)
 		    
 		    Description.Add("- create a datatable with order quantity of unit price per city")
-		    Description.Add(" - inner and outer full join with a country table")
-		    Description.Add(" - no join status")
+		    Description.Add(" - inner, left join,  outer full join with a country table")
+		    Description.Add(" - with join status")
 		    
 		    return nil
 		    
@@ -2291,20 +2291,30 @@ Protected Class clLibDataExample
 		  
 		  
 		  var tjoin1 as clDataTable = tsales.InnerJoin(tcountries1,  array("City"))
+		  tjoin1.Rename("Results inner join Countries1")
 		  
-		  var tjoin2 as clDataTable = tsales.OuterJoin(tcountries1,  array("City"))
+		  var tjoin2 as clDataTable = tsales.OuterJoin(tcountries1,  array("City"), "Status")
+		  tjoin2.Rename("Results outter join Countries1")
 		  
 		  var tjoin3 as clDataTable = tsales.InnerJoin(tcountries2, array("City"))
+		  tjoin3.Rename("Results inner join Countries2")
 		  
-		  var tjoin4 as clDataTable = tsales.OuterJoin(tcountries2, array("City"))
+		  var tjoin4 as clDataTable = tsales.OuterJoin(tcountries2, array("City"),"Status")
+		  tjoin4.Rename("Results outter join Countries2")
 		  
 		  var tjoin5 as clDataTable = tsales.InnerJoin(tcountries3, array("City"))
+		  tjoin5.Rename("Results inner join Countries3")
 		  
-		  var tjoin6 as clDataTable = tsales.OuterJoin(tcountries3 , array("City"))
+		  var tjoin6 as clDataTable = tsales.OuterJoin(tcountries3 , array("City"),"Status")
+		  tjoin6.Rename("Results outter join Countries3")
+		  
+		  var tjoin7 as clDataTable = tsales.LeftJoin(tcountries3, array("City"),"Starus")
+		  tjoin7.Rename("Results Left join Countries3")
+		  
 		  
 		  log.end_exec(CurrentMethodName)
 		  
-		  return  array(tsales, tcountries1, tcountries2, tcountries3, tjoin1, tjoin2, tjoin3, tjoin4, tjoin5, tjoin6)
+		  return  array(tsales, tcountries1, tcountries2, tcountries3, tjoin1, tjoin2, tjoin3, tjoin4, tjoin5, tjoin6, tjoin7)
 		  
 		  
 		  
