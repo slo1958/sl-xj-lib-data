@@ -260,11 +260,11 @@ End
 
 	#tag Event
 		Sub Opening()
-		  Reset_viewer
+		  ResetViewer
 		  allow_update_window_title = True
 		  FreezeMetaData = False
 		  
-		  reset_Metadata
+		  ResetMetadata
 		  
 		  Opening
 		  
@@ -280,10 +280,10 @@ End
 		  else
 		    table_dict.Value(mytable.name) = mytable
 		    
-		    refresh_list
+		    RefreshList
 		    
 		    if current_table = "" then
-		      show_table mytable.name
+		      ShowTable mytable.name
 		      
 		    end if
 		    
@@ -314,7 +314,32 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub refresh_list()
+		Sub RefreshComments(comments() as string)
+		  lbl_comments.Text = String.FromArray(comments, chr(13))
+		  
+		  lbl_comments.Height = comments.Count * 20 
+		  
+		  var tmp_h as integer = lb_data.Height - lbl_comments.Height -10 + 20
+		  
+		  lb_data.Height = tmp_h
+		  
+		  lbl_comments.top = lb_data.top + lb_data.Height + 10
+		  
+		  lbl_comments.Visible = true
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RefreshDescription(description as string)
+		  
+		  lbl_description.text = description
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RefreshList()
 		  
 		  block_list_events = True
 		  
@@ -342,73 +367,9 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub reset_Metadata()
-		  lb_Meta.RemoveAllRows
-		  lb_meta.ColumnCount=2
+		Sub RefreshMetadataFromSerie(col as clAbstractDataSerie)
 		  
-		  lb_meta.HasHeader = True
-		  lb_meta.HeaderAt(0) = "Metadata tag"
-		  lb_meta.HeaderAt(1) = "Value"
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub reset_viewer()
-		  lb_list.HasHeader = True
-		  lb_list.HeaderAt(0) = "Data table"
-		  lb_list.RemoveAllRows
-		  
-		  show_description  ""
-		  
-		  lb_data.RemoveAllRows
-		  
-		  table_dict = new Dictionary
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub ShowMetadata()
-		  
-		  lb_data.width = lb_data.width - lb_meta.width - 10
-		  
-		  lb_meta.Visible = True
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub show_comments(comments() as string)
-		  lbl_comments.Text = String.FromArray(comments, chr(13))
-		  
-		  lbl_comments.Height = comments.Count * 20 
-		  
-		  var tmp_h as integer = lb_data.Height - lbl_comments.Height -10 + 20
-		  
-		  lb_data.Height = tmp_h
-		  
-		  lbl_comments.top = lb_data.top + lb_data.Height + 10
-		  
-		  lbl_comments.Visible = true
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub show_description(description as string)
-		  
-		  lbl_description.text = description
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub show_metadata(col as clAbstractDataSerie)
-		  
-		  reset_Metadata
+		  ResetMetadata
 		  
 		  lb_meta.ColumnWidths="25%,75%"
 		  
@@ -429,7 +390,69 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub show_table(table_name as string)
+		Sub RefreshMetadataFromTable(tbl as clDataTable)
+		  
+		  ResetMetadata
+		  
+		  lb_meta.ColumnWidths="25%,75%"
+		  
+		  lb_meta.addrow("name",tbl.name)
+		  //lb_meta.addrow("title", tbl.)
+		  
+		  var m as clMetadata = tbl.GetMetadata
+		  
+		  for i as integer = 0 to m.LastIndex
+		    var r() as string = m.MetadataAt(i)
+		    
+		    lb_meta.addrow(r(0), r(1))
+		    
+		  next
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ResetMetadata()
+		  lb_Meta.RemoveAllRows
+		  lb_meta.ColumnCount=2
+		  
+		  lb_meta.HasHeader = True
+		  lb_meta.HeaderAt(0) = "Metadata tag"
+		  lb_meta.HeaderAt(1) = "Value"
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ResetViewer()
+		  lb_list.HasHeader = True
+		  lb_list.HeaderAt(0) = "Data table"
+		  lb_list.RemoveAllRows
+		  
+		  RefreshDescription  ""
+		  
+		  lb_data.RemoveAllRows
+		  
+		  table_dict = new Dictionary
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ShowMetadata()
+		  
+		  lb_data.width = lb_data.width - lb_meta.width - 10
+		  
+		  lb_meta.Visible = True
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ShowTable(table_name as string)
 		  
 		  if table_name.Trim.Len <1 then
 		    return
@@ -452,6 +475,12 @@ End
 		  
 		  lb_data.ShowTable(tbl)
 		  //show_table_in_listbox tbl, lb_data
+		  
+		  if tbl isa clDataTable then
+		    RefreshMetadataFromTable( clDataTable(tbl))
+		    
+		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -496,7 +525,7 @@ End
 		    
 		  end if
 		  
-		  show_table tmp_table
+		  ShowTable tmp_table
 		  
 		  
 		End Sub
@@ -513,7 +542,7 @@ End
 		  var col_no as integer = me.ColumnFromXY(x,y)
 		  
 		  if col_no < 0 then 
-		    show_description ""
+		    RefreshDescription ""
 		    return
 		    
 		  end if
@@ -521,22 +550,22 @@ End
 		  var col as clAbstractDataSerie = clAbstractDataSerie(me.ColumnTagAt(col_no))
 		  
 		  if col = nil then
-		    show_description ""
+		    RefreshDescription ""
 		    return
 		    
 		  end if
 		  
-		  show_description   col.FullName(true)
+		  RefreshDescription   col.FullName(true)
 		  
 		  if not FreezeMetaData then
-		    show_metadata col
+		    RefreshMetadataFromSerie col
 		    
 		  end if
 		End Sub
 	#tag EndEvent
 	#tag Event
 		Sub MouseExit()
-		  show_description  ""
+		  RefreshDescription  ""
 		  
 		  if FreezeMetaData then
 		    

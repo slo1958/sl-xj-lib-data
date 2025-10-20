@@ -47,7 +47,7 @@ Inherits clAbstractTransformer
 		  //
 		  
 		  
-		  var outputTable as clDataTable = new clDataTable(self.GetOutputTableName(cOutputConnectionJoined))
+		  var OutputTable as clDataTable = new clDataTable(self.GetOutputTableName(cOutputConnectionJoined))
 		  var masterOnlyOutputTable as clDataTable = nil
 		  var secondaryOnlyOutputTable as clDataTable = nil
 		  
@@ -101,7 +101,7 @@ Inherits clAbstractTransformer
 		          
 		          row_main.AppendCellsFrom(row_join)
 		          
-		          outputtable.AddRow(row_main, clDataTable.AddRowMode.CreateNewColumn)
+		          OutputTable.AddRow(row_main, clDataTable.AddRowMode.CreateNewColumn)
 		          
 		          if mode = JoinMode.OuterJoin then rowmap(index) = True
 		          FoundRowsInJoinedTable = True
@@ -115,7 +115,7 @@ Inherits clAbstractTransformer
 		        
 		        if JoinStatusFieldName.Length>0 then row_main.SetCell(JoinStatusFieldName, JoinStatusMasterOnly)
 		        
-		        outputtable.AddRow(row_main, clDataTable.AddRowMode.CreateNewColumn)
+		        OutputTable.AddRow(row_main, clDataTable.AddRowMode.CreateNewColumn)
 		        
 		      end if
 		      
@@ -130,16 +130,16 @@ Inherits clAbstractTransformer
 		  next
 		  
 		  // Add empty columns from master table and joined table if output is empty
-		  if outputtable.RowCount = 0 then 
+		  if OutputTable.RowCount = 0 then 
 		    for each col as clAbstractDataSerie in mastertable.GetAllColumns
-		      call outputtable.AddColumn(col.CloneStructure)
+		      call OutputTable.AddColumn(col.CloneStructure)
 		      
 		    next
 		    
-		    if  JoinStatusFieldName.Length > 0  then call outputtable.AddColumn(new clDataSerie(JoinStatusFieldName))
+		    if  JoinStatusFieldName.Length > 0  then call OutputTable.AddColumn(new clDataSerie(JoinStatusFieldName))
 		    
 		    for each col as clAbstractDataSerie in SecondaryTable.GetAllColumns
-		      call outputtable.AddColumn(col.CloneStructure)
+		      call OutputTable.AddColumn(col.CloneStructure)
 		      
 		    next
 		    
@@ -161,7 +161,7 @@ Inherits clAbstractTransformer
 		        
 		        if JoinStatusFieldName.Length>0 then row_join.SetCell(JoinStatusFieldName, JoinStatusSecondaryOnly)
 		        
-		        outputtable.AddRow(row_join, clDataTable.AddRowMode.CreateNewColumn)
+		        OutputTable.AddRow(row_join, clDataTable.AddRowMode.CreateNewColumn)
 		        
 		      end if
 		      
@@ -171,10 +171,8 @@ Inherits clAbstractTransformer
 		  case else
 		    
 		  end select
-		  
-		  // if masterOnlyOutputTable <> nil Then self.AddOutput(cOutputConnectionLeft, masterOnlyOutputTable)
-		  
-		  self.SetOutputTable(cOutputConnectionJoined, outputTable)
+		    
+		  self.SetOutputTable(cOutputConnectionJoined, OutputTable)
 		  
 		  return
 		  
@@ -248,6 +246,11 @@ Inherits clAbstractTransformer
 		  var tblleft as clDataTable = self.GetInputTable(cInputConnectionLeft)
 		  var tblright as clDataTable = self.GetInputTable(cInputConnectionRight)
 		  
+		  if tblleft = nil or tblright = nil then
+		    return false
+		    
+		  end if
+		  
 		  var cntleft as integer = tblleft.RowCount
 		  var cntright as integer = tblright.RowCount
 		  
@@ -266,6 +269,29 @@ Inherits clAbstractTransformer
 		    
 		  end if
 		  
+		  
+		  // Update metadata
+		  
+		  var OutputTable as clDataTable =  self.GetOutputTable(cOutputConnectionJoined)
+		  var outputLeft as clDataTable = self.GetOutputTable(cOutputConnectionLeft)
+		  var outputRight as clDataTable = self.GetOutputTable(cOutputConnectionRight)
+		  
+		  select case mode
+		    
+		  case JoinMode.InnerJoin
+		    OutputTable.AddMetaData("Transformation", "Inner join between " + tblleft.name + " and " + tblright.name+"." )
+		    
+		    if outputLeft <> nil then outputLeft.AddMetaData("Transformation", "Non matching records from "+ tblleft.name  + " when joining with " + tblright.name+"." )
+		    
+		    if outputRight <> nil then outputRight.AddMetaData("Transformation", "Non matching records from "+ tblright.name  + " when joining with " + tblleft.name+"." )
+		    
+		  case JoinMode.OuterJoin
+		    OutputTable.AddMetaData("Transformation", "Outer join between " + tblleft.name + " and " + tblright.name+"." )
+		    
+		  case else
+		    OutputTable.AddMetaData("Transformation", "Join between " + tblleft.name + " and " + tblright.name+"." )
+		    
+		  end select
 		  
 		  return true
 		  

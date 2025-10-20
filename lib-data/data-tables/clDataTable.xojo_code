@@ -2099,21 +2099,9 @@ Implements TableColumnReaderInterface,Iterable
 		  // const JoinSuccessJoinedOnly= "Joined"
 		  
 		  
-		  var joinModeStr as string
-		  if mode = JoinMode.InnerJoin then 
-		    joinModeStr = "Inner join"
-		    
-		  elseif mode = JoinMode.OuterJoin then
-		    joinModeStr = "Outer join"
-		    
-		  else
-		    joinModeStr = "Strange join"
-		    
-		  end if
-		  
 		  var mastertable as clDataTable = self
 		  var joinedtable as clDataTable = TableToJoin
-		  var outputtable as new clDataTable(joinModeStr + " " + mastertable.Name + " and " + joinedtable.Name)
+		  var OutputTable as   clDataTable
 		  
 		  
 		  var trsf as new clJoinTransformer(mastertable, joinedtable, mode, KeyFields, JoinSuccessField)
@@ -2124,7 +2112,9 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  call trsf.Transform()
 		  
-		  return trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		  OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		  
+		  return OutputTable
 		  
 		  
 		End Function
@@ -2934,21 +2924,21 @@ Implements TableColumnReaderInterface,Iterable
 		  // const JoinSuccessJoinedOnly= "Joined"
 		  
 		   
-		  
 		  var mastertable as clDataTable = self
 		  var joinedtable as clDataTable = TableToJoin
-		  var outputtable as new clDataTable("Inner join " + mastertable.Name + " and " + joinedtable.Name)
-		  
-		  
+		  var OutputTable as clDataTable
+		   
 		  var trsf as new clJoinTransformer(mastertable, joinedtable, joinmode.InnerJoin, KeyFields, "")
 		  
-		  trsf.SetJoinStatusLeft( JoinSuccessMainOnly)
+		  trsf.SetJoinStatusLeft(JoinSuccessMainOnly)
 		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
 		  call trsf.Transform()
 		  
-		  return trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		  OutputTable = trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		  
+		  return OutputTable
 		  
 		  
 		End Function
@@ -3461,8 +3451,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var mastertable as clDataTable = self
 		  var joinedtable as clDataTable = TableToJoin
-		  var outputtable as new clDataTable("Outer join  " + mastertable.Name + " and " + joinedtable.Name)
-		  
+		  var OutputTable as   clDataTable
 		  
 		  var trsf as new clJoinTransformer(mastertable, joinedtable, JoinMode.OuterJoin , KeyFields, JoinSuccessField)
 		  
@@ -3472,9 +3461,9 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  call trsf.Transform()
 		  
-		  return trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		  OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
 		  
-		  
+		  return OutputTable
 		End Function
 	#tag EndMethod
 

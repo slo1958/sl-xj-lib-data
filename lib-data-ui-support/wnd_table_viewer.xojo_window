@@ -10,6 +10,7 @@ Begin DesktopWindow wnd_table_viewer
    HasFullScreenButton=   False
    HasMaximizeButton=   True
    HasMinimizeButton=   True
+   HasTitleBar     =   True
    Height          =   432
    ImplicitInstance=   True
    MacProcID       =   0
@@ -36,6 +37,7 @@ Begin DesktopWindow wnd_table_viewer
       Composited      =   False
       current_table   =   ""
       Enabled         =   True
+      FreezeMetaData  =   False
       HasBackgroundColor=   False
       Height          =   380
       Index           =   -2147483648
@@ -81,6 +83,7 @@ Begin DesktopWindow wnd_table_viewer
       Top             =   392
       Transparent     =   False
       Underline       =   False
+      Value           =   False
       Visible         =   True
       VisualState     =   1
       Width           =   122
@@ -115,21 +118,21 @@ End
 
 	#tag Method, Flags = &h0
 		Sub ResetViewer()
-		  ccDataPool_Viewer1.Reset_viewer
+		  ccDataPool_Viewer1.ResetViewer
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ShowComments(comments() as string)
 		  
-		  ccDataPool_Viewer1.show_comments(comments)
+		  ccDataPool_Viewer1.RefreshComments(comments)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ShowTableFromPool(data_pool as clDataPool)
 		  
-		  ccDataPool_Viewer1.reset_viewer
+		  ccDataPool_Viewer1.ResetViewer
 		  ccDataPool_Viewer1.add_tables_from_pool(data_pool)
 		  
 		  
@@ -139,7 +142,7 @@ End
 	#tag Method, Flags = &h0
 		Sub ShowTables(tables() as TableColumnReaderInterface)
 		  
-		  ccDataPool_Viewer1.reset_viewer
+		  ccDataPool_Viewer1.ResetViewer
 		  
 		  for each table as TableColumnReaderInterface in tables
 		    ccDataPool_Viewer1.add_table(table)
@@ -167,6 +170,14 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="HasTitleBar"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="MinimumWidth"
 		Visible=true

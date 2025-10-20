@@ -53,6 +53,24 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetInputTableName(ConnectionName as string) As String
+		  
+		  
+		  var c as clTransformerConnection
+		  
+		  c = self.inputConnections.Lookup(connectionName, nil)
+		  
+		  if c = nil then return ""
+		  
+		  return c.GetTableName(false)
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetInputTables() As clDataTable()
 		  //
 		  // Returns an array with the input tables
