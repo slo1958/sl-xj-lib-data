@@ -128,7 +128,7 @@ Implements Iterable
 		  
 		  
 		  If my_storage.HasKey(CellName) And Not mutable_flag Then
-		    Raise New clDataException("Cannot update a field in a non mutable row")
+		    Raise New clDataException("Cannot update a field in a non mutable row: [" + CellName + "]")
 		    
 		  Else
 		    my_storage.Value(CellName) = NewCellValue
@@ -457,7 +457,7 @@ Implements Iterable
 		  
 		  
 		  If my_storage.HasKey(CellName) And Not mutable_flag Then
-		    Raise New clDataException("Cannot update a field in a non mutable row")
+		    Raise New clDataException("Cannot update a field in a non mutable row, updating: [" + CellName + "]")
 		    
 		  Else
 		    my_storage.Value(CellName) = NewCellValue
