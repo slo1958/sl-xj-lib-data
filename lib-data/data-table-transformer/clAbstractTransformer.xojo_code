@@ -4,8 +4,9 @@ Protected Class clAbstractTransformer
 		Protected Sub AddInput(ConnectionName as string, table as clDataTable)
 		  
 		  self.InputConnections.add(ConnectionName)
+		  
 		  if self.TableDict.HasKey(ConnectionName) then
-		    Raise New clDataException("Connection already defined:" + ConnectionName)
+		    Raise New clDataException("Input connection already linked to a table:" + ConnectionName)
 		    
 		  else
 		    
@@ -24,7 +25,7 @@ Protected Class clAbstractTransformer
 		  self.OutputConnections.add(ConnectionName)
 		  
 		  if self.TableDict.HasKey(ConnectionName) then
-		    Raise New clDataException("Connection already defined:" + ConnectionName)
+		    Raise New clDataException("Output connection already linked to a table:" + ConnectionName)
 		    
 		  else
 		    self.TableDict.Value(ConnectionName) = table
@@ -183,10 +184,9 @@ Protected Class clAbstractTransformer
 		
 		A  transformer is an object that takes a set of tables as input and produces a set of tables.
 		
-		Two specific variants:
+		Specific variants:
 		
 		- linear transformer: one input and one output, for example sorting, grouping, ...
-		- TwoToOne and TwoToTwo transformers: two inputs and one or two outputs, for example joins, table based filter, lookup, ... 
 		
 		
 	#tag EndNote
