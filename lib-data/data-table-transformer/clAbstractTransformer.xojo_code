@@ -4,7 +4,14 @@ Protected Class clAbstractTransformer
 		Protected Sub AddInput(ConnectionName as string, table as clDataTable)
 		  
 		  self.InputConnections.add(ConnectionName)
-		  self.TableDict.Value(ConnectionName) = table
+		  if self.TableDict.HasKey(ConnectionName) then
+		    Raise New clDataException("Connection already defined:" + ConnectionName)
+		    
+		  else
+		    
+		    self.TableDict.Value(ConnectionName) = table
+		    
+		  end if
 		  
 		  return
 		  
@@ -15,7 +22,14 @@ Protected Class clAbstractTransformer
 		Protected Sub AddOutput(ConnectionName as string, table as clDataTable)
 		  
 		  self.OutputConnections.add(ConnectionName)
-		  self.TableDict.Value(ConnectionName) = table
+		  
+		  if self.TableDict.HasKey(ConnectionName) then
+		    Raise New clDataException("Connection already defined:" + ConnectionName)
+		    
+		  else
+		    self.TableDict.Value(ConnectionName) = table
+		    
+		  end if
 		  
 		  return 
 		  
@@ -167,7 +181,7 @@ Protected Class clAbstractTransformer
 
 	#tag Note, Name = Description
 		
-		A  transformer is a transformer that takes a set of tables as input and produces a set of tables.
+		A  transformer is an object that takes a set of tables as input and produces a set of tables.
 		
 		Two specific variants:
 		
