@@ -13,9 +13,9 @@ Begin DesktopContainer ccDataPool_Viewer
    Index           =   -2147483648
    InitialParent   =   ""
    Left            =   0
-   LockBottom      =   False
+   LockBottom      =   True
    LockLeft        =   True
-   LockRight       =   False
+   LockRight       =   True
    LockTop         =   True
    TabIndex        =   0
    TabPanelIndex   =   0
@@ -185,7 +185,7 @@ Begin DesktopContainer ccDataPool_Viewer
       Visible         =   True
       Width           =   545
    End
-   Begin DesktopListBox lb_meta
+   Begin DesktopListBox lb_meta0
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
@@ -208,12 +208,12 @@ Begin DesktopContainer ccDataPool_Viewer
       HasHorizontalScrollbar=   False
       HasVerticalScrollbar=   True
       HeadingIndex    =   -1
-      Height          =   310
+      Height          =   167
       Index           =   -2147483648
       InitialValue    =   ""
       Italic          =   False
       Left            =   520
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
@@ -233,6 +233,54 @@ Begin DesktopContainer ccDataPool_Viewer
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
+   Begin DesktopListBox lb_meta1
+      AllowAutoDeactivate=   True
+      AllowAutoHideScrollbars=   True
+      AllowExpandableRows=   False
+      AllowFocusRing  =   True
+      AllowResizableColumns=   False
+      AllowRowDragging=   False
+      AllowRowReordering=   False
+      Bold            =   False
+      ColumnCount     =   1
+      ColumnWidths    =   ""
+      DefaultRowHeight=   -1
+      DropIndicatorVisible=   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      GridLineStyle   =   0
+      HasBorder       =   True
+      HasHeader       =   True
+      HasHorizontalScrollbar=   False
+      HasVerticalScrollbar=   True
+      HeadingIndex    =   -1
+      Height          =   134
+      Index           =   -2147483648
+      InitialValue    =   ""
+      Italic          =   False
+      Left            =   522
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
+      RequiresSelection=   False
+      RowSelectionType=   0
+      Scope           =   0
+      TabIndex        =   5
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   199
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   242
+      _ScrollOffset   =   0
+      _ScrollWidth    =   -1
+   End
 End
 #tag EndDesktopWindow
 
@@ -242,9 +290,9 @@ End
 		  if key = "F" then
 		    FreezeMetaData = not FreezeMetaData
 		    
-		    if lb_meta.Visible then 
+		    if lb_meta0.Visible then 
 		      
-		      lb_meta.HeaderAt(1) = if(FreezeMetaData,"Value (frozen)", "Value")
+		      lb_meta0.HeaderAt(1) = if(FreezeMetaData,"Value (frozen)", "Value")
 		      
 		    end if
 		    
@@ -306,9 +354,10 @@ End
 	#tag Method, Flags = &h0
 		Sub HideMetaData()
 		  
-		  lb_meta.Visible = false
+		  lb_meta0.Visible = false
+		  lb_meta1.Visible = false
 		  
-		  lb_data.width = lb_data.width + lb_meta.width + 10
+		  lb_data.width = lb_data.width + lb_meta0.width + 10
 		  
 		End Sub
 	#tag EndMethod
@@ -371,17 +420,17 @@ End
 		  
 		  ResetMetadata
 		  
-		  lb_meta.ColumnWidths="25%,75%"
+		  lb_meta0.ColumnWidths="25%,75%"
 		  
-		  lb_meta.addrow("name",col.name)
-		  lb_meta.addrow("title", col.DisplayTitle)
+		  lb_meta0.addrow("name",col.name)
+		  lb_meta0.addrow("title", col.DisplayTitle)
 		  
 		  var m as clMetadata = col.GetMetadata
 		  
 		  for i as integer = 0 to m.LastIndex
 		    var r() as string = m.MetadataAt(i)
 		    
-		    lb_meta.addrow(r(0), r(1))
+		    lb_meta0.addrow(r(0), r(1))
 		    
 		  next
 		  
@@ -392,11 +441,15 @@ End
 	#tag Method, Flags = &h0
 		Sub RefreshMetadataFromTable(tbl as clDataTable)
 		  
-		  ResetMetadata
+		  lb_Meta1.RemoveAllRows
+		  lb_meta1.ColumnCount=2
+		  lb_meta1.HasHeader = True
+		  lb_meta1.HeaderAt(0) = "Metadata tag"
+		  lb_meta1.HeaderAt(1) = "Value"
 		  
-		  lb_meta.ColumnWidths="25%,75%"
+		  lb_meta1.ColumnWidths="25%,75%"
 		  
-		  lb_meta.addrow("name",tbl.name)
+		  lb_meta1.addrow("name",tbl.name)
 		  //lb_meta.addrow("title", tbl.)
 		  
 		  var m as clMetadata = tbl.GetMetadata
@@ -404,7 +457,7 @@ End
 		  for i as integer = 0 to m.LastIndex
 		    var r() as string = m.MetadataAt(i)
 		    
-		    lb_meta.addrow(r(0), r(1))
+		    lb_meta1.addrow(r(0), r(1))
 		    
 		  next
 		  
@@ -414,12 +467,12 @@ End
 
 	#tag Method, Flags = &h0
 		Sub ResetMetadata()
-		  lb_Meta.RemoveAllRows
-		  lb_meta.ColumnCount=2
+		  lb_Meta0.RemoveAllRows
+		  lb_meta0.ColumnCount=2
 		  
-		  lb_meta.HasHeader = True
-		  lb_meta.HeaderAt(0) = "Metadata tag"
-		  lb_meta.HeaderAt(1) = "Value"
+		  lb_meta0.HasHeader = True
+		  lb_meta0.HeaderAt(0) = "Metadata tag"
+		  lb_meta0.HeaderAt(1) = "Value"
 		  
 		  
 		End Sub
@@ -443,9 +496,10 @@ End
 	#tag Method, Flags = &h0
 		Sub ShowMetadata()
 		  
-		  lb_data.width = lb_data.width - lb_meta.width - 10
+		  lb_data.width = lb_data.width - lb_meta0.width - 10
 		  
-		  lb_meta.Visible = True
+		  lb_meta0.Visible = True
+		  lb_meta1.Visible = True
 		  
 		  
 		End Sub
@@ -519,9 +573,9 @@ End
 		Sub SelectionChanged()
 		  var tmp_table as string = me.SelectedRowValue
 		  
-		  if lb_meta.Visible then 
+		  if lb_meta0.Visible then 
 		    FreezeMetaData = False
-		    lb_meta.HeaderAt(1) =  "Value"
+		    lb_meta0.HeaderAt(1) =  "Value"
 		    
 		  end if
 		  
@@ -570,7 +624,7 @@ End
 		  if FreezeMetaData then
 		    
 		  else
-		    lb_meta.RemoveAllRows
+		    lb_meta0.RemoveAllRows
 		    
 		  end if
 		  
