@@ -1203,7 +1203,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function Clone(NewName as string = "") As clDataTable
 		  //
-		  //  Duplicate the table and all its columns
+		  //  Duplicates the table and all its columns
 		  //  
 		  //  Parameters:
 		  //  - NewName (optional): name of the new table, default to name of current table followed by '...copy'
@@ -1230,7 +1230,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function CloneStructure(NewName as string = "") As clDataTable
 		  //
-		  //  Duplicate the table and all its columns
+		  //  Duplicate the table and all its columns, without data
 		  //  
 		  //  Parameters:
 		  //  - NewName (optional): name of the new table, default to name of current table followed by '...copy'
@@ -2762,12 +2762,45 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function GetUniqueColumnName(BaseColumnName as string) As string
 		  
+		  //  
+		  //  returns a unique column name by adding a suffix. The suffix is an integer, starting at zero
+		  //  If the baseColumnName is "Something"   and the table already contains a column named "Something", this
+		  //  method returns "Something 1"
+		  //  
+		  //  Parameters:
+		  //  - the name of a future column, which may duplicate the name of an existing column
+		  //  
+		  //  Returns:
+		  //  - the name of the column made unique by appending a number
+		  //  
+		  
+		  return GetUniqueColumnName(BaseColumnName, " ", "") 
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetUniqueColumnName(BaseColumnName as string, prefix as string, suffix as string) As string
+		  
+		  //  
+		  //  returns a unique column name by adding a suffix. The suffix is an integer, starting at zero
+		  //  If the baseColumnName is "Something" , the prefix is '-', the suffix is an empty string  and the table already contains a column named "Something", this
+		  //  method returns "Something-1"
+		  //  
+		  //  Parameters:
+		  //  - the name of a future column, which may duplicate the name of an existing column
+		  //  - the separator to insert between the name of the column and the number
+		  //  
+		  //  Returns:
+		  //  - the name of the column made unique by appending a number
+		  //  
 		  var tmp() as string = self.GetColumnNames
+		  var tmppfx as string = prefix
+		  var tmpsfx as string = suffix
 		  
 		  if tmp.IndexOf(BaseColumnName) < 0 then return BaseColumnName
 		  
 		  for i as integer = 0 to 1000
-		    var tmp_name as string = BaseColumnName + " " + str(i)
+		    var tmp_name as string = BaseColumnName + tmppfx + str(i) + tmpsfx
 		    if tmp.IndexOf(tmp_name)  < 0 then return tmp_name
 		    
 		  next
@@ -3545,7 +3578,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function RowFilter(pRowIndex as integer, pRowCount as integer, pColumnNames() as string, pCellValues() as variant, paramarray pFunctionParameters as variant) As Boolean
+		Delegate Function RowFilter(pRowIndex as integer, pRowCount as integer, pColumnNames() as string, pCellValues() as variant, pFunctionParameters() as variant) As Boolean
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0

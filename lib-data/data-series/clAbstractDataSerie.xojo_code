@@ -670,7 +670,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function FilterColumnByRows(pRowIndex as integer, pRowCount as integer, pColumnName as string, the_cell_value as variant, paramarray pFunctionParameters as variant) As Boolean
+		Delegate Function FilterColumnByRows(pRowIndex as integer, pRowCount as integer, pColumnName as string, the_cell_value as variant, pFunctionParameters() as variant) As Boolean
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0

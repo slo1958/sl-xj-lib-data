@@ -2654,6 +2654,53 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_calc_048(log as LogMessageInterface)
+		  //
+		  // Test generation of unique names
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  // First join table: with a match with some cities, only row per city
+		  var myTable as new clDataTable("Countries")
+		  call  myTable.AddColumn(new clStringDataSerie("Country"))
+		  call  myTable.AddColumn(new clStringDataSerie("City"))
+		  myTable.AddRow(new Dictionary("Country":"Belgium","City":"Brussels"))
+		  
+		  call check_table(log, "myTable table integrity", nil, myTable) 
+		  
+		  var col1 as string = myTable.GetUniqueColumnName("Country")
+		  var col2 as string = myTable.GetUniqueColumnName("City", "-","")
+		  
+		  call myTable.AddColumn(col1)
+		  call myTable.AddColumn(col2)
+		  
+		  var col3 as string = myTable.GetUniqueColumnName("Country")
+		  var col4 as string = myTable.GetUniqueColumnName("City", " (",")")
+		  
+		  call myTable.AddColumn(col3)
+		  call myTable.AddColumn(col4)
+		  
+		  var myExpectedTable as new clDataTable("Expected")
+		  call  myExpectedTable.AddColumn(new clStringDataSerie("Country"))
+		  call  myExpectedTable.AddColumn(new clStringDataSerie("City"))
+		  myExpectedTable.AddRow(new Dictionary("Country":"Belgium","City":"Brussels"))
+		  
+		  call  myExpectedTable.AddColumn("Country 0")
+		  call  myExpectedTable.AddColumn("City-0")
+		  call  myExpectedTable.AddColumn("Country 1")
+		  call  myExpectedTable.AddColumn("City (0)")
+		  
+		  
+		  call check_table(log, "Unique column names", myExpectedTable, myTable)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)

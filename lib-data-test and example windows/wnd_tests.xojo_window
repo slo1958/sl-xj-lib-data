@@ -10,6 +10,7 @@ Begin DesktopWindow wnd_tests Implements support_tests.LogMessageInterface
    HasFullScreenButton=   False
    HasMaximizeButton=   True
    HasMinimizeButton=   True
+   HasTitleBar     =   True
    Height          =   538
    ImplicitInstance=   True
    MacProcID       =   0
@@ -757,11 +758,16 @@ End
 		  
 		  var source() as Dictionary
 		  var dest() as DesktopListBox
+		  var header() as string
 		  
 		  for each test_object as Object in test_objects
 		    source.add( support_tests.GetTestMethods(test_object, "test"))
 		    
 		  next
+		  
+		  header.add("DataSerie Tests")
+		  header.add("DataTable tests")
+		  header.add("DataPool tests")
 		  
 		  dest.add(lb_tests(0))
 		  dest.add(lb_tests(1))
@@ -780,8 +786,8 @@ End
 		    dest(i).RemoveAllRows
 		    dest(i).ColumnCount = 2
 		    dest(i).ColumnWidths = "64"
-		    dest(i).HeaderAt(0) = ""
-		    dest(i).HeaderAt(1) = "Test"
+		    dest(i).HeaderAt(0) = "Select"
+		    dest(i).HeaderAt(1) = header(i)
 		    dest(i).ColumnTypeAt(0) = DesktopListBox.CellTypes.CheckBox
 		    
 		    for each k as string in s
@@ -1003,6 +1009,14 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="HasTitleBar"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Name"
 		Visible=true
