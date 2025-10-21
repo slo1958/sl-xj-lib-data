@@ -280,12 +280,12 @@ Inherits clAbstractTransformer
 		  if self.GetOutputTableName(cOutputConnectionLeft).trim.Length > 0 then outputLeftConnection = cOutputConnectionLeft
 		  if self.GetOutputTableName(cOutputConnectionRight).trim.Length > 0 then outputRightConnection = cOutputConnectionRight
 		  
-		  if cntleft < cntright then
-		    
-		    FullJoin(tblright, tblleft, self.JoinStatusRightOnly, self.JoinStatusLeftOnly, cOutputConnectionRight, outputLeftConnection)
+		  if cntleft > cntright or self.mode = JoinMode.LeftJoin then
+		    FullJoin(tblleft, tblright, self.JoinStatusLeftOnly, self.JoinStatusRightOnly, outputLeftConnection, cOutputConnectionRight)
 		    
 		  else
-		    FullJoin(tblleft, tblright, self.JoinStatusLeftOnly, self.JoinStatusRightOnly, outputLeftConnection, cOutputConnectionRight)
+		    FullJoin(tblright, tblleft, self.JoinStatusRightOnly, self.JoinStatusLeftOnly, cOutputConnectionRight, outputLeftConnection)
+		    
 		    
 		  end if
 		  
@@ -421,6 +421,7 @@ Inherits clAbstractTransformer
 			#tag EnumValues
 				"0 - OuterJoin"
 				"1 - InnerJoin"
+				"2 - LeftJoin"
 			#tag EndEnumValues
 		#tag EndViewProperty
 		#tag ViewProperty
