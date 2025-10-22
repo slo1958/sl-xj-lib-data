@@ -3239,13 +3239,10 @@ Implements TableColumnReaderInterface,Iterable
 		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
 		  //
 		  
-		  
-		  
 		  var trsf as new clLookupTransformer(self, LookupSourceTable, KeyFieldMapping, LookupFieldMapping, JoinSuccessField)
 		  
-		  
 		  return trsf.Transform()
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -3262,8 +3259,6 @@ Implements TableColumnReaderInterface,Iterable
 		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
 		  //
 		  
-		    
-		  
 		  var pKey() as pair
 		  var pData() as pair
 		  
@@ -3277,9 +3272,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  
 		  var trsf as new clLookupTransformer(self, LookupSourceTable, pKey, pData, JoinSuccessField)
-		  
 		  
 		  return trsf.Transform()
 		  
