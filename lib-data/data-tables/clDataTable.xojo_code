@@ -1818,7 +1818,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  in the table
 		  //  
 		  //  Parameters:
-		  //  - the name of the column
+		  //  - the name of the column used to select rows
 		  //  
 		  //  Returns:
 		  //  - a data table filter
@@ -2110,11 +2110,16 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
-		  call trsf.Transform()
-		  
-		  OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
-		  
-		  return OutputTable
+		  if trsf.Transform() then
+		    
+		    OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		    
+		    return OutputTable
+		    
+		  else
+		    return nil
+		    
+		  end if
 		  
 		  
 		End Function
@@ -2934,11 +2939,16 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
-		  call trsf.Transform()
-		  
-		  OutputTable = trsf.GetOutputTable(trsf.cOutputConnectionJoined)
-		  
-		  return OutputTable
+		  if trsf.Transform() then
+		    
+		    OutputTable = trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		    
+		    return OutputTable
+		    
+		  else
+		    Return nil
+		    
+		  end if
 		  
 		  
 		End Function
@@ -3214,15 +3224,21 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var trsf as new clJoinTransformer(mastertable, joinedtable, JoinMode.LeftJoin , KeyFields, JoinSuccessField)
 		  
-		  trsf.SetJoinStatusLeft( JoinSuccessMainOnly)
-		  //trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
+		  trsf.SetJoinStatusLeft(JoinSuccessMainOnly)
+		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
-		  call trsf.Transform()
+		  if trsf.Transform() then
+		    
+		    OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		    
+		    return OutputTable
+		    
+		  else
+		    return nil
+		    
+		  end if
 		  
-		  OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
-		  
-		  return OutputTable
 		End Function
 	#tag EndMethod
 
@@ -3350,17 +3366,23 @@ Implements TableColumnReaderInterface,Iterable
 		  var joinedtable as clDataTable = TableToJoin
 		  var OutputTable as   clDataTable
 		  
-		  var trsf as new clJoinTransformer(mastertable, joinedtable, JoinMode.OuterJoin , KeyFields, JoinSuccessField)
+		  var trsf as new clJoinTransformer(mastertable, joinedtable, JoinMode.OuterJoin, KeyFields, JoinSuccessField)
 		  
-		  trsf.SetJoinStatusLeft( JoinSuccessMainOnly)
+		  trsf.SetJoinStatusLeft(JoinSuccessMainOnly)
 		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
-		  call trsf.Transform()
+		  if trsf.Transform() then
+		    
+		    OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		    
+		    return OutputTable
+		    
+		  else
+		    return nil
+		    
+		  end if
 		  
-		  OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
-		  
-		  return OutputTable
 		End Function
 	#tag EndMethod
 
