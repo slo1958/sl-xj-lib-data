@@ -3134,122 +3134,6 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function internal_LookUp(the_table as clDataTable, OwnKeyFields() as string, JoinTableKeyFields() as string, OwnDataFields() as string, JoinTableDataFields() as string, JoinSuccessField as string) As Boolean
-		  const cstSuccessMark = "$$$M$$$"
-		  
-		  var buffer as new Dictionary
-		  
-		  var keyColumns() as clAbstractDataSerie
-		  var dataColumns() as clAbstractDataSerie
-		  
-		  var sourceColumns() as clAbstractDataSerie
-		  
-		  var JoinSuccessColumn as clAbstractDataSerie = nil
-		  
-		  if OwnKeyFields.LastIndex <> JoinTableDataFields.LastIndex then return false
-		  if OwnDataFields.LastIndex <> JoinTableDataFields.LastIndex then return false
-		  
-		  for each field as string in OwnKeyFields
-		    keyColumns.Add(self.GetColumn(field, False))
-		    
-		  next
-		  
-		  if JoinSuccessField.Length > 0 then JoinSuccessColumn = self.GetColumn(JoinSuccessField, False)
-		  
-		  
-		  for i as integer = 0 to OwnDataFields.LastIndex
-		    var c as clAbstractDataSerie = self.GetColumn(OwnDataFields(i), false)
-		    
-		    if c = nil then
-		      var d as clAbstractDataSerie = the_table.GetColumn(JoinTableDataFields(i), false)
-		      
-		      if d = nil then
-		        c = self.AddColumn(new clDataSerie(OwnDataFields(i)))
-		        
-		      else
-		        c = self.AddColumn(clDataType.CreateDataSerieFromType(OwnDataFields(i), d.GetType))
-		        
-		      end if
-		      
-		    end if
-		    
-		    dataColumns.add (c)
-		    
-		  next
-		  
-		  
-		  for each field as string in JoinTableDataFields
-		    sourceColumns.Add(the_table.GetColumn(field, false))
-		    
-		  next
-		  
-		  
-		  for i as integer = 0 to self.RowCount
-		    var lookupKeyParts() as string 
-		    var lookupkey as string
-		    var row as clDataRow
-		    
-		    for each c as clAbstractDataSerie in keyColumns
-		      lookupKeyParts.Add(c.GetElementAsString(i))
-		      
-		    next
-		    
-		    lookupkey = string.FromArray(Lookupkeyparts,chr(8))
-		    
-		    if buffer.HasKey(lookupkey) then
-		      row = clDataRow(buffer.Value(lookupkey))
-		      
-		      
-		    else
-		      row = the_table.FindFirstMatchingRow(JoinTableKeyFields, lookupKeyParts, false)
-		      
-		      if row = nil then
-		        row = new clDataRow()
-		        
-		        for each col as clAbstractDataSerie in sourceColumns
-		          if col <> nil then
-		            row.SetCell(col.name, col.GetDefaultValue)
-		            
-		          end if
-		          
-		        next
-		        
-		        row.SetCell(cstSuccessMark, False)
-		        
-		      else
-		        row.SetCell(cstSuccessMark, True)
-		        
-		      end if
-		      
-		      buffer.Value(lookupkey) = row
-		      
-		    end if
-		    
-		    for col_index as integer = 0 to dataColumns.LastIndex
-		      var col  as clAbstractDataSerie = dataColumns(col_index)
-		      var sourcename as string = JoinTableDataFields(col_index)
-		      
-		      
-		      if col <> nil then
-		        col.SetElement(i, row.GetCell(sourcename))
-		        
-		      end if
-		      
-		      
-		    next
-		    
-		    if JoinSuccessColumn <> nil then JoinSuccessColumn.SetElement(i, row.GetCell(cstSuccessMark))
-		    
-		  next
-		  
-		  
-		  return True
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
 		Private Sub internal_NewTable(NewTableName as string)
 		  
 		  Self.TableName = StringWithDefault(NewTableName.Trim, "Unnamed")
@@ -3343,43 +3227,25 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Lookup(LookupSourceTable As clDataTable, KeyFieldMapping As Dictionary, LookupFieldMapping As Dictionary, JoinSuccessField As string = "") As Boolean
+		Function Lookup(LookupSourceTable As clDataTable, KeyFieldMapping() As pair, LookupFieldMapping() As pair, JoinSuccessField As string = "") As Boolean
 		  //
 		  // Lookup data
 		  // Similar to left join or an Excel Vlookup()
 		  //
 		  // Paramters
 		  // LookupSourceTable  (clDataTable): table used as lookup source
-		  // KeyFieldapping: list of fields used as lookup keys as a dictionary. For each dictionary entry,  key is expected in the current table and value is expected in the joined table
-		  // LookUpFieldMaping: Field to 'bring back' from the lookup table as a dictionary. For each dictionary entry,  key is expected in the current table and value is expected in the joined table
+		  // KeyFieldapping: list of fields used as lookup keys as an array of pair. For each pair, left value is expected in the current table and  right value  is expected in the joined table
+		  // LookUpFieldMaping: Field to 'bring back' from the lookup table as an array of pair. For each pair, left value is expected in the current table and right value is expected in the joined table
 		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
 		  //
-		  var OwnKeyFields() as string
-		  var JoinTableKeyFields() as String
-		  
-		  var OwnDataFields() as string
-		  var JoinTableDataFields() as string
 		  
 		  
 		  
-		  for each key as string in KeyFieldMapping.Keys
-		    
-		    OwnKeyFields.Add(key)
-		    
-		    JoinTableKeyFields.Add(KeyFieldMapping.Value(key))
-		    
-		  next
-		  
-		  for each dataField  as string in  LookupFieldMapping.Keys
-		    OwnDataFields.Add(dataField)
-		    JoinTableDataFields.Add(LookupFieldMapping.value(dataField))
-		    
-		  next
+		  var trsf as new clLookupTransformer(self, LookupSourceTable, KeyFieldMapping, LookupFieldMapping, JoinSuccessField)
 		  
 		  
-		  return internal_LookUp(LookupSourceTable, OwnKeyFields, JoinTableKeyFields,OwnDataFields, JoinTableDataFields, JoinSuccessField)
-		  
-		  
+		  return trsf.Transform()
+		   
 		End Function
 	#tag EndMethod
 
@@ -3396,27 +3262,26 @@ Implements TableColumnReaderInterface,Iterable
 		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
 		  //
 		  
-		  var OwnKeyFields() as string
-		  var JoinTableKeyFields() as String
+		    
 		  
-		  var OwnDataFields() as string
-		  var JoinTableDataFields() as string
-		  
+		  var pKey() as pair
+		  var pData() as pair
 		  
 		  for each key as string in KeyFields
-		    OwnKeyFields.Add(key)
-		    JoinTableKeyFields.Add(key)
+		    pKey.Add(new pair(key,key))
 		    
 		  next
 		  
 		  for each dataField  as string in  LookupFields
-		    OwnDataFields.Add(dataField)
-		    JoinTableDataFields.Add(dataField)
+		    pData.Add(new pair(dataField, dataField))
 		    
 		  next
 		  
-		  return internal_LookUp(LookupSourceTable, OwnKeyFields, JoinTableKeyFields,OwnDataFields, JoinTableDataFields,JoinSuccessField)
 		  
+		  var trsf as new clLookupTransformer(self, LookupSourceTable, pKey, pData, JoinSuccessField)
+		  
+		  
+		  return trsf.Transform()
 		  
 		End Function
 	#tag EndMethod

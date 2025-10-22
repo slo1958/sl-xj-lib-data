@@ -152,6 +152,7 @@ Class=clGenericLogWriter;imported_libraries/lib-loging/lib-log-writers/clGeneric
 Class=clTextfileLogWriter;imported_libraries/lib-loging/lib-log-writers/clTextfileLogWriter.xojo_code;&h000000007E88C7FF;&h0000000001243FFF;false
 Class=clDebugLogWriter;imported_libraries/lib-loging/lib-log-writers/clDebugLogWriter.xojo_code;&h00000000400EAFFF;&h0000000001243FFF;false
 Interface=itfLogingWriter;imported_libraries/lib-loging/itfLogingWriter.xojo_code;&h0000000032E5C7FF;&h000000005BA1EFFF;false
+Class=clLookupTransformer;lib-data/data-table-transformer/clLookupTransformer.xojo_code;&h000000004B2517FF;&h0000000072FDA7FF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1
