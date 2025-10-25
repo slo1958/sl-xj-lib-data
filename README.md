@@ -45,7 +45,9 @@ You can create a data serie:
 
 ```xojo
 // Snippet 001
-
+//
+// Create a new table named 'some_values'
+//
 var my_serie As New clDataSerie("some_values")
 
 my_serie.AddElement("abcd")
@@ -63,6 +65,9 @@ Depending on your version of Xojp, you may need use the helper function make\_va
 ```xojo
 // Snippet 002
 
+//
+// Create a data serie named 'some_values' and add a few values to the data serie
+//
 var my_serie As New clDataSerie("some_values", VariantArray("aaa",123,True))
 
  
@@ -72,6 +77,9 @@ In recent version of Xojo, you can directly write:
 ```xojo
 // Snippet 003
 
+//
+// Create a data serie named 'some_values' and add a few values to the data serie
+//
 var my_serie As New clDataSerie("some_values", "aaa",123,True)
 
  
@@ -85,6 +93,9 @@ Note that one line in the source file creates one element in the data serie. The
 ```xojo
 // Snippet 004
 
+//
+// Create a data serie and add lines from a text file
+//
 var fld_file as FolderItem
 ...
 
@@ -199,18 +210,25 @@ var my_table As New clDataTable("table_1")
 ```xojo
 // Snippet 005
 
+//
+// Create three data series
+//
 var my_serie1 As New clDataSerie("customer")
 var my_serie2 As New clDataSerie("product")
 var my_serie3 As New clDataSerie("region")
 
 
+//
 // populate the series
+//
 my_serie1.AddElement(...)
 ...
 my_serie3.AddElement(...)
 
-
-var my_table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
+//
+// Create a data table named 'mytable1' using the existing data series
+//
+var my_table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2, my_serie3))
 
 ```
 
@@ -219,6 +237,9 @@ A shorter way to do it:
 ```xojo
 // Snippet 006
 
+//
+// Create five data series and use them to create a data table
+//
 var my_table As New clDataTable("mytable", SerieArray( _
 New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
@@ -235,6 +256,9 @@ If you need to create multiple tables from the same data series, remember that a
 ```xojo
 // Snippet 007
 
+//
+// Create three data series
+//
 var my_serie1 As New clDataSerie("customer")
 var my_serie2 As New clDataSerie("product")
 var my_serie3 As New clDataSerie("region")
@@ -244,9 +268,15 @@ var my_serie3 As New clDataSerie("region")
 my_serie1.AddElement(...)
 ...
 
+//
+// Create a data table named 'mytable1' using the existing data series
+//
 var my_table1 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 
-var my_table2 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie3), True)
+//
+// Create another data table named 'mytable2' using the existing data series. Note that my_serie1 will be cloned.
+//
+var my_table2 As New clDataTable("mytable2”, SerieArray(my_serie1, my_serie3), True)
 ```
 
 Note the last parameter for the second call to the constructor: it is telling the constructor to clone the data serie if it belongs to another table. In the example, my_serie1 will be cloned.
@@ -671,9 +701,10 @@ Creation of a new table, with split columns
 ```xojo
 // Snippet 021
 
-// defined in previous snippet:
-Var col_source as new clStringDataSerie("source")
-var col_sales as new clNumberDataSerie("Sales")
+// from previous snippet:
+var col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
+var col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
+
 
 var table2 as new clDataTable("prepared", SerieArray( _
 col_source, _
@@ -689,8 +720,18 @@ Getting the total sales per country
 ```xojo
 // Snippet 022
 
-// defined in previous snippet:
-var table2 as clDataTable
+// from previous snippet:
+var col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
+var col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
+
+
+
+var table2 as new clDataTable("prepared", SerieArray( _
+col_source, _
+col_source.TextBefore("-").Rename("country"), _
+col_source.TextAfter("-").Rename("city"), _
+col_sales),_
+true)
 
 
 var table4 As clDataTable = table2.GroupBy(StringArray("country"), StringArray("sales"))

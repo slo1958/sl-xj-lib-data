@@ -583,13 +583,13 @@ Protected Class clDataTableTests
 		  for each row as clDataRow in table0
 		    
 		    if row_index = 0 then
-		      call check_value(log,"row 0, index",  0, row.GetCell("row_index"))
+		      call check_value(log,"row 0, index",  0, row.GetCell(table0.DefaultRowIndexColumnName))
 		      call check_value(log, "row 0, country",  "France", row.GetCell("country"))
 		      call check_value(log,"row 0, city",  "Paris", row.GetCell("city"))
 		      call check_value(log, "row 0, sales",  1100, row.GetCell("sales"))
 		      
 		    elseif row_index  = 1 then
-		      call check_value(log, "row 1, index",  1, row.GetCell("row_index"))
+		      call check_value(log, "row 1, index",  1, row.GetCell(table0.DefaultRowIndexColumnName))
 		      call check_value(log, "row 1, country",  "USA", row.GetCell("country"))
 		      call check_value(log, "row 1, city",  "NewYork", row.GetCell("city"))
 		      call check_value(log, "row 1, sales",  1400, row.GetCell("sales"))

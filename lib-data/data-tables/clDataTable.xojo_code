@@ -2483,10 +2483,10 @@ Implements TableColumnReaderInterface,Iterable
 		  if not include_index then
 		    
 		  elseif RowIndexColumn = nil then
-		    tmp_row.SetCell("row_index",  pRowIndex)
+		    tmp_row.SetCell(DefaultRowIndexColumnName,  pRowIndex)
 		    
 		  else
-		    tmp_row.SetCell("row_index",  RowIndexColumn.GetElement(pRowIndex))
+		    tmp_row.SetCell(DefaultRowIndexColumnName,  RowIndexColumn.GetElement(pRowIndex))
 		    
 		  end if
 		  
@@ -3148,7 +3148,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  Self.TableName = StringWithDefault(NewTableName.Trim, "Unnamed")
 		  
-		  RowIndexColumn = New clDataSerieRowID("row_id")
+		  RowIndexColumn = New clDataSerieRowID(DefaultRowIDColumnName)
 		  
 		  allow_local_columns =  False
 		  index_explicit_when_iterate = False
@@ -3890,6 +3890,12 @@ Implements TableColumnReaderInterface,Iterable
 
 
 	#tag Constant, Name = DefaultColumnNamePattern, Type = String, Dynamic = False, Default = \"Untitled %0", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = DefaultRowIDColumnName, Type = String, Dynamic = False, Default = \"row_id", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = DefaultRowIndexColumnName, Type = String, Dynamic = False, Default = \"row_index", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = DefaultTableName, Type = String, Dynamic = False, Default = \"Noname", Scope = Public

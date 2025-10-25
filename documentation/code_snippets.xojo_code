@@ -10,6 +10,9 @@ Protected Module code_snippets
 		Sub snippet_readme_001()
 		  // Snippet 001
 		  
+		  //
+		  // Create a new table named 'some_values'
+		  //
 		  Var my_serie As New clDataSerie("some_values")
 		  
 		  my_serie.AddElement("abcd")
@@ -23,6 +26,9 @@ Protected Module code_snippets
 		Sub snippet_readme_002()
 		  // Snippet 002
 		  
+		  //
+		  // Create a data serie named 'some_values' and add a few values to the data serie
+		  //
 		  Var my_serie As New clDataSerie("some_values", VariantArray("aaa",123,True))
 		  
 		  
@@ -33,6 +39,9 @@ Protected Module code_snippets
 		Sub snippet_readme_003()
 		  // Snippet 003
 		  
+		  //
+		  // Create a data serie named 'some_values' and add a few values to the data serie
+		  //
 		  Var my_serie As New clDataSerie("some_values", "aaa",123,True)
 		  
 		  
@@ -43,6 +52,9 @@ Protected Module code_snippets
 		Sub snippet_readme_004()
 		  // Snippet 004
 		  
+		  //
+		  // Create a data serie and add lines from a text file
+		  //
 		  var fld_file as FolderItem
 		  
 		  Var my_serie  As  clDataSerie = clDataSerie(AppendTextfileToDataSerie(fld_file, new clDataSerie(""), true))
@@ -55,18 +67,24 @@ Protected Module code_snippets
 		Sub snippet_readme_005()
 		  // Snippet 005
 		  
+		  //
+		  // Create three data series
+		  //
 		  Var my_serie1 As New clDataSerie("customer")
 		  Var my_serie2 As New clDataSerie("product")
 		  Var my_serie3 As New clDataSerie("region")
 		  
-		  
+		  //
 		  // populate the series
+		  //
 		  my_serie1.AddElement("aaa") // (...)
 		  
 		  my_serie3.AddElement(123.34) // (...)
 		  
-		  
-		  var table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
+		  //
+		  // Create a data table named 'mytable1' using the existing data series
+		  //
+		  var table As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2, my_serie3))
 		  
 		End Sub
 	#tag EndMethod
@@ -75,6 +93,9 @@ Protected Module code_snippets
 		Sub snippet_readme_006()
 		  // Snippet 006
 		  
+		  //
+		  // Create five data series and use them to create a data table
+		  //
 		  var table As New clDataTable("mytable", SerieArray( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
 		  , New clDataSerie("Country", "FR","FR","BE","FR","BE","IT") _
@@ -90,6 +111,9 @@ Protected Module code_snippets
 		Sub snippet_readme_007()
 		  // Snippet 007
 		  
+		  //
+		  // Create three data series
+		  //
 		  Var my_serie1 As New clDataSerie("customer")
 		  Var my_serie2 As New clDataSerie("product")
 		  Var my_serie3 As New clDataSerie("region")
@@ -99,9 +123,15 @@ Protected Module code_snippets
 		  my_serie1.AddElement("abc") // (...)
 		  
 		  
+		  //
+		  // Create a data table named 'mytable1' using the existing data series
+		  //
 		  var table1 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie2))
 		  
-		  var table2 As New clDataTable("mytable1", SerieArray(my_serie1, my_serie3), True)
+		  //
+		  // Create another data table named 'mytable2' using the existing data series. Note that my_serie1 will be cloned.
+		  //
+		  var table2 As New clDataTable("mytable2", SerieArray(my_serie1, my_serie3), True)
 		  
 		End Sub
 	#tag EndMethod
@@ -409,9 +439,11 @@ Protected Module code_snippets
 		Sub snippet_readme_021()
 		  // Snippet 021
 		  
-		  // defined in previous snippet:
-		  Var col_source as new clStringDataSerie("source")
-		  var col_sales as new clNumberDataSerie("Sales")
+		  // from previous snippet:
+		  var col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
+		  var col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
+		  
+		  
 		  
 		  var table2 as new clDataTable("prepared", SerieArray( _
 		  col_source, _
@@ -427,8 +459,18 @@ Protected Module code_snippets
 		Sub snippet_readme_022()
 		  // Snippet 022
 		  
-		  // defined in previous snippet:
-		  var table2 as clDataTable
+		  // from previous snippet:
+		  var col_source as new clStringDataSerie("source", "France-Paris","Belgique-","Belgque-Bruxelles", "USA-NewYork", "USA-Chicago", "France-Marseille")
+		  var col_sales as new clNumberDataSerie("sales", 1000,1100, 1200, 1300, 1400, 1500)
+		  
+		  
+		  
+		  var table2 as new clDataTable("prepared", SerieArray( _
+		  col_source, _
+		  col_source.TextBefore("-").Rename("country"), _
+		  col_source.TextAfter("-").Rename("city"), _
+		  col_sales),_
+		  true)
 		  
 		  
 		  var table4 As clDataTable = table2.GroupBy(StringArray("country"), StringArray("sales"))
