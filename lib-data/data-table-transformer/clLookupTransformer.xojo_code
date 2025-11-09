@@ -8,7 +8,7 @@ Inherits clAbstractTransformer
 		  
 		  self.AddInput(new clTransformerConnection(cInputConnectionMain, MainTable))
 		  self.AddInput(new clTransformerConnection(cInputConnectionLookUp, LookupTable))
-		   
+		  
 		  self.JoinStatusFieldName = JoinStatusField
 		  
 		  
@@ -37,8 +37,8 @@ Inherits clAbstractTransformer
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function RunLookup() As boolean
+	#tag Method, Flags = &h21
+		Private Function RunLookup() As boolean
 		  const cstSuccessMark = "$$$M$$$"
 		  
 		  var tblleft as clDataTable = self.GetInputTable(cInputConnectionMain)
@@ -53,7 +53,7 @@ Inherits clAbstractTransformer
 		  var sourceColumns() as clAbstractDataSerie
 		  
 		  var JoinSuccessColumn as clAbstractDataSerie = nil
-		   
+		  
 		  if MainKeyFields.LastIndex <> LookupKeyFields.LastIndex then return false
 		  if MainTargetDataFields.LastIndex <> LookupSourceDataFields.LastIndex then return false
 		  
@@ -63,12 +63,12 @@ Inherits clAbstractTransformer
 		  next
 		  
 		  if JoinStatusFieldName.Length > 0 then JoinSuccessColumn = tblleft.GetColumn(JoinStatusFieldName, False)
-		   
-		   // collect impacted data columns in the main table
-		   for i as integer = 0 to MainTargetDataFields.LastIndex
+		  
+		  // collect impacted data columns in the main table
+		  for i as integer = 0 to MainTargetDataFields.LastIndex
 		    
 		    var c as clAbstractDataSerie = tblleft.GetColumn(MainTargetDataFields(i), false)
-		     
+		    
 		    
 		    if c = nil then
 		      // If the column does not exist in the main table ..
@@ -110,7 +110,7 @@ Inherits clAbstractTransformer
 		    next
 		    
 		    lookupkey = string.FromArray(Lookupkeyparts,chr(8))
-		     
+		    
 		    if buffer.HasKey(lookupkey) then
 		      row = clDataRow(buffer.Value(lookupkey))
 		      
@@ -172,7 +172,7 @@ Inherits clAbstractTransformer
 		Function Transform() As Boolean
 		  
 		  return RunLookup()
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -255,15 +255,7 @@ Inherits clAbstractTransformer
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="MainKeyFields()"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Integer"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
