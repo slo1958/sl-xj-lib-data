@@ -15,6 +15,11 @@ Protected Module mdEnumerations
 		Max
 	#tag EndEnum
 
+	#tag Enum, Name = FilterMode, Type = Integer, Flags = &h0
+		IncludeSelected
+		ExcludeSelected
+	#tag EndEnum
+
 	#tag Enum, Name = JoinMode, Flags = &h0
 		OuterJoin
 		  InnerJoin
