@@ -2703,7 +2703,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  //  returns a unique column name by adding a suffix. The suffix is an integer, starting at zero
 		  //  If the baseColumnName is "Something"   and the table already contains a column named "Something", this
-		  //  method returns "Something 1"
+		  //  method returns "Something 0"
 		  //  
 		  //  Parameters:
 		  //  - the name of a future column, which may duplicate the name of an existing column
@@ -2717,27 +2717,36 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetUniqueColumnName(BaseColumnName as string, prefix as string, suffix as string) As string
+		Function GetUniqueColumnName(BaseColumnName as string, prefix as string, suffix as string, counterStart as integer = 0) As string
 		  
 		  //  
 		  //  returns a unique column name by adding a suffix. The suffix is an integer, starting at zero
+		  //
 		  //  If the baseColumnName is "Something" , the prefix is '-', the suffix is an empty string  and the table already contains a column named "Something", this
-		  //  method returns "Something-1"
-		  //  
+		  //  method returns "Something-0"
+		  //
+		  //  If the baseColumnName is "Something" , the prefix is '[', the suffix is ']' and the table already contains a column named "Something", this
+		  //  method returns "Something[0]"
+		  //
 		  //  Parameters:
 		  //  - the name of a future column, which may duplicate the name of an existing column
-		  //  - the separator to insert between the name of the column and the number
+		  //  - the string inserted before the integer
+		  //  - the string inserted after the integer
+		  //  - the start value of the counter used to create unique column name
 		  //  
 		  //  Returns:
 		  //  - the name of the column made unique by appending a number
 		  //  
+		  
+		  const limitForNumberOfTests = 1000  
+		  
 		  var tmp() as string = self.GetColumnNames
 		  var tmppfx as string = prefix
 		  var tmpsfx as string = suffix
 		  
 		  if tmp.IndexOf(BaseColumnName) < 0 then return BaseColumnName
 		  
-		  for i as integer = 0 to 1000
+		  for i as integer = counterStart to counterStart + limitForNumberOfTests
 		    var tmp_name as string = BaseColumnName + tmppfx + str(i) + tmpsfx
 		    if tmp.IndexOf(tmp_name)  < 0 then return tmp_name
 		    
