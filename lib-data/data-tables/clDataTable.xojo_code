@@ -3447,6 +3447,22 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Rename(the_new_name as string) As clDataTable
+		  
+		  If the_new_name.Trim.Len = 0 Then
+		    Self.TableName = DefaultTableName
+		    
+		  Else
+		    Self.TableName = the_new_name.Trim
+		    
+		  End If
+		  
+		  return self
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub RenameColumn(OldColumnName as string, NewColumnName as string)
 		  
 		  var col as clAbstractDataSerie = self.GetColumn(OldColumnName)

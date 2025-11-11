@@ -190,8 +190,7 @@ Protected Class clLibDataExample
 		  //
 		  // Calculate total sales
 		  // 
-		  var table2 As clDataTable = table0.GroupBy(Array(""), Array("Sales"))
-		  table2.rename("Grand total")
+		  var table2 As clDataTable = table0.GroupBy(Array(""), Array("Sales")).Rename("Grand total")
 		  
 		  //
 		  // Get list of unique combinations of country and city
@@ -1084,8 +1083,8 @@ Protected Class clLibDataExample
 		  db.AddRow("test3", dbrow)
 		  
 		  
-		  var table1 as new clDataTable(new clDBReader(db.SelectSql("select * from test1")))
-		  table1.rename("test2")
+		  var table1 as new clDataTable("test2", new clDBReader(db.SelectSql("select * from test1"))) 
+		   
 		  table1.save(new clDBWriter(new clSqliteDBAccess(db)))
 		  
 		  var table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
@@ -1094,7 +1093,7 @@ Protected Class clLibDataExample
 		  
 		  
 		  
-		  var table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3")))
+		  var table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3"))) 
 		  table3.rename("test4")
 		  table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
@@ -1672,8 +1671,8 @@ Protected Class clLibDataExample
 		  var tSumSales1 as clDataTable = tsales.GroupBy(StringArray("Country"), StringArray("Sales","Quantity"))
 		  
 		  
-		  var tSumSales2 as clDataTable = tsales.GroupBy(StringArray("Country","Zorglub","City"), StringArray("Sales","Quantity"))
-		  tSumSales2.Rename("Sum sales 2")
+		  var tSumSales2 as clDataTable = tsales.GroupBy(StringArray("Country","Zorglub","City"), StringArray("Sales","Quantity")).Rename("Sum sales 2")
+		  
 		  
 		  log.end_exec(CurrentMethodName)
 		  

@@ -3142,6 +3142,56 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_calc_051(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  // Test basic filter transformer
+		  
+		  var col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "Belgique")
+		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Namur")
+		  var col_something as new clIntegerDataSerie("Something", 1000, 2000, 3000, 4000, 5000)
+		  var col_sales as new clNumberDataSerie("sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  
+		  var table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales, col_something))
+		  
+		  call table0.AddColumn(table0.ApplyFilterFunction("is_france",AddressOf BasicFieldFilter,"country","France"))
+		  
+		  var tableFrance as clDataTable
+		  var tableNotFrance as clDataTable
+		  
+		  var t1 as new clFilterTransformer(table0, "is_france")
+		  if t1.Transform() then tableFrance = t1.GetOutputTable
+		  
+		  var t2 as new clFilterTransformer(table0, "is_france", FilterMode.ExcludeSelected)
+		  if t2.Transform() then tableNotFrance = t2.GetOutputTable
+		  
+		  var expectedTableNotFrance as new clDataTable("ExpectedNotFrance")
+		  var expectedTableFrance as new clDataTable("ExpectedFrance")
+		  
+		  for each row as clDataRow in table0
+		    var country as string = row.GetCell("country")
+		     
+		    if country = "France" then 
+		      expectedTableFrance.AddRow(row)
+		      
+		    else
+		      expectedTableNotFrance.AddRow(row)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  call check_table(log,"selected France", expectedTableFrance, tableFrance)
+		  call check_table(log,"Selected not france", expectedTableNotFrance, tableNotFrance)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)
