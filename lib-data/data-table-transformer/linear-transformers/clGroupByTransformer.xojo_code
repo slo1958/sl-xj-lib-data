@@ -19,6 +19,7 @@ Inherits clLinearTransformer
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures = measures
 		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
@@ -46,6 +47,8 @@ Inherits clLinearTransformer
 		    
 		  next
 		  
+		  return
+		  
 		End Sub
 	#tag EndMethod
 
@@ -66,6 +69,7 @@ Inherits clLinearTransformer
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures.RemoveAll
 		  
+		  return
 		  
 		End Sub
 	#tag EndMethod

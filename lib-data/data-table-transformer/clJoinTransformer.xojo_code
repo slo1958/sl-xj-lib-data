@@ -14,18 +14,18 @@ Inherits clAbstractTransformer
 		  select case mode
 		    
 		  case JoinMode.OuterJoin 
-		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, "Results"))
+		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, cDefaultMainOutputTableName))
 		    
 		    self.JoinStatusBoth = "JOIN"
 		    
 		  case JoinMode.LeftJoin
-		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, "Results"))
+		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, cDefaultMainOutputTableName))
 		    
 		    self.JoinStatusBoth = "JOIN"
 		    self.JoinStatusLeftOnly = "LEFT"
 		    
 		  case JoinMode.InnerJoin
-		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, "JoinedResults"))
+		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, cDefaultMainOutputTableName)) // $$ "JoinedResults"))
 		    
 		    // by default, we only generated the main output (joined results)
 		    
@@ -41,6 +41,8 @@ Inherits clAbstractTransformer
 		  self.mode = mode
 		  self.joinKeyFields = KeyFields
 		  self.JoinStatusFieldName = JoinStatusField
+		  
+		  return
 		  
 		  
 		End Sub

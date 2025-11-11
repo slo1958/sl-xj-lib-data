@@ -125,8 +125,8 @@ Protected Class clAbstractTransformer
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub SetOutputName(ConnectionName as string, OutputName as string)
+	#tag Method, Flags = &h1
+		Protected Sub SetOutputName(ConnectionName as string, OutputName as string)
 		  //
 		  // Overwrite a default output name
 		  // Default output names are expected to be defined by the transformer constructor
@@ -229,6 +229,10 @@ Protected Class clAbstractTransformer
 	#tag Property, Flags = &h1
 		Protected OutputConnectors As Dictionary
 	#tag EndProperty
+
+
+	#tag Constant, Name = cDefaultMainOutputTableName, Type = String, Dynamic = False, Default = \"Results", Scope = Public
+	#tag EndConstant
 
 
 	#tag ViewBehavior
