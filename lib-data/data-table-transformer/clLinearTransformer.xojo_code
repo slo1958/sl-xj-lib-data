@@ -6,9 +6,9 @@ Inherits clAbstractTransformer
 		  // Calling the overridden superclass constructor.
 		  Super.Constructor
 		  
-		  self.AddInput(new clTransformerConnection(cInputConnectionName, MainTable))
+		  self.AddInput(new clTransformerConnector(cInputConnectorName, MainTable))
 		  
-		  self.AddOutput(new clTransformerConnection(cOutputConnectionName, cDefaultOutputTableName))
+		  self.AddOutput(new clTransformerConnector(cOutputConnectorName, cDefaultOutputTableName))
 		  
 		  return
 		  
@@ -20,7 +20,7 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h1
 		Protected Function EmptyOutputTable() As clDataTable
 		  
-		  var c  as clTransformerConnection = OutputConnections.lookup(cOutputConnectionName, nil)
+		  var c  as clTransformerConnector = OutputConnectors.lookup(cOutputConnectorName, nil)
 		  
 		  if c = nil then return nil
 		  
@@ -33,7 +33,7 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Function SourceTable() As clDataTable
 		  
-		  return   self.GetInputTable(self.cInputConnectionName)
+		  return   self.GetInputConnector(self.cInputConnectorName).GetTable()
 		  
 		  
 		End Function
@@ -50,10 +50,10 @@ Inherits clAbstractTransformer
 	#tag Constant, Name = cDefaultOutputTableName, Type = String, Dynamic = False, Default = \"Results", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = cInputConnectionName, Type = String, Dynamic = False, Default = \"Input", Scope = Public
+	#tag Constant, Name = cInputConnectorName, Type = String, Dynamic = False, Default = \"Input", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = cOutputConnectionName, Type = String, Dynamic = False, Default = \"Output", Scope = Public
+	#tag Constant, Name = cOutputConnectorName, Type = String, Dynamic = False, Default = \"Output", Scope = Public
 	#tag EndConstant
 
 

@@ -36,11 +36,11 @@ Inherits clLinearTransformer
 		  
 		  // create virtual table for output
 		  var output as clDataTable = source.SelectAllColumns(true)
-		   
+		  
 		  // Apply function
 		  var success as Boolean = fct.Invoke(output, FctColumnNames, FctParameters)
 		  
-		  Self.SetOutputTable(cOutputConnectionName, output)
+		  Self.SetOutputTable(cOutputConnectorName, output)
 		  
 		  return success
 		  
@@ -102,14 +102,6 @@ Inherits clLinearTransformer
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Fct"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="FilterMode"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

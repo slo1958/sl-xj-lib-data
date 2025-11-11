@@ -1,9 +1,9 @@
 #tag Class
 Protected Class clAbstractTransformer
 	#tag Method, Flags = &h1
-		Protected Sub AddInput(connection as clTransformerConnection)
+		Protected Sub AddInput(connector as clTransformerConnector)
 		  
-		  self.InputConnections.Value(connection.GetName) = connection
+		  self.InputConnectors.Value(connector.GetName) = connector
 		  
 		  return
 		  
@@ -11,11 +11,11 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub AddOutput(connection as clTransformerConnection)
+		Protected Sub AddOutput(connector as clTransformerConnector)
 		  
-		  self.OutputConnections.value(connection.GetName) = connection
+		  self.OutputConnectors.value(connector.GetName) = connector
 		  
-		  if self.firstOutputConnection = nil then self.firstOutputConnection = connection
+		  if self.firstOutputConnector = nil then self.firstOutputConnector = connector
 		  
 		  return 
 		  
@@ -25,10 +25,10 @@ Protected Class clAbstractTransformer
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  
-		  self.InputConnections = new Dictionary
-		  self.OutputConnections = new Dictionary
+		  self.InputConnectors = new Dictionary
+		  self.OutputConnectors = new Dictionary
 		  
-		  self.firstOutputConnection = nil
+		  self.firstOutputConnector = nil
 		  
 		  return
 		  
@@ -37,58 +37,49 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetInputTable(ConnectionName as string) As clDataTable
-		  
-		  
-		  var c as clTransformerConnection
-		  
-		  c = self.inputConnections.Lookup(connectionName, nil)
-		  
-		  if c = nil then return nil
-		  
-		  return c.GetTable
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetInputTableName(ConnectionName as string) As String
-		  
-		  
-		  var c as clTransformerConnection
-		  
-		  c = self.inputConnections.Lookup(connectionName, nil)
-		  
-		  if c = nil then return ""
-		  
-		  return c.GetTableName(false)
-		  
-		  
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetInputTables() As clDataTable()
+		Function GetInputConnector(InputConnectorName as string) As clTransformerConnector
 		  //
-		  // Returns an array with the input tables
+		  // Returns the input connector matching passed name
 		  //
 		  // Parameters:
-		  // (nothing)
+		  // - input connector name
 		  //
 		  // Returns:
-		  // Array of input tables
+		  // selected input connector
 		  //
-		  var r() as clDataTable
 		  
-		  for each Connection as clTransformerConnection in self.InputConnections
-		    r.add(connection.GetTable)
+		  var c as clTransformerConnector
+		  
+		  c = self.InputConnectors.Lookup(InputConnectorName, nil)
+		  
+		  return c
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetOutputConnector(OutputConnectorName as string = "") As clTransformerConnector
+		  //
+		  // Returns the output connector matching passed name or the first output connector if name is empty
+		  //
+		  // Parameters:
+		  // - output connector name
+		  //
+		  // Returns:
+		  // selected output connector
+		  //
+		  
+		  
+		  if OutputConnectorName.Length > 0 then
+		    return self.OutputConnectors.Lookup(OutputConnectorName, nil)
 		    
-		  next
+		  else
+		     return self.firstOutputConnector  
+		    
+		  end if
 		  
-		  return r
+		  
 		End Function
 	#tag EndMethod
 
@@ -104,88 +95,15 @@ Protected Class clAbstractTransformer
 		  // selected output table
 		  //
 		  
-		  if self.firstOutputConnection = nil then
+		  if self.firstOutputConnector = nil then
 		    return nil
 		    
 		  else
-		    return self.firstOutputConnection.GetTable
+		    return self.firstOutputConnector.GetTable
 		    
 		  end if
 		  
 		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetOutputTable(connectionName as string) As clDataTable
-		  //
-		  // Returns the output table related to the connection
-		  //
-		  // Parameters:
-		  // - connection name
-		  //
-		  // Returns:
-		  // selected output table
-		  //
-		  
-		  var c as clTransformerConnection
-		  
-		  c = self.OutputConnections.Lookup(connectionName, nil)
-		  
-		  if c = nil then return nil
-		  
-		  return c.GetTable
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetOutputTableName(ConnectionName as string, AllowDefault as Boolean = False) As String
-		  //
-		  // Returns the name of output table related to the connection
-		  //
-		  // Parameters:
-		  // - connection name
-		  // - allow default value (if the connection exists but it is not linked to a table, and no table name have been defined)
-		  //
-		  // Returns:
-		  // - selected output table name
-		  //
-		  
-		  
-		  var c as clTransformerConnection
-		  
-		  c = self.OutputConnections.Lookup(connectionName, nil)
-		  
-		  if c = nil then return ""
-		  
-		  return c.GetTableName(AllowDefault)
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetOutputTables() As clDataTable()
-		  //
-		  // Returns an array with the output tables
-		  //
-		  // Parameters:
-		  // (nothing)
-		  //
-		  // Returns:
-		  // Array of output tables
-		  //
-		  
-		  var r() as clDataTable
-		  
-		  for each Connection as clTransformerConnection in self.OutputConnections
-		    r.Add(Connection.GetTable)
-		    
-		  next
-		  
-		  return r
 		End Function
 	#tag EndMethod
 
@@ -202,9 +120,9 @@ Protected Class clAbstractTransformer
 		  // - new name
 		  //
 		  
-		  var c as clTransformerConnection
+		  var c as clTransformerConnector
 		  
-		  c = self.OutputConnections.Lookup(connectionName, nil)
+		  c = self.OutputConnectors.Lookup(connectionName, nil)
 		  
 		  if c = nil then return
 		  
@@ -228,9 +146,9 @@ Protected Class clAbstractTransformer
 		  // selected output table
 		  //
 		  
-		  var c as clTransformerConnection
+		  var c as clTransformerConnector
 		  
-		  c = self.OutputConnections.Lookup(connectionName, nil)
+		  c = self.OutputConnectors.Lookup(connectionName, nil)
 		  
 		  if c = nil then return
 		  
@@ -283,15 +201,15 @@ Protected Class clAbstractTransformer
 
 
 	#tag Property, Flags = &h1
-		Protected firstOutputConnection As clTransformerConnection
+		Protected firstOutputConnector As clTransformerConnector
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected InputConnections As Dictionary
+		Protected InputConnectors As Dictionary
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected OutputConnections As Dictionary
+		Protected OutputConnectors As Dictionary
 	#tag EndProperty
 
 

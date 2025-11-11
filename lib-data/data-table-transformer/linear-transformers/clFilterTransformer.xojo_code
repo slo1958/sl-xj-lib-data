@@ -48,7 +48,7 @@ Inherits clLinearTransformer
 		  for each row as clDataRow in retval
 		    output.AddRow(row)
 		    
-		    Self.SetOutputTable(cOutputConnectionName, output)
+		    Self.SetOutputTable(cOutputConnectorName, output)
 		    
 		  next
 		  
@@ -107,6 +107,14 @@ Inherits clLinearTransformer
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Mode"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="FilterMode"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

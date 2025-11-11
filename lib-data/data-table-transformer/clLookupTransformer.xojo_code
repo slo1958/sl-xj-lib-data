@@ -6,8 +6,8 @@ Inherits clAbstractTransformer
 		  // Calling the overridden superclass constructor.
 		  Super.Constructor
 		  
-		  self.AddInput(new clTransformerConnection(cInputConnectionMain, MainTable))
-		  self.AddInput(new clTransformerConnection(cInputConnectionLookUp, LookupTable))
+		  self.AddInput(new clTransformerConnector(cInputConnectorMain, MainTable))
+		  self.AddInput(new clTransformerConnector(cInputConnectorLookUp, LookupTable))
 		  
 		  self.JoinStatusFieldName = JoinStatusField
 		  
@@ -41,8 +41,8 @@ Inherits clAbstractTransformer
 		Private Function RunLookup() As boolean
 		  const cstSuccessMark = "$$$M$$$"
 		  
-		  var tblleft as clDataTable = self.GetInputTable(cInputConnectionMain)
-		  var tblright as clDataTable = self.GetInputTable(cInputConnectionLookup)
+		  var tblleft as clDataTable = self.GetInputConnector(cInputConnectorMain).GetTable()
+		  var tblright as clDataTable = self.GetInputConnector(cInputConnectorLookup).GetTable()
 		  
 		  
 		  var buffer as new Dictionary
@@ -198,13 +198,13 @@ Inherits clAbstractTransformer
 	#tag EndProperty
 
 
-	#tag Constant, Name = cInputConnectionLookUp, Type = String, Dynamic = False, Default = \"LookupInput", Scope = Public
+	#tag Constant, Name = cInputConnectorLookUp, Type = String, Dynamic = False, Default = \"LookupInput", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = cInputConnectionMain, Type = String, Dynamic = False, Default = \"MainInput", Scope = Public
+	#tag Constant, Name = cInputConnectorMain, Type = String, Dynamic = False, Default = \"MainInput", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = cOutputConnectionName, Type = String, Dynamic = False, Default = \"Output", Scope = Public
+	#tag Constant, Name = cOutputConnectorName, Type = String, Dynamic = False, Default = \"Output", Scope = Public
 	#tag EndConstant
 
 

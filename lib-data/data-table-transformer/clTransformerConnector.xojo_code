@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clTransformerConnection
+Protected Class clTransformerConnector
 	#tag Method, Flags = &h0
 		Sub Constructor(ConnectionName as string)
 		  
@@ -40,6 +40,14 @@ Protected Class clTransformerConnection
 		  return
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetConnectorLabel() As String
+		  return Self.ConnectorLabel
+		   
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -96,6 +104,13 @@ Protected Class clTransformerConnection
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetConnectorLabel(NewConnectorLabel as String)
+		  Self.ConnectorLabel = NewConnectorLabel
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetTable(t as clDataTable)
 		  
 		  self.Table = t
@@ -116,6 +131,10 @@ Protected Class clTransformerConnection
 
 	#tag Property, Flags = &h21
 		Private ConnectionName As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private ConnectorLabel As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -174,6 +193,14 @@ Protected Class clTransformerConnection
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="EnableFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

@@ -53,7 +53,7 @@ Inherits clLinearTransformer
 		Function Transform() As Boolean
 		  // Calling the overridden superclass method.
 		  
-		  var source as clDataTable = self.GetInputTable(self.cInputConnectionName)
+		  var source as clDataTable = self.GetInputConnector(self.cInputConnectorName).GetTable()
 		  
 		  var dimensionColumns() as clAbstractDataSerie = source.GetColumns(ColumnsToRetain, false)
 		  var pivotColumn as clAbstractDataSerie = source.GetColumn(PivotColumnName)
@@ -76,14 +76,17 @@ Inherits clLinearTransformer
 		    
 		  next
 		  
+		  var connector as clTransformerConnector
+		  
 		  var cg1 as new clSeriesGroupAndPivot(dimensionColumns, measurePairs, pivotColumn, measureMapping)
 		  
-		  var t as new clDataTable(self.GetOutputTableName(cOutputConnectionName), cg1.Flattened)
+		  connector = self.GetOutputConnector(cOutputConnectorName)
+		  
+		  var t as new clDataTable(connector.GetTableName(false), cg1.Flattened)
 		  
 		  t.AddMetaData("Transformation","Pivotting  " + source.Name + " on " + String.FromArray(ColumnsToRetain,","))
 		  
-		  Self.SetOutputTable(cOutputConnectionName, t)
-		  
+		  Self.SetOutputTable(cOutputConnectorName, t)
 		  
 		  return t <> nil
 		  

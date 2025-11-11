@@ -39,7 +39,7 @@ Inherits clLinearTransformer
 		Function Transform() As Boolean
 		  
 		  
-		  var source as clDataTable = self.GetInputTable(self.cInputConnectionName)
+		  var source as clDataTable = self.GetInputConnector(self.cInputConnectorName).GetTable()
 		  
 		  var columnsToUnpivot() as string
 		  
@@ -83,7 +83,7 @@ Inherits clLinearTransformer
 		    
 		  next
 		  
-		  self.SetOutputTable(cOutputConnectionName, output)
+		  self.SetOutputTable(cOutputConnectorName, output)
 		  
 		  return true
 		  
@@ -165,7 +165,7 @@ Inherits clLinearTransformer
 			Group="Behavior"
 			InitialValue=""
 			Type="String"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

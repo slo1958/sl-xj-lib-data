@@ -18,7 +18,7 @@ Inherits clLinearTransformer
 		  super.Constructor(MainTable)
 		  
 		  self.fct = TrsfFunction
-		   
+		  
 		  self.FctColumnNames = ColumnNames
 		  self.FctParameters = Parameters
 		  
@@ -39,7 +39,7 @@ Inherits clLinearTransformer
 		  
 		  // create virtual table for output
 		  var output as clDataTable = source.SelectAllColumns(true)
-		   
+		  
 		  // Apply function
 		  
 		  
@@ -52,11 +52,11 @@ Inherits clLinearTransformer
 		      
 		    end if
 		    
-		     success = success and tmp
+		    success = success and tmp
 		    
 		  next
 		  
-		  Self.SetOutputTable(cOutputConnectionName, output)
+		  Self.SetOutputTable(cOutputConnectorName, output)
 		  
 		  return success
 		  

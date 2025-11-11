@@ -91,7 +91,7 @@ Inherits clLinearTransformer
 		    
 		  end if
 		  
-		  Self.SetOutputTable(cOutputConnectionName, t)
+		  Self.SetOutputTable(cOutputConnectorName, t)
 		  
 		  return t <> nil
 		  
@@ -148,11 +148,20 @@ Inherits clLinearTransformer
 		    
 		  next
 		  
+		  var connector as clTransformerConnector
 		  var grp as new clSeriesGroupAndAggregate(GroupingDataSeries,MeasureColumns)
 		  
 		  var res() as clAbstractDataSerie = grp.Flattened(self.GroupingCountColumn)
 		  
-		  return new clDataTable(self.GetOutputTableName(cOutputConnectionName), res)
+		  connector = self.GetOutputConnector(cOutputConnectorName)
+		  
+		  if connector = nil then
+		    Return nil
+		    
+		  else
+		    return new clDataTable(connector.GetTableName(false), res)
+		    
+		  end if
 		  
 		  
 		  

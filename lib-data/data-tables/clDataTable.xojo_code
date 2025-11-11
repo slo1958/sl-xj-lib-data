@@ -873,7 +873,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  
 		  return new clBooleanDataSerie(NewDataSerieName, self.ApplyFilterFunction(pFilterFunction, pFunctionParameters))
-		   
+		  
 		End Function
 	#tag EndMethod
 
@@ -2147,8 +2147,10 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
 		  if trsf.Transform() then
+		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
-		    OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		    OutputTable = connection.GetTable()
+		    //OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectorJoined)
 		    
 		    return OutputTable
 		    
@@ -2985,8 +2987,9 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
 		  if trsf.Transform() then
+		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
-		    OutputTable = trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		    OutputTable = connection.GetTable
 		    
 		    return OutputTable
 		    
@@ -3274,8 +3277,9 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
 		  if trsf.Transform() then
+		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
-		    OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		    OutputTable =  connection.GetTable
 		    
 		    return OutputTable
 		    
@@ -3418,8 +3422,9 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
 		  if trsf.Transform() then
+		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
-		    OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectionJoined)
+		    OutputTable = connection.GetTable
 		    
 		    return OutputTable
 		    

@@ -7,25 +7,25 @@ Inherits clAbstractTransformer
 		  Super.Constructor
 		  
 		  
-		  self.AddInput(new clTransformerConnection(cInputConnectionLeft, LeftTable))
-		  self.AddInput(new clTransformerConnection(cInputConnectionRight, RightTable))
+		  self.AddInput(new clTransformerConnector(cInputConnectorLeft, LeftTable))
+		  self.AddInput(new clTransformerConnector(cInputConnectorRight, RightTable))
 		  
 		  
 		  select case mode
 		    
 		  case JoinMode.OuterJoin 
-		    self.AddOutput(new clTransformerConnection(cOutputConnectionJoined, "Results"))
+		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, "Results"))
 		    
 		    self.JoinStatusBoth = "JOIN"
 		    
 		  case JoinMode.LeftJoin
-		    self.AddOutput(new clTransformerConnection(cOutputConnectionJoined, "Results"))
+		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, "Results"))
 		    
 		    self.JoinStatusBoth = "JOIN"
 		    self.JoinStatusLeftOnly = "LEFT"
 		    
 		  case JoinMode.InnerJoin
-		    self.AddOutput(new clTransformerConnection(cOutputConnectionJoined, "JoinedResults"))
+		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, "JoinedResults"))
 		    
 		    // by default, we only generated the main output (joined results)
 		    
@@ -47,23 +47,29 @@ Inherits clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub FullJoin(MasterTable as clDataTable, SecondaryTable as clDataTable, JoinStatusMasterOnly as string, JoinStatusSecondaryOnly as string, MasterOnlyOutputConnectionName as string, SecondaryOnlyOutputConnectionName as String)
+		Protected Sub FullJoin(MasterTable as clDataTable, SecondaryTable as clDataTable, JoinStatusMasterOnly as string, JoinStatusSecondaryOnly as string, MasterOnlyOutputConnectorName as string, SecondaryOnlyOutputConnectorName as String)
 		  //
 		  // Executes a full join between the Master table and the secondary table
 		  //
 		  
-		  
-		  var OutputTable as clDataTable = new clDataTable(self.GetOutputTableName(cOutputConnectionJoined))
+		  var connector as clTransformerConnector
+		  var OutputTable as clDataTable 
 		  var masterOnlyOutputTable as clDataTable = nil
 		  var secondaryOnlyOutputTable as clDataTable = nil
 		  
-		  if MasterOnlyOutputConnectionName.trim <> "" then
-		    masterOnlyOutputTable = new clDataTable(self.GetOutputTableName(MasterOnlyOutputConnectionName))
+		  connector = self.GetOutputConnector(cOutputConnectorJoined)
+		  
+		  OutputTable = new clDataTable(connector.GetTableName(False))
+		  
+		  if MasterOnlyOutputConnectorName.trim <> "" then
+		    connector = self.GetOutputConnector(MasterOnlyOutputConnectorName)
+		    if connector <> nil then masterOnlyOutputTable = new clDataTable(connector.GetTableName(False))
 		    
 		  end if
 		  
-		  if SecondaryOnlyOutputConnectionName.trim <> "" then
-		    secondaryOnlyOutputTable = new clDataTable(self.GetOutputTableName(SecondaryOnlyOutputConnectionName))
+		  if SecondaryOnlyOutputConnectorName.trim <> "" then
+		    connector = self.GetOutputConnector(SecondaryOnlyOutputConnectorName)
+		    if connector <> nil then secondaryOnlyOutputTable = new clDataTable(connector.GetTableName(False))
 		    
 		  end if
 		  
@@ -192,7 +198,7 @@ Inherits clAbstractTransformer
 		    
 		  end select
 		  
-		  self.SetOutputTable(cOutputConnectionJoined, OutputTable)
+		  self.SetOutputTable(cOutputConnectorJoined, OutputTable)
 		  
 		  return
 		  
@@ -207,20 +213,20 @@ Inherits clAbstractTransformer
 		  
 		  
 		  If GenerateNonMatchingLeft then 
-		    self.AddOutput(new clTransformerConnection(cOutputConnectionLeft, "LeftResults"))
+		    self.AddOutput(new clTransformerConnector(cOutputConnectorLeft, "LeftResults"))
 		    
-		  elseif self.OutputConnections.HasKey(cOutputConnectionLeft) then 
-		    self.OutputConnections.Remove(cOutputConnectionLeft)
+		  elseif self.OutputConnectors.HasKey(cOutputConnectorLeft) then 
+		    self.OutputConnectors.Remove(cOutputConnectorLeft)
 		    
 		  end if
 		  
 		  
 		  
 		  If GenerateNonMatchingRight then 
-		    self.AddOutput(new clTransformerConnection(cOutputConnectionRight, "RightResults"))
+		    self.AddOutput(new clTransformerConnector(cOutputConnectorRight, "RightResults"))
 		    
-		  elseif self.OutputConnections.HasKey(cOutputConnectionRight) then 
-		    self.OutputConnections.Remove(cOutputConnectionRight)
+		  elseif self.OutputConnectors.HasKey(cOutputConnectorRight) then 
+		    self.OutputConnectors.Remove(cOutputConnectorRight)
 		    
 		  end if
 		  
@@ -263,8 +269,8 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Function Transform() As Boolean
 		  
-		  var tblleft as clDataTable = self.GetInputTable(cInputConnectionLeft)
-		  var tblright as clDataTable = self.GetInputTable(cInputConnectionRight)
+		  var tblleft as clDataTable = self.GetInputConnector(cInputConnectorLeft).GetTable()
+		  var tblright as clDataTable = self.GetInputConnector(cInputConnectorRight).GetTable()
 		  
 		  if tblleft = nil or tblright = nil then
 		    return false
@@ -274,17 +280,23 @@ Inherits clAbstractTransformer
 		  var cntleft as integer = tblleft.RowCount
 		  var cntright as integer = tblright.RowCount
 		  
+		  var connector as clTransformerConnector
+		  
 		  var outputLeftConnection as string = ""
 		  var outputRightConnection as string = ""
 		  
-		  if self.GetOutputTableName(cOutputConnectionLeft).trim.Length > 0 then outputLeftConnection = cOutputConnectionLeft
-		  if self.GetOutputTableName(cOutputConnectionRight).trim.Length > 0 then outputRightConnection = cOutputConnectionRight
+		  connector = self.GetOutputConnector(cOutputConnectorLeft)
+		  if connector <>nil and  connector.GetTableName(false).trim.Length > 0 then outputLeftConnection = cOutputConnectorLeft
+		  
+		  connector = self.GetOutputConnector(cOutputConnectorRight)
+		  if connector <>nil and connector.GetTableName(false).trim.Length > 0 then outputRightConnection = cOutputConnectorRight
+		   
 		  
 		  if cntleft > cntright or self.mode = JoinMode.LeftJoin then
-		    FullJoin(tblleft, tblright, self.JoinStatusLeftOnly, self.JoinStatusRightOnly, outputLeftConnection, cOutputConnectionRight)
+		    FullJoin(tblleft, tblright, self.JoinStatusLeftOnly, self.JoinStatusRightOnly, outputLeftConnection, cOutputConnectorRight)
 		    
 		  else
-		    FullJoin(tblright, tblleft, self.JoinStatusRightOnly, self.JoinStatusLeftOnly, cOutputConnectionRight, outputLeftConnection)
+		    FullJoin(tblright, tblleft, self.JoinStatusRightOnly, self.JoinStatusLeftOnly, cOutputConnectorRight, outputLeftConnection)
 		    
 		    
 		  end if
@@ -292,27 +304,31 @@ Inherits clAbstractTransformer
 		  
 		  // Update metadata
 		  
-		  var OutputTable as clDataTable =  self.GetOutputTable(cOutputConnectionJoined)
-		  var outputLeft as clDataTable = self.GetOutputTable(cOutputConnectionLeft)
-		  var outputRight as clDataTable = self.GetOutputTable(cOutputConnectionRight)
+		  var connJoined as clTransformerConnector = self.GetOutputConnector(cOutputConnectorJoined)
+		  var connLeft as clTransformerConnector = self.GetOutputConnector(cOutputConnectorLeft)
+		  var connRight as clTransformerConnector = self.GetOutputConnector(cOutputConnectorRight) 
+		  
+		  var OutputJoin as clDataTable =  connJoined.GetTable()
+		  var outputLeft as clDataTable = if(connLeft = nil , nil , connLeft.GetTable())
+		  var outputRight as clDataTable = if(connRight = nil, nil, connRight.GetTable())
 		  
 		  select case mode
 		    
 		  case JoinMode.InnerJoin
-		    OutputTable.AddMetaData("Transformation", "Inner join between " + tblleft.name + " and " + tblright.name+"." )
+		    OutputJoin.AddMetaData("Transformation", "Inner join between " + tblleft.name + " and " + tblright.name+"." )
 		    
 		    if outputLeft <> nil then outputLeft.AddMetaData("Transformation", "Non matching records from "+ tblleft.name  + " when joining with " + tblright.name+"." )
 		    
 		    if outputRight <> nil then outputRight.AddMetaData("Transformation", "Non matching records from "+ tblright.name  + " when joining with " + tblleft.name+"." )
 		    
 		  case JoinMode.OuterJoin
-		    OutputTable.AddMetaData("Transformation", "Outer join between " + tblleft.name + " and " + tblright.name+"." )
+		    OutputJoin.AddMetaData("Transformation", "Outer join between " + tblleft.name + " and " + tblright.name+"." )
 		    
 		  case JoinMode.LeftJoin
-		    OutputTable.AddMetaData("Transformation", "Left join between " + tblleft.name + " and " + tblright.name+"." )
+		    OutputJoin.AddMetaData("Transformation", "Left join between " + tblleft.name + " and " + tblright.name+"." )
 		    
 		  case else
-		    OutputTable.AddMetaData("Transformation", "Join between " + tblleft.name + " and " + tblright.name+"." )
+		    OutputJoin.AddMetaData("Transformation", "Join between " + tblleft.name + " and " + tblright.name+"." )
 		    
 		  end select
 		  
@@ -354,19 +370,19 @@ Inherits clAbstractTransformer
 	#tag EndProperty
 
 
-	#tag Constant, Name = cInputConnectionLeft, Type = String, Dynamic = False, Default = \"LeftInput", Scope = Public
+	#tag Constant, Name = cInputConnectorLeft, Type = String, Dynamic = False, Default = \"LeftInput", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = cInputConnectionRight, Type = String, Dynamic = False, Default = \"RightInput", Scope = Public
+	#tag Constant, Name = cInputConnectorRight, Type = String, Dynamic = False, Default = \"RightInput", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = cOutputConnectionJoined, Type = String, Dynamic = False, Default = \"JoinedOutput", Scope = Public
+	#tag Constant, Name = cOutputConnectorJoined, Type = String, Dynamic = False, Default = \"JoinedOutput", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = cOutputConnectionLeft, Type = String, Dynamic = False, Default = \"LeftOutput", Scope = Public
+	#tag Constant, Name = cOutputConnectorLeft, Type = String, Dynamic = False, Default = \"LeftOutput", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = cOutputConnectionRight, Type = String, Dynamic = False, Default = \"RightOutput", Scope = Public
+	#tag Constant, Name = cOutputConnectorRight, Type = String, Dynamic = False, Default = \"RightOutput", Scope = Public
 	#tag EndConstant
 
 
