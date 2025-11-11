@@ -70,6 +70,8 @@ Inherits clLinearTransformer
 		  
 		  var source as clDataTable = self.SourceTable
 		  
+		  if source = nil then return false
+		  
 		  var SortKeyColumns() as clAbstractDataSerie = Source.GetColumns(self.SortColumnsNames, False)
 		  
 		  var srt as new clSorter(SortKeyColumns, order)
