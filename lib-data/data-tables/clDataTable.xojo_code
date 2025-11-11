@@ -800,7 +800,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ApplyFilterFunction(pFilterFunction as RowFilter, paramarray pFunctionParameters as variant) As variant()
+		Function ApplyFilterFunction(pFilterFunction as RowFilter, pFunctionParameters() as variant) As variant()
 		  //  
 		  //  Applies a filter function to each data row of the table, returns a boolean data serie
 		  //  
@@ -809,7 +809,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - the parameters to pass to the function
 		  //  
 		  //  Returns:
-		  //  - a boolean data serie
+		  //  - an array of boolean
 		  //  
 		  
 		  var return_boolean() As Variant
@@ -838,6 +838,46 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  Return return_boolean
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ApplyFilterFunction(pFilterFunction as RowFilter, paramarray pFunctionParameters as variant) As variant()
+		  //  
+		  //  Applies a filter function to each data row of the table, returns a boolean data serie
+		  //  
+		  //  Parameters:
+		  //  - the address of the filter function
+		  //  - the parameters to pass to the function
+		  //  
+		  //  Returns:
+		  //  - an array of boolean
+		  //  
+		  
+		  
+		  return self.ApplyFilterFunction(pFilterFunction, pFunctionParameters)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ApplyFilterFunction(NewDataSerieName as string, pFilterFunction as RowFilter, paramarray pFunctionParameters as variant) As clBooleanDataSerie
+		  //  
+		  //  Applies a filter function to each data row of the table, returns a boolean data serie
+		  //  
+		  //  Parameters:
+		  //  - the address of the filter function
+		  //  - the parameters to pass to the function
+		  //  
+		  //  Returns:
+		  //  - a boolean data serie
+		  //  
+		  
+		  
+		  
+		  
+		  return new clBooleanDataSerie(NewDataSerieName, self.ApplyFilterFunction(pFilterFunction, pFunctionParameters))
+		   
 		End Function
 	#tag EndMethod
 

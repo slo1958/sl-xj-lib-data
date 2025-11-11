@@ -1537,10 +1537,11 @@ Protected Class clLibDataExample
 		  col_cloned_sales.SetStringFormat(new clRangeFormatting("",""))
 		  col_cloned_sales.AddFormattingRanges(colmin, colmax, collabel)
 		  
+		  // Get the results as a boolean data serie
+		  call table0.AddColumn(table0.ApplyFilterFunction("is_france",AddressOf BasicFieldFilter,"country","France"))
 		  
-		  call table0.AddColumn(new clBooleanDataSerie("is_france", table0.ApplyFilterFunction(AddressOf BasicFieldFilter,"country","France")))
+		  // Or create a boolean data serie from the returned array of boolean
 		  call table0.AddColumn(new clBooleanDataSerie("is_belgium", table0.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")))
-		  
 		  
 		  clBooleanDataSerie(table0.GetColumn("is_france")).SetStringFormat("≠ France","= France")
 		  
