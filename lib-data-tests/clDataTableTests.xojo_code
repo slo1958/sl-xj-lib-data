@@ -2732,6 +2732,26 @@ Protected Class clDataTableTests
 		  log.start_exec(CurrentMethodName)
 		  
 		  
+		  // Main data table
+		  var tsales as new clDataTable("Sales")
+		  
+		  var ccity As clAbstractDataSerie =  tsales.AddColumn(new clStringDataSerie("City"))
+		  var cqtt as clAbstractDataSerie =  tsales.AddColumn(new clNumberDataSerie("Quantity"))
+		  var cup as clAbstractDataSerie = tsales.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23))
+		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26))
+		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27))
+		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28))
+		  tsales.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
+		  
+		  call check_table(log, "tsales table integrity", nil, tsales) 
+		  
+		  
 		  var tcountries1 as new clDataTable("Countries1")
 		  call  tcountries1.AddColumn(new clStringDataSerie("Country"))
 		  call  tcountries1.AddColumn(new clStringDataSerie("City"))
@@ -2753,7 +2773,6 @@ Protected Class clDataTableTests
 		  call check_table(log, "tcountries table integrity", nil, tcountries2) 
 		  
 		  
-		  
 		  var tcountries3 as new clDataTable("Countries3")
 		  call  tcountries3.AddColumn(new clStringDataSerie("Country"))
 		  call  tcountries3.AddColumn(new clStringDataSerie("City"))
@@ -2769,25 +2788,6 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "tcountries table integrity", nil, tcountries3) 
 		  
-		  
-		  
-		  var tsales as new clDataTable("Sales")
-		  
-		  var ccity As clAbstractDataSerie =  tsales.AddColumn(new clStringDataSerie("City"))
-		  var cqtt as clAbstractDataSerie =  tsales.AddColumn(new clNumberDataSerie("Quantity"))
-		  var cup as clAbstractDataSerie = tsales.AddColumn(new clNumberDataSerie("UnitPrice"))
-		  
-		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21))
-		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 22))
-		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 23))
-		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 24))
-		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 25))
-		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 26))
-		  tsales.AddRow(new Dictionary("City":"Liege", "Quantity":12, "Unitprice": 27))
-		  tsales.AddRow(new Dictionary("City":"Paris", "Quantity":12, "Unitprice": 28))
-		  tsales.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
-		  
-		  call check_table(log, "tsales table integrity", nil, tsales) 
 		  
 		  var tjoin1 as clDataTable = tsales.InnerJoin(tcountries1, array("City"))
 		  
@@ -2936,47 +2936,8 @@ Protected Class clDataTableTests
 		  
 		  log.start_exec(CurrentMethodName)
 		  
-		  // First join table: with a match with some cities, only row per city
-		  var tcountriesWithOneCity as new clDataTable("Countries1")
-		  call  tcountriesWithOneCity.AddColumn(new clStringDataSerie("Country"))
-		  call  tcountriesWithOneCity.AddColumn(new clStringDataSerie("City"))
-		  tcountriesWithOneCity.AddRow(new Dictionary("Country":"Belgium","City":"Brussels"))
-		  tcountriesWithOneCity.AddRow(new Dictionary("Country":"Belgium","City":"Liege"))
-		  tcountriesWithOneCity.AddRow(new Dictionary("Country":"France","City":"Paris"))
-		  tcountriesWithOneCity.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
-		  tcountriesWithOneCity.AddRow(new Dictionary("City":"London"))
 		  
-		  call check_table(log, "tcountries table integrity", nil, tcountriesWithOneCity) 
-		  
-		  // Second join table; no matching cities
-		  var tcountriesWithoutCity as new clDataTable("Countries2")
-		  call  tcountriesWithoutCity.AddColumn(new clStringDataSerie("Country"))
-		  call  tcountriesWithoutCity.AddColumn(new clStringDataSerie("City"))
-		  tcountriesWithoutCity.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
-		  tcountriesWithoutCity.AddRow(new Dictionary("Country":"France","City":"Lyon"))
-		  tcountriesWithoutCity.AddRow(new Dictionary("Country":"Spain","City":"Madrid"))
-		  
-		  call check_table(log, "tcountries table integrity", nil, tcountriesWithoutCity) 
-		  
-		  
-		  // Third join table, with mutlitple matching rows for some cities
-		  var tcountriesWithMultipleCities as new clDataTable("Countries3")
-		  call  tcountriesWithMultipleCities.AddColumn(new clStringDataSerie("Country"))
-		  call  tcountriesWithMultipleCities.AddColumn(new clStringDataSerie("City"))
-		  call tcountriesWithMultipleCities.AddColumn(new clStringDataSerie("Something"))
-		  
-		  tcountriesWithMultipleCities.AddRow(new Dictionary("Country":"Belgium","City":"Brussels","Something":"Alpha"))
-		  tcountriesWithMultipleCities.AddRow(new Dictionary("Country":"Belgium","City":"Liege","Something":"Beta"))
-		  tcountriesWithMultipleCities.AddRow(new Dictionary("Country":"Belgium","City":"Liege","Something":"Gamma"))
-		  tcountriesWithMultipleCities.AddRow(new Dictionary("Country":"France","City":"Paris","Something":"Delta"))
-		  tcountriesWithMultipleCities.AddRow(new Dictionary("Country":"France","City":"Lille","Something":"Omega"))
-		  tcountriesWithMultipleCities.AddRow(new Dictionary("Country":"USA","City":"NewYork","Something":"Zeta"))
-		  tcountriesWithMultipleCities.AddRow(new Dictionary("City":"London"))
-		  
-		  call check_table(log, "tcountries table integrity", nil, tcountriesWithMultipleCities) 
-		  
-		  
-		  
+		  // Create main table, to be joined
 		  var tsales as new clDataTable("Sales")
 		  
 		  var ccity As clAbstractDataSerie =  tsales.AddColumn(new clStringDataSerie("City"))
@@ -2995,24 +2956,66 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "tsales table integrity", nil, tsales) 
 		  
-		  var tinnerJoin_oneCity as clDataTable = tsales.InnerJoin(tcountriesWithOneCity, array("City"))
 		  
-		  var touterJoin_OneCity as clDataTable = tsales.OuterJoin(tcountriesWithOneCity, array("City"), "JoinStatus")
+		  // First join table: with a match with some cities, only row per city
+		  var tcountriesWithOneMatchingCityRow as new clDataTable("Countries1")
+		  call  tcountriesWithOneMatchingCityRow.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountriesWithOneMatchingCityRow.AddColumn(new clStringDataSerie("City"))
+		  tcountriesWithOneMatchingCityRow.AddRow(new Dictionary("Country":"Belgium","City":"Brussels"))
+		  tcountriesWithOneMatchingCityRow.AddRow(new Dictionary("Country":"Belgium","City":"Liege"))
+		  tcountriesWithOneMatchingCityRow.AddRow(new Dictionary("Country":"France","City":"Paris"))
+		  tcountriesWithOneMatchingCityRow.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  tcountriesWithOneMatchingCityRow.AddRow(new Dictionary("City":"London"))
 		  
-		  var tinnerJoin_NoCity as clDataTable = tsales.InnerJoin(tcountriesWithoutCity, array("City"))
+		  call check_table(log, "tcountries table integrity", nil, tcountriesWithOneMatchingCityRow) 
 		  
-		  var touterJoin_NoCity as clDataTable = tsales.OuterJoin(tcountriesWithoutCity, array("City"), "JoinStatus")
+		  // Second join table; no matching cities
+		  var tcountriesWithoutMatchingCityRow as new clDataTable("Countries2")
+		  call  tcountriesWithoutMatchingCityRow.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountriesWithoutMatchingCityRow.AddColumn(new clStringDataSerie("City"))
+		  tcountriesWithoutMatchingCityRow.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  tcountriesWithoutMatchingCityRow.AddRow(new Dictionary("Country":"France","City":"Lyon"))
+		  tcountriesWithoutMatchingCityRow.AddRow(new Dictionary("Country":"Spain","City":"Madrid"))
 		  
-		  var tinnerJoin_MulitpleCities as clDataTable = tsales.InnerJoin(tcountriesWithMultipleCities, array("City"))
-		  
-		  var touterJoin_MulitpleCities as clDataTable = tsales.OuterJoin(tcountriesWithMultipleCities, array("City"), "JoinStatus")
+		  call check_table(log, "tcountries table integrity", nil, tcountriesWithoutMatchingCityRow) 
 		  
 		  
-		  var tinnerJoin_oneCity_expected as new clDataTable("X1")
-		  call tinnerJoin_oneCity_expected.AddColumn(new clStringDataSerie("City"))
-		  call tinnerJoin_oneCity_expected.AddColumn(new clNumberDataSerie("Quantity"))
-		  call tinnerJoin_oneCity_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
-		  call tinnerJoin_oneCity_expected.AddColumn(new clStringDataSerie("Country"))
+		  // Third join table, with mutlitple matching rows for some cities
+		  var tcountriesWithMulitpleMatchingCityRow as new clDataTable("Countries3")
+		  call  tcountriesWithMulitpleMatchingCityRow.AddColumn(new clStringDataSerie("Country"))
+		  call  tcountriesWithMulitpleMatchingCityRow.AddColumn(new clStringDataSerie("City"))
+		  call tcountriesWithMulitpleMatchingCityRow.AddColumn(new clStringDataSerie("Something"))
+		  
+		  tcountriesWithMulitpleMatchingCityRow.AddRow(new Dictionary("Country":"Belgium","City":"Brussels","Something":"Alpha"))
+		  tcountriesWithMulitpleMatchingCityRow.AddRow(new Dictionary("Country":"Belgium","City":"Liege","Something":"Beta"))
+		  tcountriesWithMulitpleMatchingCityRow.AddRow(new Dictionary("Country":"Belgium","City":"Liege","Something":"Gamma"))
+		  tcountriesWithMulitpleMatchingCityRow.AddRow(new Dictionary("Country":"France","City":"Paris","Something":"Delta"))
+		  tcountriesWithMulitpleMatchingCityRow.AddRow(new Dictionary("Country":"France","City":"Lille","Something":"Omega"))
+		  tcountriesWithMulitpleMatchingCityRow.AddRow(new Dictionary("Country":"USA","City":"NewYork","Something":"Zeta"))
+		  tcountriesWithMulitpleMatchingCityRow.AddRow(new Dictionary("City":"London"))
+		  
+		  call check_table(log, "tcountries table integrity", nil, tcountriesWithMulitpleMatchingCityRow) 
+		  
+		  
+		  
+		  var tinnerJoin_OneCity as clDataTable = tsales.InnerJoin(tcountriesWithOneMatchingCityRow, array("City"))
+		  
+		  var touterJoin_OneCity as clDataTable = tsales.OuterJoin(tcountriesWithOneMatchingCityRow, array("City"), "JoinStatus")
+		  
+		  var tinnerJoin_NoCity as clDataTable = tsales.InnerJoin(tcountriesWithoutMatchingCityRow, array("City"))
+		  
+		  var touterJoin_NoCity as clDataTable = tsales.OuterJoin(tcountriesWithoutMatchingCityRow, array("City"), "JoinStatus")
+		  
+		  var tinnerJoin_MulitpleCities as clDataTable = tsales.InnerJoin(tcountriesWithMulitpleMatchingCityRow, array("City"))
+		  
+		  var touterJoin_MulitpleCities as clDataTable = tsales.OuterJoin(tcountriesWithMulitpleMatchingCityRow, array("City"), "JoinStatus")
+		  
+		  
+		  var tinnerJoin_OneCity_expected as new clDataTable("Inner-One city row")
+		  call tinnerJoin_OneCity_expected.AddColumn(new clStringDataSerie("City"))
+		  call tinnerJoin_OneCity_expected.AddColumn(new clNumberDataSerie("Quantity"))
+		  call tinnerJoin_OneCity_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
+		  call tinnerJoin_OneCity_expected.AddColumn(new clStringDataSerie("Country"))
 		  
 		  
 		  tinnerJoin_oneCity_expected.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21,"Country":"Belgium"))
@@ -3026,7 +3029,7 @@ Protected Class clDataTableTests
 		  
 		  
 		  //
-		  var touterJoin_OneCity_expected as new clDataTable("X2")
+		  var touterJoin_OneCity_expected as new clDataTable("Outer-One city row")
 		  call touterJoin_OneCity_expected.AddColumn(new clStringDataSerie("City"))
 		  call touterJoin_OneCity_expected.AddColumn(new clNumberDataSerie("Quantity"))
 		  call touterJoin_OneCity_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
@@ -3047,13 +3050,13 @@ Protected Class clDataTableTests
 		  
 		  
 		  
-		  var tinnerJoin_NoCity_expected as new clDataTable("X3")
+		  var tinnerJoin_NoCity_expected as new clDataTable("Inner-No city row")
 		  call tinnerJoin_NoCity_expected.AddColumn(new clStringDataSerie("City"))
 		  call tinnerJoin_NoCity_expected.AddColumn(new clNumberDataSerie("Quantity"))
 		  call tinnerJoin_NoCity_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
 		  call tinnerJoin_NoCity_expected.AddColumn(new clStringDataSerie("Country"))
 		  
-		  var touterJoin_NoCity_expected as new clDataTable("X4")
+		  var touterJoin_NoCity_expected as new clDataTable("Outer-No city row")
 		  call touterJoin_NoCity_expected.AddColumn(new clStringDataSerie("City"))
 		  call touterJoin_NoCity_expected.AddColumn(new clNumberDataSerie("Quantity"))
 		  call touterJoin_NoCity_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
@@ -3076,7 +3079,7 @@ Protected Class clDataTableTests
 		  
 		  
 		  
-		  var tinnerJoin_MulitpleCities_expected as new clDataTable("X5")
+		  var tinnerJoin_MulitpleCities_expected as new clDataTable("Inner-Multiple city rows")
 		  call tinnerJoin_MulitpleCities_expected.AddColumn(new clStringDataSerie("City"))
 		  call tinnerJoin_MulitpleCities_expected.AddColumn(new clNumberDataSerie("Quantity"))
 		  call tinnerJoin_MulitpleCities_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
@@ -3097,7 +3100,7 @@ Protected Class clDataTableTests
 		  
 		  
 		  
-		  var touterJoin_MulitpleCities_expected as new clDataTable("X6")
+		  var touterJoin_MulitpleCities_expected as new clDataTable("Outer-Mulitple city rows")
 		  call touterJoin_MulitpleCities_expected.AddColumn(new clStringDataSerie("City"))
 		  call touterJoin_MulitpleCities_expected.AddColumn(new clNumberDataSerie("Quantity"))
 		  call touterJoin_MulitpleCities_expected.AddColumn(new clNumberDataSerie("UnitPrice"))
@@ -3185,6 +3188,140 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"Selected France", expectedTableFrance, tableFrance)
 		  call check_table(log,"Selected not france", expectedTableNotFrance, tableNotFrance)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_052(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var tableInput As New clDataTable("mytable")
+		  var tableOutput as clDataTable
+		  
+		  call tableInput.AddColumn(new clStringDataSerie("country"))
+		  call tableInput.AddColumn(new clStringDataSerie("city"))
+		  call tableInput.AddColumn(new clNumberDataSerie("sales"))
+		  
+		  tableInput.AddRow(Array("France","Paris",1100))
+		  tableInput.AddRow(Array("","Marseille",1200))
+		  tableInput.AddRow(Array("Belgique","",1300))
+		  tableInput.AddRow(Array("USA","NewYork",1400))
+		  tableInput.AddRow(Array("Belgique","Bruxelles",1500))
+		  tableInput.AddRow(Array("USA","Chicago",1600))
+		  
+		  call check_table(log, "table0 integrity", nil, tableInput) 
+		  
+		  
+		  
+		  var t1 as new clFunctionTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate, array("Taxes","Sales"), VariantArray(0.06))
+		  
+		  if t1.Transform() then tableOutput = t1.GetOutputTable
+		  
+		  var expectedOutput as clDataTable = tableInput.clone("expected output")
+		  var tx as  clNumberDataSerie
+		  tx = tableInput.GetNumberColumn("Sales")*0.06
+		  
+		  call expectedOutput.AddColumn(tx.Rename("Taxes"))
+		  
+		  call check_table(log, "results", expectedOutput, tableOutput) 
+		  
+		  
+		  
+		  var statusTable as new clDataTable("Status")
+		  call statusTable.AddColumn(new clStringDataSerie("field"))
+		  call statusTable.AddColumn(new clBooleanDataSerie("local"))
+		  
+		  for each v as string  in array("Country", "City","Sales","Taxes")
+		    var r as new clDataRow
+		    r.SetCell("field", v)
+		    r.SetCell("local", tableOutput.GetColumn(v).IsLinkedToTable(tableOutput))
+		    statusTable.AddRow(r)
+		    
+		  next
+		  
+		  var expectedstatusTable as   clDataTable = statusTable.CloneStructure("ExpStatus")
+		  expectedstatusTable.AddRow(new cldatarow("field":"Country","local":false))
+		  expectedstatusTable.AddRow(new cldatarow("field":"City","local":false))
+		  expectedstatusTable.AddRow(new cldatarow("field":"Sales","local":false))
+		  expectedstatusTable.AddRow(new cldatarow("field":"Taxes","local":true))
+		  
+		  call check_table(log, "status tables", expectedstatusTable, statusTable) 
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_053(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var tableInput As New clDataTable("mytable")
+		  var tableOutput as clDataTable
+		  
+		  call tableInput.AddColumn(new clStringDataSerie("country"))
+		  call tableInput.AddColumn(new clStringDataSerie("city"))
+		  call tableInput.AddColumn(new clNumberDataSerie("sales1"))
+		  call tableInput.AddColumn(new clNumberDataSerie("sales2"))
+		  
+		  
+		  tableInput.AddRow(Array("France","Paris",1100, 800))
+		  tableInput.AddRow(Array("","Marseille",1200, 900))
+		  tableInput.AddRow(Array("Belgique","",1300, 2000))
+		  tableInput.AddRow(Array("USA","NewYork",1400, 2100))
+		  tableInput.AddRow(Array("Belgique","Bruxelles",1500, 1700))
+		  tableInput.AddRow(Array("USA","Chicago",1600, 890))
+		  
+		  call check_table(log, "table0 integrity", nil, tableInput) 
+		  
+		  
+		  var p() as pair = array(1:array("Taxes1","Sales1"), 2:array("Taxes2","Sales2"))
+		  
+		  var t1 as new clRepeatFunctionTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate, p, VariantArray(0.06))
+		  
+		  if t1.Transform() then tableOutput = t1.GetOutputTable
+		  
+		  var expectedOutput as clDataTable = tableInput.clone("expected output")
+		  
+		  var tx as  clNumberDataSerie
+		  
+		  tx = tableInput.GetNumberColumn("Sales1")*0.06
+		  call expectedOutput.AddColumn(tx.Rename("Taxes1"))
+		  
+		  tx = tableInput.GetNumberColumn("Sales2")*0.06
+		  call expectedOutput.AddColumn(tx.Rename("Taxes2"))
+		  
+		  
+		  call check_table(log, "results", expectedOutput, tableOutput) 
+		  
+		  
+		  
+		  var statusTable as new clDataTable("Status")
+		  call statusTable.AddColumn(new clStringDataSerie("field"))
+		  call statusTable.AddColumn(new clBooleanDataSerie("local"))
+		  
+		  for each v as string  in array("Country", "City","Sales1","Taxes1", "Sales2","Taxes2")
+		    var r as new clDataRow
+		    r.SetCell("field", v)
+		    r.SetCell("local", tableOutput.GetColumn(v).IsLinkedToTable(tableOutput))
+		    statusTable.AddRow(r)
+		    
+		  next
+		  
+		  var expectedstatusTable as   clDataTable = statusTable.CloneStructure("ExpStatus")
+		  expectedstatusTable.AddRow(new cldatarow("field":"Country","local":false))
+		  expectedstatusTable.AddRow(new cldatarow("field":"City","local":false))
+		  expectedstatusTable.AddRow(new cldatarow("field":"Sales1","local":false))
+		  expectedstatusTable.AddRow(new cldatarow("field":"Taxes1","local":true))
+		  expectedstatusTable.AddRow(new cldatarow("field":"Sales2","local":false))
+		  expectedstatusTable.AddRow(new cldatarow("field":"Taxes2","local":true))
+		  
+		  call check_table(log, "status tables", expectedstatusTable, statusTable) 
 		  
 		  log.end_exec(CurrentMethodName)
 		  

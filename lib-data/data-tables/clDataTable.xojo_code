@@ -769,7 +769,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Sub AdjustLength()
 		  //  
-		  //   adjust  the length of each data serie in the table, to match the longest data serie
+		  //  Adjust  the length of each data serie in the table, to match the longest data serie
 		  //  to use after directly inserting in columns 
 		  //  In normal case, all columns have the same length.
 		  //  
@@ -3565,6 +3565,40 @@ Implements TableColumnReaderInterface,Iterable
 		  write_to.DoneWithTable
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SelectAllColumns(AllowLocalColumns as Boolean = False) As clDataTable
+		  //
+		  // Create a new logical table (view) with  all columns from source table
+		  // Use the Clone() method to create a new table with cloned columns
+		  //
+		  //
+		  // Returns
+		  // - New table
+		  //
+		  
+		  
+		  var res As New clDataTable("select all " + Self.Name)
+		  
+		  res. AddSourceToMetadata( self.Name)
+		  res.RowIndexColumn = Self.RowIndexColumn
+		  //  
+		  //  link to parent must be called BEFORE adding logical columns
+		  //  
+		  res.link_to_parent = Self
+		  
+		  for each column As clAbstractDataSerie in self.columns
+		    call res.AddColumn(column)
+		    
+		  next
+		  
+		  res.allow_local_columns = AllowLocalColumns
+		  
+		  Return res
+		  
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

@@ -103,7 +103,7 @@ Protected Class clAbstractTransformer
 		  // Returns:
 		  // selected output table
 		  //
-		   
+		  
 		  if self.firstOutputConnection = nil then
 		    return nil
 		    
@@ -249,6 +249,10 @@ Protected Class clAbstractTransformer
 		  
 		End Function
 	#tag EndMethod
+
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function TransformerFunction(table as clDatatable, columns() as string, parameters() as variant) As Boolean
+	#tag EndDelegateDeclaration
 
 
 	#tag Note, Name = Description
