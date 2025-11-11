@@ -39,7 +39,7 @@ Inherits clLinearTransformer
 		Function Transform() As Boolean
 		  
 		  
-		  var source as clDataTable = self.GetInputConnector(self.cInputConnectorName).GetTable()
+		  var source as clDataTable = self.GetInputTable(self.cInputConnectorName)
 		  
 		  var columnsToUnpivot() as string
 		  

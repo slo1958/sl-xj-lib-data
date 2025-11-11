@@ -53,7 +53,7 @@ Inherits clLinearTransformer
 		Function Transform() As Boolean
 		  // Calling the overridden superclass method.
 		  
-		  var source as clDataTable = self.GetInputConnector(self.cInputConnectorName).GetTable()
+		  var source as clDataTable = self.GetInputTable(self.cInputConnectorName) 
 		  
 		  var dimensionColumns() as clAbstractDataSerie = source.GetColumns(ColumnsToRetain, false)
 		  var pivotColumn as clAbstractDataSerie = source.GetColumn(PivotColumnName)

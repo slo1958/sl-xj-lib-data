@@ -269,8 +269,8 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Function Transform() As Boolean
 		  
-		  var tblleft as clDataTable = self.GetInputConnector(cInputConnectorLeft).GetTable()
-		  var tblright as clDataTable = self.GetInputConnector(cInputConnectorRight).GetTable()
+		  var tblleft as clDataTable = self.GetInputTable(cInputConnectorLeft)
+		  var tblright as clDataTable = self.GetInputTable(cInputConnectorRight)
 		  
 		  if tblleft = nil or tblright = nil then
 		    return false
@@ -304,13 +304,9 @@ Inherits clAbstractTransformer
 		  
 		  // Update metadata
 		  
-		  var connJoined as clTransformerConnector = self.GetOutputConnector(cOutputConnectorJoined)
-		  var connLeft as clTransformerConnector = self.GetOutputConnector(cOutputConnectorLeft)
-		  var connRight as clTransformerConnector = self.GetOutputConnector(cOutputConnectorRight) 
-		  
-		  var OutputJoin as clDataTable =  connJoined.GetTable()
-		  var outputLeft as clDataTable = if(connLeft = nil , nil , connLeft.GetTable())
-		  var outputRight as clDataTable = if(connRight = nil, nil, connRight.GetTable())
+		  var OutputJoin as clDataTable =  self.GetOutputTable(cOutputConnectorJoined)
+		  var outputLeft as clDataTable = Self.GetOutputTable(cOutputConnectorLeft)
+		  var outputRight as clDataTable = Self.GetOutputTable(cOutputConnectorRight) 
 		  
 		  select case mode
 		    

@@ -41,8 +41,8 @@ Inherits clAbstractTransformer
 		Private Function RunLookup() As boolean
 		  const cstSuccessMark = "$$$M$$$"
 		  
-		  var tblleft as clDataTable = self.GetInputConnector(cInputConnectorMain).GetTable()
-		  var tblright as clDataTable = self.GetInputConnector(cInputConnectorLookup).GetTable()
+		  var tblleft as clDataTable = self.GetInputTable(cInputConnectorMain) 
+		  var tblright as clDataTable = self.GetInputTable(cInputConnectorLookup)
 		  
 		  
 		  var buffer as new Dictionary

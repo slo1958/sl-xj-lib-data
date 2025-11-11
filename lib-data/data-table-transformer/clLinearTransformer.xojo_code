@@ -33,7 +33,7 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Function SourceTable() As clDataTable
 		  
-		  return   self.GetInputConnector(self.cInputConnectorName).GetTable()
+		  return   self.GetInputTable(self.cInputConnectorName)
 		  
 		  
 		End Function

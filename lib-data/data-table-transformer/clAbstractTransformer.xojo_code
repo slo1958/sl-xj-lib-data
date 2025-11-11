@@ -59,6 +59,27 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetInputTable(InputConnectorName as string) As clDataTable
+		  //
+		  // Returns the input table related to the specified input connection
+		  //
+		  // Parameters:
+		  // - input connector name
+		  //
+		  // Returns:
+		  // selected input table
+		  //
+		  
+		  var connector as clTransformerConnector = self.GetInputConnector(InputConnectorName)
+		  
+		  return if(connector = nil, nil, connector.GetTable())
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetOutputConnector(OutputConnectorName as string = "") As clTransformerConnector
 		  //
 		  // Returns the output connector matching passed name or the first output connector if name is empty
@@ -84,24 +105,21 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetOutputTable() As clDataTable
+		Function GetOutputTable(OutputConnectorName as string = "") As clDataTable
 		  //
-		  // Returns the output table related to the first output connection
+		  // Returns the output table related to the specified output connection
 		  //
 		  // Parameters:
-		  // (nothing)
+		  // - output connector name
 		  //
 		  // Returns:
 		  // selected output table
 		  //
 		  
-		  if self.firstOutputConnector = nil then
-		    return nil
-		    
-		  else
-		    return self.firstOutputConnector.GetTable
-		    
-		  end if
+		  var connector as clTransformerConnector = self.GetOutputConnector(OutputConnectorName)
+		  
+		  return if(connector = nil, nil, connector.GetTable())
+		  
 		  
 		  
 		End Function
