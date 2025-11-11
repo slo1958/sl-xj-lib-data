@@ -10,7 +10,7 @@ Inherits clLinearTransformer
 		  // Parameters:
 		  // - Input table
 		  // - grouping_dimenions() list of columns to be used as grouping dimensions
-		  // - measures() pair of columnname : agg mode
+		  // - measures() pair of (columnname : agg mode)
 		  //
 		  
 		  super.Constructor(MainTable)
@@ -224,7 +224,7 @@ Inherits clLinearTransformer
 			Group="Behavior"
 			InitialValue=""
 			Type="string"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

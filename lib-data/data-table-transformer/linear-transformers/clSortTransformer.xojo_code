@@ -4,12 +4,12 @@ Inherits clLinearTransformer
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, ColumnNames() as string, prmOrder as SortOrder = SortOrder.ascending)
 		  //
-		  // Group records per distinct values in the grouping_dimensions
-		  // This is typically used to get a list of distinct combinations
-		  //
+		  // Sort the rows of the datatable using one or more column as sort key. The order is defined for the combined sort keys.
+		  // 
 		  // Parameters:
 		  // - Input table
-		  // - grouping_dimenions() list of columns to be used as grouping dimensions
+		  // - name of columns used as sort key
+		  // - sort order
 		  //
 		  
 		  super.Constructor(MainTable)
