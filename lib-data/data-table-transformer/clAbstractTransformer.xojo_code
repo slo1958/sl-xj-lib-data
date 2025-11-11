@@ -254,6 +254,21 @@ Protected Class clAbstractTransformer
 		Delegate Function TransformerFunction(table as clDatatable, columns() as string, parameters() as variant) As Boolean
 	#tag EndDelegateDeclaration
 
+	#tag Method, Flags = &h0
+		Sub WriteLog(message as string, paramarray txt as string)
+		  //if self.verbose then
+		  var tmp as string = message
+		  
+		  for i as integer = 0 to txt.LastIndex
+		    tmp = tmp.ReplaceAll("%"+str(i), txt(i))
+		  next
+		  
+		  System.DebugLog(message)
+		  
+		  //end if
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Description
 		

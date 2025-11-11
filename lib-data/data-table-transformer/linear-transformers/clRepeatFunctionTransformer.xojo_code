@@ -2,7 +2,7 @@
 Protected Class clRepeatFunctionTransformer
 Inherits clLinearTransformer
 	#tag Method, Flags = &h0
-		Sub Constructor(MainTable as clDataTable, TrsfFunction as TransformerFunction, ColumnNames() as pair, Parameters() as variant)
+		Sub Constructor(MainTable as clDataTable, TrsfFunction as TransformerFunction, ColumnNames() as string, Parameters() as variant)
 		  //
 		  // Run a transformation function to update data, one column at a time
 		  // The output table is a view, the transformation function is allowed to add new columns
@@ -18,8 +18,10 @@ Inherits clLinearTransformer
 		  super.Constructor(MainTable)
 		  
 		  self.fct = TrsfFunction
+		   
 		  self.FctColumnNames = ColumnNames
 		  self.FctParameters = Parameters
+		  
 		  
 		  
 		  
@@ -43,8 +45,14 @@ Inherits clLinearTransformer
 		  
 		  var success as Boolean = True
 		  
-		  for each colinfo as pair in FctColumnNames
-		     success = success and fct.Invoke(output, colinfo.right, FctParameters)
+		  for each colname as string in self.FctColumnNames
+		    var tmp as Boolean = fct.Invoke(output, array(colname), self.FctParameters)
+		    if not tmp then
+		      WriteLog("Call with %0 failed.", colname)
+		      
+		    end if
+		    
+		     success = success and tmp
 		    
 		  next
 		  
@@ -63,7 +71,7 @@ Inherits clLinearTransformer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		FctColumnNames() As pair
+		FctColumnNames() As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

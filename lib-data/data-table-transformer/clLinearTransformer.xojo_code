@@ -8,7 +8,7 @@ Inherits clAbstractTransformer
 		  
 		  self.AddInput(new clTransformerConnection(cInputConnectionName, MainTable))
 		  
-		  self.AddOutput(new clTransformerConnection(cOutputConnectionName, "Results"))
+		  self.AddOutput(new clTransformerConnection(cOutputConnectionName, cDefaultOutputTableName))
 		  
 		  return
 		  
@@ -46,6 +46,9 @@ Inherits clAbstractTransformer
 		
 	#tag EndNote
 
+
+	#tag Constant, Name = cDefaultOutputTableName, Type = String, Dynamic = False, Default = \"Results", Scope = Public
+	#tag EndConstant
 
 	#tag Constant, Name = cInputConnectionName, Type = String, Dynamic = False, Default = \"Input", Scope = Public
 	#tag EndConstant

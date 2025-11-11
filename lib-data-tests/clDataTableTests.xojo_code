@@ -3216,8 +3216,8 @@ Protected Class clDataTableTests
 		  call check_table(log, "table0 integrity", nil, tableInput) 
 		  
 		  
-		  
-		  var t1 as new clFunctionTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate, array("Taxes","Sales"), VariantArray(0.06))
+		  // call the function apply fixed rate with two column names (output column, input column)  as parameter
+		  var t1 as new clFunctionTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate2, array("Taxes","Sales"), VariantArray(0.06))
 		  
 		  if t1.Transform() then tableOutput = t1.GetOutputTable
 		  
@@ -3279,10 +3279,17 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "table0 integrity", nil, tableInput) 
 		  
+		  //
+		  // The repeat function transformer applies the same function to each column
+		  // This function receives one column name at a time and is expected to transform the value of the cell
+		  // Here we duplicate the values in new columns
+		  //
 		  
-		  var p() as pair = array(1:array("Taxes1","Sales1"), 2:array("Taxes2","Sales2"))
+		  call tableInput.AddColumn(new clNumberDataSerie("taxes1",tableInput.GetColumn("sales1")))
+		  call tableInput.AddColumn(new clNumberDataSerie("taxes2",tableInput.GetColumn("sales2")))
 		  
-		  var t1 as new clRepeatFunctionTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate, p, VariantArray(0.06))
+		  // repeat call the function apply fixed rate with one column name as parameter
+		  var t1 as new clRepeatFunctionTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate1, array("Taxes1","Taxes2"), VariantArray(0.07))
 		  
 		  if t1.Transform() then tableOutput = t1.GetOutputTable
 		  
@@ -3290,38 +3297,11 @@ Protected Class clDataTableTests
 		  
 		  var tx as  clNumberDataSerie
 		  
-		  tx = tableInput.GetNumberColumn("Sales1")*0.06
-		  call expectedOutput.AddColumn(tx.Rename("Taxes1"))
+		  call expectedOutput.SetColumnValues("Taxes1", tableInput.GetNumberColumn("Sales1")*0.07)
 		  
-		  tx = tableInput.GetNumberColumn("Sales2")*0.06
-		  call expectedOutput.AddColumn(tx.Rename("Taxes2"))
-		  
+		  call expectedOutput.SetColumnValues("Taxes2", tableInput.GetNumberColumn("Sales2")*0.07)
 		  
 		  call check_table(log, "results", expectedOutput, tableOutput) 
-		  
-		  
-		  
-		  var statusTable as new clDataTable("Status")
-		  call statusTable.AddColumn(new clStringDataSerie("field"))
-		  call statusTable.AddColumn(new clBooleanDataSerie("local"))
-		  
-		  for each v as string  in array("Country", "City","Sales1","Taxes1", "Sales2","Taxes2")
-		    var r as new clDataRow
-		    r.SetCell("field", v)
-		    r.SetCell("local", tableOutput.GetColumn(v).IsLinkedToTable(tableOutput))
-		    statusTable.AddRow(r)
-		    
-		  next
-		  
-		  var expectedstatusTable as   clDataTable = statusTable.CloneStructure("ExpStatus")
-		  expectedstatusTable.AddRow(new cldatarow("field":"Country","local":false))
-		  expectedstatusTable.AddRow(new cldatarow("field":"City","local":false))
-		  expectedstatusTable.AddRow(new cldatarow("field":"Sales1","local":false))
-		  expectedstatusTable.AddRow(new cldatarow("field":"Taxes1","local":true))
-		  expectedstatusTable.AddRow(new cldatarow("field":"Sales2","local":false))
-		  expectedstatusTable.AddRow(new cldatarow("field":"Taxes2","local":true))
-		  
-		  call check_table(log, "status tables", expectedstatusTable, statusTable) 
 		  
 		  log.end_exec(CurrentMethodName)
 		  

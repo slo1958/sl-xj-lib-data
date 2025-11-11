@@ -111,7 +111,29 @@ Protected Module clDataTable_tests_support
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function TransfomerFctApplyFixedRate(t as clDataTable, columns() as string, params() as variant) As boolean
+		Function TransfomerFctApplyFixedRate1(t as clDataTable, columns() as string, params() as variant) As boolean
+		  
+		  var rate as Double = params(0)
+		  
+		  
+		  var ColumnName as string = columns(0)
+		  
+		  var SrcColumn as clNumberDataSerie = clNumberDataSerie(t.GetColumn(ColumnName))
+		  
+		  if SrcColumn = nil then Return false
+		  
+		  var resColumn as clNumberDataSerie = SrcColumn * rate
+		  
+		  call t.SetColumnValues(ColumnName, resColumn, true)
+		  
+		  return true
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function TransfomerFctApplyFixedRate2(t as clDataTable, columns() as string, params() as variant) As boolean
 		  
 		  var rate as Double = params(0)
 		  
