@@ -802,7 +802,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function ApplyFilterFunction(pFilterFunction as RowFilter, pFunctionParameters() as variant) As variant()
 		  //  
-		  //  Applies a filter function to each data row of the table, returns a boolean data serie
+		  //  Applies a filter function to each data row of the table, returns an array of boolean
 		  //  
 		  //  Parameters:
 		  //  - the address of the filter function
@@ -844,7 +844,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function ApplyFilterFunction(pFilterFunction as RowFilter, paramarray pFunctionParameters as variant) As variant()
 		  //  
-		  //  Applies a filter function to each data row of the table, returns a boolean data serie
+		  //  Applies a filter function to each data row of the table, returns an array of boolean
 		  //  
 		  //  Parameters:
 		  //  - the address of the filter function
@@ -853,7 +853,6 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - an array of boolean
 		  //  
-		  
 		  
 		  return self.ApplyFilterFunction(pFilterFunction, pFunctionParameters)
 		  
@@ -872,9 +871,6 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a boolean data serie
 		  //  
-		  
-		  
-		  
 		  
 		  return new clBooleanDataSerie(NewDataSerieName, self.ApplyFilterFunction(pFilterFunction, pFunctionParameters))
 		   
