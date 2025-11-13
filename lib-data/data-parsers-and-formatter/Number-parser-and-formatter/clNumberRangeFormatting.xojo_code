@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clRangeFormatting
+Protected Class clNumberRangeFormatting
 Implements NumberFormatInteraface
 	#tag Method, Flags = &h0
 		Sub AddRange(low_bound as double, high_bound as double, label as string)

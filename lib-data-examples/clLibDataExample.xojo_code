@@ -1084,7 +1084,7 @@ Protected Class clLibDataExample
 		  
 		  
 		  var table1 as new clDataTable("test2", new clDBReader(db.SelectSql("select * from test1"))) 
-		   
+		  
 		  table1.save(new clDBWriter(new clSqliteDBAccess(db)))
 		  
 		  var table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
@@ -1397,7 +1397,7 @@ Protected Class clLibDataExample
 		  
 		  call table0.AddColumn(col_cloned_sales)
 		  
-		  col_cloned_sales.SetStringFormat(new clRangeFormatting("",""))
+		  col_cloned_sales.SetStringFormat(new clNumberRangeFormatting("",""))
 		  col_cloned_sales.AddFormattingRange(0,999.99,"small")
 		  col_cloned_sales.AddFormattingRange(1000,1999.99,"medium")
 		  col_cloned_sales.AddFormattingRange(2000,2999.99,"big")
@@ -1533,7 +1533,7 @@ Protected Class clLibDataExample
 		  rangeTable.AddRow(new Dictionary("min_value":1000, "max_value": 1999.999, "range_label":"Medium"))
 		  rangeTable.AddRow(new Dictionary("min_value":2000, "max_value": 2999.999, "range_label":"Big"))
 		  
-		  col_cloned_sales.SetStringFormat(new clRangeFormatting("",""))
+		  col_cloned_sales.SetStringFormat(new clNumberRangeFormatting("",""))
 		  col_cloned_sales.AddFormattingRanges(colmin, colmax, collabel)
 		  
 		  // Get the results as a boolean data serie
@@ -2207,7 +2207,7 @@ Protected Class clLibDataExample
 		  
 		  var fmtcol as clNumberDataSerie = clNumberDataSerie(people.AddColumn(people.GetColumn("Size").Clone("FormattedSize")))
 		  
-		  fmtcol.SetStringFormat(new clRangeFormatting("",""))
+		  fmtcol.SetStringFormat(new clNumberRangeFormatting("",""))
 		  fmtcol.AddFormattingRange(0,150.0,"small")
 		  fmtcol.AddFormattingRange(150.0,195.0,"average")
 		  fmtcol.AddFormattingRange(195.0,999.99,"tall")

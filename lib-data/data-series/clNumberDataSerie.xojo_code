@@ -14,8 +14,8 @@ Inherits clAbstractDataSerie
 		Sub AddFormattingRange(low_bound as double, high_bound as double, label as string)
 		  if self.Formatter = nil then Return
 		  
-		  if self.Formatter isa clRangeFormatting then
-		    clRangeFormatting(self.Formatter).AddRange(low_bound, high_bound, label)
+		  if self.Formatter isa clNumberRangeFormatting then
+		    clNumberRangeFormatting(self.Formatter).AddRange(low_bound, high_bound, label)
 		    
 		  end if
 		  
