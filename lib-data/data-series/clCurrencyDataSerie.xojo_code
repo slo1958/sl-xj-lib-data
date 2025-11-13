@@ -75,7 +75,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AverageCurrency() As Currency
+		Function AverageAsCurrency() As Currency
 		  
 		  return clBasicMath.Average(items)
 		End Function
@@ -91,7 +91,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AverageNonZeroCurrency() As Currency
+		Function AverageNonZeroAsCurrency() As Currency
 		  
 		  return clBasicMath.AverageNonZero(items)
 		  
@@ -711,7 +711,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SumCurrency() As Currency
+		Function SumAsCurrency() As Currency
 		  
 		  //
 		  // Calculates the sum

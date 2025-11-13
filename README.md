@@ -3,6 +3,9 @@ Data handling classes
 
 The library is a in-memory column store, designed for convenience, not speed, inspired by the Pandas library available in Python. The data are stored in columns, so a table is an array of columns and a column is an array of values. The table object is responsible for maintaining a consistent number of elements across columns. Finally, a damapool is a set of tables and a data pool can be loaded or saved (persisted) with a single call.
 
+Tests involving the parsing of a string
+
+
 The typical use cases are:
 
 - caching UI data before committing to a database
@@ -28,11 +31,21 @@ To ease handling of data row, we also have:
 
 - clDataRow
 
-
 Note that the library handle data by columns, any use of clDataRow means the called method need to transpose some data, which is time consuming.
+
+
+## About transformers
+
+Transformations applied to clDataTable are moved out the clDataTable class and used to create a library of clDataTable transformers. Methods in clDataTable that are producing a transformed clDataTable are converted to use a transformer. This is done for the following reasons:
+
+- reduce the size of clDataTable
+- give access to more transformation parameters, without increasing the complexity of clDataTable
+- (future) create chains of transformers to automate the management of temporary tables
+
 
 ## About clDataSerie
 A serie is mainly a named one-dimension array. Elements of the array are 'variant' in the untype version of the data serie (clDataSerie), see below for more information about type data series. The main purpose of this class is to store column data for clDataTable. 
+
 
 ### How to create a data serie ?
 You can create a data serie:
@@ -106,13 +119,14 @@ var my_serie  As  clDataSerie = clDataSerie(append_textfile_to_DataSerie(fld_fil
 The default data series is a child class of clAbstractDataSerie and stores values as variant. The following type specific data series are provided by the library:
 
 - data series index
-- integer data serie
-- double data serie
 - boolean data serie
-- string data serie
-- compressed string data serie
+- currency data serie
 - date date serie
 - datetime data serie
+- double data serie
+- integer data serie
+- string data serie
+- compressed string data serie
 
 When you convert an element to/from a number or to a string:
 
@@ -135,10 +149,28 @@ This class is only used to maintain the record index stored in tables. The value
 
 The value passed as parameter to methods like AddElement(), set_element() are ignored.
 
-#### integer data serie clIntegerDataSerie
-Elements of the data serie are integer. A type specific get_element_as_integer() function returns an integer instead of a variant.
+
+#### boolean data serie clBooleanDataSerie
+Elements of the data serie are boolean. A type specific get_element_as_boolean() function returns a boolean instead of a variant.
+Boolean operators (and, or, not ) have been overloaded.
+Operators ‘or’, ‘and’ and ‘not’ are overloaded using another boolean data serie as second operand.
+
+
+#### currency data serie clCurrencyDataSerie
+Elements of the data serie are currency. A type specific get_element_as_currency() function returns a currency instead of a variant.
 Arithmetic operators (+, _, - ) have been overloaded.
-Operators +, - and * are overloaded using a constant or another integer data serie as second operanda
+Functions like count(), count_non_zero(), average(), average_non_zero() are reimplemented for clCurrencyDataSerie to exclude invalid numbers and infinite numbers. 
+Functions average() , averageNonZero(), sum() return a double, function averageAsCurrency(), AverageNonZeroAsCurrency(), SumAsCurrency() return a currency.
+Operators +, - and * are overloaded using a constant or another currency data serie as second operand.
+
+
+#### date data serie clDateDataSerie
+This data series stores its value as DateTime, but the time part is not used. The data serie provide date related method to extract day, month, year…. Value as integer data serie.
+
+
+#### dateTime data serie clDateTimeDataSerie
+This data series stores its value as DateTime. The data serie provide date related method to extract day, month, year…. Value as integer data serie, and time related methods to extract hours, minutes, …. Values as integer data serie.
+
 
 #### double data serie clNumberDataSerie
 Elements of the data serie are double. A type specific get_element_as_number() function returns a double instead of a variant.
@@ -147,10 +179,10 @@ Functions like count(), count_non_zero(), average(), average_non_zero(), standar
 Operators +, - and * are overloaded using a constant or another number data serie as second operand.
 
 
-#### boolean data serie clBooleanDataSerie
-Elements of the data serie are boolean. A type specific get_element_as_boolean() function returns a boolean instead of a variant.
-Boolean operators (and, or, not ) have been overloaded.
-Operators ‘or’, ‘and’ and ‘not’ are overloaded using another boolean data serie as second operand.
+#### integer data serie clIntegerDataSerie
+Elements of the data serie are integer. A type specific get_element_as_integer() function returns an integer instead of a variant.
+Arithmetic operators (+, _, - ) have been overloaded.
+Operators +, - and * are overloaded using a constant or another integer data serie as second operanda
 
 
 #### string data serie clStringDataSerie
@@ -159,12 +191,6 @@ Elements of the data serie are string. The data serie exposes basic string handl
 #### compressed string data serie clCompressedDataSerie
 The data serie stores it value in a string compressed form. Each cell in the column is an integer, an index to an array of values. Use this data serie instead of the standard data serie when a large number of rows contains only a few distinct values, for example a country name in a large invoice dataset. Those operations are totally transparent. You add strings to the compressed data serie and the clCompressedDataSerie handles the conversion behind the scene. 
 
-
-#### date data serie clDateDataSerie
-This data series stores its value as DateTime, but the time part is not used. The data serie provide date related method to extract day, month, year…. Value as integer data serie.
-
-#### dateTime data serie clDateTimeDataSerie
-This data series stores its value as DateTime. The data serie provide date related method to extract day, month, year…. Value as integer data serie, and time related methods to extract hours, minutes, …. Values as integer data serie.
 
 ## About clDataTable
 A data table is a collection of data series. 

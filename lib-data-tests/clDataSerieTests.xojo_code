@@ -831,19 +831,7 @@ Protected Class clDataSerieTests
 		  var c2 as clCurrencyDataSerie = c1.ToCurrency()
 		  var expected_c2 as  new clCurrencyDataSerie("Alpha as currency", array(0.123, -0.123, 0.123, -0.123, 0.123, 123.0, -123.0, 123.0, -123.0, 123.0, 12.3, -12.3, 12.3, -12.3, 12.3, 123.4, -123.4,123.4,-123.4,123.4, 0,0,0,0,0,123456.7,-123456.7,123456.7,-123456.7,123456.7))
 		  
-		  c1.SetParser(new clCurrencyLocalParser)
-		  var c3 as clCurrencyDataSerie = c1.ToCurrency()
-		  
-		  var rr() as string
-		  for each item as Double in c3.GetElements
-		    rr.add(str(item, "#####.0####"))
-		  next
-		  System.DebugLog(join(rr, ", "))
-		  
-		  var expected_c3 as new clCurrencyDataSerie("Alpha as currency", array(123.0, -123.0, 123.0, -123.0, 123.0, 123.0, -123.0, 123.0, -123.0, 123.0, 123.0, -123.0, 123.0, -123.0, 123.0, 0.0, 0.0, 0.0, 0.0, 0.0, 123.4, -123.4, 123.4, -123.4, 123.4, 0.0, 0.0, 0.0, 0.0, 0.0))
-		  
 		  call check_serie(log, "c2", expected_c2, c2)
-		  call check_serie(log, "c3", expected_c3, c3)
 		  
 		  log.end_exec(CurrentMethodName)
 		  
@@ -895,6 +883,43 @@ Protected Class clDataSerieTests
 		  
 		  log.end_exec(CurrentMethodName)
 		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_028(log as LogMessageInterface)
+		  
+		  // parsing tests using locale
+		  log.start_exec(CurrentMethodName)
+		  
+		  var c1 as new clStringDataSerie("Alpha")
+		  
+		  var baselist() as string = array(".123","123", "12.3", "1,23.4","1.23,4", "1,234,56.7")
+		  
+		  for each base as string in baselist
+		    c1.AddElement(base)
+		    c1.AddElement(base+"-")
+		    c1.AddElement(base+"+")
+		    c1.AddElement("-"+base)
+		    c1.AddElement("+"+base)
+		    
+		  next
+		  
+		  c1.SetParser(new clCurrencyLocalParser)
+		  var c3 as clCurrencyDataSerie = c1.ToCurrency()
+		  
+		  var rr() as string
+		  for each item as Double in c3.GetElements
+		    rr.add(str(item, "#####.0####"))
+		  next
+		  System.DebugLog(join(rr, ", "))
+		  
+		  var expected_c3 as new clCurrencyDataSerie("Alpha as currency", array(123.0, -123.0, 123.0, -123.0, 123.0, 123.0, -123.0, 123.0, -123.0, 123.0, 123.0, -123.0, 123.0, -123.0, 123.0, 0.0, 0.0, 0.0, 0.0, 0.0, 123.4, -123.4, 123.4, -123.4, 123.4, 0.0, 0.0, 0.0, 0.0, 0.0))
+		  
+		  call check_serie(log, "c3", expected_c3, c3)
+		  
+		  log.end_exec(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
