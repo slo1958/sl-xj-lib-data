@@ -1,8 +1,8 @@
 #tag Class
-Protected Class clNumberRangeFormatting
-Implements NumberFormatInteraface
+Protected Class clCurrencyRangeFormatting
+Implements  CurrencyFormatInterface
 	#tag Method, Flags = &h0
-		Sub AddRange(low_bound as double, high_bound as double, label as string)
+		Sub AddRange(low_bound as currency, high_bound as currency, label as string)
 		  self.range_min.Add(low_bound)
 		  self.range_max.Add(high_bound)
 		  
@@ -42,8 +42,8 @@ Implements NumberFormatInteraface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function FormatNumber(the_value as Double) As String
-		  // Part of the NumberFormatInteraface interface.
+		Function FormatCurrency(the_value as Currency) As string
+		  // Part of the CurrencyFormatInterface interface.
 		  
 		  if the_value < lowest_value then return below_label
 		  
@@ -63,7 +63,7 @@ Implements NumberFormatInteraface
 
 	#tag Method, Flags = &h0
 		Function GetInfo() As string
-		  return "number range formatting"
+		  return "currency range formatting"
 		End Function
 	#tag EndMethod
 
@@ -77,11 +77,11 @@ Implements NumberFormatInteraface
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		highest_value As Double
+		highest_value As currency
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		lowest_value As Double
+		lowest_value As currency
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -93,11 +93,11 @@ Implements NumberFormatInteraface
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private range_max() As double
+		Private range_max() As currency
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private range_min() As double
+		Private range_min() As currency
 	#tag EndProperty
 
 

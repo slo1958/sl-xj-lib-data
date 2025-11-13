@@ -55,6 +55,14 @@ Protected Module helper_functions
 		      
 		    next
 		    
+		  case Variant.TypeCurrency
+		    var s() as Currency = v
+		    
+		    for each a as Currency in s
+		      res.add(a)
+		      
+		    next
+		    
 		    
 		  case Variant.TypeString
 		    var s() as string = v

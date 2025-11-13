@@ -552,7 +552,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CountDefined() As double
+		Function CountDefined() As integer
 		  // 
 		  // Calculate the number of definted elemnts in the current column. 
 		  // Note that if the underlying column is a number column or an integer colums, values are always defined but could be zero
@@ -585,7 +585,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CountNonZero() As double
+		Function CountNonZero() As integer
 		  // 
 		  // Calculate the number of definted non zero elemnts in the current column. 
 		  // Note that if the underlying column is a number column or an integer colums, values are always defined but could be zero
@@ -802,6 +802,43 @@ Implements Iterable
 		  
 		  Return tmp_b
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetElementAsCurrency(ElementIndex as integer) As currency
+		  //  
+		  //  Returns the element at index as a Currency
+		  //
+		  //  Parameters
+		  //  - ElementIndex (integer) index of the element to be returned
+		  //  
+		  //  Returns:
+		  //  - the selected element (currency)
+		  //
+		  // Note: this generic method is overloaded when the serie is natively using double
+		  
+		  
+		  var tmp_d As Currency
+		  var tmp_v As variant
+		  
+		  tmp_v = GetElement(ElementIndex)
+		  
+		  #pragma BreakOnExceptions false
+		  
+		  Try 
+		    // some test cases will cause an exception here, this is expected
+		    tmp_d = tmp_v.CurrencyValue
+		    
+		  Catch TypeMismatchException
+		    tmp_d = 0
+		    self.AddErrorMessage( CurrentMethodName, ErrMsgCannotConvertElement, Str(ElementIndex) , "number")
+		    
+		  End Try
+		  
+		  #pragma BreakOnExceptions Default
+		  
+		  Return tmp_d
 		End Function
 	#tag EndMethod
 

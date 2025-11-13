@@ -14,6 +14,9 @@ Protected Class clDataType
 		  case  "clCompressedDataSerie"
 		    return StringValue
 		    
+		  case "clCurrencyDataSerie"
+		    return CurrencyValue
+		    
 		  case "clDateDataSerie"
 		    return DateValue
 		    
@@ -45,7 +48,7 @@ Protected Class clDataType
 		    return BooleanValue
 		    
 		  case variant.TypeCurrency
-		    return NumberValue
+		    return CurrencyValue
 		    
 		  case variant.TypeDateTime
 		    return DateTimeValue
@@ -83,6 +86,9 @@ Protected Class clDataType
 		    
 		  case "clCompressedDataSerie"
 		    return new clCompressedDataSerie(SerieName)
+		    
+		  case "clCurrencyDataSerie"
+		    return new clCurrencyDataSerie(SerieName)
 		    
 		  case "clDateDataSerie"
 		    return new clDateDataSerie(SerieName)
@@ -131,6 +137,9 @@ Protected Class clDataType
 		  case  StringValue
 		    return new clStringDataSerie(SerieName)
 		    
+		  case CurrencyValue
+		    return new clCurrencyDataSerie(SerieName)
+		    
 		  case UndefinedType
 		    return new clDataSerie(SerieName)
 		    
@@ -154,7 +163,7 @@ Protected Class clDataType
 		    return new clBooleanDataSerie(SerieName)
 		    
 		  case variant.TypeCurrency
-		    return new clNumberDataSerie(SerieName)
+		    return new clCurrencyDataSerie(SerieName)
 		    
 		  case variant.TypeDateTime
 		    return new clDateTimeDataSerie(SerieName)
@@ -196,6 +205,9 @@ Protected Class clDataType
 
 
 	#tag Constant, Name = BooleanValue, Type = String, Dynamic = False, Default = \"Boolean", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = CurrencyValue, Type = String, Dynamic = False, Default = \"Currency", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = DateTimeValue, Type = String, Dynamic = False, Default = \"DateTime", Scope = Public

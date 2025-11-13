@@ -1,21 +1,21 @@
 #tag Class
-Protected Class clNumberDataSerie
+Protected Class clCurrencyDataSerie
 Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
 		  
-		  items.Add(Internal_ConversionToDouble(the_item))
+		  items.Add(Internal_ConversionToCurrency(the_item))
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddFormattingRange(low_bound as double, high_bound as double, label as string)
+		Sub AddFormattingRange(low_bound as Currency, high_bound as Currency, label as string)
 		  if self.Formatter = nil then Return
 		  
-		  if self.Formatter isa clNumberRangeFormatting then
-		    clNumberRangeFormatting(self.Formatter).AddRange(low_bound, high_bound, label)
+		  if self.Formatter isa clCurrencyRangeFormatting then
+		    clCurrencyRangeFormatting(self.Formatter).AddRange(low_bound, high_bound, label)
 		    
 		  end if
 		  
@@ -24,7 +24,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddFormattingRanges(low_bound as clNumberDataSerie, high_bound as clNumberDataSerie, label as clDataSerie)
+		Sub AddFormattingRanges(low_bound as clCurrencyDataSerie, high_bound as clCurrencyDataSerie, label as clDataSerie)
 		  if self.Formatter = nil then Return
 		  
 		  if self.Formatter isa NumberFormatInteraface then
@@ -32,8 +32,8 @@ Inherits clAbstractDataSerie
 		    for i as integer = 0 to label.LastIndex
 		      try
 		        self.AddFormattingRange( _
-		        low_bound.GetElementAsNumber(i) _
-		        , high_bound.GetElementAsNumber(i)_
+		        low_bound.GetElementAsCurrency(i) _
+		        , high_bound.GetElementAsCurrency(i)_
 		        , label.GetElementAsString(i) _
 		        )
 		        
@@ -51,9 +51,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Aggregate(mode as AggMode) As Double
+		Function Aggregate(mode as AggMode) As Currency
 		  //
-		  // Apply aggregation to array of tiems
+		  // Apply aggregation to array of items
 		  //
 		  // Parameters:
 		  // - type of aggregation (aggMode)
@@ -68,14 +68,30 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Average() As double
+		Function Average() As Double
 		  
 		  return clBasicMath.Average(items)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AverageNonZero() As double
+		Function AverageCurrency() As Currency
+		  
+		  return clBasicMath.Average(items)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function AverageNonZero() As Double
+		  
+		  return clBasicMath.AverageNonZero(items)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function AverageNonZeroCurrency() As Currency
 		  
 		  return clBasicMath.AverageNonZero(items)
 		  
@@ -112,9 +128,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ClippedByRange(low_value as variant, high_value as variant) As clNumberDataSerie
+		Function ClippedByRange(low_value as variant, high_value as variant) As clCurrencyDataSerie
 		  
-		  var new_col as clNumberDataSerie = self.Clone()
+		  var new_col as clCurrencyDataSerie = self.Clone()
 		  
 		  new_col.rename("clip " + self.name)
 		  
@@ -127,9 +143,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone(NewName as string = "") As clNumberDataSerie
+		Function Clone(NewName as string = "") As clCurrencyDataSerie
 		  
-		  var tmp As New clNumberDataSerie(StringWithDefault(NewName, self.name))
+		  var tmp As New clCurrencyDataSerie(StringWithDefault(NewName, self.name))
 		  
 		  self.CloneInfo(tmp)
 		  
@@ -147,19 +163,20 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub CloneInfo(target as clNumberDataSerie)
+		Protected Sub CloneInfo(target as clCurrencyDataSerie)
 		  super.CloneInfo(target)
 		  
 		  target.DefaultValue = self.DefaultValue
 		  target.Formatter = self.Formatter
 		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CloneStructure() As clNumberDataSerie
-		  var tmp As New clNumberDataSerie(Self.name)
+		Function CloneStructure() As clCurrencyDataSerie
+		  var tmp As New clCurrencyDataSerie(Self.name)
 		  
 		  self.CloneInfo(tmp)
 		  
@@ -172,7 +189,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Count() As integer
+		Function Count() As Integer
 		  //
 		  // Count items in the dataserie
 		  //
@@ -212,19 +229,20 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function GetElement(ElementIndex as integer) As variant
 		  
-		  return self.GetElementAsNumber(ElementIndex)
+		  return self.GetElementAsCurrency(ElementIndex)
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsNumber(ElementIndex as integer) As double
+		Function GetElementAsCurrency(ElementIndex as integer) As currency
+		  
 		  
 		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
 		    Return items(ElementIndex)
 		    
 		  Else
-		    var v As double
+		    var v As Currency
 		    Return v
 		    
 		  End If
@@ -234,13 +252,20 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetElementAsNumber(ElementIndex as integer) As double
+		  
+		  return self.GetElementAsCurrency(ElementIndex)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetElementAsString(ElementIndex as integer) As string
 		  
 		  if self.Formatter = nil then 
-		    return self.GetElementAsNumber(ElementIndex).ToString
+		    return self.GetElementAsCurrency(ElementIndex).ToString
 		    
 		  else
-		    return self.Formatter.FormatNumber(self.GetElementAsNumber(ElementIndex))
+		    return self.Formatter.FormatCurrency(self.GetElementAsCurrency(ElementIndex))
 		    
 		  end if
 		  
@@ -248,9 +273,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetFilterColumnValuesInRange(minimum_value as double, maximum_value as double) As variant()
+		Function GetFilterColumnValuesInRange(minimum_value as Currency, maximum_value as Currency) As variant()
 		  var return_boolean() As Variant
-		  var my_item as double
+		  var my_item as Currency
 		  
 		  For row_index As Integer=0 To items.LastIndex
 		    my_item = items(row_index)
@@ -280,20 +305,20 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function Internal_ConversionToDouble(v as Variant) As double
+		Private Function Internal_ConversionToCurrency(v as Variant) As Currency
 		  
 		  
-		  if v.Type  = variant.TypeDouble then
-		    return v.DoubleValue
+		  if v.Type  = variant.TypeCurrency then
+		    return v.CurrencyValue
 		    
 		  elseif v.type <> variant.TypeString then
-		    return v.DoubleValue
+		    return v.CurrencyValue
 		    
-		  elseif self.NumberParser = nil Then
-		    return v.DoubleValue
+		  elseif self.CurrencyParser = nil Then
+		    return v.CurrencyValue
 		    
 		  else
-		    return self.NumberParser.ParseToNumber(v.StringValue)
+		    return self.CurrencyParser.ParseToCurrency(v.StringValue)
 		    
 		  end if
 		  
@@ -301,9 +326,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function IsZero(value as Double) As Boolean
-		  return abs(value) <0.000001
-		  
+		Function IsZero(value as Currency) As Boolean
+		  return abs(value) <0.0001
 		End Function
 	#tag EndMethod
 
@@ -316,7 +340,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Maximum() As Double
+		Function Maximum() As Currency
 		  
 		  return clBasicMath.Maximum(items)
 		  
@@ -324,7 +348,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Minimum() As double
+		Function Minimum() As Currency
 		  // Calling the overridden superclass method.
 		  
 		  return clBasicMath.Minimum(items)
@@ -334,7 +358,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_add(right_serie as clNumberDataSerie) As clNumberDataSerie
+		Function operator_add(right_serie as clCurrencyDataSerie) As clCurrencyDataSerie
 		  var mx1 as integer = self.LastIndex
 		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
@@ -345,7 +369,7 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  var res as new clNumberDataSerie(self.name+"+"+right_serie.name)
+		  var res as new clCurrencyDataSerie(self.name+"+"+right_serie.name)
 		  
 		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "add values from  " + right_serie.name)
@@ -373,8 +397,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_add(right_value as double) As clNumberDataSerie
-		  var res as new clNumberDataSerie(self.name+"+"+str(right_value))
+		Function operator_add(right_value as double) As clCurrencyDataSerie
+		  var res as new clCurrencyDataSerie(self.name+"+"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "add constant " + str(right_value))
@@ -391,7 +415,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_divide(right_serie as clNumberDataSerie) As clNumberDataSerie
+		Function operator_divide(right_serie as clCurrencyDataSerie) As clCurrencyDataSerie
 		  var mx1 as integer = self.LastIndex
 		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
@@ -402,7 +426,7 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  var res as new clNumberDataSerie(self.name+"/"+right_serie.name)
+		  var res as new clCurrencyDataSerie(self.name+"/"+right_serie.name)
 		  res.AddMetadata("transformation", "divide by values from  " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
@@ -431,8 +455,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_divide(right_value as double) As clNumberDataSerie
-		  var res as new clNumberDataSerie(self.name+"/"+str(right_value))
+		Function operator_divide(right_value as double) As clCurrencyDataSerie
+		  var res as new clCurrencyDataSerie(self.name+"/"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "divide by constant " + str(right_value))
@@ -457,7 +481,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_multiply(right_serie as clNumberDataSerie) As clNumberDataSerie
+		Function operator_multiply(right_serie as clCurrencyDataSerie) As clCurrencyDataSerie
 		  var mx1 as integer = self.LastIndex
 		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
@@ -468,7 +492,7 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  var res as new clNumberDataSerie(self.name+"*"+right_serie.name)
+		  var res as new clCurrencyDataSerie(self.name+"*"+right_serie.name)
 		  res.AddMetadata("transformation", "multiply by values from  " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
@@ -494,8 +518,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_multiply(right_value as double) As clNumberDataSerie
-		  var res as new clNumberDataSerie(self.name+"*"+str(right_value))
+		Function operator_multiply(right_value as double) As clCurrencyDataSerie
+		  var res as new clCurrencyDataSerie(self.name+"*"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "multiply by constant " + str(right_value))
@@ -512,7 +536,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_subtract(right_serie as clNumberDataSerie) As clNumberDataSerie
+		Function operator_subtract(right_serie as clCurrencyDataSerie) As clCurrencyDataSerie
 		  var mx1 as integer = self.LastIndex
 		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
@@ -523,7 +547,7 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  var res as new clNumberDataSerie(self.name+"-"+right_serie.name)
+		  var res as new clCurrencyDataSerie(self.name+"-"+right_serie.name)
 		  res.AddMetadata("transformation", "substract values from  " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
@@ -549,8 +573,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_subtract(right_value as double) As clNumberDataSerie
-		  var res as new clNumberDataSerie(self.name+"-"+str(right_value))
+		Function operator_subtract(right_value as double) As clCurrencyDataSerie
+		  var res as new clCurrencyDataSerie(self.name+"-"+str(right_value))
 		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "subtract constant " + str(right_value))
 		  
@@ -585,6 +609,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetCurrencyParser(parser as CurrencyParserInterface)
+		  self.CurrencyParser = parser
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetDefaultValue(v as variant)
 		  DefaultValue = v
 		  
@@ -596,7 +627,7 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then 
-		    items(ElementIndex) = Internal_ConversionToDouble(the_item)
+		    items(ElementIndex) = Internal_ConversionToCurrency(the_item)
 		    
 		  else
 		    self.AddErrorMessage(CurrentMethodName,ErrMsgIndexOutOfbounds, str(ElementIndex), self.name)
@@ -627,13 +658,6 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetNumberParser(parser as NumberParserInterface)
-		  self.NumberParser = parser
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub SetProperties(properties as clDataSerieProperties)
 		  // Calling the overridden superclass method.
 		  Super.SetProperties(properties)
@@ -645,7 +669,7 @@ Inherits clAbstractDataSerie
 		  elseif properties.FormatStr ="Range formatting" then
 		    
 		  else
-		    self.Formatter = new clNumberFormatting(properties.FormatStr)
+		    self.Formatter = new clCurrencyFormatting(properties.FormatStr)
 		    
 		  end if
 		  
@@ -653,7 +677,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetStringFormat(the_formatter as NumberFormatInteraface)
+		Sub SetStringFormat(the_formatter as CurrencyFormatInterface)
 		  
 		  self.Formatter = the_Formatter
 		  
@@ -663,35 +687,37 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub SetStringFormat(the_format as String, UseLocal as Boolean = False)
 		  if UseLocal then
-		    self.Formatter = new clNumberLocalFormatting(the_format)
+		    self.Formatter = new clCurrencyLocalFormatting(the_format)
 		    
 		  else
-		    self.Formatter = new clNumberFormatting(the_format)
+		    self.Formatter = new clCurrencyFormatting(the_format)
 		    
 		  end if
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function StandardDeviation(is_population as boolean = False) As double
-		  
-		  return clBasicMath.StandardDeviation(items, is_population)
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function StandardDeviationNonZero(is_population as boolean = False) As double
-		  
-		  return clBasicMath.StandardDeviationNonZero(items, is_population)
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function Sum() As double
+		  //
+		  // Calculates the sum
+		  // The sum is calculated using Currency, but the results is converted to double
+		  //
+		  
+		  var c as new clBasicMath
+		  return c.sum(items)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SumCurrency() As Currency
+		  
+		  //
+		  // Calculates the sum
+		  // The sum is calculated using Currency, and the results is returned as is
+		  //
+		  
 		  var c as new clBasicMath
 		  return c.sum(items)
 		  
@@ -715,19 +741,19 @@ Inherits clAbstractDataSerie
 
 
 	#tag Property, Flags = &h1
-		Protected DefaultValue As double
+		Protected CurrencyParser As CurrencyParserInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected Formatter As NumberFormatInteraface
+		Protected DefaultValue As Currency
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected items() As double
+		Protected Formatter As CurrencyFormatInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected NumberParser As NumberParserInterface
+		Protected items() As Currency
 	#tag EndProperty
 
 

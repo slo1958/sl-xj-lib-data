@@ -1,16 +1,16 @@
 #tag Class
 Protected Class clMetadata
 	#tag Method, Flags = &h0
-		Sub Add(DataType as string, Message as string)
+		Sub Add(MetadataType as string, Message as string)
 		  //
 		  // Add an entry to the metadata
 		  //
 		  // Parameters:
-		  // - datatype (string) : type of information added
+		  // - Metadata type (string) : type of information added
 		  // - message (string) : details
 		  //
 		  
-		  var dtp as string = DataType.ReplaceAll(":","-")
+		  var dtp as string = MetadataType.ReplaceAll(":","-")
 		  var msg as string = Message.Trim
 		  
 		  var p as pair = (dtp:msg)
@@ -118,18 +118,18 @@ Protected Class clMetadata
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CountDataType(DataType as string) As integer
+		Function CountDataType(MetadataType as string) As integer
 		  //
 		  // Count the number of occurence of the passed datatype exists in the metadata
 		  //
 		  // Parameters:
-		  // - datatype (string) : type of information searched
+		  // - Metadata type (string) : type of information searched
 		  //
 		  
 		  var ret as integer
 		  for each p as pair in self.DataList
 		    
-		    if p.left = DataType then ret = ret + 1
+		    if p.left = MetadataType then ret = ret + 1
 		    
 		  next
 		  
@@ -139,17 +139,17 @@ Protected Class clMetadata
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function HasDataType(DataType as string) As boolean
+		Function HasDataType(MetadataType as string) As boolean
 		  //
 		  // Check if the passed datatype exists in the metadata
 		  //
 		  // Parameters:
-		  // - datatype (string) : type of information searched
+		  // - Metadata type (string) : type of information searched
 		  //
 		  
 		  for each p as pair in self.DataList
 		    
-		    if p.left = DataType then return true
+		    if p.left = MetadataType then return true
 		    
 		  next
 		  

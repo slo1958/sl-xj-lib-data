@@ -1,11 +1,11 @@
 #tag Class
-Protected Class clNumberLocalParser
-Inherits clNumberParser
+Protected Class clCurrencyLocalParser
+Inherits clCurrencyParser
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  super.Constructor
-		  //Override the default values, with settings from Locale
 		  
+		  //Override the default values, with settings from Locale
 		  self.GroupingChar = Locale.Current.GroupingSeparator
 		  self.DecimalMarkChar = Locale.Current.DecimalSeparator
 		  

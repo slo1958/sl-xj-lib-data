@@ -1,15 +1,15 @@
-#tag Class
-Protected Class clNumberLocalParser
-Inherits clNumberParser
+#tag Interface
+Protected Interface CurrencyFormatInterface
 	#tag Method, Flags = &h0
-		Sub Constructor()
-		  super.Constructor
-		  //Override the default values, with settings from Locale
+		Function FormatCurrency(the_value as Currency) As string
 		  
-		  self.GroupingChar = Locale.Current.GroupingSeparator
-		  self.DecimalMarkChar = Locale.Current.DecimalSeparator
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetInfo() As string
 		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 
@@ -54,14 +54,6 @@ Inherits clNumberParser
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
-		#tag ViewProperty
-			Name="GroupingChar"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="string"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
 	#tag EndViewBehavior
-End Class
-#tag EndClass
+End Interface
+#tag EndInterface

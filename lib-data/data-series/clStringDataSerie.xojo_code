@@ -89,6 +89,7 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  if self.BooleanParser = nil then
+		    // Calling the overridden superclass method
 		    return Super.GetElementAsBoolean(ElementIndex)
 		    
 		  end if
@@ -99,10 +100,26 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetElementAsCurrency(ElementIndex as integer) As currency
+		  
+		  
+		  if self.CurrencyParser = nil then
+		    // Calling the overridden superclass method.
+		    return Super.GetElementAsCurrency(ElementIndex)
+		    
+		  end if
+		  
+		  return self.CurrencyParser.ParseToCurrency(self.GetElementAsString(ElementIndex))
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetElementAsInteger(ElementIndex as integer) As integer
-		  // Calling the overridden superclass method.
+		  
 		  
 		  if self.IntegerParser = nil then
+		    // Calling the overridden superclass method
 		    return Super.GetElementAsInteger(ElementIndex)
 		    
 		  end if
@@ -115,9 +132,10 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function GetElementAsNumber(ElementIndex as integer) As double
 		  
-		  // Calling the overridden superclass method.
+		  
 		  
 		  if self.NumberParser = nil then
+		    // Calling the overridden superclass method.
 		    return Super.GetElementAsNumber(ElementIndex)
 		    
 		  end if
@@ -393,6 +411,51 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetParser(parser as BooleanParserInterface)
+		  // self.IntegerParser = nil
+		  // self.NumberParser = nil
+		  //self.CurrencyParser = nil
+		  self.BooleanParser = parser
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetParser(parser as CurrencyParserInterface)
+		  // self.IntegerParser = nil
+		  // self.NumberParser = nil
+		  self.CurrencyParser = parser
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetParser(parser as IntegerParserInterface)
+		  self.IntegerParser = parser
+		  // self.NumberParser = nil
+		  // self.CurrencyParser = nil 
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetParser(parser as NumberParserInterface)
+		  // self.IntegerParser = nil
+		  self.NumberParser = parser
+		  // self.CurrencyParser = nil
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetProperties(properties as clDataSerieProperties)
 		  // Calling the overridden superclass method.
 		  Super.SetProperties(properties)
@@ -469,7 +532,27 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ToCurrency() As clCurrencyDataSerie
+		  //
+		  // Converts the data serie to a clCurrencyDataSerie
+		  //
+		  var res as new clCurrencyDataSerie(self.name+" as Currency")
+		  
+		  for i as integer = 0 to self.LastIndex
+		    res.AddElement(self.GetElementAsCurrency(i))
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ToInteger() As clIntegerDataSerie
+		  //
+		  // Converts the data serie to a clIntegerDataSerie
+		  //
 		  var res as new clIntegerDataSerie(self.name+" as integer")
 		  
 		  for i as integer = 0 to self.LastIndex
@@ -484,7 +567,9 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function ToNumber() As clNumberDataSerie
-		  
+		  //
+		  // Converts the data serie to a clNumberDataSerie
+		  //
 		  var res as new clNumberDataSerie(self.name+" as number")
 		  
 		  for i as integer = 0 to self.LastIndex
@@ -530,6 +615,10 @@ Inherits clAbstractDataSerie
 
 	#tag Property, Flags = &h1
 		Protected BooleanParser As BooleanParserInterface
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected CurrencyParser As CurrencyParserInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

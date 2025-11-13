@@ -727,6 +727,179 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_calc_023(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var test0, test1, test2, test3  As clCurrencyDataSerie
+		  var expected, delta as clCurrencyDataSerie
+		  
+		  test1 = New clCurrencyDataSerie("test1")
+		  
+		  test1.AddElement(124)
+		  test1.AddElement(456)
+		  
+		  test2 = new clCurrencyDataSerie("test2")
+		  test2.AddElement(12)
+		  test2.AddElement(24)
+		  test2.AddElement(10)
+		  
+		  test3 = new clCurrencyDataSerie("test3")
+		  test3.AddElement(100)
+		  test3.AddElement(300)
+		  test3.AddElement(6)
+		  
+		  test0 = (test1 + test2 - test3 + 1000) * 0.5
+		  
+		  expected = new clCurrencyDataSerie("expected")
+		  expected.AddElement(518)
+		  expected.AddElement(590)
+		  expected.AddElement(502)
+		  
+		  delta = test0 - expected
+		  
+		  call check_value(log,"sum of diff", 0, delta.sum)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_024(log as LogMessageInterface)
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var test0, test1, test2, test3  As clCurrencyDataSerie
+		  var expected, delta as clCurrencyDataSerie
+		  
+		  test1 = New clCurrencyDataSerie("test1")
+		  
+		  test1.AddElement(124)
+		  test1.AddElement(456)
+		  
+		  test2 = new clCurrencyDataSerie("test2")
+		  test2.AddElement(12)
+		  test2.AddElement(24)
+		  test2.AddElement(10)
+		  
+		  test3 = new clCurrencyDataSerie("test3")
+		  test3.AddElement(100)
+		  test3.AddElement(300)
+		  test3.AddElement(6)
+		  
+		  test0 = (test1 + test2 - test3 + 1000) * 0.5
+		  
+		  expected = new clCurrencyDataSerie("expected")
+		  expected.AddElement(518)
+		  expected.AddElement(590)
+		  expected.AddElement(502)
+		  
+		  delta = test0 - expected
+		  
+		  call check_value(log,"sum of diff", 0, delta.sum)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_025(log as LogMessageInterface)
+		  
+		  // parsing tests
+		  log.start_exec(CurrentMethodName)
+		  
+		  var c1 as new clStringDataSerie("Alpha")
+		  
+		  var baselist() as string = array(".123","123", "12.3", "1,23.4","1.23,4", "1,234,56.7")
+		  
+		  for each base as string in baselist
+		    c1.AddElement(base)
+		    c1.AddElement(base+"-")
+		    c1.AddElement(base+"+")
+		    c1.AddElement("-"+base)
+		    c1.AddElement("+"+base)
+		    
+		  next
+		  
+		  c1.SetParser(new clCurrencyParser)
+		  var c2 as clCurrencyDataSerie = c1.ToCurrency()
+		  var expected_c2 as  new clCurrencyDataSerie("Alpha as currency", array(0.123, -0.123, 0.123, -0.123, 0.123, 123.0, -123.0, 123.0, -123.0, 123.0, 12.3, -12.3, 12.3, -12.3, 12.3, 123.4, -123.4,123.4,-123.4,123.4, 0,0,0,0,0,123456.7,-123456.7,123456.7,-123456.7,123456.7))
+		  
+		  c1.SetParser(new clCurrencyLocalParser)
+		  var c3 as clCurrencyDataSerie = c1.ToCurrency()
+		  
+		  var rr() as string
+		  for each item as Double in c3.GetElements
+		    rr.add(str(item, "#####.0####"))
+		  next
+		  System.DebugLog(join(rr, ", "))
+		  
+		  var expected_c3 as new clCurrencyDataSerie("Alpha as currency", array(123.0, -123.0, 123.0, -123.0, 123.0, 123.0, -123.0, 123.0, -123.0, 123.0, 123.0, -123.0, 123.0, -123.0, 123.0, 0.0, 0.0, 0.0, 0.0, 0.0, 123.4, -123.4, 123.4, -123.4, 123.4, 0.0, 0.0, 0.0, 0.0, 0.0))
+		  
+		  call check_serie(log, "c2", expected_c2, c2)
+		  call check_serie(log, "c3", expected_c3, c3)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_026(log as LogMessageInterface)
+		  
+		  // parsing tests
+		  log.start_exec(CurrentMethodName)
+		  
+		  var cNumber as new clNumberDataSerie("MyNumber", array(123.0,456.0,781.0))
+		  var cCurrency as new clCurrencyDataSerie("MyCurrency",array(123.0,456.0,781.0))
+		  
+		  var cNumberDiv as clNumberDataSerie = cNumber / 3
+		  var cCurrencyDiv as clCurrencyDataSerie = cCurrency / 3
+		  
+		  var cNumberDivExpected as new clNumberDataSerie("MyNumber/3", array(41,152,260.3333333))
+		  var cCurrencyDivExpected as new clCurrencyDataSerie ("MyCurrency/3",array(41,152,260.3333))
+		  
+		  call check_serie(log, "Number", cNumberDivExpected, cNumberDiv)
+		  call check_serie(log, "Currency", cCurrencyDivExpected, cCurrencyDiv)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_027(log as LogMessageInterface)
+		  
+		  // parsing tests
+		  log.start_exec(CurrentMethodName)
+		  
+		  var cNumber as new clNumberDataSerie("MyNumber", array(123.0,456.0,0.1111 ))
+		  var cCurrency as new clCurrencyDataSerie("MyCurrency",array(123.0,456.0,0.1111 ))
+		  
+		  var cNumberDiv as clNumberDataSerie = cNumber / 2
+		  var cCurrencyDiv as clCurrencyDataSerie = cCurrency / 2
+		  
+		  var cNumberDivExpected as new clNumberDataSerie("MyNumber/2", array(61.5,228.0,0.05555555))
+		  var cCurrencyDivExpected as new clCurrencyDataSerie ("MyCurrency/2",array(61.5,228.0, 0.0556))
+		  
+		  call check_serie(log, "Number", cNumberDivExpected, cNumberDiv)
+		  call check_serie(log, "Currency", cCurrencyDivExpected, cCurrencyDiv)
+		  
+		  log.end_exec(CurrentMethodName)
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)

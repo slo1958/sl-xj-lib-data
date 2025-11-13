@@ -50,6 +50,55 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Shared Function Aggregate(mode as AggMode, values() as Currency) As Currency
+		  select case mode
+		    
+		  case Aggmode.Sum
+		    return sum(values)
+		    
+		  case AggMode.SumSquared
+		    Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		    
+		  case AggMode.Average
+		    Return Average(values)
+		    
+		  case AggMode.AverageNonZero
+		    Return AverageNonZero(values)
+		    
+		  case AggMode.Count
+		    return count(values)
+		    
+		  case AggMode.CountNonZero
+		    return CountNonZero(values)
+		    
+		  case AggMode.StandartDeviationPopulation
+		    Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		    
+		  case AggMode.StandardDeviationSample
+		    Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		    
+		  case AggMode.StandartDeviationPopulationNonZero
+		    Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		    
+		  case AggMode.StandardDeviationSampleNonZero
+		    Raise New clDataException("Unimplemented method " + CurrentMethodName)
+		    
+		  case aggMode.Min
+		    return Minimum(values)
+		    
+		  case AggMode.max
+		    return Maximum(values)
+		    
+		  case else
+		    return 0
+		    
+		  end select
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function Aggregate(mode as AggMode, values() as double) As double
 		  select case mode
 		    
@@ -148,6 +197,27 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Shared Function Average(values() as Currency) As Currency
+		  var s As Currency
+		  var n as integer
+		  
+		  for each d as double in values
+		    if not (d.IsNotANumber or d.IsInfinite) then
+		      s = s + d
+		      n = n + 1
+		      
+		    end if
+		    
+		  Next
+		  
+		  if n < 1 then return 0
+		  
+		  return s / n
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function Average(values() as double) As double
 		  var s As Double
 		  var n as integer
@@ -164,6 +234,28 @@ Protected Class clBasicMath
 		  if n < 1 then return 0
 		  
 		  return s / n
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function AverageNonZero(values() as Currency) As Currency
+		  var s As Currency
+		  var n as integer
+		  
+		  for each d as double in values
+		    if not (d.IsNotANumber or d.IsInfinite) and (d <>0) then 
+		      s = s + d
+		      n = n + 1
+		      
+		    end if
+		    
+		  Next
+		  
+		  if n < 1 then return 0
+		  
+		  return s / n
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -191,6 +283,23 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Shared Function Count(values() as Currency) As integer
+		  var n as integer
+		  
+		  for each d as double in values
+		    if not (d.IsNotANumber or d.IsInfinite) then
+		      n = n + 1
+		      
+		    end if
+		    
+		  Next
+		  
+		  return n
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function Count(values() as double) As integer
 		  var n as integer
 		  
@@ -211,6 +320,23 @@ Protected Class clBasicMath
 		Shared Function Count(values() as integer) As integer
 		  
 		  return values.Count
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function CountNonZero(values() as Currency) As integer
+		  var n as integer
+		  
+		  for each d as double in values
+		    if not (d.IsNotANumber or d.IsInfinite) and (d <>0) then
+		      n = n + 1
+		      
+		    end if
+		    
+		  Next
+		  
+		  return n
 		  
 		End Function
 	#tag EndMethod
@@ -245,6 +371,25 @@ Protected Class clBasicMath
 		  Next
 		  
 		  return n
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function Maximum(values() as Currency) As Currency
+		  
+		  if values.Count = 0 then return 0
+		  
+		  if values.Count = 1 then return values(0)
+		  
+		  var mx as Currency = values(0)
+		  
+		  for each v as double in values
+		    mx = Max(mx, v)
+		    
+		  Next
+		  
+		  return mx
 		  
 		End Function
 	#tag EndMethod
@@ -298,6 +443,25 @@ Protected Class clBasicMath
 		  
 		  for each v as double in values
 		    mx = Max(mx, v)
+		    
+		  Next
+		  
+		  return mx
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function Minimum(values() as Currency) As Currency
+		  
+		  if values.Count = 0 then return 0
+		  
+		  if values.Count = 1 then return values(0)
+		  
+		  var mx as Currency = values(0)
+		  
+		  for each v as double in values
+		    mx = Min(mx, v)
 		    
 		  Next
 		  
@@ -410,6 +574,22 @@ Protected Class clBasicMath
 		    
 		  end if
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function Sum(values() as Currency) As Currency
+		  var retValue as Currency
+		  
+		  for each d as double in values
+		    if not (d.IsNotANumber or d.IsInfinite) then
+		      retValue = retValue + d
+		      
+		    end if
+		    
+		  next
+		  
+		  return retValue
 		End Function
 	#tag EndMethod
 
