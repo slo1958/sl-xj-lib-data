@@ -1,9 +1,9 @@
 #tag Class
 Protected Class clTransformerConnector
 	#tag Method, Flags = &h0
-		Sub Constructor(ConnectionName as string)
+		Sub Constructor(NewConnectorName as string)
 		  
-		  self.ConnectionName = ConnectionName
+		  self.ConnectorName = NewConnectorName
 		  self.TableName = ""
 		  self.Table = nil
 		  
@@ -15,9 +15,9 @@ Protected Class clTransformerConnector
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(ConnectionName as string, linkedTable as clDataTable)
+		Sub Constructor(NewConnectorName as string, linkedTable as clDataTable)
 		  
-		  self.ConnectionName = ConnectionName
+		  self.ConnectorName = NewConnectorName
 		  self.TableName = ""
 		  self.Table = linkedTable
 		  
@@ -29,9 +29,9 @@ Protected Class clTransformerConnector
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(ConnectionName as string, defaultTableName as string)
+		Sub Constructor(NewConnectorName as string, defaultTableName as string)
 		  
-		  self.ConnectionName = ConnectionName
+		  self.ConnectorName = NewConnectorName
 		  self.TableName = defaultTableName.trim
 		  self.Table = nil
 		  
@@ -45,7 +45,7 @@ Protected Class clTransformerConnector
 	#tag Method, Flags = &h0
 		Function GetConnectorLabel() As String
 		  return Self.ConnectorLabel
-		   
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -63,7 +63,7 @@ Protected Class clTransformerConnector
 	#tag Method, Flags = &h0
 		Function GetName() As string
 		  
-		  return self.ConnectionName
+		  return self.ConnectorName
 		End Function
 	#tag EndMethod
 
@@ -130,11 +130,27 @@ Protected Class clTransformerConnector
 
 
 	#tag Property, Flags = &h21
-		Private ConnectionName As string
+		#tag Note
+			The label associated with the datatable used or produced by the connector.
+			
+			The label is expected to be unique across a set of transformers in a transformation pipeline.
+			
+			
+			
+		#tag EndNote
+		Private ConnectorLabel As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private ConnectorLabel As string
+		#tag Note
+			The name of the connector, like 'INPUT', 'OUTPUT', 'LEFTOUTPUT', ...
+			
+			A given transformer always exposed the same list of input and output connector (connectorname)
+			
+			
+			
+		#tag EndNote
+		Private ConnectorName As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

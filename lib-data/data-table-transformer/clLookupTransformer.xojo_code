@@ -37,6 +37,42 @@ Inherits clAbstractTransformer
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Constructor(MainTable as clDataTable, LookupTable as clDataTable, KeyFields() as string, LookupFields() as string, JoinStatusField as string = "")
+		  // Calling the overridden superclass constructor.
+		  Super.Constructor
+		  
+		  self.AddInput(new clTransformerConnector(cInputConnectorMain, MainTable))
+		  self.AddInput(new clTransformerConnector(cInputConnectorLookUp, LookupTable))
+		  
+		  self.JoinStatusFieldName = JoinStatusField
+		  
+		  
+		  self.LookupKeyFields.RemoveAll
+		  self.MainKeyFields.RemoveAll
+		  
+		  for each v as String in KeyFields
+		    self.MainKeyFields.Add(v)
+		    self.LookupKeyFields.Add(v)
+		    
+		  next
+		  
+		  
+		  self.MainTargetDataFields.RemoveAll
+		  self.LookupSourceDataFields.RemoveAll
+		  
+		  for each v as String in LookupFields
+		    self.MainTargetDataFields.add(v)
+		    self.LookupSourceDataFields.Add(v)
+		    
+		  next
+		  
+		  return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function RunLookup() As boolean
 		  const cstSuccessMark = "$$$M$$$"

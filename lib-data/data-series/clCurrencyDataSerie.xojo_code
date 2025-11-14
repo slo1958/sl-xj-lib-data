@@ -726,8 +726,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToString() As clStringDataSerie
-		  var res as new clStringDataSerie(self.name+" as string")
+		Function ToString(NewName as string = "") As clStringDataSerie
+		  
+		  var res as new clStringDataSerie(if(NewName = "", "Convert " + self.name + " to string", NewName))
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElementAsString(i))

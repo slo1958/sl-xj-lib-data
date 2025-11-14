@@ -165,6 +165,7 @@ Class=clCurrencyRangeFormatting;lib-data/data-parsers-and-formatter/Currency-par
 Interface=CurrencyFormatInterface;lib-data/data-series/CurrencyFormatInterface.xojo_code;&h000000000831EFFF;&h00000000054067FF;false
 Class=clCurrencyFormatting;lib-data/data-parsers-and-formatter/Currency-parser-and-formatter/clCurrencyFormatting.xojo_code;&h000000004F4B97FF;&h000000005F883FFF;false
 Class=clCurrencyLocalFormatting;lib-data/data-parsers-and-formatter/Currency-parser-and-formatter/clCurrencyLocalFormatting.xojo_code;&h000000006177B7FF;&h000000005F883FFF;false
+Class=clDataPoolItem;lib-data/data-pool/clDataPoolItem.xojo_code;&h000000007C42C7FF;&h0000000057037FFF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1

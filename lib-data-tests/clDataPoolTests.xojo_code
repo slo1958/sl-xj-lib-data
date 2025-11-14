@@ -158,6 +158,84 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_calc_003(log as LogMessageInterface)
+		  //  
+		  //  Test simplified interface to tables in data pool
+		  //  
+		  //  
+		  
+		  
+		  log.start_exec(CurrentMethodName)
+		  
+		  var my_data_pool as new clDataPool
+		  
+		  var tblCustomers as new clDataTable("Customers")
+		  tblCustomers.AddRow(new clDataRow("ID":"A1","Name":"John","City":"Bruxelles"))
+		  tblCustomers.AddRow(new clDataRow("ID":"A2","Name":"Paul","City":"Liege"))
+		  tblCustomers.AddRow(new clDataRow("ID":"A3","Name":"Pierre","City":"Bruxelles"))
+		  
+		  
+		  var tblInvoiceHeader as new clDataTable("InvoiceHeaders")
+		  tblInvoiceHeader.AddRow(new clDataRow("InvoiceID":100, "CustomerID":"A2")) 
+		  tblInvoiceHeader.AddRow(new clDataRow("InvoiceID":101, "CustomerID":"A3"))
+		  tblInvoiceHeader.AddRow(new clDataRow("InvoiceID":103, "CustomerID":"A2"))
+		  
+		  
+		  var tblInvoiceDetails as new clDataTable("InvoiceItems")
+		  tblInvoiceDetails.AddRow(new clDataRow("InvoiceID":100, "line":10001, "Item":"Somethign","TotalPrice":100.0))
+		  tblInvoiceDetails.AddRow(new clDataRow("InvoiceID":100, "line":10002, "Item":"Somethign","TotalPrice":101.0))
+		  tblInvoiceDetails.AddRow(new clDataRow("InvoiceID":100, "line":10003, "Item":"Somethign","TotalPrice":102.0))
+		  tblInvoiceDetails.AddRow(new clDataRow("InvoiceID":103, "line":10301, "Item":"Somethign","TotalPrice":202.0))
+		  tblInvoiceDetails.AddRow(new clDataRow("InvoiceID":103, "line":10302, "Item":"Somethign","TotalPrice":203.0))
+		  tblInvoiceDetails.AddRow(new clDataRow("InvoiceID":101, "line":10101, "Item":"Somethign","TotalPrice":302))
+		  tblInvoiceDetails.AddRow(new clDataRow("InvoiceID":101, "line":10102, "Item":"Somethign","TotalPrice":302))
+		  tblInvoiceDetails.AddRow(new clDataRow("InvoiceID":101, "line":10103, "Item":"Somethign","TotalPrice":303))
+		  
+		  
+		  // Group invoice lines by invoice ID and calculate totals
+		  var trsfGroupByInvoice as new clGroupByTransformer(tblInvoiceDetails, array("InvoiceID"), array("TotalPrice"),"NbrLines")
+		  call trsfGroupByInvoice.Transform()
+		  var tblGroupedInvoice as clDataTable = trsfGroupByInvoice.GetOutputTable()
+		  tblGroupedInvoice.RenameColumn("Sum of TotalPrice","InvoiceTotal")
+		  
+		  // convert column datatype because groupby only works on clNumericDataSerie (to be fixed !!)
+		  call tblGroupedInvoice.AddColumn(tblGroupedInvoice.GetIntegerColumn("NbrLines").ToNumber().Rename("NbrLinesAsNumber"))
+		  
+		  // Join with invoice headers to get customer ID
+		  var trsfJoinCustomerID as new clLookupTransformer(tblGroupedInvoice, tblInvoiceHeader, array("InvoiceID"), array("CustomerID"))
+		  call trsfJoinCustomerID.Transform()
+		  var tblInvoicedCustomers as clDataTable = tblGroupedInvoice
+		  
+		  // Calculate the total per customer
+		  var trsfGroupByCustomer as new clGroupByTransformer(tblInvoicedCustomers, array("CustomerID"), array("InvoiceTotal","NbrLinesAsNumber"), "NbrInvoices")
+		  call trsfGroupByCustomer.Transform()
+		  var tblCustomerTotals as clDataTable = trsfGroupByCustomer.GetOutputTable()
+		  
+		  // lookup transformer will add columns to the source, we clone to allow for checks 
+		  var tblCustTotalsCloned as clDataTable = tblCustomerTotals.Clone("CustomerTotals")
+		  var trsfJoinCustomerInfo as new clLookupTransformer(tblCustTotalsCloned, tblCustomers, array("CustomerID":"ID"), array("Name":"Name", "City":"City"))
+		  call trsfJoinCustomerInfo.Transform()
+		  
+		  var tblExpectedTotals as new clDataTable("ExpectedtTotal")
+		  tblExpectedTotals.AddRow(new clDataRow("CustomerID":"A2", "Sum of InvoiceTotal":708.0,"Sum of NbrLinesAsNumber":5.0, "NbrInvoices":2))
+		  tblExpectedTotals.AddRow(new clDataRow("CustomerID":"A3", "Sum of InvoiceTotal":907.0,"Sum of NbrLinesAsNumber":3.0, "NbrInvoices":1))
+		  
+		  
+		  var tblExpectedJoinedTotals as new clDataTable("ExpectedJoinedTotal")
+		  tblExpectedJoinedTotals.AddRow(new clDataRow("CustomerID":"A2", "Sum of InvoiceTotal":708.0,"Sum of NbrLinesAsNumber":5.0, "NbrInvoices":2,"Name":"Paul","City":"Liege"))
+		  tblExpectedJoinedTotals.AddRow(new clDataRow("CustomerID":"A3", "Sum of InvoiceTotal":907.0,"Sum of NbrLinesAsNumber":3.0, "NbrInvoices":1,"Name":"Pierre", "City":"Bruxelles"))
+		  
+		  
+		  call check_table(log,"T1", tblExpectedTotals, tblCustomerTotals)
+		  call check_table(log,"T2", tblExpectedJoinedTotals,tblCustTotalsCloned)
+		  
+		  log.end_exec(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  
 		  log.start_exec(CurrentMethodName)

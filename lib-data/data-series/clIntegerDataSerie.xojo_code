@@ -505,9 +505,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToNumber() As clNumberDataSerie
+		Function ToNumber(NewName as string = "") As clNumberDataSerie
 		  
-		  var res as new clNumberDataSerie(self.name + " to number")
+		  var res as new clNumberDataSerie(if(NewName = "", "Convert " + self.name + " to number", NewName))
 		  
 		  for i as integer =0 to self.LastIndex
 		    res.AddElement(self.GetElementAsNumber(i))
@@ -520,9 +520,9 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ToString() As clStringDataSerie
+		Function ToString(NewName as string = "") As clStringDataSerie
 		  
-		  var res as new clStringDataSerie(self.name+" as string")
+		  var res as new clStringDataSerie(if(NewName = "", "Convert " + self.name + " to string", NewName))
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElementAsString(i))

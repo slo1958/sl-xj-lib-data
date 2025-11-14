@@ -55,16 +55,24 @@ Inherits clSeriesGroupBy
 		  
 		  var rowCountColumnIndex as integer = -1
 		  
+		  // if RowCountColumnName.Trim.Length > 0 then
+		  // OutputColumns.Add(new clIntegerDataSerie(RowCountColumnName))
+		  // rowCountColumnIndex = OutputColumns.LastIndex
+		  // 
+		  // end if
+		  
+		  for each name as string in TitleOfMeasureColumns
+		    OutputColumns.Add(new clNumberDataSerie(name))
+		    
+		  next
+		  
 		  if RowCountColumnName.Trim.Length > 0 then
 		    OutputColumns.Add(new clIntegerDataSerie(RowCountColumnName))
 		    rowCountColumnIndex = OutputColumns.LastIndex
 		    
 		  end if
 		  
-		  for each name as string in TitleOfMeasureColumns
-		    OutputColumns.Add(new clNumberDataSerie(name))
-		    
-		  next
+		  
 		  
 		  FlattenNextDimension(tmp_label, tmp_value,  0, TopNode, OutputColumns, rowCountColumnIndex)
 		  
