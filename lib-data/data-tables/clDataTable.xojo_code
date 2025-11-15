@@ -3545,10 +3545,17 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
-		Sub Save(write_to as TableRowWriterInterface)
+		Sub Save(write_to as TableRowWriterInterface, IncludeRowIndex as boolean = false)
 		  
 		  var ColumnNames() as string = self.GetColumnNames
 		  var ColumnTypes() as string = self.GetColumnTypes
+		  
+		  
+		  if IncludeRowIndex Then
+		    ColumnNames.AddAt(0, self.RowIndexColumn.name)
+		    ColumnTypes.AddAt(0, clDataType.IntegerValue)
+		    
+		  end if
 		  
 		  write_to.DefineColumns(name, ColumnNames, ColumnTypes)
 		  
@@ -3562,12 +3569,27 @@ Implements TableColumnReaderInterface,Iterable
 		      
 		    next
 		    
+		    if IncludeRowIndex Then columnValues.AddAt(0, self.RowIndexColumn.GetElement(RowIndex))
+		    
+		    
 		    Write_to.AddRow(columnValues)
 		    
 		  next
 		  
 		  
 		  write_to.DoneWithTable
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SaveWithIndex(write_to as TableRowWriterInterface)
+		  
+		  self.save(write_to, true)
+		  
+		  return 
 		  
 		End Sub
 	#tag EndMethod
@@ -3662,6 +3684,52 @@ Implements TableColumnReaderInterface,Iterable
 		  //
 		  
 		  Return SelectColumns(ColumnNames)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SelectRowsFilteredOn(pBooleanSerie as clBooleanDataSerie) As clDataTable
+		  //
+		  // Create a new table with selected rows, using flags from clBooleanDataSerie
+		  //
+		  
+		  
+		  var res as clDataTable = self.CloneStructure("Filtered " + self.Name)
+		  
+		  for each row as clDataRow in self.FilteredOn(pBooleanSerie)
+		    res.AddRow(row)
+		    
+		  next
+		  
+		  return res
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SelectRowsFilteredOn(pBooleanArray() as Variant) As clDataTable
+		  //
+		  // Create a new table with selected rows, using flags from Passed array
+		  //
+		  
+		  var tmp as new clBooleanDataSerie("temp", pBooleanArray)
+		  tmp.SetLength(self.LastIndex, false)
+		  
+		  Return self.SelectRowsFilteredOn(tmp)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SelectRowsFilteredOn1(pBooleanColumnName as string) As clDataTable
+		  //
+		  // Create a new table with selected rows, using existing boolean column
+		  //
+		  
+		  var tmp as   clBooleanDataSerie(self.GetBooleanColumn(pBooleanColumnName))
+		  
+		  Return self.SelectRowsFilteredOn(tmp)
+		  
 		End Function
 	#tag EndMethod
 
