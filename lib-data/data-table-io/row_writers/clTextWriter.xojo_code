@@ -122,6 +122,7 @@ Implements TableRowWriterInterface
 		    self.TextFile = TextOutputStream.Create(self.CurrentFIle)
 		    
 		  else
+		    System.DebugLog("Cannot open " + self.CurrentFIle.Name + " for writing.")
 		    self.TextFile =  nil
 		    
 		  end if 

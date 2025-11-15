@@ -329,6 +329,7 @@ Implements TableRowReaderInterface
 		    self.TextFile.Encoding = self.encoding
 		    
 		  else
+		    System.DebugLog("Cannot open " + self.CurrentFIle.Name + " for reading.")
 		    self.TextFile = nil
 		    
 		  end if
@@ -345,6 +346,8 @@ Implements TableRowReaderInterface
 		  end if
 		  
 		  self.LineCount = 0
+		  
+		  Return
 		End Sub
 	#tag EndMethod
 
