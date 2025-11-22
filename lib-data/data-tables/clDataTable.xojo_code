@@ -3707,13 +3707,12 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SelectRowsFilteredOn(pBooleanArray() as Variant) As clDataTable
+		Function SelectRowsFilteredOn(pBooleanColumnName as string) As clDataTable
 		  //
-		  // Create a new table with selected rows, using flags from Passed array
+		  // Create a new table with selected rows, using existing boolean column
 		  //
 		  
-		  var tmp as new clBooleanDataSerie("temp", pBooleanArray)
-		  tmp.SetLength(self.LastIndex, false)
+		  var tmp as  clBooleanDataSerie = self.GetBooleanColumn(pBooleanColumnName)
 		  
 		  Return self.SelectRowsFilteredOn(tmp)
 		  
@@ -3721,12 +3720,14 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SelectRowsFilteredOn1(pBooleanColumnName as string) As clDataTable
+		Function SelectRowsFilteredOn(pBooleanArray() as Variant) As clDataTable
 		  //
-		  // Create a new table with selected rows, using existing boolean column
+		  // Create a new table with selected rows, using flags from Passed array
 		  //
 		  
-		  var tmp as   clBooleanDataSerie(self.GetBooleanColumn(pBooleanColumnName))
+		  var tmp as new clBooleanDataSerie("temp", pBooleanArray)
+		  
+		  tmp.SetLength(self.LastIndex, false)
 		  
 		  Return self.SelectRowsFilteredOn(tmp)
 		  
