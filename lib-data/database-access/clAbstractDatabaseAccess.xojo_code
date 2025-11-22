@@ -15,6 +15,10 @@ Protected Class clAbstractDatabaseAccess
 		  //   (nothing)
 		  //  
 		  
+		  #Pragma Unused table_name
+		  #Pragma Unused field_names
+		  #Pragma Unused field_types
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
@@ -210,6 +214,10 @@ Protected Class clAbstractDatabaseAccess
 		  //   (nothing)
 		  //  
 		  
+		  #Pragma Unused table_name
+		  #Pragma Unused field_names
+		  #Pragma Unused field_types
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
@@ -227,6 +235,9 @@ Protected Class clAbstractDatabaseAccess
 		  //  Returns:
 		  //   (nothing)
 		  //  
+		  
+		  #Pragma Unused table_name
+		  
 		  Raise New clDataException("Unimplemented method " + CurrentMethodName)
 		  
 		End Sub
@@ -263,8 +274,9 @@ Protected Class clAbstractDatabaseAccess
 		  //  - corresponding sql type
 		  //  
 		  
-		  return source_type
+		  #Pragma Unused source_type
 		  
+		  return source_type
 		  
 		End Function
 	#tag EndMethod
