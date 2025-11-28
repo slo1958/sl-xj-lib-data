@@ -59,7 +59,7 @@ You can create a data serie:
 ```xojo
 // Snippet 001
 //
-// Create a new table named 'some_values'
+// Create a new data serie named 'some_values'
 //
 var my_serie As New clDataSerie("some_values")
 

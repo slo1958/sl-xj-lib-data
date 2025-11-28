@@ -11,7 +11,7 @@ Protected Module code_snippets
 		  // Snippet 001
 		  
 		  //
-		  // Create a new table named 'some_values'
+		  // Create a new data serie named 'some_values'
 		  //
 		  Var my_serie As New clDataSerie("some_values")
 		  
