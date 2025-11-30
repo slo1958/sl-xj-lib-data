@@ -1,26 +1,38 @@
 #tag Class
-Class clWriteToSystemLog
-Implements support_tests.LogMessageInterface
+Protected Class clLibDataCommon
 	#tag Method, Flags = &h0
-		Sub end_exec(method as string)
-		  WriteMessage("Done with " + method)
-		End Sub
+		Shared Function logger() As clLoging
+		  
+		  return localLogger
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub StartTask(method as string)
-		  WriteMessage("Starting " + method)
-		End Sub
+		Shared Function ReplacePlaceHolders(BaseString as string, values() as string) As string
+		  var ret as string = BaseString
+		  
+		  for i as integer = 0 to values.LastIndex
+		    ret = ret.replaceall("%"+str(i), values(i))
+		    
+		  next
+		  
+		  return ret
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub WriteMessage(msg as string)
-		  // Part of the support_tests.logmessage_writer interface.
-		  System.DebugLog(msg)
+		Shared Sub SetLogger(newLogger as clLoging)
 		  
+		  localLogger = newLogger
 		  
+		  return
 		End Sub
 	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private Shared localLogger As clLoging
+	#tag EndProperty
 
 
 	#tag ViewBehavior

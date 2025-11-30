@@ -10,7 +10,7 @@ Implements support_tests.LogMessageInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub start_exec(method as string)
+		Sub StartTask(method as string)
 		  // Part of the support_tests.LogMessageInterface interface.
 		  System.DebugLog("Start " + method)
 		  

@@ -2,6 +2,38 @@
 Protected Class clDataPool
 Implements Iterable
 	#tag Method, Flags = &h0
+		Sub AddErrorMessage(source as string, ErrorMessage as string, paramarray item as string)
+		  //  
+		  //  Add an error message
+		  //  
+		  //  Parameters
+		  //  - source: name of method generating the message
+		  //  - error message with placeholders
+		  // - list of values for placeholders
+		  //  
+		  //  Returns:
+		  //  
+		  
+		  var msg as string = clLibDataCommon.ReplacePlaceHolders(ErrorMessage, item)
+		  
+		  self.LastErrorMessage = "In " + source+": " + msg
+		  
+		  if self.localLogger = nil then
+		    System.DebugLog(self.LastErrorMessage)
+		    
+		  else
+		    self.localLogger.WriteError(source, msg)
+		    
+		  end if
+		  
+		  if clLibDataCommon.Logger <> nil then clLibDataCommon.logger.WriteError(source,msg)
+		  
+		  return 
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function CheckIntegrity() As Boolean
 		  
 		  var Results as boolean = True
@@ -85,7 +117,7 @@ Implements Iterable
 		  WriteLog("Saving datatable %0 as %1", table.name, c.entry_label)
 		  
 		  return
-		   
+		  
 		End Sub
 	#tag EndMethod
 
@@ -129,7 +161,7 @@ Implements Iterable
 	#tag Method, Flags = &h0
 		Sub SaveEachTable(WriteTo as TableRowWriterInterface, flag_empty_table as boolean = false)
 		  
-		   
+		  
 		  
 		  for each table_name as String in ItemDictionary.Keys
 		    call self.SaveOneTable(table_name, WriteTo, flag_empty_table)
@@ -206,12 +238,21 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetLogger(newLogger as clLoging)
+		  
+		  self.localLogger = newLogger
+		  
+		  return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetTable(table as clDataTable, table_key as string = "")
 		  
 		  self.internalSetTable(table, table_key, DatapoolSource.Set)
 		  
 		  return
-		   
+		  
 		End Sub
 	#tag EndMethod
 
@@ -335,6 +376,14 @@ Implements Iterable
 
 	#tag Property, Flags = &h0
 		ItemDictionary As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private LastErrorMessage As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private localLogger As clLoging
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

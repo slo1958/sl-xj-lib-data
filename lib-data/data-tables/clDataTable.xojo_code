@@ -297,11 +297,23 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  (nothing)
 		  //  
-		  var msg as string = ReplacePlaceHolders(ErrorMessageTemplate, item)
+		  
+		  
+		  var msg as string = clLibDataCommon.ReplacePlaceHolders(ErrorMessageTemplate, item)
 		  
 		  self.LastErrorMessage = "In " + SourceFunctionName+": " + msg
 		  
-		  System.DebugLog(self.LastErrorMessage)
+		  if self.localLogger = nil then
+		    System.DebugLog(self.LastErrorMessage)
+		    
+		  else
+		    self.localLogger.WriteError(SourceFunctionName, msg)
+		    
+		  end if
+		  
+		  if clLibDataCommon.Logger <> nil then clLibDataCommon.logger.WriteError(SourceFunctionName, msg)
+		  
+		  return 
 		  
 		End Sub
 	#tag EndMethod
@@ -761,7 +773,15 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  Self.LastWarningMessage = "In " + SourceFunctionName + ": " + msg
 		  
-		  System.DebugLog(Self.LastWarningMessage)
+		  if self.localLogger = nil then
+		    System.DebugLog(self.LastErrorMessage)
+		    
+		  else
+		    self.localLogger.WriteWarning(SourceFunctionName, msg)
+		    
+		  end if
+		  
+		  if clLibDataCommon.Logger <> nil then clLibDataCommon.logger.WriteWarning(SourceFunctionName, msg)
 		  
 		End Sub
 	#tag EndMethod
@@ -3845,6 +3865,15 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetLogger(newLogger as clLoging)
+		  
+		  self.localLogger = newLogger
+		  
+		  return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Sort(ColumnNames() as string, order as SortOrder = SortOrder.ascending) As clDataTable
 		  //
 		  // Produces a new table with content of current table sorted on the value of the columns 
@@ -4039,6 +4068,10 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Property, Flags = &h1
 		Protected link_to_source As TableColumnReaderInterface
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private localLogger As clLoging
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

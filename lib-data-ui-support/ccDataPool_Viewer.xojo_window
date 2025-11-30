@@ -321,6 +321,38 @@ End
 
 
 	#tag Method, Flags = &h0
+		Sub AddErrorMessage(source as string, ErrorMessage as string, paramarray item as string)
+		  //  
+		  //  Add an error message
+		  //  
+		  //  Parameters
+		  //  - source: name of method generating the message
+		  //  - error message with placeholders
+		  // - list of values for placeholders
+		  //  
+		  //  Returns:
+		  //  
+		  
+		  var msg as string = clLibDataCommon.ReplacePlaceHolders(ErrorMessage, item)
+		  
+		  self.LastErrorMessage = "In " + source+": " + msg
+		  
+		  if self.localLogger = nil then
+		    System.DebugLog(self.LastErrorMessage)
+		    
+		  else
+		    self.localLogger.WriteError(source, msg)
+		    
+		  end if
+		  
+		  if clLibDataCommon.Logger <> nil then clLibDataCommon.logger.WriteError(source,msg)
+		   
+		  return 
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub add_table(mytable as TableColumnReaderInterface)
 		  
 		  if mytable = nil Then
@@ -494,6 +526,15 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetLogger(newLogger as clLoging)
+		  
+		  self.localLogger = newLogger
+		  
+		  return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub ShowMetadata()
 		  
 		  lb_data.width = lb_data.width - lb_meta0.width - 10
@@ -517,7 +558,7 @@ End
 		  var tbl as TableColumnReaderInterface = table_dict.Lookup(current_table, nil)
 		  
 		  if tbl is nil then
-		    System.DebugLog(CurrentMethodName+" cannot find table " + table_name)
+		    self.AddErrorMessage(CurrentMethodName,"Cannot find table " + table_name)
 		    return
 		    
 		  end if
@@ -559,6 +600,14 @@ End
 
 	#tag Property, Flags = &h0
 		FreezeMetaData As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private LastErrormessage As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private localLogger As clLoging
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

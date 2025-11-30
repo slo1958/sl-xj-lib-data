@@ -9,7 +9,7 @@ Protected Module clDataPool_tests
 		    logwriter = new clWriteToSystemLog
 		  end if
 		  
-		  logwriter.start_exec(CurrentMethodName)
+		  logwriter.StartTask(CurrentMethodName)
 		  
 		  RunTests(new clDataPoolTests, "test_ca", logwriter)
 		  
@@ -27,7 +27,7 @@ Protected Module clDataPool_tests
 		    logwriter = new clWriteToSystemLog
 		  end if
 		  
-		  logwriter.start_exec(CurrentMethodName)
+		  logwriter.StartTask(CurrentMethodName)
 		  
 		  RunTests(new clDataPoolTests, "test_io", logwriter)
 		  

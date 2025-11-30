@@ -3,7 +3,7 @@ Protected Class clDataPoolTests
 	#tag Method, Flags = &h0
 		Sub test_calc_001(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var my_data_pool as new clDataPool
 		  
@@ -84,7 +84,7 @@ Protected Class clDataPoolTests
 		  //  
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var my_data_pool as new clDataPool
 		  
@@ -165,7 +165,7 @@ Protected Class clDataPoolTests
 		  //  
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var my_data_pool as new clDataPool
 		  
@@ -238,7 +238,7 @@ Protected Class clDataPoolTests
 	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var my_data_pool as new clDataPool
 		  
@@ -303,7 +303,7 @@ Protected Class clDataPoolTests
 	#tag Method, Flags = &h0
 		Sub test_io_002(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var my_data_pool as new clDataPool
 		  
@@ -375,7 +375,7 @@ Protected Class clDataPoolTests
 	#tag Method, Flags = &h0
 		Sub test_io_003(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var my_data_pool as new clDataPool
 		  
@@ -442,7 +442,7 @@ Protected Class clDataPoolTests
 	#tag Method, Flags = &h0
 		Sub test_io_004(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var my_data_pool as new clDataPool
 		  
@@ -502,7 +502,7 @@ Protected Class clDataPoolTests
 	#tag Method, Flags = &h0
 		Sub test_io_005(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var my_data_pool as new clDataPool
 		  

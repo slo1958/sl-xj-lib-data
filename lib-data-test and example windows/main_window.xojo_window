@@ -10,6 +10,7 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
    HasFullScreenButton=   False
    HasMaximizeButton=   True
    HasMinimizeButton=   True
+   HasTitleBar     =   True
    Height          =   452
    ImplicitInstance=   True
    MacProcID       =   0
@@ -328,7 +329,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub start_exec(method as string)
+		Sub StartTask(method as string)
 		  WriteMessage("Starting " + method)
 		End Sub
 	#tag EndMethod
@@ -447,6 +448,14 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="HasTitleBar"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="MinimumWidth"
 		Visible=true

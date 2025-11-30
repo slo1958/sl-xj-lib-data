@@ -61,7 +61,7 @@ Protected Module clDataSerie_tests
 		    logwriter = new clWriteToSystemLog
 		  end if
 		  
-		  logwriter.start_exec(CurrentMethodName)
+		  logwriter.StartTask(CurrentMethodName)
 		  
 		  RunTests(new clDataSerieTests, "test_ca", logwriter)
 		  
@@ -79,7 +79,7 @@ Protected Module clDataSerie_tests
 		    logwriter = new clWriteToSystemLog
 		  end if
 		  
-		  logwriter.start_exec(CurrentMethodName)
+		  logwriter.StartTask(CurrentMethodName)
 		  
 		  RunTests(new clDataSerieTests, "test_io", logwriter)
 		  

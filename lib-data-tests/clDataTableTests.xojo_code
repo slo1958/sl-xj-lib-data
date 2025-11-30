@@ -3,7 +3,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_001(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table As New clDataTable("T1")
 		  
@@ -41,7 +41,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_002(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var rtst As clDataRow
 		  
@@ -101,7 +101,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_003(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var rtst As clDataRow
@@ -146,7 +146,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_004(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var rtst As clDataRow
 		  
@@ -186,7 +186,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_005(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var rtst As clDataRow
@@ -234,7 +234,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_006(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var c1 As New clDataSerie("premier")
@@ -292,7 +292,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_007(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var table As New clDataTable("T1")
@@ -323,7 +323,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_008(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var table As New clDataTable("T1")
@@ -369,7 +369,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_009(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var rtst As clDataRow
@@ -446,7 +446,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_010(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var temp_row As clDataRow
@@ -489,7 +489,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_011(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var table1 As New clDataTable("mytable")
@@ -521,7 +521,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_012(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table0 As New clDataTable("mytable")
 		  
@@ -563,7 +563,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_013(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var table0 As New clDataTable("mytable")
@@ -610,7 +610,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_014(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var table0 As New clDataTable("mytable")
@@ -665,7 +665,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_015(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var table0 As New clDataTable("mytable")
@@ -722,7 +722,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_016(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var table As New clDataTable("T1")
@@ -760,7 +760,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_017(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table0 As New clDataTable("mytable")
 		  
@@ -800,7 +800,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_018(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
@@ -842,7 +842,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_019(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var dct as Dictionary
 		  
@@ -888,7 +888,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_020(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var dct as Dictionary
 		  
@@ -962,7 +962,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_021(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 as new clDataSerie("DataSerie")
 		  var c2 as new clNumberDataSerie("NumberDataSerie")
@@ -1025,7 +1025,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_022(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  // Build the source list of dictionaries
@@ -1074,7 +1074,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_023(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  // Build the source list of dictionaries
@@ -1124,7 +1124,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_024(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
 		  
@@ -1161,7 +1161,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_025(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table_1 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
 		  
@@ -1219,7 +1219,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_026(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table_0 As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
 		  table_0.IncludeRowNameAsColumn( True)
@@ -1277,7 +1277,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_027(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table As New clDataTable("T1", array("aaa", "bbb", "ccc","ddd"))
 		  
@@ -1304,7 +1304,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_028(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var mytable As New clDataTable("T1")
@@ -1337,7 +1337,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_029(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var mytable As New clDataTable("T1")
@@ -1370,7 +1370,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_030(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table0 As New clDataTable("mytable")
 		  
@@ -1418,7 +1418,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_031(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var mytable As New clDataTable("T1")
@@ -1451,7 +1451,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_032(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table0 As New clDataTable("mytable")
 		  
@@ -1498,7 +1498,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_033(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var col_country1 as new clStringDataSerie("Country", "France", "France", "Belgique")
 		  var col_city1 as new clStringDataSerie("City", "Paris", "Marseille", "Bruxelles")
@@ -1529,7 +1529,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_034(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var t as new clDataTable("t")
 		  
@@ -1585,7 +1585,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_035(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var t as new clDataTable("t")
 		  
@@ -1630,7 +1630,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_036(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var tcountries as new clDataTable("Countries")
@@ -1704,7 +1704,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_037(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var tcountries as new clDataTable("Countries")
@@ -1772,7 +1772,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_038(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var t as new clDataTable("t")
 		  
@@ -1814,7 +1814,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_039(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var t1 as new clDataTable("Main")
 		  
@@ -1887,7 +1887,7 @@ Protected Class clDataTableTests
 		  //
 		  // Test full joins
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var tcountries1 as new clDataTable("Countries1")
@@ -2092,7 +2092,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_041(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var tcountries as new clDataTable("Countries")
@@ -2175,7 +2175,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_042(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var temp_row As clDataRow
@@ -2214,7 +2214,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_043(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var temp_row As clDataRow
@@ -2258,7 +2258,7 @@ Protected Class clDataTableTests
 		  // Test clGroupAndPivot, direct calls
 		  //
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table0 As New clDataTable("mytable")
 		  
@@ -2320,7 +2320,7 @@ Protected Class clDataTableTests
 		  // Test the pivot transformer
 		  //
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table0 As New clDataTable("mytable")
 		  
@@ -2376,7 +2376,7 @@ Protected Class clDataTableTests
 		  //
 		  //
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var rtst As clDataRow
 		  
@@ -2443,7 +2443,7 @@ Protected Class clDataTableTests
 		  //
 		  // Test full joins with join success column
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  // First join table: with a match with some cities, only row per city
 		  var tcountries1 as new clDataTable("Countries1")
@@ -2682,7 +2682,7 @@ Protected Class clDataTableTests
 		  //
 		  // Test generation of unique names
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  // First join table: with a match with some cities, only row per city
 		  var myTable as new clDataTable("Countries")
@@ -2729,7 +2729,7 @@ Protected Class clDataTableTests
 		  //
 		  // Test full joins
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  // Main data table
@@ -2934,7 +2934,7 @@ Protected Class clDataTableTests
 		  //
 		  // Test full joins with join success column
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  // Create main table, to be joined
@@ -3147,7 +3147,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_051(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  // Test basic filter transformer
 		  
@@ -3174,7 +3174,7 @@ Protected Class clDataTableTests
 		  
 		  for each row as clDataRow in table0
 		    var country as string = row.GetCell("country")
-		     
+		    
 		    if country = "France" then 
 		      expectedTableFrance.AddRow(row)
 		      
@@ -3197,7 +3197,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_052(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var tableInput As New clDataTable("mytable")
 		  var tableOutput as clDataTable
@@ -3259,7 +3259,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_053(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var tableInput As New clDataTable("mytable")
 		  var tableOutput as clDataTable
@@ -3311,7 +3311,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var fld_file1 As FolderItem
@@ -3359,7 +3359,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_io_002(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var db as new SQLiteDatabase
 		  
@@ -3479,7 +3479,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_io_003(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var db as new SQLiteDatabase
 		  
@@ -3590,7 +3590,7 @@ Protected Class clDataTableTests
 		Sub test_io_004(log as LogMessageInterface)
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var fld_file1 As FolderItem
@@ -3652,7 +3652,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_io_005(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var v1 as new clDBReader(nil, "table")
 		  var v1_name as string = v1.name

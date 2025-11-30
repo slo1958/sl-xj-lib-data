@@ -84,11 +84,22 @@ Implements Iterable
 		  //  Returns:
 		  //  
 		  
-		  var msg as string = ReplacePlaceHolders(ErrorMessage, item)
+		  var msg as string = clLibDataCommon.ReplacePlaceHolders(ErrorMessage, item)
 		  
 		  self.LastErrorMessage = "In " + source+": " + msg
 		  
-		  System.DebugLog(self.LastErrorMessage)
+		  if self.localLogger = nil then
+		    System.DebugLog(self.LastErrorMessage)
+		    
+		  else
+		    self.localLogger.WriteError(source, msg)
+		    
+		  end if
+		  
+		  if clLibDataCommon.Logger <> nil then clLibDataCommon.logger.WriteError(source,msg)
+		  
+		  return 
+		  
 		End Sub
 	#tag EndMethod
 
@@ -1166,19 +1177,6 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ReplacePlaceHolders(BaseString as string, values() as string) As string
-		  var ret as string = BaseString
-		  
-		  for i as integer = 0 to values.LastIndex
-		    ret = ret.replaceall("%"+str(i), values(i))
-		    
-		  next
-		  
-		  return ret
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Reset()
 		  //  
 		  //  Reset the data serie. Type specific subclasses will clear all values.
@@ -1362,6 +1360,15 @@ Implements Iterable
 		    
 		  End If
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetLogger(newLogger as clLoging)
+		  
+		  self.localLogger = newLogger
+		  
+		  return
 		End Sub
 	#tag EndMethod
 
@@ -1686,6 +1693,10 @@ Implements Iterable
 
 	#tag Property, Flags = &h1
 		Protected LastErrorMessage As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private localLogger As clLoging
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

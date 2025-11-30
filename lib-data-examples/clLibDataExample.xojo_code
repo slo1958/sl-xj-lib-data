@@ -20,7 +20,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var row As clDataRow
 		  
@@ -84,7 +84,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var row As clDataRow
 		  
@@ -159,7 +159,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  //
 		  // Create a data table wih some data
@@ -224,7 +224,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  //
 		  // Create two tables with some data
@@ -281,7 +281,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var table0 As New clDataTable("mytable", SerieArray( _
@@ -323,7 +323,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  //
 		  //  Create an empty table
@@ -371,7 +371,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  //
 		  //  Create an empty table
@@ -430,7 +430,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  //
 		  //  Create an empty table
@@ -485,7 +485,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  //
 		  //  Create an empty table
@@ -559,7 +559,7 @@ Protected Class clLibDataExample
 		    return nil
 		    
 		  end if
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  //
 		  //  Create an empty table
@@ -632,7 +632,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  //
 		  //  Create an empty table
@@ -692,7 +692,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  //
 		  //  Create an empty table
@@ -755,7 +755,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  //
 		  // Create two data series
@@ -848,7 +848,7 @@ Protected Class clLibDataExample
 		  
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  //
@@ -918,7 +918,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 As New clDateDataSerie("ExpiryDate") 
 		  var c2 As New clDateDataSerie("CurrentDate") 
@@ -966,7 +966,7 @@ Protected Class clLibDataExample
 		  
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  // Build the table, to simulate loading from an external data source
 		  var col_country as new clDataSerie("Customer", "C001", "", "C002", "C003", "C004","C005")
@@ -1021,7 +1021,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var db as new SQLiteDatabase
 		  
@@ -1152,7 +1152,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var dct as Dictionary
 		  
@@ -1196,7 +1196,7 @@ Protected Class clLibDataExample
 		  
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var table0 As New clDataTable("mytable without display title", SerieArray( _
 		  New clDataSerie("City",  "F1","F2","B1","F1","B2","I1") _
@@ -1251,7 +1251,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var c0 as new clDataSerie("Action")
@@ -1318,7 +1318,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 as new clDataSerie("DataSerie")
 		  var c2 as new clNumberDataSerie("NumberDataSerie")
@@ -1376,7 +1376,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1435,7 +1435,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var fld_folder As New FolderItem
 		  var fld_file1 As FolderItem
@@ -1500,7 +1500,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1571,7 +1571,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 as new clStringDataSerie("Alpha")
 		  
@@ -1623,7 +1623,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var tcountries as new clDataTable("Countries")
@@ -1702,7 +1702,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var t1 as new clDataTable("transactions")
 		  
@@ -1765,7 +1765,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var tcountries1 as new clDataTable("Countries1")
 		  call  tcountries1.AddColumn(new clStringDataSerie("Country"))
@@ -1858,7 +1858,7 @@ Protected Class clLibDataExample
 		  end if
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1938,7 +1938,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var SourceTable as new clDataTable("MyTable")
 		  
@@ -1980,7 +1980,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var SourceTable as new clDataTable("MyTable")
 		  
@@ -2025,7 +2025,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var SourceTable as new clDataTable("MyTable")
 		  
@@ -2083,7 +2083,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var tcountries1 as new clDataTable("Countries1")
 		  call  tcountries1.AddColumn(new clStringDataSerie("Country"))
@@ -2171,7 +2171,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var people as new clDataTable("people")
 		  call  people.AddColumn(new clStringDataSerie("Gender"))
@@ -2240,7 +2240,7 @@ Protected Class clLibDataExample
 		    
 		  end if
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var tcountries1 as new clDataTable("Countries1")
 		  call  tcountries1.AddColumn(new clStringDataSerie("Country"))

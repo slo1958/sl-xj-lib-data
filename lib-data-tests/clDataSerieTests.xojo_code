@@ -3,7 +3,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_001(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var test  As clDataSerie
 		  
@@ -24,7 +24,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_003(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var test  As clDataSerie
 		  
@@ -56,7 +56,7 @@ Protected Class clDataSerieTests
 		Sub test_calc_006(log as LogMessageInterface)
 		  
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var src As New clDataSerie("premier") 
 		  
@@ -122,7 +122,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_007(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 As New clDataSerie("premier") 
 		  var c2 As New clDataSerie("second") 
@@ -151,7 +151,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_008(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 As New clDataSerie("premier") 
 		  var c2 As New clDataSerie("second") 
@@ -186,7 +186,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_009(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 As New clDataSerieMultiValued(Array("aaaa","bbbb")) 
 		  
@@ -202,7 +202,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_010(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 As New clCompressedDataSerie("CompSerie") 
 		  var c2 As New clDataSerie("BaseSerie") 
@@ -261,7 +261,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_011(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var test  As clNumberDataSerie
 		  
@@ -281,7 +281,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_012(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var test  As clNumberDataSerie
 		  
@@ -301,7 +301,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_014(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var test  As clNumberDataSerie
 		  
@@ -322,7 +322,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_015(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var test0, test1, test2, test3  As clNumberDataSerie
 		  var expected, delta as clNumberDataSerie
@@ -363,7 +363,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_016(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var c1 As New clDataSerie("premier") 
@@ -408,7 +408,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_017(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 As New clCompressedDataSerie("CompSerie") 
 		  var c2 As New clDataSerie("BaseSerie") 
@@ -467,7 +467,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_018(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 As New clDateDataSerie("premier") 
 		  var c2 As New clDateDataSerie("second") 
@@ -497,7 +497,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_019(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 As New clDateDataSerie("premier") 
 		  var c2 As New clDateDataSerie("second") 
@@ -563,7 +563,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_020(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 As New clDateTimeDataSerie("premier") 
 		  var c2 As New clDateTimeDataSerie("second") 
@@ -652,7 +652,7 @@ Protected Class clDataSerieTests
 		Sub test_calc_021(log as LogMessageInterface)
 		  
 		  // parsing tests
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 as new clStringDataSerie("Alpha")
 		  
@@ -688,7 +688,7 @@ Protected Class clDataSerieTests
 		Sub test_calc_022(log as LogMessageInterface)
 		  
 		  // parsing tests
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 as new clStringDataSerie("Alpha")
 		  
@@ -729,7 +729,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_023(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var test0, test1, test2, test3  As clCurrencyDataSerie
 		  var expected, delta as clCurrencyDataSerie
@@ -770,7 +770,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_calc_024(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var test0, test1, test2, test3  As clCurrencyDataSerie
 		  var expected, delta as clCurrencyDataSerie
@@ -812,7 +812,7 @@ Protected Class clDataSerieTests
 		Sub test_calc_025(log as LogMessageInterface)
 		  
 		  // parsing tests
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 as new clStringDataSerie("Alpha")
 		  
@@ -842,7 +842,7 @@ Protected Class clDataSerieTests
 		Sub test_calc_026(log as LogMessageInterface)
 		  
 		  // parsing tests
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var cNumber as new clNumberDataSerie("MyNumber", array(123.0,456.0,781.0))
 		  var cCurrency as new clCurrencyDataSerie("MyCurrency",array(123.0,456.0,781.0))
@@ -867,7 +867,7 @@ Protected Class clDataSerieTests
 		Sub test_calc_027(log as LogMessageInterface)
 		  
 		  // parsing tests
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var cNumber as new clNumberDataSerie("MyNumber", array(123.0,456.0,0.1111 ))
 		  var cCurrency as new clCurrencyDataSerie("MyCurrency",array(123.0,456.0,0.1111 ))
@@ -891,7 +891,7 @@ Protected Class clDataSerieTests
 		Sub test_calc_028(log as LogMessageInterface)
 		  
 		  // parsing tests using locale
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var c1 as new clStringDataSerie("Alpha")
 		  
@@ -927,7 +927,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_io_001(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  var k As Variant
 		  
@@ -949,7 +949,7 @@ Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
 		Sub test_io_005(log as LogMessageInterface)
 		  
-		  log.start_exec(CurrentMethodName)
+		  log.StartTask(CurrentMethodName)
 		  
 		  
 		  var k As Variant

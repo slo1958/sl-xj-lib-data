@@ -6,7 +6,7 @@ Inherits DesktopApplication
 		  
 		  var logwriter as  LogMessageInterface = new clWriteToSystemLog 
 		  // 
-		  // logwriter.start_exec(CurrentMethodName)
+		  // logwriter.StartTask(CurrentMethodName)
 		  // 
 		  // var t as new clDataTableTests
 		  // 
@@ -82,6 +82,14 @@ Inherits DesktopApplication
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ProcessID"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=false

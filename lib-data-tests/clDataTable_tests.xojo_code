@@ -9,7 +9,7 @@ Protected Module clDataTable_tests
 		    logwriter = new clWriteToSystemLog
 		  end if
 		  
-		  logwriter.start_exec(CurrentMethodName)
+		  logwriter.StartTask(CurrentMethodName)
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats
 		  
@@ -36,7 +36,7 @@ Protected Module clDataTable_tests
 		    logwriter = new clWriteToSystemLog
 		  end if
 		  
-		  logwriter.start_exec(CurrentMethodName)
+		  logwriter.StartTask(CurrentMethodName)
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats
 		  
@@ -70,7 +70,7 @@ Protected Module clDataTable_tests
 		  end if
 		  
 		  
-		  logwriter.start_exec(CurrentMethodName)
+		  logwriter.StartTask(CurrentMethodName)
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats
 		  
