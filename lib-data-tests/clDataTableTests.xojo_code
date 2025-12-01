@@ -33,7 +33,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "T1", expected_table, table)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -92,7 +92,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "T1", expected_table3, table3)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -137,7 +137,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"T1", expected_table3, table3)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -178,7 +178,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "T1", expected_table, table)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -223,7 +223,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"T1", expected_table, table)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -283,7 +283,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"mytable2", expected_t2, t2)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -315,7 +315,7 @@ Protected Class clDataTableTests
 		  call check_table(log, "mytable integrity", nil, table) 
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -359,7 +359,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"t1", expected_table, table)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -438,7 +438,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"T4", expected_table4, table4)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -480,7 +480,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"T1", expected_table1, table1)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -513,7 +513,7 @@ Protected Class clDataTableTests
 		  call check_value(log,"row 2, sales", 1300, tmp_row.GetCell("sales"))
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -555,7 +555,7 @@ Protected Class clDataTableTests
 		  
 		  call check_value(log, "filtered row count", 2, k)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -602,7 +602,7 @@ Protected Class clDataTableTests
 		  next
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -657,7 +657,7 @@ Protected Class clDataTableTests
 		  next
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -714,7 +714,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "table0  integrity", nil, table0) 
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -752,7 +752,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "T1", expected_table, table)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -792,7 +792,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"unique", expected_table1, table1)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -834,7 +834,7 @@ Protected Class clDataTableTests
 		  
 		  call check_value(log, "nb clipped", 3, nb)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -877,7 +877,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"structure", struc_expected, struc0)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -951,7 +951,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"structure", struc_expected, struc1)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1015,7 +1015,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"statistics", table_expected, stat_table)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1066,7 +1066,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"list of dicts", t_expected, t_actual)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -1116,7 +1116,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"list of dicts", t_expected, t_actual)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -1153,7 +1153,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "T1", expected_table, table)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -1211,7 +1211,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "T1", expected_table, table_2)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -1269,7 +1269,7 @@ Protected Class clDataTableTests
 		  call check_table(log, "T2a", expected_table, table_1)
 		  call check_table(log, "T2b", expected_table, table_2)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -1296,7 +1296,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "T1", expected_table, table)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -1328,7 +1328,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"T1", expected_t1, mytable)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -1361,7 +1361,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"T1", expected_t1, mytable)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -1409,7 +1409,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"T1", expected_table0, table0)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -1442,7 +1442,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"T1", expected_t1, mytable)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -1489,7 +1489,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"T1", expected_t1, table0)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -1518,7 +1518,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"use dict for creation", table_expected, table0)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1574,7 +1574,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"groupby and aggregate", table_expected, table0)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1619,7 +1619,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"get distinct values", table_expected, table0)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1693,7 +1693,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"Check total sales", tSumSales_expected, tSumSales )
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1761,7 +1761,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"Check total sales", tSumSales_expected, tSumSales )
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1803,7 +1803,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"get distinct values", table_expected, table0)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -1874,7 +1874,7 @@ Protected Class clDataTableTests
 		  
 		  // call check_table(log,"get distinct values", table_expected, table0)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -2084,7 +2084,7 @@ Protected Class clDataTableTests
 		  call check_table(log, "Join6", tjoin6_expected, tjoin6)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -2164,7 +2164,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"Check total sales", tSumSales_expected, tSumSales )
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -2205,7 +2205,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"Results", expected_results, results)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -2246,7 +2246,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"Results", expected_results, results)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -2308,7 +2308,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"T1", expected_t1, table1)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -2361,7 +2361,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"T1", expected_t1, table1)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -2432,7 +2432,7 @@ Protected Class clDataTableTests
 		  call check_table(log, "T1", table3, expected_table3)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -2672,7 +2672,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "Join7", tjoin7_expected, tjoin7)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -2717,7 +2717,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "Unique column names", myExpectedTable, myTable)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -2924,7 +2924,7 @@ Protected Class clDataTableTests
 		  call check_table(log, "Join6", tjoin6_expected, tjoin6)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -3139,7 +3139,7 @@ Protected Class clDataTableTests
 		  call check_table(log, "Join6", touterJoin_MulitpleCities_expected, touterJoin_MulitpleCities)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -3189,7 +3189,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"Selected France", expectedTableFrance, tableFrance)
 		  call check_table(log,"Selected not france", expectedTableNotFrance, tableNotFrance)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -3251,7 +3251,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "status tables", expectedstatusTable, statusTable) 
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -3303,7 +3303,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "results", expectedOutput, tableOutput) 
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -3349,7 +3349,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"table3/table6Compressed", table3, table6Compressed) 
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -3469,7 +3469,7 @@ Protected Class clDataTableTests
 		  call check_table(log,"Test7/Test8", table7, table8)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -3580,7 +3580,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"Test7/Test8", table7, table8)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -3642,7 +3642,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"T4/T5", expected_table, table, 0.0001) 
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -3672,7 +3672,7 @@ Protected Class clDataTableTests
 		  call check_value(log, "name v3", "table", v3_name)
 		  call check_value(log, "name v3", "table", v4_name)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  

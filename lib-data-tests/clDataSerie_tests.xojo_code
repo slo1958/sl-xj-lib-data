@@ -65,7 +65,7 @@ Protected Module clDataSerie_tests
 		  
 		  RunTests(new clDataSerieTests, "test_ca", logwriter)
 		  
-		  logwriter.end_exec(CurrentMethodName)
+		  logwriter.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -83,7 +83,7 @@ Protected Module clDataSerie_tests
 		  
 		  RunTests(new clDataSerieTests, "test_io", logwriter)
 		  
-		  logwriter.end_exec(CurrentMethodName)
+		  logwriter.EndTask(CurrentMethodName)
 		End Sub
 	#tag EndMethod
 

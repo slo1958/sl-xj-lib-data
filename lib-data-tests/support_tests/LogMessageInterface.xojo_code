@@ -1,7 +1,7 @@
 #tag Interface
 Interface LogMessageInterface
 	#tag Method, Flags = &h0
-		Sub end_exec(method as string)
+		Sub EndTask(method as string)
 		  
 		End Sub
 	#tag EndMethod

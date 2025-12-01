@@ -13,7 +13,7 @@ Protected Module clDataPool_tests
 		  
 		  RunTests(new clDataPoolTests, "test_ca", logwriter)
 		  
-		  logwriter.end_exec(CurrentMethodName)
+		  logwriter.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -31,7 +31,7 @@ Protected Module clDataPool_tests
 		  
 		  RunTests(new clDataPoolTests, "test_io", logwriter)
 		  
-		  logwriter.end_exec(CurrentMethodName)
+		  logwriter.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod

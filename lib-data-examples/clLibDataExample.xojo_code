@@ -48,7 +48,7 @@ Protected Class clLibDataExample
 		  
 		  clNumberDataSerie(table.GetColumn("ccc with format")).SetStringFormat("-###,##0.000", False) 
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the table to the viewer
@@ -129,7 +129,7 @@ Protected Class clLibDataExample
 		  clNumberDataSerie(table.GetColumn("ccc")).SetStringFormat("-###,##0.0#", True)
 		  call table.AddColumn(table.GetColumn("ccc").AsString("ccc third format")) 
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the table to the viewer
@@ -197,7 +197,7 @@ Protected Class clLibDataExample
 		  //
 		  var table3 As clDataTable = table0.GroupBy(StringArray("Country","City"), StringArray)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the tables to the viewer
@@ -255,7 +255,7 @@ Protected Class clLibDataExample
 		  call table4.AddRows(new clDataTableRowReader(table2))
 		  table4.rename("Using row source")
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the tables to the viewer
@@ -295,7 +295,7 @@ Protected Class clLibDataExample
 		  
 		  var view1 As clDataTable = table0.SelectColumns(array("Country", "City", "Sales"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the tables to the viewer
@@ -343,7 +343,7 @@ Protected Class clLibDataExample
 		  table0.AddRow(Array("aaa2","bbb2","ccc2"))
 		  table0.AddRow(Array("aaa3","bbb3","ccc3"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the table to the viewer
@@ -401,7 +401,7 @@ Protected Class clLibDataExample
 		  
 		  call table0.AddColumn(new clBooleanDataSerie("is_belgium",  table0.ApplyFilterFunction(AddressOf BasicFieldFilter, "country","Belgique")))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the table to the viewer
@@ -458,7 +458,7 @@ Protected Class clLibDataExample
 		  
 		  call table0.AddColumn(clNumberDataSerie(table0.GetColumn("unit_price")) * clNumberDataSerie(table0.GetColumn("quantity")))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the table to the viewer
@@ -533,7 +533,7 @@ Protected Class clLibDataExample
 		  //
 		  call table0.SetColumnValues("is_europe", table0.GetIntegerColumn("is_france") +clIntegerDataSerie( table0.GetColumn("is_belgium")), false)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the table to the viewer
@@ -600,7 +600,7 @@ Protected Class clLibDataExample
 		  //
 		  var table1 As  clDataTable = tableValid.GetResults()
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the tables to the viewer
@@ -667,7 +667,7 @@ Protected Class clLibDataExample
 		    table1.AddRow(tmp_row)
 		  next
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the table to the viewer
@@ -725,7 +725,7 @@ Protected Class clLibDataExample
 		  //
 		  var table1 As clDataTable = table0.GroupBy(array("country", "city"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the tables to the viewer
@@ -798,7 +798,7 @@ Protected Class clLibDataExample
 		  //
 		  var table4 as clDataTable  = table2.groupby(array("country"), array("Sales":aggMode.Sum,"Sales":aggMode.Max))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the tables to the viewer
@@ -892,7 +892,7 @@ Protected Class clLibDataExample
 		  // Add a new column with clipped sales
 		  call table0.AddColumn(col_sales.ClippedByRange(1100, 1500) )
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  //
 		  // Send the tables to the viewer
@@ -941,7 +941,7 @@ Protected Class clLibDataExample
 		  
 		  var table0 as new clDataTable("output", SerieArray(c1, c2, c3, c4, c5, c6, c7))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(table0)
 		  
@@ -996,7 +996,7 @@ Protected Class clLibDataExample
 		  // update table
 		  call table0.AddColumns(SerieArray(delay, flagged, total_penaty))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(table0)
 		  
@@ -1126,7 +1126,7 @@ Protected Class clLibDataExample
 		  table7.rename("loaded from merged in memory data tables")
 		  table8.rename("loaded from merged db tables")
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  return array(table1, table2, table3, table4, table7, table8)
@@ -1170,7 +1170,7 @@ Protected Class clLibDataExample
 		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  var prop0 as clDataTable = table0.GetPropertiesAsTable
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(table0, struc0, prop0)
 		  
@@ -1226,7 +1226,7 @@ Protected Class clLibDataExample
 		  
 		  var view1 As clDataTable = table1.SelectColumns(array("Country", "City", "Sales"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(table0, table1, view0, view1)
 		  
@@ -1294,7 +1294,7 @@ Protected Class clLibDataExample
 		    
 		  next
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return ret_tables
 		  
@@ -1349,7 +1349,7 @@ Protected Class clLibDataExample
 		  ret_tables.add(stat_table)
 		  ret_tables.Add(struc_table)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return ret_tables
 		  
@@ -1409,7 +1409,7 @@ Protected Class clLibDataExample
 		  
 		  clBooleanDataSerie(table0.GetColumn("is_france")).SetStringFormat("≠ France","= France")
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(table0)
 		  
@@ -1473,7 +1473,7 @@ Protected Class clLibDataExample
 		  
 		  call table.AddRows(new clTextReader(fld_file3, True, new clTextFileConfig(chr(9))),dct_mapping_file3)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(table, source_table1, source_table2, source_table3)
 		  
@@ -1544,7 +1544,7 @@ Protected Class clLibDataExample
 		  
 		  clBooleanDataSerie(table0.GetColumn("is_france")).SetStringFormat("≠ France","= France")
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(table0, rangeTable)
 		  
@@ -1598,7 +1598,7 @@ Protected Class clLibDataExample
 		  
 		  var table0 as new clDataTable("Example", SerieArray(c1, c2, expected_c2, c3, expected_c3))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(table0)
 		  
@@ -1674,7 +1674,7 @@ Protected Class clLibDataExample
 		  var tSumSales2 as clDataTable = tsales.GroupBy(StringArray("Country","Zorglub","City"), StringArray("Sales","Quantity")).Rename("Sum sales 2")
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(tsales, tcountries, tDistinct, tSumSales1, tSumSales2)
 		  
@@ -1739,7 +1739,7 @@ Protected Class clLibDataExample
 		  
 		  var sort22 as clDataTable = t2.Sort(array("Country"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return  array(t1, sort11, sort12, sort13, t2, sort21, sort22)
 		  
@@ -1827,7 +1827,7 @@ Protected Class clLibDataExample
 		  
 		  var tjoin6 as clDataTable = tsales.FullJoin(tcountries3, JoinMode.OuterJoin, array("City"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return  array(tsales, tcountries1, tcountries2, tcountries3, tjoin1, tjoin2, tjoin3, tjoin4, tjoin5, tjoin6)
 		  
@@ -1913,7 +1913,7 @@ Protected Class clLibDataExample
 		  var tSumSales2 as clDataTable = tsales.GroupBy(StringArray("Country","Zorglub","City"), StringArray("Sales","Quantity"))
 		  tSumSales2.Rename("Sum sales 2")
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(tsales, tcountries, tDistinct, tSumSales1, tSumSales2)
 		  
@@ -1953,7 +1953,7 @@ Protected Class clLibDataExample
 		    
 		  next
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(SourceTable, GroupedTable)
 		  
@@ -2002,7 +2002,7 @@ Protected Class clLibDataExample
 		    
 		  next
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(SourceTable, GroupedTable)
 		End Function
@@ -2044,7 +2044,7 @@ Protected Class clLibDataExample
 		  var GroupedTable as clDataTable = SourceTable.Groupby(array("Category"), array("Sales", "Taxes"))
 		  GroupedTable.Rename("Sales per category")
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return array(SourceTable, GroupedTable)
 		End Function
@@ -2145,7 +2145,7 @@ Protected Class clLibDataExample
 		  
 		  var tjoin6 as clDataTable = tsales.FullJoin(tcountries3, JoinMode.OuterJoin, array("City"),"Join_status")
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return  array(tsales, tcountries1, tcountries2, tcountries3, tjoin1, tjoin2, tjoin3, tjoin4, tjoin5, tjoin6)
 		  
@@ -2217,7 +2217,7 @@ Protected Class clLibDataExample
 		  
 		  var countPerCategory as clDataTable = people.Groupby(array("gender","Categ"), "CountPeople")
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return  array(people, countPerGender, countPerCategory)
 		  
@@ -2312,7 +2312,7 @@ Protected Class clLibDataExample
 		  tjoin7.Rename("Results Left join Countries3")
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return  array(tsales, tcountries1, tcountries2, tcountries3, tjoin1, tjoin2, tjoin3, tjoin4, tjoin5, tjoin6, tjoin7)
 		  

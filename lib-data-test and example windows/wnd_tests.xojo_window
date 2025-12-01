@@ -804,7 +804,7 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub end_exec(method as string)
+		Sub EndTask(method as string)
 		  // Part of the support_tests.LogMessageInterface interface.
 		  
 		  WriteMessage("Done with " + method)

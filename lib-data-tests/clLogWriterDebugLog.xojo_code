@@ -2,7 +2,7 @@
 Protected Class clLogWriterDebugLog
 Implements support_tests.LogMessageInterface
 	#tag Method, Flags = &h0
-		Sub end_exec(method as string)
+		Sub EndTask(method as string)
 		  // Part of the support_tests.LogMessageInterface interface.
 		  
 		  System.DebugLog("Done with " + method)
@@ -12,6 +12,7 @@ Implements support_tests.LogMessageInterface
 	#tag Method, Flags = &h0
 		Sub StartTask(method as string)
 		  // Part of the support_tests.LogMessageInterface interface.
+		  
 		  System.DebugLog("Start " + method)
 		  
 		End Sub

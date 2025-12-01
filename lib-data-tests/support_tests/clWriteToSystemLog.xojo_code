@@ -2,7 +2,7 @@
 Class clWriteToSystemLog
 Implements support_tests.LogMessageInterface
 	#tag Method, Flags = &h0
-		Sub end_exec(method as string)
+		Sub EndTask(method as string)
 		  WriteMessage("Done with " + method)
 		End Sub
 	#tag EndMethod

@@ -16,7 +16,7 @@ Protected Class clDataSerieTests
 		  call check_value(log,"row count", test.RowCount, 2)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -47,7 +47,7 @@ Protected Class clDataSerieTests
 		  next
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -112,7 +112,7 @@ Protected Class clDataSerieTests
 		  call check_value(log, "cnt5", 7, cnt5)
 		  call check_value(log, "cnt6", 10, cnt6)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -143,7 +143,7 @@ Protected Class clDataSerieTests
 		  call check_value(log,"d1", 263.9, d1)
 		  call check_value(log,"d2", 263.9, d2)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -178,7 +178,7 @@ Protected Class clDataSerieTests
 		  call check_value(log, "upper bound for c4", 0, c4.LastIndex)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -194,7 +194,7 @@ Protected Class clDataSerieTests
 		  
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -253,7 +253,7 @@ Protected Class clDataSerieTests
 		  call check_value(log, "nbr2", 11, nbr2) 
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -273,7 +273,7 @@ Protected Class clDataSerieTests
 		  
 		  call check_value(log,"row count", test.RowCount, 2) 
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -293,7 +293,7 @@ Protected Class clDataSerieTests
 		  
 		  call check_value(log,"row count", test.RowCount, 2) 
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -314,7 +314,7 @@ Protected Class clDataSerieTests
 		  call check_value(log,"row count", test.RowCount, 2)
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -353,7 +353,7 @@ Protected Class clDataSerieTests
 		  
 		  call check_value(log,"sum of diff", 0, delta.sum)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -400,7 +400,7 @@ Protected Class clDataSerieTests
 		  call check_value(log, "uniq2", 5, uniq2.Count)
 		  call check_value(log, "uniq3", 5, uniq3.Count)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -459,7 +459,7 @@ Protected Class clDataSerieTests
 		  call check_value(log,"nbr1", 4, nbr1)
 		  call check_value(log, "nbr2", 4, nbr2) 
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -489,7 +489,7 @@ Protected Class clDataSerieTests
 		  var c7 as clStringDataSerie = c1.ToString("yyyy-MM")
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -555,7 +555,7 @@ Protected Class clDataSerieTests
 		  
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -643,7 +643,7 @@ Protected Class clDataSerieTests
 		  
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -679,7 +679,7 @@ Protected Class clDataSerieTests
 		  call check_serie(log, "c2", expected_c2, c2)
 		  call check_serie(log, "c3", expected_c3, c3)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -721,7 +721,7 @@ Protected Class clDataSerieTests
 		  call check_serie(log, "c2", expected_c2, c2)
 		  call check_serie(log, "c3", expected_c3, c3)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -760,7 +760,7 @@ Protected Class clDataSerieTests
 		  
 		  call check_value(log,"sum of diff", 0, delta.sum)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -801,7 +801,7 @@ Protected Class clDataSerieTests
 		  
 		  call check_value(log,"sum of diff", 0, delta.sum)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		  
@@ -833,7 +833,7 @@ Protected Class clDataSerieTests
 		  
 		  call check_serie(log, "c2", expected_c2, c2)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -856,7 +856,7 @@ Protected Class clDataSerieTests
 		  call check_serie(log, "Number", cNumberDivExpected, cNumberDiv)
 		  call check_serie(log, "Currency", cCurrencyDivExpected, cCurrencyDiv)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  return
 		  
@@ -881,7 +881,7 @@ Protected Class clDataSerieTests
 		  call check_serie(log, "Number", cNumberDivExpected, cNumberDiv)
 		  call check_serie(log, "Currency", cCurrencyDivExpected, cCurrencyDiv)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  return
 		  
 		End Sub
@@ -919,7 +919,7 @@ Protected Class clDataSerieTests
 		  
 		  call check_serie(log, "c3", expected_c3, c3)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -941,7 +941,7 @@ Protected Class clDataSerieTests
 		  var k2 As Integer = 1
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod
@@ -970,7 +970,7 @@ Protected Class clDataSerieTests
 		  
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod

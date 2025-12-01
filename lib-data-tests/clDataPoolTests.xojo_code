@@ -70,7 +70,7 @@ Protected Class clDataPoolTests
 		  call check_table(log,"res", expected_res, my_data_pool.GetTable("res"))
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -151,7 +151,7 @@ Protected Class clDataPoolTests
 		  call check_table(log,"res", expected_res, my_data_pool.table("res"))
 		  
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -229,7 +229,7 @@ Protected Class clDataPoolTests
 		  call check_table(log,"T1", tblExpectedTotals, tblCustomerTotals)
 		  call check_table(log,"T2", tblExpectedJoinedTotals,tblCustTotalsCloned)
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -294,7 +294,7 @@ Protected Class clDataPoolTests
 		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1.csv"))
 		  call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2.csv"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -366,7 +366,7 @@ Protected Class clDataPoolTests
 		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1"))
 		  call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -433,7 +433,7 @@ Protected Class clDataPoolTests
 		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1.csv"))
 		  call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2.csv"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -493,7 +493,7 @@ Protected Class clDataPoolTests
 		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1"))
 		  call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub
@@ -564,7 +564,7 @@ Protected Class clDataPoolTests
 		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1"))
 		  call check_table(log,"pool table 2",my_data_pool.GetTable("PoolTable2"), test_data_pool.GetTable("from PoolTable2"))
 		  
-		  log.end_exec(CurrentMethodName)
+		  log.EndTask(CurrentMethodName)
 		  
 		  
 		End Sub

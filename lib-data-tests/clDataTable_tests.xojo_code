@@ -20,7 +20,7 @@ Protected Module clDataTable_tests
 		  logwriter.WriteMessage("Tables in memory was: " + str(ms0.NumberOfTables)+", dataseries in memory was: " + str(ms0.NumberOfDataSeries))
 		  logwriter.WriteMessage("Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
 		  
-		  logwriter.end_exec(CurrentMethodName)
+		  logwriter.EndTask(CurrentMethodName)
 		  
 		  return
 		  
@@ -53,7 +53,7 @@ Protected Module clDataTable_tests
 		  logwriter.WriteMessage("Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
 		  
 		  
-		  logwriter.end_exec(CurrentMethodName)
+		  logwriter.EndTask(CurrentMethodName)
 		  
 		  return
 		  
@@ -82,7 +82,7 @@ Protected Module clDataTable_tests
 		  logwriter.WriteMessage("Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
 		  
 		  
-		  logwriter.end_exec(CurrentMethodName)
+		  logwriter.EndTask(CurrentMethodName)
 		  
 		  return
 		  

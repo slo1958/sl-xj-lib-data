@@ -12,7 +12,7 @@ Inherits DesktopApplication
 		  // 
 		  // t.test_calc_042(logwriter)
 		  // 
-		  // logwriter.end_exec(CurrentMethodName)
+		  // logwriter.EndTask(CurrentMethodName)
 		  // 
 		  
 		  
