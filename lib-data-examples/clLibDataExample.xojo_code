@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clLibDataExample
 	#tag Method, Flags = &h0
-		Function Example_000(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_000(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  //
 		  //  Example_000
@@ -63,7 +63,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_001(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_001(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  //
 		  //  Example_001 
@@ -144,7 +144,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_002(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_002(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -208,7 +208,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_003(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_003(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -267,7 +267,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_004(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_004(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -307,7 +307,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_005(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_005(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -355,7 +355,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_006(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_006(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -413,7 +413,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_007(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_007(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -469,7 +469,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_008(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_008(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -545,7 +545,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_009(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_009(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -617,7 +617,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_010(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_010(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -678,7 +678,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_011(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_011(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -737,7 +737,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_012(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_012(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -810,7 +810,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_013(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_013(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -829,7 +829,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_014(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_014(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -903,7 +903,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_015(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_015(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -949,7 +949,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_016(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_016(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1005,7 +1005,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_017(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_017(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1136,7 +1136,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_018(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_018(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1179,7 +1179,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_019(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_019(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1235,7 +1235,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_020(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_020(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1303,7 +1303,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_021(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_021(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1358,7 +1358,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_022(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_022(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1417,7 +1417,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_023(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_023(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1481,7 +1481,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_024(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_024(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1552,7 +1552,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_025(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_025(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1606,7 +1606,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_026(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_026(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1684,7 +1684,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_027(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_027(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1750,7 +1750,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_028(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_028(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1839,7 +1839,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_029(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_029(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1923,7 +1923,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_030(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_030(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -1963,7 +1963,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_031(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_031(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -2009,7 +2009,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_032(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_032(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -2051,7 +2051,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_033(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_033(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -2069,7 +2069,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_034(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_034(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -2157,7 +2157,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_035(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_035(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -2225,7 +2225,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_036(log as LogMessageInterface, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_036(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -2324,6 +2324,42 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Example_037(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
+		  
+		  //
+		  //  Example_037
+		  //
+		  
+		  if Describe then
+		    Description.RemoveAll
+		    
+		    Description.Add(CurrentMethodName)
+		    
+		    Description.Add("- Show log to table")
+		    
+		    return nil
+		    
+		  end if
+		  
+		  var tlw as new clTableLogWriter("MyLogData")
+		  log.StartTask(CurrentMethodName)
+		  
+		  log.AddWriter("TBL", tlw) 
+		  
+		  log.WriteError("ErrorSrc","My error info is %0", "something")
+		  log.WriteInfo("InfoSrc","More info ")
+		  
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		  return  array(tlw.GetTable)
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function GetAllExamples() As Dictionary
 		  // 
 		  //. Get the list of 'example_xxx' methods
@@ -2379,7 +2415,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function RunExample(log as LogMessageInterface, m as Introspection.MethodInfo) As TableColumnReaderInterface()
+		Shared Function RunExample(log as clLogManager, m as Introspection.MethodInfo) As TableColumnReaderInterface()
 		  
 		  //
 		  // Run the example method 
@@ -2389,13 +2425,7 @@ Protected Class clLibDataExample
 		  
 		  var vParams() as Variant
 		  
-		  if log = nil then
-		    vParams.add(new clLogWriterDebugLog)
-		    
-		  else
-		    vParams.Add(log)
-		    
-		  end if
+		  vParams.Add(log)
 		  
 		  vParams.Add(False) // Request execution (== do not request description)
 		  vParams.Add(tParam)
