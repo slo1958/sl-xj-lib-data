@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clDataPoolTests
 	#tag Method, Flags = &h0
-		Sub test_calc_001(log as LogMessageInterface)
+		Sub test_calc_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -77,7 +77,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_002(log as LogMessageInterface)
+		Sub test_calc_002(log as clLogManager)
 		  //  
 		  //  Test simplified interface to tables in data pool
 		  //  
@@ -158,7 +158,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_003(log as LogMessageInterface)
+		Sub test_calc_003(log as clLogManager)
 		  //  
 		  //  Test simplified interface to tables in data pool
 		  //  
@@ -236,7 +236,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_001(log as LogMessageInterface)
+		Sub test_io_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -301,7 +301,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_002(log as LogMessageInterface)
+		Sub test_io_002(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -373,7 +373,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_003(log as LogMessageInterface)
+		Sub test_io_003(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -440,7 +440,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_004(log as LogMessageInterface)
+		Sub test_io_004(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -500,7 +500,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_005(log as LogMessageInterface)
+		Sub test_io_005(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  

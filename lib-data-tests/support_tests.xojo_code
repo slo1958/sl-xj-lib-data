@@ -1,13 +1,15 @@
 #tag Module
 Protected Module support_tests
 	#tag Method, Flags = &h0
-		Function check_value(log as support_tests.LogMessageInterface, label as string, expected as variant, calculated as variant, accepted_error_on_double as double = 0.00001) As boolean
+		Function check_value(log as clLogManager, label as string, expected as variant, calculated as variant, accepted_error_on_double as double = 0.00001) As boolean
 		  if (expected.Type = variant.TypeDouble or expected.Type = Variant.TypeSingle) then //and (calculated.Type = variant.TypeDouble or calculated.Type = variant.TypeSingle) then
 		    
 		    var calculated_float as double = calculated.DoubleValue
 		    
 		    if abs(expected - calculated_float) < accepted_error_on_double then return true
-		    log.WriteMessage("Invalid numeric value for " + label + ", expecting " + str(expected) + " got " + str(calculated) + " dif. " + str(abs(expected - calculated_float) ))
+		    log.WriteWarning(CurrentMethodName,"Invalid numeric value for %0, expecting %1  got %2,  dif. %3 " , label, str(expected), str(calculated)  , str(abs(expected - calculated_float) ))
+		    // log.WriteWarning(CurrentMethodName,"Invalid numeric value for " + label + ", expecting " + str(expected) + " got " + str(calculated) + " dif. " + str(abs(expected - calculated_float) ))
+		    
 		    return false
 		  end if
 		  
@@ -34,7 +36,8 @@ Protected Module support_tests
 		  end if
 		  
 		  
-		  log.WriteMessage("Invalid value for " + label + ", expecting <" + fmt_expected + "> got <" + fmt_calculated+">")
+		  log.WriteWarning(CurrentMethodName,"Invalid value for %0, expecting <%1> got <%2>" , label , fmt_expected , fmt_calculated)
+		  // log.WriteWarning(CurrentMethodName,"Invalid value for " + label + ", expecting <" + fmt_expected + "> got <" + fmt_calculated+">")
 		  
 		  return False
 		  
@@ -91,7 +94,7 @@ Protected Module support_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub RunTests(c as object, mask as string, logwriter as LogMessageInterface)
+		Sub RunTests(c as object, mask as string, logwriter as clLogManager)
 		  
 		  Var t As Introspection.TypeInfo
 		  
@@ -117,12 +120,6 @@ Protected Module support_tests
 		    met.Invoke(c, v)
 		    
 		  next
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub WriteMessage(msg as string)
-		  system.DebugLog(msg)
 		End Sub
 	#tag EndMethod
 

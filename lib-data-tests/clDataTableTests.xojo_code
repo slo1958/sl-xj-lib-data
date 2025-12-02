@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clDataTableTests
 	#tag Method, Flags = &h0
-		Sub test_calc_001(log as LogMessageInterface)
+		Sub test_calc_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -39,7 +39,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_002(log as LogMessageInterface)
+		Sub test_calc_002(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -99,7 +99,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_003(log as LogMessageInterface)
+		Sub test_calc_003(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -144,7 +144,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_004(log as LogMessageInterface)
+		Sub test_calc_004(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -184,7 +184,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_005(log as LogMessageInterface)
+		Sub test_calc_005(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -232,7 +232,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_006(log as LogMessageInterface)
+		Sub test_calc_006(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -290,7 +290,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_007(log as LogMessageInterface)
+		Sub test_calc_007(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -321,7 +321,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_008(log as LogMessageInterface)
+		Sub test_calc_008(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -367,7 +367,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_009(log as LogMessageInterface)
+		Sub test_calc_009(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -444,7 +444,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_010(log as LogMessageInterface)
+		Sub test_calc_010(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -487,7 +487,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_011(log as LogMessageInterface)
+		Sub test_calc_011(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -519,7 +519,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_012(log as LogMessageInterface)
+		Sub test_calc_012(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -561,7 +561,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_013(log as LogMessageInterface)
+		Sub test_calc_013(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -608,7 +608,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_014(log as LogMessageInterface)
+		Sub test_calc_014(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -663,7 +663,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_015(log as LogMessageInterface)
+		Sub test_calc_015(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -720,7 +720,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_016(log as LogMessageInterface)
+		Sub test_calc_016(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -758,7 +758,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_017(log as LogMessageInterface)
+		Sub test_calc_017(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -798,7 +798,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_018(log as LogMessageInterface)
+		Sub test_calc_018(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -840,7 +840,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_019(log as LogMessageInterface)
+		Sub test_calc_019(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -886,7 +886,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_020(log as LogMessageInterface)
+		Sub test_calc_020(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -960,7 +960,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_021(log as LogMessageInterface)
+		Sub test_calc_021(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1023,7 +1023,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_022(log as LogMessageInterface)
+		Sub test_calc_022(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1072,7 +1072,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_023(log as LogMessageInterface)
+		Sub test_calc_023(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1122,7 +1122,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_024(log as LogMessageInterface)
+		Sub test_calc_024(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1159,7 +1159,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_025(log as LogMessageInterface)
+		Sub test_calc_025(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1217,7 +1217,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_026(log as LogMessageInterface)
+		Sub test_calc_026(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1275,7 +1275,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_027(log as LogMessageInterface)
+		Sub test_calc_027(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1302,7 +1302,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_028(log as LogMessageInterface)
+		Sub test_calc_028(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1335,7 +1335,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_029(log as LogMessageInterface)
+		Sub test_calc_029(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1368,7 +1368,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_030(log as LogMessageInterface)
+		Sub test_calc_030(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1416,7 +1416,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_031(log as LogMessageInterface)
+		Sub test_calc_031(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1449,7 +1449,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_032(log as LogMessageInterface)
+		Sub test_calc_032(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1496,7 +1496,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_033(log as LogMessageInterface)
+		Sub test_calc_033(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1527,7 +1527,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_034(log as LogMessageInterface)
+		Sub test_calc_034(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1583,7 +1583,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_035(log as LogMessageInterface)
+		Sub test_calc_035(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1628,7 +1628,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_036(log as LogMessageInterface)
+		Sub test_calc_036(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1702,7 +1702,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_037(log as LogMessageInterface)
+		Sub test_calc_037(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1770,7 +1770,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_038(log as LogMessageInterface)
+		Sub test_calc_038(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1812,7 +1812,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_039(log as LogMessageInterface)
+		Sub test_calc_039(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1883,7 +1883,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_040(log as LogMessageInterface)
+		Sub test_calc_040(log as clLogManager)
 		  //
 		  // Test full joins
 		  
@@ -2090,7 +2090,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_041(log as LogMessageInterface)
+		Sub test_calc_041(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -2173,12 +2173,10 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_042(log as LogMessageInterface)
+		Sub test_calc_042(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
-		  
-		  var temp_row As clDataRow
 		  var mytable As New clDataTable("T1")
 		  
 		  call mytable.AddColumn(new clStringDataSerie("name", array("2020Q1","2020Q2","2020Q3")))
@@ -2212,12 +2210,10 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_043(log as LogMessageInterface)
+		Sub test_calc_043(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
-		  
-		  var temp_row As clDataRow
 		  var mytable As New clDataTable("T1")
 		  
 		  call mytable.AddColumn(new clStringDataSerie("name", array("2020Q1","2020Q2","2020Q3")))
@@ -2253,7 +2249,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_044(log as LogMessageInterface)
+		Sub test_calc_044(log as clLogManager)
 		  //
 		  // Test clGroupAndPivot, direct calls
 		  //
@@ -2315,7 +2311,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_045(log as LogMessageInterface)
+		Sub test_calc_045(log as clLogManager)
 		  //
 		  // Test the pivot transformer
 		  //
@@ -2368,7 +2364,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_046(log as LogMessageInterface)
+		Sub test_calc_046(log as clLogManager)
 		  //
 		  // Test select columns (creating a view)  and extract columns (cloning the columns)
 		  // Updating the data in the orignal table once selectColumns() and ExtractColumns are called will also update the values
@@ -2439,7 +2435,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_047(log as LogMessageInterface)
+		Sub test_calc_047(log as clLogManager)
 		  //
 		  // Test full joins with join success column
 		  
@@ -2678,7 +2674,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_048(log as LogMessageInterface)
+		Sub test_calc_048(log as clLogManager)
 		  //
 		  // Test generation of unique names
 		  
@@ -2725,7 +2721,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_049(log as LogMessageInterface)
+		Sub test_calc_049(log as clLogManager)
 		  //
 		  // Test full joins
 		  
@@ -2930,7 +2926,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_050(log as LogMessageInterface)
+		Sub test_calc_050(log as clLogManager)
 		  //
 		  // Test full joins with join success column
 		  
@@ -3145,7 +3141,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_051(log as LogMessageInterface)
+		Sub test_calc_051(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3195,7 +3191,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_052(log as LogMessageInterface)
+		Sub test_calc_052(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3257,7 +3253,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_053(log as LogMessageInterface)
+		Sub test_calc_053(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3295,8 +3291,6 @@ Protected Class clDataTableTests
 		  
 		  var expectedOutput as clDataTable = tableInput.clone("expected output")
 		  
-		  var tx as  clNumberDataSerie
-		  
 		  call expectedOutput.SetColumnValues("Taxes1", tableInput.GetNumberColumn("Sales1")*0.07)
 		  
 		  call expectedOutput.SetColumnValues("Taxes2", tableInput.GetNumberColumn("Sales2")*0.07)
@@ -3309,7 +3303,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_001(log as LogMessageInterface)
+		Sub test_io_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3357,7 +3351,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_002(log as LogMessageInterface)
+		Sub test_io_002(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3477,7 +3471,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_003(log as LogMessageInterface)
+		Sub test_io_003(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3587,7 +3581,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_004(log as LogMessageInterface)
+		Sub test_io_004(log as clLogManager)
 		  
 		  
 		  log.StartTask(CurrentMethodName)
@@ -3650,7 +3644,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_005(log as LogMessageInterface)
+		Sub test_io_005(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  

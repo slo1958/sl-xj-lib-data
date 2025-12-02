@@ -283,7 +283,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddErrorMessage(SourceFunctionName as string, ErrorMessageTemplate as string, paramarray item as string)
+		Sub AddErrorMessage(SourceFunctionName as string, ErrorMessageTemplate as string, paramarray item as variant)
 		  //  
 		  //  Add  an error message:
 		  //.  - Update the LastErrorMessage property
@@ -298,20 +298,9 @@ Implements TableColumnReaderInterface,Iterable
 		  //  (nothing)
 		  //  
 		  
+		  self.getLogManager.WriteError(SourceFunctionName, ErrorMessageTemplate, item)
 		  
-		  var msg as string = clLibDataCommon.ReplacePlaceHolders(ErrorMessageTemplate, item)
-		  
-		  self.LastErrorMessage = "In " + SourceFunctionName+": " + msg
-		  
-		  if self.localLogger = nil then
-		    System.DebugLog(self.LastErrorMessage)
-		    
-		  else
-		    self.localLogger.WriteError(SourceFunctionName, msg)
-		    
-		  end if
-		  
-		  if clLibDataCommon.Logger <> nil then clLibDataCommon.logger.WriteError(SourceFunctionName, msg)
+		  self.LastErrorMessage = self.getLogManager.GetProcessedMessage(ErrorMessageTemplate, item)
 		  
 		  return 
 		  
@@ -755,7 +744,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub AddWarningMessage(SourceFunctionName as string, WarningMessageTemplate as string, paramarray item as string)
+		Sub AddWarningMessage(SourceFunctionName as string, WarningMessageTemplate as string, paramarray item as variant)
 		  //  
 		  //  Add  a warning message:
 		  //.  - Update the LastWarningMessage property
@@ -769,19 +758,13 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  (nothing)
 		  //  
-		  var msg as string = ReplacePlaceHolders(WarningMessageTemplate, item)
 		  
-		  Self.LastWarningMessage = "In " + SourceFunctionName + ": " + msg
+		  self.getLogManager.WriteWarning(SourceFunctionName, WarningMessageTemplate, item)
 		  
-		  if self.localLogger = nil then
-		    System.DebugLog(self.LastErrorMessage)
-		    
-		  else
-		    self.localLogger.WriteWarning(SourceFunctionName, msg)
-		    
-		  end if
+		  self.LastWarningMessage = self.getLogManager.GetProcessedMessage(WarningMessageTemplate, item)
 		  
-		  if clLibDataCommon.Logger <> nil then clLibDataCommon.logger.WriteWarning(SourceFunctionName, msg)
+		  
+		  return 
 		  
 		End Sub
 	#tag EndMethod
@@ -2467,6 +2450,20 @@ Implements TableColumnReaderInterface,Iterable
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Function getLogManager() As clLogManager
+		  
+		  if self.localLogger = nil then
+		    return clLogManager.GetDefaultLogingSupport
+		    
+		  else
+		    return self.localLogger
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function GetMetadata() As clMetaData
 		  Return self.Metadata
@@ -3865,7 +3862,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetLogger(newLogger as clLoging)
+		Sub SetLogger(newLogger as clLogManager)
 		  
 		  self.localLogger = newLogger
 		  
@@ -4071,7 +4068,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private localLogger As clLoging
+		Private localLogger As clLogManager
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

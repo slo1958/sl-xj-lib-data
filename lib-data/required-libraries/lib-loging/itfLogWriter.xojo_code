@@ -1,5 +1,5 @@
 #tag Interface
-Protected Interface itfLogingWriter
+Protected Interface itfLogWriter
 	#tag Method, Flags = &h0
 		Sub AddLogEntry(MessageSeverity as string, MessageTime as string, MessageSource as string, MessageText as string)
 		  

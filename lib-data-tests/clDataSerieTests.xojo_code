@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clDataSerieTests
 	#tag Method, Flags = &h0
-		Sub test_calc_001(log as LogMessageInterface)
+		Sub test_calc_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -22,7 +22,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_003(log as LogMessageInterface)
+		Sub test_calc_003(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -53,7 +53,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_006(log as LogMessageInterface)
+		Sub test_calc_006(log as clLogManager)
 		  
 		  
 		  log.StartTask(CurrentMethodName)
@@ -120,7 +120,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_007(log as LogMessageInterface)
+		Sub test_calc_007(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -149,7 +149,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_008(log as LogMessageInterface)
+		Sub test_calc_008(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -164,7 +164,6 @@ Protected Class clDataSerieTests
 		  c2.AddElement("123.4")
 		  c2.AddElement(140.5)
 		  c2.AddElement("yoyo")
-		  
 		  
 		  c3.AddElement(c1)
 		  c3.AddElement(c2)
@@ -184,7 +183,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_009(log as LogMessageInterface)
+		Sub test_calc_009(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -200,7 +199,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_010(log as LogMessageInterface)
+		Sub test_calc_010(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -259,7 +258,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_011(log as LogMessageInterface)
+		Sub test_calc_011(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -279,7 +278,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_012(log as LogMessageInterface)
+		Sub test_calc_012(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -299,7 +298,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_014(log as LogMessageInterface)
+		Sub test_calc_014(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -320,7 +319,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_015(log as LogMessageInterface)
+		Sub test_calc_015(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -361,7 +360,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_016(log as LogMessageInterface)
+		Sub test_calc_016(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -406,7 +405,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_017(log as LogMessageInterface)
+		Sub test_calc_017(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -465,7 +464,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_018(log as LogMessageInterface)
+		Sub test_calc_018(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -495,7 +494,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_019(log as LogMessageInterface)
+		Sub test_calc_019(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -561,7 +560,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_020(log as LogMessageInterface)
+		Sub test_calc_020(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -649,7 +648,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_021(log as LogMessageInterface)
+		Sub test_calc_021(log as clLogManager)
 		  
 		  // parsing tests
 		  log.StartTask(CurrentMethodName)
@@ -685,7 +684,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_022(log as LogMessageInterface)
+		Sub test_calc_022(log as clLogManager)
 		  
 		  // parsing tests
 		  log.StartTask(CurrentMethodName)
@@ -727,7 +726,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_023(log as LogMessageInterface)
+		Sub test_calc_023(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -768,7 +767,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_024(log as LogMessageInterface)
+		Sub test_calc_024(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -809,7 +808,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_025(log as LogMessageInterface)
+		Sub test_calc_025(log as clLogManager)
 		  
 		  // parsing tests
 		  log.StartTask(CurrentMethodName)
@@ -839,7 +838,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_026(log as LogMessageInterface)
+		Sub test_calc_026(log as clLogManager)
 		  
 		  // parsing tests
 		  log.StartTask(CurrentMethodName)
@@ -864,7 +863,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_027(log as LogMessageInterface)
+		Sub test_calc_027(log as clLogManager)
 		  
 		  // parsing tests
 		  log.StartTask(CurrentMethodName)
@@ -888,7 +887,7 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_028(log as LogMessageInterface)
+		Sub test_calc_028(log as clLogManager)
 		  
 		  // parsing tests using locale
 		  log.StartTask(CurrentMethodName)
@@ -925,11 +924,9 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_001(log as LogMessageInterface)
+		Sub test_io_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
-		  
-		  var k As Variant
 		  
 		  var main_folder As  FolderItem = GetTestBaseFolder()
 		  var fld_file As FolderItem
@@ -947,12 +944,9 @@ Protected Class clDataSerieTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_005(log as LogMessageInterface)
+		Sub test_io_005(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
-		  
-		  
-		  var k As Variant
 		  
 		  var main_folder As  FolderItem = GetTestBaseFolder()
 		  
@@ -962,7 +956,6 @@ Protected Class clDataSerieTests
 		  fld_file_in = main_folder.Child("myfile3_10K_tab.txt")
 		  
 		  fld_file_out =  main_folder.Child("mytest.txt")
-		  
 		  
 		  var ss1 As  clDataSerie = clDataSerie(AppendTextfileToDataSerie(fld_file_in, new clDataSerie(""), true))
 		  

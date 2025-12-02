@@ -1,5 +1,5 @@
 #tag DesktopWindow
-Begin DesktopWindow wnd_tests Implements support_tests.LogMessageInterface
+Begin DesktopWindow wnd_tests
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF
    Composite       =   False
@@ -440,7 +440,7 @@ Begin DesktopWindow wnd_tests Implements support_tests.LogMessageInterface
       AllowRowDragging=   False
       AllowRowReordering=   False
       Bold            =   False
-      ColumnCount     =   1
+      ColumnCount     =   2
       ColumnWidths    =   ""
       DefaultRowHeight=   -1
       DropIndicatorVisible=   False
@@ -804,15 +804,7 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub EndTask(method as string)
-		  // Part of the support_tests.LogMessageInterface interface.
-		  
-		  WriteMessage("Done with " + method)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub runSelectedTests(c as object, m() as Introspection.MethodInfo, logwriter as LogMessageInterface)
+		Sub runSelectedTests(c as object, m() as Introspection.MethodInfo, logwriter as clLogManager)
 		  
 		  Var t As Introspection.TypeInfo
 		  
@@ -830,11 +822,17 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub StartTask(method as string)
-		  // Part of the support_tests.LogMessageInterface interface.
+		Function SetUpLogWriter() As clLogManager
 		  
-		  WriteMessage("Starting " + method)
-		End Sub
+		  
+		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
+		  
+		  logmanager.ResetWriters()
+		  logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox1))
+		  
+		  Return logmanager
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -845,24 +843,6 @@ End
 		    lb_tests(index).CellCheckBoxValueAt(row, 0) = s.left(mask.length) = mask 
 		    
 		  next
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub WriteMessage(msg as string)
-		  // Part of the support_tests.LogMessageInterface interface.
-		  WriteMessageToListbox(msg)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub WriteMessageToListbox(Paramarray vprint as string)
-		  var tmp As String
-		  tmp = join(vprint, " ")
-		  Listbox1.AddRow tmp
-		  
 		  
 		End Sub
 	#tag EndMethod
@@ -897,22 +877,24 @@ End
 		  next
 		  
 		  
-		  var logwriter as  LogMessageInterface 
-		  
-		  logwriter = self
+		  var logmanager as clLogManager = SetUpLogWriter()
+		   
 		  
 		  if m.Count  > 0 then
-		    writemessage "Running tests.."
+		    logmanager.StartTask("Selected tests")
 		    
-		    runSelectedTests(test_objects(index), m, logwriter)
+		    runSelectedTests(test_objects(index), m, logmanager)
 		    
-		    writemessage "all tests done"
+		    logmanager.EndTask("Selected tests")
 		    
 		  else
-		    writemessage "Nothing to run"
-		    
+		    logmanager.WriteWarning("", "Nothing to run")
 		    
 		  end if
+		  
+		  logmanager.ResetWriters()
+		  
+		  return
 		  
 		  
 		  
@@ -959,9 +941,8 @@ End
 		  var msgflg as Boolean = False
 		  
 		  
-		  var logwriter as  LogMessageInterface 
+		  var logwriter as  clLogManager = SetUpLogWriter
 		  
-		  logwriter = self
 		  
 		  for index as integer = 0 to 2
 		    var m() as  Introspection.MethodInfo 
@@ -980,7 +961,7 @@ End
 		      if not msgflg then
 		        msgflg = True
 		        
-		        writemessage "Running tests.."
+		        logwriter.StartTask( "Running tests")
 		        
 		      end if
 		      
@@ -994,10 +975,10 @@ End
 		  
 		  
 		  if msgflg then
-		    WriteMessage "Done with tests"
+		    logwriter.EndTask( "Running tests")
 		    
 		  else
-		    writemessage "Nothing to run"
+		    logwriter.WriteWarning("-", "Nothing to run")
 		    
 		    
 		  end if

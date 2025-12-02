@@ -1,9 +1,17 @@
 #tag Class
 Protected Class clLogingTaskTimer
 	#tag Method, Flags = &h0
+		Function Completed() As Boolean
+		  return end_time > 0
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(pTaskId as string)
 		  identifier = pTaskId
-		  start_time = DateTime.now
+		  start_time = System.Microseconds
+		  end_time = -1
 		  
 		  
 		End Sub
@@ -11,7 +19,7 @@ Protected Class clLogingTaskTimer
 
 	#tag Method, Flags = &h0
 		Sub Done()
-		  end_time = DateTime.now
+		  end_time = System.Microseconds
 		  
 		  
 		End Sub
@@ -19,21 +27,20 @@ Protected Class clLogingTaskTimer
 
 	#tag Method, Flags = &h0
 		Function GetExecutionTime() As double
-		  
-		  
-		  var interval as integer
-		  
-		  interval = end_time.Nanosecond - start_time.Nanosecond
-		  
-		  Return interval / 100000000
-		  
+		  if end_time > 0 then
+		    return (end_time - start_time) / 1000000
+		    
+		  else
+		    return 0
+		    
+		  end if
 		  
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		end_time As DateTime
+		end_time As Double
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -41,7 +48,7 @@ Protected Class clLogingTaskTimer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		start_time As DateTime
+		start_time As Double
 	#tag EndProperty
 
 

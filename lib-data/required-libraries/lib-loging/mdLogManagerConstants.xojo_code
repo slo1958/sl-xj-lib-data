@@ -1,5 +1,5 @@
 #tag Module
-Protected Module lib_loging_constants
+Protected Module mdLogManagerConstants
 	#tag Note, Name = Description
 		
 		Support for message logging.
@@ -108,6 +108,9 @@ Protected Module lib_loging_constants
 	#tag EndConstant
 
 	#tag Constant, Name = cstSeverityInformation, Type = String, Dynamic = False, Default = \"INF", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = cstSeverityMessage, Type = String, Dynamic = False, Default = \"MSG", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = cstSeverityStatistics, Type = String, Dynamic = False, Default = \"STS", Scope = Public

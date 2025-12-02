@@ -1,19 +1,30 @@
-#tag Interface
-Interface LogMessageInterface
+#tag Class
+Protected Class clDebugLogWriter
+Inherits clGenericLogWriter
+Implements itfLogWriter
 	#tag Method, Flags = &h0
-		Sub EndTask(method as string)
+		Sub AddLogEntry(MessageSeverity as string, MessageTime as string, MessageSource as string, MessageText as string)
+		  // Part of the itfLogingWriter interface.
+		  
+		  if not self.AcceptSeverity(MessageSeverity) then return
+		  
+		  if MessageSource.Length > 0 then
+		    
+		    System.DebugLog MessageTime+". " +MessageSeverity + " " +  MessageText + " from " + MessageSource
+		    
+		  else
+		    System.DebugLog MessageTime+". " +MessageSeverity + " " +  MessageText
+		    
+		  end if
+		  
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub StartTask(method as string)
+		Sub Constructor()
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub WriteMessage(msg as string)
+		  Super.Constructor
 		  
 		End Sub
 	#tag EndMethod
@@ -61,5 +72,5 @@ Interface LogMessageInterface
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
-End Interface
-#tag EndInterface
+End Class
+#tag EndClass

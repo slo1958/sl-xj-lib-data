@@ -82,6 +82,13 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function getLogManager() As clLogManager
+		  return clLogManager.GetDefaultLogingSupport
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetMemoryStats() As clMemoryStats
 		  
 		  var ms as new clMemoryStats

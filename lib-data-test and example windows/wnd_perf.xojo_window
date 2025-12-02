@@ -10,6 +10,7 @@ Begin DesktopWindow wnd_perf
    HasFullScreenButton=   False
    HasMaximizeButton=   True
    HasMinimizeButton=   True
+   HasTitleBar     =   True
    Height          =   400
    ImplicitInstance=   True
    MacProcID       =   0
@@ -36,11 +37,11 @@ Begin DesktopWindow wnd_perf
       InitialParent   =   ""
       Italic          =   False
       Left            =   223
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
@@ -69,11 +70,11 @@ Begin DesktopWindow wnd_perf
       InitialParent   =   ""
       Italic          =   False
       Left            =   427
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Multiline       =   False
       Scope           =   0
       Selectable      =   False
@@ -105,11 +106,11 @@ Begin DesktopWindow wnd_perf
       InitialParent   =   ""
       Italic          =   False
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   0
       TabIndex        =   2
@@ -140,11 +141,11 @@ Begin DesktopWindow wnd_perf
       Index           =   -2147483648
       Italic          =   False
       Left            =   335
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       MaximumCharactersAllowed=   0
       Password        =   False
       ReadOnly        =   False
@@ -181,11 +182,11 @@ Begin DesktopWindow wnd_perf
       Index           =   -2147483648
       Italic          =   False
       Left            =   131
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       MaximumCharactersAllowed=   0
       Password        =   False
       ReadOnly        =   False
@@ -233,10 +234,10 @@ Begin DesktopWindow wnd_perf
       InitialValue    =   ""
       Italic          =   False
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
-      LockRight       =   False
+      LockRight       =   True
       LockTop         =   True
       RequiresSelection=   False
       RowSelectionType=   0
@@ -258,7 +259,21 @@ End
 
 #tag WindowCode
 	#tag Method, Flags = &h0
-		Function test_inserts(nbr_columns as integer, nbr_rows as integer) As double()
+		Function SetUpLogWriter() As clLogManager
+		  
+		  
+		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
+		  
+		  logmanager.ResetWriters()
+		  logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox1))
+		  
+		  Return logmanager
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_inserts(log as clLogManager, nbr_columns as integer, nbr_rows as integer)
 		  var nbr_int_cols as integer
 		  var nbr_str_cols as integer
 		  
@@ -268,12 +283,14 @@ End
 		  nbr_int_cols = nbr_columns / 2
 		  nbr_str_cols = nbr_columns - nbr_int_cols
 		  
+		  log.StartTask("Perf test method")
+		  
+		  log.StartTask("Generate dummy data")
+		  
 		  for i as integer = 0 to nbr_int_cols-1
 		    int_values.Add(i*123)
 		    
 		  next
-		  
-		  
 		  
 		  var tmp_str as string = "AZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBNAZERTYUIOPQSDFGHJKLMWXCVBN"
 		  
@@ -281,13 +298,13 @@ End
 		  for i as integer = 0 to nbr_str_cols-1
 		    str_values.Add(left(tmp_str, len(tmp_str) - i - i ))
 		    
-		    
 		  next
-		  
-		  var tstart as Double  = System.Microseconds
+		   
+		  log.EndTask("Generate dummy data")
 		  
 		  // create the structure
 		  
+		  log.StartTask("Create structure")
 		  
 		  var int_col_list() as clIntegerDataSerie
 		  var str_col_list() as clDataSerie
@@ -310,9 +327,10 @@ End
 		  
 		  var tbl as new clDataTable("MYTABLE", col_list)
 		  
-		  var tcreate as double = System.Microseconds
+		  log.EndTask("Create structure")
 		  
-		  
+		   
+		  log.StartTask("Load data")
 		  // load data
 		  
 		  for row as integer = 0 to nbr_rows
@@ -329,26 +347,12 @@ End
 		    
 		  next
 		  
-		  var tload as double = System.Microseconds
+		  log.endTask("Load data")
 		  
-		  var ret() as double
-		  ret.Add tstart
-		  ret.Add tcreate
-		  ret.Add tload
+		  log.EndTask("Perf test method")
 		  
-		  return ret
+		  return 
 		  
-		  
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub writemessage(Paramarray vprint as string)
-		  var tmp As String
-		  tmp = join(vprint, " ")
-		  Listbox1.AddRow tmp
 		  
 		  
 		End Sub
@@ -361,13 +365,9 @@ End
 	#tag Event
 		Sub Pressed()
 		  
-		  writemessage "Starting insert tests"
+		  var logWriter as clLogManager = self.SetUpLogWriter()
 		  
-		  var ret() as double
-		  
-		  var time_to_create as string
-		  var time_to_load as String
-		  
+		  logWriter.StartTask("Insert tests")
 		  
 		  var nbr_rows as integer = tf_rows.Text.ToInteger
 		  var nbr_cols as integer = tf_cols.Text.ToInteger
@@ -377,20 +377,27 @@ End
 		  
 		  if nbr_cols < 1 then nbr_cols = 1
 		  
+		  logWriter.WriteMessage("Insert tests", "Preparing %0 rows and %1 columns", str(nbr_rows) , str(nbr_cols) )
 		  
-		  writemessage "Preparing " + str(nbr_rows) + " rows and " + str(nbr_cols) + " columns."
-		  ret = test_inserts(nbr_cols, nbr_rows)
+		  test_inserts(logWriter, nbr_cols, nbr_rows)
 		  
-		  time_to_create = "Time to create " + format(ret(1)  - ret(0),"0.0") + " microseconds"
+		  logWriter.EndTask("Insert tests")
 		  
-		  time_to_load = "Time to load " + format(ret(2)  - ret(1),"0.0") + " microseconds"
+		  return
 		  
-		  writemessage time_to_create
-		  writemessage time_to_load
+		  
 		End Sub
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="HasTitleBar"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Name"
 		Visible=true

@@ -2,7 +2,7 @@
 Protected Class clDataPool
 Implements Iterable
 	#tag Method, Flags = &h0
-		Sub AddErrorMessage(source as string, ErrorMessage as string, paramarray item as string)
+		Sub AddErrorMessage(source as string, ErrorMessageTemplate as string, paramarray item as variant)
 		  //  
 		  //  Add an error message
 		  //  
@@ -14,19 +14,9 @@ Implements Iterable
 		  //  Returns:
 		  //  
 		  
-		  var msg as string = clLibDataCommon.ReplacePlaceHolders(ErrorMessage, item)
+		  self.getLogManager.WriteError(Source, ErrorMessageTemplate, item)
 		  
-		  self.LastErrorMessage = "In " + source+": " + msg
-		  
-		  if self.localLogger = nil then
-		    System.DebugLog(self.LastErrorMessage)
-		    
-		  else
-		    self.localLogger.WriteError(source, msg)
-		    
-		  end if
-		  
-		  if clLibDataCommon.Logger <> nil then clLibDataCommon.logger.WriteError(source,msg)
+		  self.LastErrorMessage = self.getLogManager.GetProcessedMessage(ErrorMessageTemplate, item)
 		  
 		  return 
 		  
@@ -60,6 +50,20 @@ Implements Iterable
 		  
 		  self.verbose = False
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function getLogManager() As clLogManager
+		  
+		  if self.localLogger = nil then
+		    return clLogManager.GetDefaultLogingSupport
+		    
+		  else
+		    return self.localLogger
+		    
+		  end if
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -238,7 +242,7 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetLogger(newLogger as clLoging)
+		Sub SetLogger(newLogger as clLogManager)
 		  
 		  self.localLogger = newLogger
 		  
@@ -383,7 +387,7 @@ Implements Iterable
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private localLogger As clLoging
+		Private localLogger As clLogManager
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

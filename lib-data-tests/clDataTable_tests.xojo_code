@@ -1,13 +1,9 @@
 #tag Module
 Protected Module clDataTable_tests
 	#tag Method, Flags = &h0
-		Sub tests(log as LogMessageInterface)
+		Sub tests(log as clLogManager)
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
+		  var logwriter as  clLogManager = log 
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
@@ -17,8 +13,10 @@ Protected Module clDataTable_tests
 		  
 		  var ms1 as clMemoryStats = GetMemoryStats
 		  
-		  logwriter.WriteMessage("Tables in memory was: " + str(ms0.NumberOfTables)+", dataseries in memory was: " + str(ms0.NumberOfDataSeries))
-		  logwriter.WriteMessage("Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
+		  logwriter.WriteMessage(CurrentMethodName,"Tables in memory was:  %0,  dataseries in memory was: %1" , str(ms0.NumberOfTables), str(ms0.NumberOfDataSeries))
+		  logwriter.WriteMessage(CurrentMethodName,"Tables in memory is:  %0, dataseries in memory is: %1" , str(ms1.NumberOfTables), str(ms1.NumberOfDataSeries))
+		  
+		  //logwriter.WriteMessage(CurrentMethodName,"Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  
@@ -28,13 +26,9 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests_examples(log as LogMessageInterface)
+		Sub tests_examples(log as clLogManager)
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
+		  var logwriter as  clLogManager = log 
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
@@ -49,8 +43,8 @@ Protected Module clDataTable_tests
 		  
 		  var ms1 as clMemoryStats = GetMemoryStats
 		  
-		  logwriter.WriteMessage("Tables in memory was: " + str(ms0.NumberOfTables)+", dataseries in memory was: " + str(ms0.NumberOfDataSeries))
-		  logwriter.WriteMessage("Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
+		  logwriter.WriteMessage(CurrentMethodName,"Tables in memory was: " + str(ms0.NumberOfTables)+", dataseries in memory was: " + str(ms0.NumberOfDataSeries))
+		  logwriter.WriteMessage(CurrentMethodName,"Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
 		  
 		  
 		  logwriter.EndTask(CurrentMethodName)
@@ -61,14 +55,9 @@ Protected Module clDataTable_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests_io(log as LogMessageInterface)
+		Sub tests_io(log as clLogManager)
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
-		  
+		  var logwriter as  clLogManager = log 
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
@@ -78,8 +67,8 @@ Protected Module clDataTable_tests
 		  
 		  var ms1 as clMemoryStats = GetMemoryStats
 		  
-		  logwriter.WriteMessage("Tables in memory was: " + str(ms0.NumberOfTables)+", dataseries in memory was: " + str(ms0.NumberOfDataSeries))
-		  logwriter.WriteMessage("Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
+		  logwriter.WriteMessage(CurrentMethodName,"Tables in memory was: " + str(ms0.NumberOfTables)+", dataseries in memory was: " + str(ms0.NumberOfDataSeries))
+		  logwriter.WriteMessage(CurrentMethodName,"Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
 		  
 		  
 		  logwriter.EndTask(CurrentMethodName)

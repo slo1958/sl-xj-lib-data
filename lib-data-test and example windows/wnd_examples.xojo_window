@@ -10,6 +10,7 @@ Begin DesktopWindow wnd_examples
    HasFullScreenButton=   False
    HasMaximizeButton=   True
    HasMinimizeButton=   True
+   HasTitleBar     =   True
    Height          =   473
    ImplicitInstance=   True
    MacProcID       =   0
@@ -176,7 +177,9 @@ End
 		  
 		  if item = nil then return
 		  
-		  var tables() as TableColumnReaderInterface = clLibDataExample.RunExample(nil, item)
+		  var logWriter as clLogManager = SetUpLogWriter()
+		  
+		  var tables() as TableColumnReaderInterface = clLibDataExample.RunExample(logWriter, item)
 		  
 		  var wnd as new wnd_table_viewer
 		  
@@ -194,6 +197,20 @@ End
 		  
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SetUpLogWriter() As clLogManager
+		  
+		  
+		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
+		  
+		  logmanager.ResetWriters()
+		  // logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox1))
+		  
+		  Return logmanager
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -294,6 +311,14 @@ End
 	#tag EndEvent
 #tag EndEvents
 #tag ViewBehavior
+	#tag ViewProperty
+		Name="HasTitleBar"
+		Visible=true
+		Group="Frame"
+		InitialValue="True"
+		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
 	#tag ViewProperty
 		Name="Name"
 		Visible=true

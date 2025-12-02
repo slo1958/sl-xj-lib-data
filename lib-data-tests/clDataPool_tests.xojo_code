@@ -1,13 +1,9 @@
 #tag Module
 Protected Module clDataPool_tests
 	#tag Method, Flags = &h0
-		Sub tests(log as LogMessageInterface)
+		Sub tests(log as clLogManager)
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
+		  var logwriter as  clLogManager = log 
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
@@ -15,17 +11,14 @@ Protected Module clDataPool_tests
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  
+		  return
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests_io(log as LogMessageInterface)
+		Sub tests_io(log as clLogManager)
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
+		  var logwriter as  clLogManager = log 
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
@@ -33,6 +26,7 @@ Protected Module clDataPool_tests
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  
+		  return
 		End Sub
 	#tag EndMethod
 

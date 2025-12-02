@@ -333,22 +333,16 @@ End
 		  //  Returns:
 		  //  
 		  
-		  var msg as string = clLibDataCommon.ReplacePlaceHolders(ErrorMessage, item)
 		  
-		  self.LastErrorMessage = "In " + source+": " + msg
-		  
-		  if self.localLogger = nil then
-		    System.DebugLog(self.LastErrorMessage)
+		  if self.localLogger = nil then 
+		    clLogManager.GetDefaultLogingSupport.WriteError(Source, ErrorMessage, item)
 		    
 		  else
-		    self.localLogger.WriteError(source, msg)
+		    self.localLogger.WriteError(Source, ErrorMessage, item)
 		    
 		  end if
 		  
-		  if clLibDataCommon.Logger <> nil then clLibDataCommon.logger.WriteError(source,msg)
-		   
 		  return 
-		  
 		End Sub
 	#tag EndMethod
 
@@ -526,7 +520,7 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetLogger(newLogger as clLoging)
+		Sub SetLogger(newLogger as clLogManager)
 		  
 		  self.localLogger = newLogger
 		  
@@ -607,7 +601,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private localLogger As clLoging
+		Private localLogger As clLogManager
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

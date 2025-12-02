@@ -48,12 +48,12 @@ Protected Module clDataTable_tests_support
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function check_table(log as LogMessageInterface, label as string, expected as clDataTable, calculated as clDataTable, accepted_error_on_double as double = 0.00001) As Boolean
+		Function check_table(log as clLogManager, label as string, expected as clDataTable, calculated as clDataTable, accepted_error_on_double as double = 0.00001) As Boolean
 		  var cnt1 as integer  
 		  var cnt2 as integer  
 		  
 		  if calculated = nil then
-		    if log <> nil then log.WriteMessage(CurrentMethodName+": Missing or unknow calculated table.")
+		    if log <> nil then log.WriteWarning(CurrentMethodName,": Missing or unknow calculated table.")
 		    return false
 		    
 		  end if
@@ -64,13 +64,13 @@ Protected Module clDataTable_tests_support
 		    if expected = nil then return True
 		    
 		  else
-		    if log <> nil then log.WriteMessage(CurrentMethodName+": Integrity error calculated table ["+calcTableName+ "].")
+		    if log <> nil then log.WriteWarning(CurrentMethodName,": Integrity error calculated table [%0]", calcTableName)
 		    if expected = nil then return False
 		    
 		  end if
 		  
 		  if expected = nil then
-		    if log <> nil then log.WriteMessage(CurrentMethodName+": Missing or unknow expected table.")
+		    if log <> nil then log.WriteWarning(CurrentMethodName,": Missing or unknow expected table.")
 		    return False
 		    
 		  end if
@@ -80,7 +80,7 @@ Protected Module clDataTable_tests_support
 		  
 		  if expected.CheckIntegrity() then
 		  else
-		    if log <> nil then log.WriteMessage(CurrentMethodName+": Integrity error expected table [" + expectName+"].")
+		    if log <> nil then log.WriteWarning(CurrentMethodName,": Integrity error expected table [%0]", expectName)
 		    
 		  end if
 		  

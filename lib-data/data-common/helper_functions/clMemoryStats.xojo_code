@@ -3,6 +3,7 @@ Class clMemoryStats
 	#tag Method, Flags = &h0
 		Sub Add(obj as object)
 		  
+		  
 		  if obj isa clDataTable then
 		    tables.add(new clMemoryStatEntry( _
 		    Introspection.GetType(obj).name _
@@ -20,6 +21,7 @@ Class clMemoryStats
 		    
 		  end if
 		  
+		  return
 		End Sub
 	#tag EndMethod
 

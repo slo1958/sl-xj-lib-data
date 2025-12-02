@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clTextfileLogWriter
 Inherits clGenericLogWriter
-Implements itfLogingWriter
+Implements itfLogWriter
 	#tag Method, Flags = &h0
 		Sub AddLogEntry(MessageSeverity as string, MessageTime as string, MessageSource as string, MessageText as string)
 		  // Part of the itfLogingWriter interface.
@@ -80,10 +80,10 @@ Implements itfLogingWriter
 		    var output As TextOutputStream = TextOutputStream.Open(file_path)
 		    
 		    var field_names() as string
-		    field_names.Add(kWhen)
-		    field_names.Add(kWho)
-		    field_names.Add(kSeverity)
-		    field_names.Add(kMessage)
+		    field_names.Append(kWhen)
+		    field_names.Append(kWho)
+		    field_names.Append(kSeverity)
+		    field_names.Append(kMessage)
 		    
 		    output.WriteLine(string.FromArray(field_names, field_separator))
 		    

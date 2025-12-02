@@ -1,7 +1,7 @@
 #tag Module
 Protected Module clDataSerie_tests
 	#tag Method, Flags = &h0
-		Function check_serie(log as support_tests.LogMessageInterface, label as string, expected as clAbstractDataSerie, calculated as clAbstractDataSerie, accepted_error_on_double as double = 0.00001) As Boolean
+		Function check_serie(log as clLogManager, label as string, expected as clAbstractDataSerie, calculated as clAbstractDataSerie, accepted_error_on_double as double = 0.00001) As Boolean
 		  
 		  if not  check_value(log,label + " name", expected.name, calculated.name) then
 		    return False
@@ -53,13 +53,9 @@ Protected Module clDataSerie_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests(log as LogMessageInterface)
+		Sub tests(log as clLogManager)
 		  
-		  var logwriter as  LogMessageInterface = log 
-		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
+		  var logwriter as  clLogManager = log  
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
@@ -67,23 +63,25 @@ Protected Module clDataSerie_tests
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  
+		  return
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub tests_io(log as LogMessageInterface)
+		Sub tests_io(log as clLogManager)
 		  
-		  var logwriter as  LogMessageInterface = log 
+		  var logwriter as  clLogManager = log 
 		  
-		  if log = nil then
-		    logwriter = new clWriteToSystemLog
-		  end if
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
 		  RunTests(new clDataSerieTests, "test_io", logwriter)
 		  
 		  logwriter.EndTask(CurrentMethodName)
+		  
+		  return
+		  
 		End Sub
 	#tag EndMethod
 

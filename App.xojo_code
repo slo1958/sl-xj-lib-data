@@ -4,21 +4,7 @@ Inherits DesktopApplication
 	#tag Event
 		Sub Opening()
 		  
-		  var logwriter as  LogMessageInterface = new clWriteToSystemLog 
-		  // 
-		  // logwriter.StartTask(CurrentMethodName)
-		  // 
-		  // var t as new clDataTableTests
-		  // 
-		  // t.test_calc_042(logwriter)
-		  // 
-		  // logwriter.EndTask(CurrentMethodName)
-		  // 
-		  
-		  
-		  
-		  
-		  return
+		  Return
 		End Sub
 	#tag EndEvent
 

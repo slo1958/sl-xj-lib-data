@@ -1,11 +1,11 @@
 #tag Class
-Protected Class clLogingWriterEntry
+Protected Class clLogWriterEntry
 	#tag Method, Flags = &h0
-		Sub Constructor(WriterID as String, Writer as itfLogingWriter)
+		Sub Constructor(WriterID as String, Writer as itfLogWriter)
 		  
 		  self.identity = WriterID
 		  self.enabled = True
-		  self.log_writer = Writer
+		  self.logWriter = Writer
 		  
 		End Sub
 	#tag EndMethod
@@ -27,7 +27,7 @@ Protected Class clLogingWriterEntry
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		log_writer As itfLogingWriter
+		logWriter As itfLogWriter
 	#tag EndProperty
 
 

@@ -18,6 +18,13 @@ Protected Module clDataTableFilterFunctions
 		  //  Returns:
 		  //   - boolean: results of comparision, true if the value in the column matches the expected value
 		  //  
+		  
+		  #pragma unused pRowIndex
+		  #pragma unused pRowCount
+		  #pragma unused pColumnNames
+		  #pragma unused pCellValues
+		  #pragma unused pFunctionParameters
+		  
 		  var FieldName as string = pFunctionParameters(0)
 		  var FieldValue as variant = pFunctionParameters(1)
 		  

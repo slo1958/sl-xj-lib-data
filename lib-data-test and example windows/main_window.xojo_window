@@ -1,5 +1,5 @@
 #tag DesktopWindow
-Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
+Begin DesktopWindow main_window
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF00
    Composite       =   False
@@ -294,6 +294,37 @@ Begin DesktopWindow main_window Implements support_tests.LogMessageInterface
       Visible         =   True
       Width           =   109
    End
+   Begin DesktopButton pb_clear
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Clear"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   501
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   9
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   328
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   107
+   End
 End
 #tag EndDesktopWindow
 
@@ -307,12 +338,6 @@ End
 		End Sub
 	#tag EndEvent
 
-
-	#tag Method, Flags = &h0
-		Sub EndTask(method as string)
-		  WriteMessage("Done with " + method)
-		End Sub
-	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub run_exemple()
@@ -329,27 +354,21 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub StartTask(method as string)
-		  WriteMessage("Starting " + method)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub WriteMessage(msg as string)
-		  // Part of the support_tests.LogMessageInterface interface.
-		  WriteMessageToListbox(msg)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub WriteMessageToListbox(Paramarray vprint as string)
-		  var tmp As String
-		  tmp = join(vprint, " ")
-		  Listbox1.AddRow tmp
+		Function SetUpLogWriter(EchoToListBox as Boolean) As clLogManager
 		  
 		  
-		End Sub
+		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
+		  
+		  logmanager.ResetWriters()
+		  
+		  if EchoToListBox then
+		    logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox1))
+		    
+		  end if
+		  
+		  Return logmanager
+		  
+		End Function
 	#tag EndMethod
 
 
@@ -391,22 +410,23 @@ End
 #tag Events pb_test_examples
 	#tag Event
 		Sub Pressed()
-		  writemessage "started"
 		  
+		  var logwriter as  clLogManager = SetUpLogWriter(CheckBox1.value)
 		  
-		  var logwriter as  LogMessageInterface = nil
-		  
-		  if CheckBox1.value then
-		    logwriter = self
-		    
-		  end if
-		  
-		  
+		  logwriter.StartTask("Test examples")
+		   
 		  clDataTable_tests.tests_examples(logwriter)
-		  writemessage "test run example (no validaton)"
 		  
+		  logwriter.EndTask("Test examples")
+		  logwriter.WriteMessage("Test examples", "test run example (no validaton)")
 		  
-		  writemessage "all tests done"
+		  logwriter = self.SetUpLogWriter(true)
+		  logwriter.WriteMessage("", "All test completed.")
+		  
+		  logwriter.ResetWriters()
+		  
+		  return
+		  
 		  
 		  
 		End Sub
@@ -415,34 +435,50 @@ End
 #tag Events pb_run_all_tests1
 	#tag Event
 		Sub Pressed()
-		  writemessage "started"
+		  
+		  var logwriter as clLogManager 
+		  
+		  logwriter = self.SetUpLogWriter(CheckBox1.value)
+		  
+		  logwriter.StartTask("All tests")
+		  
+		  logwriter.writemessage("All tests",  "Run dataserie tests")
 		  
 		  
-		  var logwriter as  LogMessageInterface = nil
-		  
-		  if CheckBox1.value then
-		    logwriter = self
-		    
-		  end if
-		  
-		  writemessage "Run dataserie tests"
 		  clDataSerie_tests.tests(logwriter)
 		  clDataSerie_tests.tests_io(logwriter)
 		  
 		  
-		  writemessage "Run datatable tests"
+		  logwriter.WriteMessage("All tests",  "Run datatable tests")
 		  clDataTable_tests.tests(logwriter)
 		  clDataTable_tests.tests_io(logwriter)
 		  
-		  writemessage "Run datapool tests"
+		  logwriter.WriteMessage("All tests",  "Run datapool tests")
 		  clDataPool_tests.tests(logwriter)
 		  clDataPool_tests.tests_io(logwriter)
 		  
-		  writemessage "test run example (no validaton)"
+		  logwriter.WriteMessage("All tests", "test run example (no validaton)")
 		  clDataTable_tests.tests_examples(logwriter)
 		  
-		  writemessage "all tests done"
+		  logwriter.EndTask("All tests")
 		  
+		  logwriter = self.SetUpLogWriter(true)
+		  logwriter.WriteMessage("", "All test completed.")
+		  
+		  logwriter.ResetWriters()
+		  
+		  return
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events pb_clear
+	#tag Event
+		Sub Pressed()
+		  
+		  Listbox1.RemoveAllRows
+		  
+		  return
 		  
 		End Sub
 	#tag EndEvent
