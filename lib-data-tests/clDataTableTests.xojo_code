@@ -3303,6 +3303,51 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_calc_054(log as clLogManager)
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  var table As New clDataTable("T1", SerieArray(new clIntegerDataSerie("aaa"), new clStringDataSerie("bbb"), new clNumberDataSerie("ccc")))
+		  
+		  var d as new test_class_02
+		  d.aaa = 1234
+		  d.bbb =  "abcd"
+		  d.ccc =  "123.456"
+		  
+		  table.AddRow( New clDataRow(d), clDataTable.AddRowMode.IgnoreNewColumn)
+		  
+		  var c as new test_class_01
+		  c.aaa = 1235
+		  c.bbb = "abce"
+		  c.ddd = 987.654
+		  
+		  
+		  table.AddRow(New clDataRow(c),  clDataTable.AddRowMode.CreateNewColumn)
+		  
+		  var output_table as new clDataTable("res")
+		  
+		  var s as clStringDataSerie = clStringDataSerie( output_table.AddColumn( new clStringDataSerie("output")))
+		  
+		  for each r as clDoubleDatarow in table.DoubleDataRows
+		    s.AddElement(r.ToString)
+		    
+		  next
+		  
+		  var expected_table as new clDataTable("exp")
+		  call expected_table.AddColumn( new clStringDataSerie("output"))
+		  
+		  expected_table.AddRow("output": "0[1234];2[123.456];3[0]")
+		  expected_table.AddRow("output":"0[1235];2[0];3[987.654]")
+		  
+		  
+		  call check_table(log, "T1", expected_table, output_table)
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_io_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)

@@ -292,7 +292,7 @@ Inherits clAbstractTransformer
 		  
 		  connector = self.GetOutputConnector(cOutputConnectorRight)
 		  if connector <>nil and connector.GetTableName(false).trim.Length > 0 then outputRightConnection = cOutputConnectorRight
-		   
+		  
 		  
 		  if cntleft > cntright or self.mode = JoinMode.LeftJoin then
 		    FullJoin(tblleft, tblright, self.JoinStatusLeftOnly, self.JoinStatusRightOnly, outputLeftConnection, cOutputConnectorRight)

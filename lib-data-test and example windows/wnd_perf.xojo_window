@@ -299,7 +299,7 @@ End
 		    str_values.Add(left(tmp_str, len(tmp_str) - i - i ))
 		    
 		  next
-		   
+		  
 		  log.EndTask("Generate dummy data")
 		  
 		  // create the structure
@@ -329,7 +329,7 @@ End
 		  
 		  log.EndTask("Create structure")
 		  
-		   
+		  
 		  log.StartTask("Load data")
 		  // load data
 		  

@@ -464,6 +464,7 @@ Implements Iterable
 		    
 		  End If
 		  
+		  return
 		End Sub
 	#tag EndMethod
 

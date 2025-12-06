@@ -1777,6 +1777,32 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function DoubleDataRows() As clDataTableDoubleRows
+		  //
+		  // Returns a clDataTableDoubleRows, allowing to iterate a table getting clDoubleDataRow
+		  // A clDoubleDataRow is eExpected to be faster to use for numerical processing
+		  //
+		  
+		  var tmp() as string
+		  
+		  for each c as clAbstractDataSerie in self.columns
+		    if clDoubleDataRow.IsUsed(c) then
+		      tmp.Add(c.name)
+		      
+		    else
+		      tmp.add("-")
+		      
+		    end if
+		    
+		  next
+		  
+		  return new clDataTableDoubleRows(self, tmp)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ExtractColumns(ColumnNames() as string) As clDataTable
 		  //
 		  // Create a new table with cloned columns from source table
@@ -2386,6 +2412,36 @@ Implements TableColumnReaderInterface,Iterable
 		  //  
 		  
 		  return clDateTimeDataSerie(self.GetColumn(pColumnName, IncludeAlias))
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetDoubleRowAt(pRowIndex as integer) As clDoubleDataRow
+		  //  
+		  //  returns a specific data row
+		  //  
+		  //  Parameters:
+		  //  - the  index of the data row
+		  //  
+		  //  Returns:
+		  //  - a data row with the value of the cell in each column at the specified index
+		  //  
+		  var tmp_row as new clDoubleDataRow(self.ColumnCount)
+		  
+		  for i as integer = 0 to self.columns.LastIndex
+		    var column as clAbstractDataSerie = self.Columns(i)
+		    
+		    if clDoubleDataRow.IsUsed(column) then
+		      tmp_row.SetCell(i, column.GetElementAsNumber(pRowIndex))
+		      
+		    end if
+		    
+		  next
+		  
+		  tmp_row.SetTableLink(self)
+		  
+		  return tmp_row
 		  
 		End Function
 	#tag EndMethod

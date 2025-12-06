@@ -1,34 +1,32 @@
 #tag Class
-Protected Class clDataSerieIterator
+Protected Class clDataTableDoubleRowsIterator
 Implements Iterator
 	#tag Method, Flags = &h0
-		Sub Constructor(the_serie as clAbstractDataSerie)
-		  current_index = -1
-		  temp_serie = the_serie
+		Sub Constructor(the_table as clDataTable, fields() as string)
+		  tmp_table = the_table
+		  last_row_index = -1
+		  tmp_fields = fields
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function MoveNext() As Boolean
-		  // Part of iterator
+		  // Part of the Iterator interface.
 		  
-		  if temp_serie = nil then
-		    iteration_next_value = ""
-		    return false
+		  if last_row_index < tmp_table.RowCount - 1 then
+		    last_row_index = last_row_index + 1
 		    
-		  elseif current_index >= temp_serie.LastIndex then
-		    iteration_next_value = ""
-		    return false
+		    var tmprow as clDoubleDataRow = tmp_table.GetDoubleRowAt(last_row_index)
+		    
+		    value_to_return = tmprow
+		    
+		    return True
 		    
 		  else
-		    current_index = current_index + 1
-		    iteration_next_value = temp_serie.GetElement(current_index)
-		    Return True
+		    return False
 		    
 		  end if
-		  
-		  
 		  
 		  
 		End Function
@@ -38,48 +36,43 @@ Implements Iterator
 		Function Value() As Variant
 		  // Part of the Iterator interface.
 		  
-		  Return iteration_next_value
-		  
+		  return value_to_return
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		current_index As Integer
+		last_row_index As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		iteration_next_value As variant
+		tmp_fields() As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		temp_serie As clAbstractDataSerie
+		tmp_table As clDataTable
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		value_to_return As clDoubleDataRow
 	#tag EndProperty
 
 
 	#tag ViewBehavior
-		#tag ViewProperty
-			Name="Index"
-			Visible=true
-			Group="ID"
-			InitialValue="-2147483648"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Left"
-			Visible=true
-			Group="Position"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
 			InitialValue=""
 			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -91,6 +84,14 @@ Implements Iterator
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Top"
 			Visible=true
 			Group="Position"
@@ -99,7 +100,7 @@ Implements Iterator
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="current_index"
+			Name="last_row_index"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
