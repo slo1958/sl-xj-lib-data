@@ -2,10 +2,10 @@
 Protected Class clDataTableDoubleRows
 Implements Iterable
 	#tag Method, Flags = &h0
-		Sub Constructor(SourceTable as clDataTable, fields() as string)
+		Sub Constructor(SourceTable as clDataTable, fields() as clDoubleDataRowFieldInfo)
 		  
 		  self.tmp_table = SourceTable 
-		  self.tmp_fields = fields
+		  self.FieldInfo = fields
 		  
 		  
 		End Sub
@@ -15,7 +15,7 @@ Implements Iterable
 		Function Iterator() As Iterator
 		  // Part of the Iterable interface.
 		  
-		  return new clDataTableDoubleRowsIterator(self.tmp_table,tmp_fields)
+		  return new clDataTableDoubleRowsIterator(self.tmp_table,self.FieldInfo)
 		  
 		  
 		End Function
@@ -32,7 +32,7 @@ Implements Iterable
 
 
 	#tag Property, Flags = &h0
-		tmp_fields() As string
+		FieldInfo() As clDoubleDataRowFieldInfo
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

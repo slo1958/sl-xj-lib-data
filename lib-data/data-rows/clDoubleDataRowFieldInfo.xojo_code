@@ -1,63 +1,39 @@
 #tag Class
-Protected Class clDataTableDoubleRowsIterator
-Implements Iterator
+Protected Class clDoubleDataRowFieldInfo
 	#tag Method, Flags = &h0
-		Sub Constructor(the_table as clDataTable, fields() as clDoubleDataRowFieldInfo)
-		  tmp_table = the_table
-		  last_row_index = -1
+		Function adjustedName() As string
+		  if self.Supported then
+		    return self.Name
+		    
+		  else
+		    Return cNameForUnsupported
+		    
+		  end if
 		  
-		  self.fieldInfo = fields
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(fieldName as string, fieldSupported as boolean)
+		  
+		  self.Name = fieldName
+		  self.Supported = fieldSupported
 		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function MoveNext() As Boolean
-		  // Part of the Iterator interface.
-		  
-		  if last_row_index < tmp_table.RowCount - 1 then
-		    last_row_index = last_row_index + 1
-		    
-		    var tmprow as clDoubleDataRow = tmp_table.GetDoubleRowAt(last_row_index, fieldInfo)
-		    tmprow.columnsInfo = self.fieldInfo
-		    
-		    value_to_return = tmprow
-		    
-		    return True
-		    
-		  else
-		    return False
-		    
-		  end if
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Value() As Variant
-		  // Part of the Iterator interface.
-		  
-		  return value_to_return
-		End Function
-	#tag EndMethod
-
 
 	#tag Property, Flags = &h0
-		fieldInfo() As clDoubleDataRowFieldInfo
+		Name As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		last_row_index As Integer
+		Supported As Boolean
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		tmp_table As clDataTable
-	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		value_to_return As clDoubleDataRow
-	#tag EndProperty
+	#tag Constant, Name = cNameForUnsupported, Type = String, Dynamic = False, Default = \"-", Scope = Public
+	#tag EndConstant
 
 
 	#tag ViewBehavior
@@ -102,7 +78,7 @@ Implements Iterator
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="last_row_index"
+			Name="Name"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

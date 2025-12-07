@@ -263,7 +263,7 @@ Implements TableColumnReaderInterface,Iterable
 		      dst_tmp_column.AddSerie(src_tmp_column)
 		      
 		    else
-		      AddErrorMessage(CurrentMethodName, ErrMsgIgnoringColumn , column_name)
+		      AddWarningMessage(CurrentMethodName, ErrMsgIgnoringColumn , column_name)
 		      
 		    End If
 		    
@@ -1783,16 +1783,10 @@ Implements TableColumnReaderInterface,Iterable
 		  // A clDoubleDataRow is eExpected to be faster to use for numerical processing
 		  //
 		  
-		  var tmp() as string
+		  var tmp() as clDoubleDataRowFieldInfo
 		  
 		  for each c as clAbstractDataSerie in self.columns
-		    if clDoubleDataRow.IsUsed(c) then
-		      tmp.Add(c.name)
-		      
-		    else
-		      tmp.add("-")
-		      
-		    end if
+		    tmp.Add(new clDoubleDataRowFieldInfo(c.name, clDoubleDataRow.IsUsed(c)))
 		    
 		  next
 		  
@@ -2427,7 +2421,50 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a data row with the value of the cell in each column at the specified index
 		  //  
-		  var tmp_row as new clDoubleDataRow(self.ColumnCount)
+		  
+		  var fieldInfo() as clDoubleDataRowFieldInfo
+		  
+		  
+		  var tmp_row as new clDoubleDataRow("", self.ColumnCount)
+		  
+		  for i as integer = 0 to self.columns.LastIndex
+		    
+		    var column as clAbstractDataSerie = self.Columns(i)
+		    var columnInfo as new clDoubleDataRowFieldInfo(column.name, clDoubleDataRow.IsUsed(column))
+		    
+		    fieldInfo.Add(columnInfo)
+		    
+		    if columnInfo.Supported then
+		      tmp_row.SetCell(i, column.GetElementAsNumber(pRowIndex))
+		      
+		    end if
+		    
+		  next
+		  
+		  
+		  tmp_row.columnsInfo = fieldInfo
+		  
+		  tmp_row.SetTableLink(self)
+		  
+		  return tmp_row
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetDoubleRowAt(pRowIndex as integer, fieldInfo() as clDoubleDataRowFieldInfo) As clDoubleDataRow
+		  //  
+		  //  returns a specific data row
+		  //  
+		  //  Parameters:
+		  //  - the  index of the data row
+		  //  - field information
+		  //  
+		  //  Returns:
+		  //  - a data row with the value of the cell in each column at the specified index
+		  //  
+		  
+		  var tmp_row as new clDoubleDataRow("", fieldInfo)
 		  
 		  for i as integer = 0 to self.columns.LastIndex
 		    var column as clAbstractDataSerie = self.Columns(i)
@@ -2442,6 +2479,7 @@ Implements TableColumnReaderInterface,Iterable
 		  tmp_row.SetTableLink(self)
 		  
 		  return tmp_row
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -3247,6 +3285,9 @@ Implements TableColumnReaderInterface,Iterable
 		    tmp_column =new clDataSerie(ColumnName)
 		    
 		  case AddRowMode.IgnoreNewColumn
+		    
+		  case AddRowMode.WarningOnNewColumn
+		    self.AddWarningMessage(CurrentMethodName, ErrMsgIgnoringColumn, ColumnName)
 		    
 		  case AddRowMode.ErrorOnNewColumn
 		    self.AddErrorMessage(CurrentMethodName, ErrMsgIgnoringColumn, ColumnName)
@@ -4258,7 +4299,8 @@ Implements TableColumnReaderInterface,Iterable
 		  ErrorOnNewColumn
 		  ExceptionOnNewColumn
 		  CreateNewColumn
-		CreateNewColumnAsVariant
+		  CreateNewColumnAsVariant
+		WarningOnNewColumn
 	#tag EndEnum
 
 

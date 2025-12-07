@@ -3336,8 +3336,8 @@ Protected Class clDataTableTests
 		  var expected_table as new clDataTable("exp")
 		  call expected_table.AddColumn( new clStringDataSerie("output"))
 		  
-		  expected_table.AddRow("output": "0[1234];2[123.456];3[0]")
-		  expected_table.AddRow("output":"0[1235];2[0];3[987.654]")
+		  expected_table.AddRow("output": "#0/aaa[1234];#2/ccc[123.456];#3/ddd[0]")
+		  expected_table.AddRow("output":"#0/aaa[1235];#2/ccc[0];#3/ddd[987.654]")
 		  
 		  
 		  call check_table(log, "T1", expected_table, output_table)

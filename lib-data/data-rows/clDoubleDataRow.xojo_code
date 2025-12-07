@@ -1,34 +1,11 @@
 #tag Class
 Protected Class clDoubleDataRow
 	#tag Method, Flags = &h0
-		Sub Constructor()
-		  
-		  self.my_label = "Nolabel"
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(NbrOfCells as integer)
-		  
-		  self.my_label = "Nolabel"
-		  self.SetSize(NbrOfCells)
-		  
-		  
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(pRowLabel as string)
+		Sub Constructor(pRowLabel as string, fieldInfo() as clDoubleDataRowFieldInfo)
 		  
 		  self.my_label = pRowLabel
 		  
-		  
+		  self.values.ResizeTo(fieldInfo.LastIndex)
 		  
 		End Sub
 	#tag EndMethod
@@ -37,7 +14,9 @@ Protected Class clDoubleDataRow
 		Sub Constructor(pRowLabel as string, NbrOfCells as integer)
 		  
 		  self.my_label = pRowLabel
-		  self.SetSize(NbrOfCells)
+		  
+		  self.values.ResizeTo(NbrOfCells)
+		  
 		  
 		  
 		  
@@ -70,6 +49,30 @@ Protected Class clDoubleDataRow
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetCellAdjustedName(theColumnIndex as integer) As string
+		  //  
+		  //  Get the name of one field / cell
+		  //  
+		  //  Parameters:
+		  //  - the index of the cell
+		  //  
+		  //  Returns:
+		  //    name of the cell or '-' if the cell is not used or names are not propagated
+		  //  
+		  
+		  if  (0<= theColumnIndex)  and (theColumnIndex <= columnsInfo.LastIndex) then
+		    return self.columnsInfo(theColumnIndex).adjustedName()
+		    
+		  else
+		    return clDoubleDataRowFieldInfo.cNameForUnsupported
+		    
+		  end if
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetCellName(theColumnIndex as integer) As string
 		  //  
 		  //  Get the name of one field / cell
@@ -81,11 +84,11 @@ Protected Class clDoubleDataRow
 		  //    name of the cell or '-' if the cell is not used or names are not propagated
 		  //  
 		  
-		  if  (0<= theColumnIndex)  and (theColumnIndex <= columns.LastIndex) then
-		    return self.columns(theColumnIndex)
+		  if  (0<= theColumnIndex)  and (theColumnIndex <= columnsInfo.LastIndex) then
+		    return self.columnsInfo(theColumnIndex).Name
 		    
 		  else
-		    return "-"
+		    return clDoubleDataRowFieldInfo.cNameForUnsupported
 		    
 		  end if
 		  
@@ -132,7 +135,6 @@ Protected Class clDoubleDataRow
 		  
 		  if  (0<= theColumnIndex)  and (theColumnIndex <= values.LastIndex) then
 		    self.values(theColumnIndex) = NewCellValue
-		    self.columnsUsed(theColumnIndex) = true
 		    
 		  else
 		    Raise New clDataException("Index out of range in SetCell : [" + str(theColumnIndex) + "]")
@@ -141,36 +143,6 @@ Protected Class clDoubleDataRow
 		  
 		  return
 		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetFieldNames(names() as string)
-		  //
-		  // Update the list of field names
-		  //
-		  
-		  self.columns = names
-		  
-		  return
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetSize(NbrOfCells as integer)
-		  
-		  self.values.ResizeTo(NbrOfCells)
-		  
-		  self.columnsUsed.ResizeTo(NbrOfCells)
-		  
-		  for i as integer = 0 to self.columnsUsed.LastIndex
-		    self.columnsUsed(i) = false
-		    
-		  next
-		  
-		  Return
 		  
 		End Sub
 	#tag EndMethod
@@ -196,13 +168,13 @@ Protected Class clDoubleDataRow
 		  
 		  var ret() as string
 		  
-		  for i as integer = 0 to values.LastIndex
+		  for i as integer = 0 to columnsInfo.LastIndex
 		    
-		    if self.columnsUsed(i) then
+		    if self.columnsInfo(i).Supported then
 		      var tmp as string
-		      tmp = str(i) 
+		      tmp = "#" + str(i) 
 		      
-		      if i <= self.columns.LastIndex then tmp = tmp + "/" +  self.columns(i)
+		      if i <= self.columnsInfo.LastIndex then tmp = tmp + "/" +  self.columnsInfo(i).Name
 		      tmp = tmp + "[" + self.values(i).ToString + "]"
 		      
 		      ret.Add(tmp)
@@ -219,11 +191,7 @@ Protected Class clDoubleDataRow
 
 
 	#tag Property, Flags = &h0
-		columns() As string
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		columnsUsed() As Boolean
+		columnsInfo() As clDoubleDataRowFieldInfo
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -285,8 +253,8 @@ Protected Class clDoubleDataRow
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
-			EditorType=""
+			Type="string"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

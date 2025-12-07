@@ -168,6 +168,7 @@ Folder=lib-loging-ui-support;lib-data-test and example windows/required-librarie
 Folder=combined;lib-data/required-libraries/combined;&h00000000781B7FFF;&h000000001AF38FFF;false
 Class=clTableLogWriter;lib-data/required-libraries/combined/clTableLogWriter.xojo_code;&h000000004A87A7FF;&h00000000781B7FFF;false
 Class=clDoubleDataRow;lib-data/data-rows/clDoubleDataRow.xojo_code;&h0000000039002FFF;&h0000000055BEF7FF;false
+Class=clDoubleDataRowFieldInfo;lib-data/data-rows/clDoubleDataRowFieldInfo.xojo_code;&h0000000005DA57FF;&h0000000055BEF7FF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1
