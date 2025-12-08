@@ -2,6 +2,15 @@
 Protected Class clDataRow
 Implements Iterable
 	#tag Method, Flags = &h0
+		Sub AllowUpdate()
+		  
+		  self.mutable_flag = true
+		  
+		  return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub AppendCellsFrom(SourceRow as clDataRow)
 		  //
 		  // Append cells from the SourceRow to the current row
@@ -175,7 +184,7 @@ Implements Iterable
 		  //  Returns:
 		  //   This is a constructor
 		  //  
-		  
+		  my_row_index = -1
 		  my_storage = New Dictionary
 		  mutable_flag = False
 		  my_label = ""
@@ -200,6 +209,26 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(pRowIndex as integer, pRowLabel as string = "")
+		  //  
+		  //  Create a row based object
+		  //  
+		  //  Parameters:
+		  //  - the name of the row
+		  //
+		  // The generated row has no cells
+		  //  
+		  //  Returns:
+		  //   This is a constructor
+		  //  
+		  my_row_index = pRowIndex
+		  my_storage = New Dictionary
+		  mutable_flag = False
+		  my_label = pRowLabel
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(SourceObject as object)
 		  //  
 		  //  Create a row based on an object
@@ -211,7 +240,7 @@ Implements Iterable
 		  //  Returns:
 		  //   This is a constructor
 		  //  
-		  
+		  my_row_index = -1
 		  my_storage = new Dictionary
 		  mutable_flag = False
 		  my_label = ""
@@ -253,6 +282,7 @@ Implements Iterable
 		  //   This is a constructor
 		  //  
 		  
+		  my_row_index = -1
 		  my_storage = New Dictionary()
 		  mutable_flag = False
 		  my_label = ""
@@ -287,7 +317,7 @@ Implements Iterable
 		  //  Returns:
 		  //   This is a constructor
 		  //  
-		  
+		  my_row_index = -1
 		  my_storage = New Dictionary()
 		  mutable_flag = False
 		  my_label = ""
@@ -323,7 +353,7 @@ Implements Iterable
 		  //  Returns:
 		  //   This is a constructor
 		  //  
-		  
+		  my_row_index = -1
 		  my_storage = New Dictionary
 		  mutable_flag = False
 		  my_label = pRowLabel
@@ -481,6 +511,29 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Update()
+		  //
+		  // Save the record back to the table
+		  //
+		  
+		  if self.table_link = nil then
+		    raise new clDataException("No table link, cannot update")
+		    
+		  end if
+		  
+		  if self.my_row_index < 0 then
+		     raise new clDataException("No record index, cannot update")
+		    
+		  end if
+		  
+		  self.table_link.UpdateRowAt(self.my_row_index, self)
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub UpdateObject(TargetObject as Object)
 		  //  
 		  //  Update the public properties of an object from the cell values
@@ -560,6 +613,10 @@ Implements Iterable
 
 	#tag Property, Flags = &h1
 		Protected my_label As String
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected my_row_index As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h1

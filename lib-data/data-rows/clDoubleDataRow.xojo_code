@@ -1,21 +1,37 @@
 #tag Class
 Protected Class clDoubleDataRow
 	#tag Method, Flags = &h0
-		Sub Constructor(pRowLabel as string, fieldInfo() as clDoubleDataRowFieldInfo)
+		Sub Constructor(pRowIndex as integer, pRowLabel as string, fieldInfo() as clDoubleDataRowFieldInfo)
+		  //
+		  // Create a clDoubleDataRow, it is assumed fieldInfo() provides relevant information
+		  //
+		  
+		  self.my_row_index = pRowIndex
 		  
 		  self.my_label = pRowLabel
 		  
 		  self.values.ResizeTo(fieldInfo.LastIndex)
 		  
+		  self.columnsInfo = fieldInfo
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(pRowLabel as string, NbrOfCells as integer)
+		Sub Constructor(pRowIndex as integer, pRowLabel as string, NbrOfCells as integer, fieldInfo() as clDoubleDataRowFieldInfo)
+		  //
+		  // Create a clDoubleDataRow, it is assumed fieldInfo() does not provides relevant information 
+		  // at construction time
+		  // 
+		  //
+		  
+		  self.my_row_index = pRowIndex
 		  
 		  self.my_label = pRowLabel
 		  
 		  self.values.ResizeTo(NbrOfCells)
+		  
+		  self.columnsInfo = fieldInfo
 		  
 		  
 		  
@@ -190,20 +206,24 @@ Protected Class clDoubleDataRow
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h0
-		columnsInfo() As clDoubleDataRowFieldInfo
+	#tag Property, Flags = &h1
+		Protected columnsInfo() As clDoubleDataRowFieldInfo
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		my_label As string
+	#tag Property, Flags = &h1
+		Protected my_label As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected my_row_index As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected table_link As clDataTable
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		values() As Double
+	#tag Property, Flags = &h1
+		Protected values() As Double
 	#tag EndProperty
 
 

@@ -3321,7 +3321,6 @@ Protected Class clDataTableTests
 		  c.bbb = "abce"
 		  c.ddd = 987.654
 		  
-		  
 		  table.AddRow(New clDataRow(c),  clDataTable.AddRowMode.CreateNewColumn)
 		  
 		  var output_table as new clDataTable("res")
@@ -3343,6 +3342,51 @@ Protected Class clDataTableTests
 		  call check_table(log, "T1", expected_table, output_table)
 		  
 		  log.EndTask(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_055(log as clLogManager)
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  
+		  var mytable As New clDataTable("T1")
+		  
+		  call mytable.AddColumn(new clDataSerie("name"))
+		  call mytable.AddColumn(new clNumberDataSerie("quantity"))
+		  call mytable.AddColumn(new clNumberDataSerie("unit_price"))
+		  call mytable.AddColumn(new clNumberDataSerie("total"))
+		  
+		  mytable.AddRow("name": "alpha", "quantity":50, "unit_price": 6)
+		  mytable.AddRow("name": "beta", "quantity":20, "unit_price": 8)
+		  mytable.AddRow("name": "gamma", "quantity":5.5, "unit_price": 8.1)
+		  
+		  
+		  for each r as clDataRow in mytable
+		    var q as Double = r.GetCell("quantity").DoubleValue
+		    var u as Double = r.GetCell("unit_price").DoubleValue
+		    
+		    r.AllowUpdate()
+		    r.SetCell("total", q*u)
+		    
+		    r.Update()
+		    
+		  next
+		   
+		  var col1 as new clDataSerie("name", "alpha","beta", "gamma")
+		  var col2 as new clNumberDataSerie("quantity", 50, 20, 5.5)
+		  var col3 as new clNumberDataSerie("unit_price", 6, 8, 8.1)
+		  var col4 as new clNumberDataSerie("total", 300, 160, 44.55)
+		  
+		  var expected_t1 as new clDataTable("T1", SerieArray(col1, col2, col3, col4))
+		  
+		  call check_table(log,"T1", expected_t1, mytable)
+		  
+		  
+		  log.EndTask(CurrentMethodName)
+		  
 		  
 		End Sub
 	#tag EndMethod

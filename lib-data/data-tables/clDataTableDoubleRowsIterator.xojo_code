@@ -19,7 +19,6 @@ Implements Iterator
 		    last_row_index = last_row_index + 1
 		    
 		    var tmprow as clDoubleDataRow = tmp_table.GetDoubleRowAt(last_row_index, fieldInfo)
-		    tmprow.columnsInfo = self.fieldInfo
 		    
 		    value_to_return = tmprow
 		    

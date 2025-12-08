@@ -2424,8 +2424,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var fieldInfo() as clDoubleDataRowFieldInfo
 		  
-		  
-		  var tmp_row as new clDoubleDataRow("", self.ColumnCount)
+		  var tmp_row as new clDoubleDataRow(pRowIndex, "", self.ColumnCount, fieldInfo)
 		  
 		  for i as integer = 0 to self.columns.LastIndex
 		    
@@ -2441,7 +2440,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  tmp_row.columnsInfo = fieldInfo
+		  // tmp_row.columnsInfo = fieldInfo
 		  
 		  tmp_row.SetTableLink(self)
 		  
@@ -2468,7 +2467,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		  
-		  var tmp_row as new clDoubleDataRow("", fieldInfo)
+		  var tmp_row as new clDoubleDataRow(pRowIndex, "", fieldInfo)
 		  
 		  for i as integer = 0 to self.columns.LastIndex
 		    var column as clAbstractDataSerie = self.Columns(i)
@@ -2631,7 +2630,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  Returns:
 		  //  - a data row with the value of the cell in each column at the specified index
 		  //  
-		  var tmp_row as new clDataRow
+		  var tmp_row as new clDataRow(pRowIndex)
 		  
 		  if not include_index then
 		    
