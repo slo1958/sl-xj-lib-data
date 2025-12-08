@@ -2419,7 +2419,7 @@ Implements TableColumnReaderInterface,Iterable
 		  //  - the  index of the data row
 		  //  
 		  //  Returns:
-		  //  - a data row with the value of the cell in each column at the specified index
+		  //  - a data row with the value of the cell in each column at the specified index, only number, integer and currency columns are populated
 		  //  
 		  
 		  var fieldInfo() as clDoubleDataRowFieldInfo
@@ -2441,7 +2441,6 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  
 		  tmp_row.columnsInfo = fieldInfo
 		  
 		  tmp_row.SetTableLink(self)
@@ -2454,15 +2453,20 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function GetDoubleRowAt(pRowIndex as integer, fieldInfo() as clDoubleDataRowFieldInfo) As clDoubleDataRow
 		  //  
-		  //  returns a specific data row
+		  //  returns a specific data row, the number of fields in the table must be consistent with the number of fields in the FieldInfo() array
 		  //  
 		  //  Parameters:
 		  //  - the  index of the data row
-		  //  - field information
+		  //  - field information as an array of clDoubleDataRowFieldInfo
 		  //  
 		  //  Returns:
-		  //  - a data row with the value of the cell in each column at the specified index
+		  //  - a data row with the value of the cell in each column at the specified index, only number, integer and currency columns are populated
 		  //  
+		  
+		  if fieldInfo.Count <> self.Columns.Count then
+		    raise new clDataException("Inconsistent column count in " + CurrentMethodName)
+		    
+		  end if
 		  
 		  var tmp_row as new clDoubleDataRow("", fieldInfo)
 		  
