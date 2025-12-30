@@ -476,6 +476,8 @@ Implements Iterable
 		  // - the_values: Values to add to the column
 		  //
 		  
+		  self.InitFromConstructor
+		  
 		  self.Reset
 		  
 		  SerieName = NewColumnName
@@ -497,6 +499,8 @@ Implements Iterable
 		  // - NewColumnName: name of the new column
 		  // - the_values: Values to add to the column
 		  //
+		  
+		  self.InitFromConstructor
 		  
 		  self.Reset
 		  
@@ -1097,6 +1101,17 @@ Implements Iterable
 		  
 		  return aliases.IndexOf(alias) >= 0
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub InitFromConstructor()
+		  //
+		  // Called by constructor to complete initialization, before moving values
+		  //
+		  
+		  return
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

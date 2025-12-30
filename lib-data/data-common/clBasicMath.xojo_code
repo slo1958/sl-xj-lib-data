@@ -148,7 +148,7 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function Aggregate(mode as AggMode, values() as integer) As double
+		Shared Function Aggregate(mode as AggMode, values() as int64) As double
 		  select case mode
 		    
 		  case Aggmode.Sum
@@ -239,6 +239,24 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Shared Function Average(values() as int64) As int64
+		  var s As int64
+		  var n as integer
+		  
+		  for each d as int64 in values
+		    s = s + d
+		    n = n + 1
+		    
+		  Next
+		  
+		  if n < 1 then return 0
+		  
+		  return s / n
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function AverageNonZero(values() as Currency) As Currency
 		  var s As Currency
 		  var n as integer
@@ -267,6 +285,28 @@ Protected Class clBasicMath
 		  
 		  for each d as double in values
 		    if not (d.IsNotANumber or d.IsInfinite) and (d <>0) then 
+		      s = s + d
+		      n = n + 1
+		      
+		    end if
+		    
+		  Next
+		  
+		  if n < 1 then return 0
+		  
+		  return s / n
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function AverageNonZero(values() as int64) As int64
+		  var s As int64
+		  var n as integer
+		  
+		  for each d as int64 in values
+		    if  (d <>0) then 
 		      s = s + d
 		      n = n + 1
 		      
@@ -317,7 +357,7 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function Count(values() as integer) As integer
+		Shared Function Count(values() as int64) As integer
 		  
 		  return values.Count
 		  
@@ -359,10 +399,10 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function CountNonZero(values() as integer) As integer
+		Shared Function CountNonZero(values() as int64) As integer
 		  var n as integer
 		  
-		  for each d as integer in values
+		  for each d as int64 in values
 		    if   (d <>0) then
 		      n = n + 1
 		      
@@ -433,15 +473,15 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function Maximum(values() as integer) As integer
+		Shared Function Maximum(values() as int64) As int64
 		  
 		  if values.Count = 0 then return 0
 		  
 		  if values.Count = 1 then return values(0)
 		  
-		  var mx as integer = values(0)
+		  var mx as int64 = values(0)
 		  
-		  for each v as double in values
+		  for each v as int64 in values
 		    mx = Max(mx, v)
 		    
 		  Next
@@ -509,15 +549,15 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function Minimum(values() as integer) As integer
+		Shared Function Minimum(values() as int64) As int64
 		  
 		  if values.Count = 0 then return 0
 		  
 		  if values.Count = 1 then return values(0)
 		  
-		  var mx as integer = values(0)
+		  var mx as int64 = values(0)
 		  
-		  for each v as double in values
+		  for each v as int64 in values
 		    mx = Min(mx, v)
 		    
 		  Next
@@ -610,10 +650,10 @@ Protected Class clBasicMath
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function Sum(values() as integer) As integer
-		  var retValue as integer
+		Shared Function Sum(values() as int64) As int64
+		  var retValue as int64
 		  
-		  for each d as integer in values
+		  for each d as int64 in values
 		    retValue = retValue + d
 		    
 		  next

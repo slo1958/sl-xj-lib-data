@@ -1,11 +1,11 @@
 #tag Class
-Protected Class clCurrencyDataSerie
+Protected Class clDecimalDataSerie
 Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
 		  
-		  items.Add(Internal_ConversionToCurrency(the_item))
+		  items.Add(Internal_ConversionToDecimal(the_item))
 		  
 		End Sub
 	#tag EndMethod
@@ -50,8 +50,25 @@ Inherits clAbstractDataSerie
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub AddInternalElement(v as int64)
+		  //
+		  // Adds a scaled element, typically when processing another clDecimalDataSerie
+		  //
+		  // Parameters:
+		  // v: scaled value to add
+		  //
+		  
+		  items.Add(v)
+		  
+		  Return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
-		Function Aggregate(mode as AggMode) As Currency
+		Function Aggregate(mode as AggMode) As double
 		  //
 		  // Apply aggregation to array of items
 		  //
@@ -62,6 +79,9 @@ Inherits clAbstractDataSerie
 		  // Aggregation results
 		  //
 		  
+		  // !! TODO: align behaivour with individual aggregation calls
+		  // !! TODO: test cases
+		  
 		  return clBasicMath.Aggregate(mode, items)
 		  
 		End Function
@@ -70,53 +90,72 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function Average() As Double
 		  
-		  return clBasicMath.Average(items)
+		  // !! TODO: test cases
+		  
+		  return self.DecimalToDouble(clBasicMath.Average(items))
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AverageAsCurrency() As Currency
+		Function AverageAsDecimal() As clDecimal
+		  // !! TODO: test cases
 		  
-		  return clBasicMath.Average(items)
+		  var r as new clDecimal(self.mDecPos)
+		  
+		  r.ScaledValue = clBasicMath.Average(items)
+		  
+		  Return r
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function AverageNonZero() As Double
+		  // !! TODO: test cases
 		  
-		  return clBasicMath.AverageNonZero(items)
-		  
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function AverageNonZeroAsCurrency() As Currency
-		  
-		  return clBasicMath.AverageNonZero(items)
+		  return self.DecimalToDouble(clBasicMath.AverageNonZero(items))
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ClipByRange_gg(low_value as variant, high_value as variant) As integer
+		Function AverageNonZeroAsCurrency() As clDecimal
+		  // !! TODO: test cases
+		  
+		  var r as new clDecimal(self.mDecPos)
+		  
+		  r.ScaledValue = clBasicMath.AverageNonZero(items)
+		  
+		  Return r
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ClipByRange(low_value as variant, high_value as variant) As integer
+		  
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  
 		  var last_index as integer = self.RowCount
 		  var count_changes as integer = 0
 		  
-		  var low_value_dbl as double = low_value
-		  var high_value_dbl as double = high_value
+		  var low_value_dcl as int64 = Internal_ConversionToDecimal(low_value)
+		  
+		  var high_value_dcl as double = Internal_ConversionToDecimal(high_value)
 		  
 		  for index as integer = 0 to last_index
-		    var tmp as double = self.GetElement(index)
+		    var tmp as int64 = self.items(index)
 		    
-		    if low_value_dbl > tmp then
-		      self.SetElement(index, low_value_dbl)
+		    if low_value_dcl> tmp then
+		      self.items(index) = low_value_dcl
 		      count_changes = count_changes + 1
 		      
-		    elseif  tmp > high_value_dbl then
-		      self.SetElement(index, high_value_dbl)
+		    elseif  tmp > high_value_dcl then
+		      self.items(index) = high_value_dcl
 		      count_changes = count_changes + 1
 		      
 		    end if
@@ -128,9 +167,10 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ClippedByRange(low_value as variant, high_value as variant) As clCurrencyDataSerie
+		Function ClippedByRange(low_value as variant, high_value as variant) As clDecimalDataSerie
+		  // !! TODO: test cases
 		  
-		  var new_col as clCurrencyDataSerie = self.Clone()
+		  var new_col as clDecimalDataSerie = self.Clone()
 		  
 		  new_col.rename("clip " + self.name)
 		  
@@ -143,14 +183,16 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone(NewName as string = "") As clCurrencyDataSerie
+		Function Clone(NewName as string = "") As clDecimalDataSerie
+		  // !! TODO: test cases
 		  
-		  var tmp As New clCurrencyDataSerie(StringWithDefault(NewName, self.name))
+		  var tmp As New clDecimalDataSerie(StringWithDefault(NewName, self.name))
 		  
 		  self.CloneInfo(tmp)
 		  
-		  For Each v As double In Self.items
-		    tmp.AddElement(v)
+		  For Each v As int64 In Self.items
+		    
+		    tmp.AddInternalElement(v)
 		    
 		  Next
 		  
@@ -163,11 +205,13 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub CloneInfo(target as clCurrencyDataSerie)
+		Protected Sub CloneInfo(target as clDecimalDataSerie)
 		  super.CloneInfo(target)
 		  
 		  target.DefaultValue = self.DefaultValue
 		  target.Formatter = self.Formatter
+		  target.mDecPos = self.mDecPos
+		  target.mDecScale = self.mDecScale
 		  
 		  return
 		  
@@ -175,8 +219,8 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CloneStructure() As clCurrencyDataSerie
-		  var tmp As New clCurrencyDataSerie(Self.name)
+		Function CloneStructure() As clDecimalDataSerie
+		  var tmp As New clDecimalDataSerie(Self.name)
 		  
 		  self.CloneInfo(tmp)
 		  
@@ -206,9 +250,20 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function CountNonZero() As integer
+		  // !! TODO: test cases
+		  // !! TODO: description
 		  
 		  return clBasicMath.CountNonZero(items)
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function DecimalToDouble(v as int64) As Double
+		  
+		  // !! TODO: description
+		  
+		  return v / mDecScale
 		End Function
 	#tag EndMethod
 
@@ -229,23 +284,32 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function GetElement(ElementIndex as integer) As variant
 		  
-		  return self.GetElementAsCurrency(ElementIndex)
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  return self.GetElementAsNumber(ElementIndex)
+		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetElementAsCurrency(ElementIndex as integer) As currency
+		Function GetElementAsDecimal(ElementIndex as integer) As clDecimal
 		  
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  
+		  var v as new clDecimal(self.mDecPos)
 		  
 		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
-		    Return items(ElementIndex)
+		    v.ScaledValue = items(ElementIndex)
 		    
-		  Else
-		    var v As Currency
-		    Return v
-		    
-		  End If
+		  End if
+		  
+		  Return v
+		  
+		  
 		  
 		  
 		End Function
@@ -254,15 +318,31 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function GetElementAsNumber(ElementIndex as integer) As double
 		  
-		  return self.GetElementAsCurrency(ElementIndex)
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  var v As double
+		  
+		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
+		      v= DecimalToDouble(items(ElementIndex))
+		    
+		  End If
+		  
+		  Return v
+		  
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetElementAsString(ElementIndex as integer) As string
+		  // !! TODO; update code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  
 		  if self.Formatter = nil then 
-		    return self.GetElementAsCurrency(ElementIndex).ToString
+		    return self.GetElementAsNumber(ElementIndex).ToString
 		    
 		  else
 		    return self.Formatter.FormatCurrency(self.GetElementAsCurrency(ElementIndex))
@@ -274,6 +354,10 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function GetFilterColumnValuesInRange(minimum_value as Currency, maximum_value as Currency) As variant()
+		  // !! TODO; update code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  var return_boolean() As Variant
 		  var my_item as Currency
 		  
@@ -304,21 +388,41 @@ Inherits clAbstractDataSerie
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub InitFromConstructor()
+		  // Calling the overridden superclass method.
+		  
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  Super.InitFromConstructor()
+		  
+		  self.mDecPos = 2
+		  self.mDecScale = 100
+		  
+		  Return
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
-		Private Function Internal_ConversionToCurrency(v as Variant) As Currency
+		Private Function Internal_ConversionToDecimal(v as Variant) As int64
+		   
+		  // !! TODO: description
+		  // !! TODO: test cases
 		  
-		  
-		  if v.Type  = variant.TypeCurrency then
-		    return v.CurrencyValue
+		  if v.Type  = variant.TypeDouble then
+		    return mDecScale * v.DoubleValue
+		    
 		    
 		  elseif v.type <> variant.TypeString then
-		    return v.CurrencyValue
+		    return  mDecScale * v.DoubleValue
 		    
 		  elseif self.CurrencyParser = nil Then
-		    return v.CurrencyValue
+		    return mDecScale * v.DoubleValue
 		    
 		  else
-		    return self.CurrencyParser.ParseToCurrency(v.StringValue)
+		    return self.CurrencyParser.ParseToCurrency(v.StringValue)/0
 		    
 		  end if
 		  
@@ -327,12 +431,19 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function IsZero(value as Currency) As Boolean
+		  // !! TODO; update code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  return abs(value) <0.0001
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function LastIndex() As integer
+		   
+		  // !! TODO: description
+		  // !! TODO: test cases
 		  
 		  Return items.LastIndex
 		  
@@ -341,17 +452,24 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Maximum() As Currency
+		   
+		  // !! TODO: description
+		  // !! TODO: test cases
 		  
-		  return clBasicMath.Maximum(items)
+		  return DecimalToDouble(clBasicMath.Maximum(items))
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Minimum() As Currency
-		  // Calling the overridden superclass method.
+		   
 		  
-		  return clBasicMath.Minimum(items)
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  
+		  return DecimalToDouble(clBasicMath.Minimum(items))
 		  
 		  
 		End Function
@@ -359,6 +477,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_add(right_serie as clCurrencyDataSerie) As clCurrencyDataSerie
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  var mx1 as integer = self.LastIndex
 		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
@@ -398,6 +521,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_add(right_value as double) As clCurrencyDataSerie
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  var res as new clCurrencyDataSerie(self.name+"+"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
@@ -416,6 +544,12 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_divide(right_serie as clCurrencyDataSerie) As clCurrencyDataSerie
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  
 		  var mx1 as integer = self.LastIndex
 		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
@@ -456,6 +590,12 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_divide(right_value as double) As clCurrencyDataSerie
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  
 		  var res as new clCurrencyDataSerie(self.name+"/"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
@@ -482,6 +622,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_multiply(right_serie as clCurrencyDataSerie) As clCurrencyDataSerie
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  var mx1 as integer = self.LastIndex
 		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
@@ -519,6 +664,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_multiply(right_value as double) As clCurrencyDataSerie
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  var res as new clCurrencyDataSerie(self.name+"*"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
@@ -537,6 +687,12 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_subtract(right_serie as clCurrencyDataSerie) As clCurrencyDataSerie
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  
 		  var mx1 as integer = self.LastIndex
 		  var mx2 as integer = right_serie.LastIndex
 		  var mx0 as integer 
@@ -574,6 +730,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function operator_subtract(right_value as double) As clCurrencyDataSerie
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  var res as new clCurrencyDataSerie(self.name+"-"+str(right_value))
 		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "subtract constant " + str(right_value))
@@ -589,13 +750,33 @@ Inherits clAbstractDataSerie
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function Rescale(oldValue as int64, oldScale as int64, newScale as int64) As int64
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  
+		  var temp as int64 = oldValue * newScale
+		  
+		  temp = temp / oldScale
+		  
+		  Return temp
+		  
+		  
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub ResetElements()
 		  
+		  // !! TODO: description
+		  // !! TODO: test cases
 		  
-		  self.Metadata.Add("type","currency")
+		  self.Metadata.Add("type","decimal")
 		  
 		  items.RemoveAll
+		  
+		  Return
 		  
 		End Sub
 	#tag EndMethod
@@ -610,6 +791,11 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub SetCurrencyParser(parser as CurrencyParserInterface)
+		  
+		  // !! TODO: update code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  self.CurrencyParser = parser
 		  
 		End Sub
@@ -617,7 +803,15 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub SetDefaultValue(v as variant)
-		  DefaultValue = v
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  
+		  self.DefaultValue = Internal_ConversionToDecimal(v)
+		  
+		  Return
 		  
 		End Sub
 	#tag EndMethod
@@ -625,9 +819,13 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub SetElement(ElementIndex as integer, the_item as Variant)
 		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  
 		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then 
-		    items(ElementIndex) = Internal_ConversionToCurrency(the_item)
+		    items(ElementIndex) = Internal_ConversionToDecimal(the_item)
 		    
 		  else
 		    self.AddErrorMessage(CurrentMethodName,ErrMsgIndexOutOfbounds, str(ElementIndex), self.name)
@@ -642,6 +840,10 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub SetLength(the_length as integer, DefaultValue as variant)
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
 		  
 		  if items.LastIndex > the_length then
 		    Raise New clDataException("Column " + self.name + " contains more elements than expected")
@@ -658,8 +860,52 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SetPrecision(DecimalPosition as integer)
+		  //
+		  // Set the precision of the number stored in the data serie. Existing numbers are rescaled.
+		  //
+		  // DecimalPosition: number of digits after decimal point
+		  //
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  
+		  var oldDecScale as integer = mDecScale
+		  
+		  if DecimalPosition <=0 then
+		    self.mDecPos = 0
+		    self.mDecScale = 1
+		    
+		  else
+		    self.mDecPos = DecimalPosition
+		    self.mDecScale = 10 ^ DecimalPosition
+		    
+		  end if
+		  
+		  if oldDecScale = self.mDecScale then Return
+		  
+		  
+		  for i as integer = 0 to self.items.LastIndex
+		    
+		    self.items(i) = Rescale(self.items(i), oldDecScale, self.mDecScale)
+		    
+		    
+		  next
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SetProperties(properties as clDataSerieProperties)
 		  // Calling the overridden superclass method.
+		  
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  Super.SetProperties(properties)
 		  
 		  self.DefaultValue = properties.DefaultValue
@@ -679,6 +925,10 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub SetStringFormat(the_formatter as CurrencyFormatInterface)
 		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
 		  self.Formatter = the_Formatter
 		  
 		End Sub
@@ -686,6 +936,12 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Sub SetStringFormat(the_format as String, UseLocal as Boolean = False)
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  
 		  if UseLocal then
 		    self.Formatter = new clCurrencyLocalFormatting(the_format)
 		    
@@ -700,33 +956,38 @@ Inherits clAbstractDataSerie
 		Function Sum() As double
 		  //
 		  // Calculates the sum
-		  // The sum is calculated using Currency, but the results is converted to double
+		  // The sum is calculated using int64, but the results is scaled and converted to double
 		  //
 		  
-		  var c as new clBasicMath
-		  return c.sum(items)
+		  return self.DecimalToDouble(clBasicMath.sum(items))
 		  
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SumAsCurrency() As Currency
+		Function SumAsDecimal() As clDecimal
 		  
 		  //
 		  // Calculates the sum
-		  // The sum is calculated using Currency, and the results is returned as is
+		  // The sum is calculated using int64, and the results is returned as clDecimal
 		  //
 		  
-		  var c as new clBasicMath
-		  return c.sum(items)
+		  var r as new clDecimal(self.mDecPos)
 		  
+		  r.ScaledValue = clBasicMath.sum(items)
+		  
+		  Return r
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToString(NewName as string = "") As clStringDataSerie
+		  
+		  // !! TODO: review code
+		  // !! TODO: description
+		  // !! TODO: test cases
 		  
 		  var res as new clStringDataSerie(if(NewName = "", "Convert " + self.name + " to string", NewName))
 		  
@@ -746,7 +1007,7 @@ Inherits clAbstractDataSerie
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected DefaultValue As Currency
+		Protected DefaultValue As int64
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -754,7 +1015,15 @@ Inherits clAbstractDataSerie
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected items() As Currency
+		Protected items() As int64
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mDecPos As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mDecScale As Integer
 	#tag EndProperty
 
 
