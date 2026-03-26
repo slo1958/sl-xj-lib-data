@@ -45,26 +45,32 @@ Implements TableColumnReaderInterface,Iterable
 		  end if
 		  
 		  //  adding a physical column to a virtual table (when permitted)
-		  if self.IsVirtual and not tmp_column.IsLinkedToTable and self.allow_local_columns then
-		    
-		    var max_RowCount as integer 
-		    
-		    if tmp_column.RowCount > 0 then
-		      max_RowCount = self.IncreaseLength(tmp_column.RowCount)
+		  if self.IsVirtual and not tmp_column.IsLinkedToTable then
+		    if self.allow_local_columns then
+		      
+		      var max_RowCount as integer 
+		      
+		      if tmp_column.RowCount > 0 then
+		        max_RowCount = self.IncreaseLength(tmp_column.RowCount)
+		        
+		      else
+		        max_RowCount = self.RowCount
+		        
+		      end if
+		      
+		      tmp_column.SetLinkToTable(Self)
+		      tmp_column.SetLength(max_RowCount)
+		      
+		      Self.columns.Add(tmp_column)
+		      
+		      return tmp_column
 		      
 		    else
-		      max_RowCount = self.RowCount
+		      AddWarningMessage("AddColumn",ErrMsgCannotAddColumnToVirtualTable, self.Name, the_column.name)
 		      
 		    end if
-		    
-		    tmp_column.SetLinkToTable(Self)
-		    tmp_column.SetLength(max_RowCount)
-		    
-		    Self.columns.Add(tmp_column)
-		    
-		    return tmp_column
-		    
 		  end if
+		  
 		  
 		  //  we add a column from another table to a virtual table
 		  if self.IsVirtual and tmp_column.IsLinkedToTable then
@@ -3775,7 +3781,7 @@ Implements TableColumnReaderInterface,Iterable
 		      call res.AddColumn(tmp_column)
 		      
 		    else
-		      AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn, self.Name, name)
+		      AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn, self.Name, column_name)
 		      
 		    End If
 		    
@@ -4198,6 +4204,9 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndConstant
 
 	#tag Constant, Name = DefaultTableName, Type = String, Dynamic = False, Default = \"Noname", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgCannotAddColumnToVirtualTable, Type = String, Dynamic = False, Default = \"Cannot add column [%1] to virtual table [%0]", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = ErrMsgCannotFIndColumn, Type = String, Dynamic = False, Default = \"Cannot find column [%1] in table [%0]", Scope = Public

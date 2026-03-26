@@ -3374,7 +3374,7 @@ Protected Class clDataTableTests
 		    r.Update()
 		    
 		  next
-		   
+		  
 		  var col1 as new clDataSerie("name", "alpha","beta", "gamma")
 		  var col2 as new clNumberDataSerie("quantity", 50, 20, 5.5)
 		  var col3 as new clNumberDataSerie("unit_price", 6, 8, 8.1)
@@ -3384,6 +3384,60 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"T1", expected_t1, mytable)
 		  
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_056(log as clLogManager)
+		  //
+		  // Test the pivot transformer
+		  //
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  var table0 As New clDataTable("mytable")
+		  
+		  call table0.AddColumn(new clStringDataSerie("country"))
+		  call table0.AddColumn(new clIntegerDataSerie("product_id"))
+		  call table0.AddColumn(new clNumberDataSerie("sales"))
+		  call table0.AddColumn(new clNumberDataSerie("quantity"))
+		  
+		  table0.AddRow(Array("France",101,1100, 50))
+		  table0.AddRow(Array("France",202,1200, 60))
+		  table0.AddRow(Array("Belgique",101,1300, 70))
+		  table0.AddRow(Array("USA",303,1400, 80))
+		  table0.AddRow(Array("Belgique",303,1500, 90))
+		  table0.AddRow(Array("USA",202,1600, 100))
+		  table0.AddRow(Array("France",202,1700, 95))
+		  
+		  
+		  call table0.AddColumn(new clStringDataSerie("product_idstr", table0.GetColumn("product_id")))
+		  
+		  var pTransformer as new clPivotTransformer(table0, array("country"), "product_idstr", array("101","202",""), array("sales","quantity"))
+		  
+		  call pTransformer.Transform()
+		  
+		  var table1 as clDataTable  = pTransformer.GetOutputTable()
+		  
+		  var expected_t1 as new clDataTable("results", SerieArray( _
+		  new clDataSerie("Country") _
+		  ,new clNumberDataSerie("101_Sales") _
+		  ,new clNumberDataSerie("202_Sales") _
+		  ,new clNumberDataSerie("Other_Sales") _
+		  ,new clNumberDataSerie("101_quantity") _
+		  ,new clNumberDataSerie("202_quantity") _
+		  ,new clNumberDataSerie("Other_quantity") _
+		  ))
+		  
+		  expected_t1.AddRow(array("France", 1100,2900,0,50,155,0))
+		  expected_t1.AddRow(array("Belgique", 1300,0,1500,70,0,90))
+		  expected_t1.AddRow(array("USA", 0,1600,1400,0,100,80))
+		  
+		  call check_table(log,"T1", expected_t1, table1)
 		  
 		  log.EndTask(CurrentMethodName)
 		  
