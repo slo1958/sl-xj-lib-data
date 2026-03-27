@@ -11,7 +11,6 @@ Inherits clAbstractTransformer
 		  
 		  self.JoinStatusFieldName = JoinStatusField
 		  
-		  
 		  self.LookupKeyFields.RemoveAll
 		  self.MainKeyFields.RemoveAll
 		  
@@ -46,7 +45,6 @@ Inherits clAbstractTransformer
 		  self.AddInput(new clTransformerConnector(cInputConnectorLookUp, LookupTable))
 		  
 		  self.JoinStatusFieldName = JoinStatusField
-		  
 		  
 		  self.LookupKeyFields.RemoveAll
 		  self.MainKeyFields.RemoveAll
@@ -98,7 +96,12 @@ Inherits clAbstractTransformer
 		    
 		  next
 		  
-		  if JoinStatusFieldName.Length > 0 then JoinSuccessColumn = tblleft.GetColumn(JoinStatusFieldName, False)
+		  if JoinStatusFieldName.Length > 0 then 
+		    JoinSuccessColumn = tblleft.GetColumn(JoinStatusFieldName, False)
+		    // $$
+		    if JoinSuccessColumn = nil then JoinSuccessColumn = tblleft.AddColumn(new clBooleanDataSerie(JoinStatusFieldName))
+		    
+		  end if
 		  
 		  // collect impacted data columns in the main table
 		  for i as integer = 0 to MainTargetDataFields.LastIndex
@@ -134,7 +137,7 @@ Inherits clAbstractTransformer
 		  next
 		  
 		  // Scan main table
-		  for i as integer = 0 to tblleft.RowCount
+		  for i as integer = 0 to tblleft.LastRowIndex
 		    var lookupKeyParts() as string 
 		    var lookupkey as string
 		    var row as clDataRow
@@ -207,6 +210,7 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Function Transform() As Boolean
 		  
+		  // Add an output connector 
 		  return RunLookup()
 		  
 		End Function
