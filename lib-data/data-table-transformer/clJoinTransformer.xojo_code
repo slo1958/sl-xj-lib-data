@@ -86,7 +86,7 @@ Inherits clAbstractTransformer
 		  if mode = JoinMode.OuterJoin then
 		    rowmap.RemoveAll
 		    
-		    for i as integer = 0 to SecondaryTable.LastIndex
+		    for i as integer = 0 to SecondaryTable.LastRowIndex
 		      rowmap.Add(False)
 		      
 		    next 

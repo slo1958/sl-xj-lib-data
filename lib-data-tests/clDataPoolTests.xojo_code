@@ -221,6 +221,7 @@ Protected Class clDataPoolTests
 		  tblExpectedTotals.AddRow(new clDataRow("CustomerID":"A3", "Sum of InvoiceTotal":907.0,"Sum of NbrLinesAsNumber":3.0, "NbrInvoices":1))
 		  
 		  
+		  
 		  var tblExpectedJoinedTotals as new clDataTable("ExpectedJoinedTotal")
 		  tblExpectedJoinedTotals.AddRow(new clDataRow("CustomerID":"A2", "Sum of InvoiceTotal":708.0,"Sum of NbrLinesAsNumber":5.0, "NbrInvoices":2,"Name":"Paul","City":"Liege"))
 		  tblExpectedJoinedTotals.AddRow(new clDataRow("CustomerID":"A3", "Sum of InvoiceTotal":907.0,"Sum of NbrLinesAsNumber":3.0, "NbrInvoices":1,"Name":"Pierre", "City":"Bruxelles"))
@@ -231,6 +232,7 @@ Protected Class clDataPoolTests
 		  
 		  log.EndTask(CurrentMethodName)
 		  
+		  return
 		  
 		End Sub
 	#tag EndMethod

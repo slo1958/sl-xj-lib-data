@@ -86,7 +86,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Function ClipByRange_gg(low_value as variant, high_value as variant) As integer
 		  
-		  var last_index as integer = self.RowCount
+		  var last_index as integer = self.LastIndex
 		  var count_changes as integer = 0
 		  
 		  var low_value_dbl as double = low_value

@@ -1034,7 +1034,7 @@ Implements TableColumnReaderInterface,Iterable
 		  if LowValueColumn = nil then return 0
 		  if HighValueColumn = nil then return 0
 		  
-		  var last_index as integer = column.RowCount
+		  var last_index as integer = column.LastIndex
 		  var count_changes as integer = 0
 		  
 		  
@@ -3430,7 +3430,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function LastIndex() As integer
+		Function LastRowIndex() As integer
 		  If Self.RowIndexColumn = Nil Then
 		    Return -1
 		    
@@ -3521,20 +3521,22 @@ Implements TableColumnReaderInterface,Iterable
 		  // JoinSuccessField: Field to store a flag indicating the success of the lookup
 		  //
 		  
-		  var pKey() as pair
-		  var pData() as pair
+		  // var pKey() as pair
+		  // var pData() as pair
+		  // 
+		  // for each key as string in KeyFields
+		  // pKey.Add(new pair(key,key))
+		  // 
+		  // next
+		  // 
+		  // for each dataField  as string in  LookupFields
+		  // pData.Add(new pair(dataField, dataField))
+		  // 
+		  // next
 		  
-		  for each key as string in KeyFields
-		    pKey.Add(new pair(key,key))
-		    
-		  next
+		  //var trsf as new clLookupTransformer(self, LookupSourceTable, pKey, pData, JoinSuccessField)
 		  
-		  for each dataField  as string in  LookupFields
-		    pData.Add(new pair(dataField, dataField))
-		    
-		  next
-		  
-		  var trsf as new clLookupTransformer(self, LookupSourceTable, pKey, pData, JoinSuccessField)
+		  var trsf as new clLookupTransformer(self, LookupSourceTable, KeyFields, LookupFields, JoinSuccessField)
 		  
 		  return trsf.Transform()
 		  
@@ -3826,7 +3828,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SelectColumns(ColumnNames() as string) As clDataTable
+		Function SelectColumns(ColumnNames() as string, AllowLocalColumns as Boolean = False) As clDataTable
 		  //
 		  // Create a new logical table (view) with  columns from source table
 		  // Use ExtractColumns() method to create a new table with cloned columns
@@ -3837,8 +3839,6 @@ Implements TableColumnReaderInterface,Iterable
 		  // Returns
 		  // - New table
 		  //
-		  
-		  
 		  var res As New clDataTable("select " + Self.Name)
 		  
 		  res. AddSourceToMetadata( self.Name)
@@ -3860,6 +3860,8 @@ Implements TableColumnReaderInterface,Iterable
 		    End If
 		    
 		  Next
+		  
+		  res.allow_local_columns = AllowLocalColumns
 		  
 		  Return res
 		  
@@ -3924,7 +3926,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp as new clBooleanDataSerie("temp", pBooleanArray)
 		  
-		  tmp.SetLength(self.LastIndex, false)
+		  tmp.SetLength(self.LastRowIndex, false)
 		  
 		  Return self.SelectRowsFilteredOn(tmp)
 		  

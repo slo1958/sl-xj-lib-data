@@ -832,7 +832,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log,"clipping fct", expected_table0, table0)
 		  
-		  call check_value(log, "nb clipped", 3, nb)
+		  call check_value(log, "nb clipped", 2, nb)
 		  
 		  log.EndTask(CurrentMethodName)
 		  
@@ -1649,7 +1649,7 @@ Protected Class clDataTableTests
 		  var ccity As clAbstractDataSerie =  tsales.AddColumn(new clStringDataSerie("City"))
 		  var cqtt as clAbstractDataSerie =  tsales.AddColumn(new clNumberDataSerie("Quantity"))
 		  var cup as clAbstractDataSerie = tsales.AddColumn(new clNumberDataSerie("UnitPrice"))
-		  call tsales.AddColumn(new clBooleanDataSerie("CountryFound"))
+		  //call tsales.AddColumn(new clBooleanDataSerie("CountryFound"))
 		  
 		  
 		  tsales.AddRow(new Dictionary("City":"Brussels", "Quantity":12, "Unitprice": 21))
@@ -1708,12 +1708,12 @@ Protected Class clDataTableTests
 		  
 		  
 		  var tcountries as new clDataTable("Countries")
-		  call  tcountries.AddColumn(new clStringDataSerie("Country"))
-		  call  tcountries.AddColumn(new clStringDataSerie("City"))
-		  tcountries.AddRow(new Dictionary("Country":"Belgium","City":"Brussels"))
-		  tcountries.AddRow(new Dictionary("Country":"Belgium","City":"Liege"))
-		  tcountries.AddRow(new Dictionary("Country":"France","City":"Paris"))
-		  tcountries.AddRow(new Dictionary("Country":"USA","City":"NewYork"))
+		  call  tcountries.AddColumn(new clStringDataSerie("Pays"))
+		  call  tcountries.AddColumn(new clStringDataSerie("Ville"))
+		  tcountries.AddRow(new Dictionary("Pays":"Belgium","Ville":"Brussels"))
+		  tcountries.AddRow(new Dictionary("Pays":"Belgium","Ville":"Liege"))
+		  tcountries.AddRow(new Dictionary("Pays":"France","Ville":"Paris"))
+		  tcountries.AddRow(new Dictionary("Pays":"USA","Ville":"NewYork"))
 		  
 		  call check_table(log, "tcountries table integrity", nil, tcountries) 
 		  
@@ -1739,7 +1739,7 @@ Protected Class clDataTableTests
 		  
 		  call check_table(log, "tsales table integrity", nil, tsales) 
 		  
-		  var join_results as Boolean = tsales.Lookup(tcountries, array("City"), array("Country"))
+		  var join_results as Boolean = tsales.Lookup(tcountries, array("City":"Ville"), array("Country":"Pays"))
 		  
 		  var tDistinct  as clDataTable = tsales.GroupBy(StringArray("Country", "City"))
 		  
@@ -3448,7 +3448,7 @@ Protected Class clDataTableTests
 	#tag Method, Flags = &h0
 		Sub test_calc_057(log as clLogManager)
 		  //
-		  // Test the pivot transformer
+		  // Test the method backportNewColumns()
 		  //
 		  
 		  log.StartTask(CurrentMethodName)
@@ -3457,8 +3457,8 @@ Protected Class clDataTableTests
 		  
 		  call table0.AddColumn(new clStringDataSerie("country"))
 		  call table0.AddColumn(new clIntegerDataSerie("product_id"))
-		  var col1 as clAbstractDataSerie = table0.AddColumn(new clNumberDataSerie("price"))
-		  var col2 as clAbstractDataSerie = table0.AddColumn(new clNumberDataSerie("quantity"))
+		  var col_price as clAbstractDataSerie = table0.AddColumn(new clNumberDataSerie("price"))
+		  var col_quantity as clAbstractDataSerie = table0.AddColumn(new clNumberDataSerie("quantity"))
 		  
 		  table0.AddRow(Array("France",101,11, 50))
 		  table0.AddRow(Array("Belgique",102,31, 70))
@@ -3466,7 +3466,7 @@ Protected Class clDataTableTests
 		  
 		  var table1 as clDataTable = table0.SelectAllColumns(true)
 		  
-		  table1.AddColumn(clNumberDataSerie(col1) * clNumberDataSerie(col2)).Rename("sales") 
+		  table1.AddColumn(clNumberDataSerie(col_price) * clNumberDataSerie(col_quantity)).Rename("sales") 
 		  
 		  var expected_table0_before as new clDataTable("exp_table0_before")
 		  
@@ -3475,13 +3475,11 @@ Protected Class clDataTableTests
 		  call expected_table0_before.AddColumn(new clNumberDataSerie("price"))
 		  call expected_table0_before.AddColumn(new clNumberDataSerie("quantity"))
 		   
-		  
 		  expected_table0_before.AddRow(array("France", 101,11,50))
 		  expected_table0_before.AddRow(array("Belgique", 102,31, 70))
 		  expected_table0_before.AddRow(array("Italy",202,21, 95))
 		  
 		  call check_table(log,"table0 before", expected_table0_before, table0)
-		  
 		  
 		  table1.BackportNewColumns()
 		  

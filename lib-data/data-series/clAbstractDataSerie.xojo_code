@@ -304,7 +304,7 @@ Implements Iterable
 		  //  - the number of values changed
 		  //
 		  
-		  var last_index as integer = self.RowCount
+		  var last_index as integer = self.LastIndex
 		  var count_changes as integer = 0
 		  
 		  for index as integer = 0 to last_index

@@ -140,7 +140,7 @@ Inherits clAbstractDataSerie
 		  // !! TODO: test cases
 		  
 		  
-		  var last_index as integer = self.RowCount
+		  var last_index as integer = self.LastIndex
 		  var count_changes as integer = 0
 		  
 		  var low_value_dcl as int64 = Internal_ConversionToDecimal(low_value)
@@ -324,7 +324,7 @@ Inherits clAbstractDataSerie
 		  var v As double
 		  
 		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex then
-		      v= DecimalToDouble(items(ElementIndex))
+		    v= DecimalToDouble(items(ElementIndex))
 		    
 		  End If
 		  
@@ -407,7 +407,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h21
 		Private Function Internal_ConversionToDecimal(v as Variant) As int64
-		   
+		  
 		  // !! TODO: description
 		  // !! TODO: test cases
 		  
@@ -441,7 +441,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function LastIndex() As integer
-		   
+		  
 		  // !! TODO: description
 		  // !! TODO: test cases
 		  
@@ -452,7 +452,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Maximum() As Currency
-		   
+		  
 		  // !! TODO: description
 		  // !! TODO: test cases
 		  
@@ -463,7 +463,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h0
 		Function Minimum() As Currency
-		   
+		  
 		  
 		  // !! TODO: description
 		  // !! TODO: test cases
