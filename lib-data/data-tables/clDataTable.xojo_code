@@ -142,8 +142,10 @@ Implements TableColumnReaderInterface,Iterable
 		    tmp_column.SetLength(RowCount, DefaultValue)
 		    
 		  Else
+		    tmp_column = nil
 		    //  could be nil if the column exists in the parent datatable
-		    tmp_column = link_to_parent.AddColumn( tmp_column_name)
+		    // tmp_column = link_to_parent.AddColumn( tmp_column_name)
+		    // Stop adding column to parent table 20260327
 		    
 		  End If
 		  
@@ -884,6 +886,55 @@ Implements TableColumnReaderInterface,Iterable
 		  return new clBooleanDataSerie(NewDataSerieName, self.ApplyFilterFunction(pFilterFunction, pFunctionParameters))
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub BackportNewColumns()
+		  //  
+		  //  Move columns added to a virtual table to the parent table
+		  // The columns are now part of the parent table and appears as virtual in the current table
+		  //  Does not do anything on a normal table
+		  //  
+		  //  Parameters:
+		  //  (none)
+		  //  
+		  //  Returns:
+		  //   (nothing)
+		  //  
+		  
+		  if not self.IsVirtual then
+		    AddWarningMessage(CurrentMethodName, ErrMsgNoOpOnNormalTable, self.Name)
+		    Return
+		    
+		  end if
+		  
+		  var parentTable as clDataTable = self.GetParentTable
+		  if parentTable.IsVirtual then 
+		    AddWarningMessage(CurrentMethodName, ErrMsgCannotBackportToVirtual, self.Name, parentTable.Name)
+		    Return
+		    
+		  end if
+		  
+		  for each c as clAbstractDataSerie in self.columns
+		    
+		    if c.IsLinkedToTable(self) then
+		      
+		      if parentTable.GetColumn(c.name, True) <> nil then
+		        self.AddWarningMessage(CurrentMethodName, ErrMsgColumnAlreadyDefined, parentTable.TableName, c.name)
+		        
+		       else
+		        c.SetLinkToTable(nil)
+		        call parentTable.AddColumn(c)
+		        
+		      end if
+		      
+		    end if
+		    
+		  next
+		  
+		  Return
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -2592,6 +2643,29 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetParentTable() As clDataTable
+		  //  
+		  //  returns the parent table of a virtual table, returns nil if the table is not a virtual table
+		  //  
+		  //  Parameters:
+		  //  - (none)
+		  // 
+		  //  
+		  //  Returns:
+		  //  - the parent table or nil
+		  //  
+		  
+		  if self.IsVirtual then
+		    return self.link_to_parent
+		    
+		  else
+		    return nil
+		    
+		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetPropertiesAsTable(NewTableName as string = "") As clDataTable
 		  //
 		  // Get properties of each columns as a data table
@@ -4209,6 +4283,9 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Constant, Name = ErrMsgCannotAddColumnToVirtualTable, Type = String, Dynamic = False, Default = \"Cannot add column [%1] to virtual table [%0]", Scope = Public
 	#tag EndConstant
 
+	#tag Constant, Name = ErrMsgCannotBackportToVirtual, Type = String, Dynamic = False, Default = \"Cannot backport from table [%0] to virtual table [%1]", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = ErrMsgCannotFIndColumn, Type = String, Dynamic = False, Default = \"Cannot find column [%1] in table [%0]", Scope = Public
 	#tag EndConstant
 
@@ -4240,6 +4317,9 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndConstant
 
 	#tag Constant, Name = ErrMsgMissingMeasureColumnName, Type = String, Dynamic = False, Default = \"Missing measure column name", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = ErrMsgNoOpOnNormalTable, Type = String, Dynamic = False, Default = \"This method has no impact on physical table  [%0]", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = JoinSuccessBoth, Type = String, Dynamic = False, Default = \" Both", Scope = Public

@@ -3446,6 +3446,66 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub test_calc_057(log as clLogManager)
+		  //
+		  // Test the pivot transformer
+		  //
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  var table0 As New clDataTable("mytable")
+		  
+		  call table0.AddColumn(new clStringDataSerie("country"))
+		  call table0.AddColumn(new clIntegerDataSerie("product_id"))
+		  var col1 as clAbstractDataSerie = table0.AddColumn(new clNumberDataSerie("price"))
+		  var col2 as clAbstractDataSerie = table0.AddColumn(new clNumberDataSerie("quantity"))
+		  
+		  table0.AddRow(Array("France",101,11, 50))
+		  table0.AddRow(Array("Belgique",102,31, 70))
+		  table0.AddRow(Array("Italy",202,21, 95))
+		  
+		  var table1 as clDataTable = table0.SelectAllColumns(true)
+		  
+		  table1.AddColumn(clNumberDataSerie(col1) * clNumberDataSerie(col2)).Rename("sales") 
+		  
+		  var expected_table0_before as new clDataTable("exp_table0_before")
+		  
+		  call expected_table0_before.AddColumn(new clStringDataSerie("country"))
+		  call expected_table0_before.AddColumn(new clIntegerDataSerie("product_id"))
+		  call expected_table0_before.AddColumn(new clNumberDataSerie("price"))
+		  call expected_table0_before.AddColumn(new clNumberDataSerie("quantity"))
+		   
+		  
+		  expected_table0_before.AddRow(array("France", 101,11,50))
+		  expected_table0_before.AddRow(array("Belgique", 102,31, 70))
+		  expected_table0_before.AddRow(array("Italy",202,21, 95))
+		  
+		  call check_table(log,"table0 before", expected_table0_before, table0)
+		  
+		  
+		  table1.BackportNewColumns()
+		  
+		  var expected_table0_after as new clDataTable("exp_table0_after")
+		  
+		  call expected_table0_after.AddColumn(new clStringDataSerie("country"))
+		  call expected_table0_after.AddColumn(new clIntegerDataSerie("product_id"))
+		  call expected_table0_after.AddColumn(new clNumberDataSerie("price"))
+		  call expected_table0_after.AddColumn(new clNumberDataSerie("quantity"))
+		  call expected_table0_after.AddColumn(new clNumberDataSerie("sales"))
+		  
+		  expected_table0_after.AddRow(array("France", 101,11,50,550))
+		  expected_table0_after.AddRow(array("Belgique", 102,31, 70, 2170))
+		  expected_table0_after.AddRow(array("Italy",202,21, 95, 1995))
+		  
+		  call check_table(log,"table0 after", expected_table0_after, table0)
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub test_io_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
