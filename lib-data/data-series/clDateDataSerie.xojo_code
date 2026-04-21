@@ -315,6 +315,7 @@ Inherits clAbstractDataSerie
 
 	#tag Method, Flags = &h21
 		Private Function prep_date(d as variant) As DateTime
+		  
 		  var tmp as DateTime = d.DateTimeValue
 		  
 		  return new DateTime(tmp.year, tmp.Month, tmp.Day)

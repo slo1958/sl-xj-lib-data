@@ -3474,7 +3474,7 @@ Protected Class clDataTableTests
 		  call expected_table0_before.AddColumn(new clIntegerDataSerie("product_id"))
 		  call expected_table0_before.AddColumn(new clNumberDataSerie("price"))
 		  call expected_table0_before.AddColumn(new clNumberDataSerie("quantity"))
-		   
+		  
 		  expected_table0_before.AddRow(array("France", 101,11,50))
 		  expected_table0_before.AddRow(array("Belgique", 102,31, 70))
 		  expected_table0_before.AddRow(array("Italy",202,21, 95))
@@ -3528,9 +3528,9 @@ Protected Class clDataTableTests
 		  
 		  var table4 As New clDataTable(new clTextReader(fld_file2, True, New clTextFileConfig(",")))
 		  
-		  table4.save(new clTextWriter(fld_file3Text, True, new clTextFileConfig(";")))
+		  table4.SaveWithoutIndex(new clTextWriter(fld_file3Text, True, new clTextFileConfig(";")))
 		  
-		  table4.save(new clJSONWriter(fld_file3JSON, new clJSONFileConfig()))
+		  table4.SaveWithoutIndex(new clJSONWriter(fld_file3JSON, new clJSONFileConfig()))
 		  
 		  var table5Text as new clDataTable(new clTextReader(fld_file3Text, True, new clTextFileConfig(";")))
 		  var table5JSON as new clDataTable(new clJSONReader(fld_file3JSON, new clJSONFileConfig()))
@@ -3620,7 +3620,7 @@ Protected Class clDataTableTests
 		  table1.rename("test2")
 		  call check_table(log, "table1 integrity", nil, table1) 
 		  
-		  table1.save(new clDBWriter(new clSqliteDBAccess(db)))
+		  table1.SaveWithoutIndex(new clDBWriter(new clSqliteDBAccess(db)))
 		  
 		  var table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
 		  call check_table(log, "mytable2 integrity", nil, table2) 
@@ -3632,7 +3632,7 @@ Protected Class clDataTableTests
 		  
 		  var table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3")))
 		  table3.rename("test4")
-		  table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  table3.SaveWithoutIndex(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  call check_table(log, "mytable3 integrity", nil, table3) 
 		  
 		  
@@ -3655,7 +3655,7 @@ Protected Class clDataTableTests
 		  
 		  // add rows from test3 to test2
 		  table6.rename("test2")
-		  table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  table6.SaveWithoutIndex(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
 		  
 		  var table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
@@ -3739,7 +3739,7 @@ Protected Class clDataTableTests
 		  var table1 as new clDataTable("test2", new clDBReader(new clSqliteDBAccess(db),"test1"))
 		  call check_table(log, "table1 integrity", nil, table1) 
 		  
-		  table1.save(new clDBWriter(new clSqliteDBAccess(db)))
+		  table1.SaveWithoutIndex(new clDBWriter(new clSqliteDBAccess(db)))
 		  
 		  var table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
 		  
@@ -3748,7 +3748,7 @@ Protected Class clDataTableTests
 		  
 		  var table3 as new clDataTable("test4", new clDBReader(new clSqliteDBAccess(db),"test3"))
 		  
-		  table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  table3.SaveWithoutIndex(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
 		  var table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
 		  
@@ -3768,7 +3768,7 @@ Protected Class clDataTableTests
 		  
 		  // add rows from test3 to test2
 		  table6.rename("test2")
-		  table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  table6.SaveWithoutIndex(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
 		  
 		  var table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))

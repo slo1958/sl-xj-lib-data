@@ -5,7 +5,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
 		  
-		  items.Add(prep_date(the_item))
+		  items.Add(prep_datetime(the_item))
 		End Sub
 	#tag EndMethod
 
@@ -59,6 +59,74 @@ Inherits clAbstractDataSerie
 		  Next
 		  
 		  Return return_boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function FromISOString(s as String) As DateTime
+		  
+		  //
+		  // Input string expected format (ISO8601)
+		  //
+		  // 2026-04-21T20:00:43+00:00
+		  //
+		  
+		  if len(s) <> 25 then return nil
+		  
+		  if mid(s, 11,1) <> "T" then Return nil
+		  if mid(s, 23,1) <> ":" then Return nil
+		  if mid(s,20,1) <>"+" and mid(s,20,1) <>"-"  then return nil 
+		  
+		  
+		  var datePart as string = mid(s,1,10)
+		  var timePart as string = mid(s, 12,8)
+		  var zonePart as string = mid(s, 20,6)
+		  
+		  // convert zonepart to seconds
+		  var hours as integer = mid(zonePart, 2,2).tointeger
+		  var minuts as integer =mid(zonePart, 5,2).toInteger
+		  var sgn as integer = if(mid(zonePart,1,1)="-", -1, 1)  
+		  
+		  var zonePartSeconds as integer = (hours * 60 + minuts) * 60 * sgn
+		  
+		  var resultsUTC as  DateTime
+		  resultsUTC = DateTime.FromString(datePart+" "+ timePart, nil, new TimeZone(zonePartSeconds))
+		  
+		  var results as new DateTime(resultsUTC.SecondsFrom1970, TimeZone.Current)
+		  
+		  Return results
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function FromUTCString(s as string) As DateTime
+		  
+		  //
+		  // Input string expected format:
+		  //
+		  // 2026-04-21T20:34:12Z
+		  // 2026-04-19T22:00:00.000Z
+		  //
+		  
+		  if len(s) <> 20 and len(s) <> 24 then return nil
+		  
+		  if mid(s, 11,1) <> "T" then Return nil
+		  if right(s,1) <> "Z" then Return nil
+		  
+		  var datePart as string = mid(s,1,10)
+		  var timePart as string = mid(s, 12,8)
+		  // ignore millisec part
+		  
+		  var resultsUTC as  DateTime
+		  resultsUTC = DateTime.FromString(datePart+" "+ timePart, nil, new TimeZone(0))
+		  
+		  var results as new DateTime(resultsUTC.SecondsFrom1970, TimeZone.Current)
+		  
+		  Return results
 		  
 		End Function
 	#tag EndMethod
@@ -293,10 +361,29 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function prep_date(d as variant) As DateTime
-		  var tmp as DateTime = d.DateTimeValue
+		Private Function prep_datetime(d as variant) As DateTime
 		  
-		  return tmp
+		  
+		  if d.Type = Variant.TypeString then
+		    var tmp as string = d
+		    
+		    if  mid(tmp, 11,1) = "T" and (mid(tmp,20,1) ="+" or mid(tmp,20,1) ="-" ) then
+		      return self.fromISOString(tmp)
+		      
+		    elseif mid(tmp, 11,1) = "T" and right(tmp,1) = "Z" then
+		      return self.FromUTCString(tmp)
+		      
+		    else
+		      var tmpd as DateTime = d.DateTimeValue
+		      return tmpd
+		      
+		    end if
+		  else
+		    var tmpd as DateTime = d.DateTimeValue
+		    return tmpd
+		    
+		  end if
+		  
 		End Function
 	#tag EndMethod
 
@@ -327,7 +414,7 @@ Inherits clAbstractDataSerie
 	#tag Method, Flags = &h0
 		Sub SetElement(ElementIndex as integer, the_item as Variant)
 		  If 0 <= ElementIndex And  ElementIndex <= items.LastIndex Then
-		    items(ElementIndex) = prep_date(the_item)
+		    items(ElementIndex) = prep_datetime(the_item)
 		    
 		  else
 		    self.AddErrorMessage(CurrentMethodName,ErrMsgIndexOutOfbounds, str(ElementIndex), self.name)

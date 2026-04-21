@@ -209,7 +209,7 @@ Implements Iterable
 		  
 		  WriteTo.UpdateExternalName(fullname)
 		  
-		  table.save(WriteTo)
+		  table.SaveWithoutIndex(WriteTo)
 		  
 		  return True
 		End Function

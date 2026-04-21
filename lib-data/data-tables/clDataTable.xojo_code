@@ -922,7 +922,7 @@ Implements TableColumnReaderInterface,Iterable
 		      if parentTable.GetColumn(c.name, True) <> nil then
 		        self.AddWarningMessage(CurrentMethodName, ErrMsgColumnAlreadyDefined, parentTable.TableName, c.name)
 		        
-		       else
+		      else
 		        c.SetLinkToTable(nil)
 		        call parentTable.AddColumn(c)
 		        
@@ -2031,7 +2031,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  For i As Integer = 0 To tmp_column.RowCount-1
 		    If tmp_column.GetElement(i) = the_column_value Then
-		      if MatchingIndexes.Count < limit and limit>0 then
+		      if MatchingIndexes.Count < limit or limit<0 then
 		        MatchingIndexes.Add(i)
 		        
 		      end if
@@ -3744,7 +3744,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
-		Sub Save(write_to as TableRowWriterInterface, IncludeRowIndex as boolean = false)
+		Sub Save(write_to as TableRowWriterInterface, IncludeRowIndex as boolean, selectedRowIndex() as integer)
 		  
 		  var ColumnNames() as string = self.GetColumnNames
 		  var ColumnTypes() as string = self.GetColumnTypes
@@ -3761,17 +3761,21 @@ Implements TableColumnReaderInterface,Iterable
 		  var columnValues() as variant
 		  
 		  for RowIndex as integer = 0 to self.RowCount-1
-		    columnValues.RemoveAll
 		    
-		    for ColumnIndex as integer = 0 to self.columns.LastIndex
-		      columnValues.Add(self.columns(ColumnIndex).GetElement(RowIndex))
+		    if selectedRowIndex.IndexOf(RowIndex)>=0 or selectedRowIndex.Count = 0 then
+		      columnValues.RemoveAll
 		      
-		    next
-		    
-		    if IncludeRowIndex Then columnValues.AddAt(0, self.RowIndexColumn.GetElement(RowIndex))
-		    
-		    
-		    Write_to.AddRow(columnValues)
+		      for ColumnIndex as integer = 0 to self.columns.LastIndex
+		        columnValues.Add(self.columns(ColumnIndex).GetElement(RowIndex))
+		        
+		      next
+		      
+		      if IncludeRowIndex Then columnValues.AddAt(0, self.RowIndexColumn.GetElement(RowIndex))
+		      
+		      
+		      Write_to.AddRow(columnValues)
+		      
+		    end if
 		    
 		  next
 		  
@@ -3784,9 +3788,49 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub SaveSelectedRowsWithIndex(write_to as TableRowWriterInterface, selectedRowIndex() as integer)
+		   
+		  
+		  if selectedRowIndex.Count = 0 then return  
+		  
+		  self.save(write_to, true, selectedRowIndex)
+		  
+		  return 
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SaveSelectedRowsWithoutIndex(write_to as TableRowWriterInterface, selectedRowIndex() as integer)
+		  
+		  
+		  if selectedRowIndex.Count = 0 then return  
+		   
+		  self.save(write_to, false, selectedRowIndex)
+		  
+		  return 
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub SaveWithIndex(write_to as TableRowWriterInterface)
 		  
-		  self.save(write_to, true)
+		  var includedRows() as integer
+		  
+		  self.save(write_to, true, includedRows)
+		  
+		  return 
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SaveWithoutIndex(write_to as TableRowWriterInterface)
+		  
+		  var includedRows() as integer
+		  
+		  self.save(write_to, false, includedRows)
 		  
 		  return 
 		  

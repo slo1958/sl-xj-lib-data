@@ -1085,7 +1085,7 @@ Protected Class clLibDataExample
 		  
 		  var table1 as new clDataTable("test2", new clDBReader(db.SelectSql("select * from test1"))) 
 		  
-		  table1.save(new clDBWriter(new clSqliteDBAccess(db)))
+		  table1.SaveWithoutIndex(new clDBWriter(new clSqliteDBAccess(db)))
 		  
 		  var table2 as new clDataTable(new clDBReader(db.SelectSql("select * from test2")))
 		  
@@ -1095,7 +1095,7 @@ Protected Class clLibDataExample
 		  
 		  var table3 as new clDataTable(new clDBReader(db.SelectSql("select * from test3"))) 
 		  table3.rename("test4")
-		  table3.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  table3.SaveWithoutIndex(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
 		  var table4 as new clDataTable(new clDBReader(db.SelectSql("select * from test4")))
 		  
@@ -1113,7 +1113,7 @@ Protected Class clLibDataExample
 		  
 		  // add rows from test3 to test2
 		  table6.rename("test2")
-		  table6.save(new clDBAppendWriter(new clSqliteDBAccess(db)))
+		  table6.SaveWithoutIndex(new clDBAppendWriter(new clSqliteDBAccess(db)))
 		  
 		  
 		  var table8 as new clDataTable(new clDBReader(db.SelectSQL("select * from test2")))
