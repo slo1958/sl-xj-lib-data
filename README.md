@@ -16,7 +16,7 @@ In the unlikely case someone finds a bug ;), please use github to report the iss
 
 
 ## About Xojo version
-Tested with Xojo 2025 release 2.1 on Mac.
+Tested with Xojo 2026 release 1.1 on Mac.
 
 
 
