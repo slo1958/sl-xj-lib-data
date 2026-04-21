@@ -211,6 +211,29 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Maximum() As string
+		  //
+		  // Returns the maximum string value
+		  //
+		  
+		  if RowCount = 0 then return ""
+		  
+		  if RowCount = 1 then return self.GetElement(0)
+		  
+		  var mx as string = self.GetElement(0)
+		  
+		  for each v as string in items
+		    if v > mx then mx = v
+		    
+		  Next
+		  
+		  return mx
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function MaxLength() As integer
 		  //
 		  // Returns the maximum length of the strings in the serie
@@ -267,6 +290,29 @@ Inherits clAbstractDataSerie
 		  next
 		  
 		  return clBasicMath.Minimum(temp)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Minimum() As String
+		  //
+		  // Returns the minimum string value
+		  //
+		  
+		  if RowCount = 0 then return ""
+		  
+		  if RowCount = 1 then return self.GetElement(0)
+		  
+		  var mx as string = self.GetElement(0)
+		  
+		  for each v as string in items
+		    if v < mx then mx = v
+		    
+		  Next
+		  
+		  return mx
+		  
 		  
 		End Function
 	#tag EndMethod
