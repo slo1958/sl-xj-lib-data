@@ -365,10 +365,10 @@ Protected Class clDataSerieTests
 		  log.StartTask(CurrentMethodName)
 		  
 		  
-		  var c1 As New clDataSerie("premier") 
+		  var c1 As New clStringDataSerie("premier") 
 		  var c2 As New clIntegerDataSerie("second") 
-		  
 		  var c3 as new clCompressedDataSerie("troisieme")
+		  var c4 as new clDateDataSerie("Quatrieme")
 		  
 		  for i as integer = 0 to 10
 		    c1.AddElement("aaa")
@@ -389,15 +389,33 @@ Protected Class clDataSerieTests
 		    c3.AddElement("ddddd")
 		    c3.AddElement("ee")
 		    
+		    
+		    c4.AddElement(new DateTime(2021, 5, 12))
+		    c4.AddElement(new DateTime(2021, 6, 12))
+		    c4.AddElement(new DateTime(2021, 4, 12))
+		    c4.AddElement(new DateTime(2021, 5, 10))
+		    c4.AddElement(new DateTime(2021, 3, 12))
+		    
 		  next
 		  
-		  var uniq1() as variant = c1.unique
-		  var uniq2() as Variant = c2.unique
-		  var uniq3() as variant = c3.unique
+		  var uniq01() as variant = c1.unique
+		  var uniq02() as Variant = c2.unique
+		  var uniq03() as variant = c3.unique
+		  var uniq04() as variant = c4.Unique
 		  
-		  call check_value(log, "uniq1", 5, uniq1.Count)
-		  call check_value(log, "uniq2", 5, uniq2.Count)
-		  call check_value(log, "uniq3", 5, uniq3.Count)
+		  var uniq21() as integer = c2.UniqueAsInteger
+		  var uniq22() as string = c1.UniqueAsString
+		  var uniq23() as DateTime = c4.UniqueAsDate
+		  
+		  
+		  call check_value(log, "uniq01", 5, uniq01.Count)
+		  call check_value(log, "uniq02", 5, uniq02.Count)
+		  call check_value(log, "uniq03", 5, uniq03.Count)
+		  call check_value(log, "uniq04", 5, uniq04.Count)
+		  
+		  call check_value(log, "uniq21", 5, uniq21.Count)
+		  call check_value(log, "uniq22", 5, uniq22.Count)
+		  call check_value(log, "uniq23", 5, uniq23.Count)
 		  
 		  log.EndTask(CurrentMethodName)
 		  

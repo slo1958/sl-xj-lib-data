@@ -9,6 +9,15 @@ Inherits clLinearTransformer
 		Sub Constructor(MainTable as clDataTable, prmColumnsToRetain() as string, prmPivotColumn as string, prmPivotValues() as string, prmColumnsToPivot() as string)
 		  // Calling the overridden superclass constructor.
 		  
+		  //
+		  // prmColumnsToRetains() :  value moved as is in output columns  
+		  // prmPivotColumn             :   column of which value are used to cross tab, value part of column name
+		  // prmPivotValues()            :   list of value to retain in the pivot column
+		  // prmColumnsToPivot()    :    values to pivot, value is moved to the column selected by the value in PivotColumn     
+		  //
+		  // The name of the new column is build from  the name of the pivoted column, based on the value from  prmPivotColumn() and the name of the selected 'columnsToPivot'
+		  //
+		  
 		  super.Constructor(MainTable)
 		  
 		  self.ColumnsToRetain = prmColumnsToRetain
@@ -23,6 +32,14 @@ Inherits clLinearTransformer
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, prmColumnsToRetain() as string, prmPivotColumn as string, prmPivotValues() as string, prmColumnsToPivot() as string, prmColumnNameFunction as ColumnNameGenerator)
 		  // Calling the overridden superclass constructor.
+		  
+		  //
+		  // prmColumnsToRetains() :  value moved as is in output columns  
+		  // prmPivotColumn             :   column of which value are used to cross tab, value part of column name
+		  // prmPivotValues()            :   list of value to retain in the pivot column
+		  // prmColumnsToPivot()    :    values to pivot, value is moved to the column selected by the value in PivotColumn     
+		  // prmColumnNameFunction:  function used to create the name of the pivoted column, based on the value from  prmPivotColumn() and the name of the selected 'columnsToPivot'
+		  //
 		  
 		  super.Constructor(MainTable)
 		  

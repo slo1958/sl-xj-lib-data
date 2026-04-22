@@ -534,6 +534,34 @@ Inherits clAbstractDataSerie
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function UniqueAsInteger() As integer()
+		  var dct as new Dictionary
+		  var results() as integer
+		  
+		  for row as integer = 0 to LastIndex
+		    var tmp as integer = self.GetElementAsInteger(row)
+		    
+		    if dct.HasKey(tmp) then
+		      dct.value(tmp)  = dct.Value(tmp) + 1
+		      
+		    else
+		      dct.value(tmp) = 1
+		      results.Add(tmp)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return results
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h1
 		Protected DefaultValue As integer

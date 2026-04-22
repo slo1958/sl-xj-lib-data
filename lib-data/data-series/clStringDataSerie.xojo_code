@@ -644,6 +644,34 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function UniqueAsString() As string()
+		  var dct as new Dictionary
+		  var results() as string
+		  
+		  for row as integer = 0 to LastIndex
+		    var tmp as string = self.GetElementAsString(row)
+		    
+		    if dct.HasKey(tmp) then
+		      dct.value(tmp)  = dct.Value(tmp) + 1
+		      
+		    else
+		      dct.value(tmp) = 1
+		      results.Add(tmp)
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  return results
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Uppercase() As clStringDataSerie
 		  var res as new clStringDataSerie(me.name+ " upper" )
 		  
