@@ -96,7 +96,7 @@ Protected Class clAbstractTransformer
 		    return self.OutputConnectors.Lookup(OutputConnectorName, nil)
 		    
 		  else
-		     return self.firstOutputConnector  
+		    return self.firstOutputConnector  
 		    
 		  end if
 		  
@@ -124,6 +124,10 @@ Protected Class clAbstractTransformer
 		  
 		End Function
 	#tag EndMethod
+
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function RowTransformerFunction(CurrentRow as clDataRow, previousRows() as clDataRow, columns() as string, parameters() as variant) As clDataRow
+	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h1
 		Protected Sub SetOutputName(ConnectionName as string, OutputName as string)
@@ -179,16 +183,16 @@ Protected Class clAbstractTransformer
 		End Sub
 	#tag EndMethod
 
+	#tag DelegateDeclaration, Flags = &h0
+		Delegate Function TableTransformerFunction(table as clDatatable, columns() as string, parameters() as variant) As Boolean
+	#tag EndDelegateDeclaration
+
 	#tag Method, Flags = &h0
 		Function Transform() As Boolean
 		  return False
 		  
 		End Function
 	#tag EndMethod
-
-	#tag DelegateDeclaration, Flags = &h0
-		Delegate Function TransformerFunction(table as clDatatable, columns() as string, parameters() as variant) As Boolean
-	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
 		Sub WriteLog(message as string, paramarray txt as string)
@@ -217,6 +221,10 @@ Protected Class clAbstractTransformer
 		
 	#tag EndNote
 
+
+	#tag Property, Flags = &h0
+		EnableTraceMode As Boolean
+	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected firstOutputConnector As clTransformerConnector

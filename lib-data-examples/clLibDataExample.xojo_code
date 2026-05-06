@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clLibDataExample
 	#tag Method, Flags = &h0
-		Function Example_000(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_000_A(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  //
 		  //  Example_000
@@ -2225,7 +2225,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_036(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_036_Inner_and_outer_joins(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  if Describe then
 		    Description.RemoveAll
@@ -2324,7 +2324,7 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Example_037(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
+		Function Example_037_LogToTable(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
 		  
 		  //
 		  //  Example_037
@@ -2354,6 +2354,139 @@ Protected Class clLibDataExample
 		  
 		  return  array(tlw.GetTable)
 		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Example_038_RollingAverage(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
+		  
+		  //
+		  //  Example_037
+		  //
+		  
+		  if Describe then
+		    Description.RemoveAll
+		    
+		    Description.Add(CurrentMethodName)
+		    Description.Add("Calculate the rolling average of sales and taxes of last 4 rows")
+		    Description.Add("Break when a new city is encountered")
+		    Description.Add("Input data table is sorted on city")
+		    
+		    return nil
+		    
+		  end if
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  
+		  var tableInput As New clDataTable("SourceTable")
+		  var tableOutput1 as clDataTable
+		  var tableOutput2 as clDataTable
+		  
+		  call tableInput.AddColumn(new clStringDataSerie("City"))
+		  call tableInput.AddColumn(new clStringDataSerie("Month"))
+		  call tableInput.AddColumn(new clNumberDataSerie("sales"))
+		  call tableInput.AddColumn(new clNumberDataSerie("Taxes"))
+		  call tableInput.AddColumn(new clNumberDataSerie("Quantity"))
+		  
+		  
+		  tableInput.AddRow(Array("Brussels","2020-01",100.0,24.0,10.0))
+		  tableInput.AddRow(Array("Brussels","2020-02",102.0,24.0,20.0))
+		  tableInput.AddRow(Array("Brussels","2020-03",103.0,24.0,30.0))
+		  tableInput.AddRow(Array("Brussels","2020-04",104.0,24.0,40.0))
+		  tableInput.AddRow(Array("Rome","2020-01",105.0,25.0,50.0))
+		  tableInput.AddRow(Array("Rome","2020-02",106.0,25.0,60.0))
+		  tableInput.AddRow(Array("Rome","2020-03",107.0,26.0,70.0))
+		  tableInput.AddRow(Array("Paris","2020-01",108.0,26.0,80.0))
+		  tableInput.AddRow(Array("Paris","2020-02",109.0,26.0,90.0))
+		  tableInput.AddRow(Array("Paris","2020-03",110.0,26.0,100.0))
+		  tableInput.AddRow(Array("Paris","2020-04",111.0,27.0,110.0))
+		  tableInput.AddRow(Array("Paris","2020-05",112.0,27.0,120.0))
+		  
+		  
+		  // call the function TransformerRowAverage() to calculate the rolling average per city  of Taxes and sales on up to four months
+		  var t1 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowAverage, 4, "", Array("City"), array("Taxes","Sales"), VariantArray())
+		  
+		  if t1.Transform() then tableOutput1 = t1.GetOutputTable
+		  tableOutput1.Rename("Output without row count")
+		  
+		  // call the function TransformerRowAverage() to calculate the rolling average per city  of Taxes and sales on up to four months
+		  var t2 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowAverage, 4, "AvgRowCount", Array("City"), array("Taxes","Sales"), VariantArray())
+		  
+		  if t2.Transform() then tableOutput2 = t2.GetOutputTable
+		  tableOutput2.Rename("Output with row count")
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		  return  array(tableInput, tableOutput1, tableOutput2)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Example_039_CalcDifferenceBetweenRows(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
+		  
+		  //
+		  //  Example_037
+		  //
+		  
+		  if Describe then
+		    Description.RemoveAll
+		    
+		    Description.Add(CurrentMethodName)
+		    Description.Add("Calculate the difference between the current row and the previous row")
+		    Description.Add("Break when a new city is encountered")
+		    Description.Add("Input data table is sorted on city")
+		    
+		    return nil
+		    
+		  end if
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  
+		  var tableInput As New clDataTable("SourceTable")
+		  
+		  var tableOutput1 as clDataTable
+		  var tableOutput2 as clDataTable
+		  
+		  call tableInput.AddColumn(new clStringDataSerie("City"))
+		  call tableInput.AddColumn(new clStringDataSerie("Month"))
+		  call tableInput.AddColumn(new clNumberDataSerie("Inventory"))
+		  
+		  tableInput.AddRow(Array("Brussels","2020-01",100.0))
+		  tableInput.AddRow(Array("Brussels","2020-02",97.0))
+		  tableInput.AddRow(Array("Brussels","2020-03",93.0))
+		  tableInput.AddRow(Array("Brussels","2020-04",101.0))
+		  tableInput.AddRow(Array("Rome","2020-01",105.0))
+		  tableInput.AddRow(Array("Rome","2020-02",98.0))
+		  tableInput.AddRow(Array("Rome","2020-03",93.0))
+		  tableInput.AddRow(Array("Paris","2020-01",100.0))
+		  tableInput.AddRow(Array("Paris","2020-02",105.0))
+		  tableInput.AddRow(Array("Paris","2020-03",101.0))
+		  tableInput.AddRow(Array("Paris","2020-04",96.0))
+		  tableInput.AddRow(Array("Paris","2020-05",92.0))
+		  
+		  
+		  // call the function TransformerRowDelta() to calculate the difference of inventory with a break when city changes, the values in the first output row for each city is set to the source value
+		  var t1 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowDelta, Array("City"), array("Inventory"), VariantArray(1))
+		  
+		  if t1.Transform() then tableOutput1 = t1.GetOutputTable
+		  
+		  tableOutput1.Rename("Output first row with source value")
+		  // call the function TransformerRowDelta() to calculate the difference of inventory with a break when city changes, the values in the first output row for each city is set to zero
+		  var t2 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowDelta, Array("City"), array("Inventory"), VariantArray())
+		  
+		  if t2.Transform() then tableOutput2 = t2.GetOutputTable
+		  
+		  tableOutput2.Rename("Output first row set to zero")
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		  return  array(tableInput, tableOutput1, tableOutput2)
 		  
 		  
 		End Function

@@ -3285,7 +3285,7 @@ Protected Class clDataTableTests
 		  call tableInput.AddColumn(new clNumberDataSerie("taxes2",tableInput.GetColumn("sales2")))
 		  
 		  // repeat call the function apply fixed rate with one column name as parameter
-		  var t1 as new clRepeatFunctionTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate1, array("Taxes1","Taxes2"), VariantArray(0.07))
+		  var t1 as new clFunctionByColumnTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate1, array("Taxes1","Taxes2"), VariantArray(0.07))
 		  
 		  if t1.Transform() then tableOutput = t1.GetOutputTable
 		  
@@ -3499,6 +3499,218 @@ Protected Class clDataTableTests
 		  
 		  log.EndTask(CurrentMethodName)
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_058(log as clLogManager)
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  var tableInput As New clDataTable("mytable")
+		  var tableOutput as clDataTable
+		  
+		  call tableInput.AddColumn(new clStringDataSerie("City"))
+		  call tableInput.AddColumn(new clStringDataSerie("Month"))
+		  call tableInput.AddColumn(new clNumberDataSerie("sales"))
+		  call tableInput.AddColumn(new clNumberDataSerie("Taxes"))
+		  call tableInput.AddColumn(new clNumberDataSerie("Quantity"))
+		  
+		  
+		  
+		  tableInput.AddRow(Array("Brussels","2020-01",100.0,24.0,10.0))
+		  tableInput.AddRow(Array("Brussels","2020-02",102.0,24.0,20.0))
+		  tableInput.AddRow(Array("Brussels","2020-03",103.0,24.0,30.0))
+		  tableInput.AddRow(Array("Brussels","2020-04",104.0,24.0,40.0))
+		  tableInput.AddRow(Array("Rome","2020-01",105.0,25.0,50.0))
+		  tableInput.AddRow(Array("Rome","2020-02",106.0,25.0,60.0))
+		  tableInput.AddRow(Array("Rome","2020-03",107.0,26.0,70.0))
+		  tableInput.AddRow(Array("Paris","2020-01",108.0,26.0,80.0))
+		  tableInput.AddRow(Array("Paris","2020-02",109.0,26.0,90.0))
+		  tableInput.AddRow(Array("Paris","2020-03",110.0,26.0,100.0))
+		  tableInput.AddRow(Array("Paris","2020-04",111.0,27.0,110.0))
+		  tableInput.AddRow(Array("Paris","2020-05",112.0,27.0,120.0))
+		  
+		  
+		  
+		  call check_table(log, "table0 integrity", nil, tableInput) 
+		  
+		  
+		  // call the function TransformerRowAverage() to calculate the rolling average per city  of Taxes and sales on up to four months
+		  var t1 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowAverage, 4, "", Array("City"), array("Taxes","Sales"), VariantArray())
+		  
+		  if t1.Transform() then tableOutput = t1.GetOutputTable
+		  
+		  var tableExpectedOutput as  clDataTable = tableInput.cloneStructure("expected output")
+		  
+		  tableExpectedOutput.AddRow(Array("Brussels","2020-01",100.00,24.00,10.0))
+		  tableExpectedOutput.AddRow(Array("Brussels","2020-02",101.00,24.00,20.0))
+		  tableExpectedOutput.AddRow(Array("Brussels","2020-03",101.66666667,24.00,30.0))
+		  tableExpectedOutput.AddRow(Array("Brussels","2020-04",102.25,24.00,40.0))
+		  tableExpectedOutput.AddRow(Array("Rome","2020-01",105.00,25.00,50.0))
+		  tableExpectedOutput.AddRow(Array("Rome","2020-02",105.50,25.00,60.0))
+		  tableExpectedOutput.AddRow(Array("Rome","2020-03",106.00,25.333333333,70.0))
+		  tableExpectedOutput.AddRow(Array("Paris","2020-01",108.00,26.00,80.0))
+		  tableExpectedOutput.AddRow(Array("Paris","2020-02",108.50,26.00,90.0))
+		  tableExpectedOutput.AddRow(Array("Paris","2020-03",109.00,26.00,100.0))
+		  tableExpectedOutput.AddRow(Array("Paris","2020-04",109.50,26.25,110.0))
+		  tableExpectedOutput.AddRow(Array("Paris","2020-05",110.50,26.50,120.0))
+		  
+		  call check_table(log, "results", tableExpectedOutput, tableOutput) 
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_059(log as clLogManager)
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  var tableInput As New clDataTable("mytable")
+		  var tableOutput as clDataTable
+		  
+		  call tableInput.AddColumn(new clStringDataSerie("City"))
+		  call tableInput.AddColumn(new clStringDataSerie("Month"))
+		  call tableInput.AddColumn(new clNumberDataSerie("sales"))
+		  call tableInput.AddColumn(new clNumberDataSerie("Taxes"))
+		  call tableInput.AddColumn(new clNumberDataSerie("Quantity"))
+		  
+		  
+		  tableInput.AddRow(Array("Brussels","2020-01",100.0,24.0,10.0))
+		  tableInput.AddRow(Array("Brussels","2020-02",102.0,24.0,20.0))
+		  tableInput.AddRow(Array("Brussels","2020-03",103.0,24.0,30.0))
+		  tableInput.AddRow(Array("Brussels","2020-04",104.0,24.0,40.0))
+		  tableInput.AddRow(Array("Rome","2020-01",105.0,25.0,50.0))
+		  tableInput.AddRow(Array("Rome","2020-02",106.0,25.0,60.0))
+		  tableInput.AddRow(Array("Rome","2020-03",107.0,26.0,70.0))
+		  tableInput.AddRow(Array("Paris","2020-01",108.0,26.0,80.0))
+		  tableInput.AddRow(Array("Paris","2020-02",109.0,26.0,90.0))
+		  tableInput.AddRow(Array("Paris","2020-03",110.0,26.0,100.0))
+		  tableInput.AddRow(Array("Paris","2020-04",111.0,27.0,110.0))
+		  tableInput.AddRow(Array("Paris","2020-05",112.0,27.0,120.0))
+		  
+		  
+		  
+		  call check_table(log, "table0 integrity", nil, tableInput) 
+		  
+		  //
+		  // call the function TransformerRowAverage() to calculate the rolling average per city  of Taxes and sales on up to four months
+		  // the number of rows used is saved in the new column 'UsedRowCount'
+		  //
+		  var t1 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowAverage, 4, "UsedRowCount", Array("City"), array("Taxes","Sales"), VariantArray())
+		  
+		  if t1.Transform() then tableOutput = t1.GetOutputTable
+		  
+		  var tableExpectedOutput as  clDataTable = tableInput.cloneStructure("expected output")
+		  call tableExpectedOutput.AddColumn(new clIntegerDataSerie("UsedRowCount"))
+		  
+		  tableExpectedOutput.AddRow(Array("Brussels","2020-01",100.00,24.00,10.0, 1))
+		  tableExpectedOutput.AddRow(Array("Brussels","2020-02",101.00,24.00,20.0,2))
+		  tableExpectedOutput.AddRow(Array("Brussels","2020-03",101.66666667,24.00,30.0, 3))
+		  tableExpectedOutput.AddRow(Array("Brussels","2020-04",102.25,24.00,40.0, 4))
+		  tableExpectedOutput.AddRow(Array("Rome","2020-01",105.00,25.00,50.0, 1))
+		  tableExpectedOutput.AddRow(Array("Rome","2020-02",105.50,25.00,60.0, 2))
+		  tableExpectedOutput.AddRow(Array("Rome","2020-03",106.00,25.333333333,70.0, 3))
+		  tableExpectedOutput.AddRow(Array("Paris","2020-01",108.00,26.00,80.0, 1))
+		  tableExpectedOutput.AddRow(Array("Paris","2020-02",108.50,26.00,90.0, 2))
+		  tableExpectedOutput.AddRow(Array("Paris","2020-03",109.00,26.00,100.0, 3))
+		  tableExpectedOutput.AddRow(Array("Paris","2020-04",109.50,26.25,110.0, 4))
+		  tableExpectedOutput.AddRow(Array("Paris","2020-05",110.50,26.50,120.0, 4))
+		  
+		  call check_table(log, "results", tableExpectedOutput, tableOutput) 
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub test_calc_060(log as clLogManager)
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  var tableInput As New clDataTable("mytable")
+		  var tableOutput1 as clDataTable
+		  var tableOutput2 as clDataTable
+		  
+		  call tableInput.AddColumn(new clStringDataSerie("City"))
+		  call tableInput.AddColumn(new clStringDataSerie("Month"))
+		  call tableInput.AddColumn(new clNumberDataSerie("Inventory"))
+		  
+		  tableInput.AddRow(Array("Brussels","2020-01",100.0))
+		  tableInput.AddRow(Array("Brussels","2020-02",97.0))
+		  tableInput.AddRow(Array("Brussels","2020-03",93.0))
+		  tableInput.AddRow(Array("Brussels","2020-04",101.0))
+		  tableInput.AddRow(Array("Rome","2020-01",105.0))
+		  tableInput.AddRow(Array("Rome","2020-02",98.0))
+		  tableInput.AddRow(Array("Rome","2020-03",93.0))
+		  tableInput.AddRow(Array("Paris","2020-01",100.0))
+		  tableInput.AddRow(Array("Paris","2020-02",105.0))
+		  tableInput.AddRow(Array("Paris","2020-03",101.0))
+		  tableInput.AddRow(Array("Paris","2020-04",96.0))
+		  tableInput.AddRow(Array("Paris","2020-05",92.0))
+		  
+		  
+		  
+		  
+		  call check_table(log, "table0 integrity", nil, tableInput) 
+		  
+		  
+		  // call the function TransformerRowDelta() to calculate the difference of inventory with a break when city changes, the values in the first output row for each city is set to the source value
+		  var t1 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowDelta, Array("City"), array("Inventory"), VariantArray(1))
+		  
+		  if t1.Transform() then tableOutput1 = t1.GetOutputTable
+		  
+		  var tableExpectedOutput1 as  clDataTable = tableInput.cloneStructure("expected output 1")
+		  
+		  tableExpectedOutput1.AddRow(Array("Brussels","2020-01",100.0))
+		  tableExpectedOutput1.AddRow(Array("Brussels","2020-02",-3.0))
+		  tableExpectedOutput1.AddRow(Array("Brussels","2020-03",-4.0))
+		  tableExpectedOutput1.AddRow(Array("Brussels","2020-04",8.0))
+		  tableExpectedOutput1.AddRow(Array("Rome","2020-01",105.0))
+		  tableExpectedOutput1.AddRow(Array("Rome","2020-02",-7.0))
+		  tableExpectedOutput1.AddRow(Array("Rome","2020-03",-5.0))
+		  tableExpectedOutput1.AddRow(Array("Paris","2020-01",100.0))
+		  tableExpectedOutput1.AddRow(Array("Paris","2020-02",5.0))
+		  tableExpectedOutput1.AddRow(Array("Paris","2020-03",-4.0))
+		  tableExpectedOutput1.AddRow(Array("Paris","2020-04",-5.0))
+		  tableExpectedOutput1.AddRow(Array("Paris","2020-05",-4.0))
+		  
+		  
+		  
+		  
+		  // call the function TransformerRowDelta() to calculate the difference of inventory with a break when city changes, the values in the first output row for each city is set to zero
+		  var t2 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowDelta, Array("City"), array("Inventory"), VariantArray())
+		  
+		  if t2.Transform() then tableOutput2 = t2.GetOutputTable
+		  
+		  var tableExpectedOutput2 as  clDataTable = tableInput.cloneStructure("expected output 2")
+		  
+		  
+		  tableExpectedOutput2.AddRow(Array("Brussels","2020-01",0.0))
+		  tableExpectedOutput2.AddRow(Array("Brussels","2020-02",-3.0))
+		  tableExpectedOutput2.AddRow(Array("Brussels","2020-03",-4.0))
+		  tableExpectedOutput2.AddRow(Array("Brussels","2020-04",8.0))
+		  tableExpectedOutput2.AddRow(Array("Rome","2020-01",0.0))
+		  tableExpectedOutput2.AddRow(Array("Rome","2020-02",-7.0))
+		  tableExpectedOutput2.AddRow(Array("Rome","2020-03",-5.0))
+		  tableExpectedOutput2.AddRow(Array("Paris","2020-01",0.0))
+		  tableExpectedOutput2.AddRow(Array("Paris","2020-02",5.0))
+		  tableExpectedOutput2.AddRow(Array("Paris","2020-03",-4.0))
+		  tableExpectedOutput2.AddRow(Array("Paris","2020-04",-5.0))
+		  tableExpectedOutput2.AddRow(Array("Paris","2020-05",-4.0))
+		  
+		  
+		  
+		  
+		  
+		  call check_table(log, "results", tableExpectedOutput1, tableOutput1) 
+		  call check_table(log, "results", tableExpectedOutput2, tableOutput2) 
+		  
+		  log.EndTask(CurrentMethodName)
 		  
 		End Sub
 	#tag EndMethod

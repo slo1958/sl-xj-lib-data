@@ -174,6 +174,28 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function CloneAsMutable() As clDataRow
+		  //
+		  // Clone the current data row, making it mutable and not linked to a table
+		  //
+		  // Parameters: 
+		  // (nothing)
+		  //
+		  // Returns:
+		  // cloned data row
+		  //
+		  
+		  var ret as new clDataRow(self.my_storage,self.my_label)
+		  ret.mutable_flag = true
+		  ret.table_link = nil
+		  
+		  // self.table_link
+		  
+		  return ret
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(SourceValues as Dictionary, the_row_label as string = "")
 		  //  
 		  //  Create a row based on a dictionary
@@ -522,7 +544,7 @@ Implements Iterable
 		  end if
 		  
 		  if self.my_row_index < 0 then
-		     raise new clDataException("No record index, cannot update")
+		    raise new clDataException("No record index, cannot update")
 		    
 		  end if
 		  

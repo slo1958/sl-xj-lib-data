@@ -41,9 +41,16 @@ Implements itfLogWriter
 		  
 		  mlb = the_listbox
 		  
-		  
-		  
-		  
+		  If mlb.ColumnCount >2 Then
+		    mlb.ColumnWidths = "20%,20%,"
+		    
+		  Elseif mlb.ColumnCount > 1 Then
+		    mlb.ColumnWidths = "20%,"
+		    
+		  Else
+		    mlb.ColumnWidths = "100%"
+		    
+		  End If
 		End Sub
 	#tag EndMethod
 

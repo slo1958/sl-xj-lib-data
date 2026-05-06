@@ -1,8 +1,8 @@
 #tag Class
-Protected Class clRepeatFunctionTransformer
+Protected Class clFunctionByColumnTransformer
 Inherits clLinearTransformer
 	#tag Method, Flags = &h0
-		Sub Constructor(MainTable as clDataTable, TrsfFunction as TransformerFunction, ColumnNames() as string, Parameters() as variant)
+		Sub Constructor(MainTable as clDataTable, TrsfFunction as TableTransformerFunction, ColumnNames() as string, Parameters() as variant)
 		  //
 		  // Run a transformation function to update data, one column at a time
 		  // The output table is a view, the transformation function is allowed to add new columns
@@ -67,7 +67,7 @@ Inherits clLinearTransformer
 
 
 	#tag Property, Flags = &h0
-		Fct As TransformerFunction
+		Fct As TableTransformerFunction
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
