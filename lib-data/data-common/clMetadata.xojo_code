@@ -49,22 +49,25 @@ Protected Class clMetadata
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AllFormattedData(Sep as String, filterOn as string = "") As string()
+		Function AllFormattedData(Sep as String, filterOnCategory as string, filterOnType as string) As string()
 		  //
 		  // Returns all metadata as an array of string
 		  // 
 		  // Parameters:
 		  // - sep (string) : separator to use between datatype and message
-		  // - filter on (string): optional filter on datatype
+		  // - filterOnCategory (string): optional filter on metadata category, empty string means no filter
+		  // - filterOnType (string): option filter on metadata type, empty string means no filter
 		  //
 		  // Returns
 		  // Array of string, one entry per enty in list of metadata, datatype and message separated by ":"
 		  //
 		  
+		  
 		  var ret() as string
 		  
 		  for each m as clMetadataEntry in self.DataList
-		    if filterOn.trim.Length = 0 or filterOn.trim = m.TypeValue then ret.Add(m.TypeValue + sep + m.DataValue)
+		    if  (filterOnCategory.trim.Length = 0 or filterOnCategory.trim = m.CategoryValue) _
+		    and (filterOnType.trim.Length = 0 or filterOnType.trim = m.TypeValue) then ret.Add(m.TypeValue + sep + m.DataValue)
 		    
 		  next
 		  
@@ -88,28 +91,14 @@ Protected Class clMetadata
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Clear(DataType as string = "")
+		Sub Clear()
 		  //
 		  // Cleanup all metadata
 		  //
 		  
-		  if DataType.trim.Length = 0 then
-		    DataList.RemoveAll
-		    
-		    return 
-		    
-		  end if
+		  self.DataList.RemoveAll
 		  
-		  var new_list() as clMetadataEntry
-		  
-		  
-		  for each m as clMetadataEntry in self.DataList
-		    if m.TypeValue<> DataType.trim then new_list.Add(m)
-		    
-		  next
-		  
-		  self.DataList = new_list
-		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
@@ -144,42 +133,79 @@ Protected Class clMetadata
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CountDataType(MetadataType as string) As integer
+		Function CountFiltered(filterOnCategory as string, filterOnType as string) As integer
 		  //
-		  // Count the number of occurence of the passed datatype exists in the metadata
+		  // Count the number of occurence of the passed datacategory and datatype exists in the metadata
 		  //
 		  // Parameters:
-		  // - Metadata type (string) : type of information searched
+		  // - filterOnCategory (string): optional filter on metadata category, empty string means no filter
+		  // - filterOnType (string): option filter on metadata type, empty string means no filter
+		  //
+		  // Returns
+		  // number of entries matching the filter
 		  //
 		  
-		  var ret as integer
+		  var cnt as integer = 0
 		  for each m as clMetadataEntry in self.DataList
-		    
-		    if m.TypeValue = MetadataType then ret = ret + 1
+		    if  (filterOnCategory.trim.Length = 0 or filterOnCategory.trim = m.CategoryValue) _
+		    and (filterOnType.trim.Length = 0 or filterOnType.trim = m.TypeValue) then cnt = cnt + 1
 		    
 		  next
 		  
-		  return ret
+		  return cnt
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function HasDataType(MetadataType as string) As boolean
+		Function ExtractFiltered(filterOnCategory as string, filterOnType as string) As clMetadataEntry()
+		  //
+		  // Return all metadata entries matching the filters
+		  //
+		  // Parameters:
+		  // - filterOnCategory (string): optional filter on metadata category, empty string means no filter
+		  // - filterOnType (string): option filter on metadata type, empty string means no filter
+		  //
+		  // Returns
+		  // list of selected metadata entries
+		  //
+		  
+		  var filteredList() as clMetadataEntry
+		  
+		  
+		  for each m as clMetadataEntry in self.DataList
+		    if  (filterOnCategory.trim.Length = 0 or filterOnCategory.trim = m.CategoryValue) _
+		    and (filterOnType.trim.Length = 0 or filterOnType.trim = m.TypeValue) then filteredList.Add(m)
+		    
+		  next
+		  
+		  return filteredList
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function HasData(filterOnCategory as string, filterOnType as string) As boolean
 		  //
 		  // Check if the passed datatype exists in the metadata
 		  //
 		  // Parameters:
-		  // - Metadata type (string) : type of information searched
+		  // - filterOnCategory (string): optional filter on metadata category, empty string means no filter
+		  // - filterOnType (string): option filter on metadata type, empty string means no filter
+		  //
+		  // Returns
+		  // boolean
 		  //
 		  
+		  
 		  for each m as clMetadataEntry in self.DataList
-		    if m.TypeValue = MetadataType then return true
+		    if  (filterOnCategory.trim.Length = 0 or filterOnCategory.trim = m.CategoryValue) _
+		    and (filterOnType.trim.Length = 0 or filterOnType.trim = m.TypeValue) then return true
 		    
 		  next
 		  
 		  return false
-		  
 		End Function
 	#tag EndMethod
 

@@ -476,7 +476,7 @@ End
 		  lb_meta1.ColumnWidths="25%,75%"
 		  
 		  lb_meta1.addrow("name",tbl.name)
-		  //lb_meta.addrow("title", tbl.)
+		  
 		  
 		  var meta as clMetadata = tbl.GetMetadata
 		  
