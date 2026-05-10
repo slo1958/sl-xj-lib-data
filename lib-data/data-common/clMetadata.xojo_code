@@ -33,6 +33,29 @@ Protected Class clMetadata
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Add(MetadataCategory as string, MetadataType as string, Message as string)
+		  //
+		  // Add an entry to the metadata
+		  //
+		  // Parameters:
+		  // - MetadataCategory (string): category of metadata
+		  // - MetadataType (string) : type of information added
+		  // - message (string) : details
+		  //
+		  // Return
+		  // (none)
+		  //
+		  
+		  DataList.Add(new clMetadataEntry(MetadataCategory, MetadataType, Message))
+		  
+		  return
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub AddSource(DataSource as string)
 		  //
 		  // Add an entry to the metadata, with key indicating source

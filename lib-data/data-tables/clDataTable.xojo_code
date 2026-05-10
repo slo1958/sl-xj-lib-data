@@ -333,6 +333,23 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub AddMetaData(categ as string, type as string, message as string)
+		  //  
+		  //  Add  meta data to the table
+		  //  
+		  //  Parameters:
+		  //  - the meta data type
+		  //  - the meta data value
+		  //  
+		  //  Returns:
+		  //  (nothing)
+		  //  
+		  
+		  Self.Metadata.Add(categ, type, message)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub AddRow(NewRow as clDataRow, Mode as AddRowMode = AddRowMode.CreateNewColumn)
 		  //  
 		  //  Add  a data row to the table
