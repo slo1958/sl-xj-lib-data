@@ -1787,7 +1787,7 @@ Implements TableColumnReaderInterface,Iterable
 		    for each key as string in metadict.Keys
 		      var vs as string = metadict.value(key).StringValue
 		      
-		      self.AddMetaData(DefaultLoadedMetadataPrefix+key, vs)
+		      self.AddMetaData(DefaultLoadedMetadataPrefix, key, vs)
 		      
 		    next
 		    
@@ -4352,7 +4352,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Constant, Name = DefaultColumnNamePattern, Type = String, Dynamic = False, Default = \"Untitled %0", Scope = Public
 	#tag EndConstant
 
-	#tag Constant, Name = DefaultLoadedMetadataPrefix, Type = String, Dynamic = False, Default = \"Loaded:", Scope = Public
+	#tag Constant, Name = DefaultLoadedMetadataPrefix, Type = String, Dynamic = False, Default = \"Loaded", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = DefaultRowIDColumnName, Type = String, Dynamic = False, Default = \"row_id", Scope = Public

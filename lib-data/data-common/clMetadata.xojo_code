@@ -72,34 +72,6 @@ Protected Class clMetadata
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function AllFormattedData(Sep as String, filterOnCategory as string, filterOnType as string) As string()
-		  //
-		  // Returns all metadata as an array of string
-		  // 
-		  // Parameters:
-		  // - sep (string) : separator to use between datatype and message
-		  // - filterOnCategory (string): optional filter on metadata category, empty string means no filter
-		  // - filterOnType (string): option filter on metadata type, empty string means no filter
-		  //
-		  // Returns
-		  // Array of string, one entry per enty in list of metadata, datatype and message separated by ":"
-		  //
-		  
-		  
-		  var ret() as string
-		  
-		  for each m as clMetadataEntry in self.DataList
-		    if  (filterOnCategory.trim.Length = 0 or filterOnCategory.trim = m.CategoryValue) _
-		    and (filterOnType.trim.Length = 0 or filterOnType.trim = m.TypeValue) then ret.Add(m.TypeValue + sep + m.DataValue)
-		    
-		  next
-		  
-		  return ret
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub AppendFrom(source as clMetadata)
 		  
 		  for i as integer = 0 to source.LastIndex
@@ -270,6 +242,43 @@ Protected Class clMetadata
 		  return m 
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RemoveEntries(CategoryToRemove as string, TypeToRemove as string)
+		  //
+		  // Remove all metadata entries matching the filters
+		  //
+		  // Parameters:
+		  // - CategoryToRemove (string): optional filter on metadata category, empty string means no filter
+		  // - TypeToRemove (string): option filter on metadata type, empty string means no filter
+		  //
+		  // Returns
+		  // list of selected metadata entries
+		  //
+		  
+		  var filteredList() as clMetadataEntry
+		  
+		  for each m as clMetadataEntry in self.DataList
+		    if  CategoryToRemove.trim <> m.CategoryValue  and CategoryToRemove.trim.Length > 0 then
+		      filteredList.add(m)
+		      
+		    elseif TypeToRemove.trim <> m.TypeValue and TypeToRemove.trim.Length > 0 then
+		      filteredList.add(m)
+		      
+		    else
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  self.DataList = filteredList
+		  
+		  return
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 

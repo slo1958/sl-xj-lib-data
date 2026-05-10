@@ -4107,8 +4107,59 @@ Inherits clObjectTest
 		  fld_file2  = main_folder.Child("myfile3_10K_tab_meta.txt") 
 		  
 		  
-		  
+		  //
+		  // the first file is a classical tab separated file with column headers on first line
+		  //
 		  var table1 As New clDataTable(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  
+		  //
+		  // the second file contains a few comments before the header line, we want to extract those comments to metadata
+		  //
+		  var table2 As New clDataTable(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9)), addressof Rowsorter_table_io_06))
+		  
+		  call check_table(log,"Table1 and table2", table1, table2, 0.0001) 
+		  
+		  // move metadata to a temporary data table for automated control
+		  var validation_md as new clDataTable("metadata")
+		  call validation_md.AddColumn(new clStringDataSerie("Category"))
+		  call validation_md.AddColumn(new clStringDataSerie("Type"))
+		  call validation_md.AddColumn(new clStringDataSerie("Data"))
+		  
+		  // expected FileInfo metadata
+		  var expected_md as new clDataTable("metadata")
+		  call expected_md.AddColumn(new clStringDataSerie("Category"))
+		  call expected_md.AddColumn(new clStringDataSerie("Type"))
+		  call expected_md.AddColumn(new clStringDataSerie("Data"))
+		  
+		  expected_md.AddRow("Category":"FileInfo", "Type":"SourceData", "Data":"2023 July 17")
+		  expected_md.AddRow("Category":"FileInfo", "Type":"RequestID", "Data":"1823A1-7")
+		  expected_md.AddRow("Category":"FileInfo", "Type":"ProcessCst", "Data":"$135")
+		  
+		  
+		  // post process table2 metadata
+		  var tmpmdInput() as clMetadataEntry  = table2.GetMetadata.ExtractFiltered(clDataTable.DefaultLoadedMetadataPrefix,"")
+		  
+		  for each item as clMetadataEntry in tmpmdInput
+		    var tmpstr() as string = item.DataValue.Split(":")
+		    
+		    if tmpstr.LastIndex >=  1 then 
+		      tmpstr(0) = tmpstr(0).trim
+		      tmpstr(1) = tmpstr(1).trim
+		      
+		      table2.AddMetaData("FileInfo",  tmpstr(0), tmpstr(1))
+		      
+		      validation_md.AddRow("Category":"FileInfo", "Type":tmpstr(0), "Data":tmpstr(1))
+		      
+		    end if
+		    
+		  next
+		  
+		  // remove raw metadata
+		  table2.GetMetadata.RemoveEntries(clDataTable.DefaultLoadedMetadataPrefix,"")
+		  
+		  MetaDataToLog(log, table2.GetMetadata)
+		  
+		  call check_table(log,"Loaded metadata", expected_md, validation_md, 0.0001) 
 		  
 		  
 		  

@@ -111,6 +111,39 @@ Protected Module clDataTable_tests_support
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub MetaDataToLog(log as clLogManager, metadata as clMetadata)
+		  
+		  for i as integer = 0 to metadata.LastIndex
+		    var m as clMetadataEntry = metadata.MetadataAt(i)
+		    
+		    log.WriteInfo(CurrentMethodName, "%0: Category %1 ,  %2 = %3",i, m.CategoryValue, m.TypeValue, m.DataValue)
+		    
+		  next
+		  
+		  Return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Rowsorter_table_io_06(Sourceline as string) As clTextReader.TextLineType
+		  
+		  if rowsorter_table_io_06_flag = 2 then
+		    return clTextReader.TextLineType.Data
+		    
+		  elseif Sourceline.Trim = "=" then // this is the end of the file header, next row is column headers
+		    rowsorter_table_io_06_flag = 2
+		    return clTextReader.TextLineType.Ignore
+		    
+		  else
+		    return clTextReader.TextLineType.Metadata
+		    
+		  end if
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function TransfomerFctApplyFixedRate1(t as clDataTable, columns() as string, params() as variant) As boolean
 		  
 		  var rate as Double = params(0)
@@ -152,6 +185,11 @@ Protected Module clDataTable_tests_support
 		  
 		End Function
 	#tag EndMethod
+
+
+	#tag Property, Flags = &h1
+		Protected rowsorter_table_io_06_flag As Integer
+	#tag EndProperty
 
 
 	#tag ViewBehavior

@@ -85,6 +85,10 @@ Class clTextFileConfig
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
+		ignoreEmpty As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
 		QuoteCharacter As String
 	#tag EndProperty
 

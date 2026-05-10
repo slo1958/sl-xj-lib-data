@@ -64,8 +64,6 @@ Implements TableRowReaderInterface
 		  self.SourcePath = SourceFileOrFolder
 		  self.RequiresHeader = SourceHasHeader
 		  
-		  self.AccumulatedMetadata = nil
-		  
 		  self.dRowSorter = selectedRowSorter
 		  
 		  self.InternalInitConfig(TempConfig)
@@ -119,6 +117,8 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h1
 		Protected Shared Function DefaultRowSorter(textLine as string) As TextLineType
+		  
+		  Return TextLineType.Data
 		  
 		End Function
 	#tag EndMethod
@@ -242,8 +242,15 @@ Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Function GetMetadata() As Dictionary
 		  
+		  var d as new Dictionary
 		  
-		  return self.AccumulatedMetadata
+		  for i as integer = 0 to RawMetaData.LastIndex
+		    d.value(str(i)) = RawMetaData(i)
+		    
+		  next
+		  
+		  return d
+		  
 		  
 		  
 		End Function
@@ -257,24 +264,48 @@ Implements TableRowReaderInterface
 		    
 		  end if
 		  
-		  var tmp as string = TextFile.ReadLine(Encodings.UTF8)
-		  
-		  return tmp
-		  
+		  var bOK as Boolean = false
+		  var tmp as string 
 		  
 		  
-		  select case self.dRowSorter.Invoke(tmp)
+		  while not bOK
+		    tmp = TextFile.ReadLine(Encodings.UTF8)
 		    
-		  case TextLineType.Ignore
+		    select case self.dRowSorter.Invoke(tmp)
+		      
+		    case TextLineType.Ignore
+		      
+		    case TextLineType.Data
+		      Return tmp
+		      
+		    case TextLineType.Metadata
+		      RawMetaData.Add(tmp)
+		      
+		    case else
+		      
+		    end Select
 		    
-		  case TextLineType.Data
-		    Return tmp
+		    if TextFile.EndOfFile  then bOk = true
 		    
-		  case TextLineType.Metadata
+		  wend
+		  
+		  return ""
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Shared Function IgnoreEmptyRowSorter(textLine as string) As TextLineType
+		  
+		  if textLine.Trim.Length > 0 then
+		    Return TextLineType.Data
 		    
-		  case else
+		  else
+		    return TextLineType.Ignore
 		    
-		  end Select
+		  end if
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -285,6 +316,8 @@ Implements TableRowReaderInterface
 		  self.DefaultFileExtension = config.file_extension
 		  self.FieldSeparator = config.FieldSeparator
 		  self.encoding = config.enc
+		  self.ignoreEmpty = config.ignoreEmpty
+		  
 		End Sub
 	#tag EndMethod
 
@@ -504,10 +537,6 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h21
-		Private AccumulatedMetadata As Dictionary
-	#tag EndProperty
-
 	#tag Property, Flags = &h1
 		Protected CurrentFIle As FolderItem
 	#tag EndProperty
@@ -529,6 +558,10 @@ Implements TableRowReaderInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected ignoreEmpty As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected LineCount As Integer
 	#tag EndProperty
 
@@ -542,6 +575,10 @@ Implements TableRowReaderInterface
 
 	#tag Property, Flags = &h1
 		Protected QuoteCharacter As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected RawMetaData() As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
