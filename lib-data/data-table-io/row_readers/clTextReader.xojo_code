@@ -45,13 +45,14 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(SourceFileOrFolder as FolderItem, SourceHasHeader as Boolean, config as clTextFileConfig)
+		Sub Constructor(SourceFileOrFolder as FolderItem, SourceHasHeader as Boolean, config as clTextFileConfig, selectedRowSorter as RowSorter = nil)
 		  //
 		  //  
 		  //  Parameters
 		  // - SourceFileOrFolder: Folderitem pointing to a file or to a folder
 		  // - SourceHasHeader: the first usable row in the file contains field names, used as names for the data series
 		  // - Config: Configuration parameters for the reader (separator, encoding, ...) 
+		  // - selectedRowSorter: method to sort  text line
 		  //  
 		  //  Returns:
 		  //  (none)
@@ -62,6 +63,10 @@ Implements TableRowReaderInterface
 		  
 		  self.SourcePath = SourceFileOrFolder
 		  self.RequiresHeader = SourceHasHeader
+		  
+		  self.AccumulatedMetadata = nil
+		  
+		  self.dRowSorter = selectedRowSorter
 		  
 		  self.InternalInitConfig(TempConfig)
 		  
@@ -109,6 +114,12 @@ Implements TableRowReaderInterface
 		  //
 		  
 		  return self.CurrentFIle
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Shared Function DefaultRowSorter(textLine as string) As TextLineType
+		  
 		End Function
 	#tag EndMethod
 
@@ -230,7 +241,40 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h0
 		Function GetMetadata() As Dictionary
-		  return nil
+		  
+		  
+		  return self.AccumulatedMetadata
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function getNextTextLine() As string
+		  
+		  if self.dRowSorter = nil then
+		    return TextFile.ReadLine(Encodings.UTF8)
+		    
+		  end if
+		  
+		  var tmp as string = TextFile.ReadLine(Encodings.UTF8)
+		  
+		  return tmp
+		  
+		  
+		  
+		  select case self.dRowSorter.Invoke(tmp)
+		    
+		  case TextLineType.Ignore
+		    
+		  case TextLineType.Data
+		    Return tmp
+		    
+		  case TextLineType.Metadata
+		    
+		  case else
+		    
+		  end Select
 		  
 		End Function
 	#tag EndMethod
@@ -308,8 +352,9 @@ Implements TableRowReaderInterface
 		    
 		  end if
 		  
+		  //lineBuffer = TextFile.ReadLine()
 		  
-		  lineBuffer = TextFile.ReadLine()
+		  lineBuffer = getNextTextLine()
 		  
 		  // since a single CR in a quoted string is handled as a line break by TextInputStream, we may have to read more
 		  // lines from the file
@@ -361,7 +406,8 @@ Implements TableRowReaderInterface
 		    
 		    
 		    if gotQuote and not TextFile.EndOfFile then
-		      lineBuffer = TextFile.ReadLine(Encodings.UTF8)
+		      // lineBuffer = TextFile.ReadLine(Encodings.UTF8)
+		      lineBuffer = getNextTextLine()
 		      
 		    else
 		      cellArray.add(cellBuffer)
@@ -419,6 +465,10 @@ Implements TableRowReaderInterface
 		End Sub
 	#tag EndMethod
 
+	#tag DelegateDeclaration, Flags = &h1
+		Protected Delegate Function RowSorter(textLine as string) As TextLineType
+	#tag EndDelegateDeclaration
+
 	#tag Method, Flags = &h0
 		Sub UpdateExternalName(new_name as string)
 		  //
@@ -454,12 +504,20 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 
+	#tag Property, Flags = &h21
+		Private AccumulatedMetadata As Dictionary
+	#tag EndProperty
+
 	#tag Property, Flags = &h1
 		Protected CurrentFIle As FolderItem
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
 		Protected DefaultFileExtension As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
+		Protected dRowSorter As RowSorter
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -479,6 +537,10 @@ Implements TableRowReaderInterface
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
+		Protected nextRow As clDataRow
+	#tag EndProperty
+
+	#tag Property, Flags = &h1
 		Protected QuoteCharacter As string
 	#tag EndProperty
 
@@ -493,6 +555,13 @@ Implements TableRowReaderInterface
 	#tag Property, Flags = &h1
 		Protected TextFile As TextInputStream
 	#tag EndProperty
+
+
+	#tag Enum, Name = TextLineType, Type = Integer, Flags = &h0
+		Ignore
+		  Metadata
+		Data
+	#tag EndEnum
 
 
 	#tag ViewBehavior

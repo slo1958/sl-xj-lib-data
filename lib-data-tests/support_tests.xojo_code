@@ -46,28 +46,10 @@ Protected Module support_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ClearFolder(fld as FolderItem) As FolderItem
-		  if not fld.Exists then 
-		    fld.CreateFolder
-		    Return fld
-		    
-		  end if
-		  
-		  if not fld.IsFolder then return nil
-		  
-		  fld.RemoveFolderAndContents
-		  
-		  fld.CreateFolder
-		  
-		  Return fld
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetTestBaseFolder() As FolderItem
+		Function GetTestInputBaseFolder() As FolderItem
 		  var fld_folder As New FolderItem
-		  return  fld_folder.Child("test-data")
+		  return  fld_folder.Child("test-data").child("input")
+		  
 		End Function
 	#tag EndMethod
 
@@ -89,6 +71,44 @@ Protected Module support_tests
 		  next
 		  
 		  return d
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetTestOutputFolder(childname as string) As FolderItem
+		  var fld_folder As New FolderItem
+		  
+		  fld_folder =  fld_folder.Child("test-data")
+		  
+		  fld_folder = fld_folder.child("output")
+		  
+		  if not fld_folder.Exists then
+		    fld_folder.CreateFolder
+		    
+		  end if
+		  
+		  fld_folder = fld_folder.Child(childname)
+		  
+		  // child folder does not exist => create and exit
+		  
+		  if not fld_folder.Exists then 
+		    fld_folder.CreateFolder
+		    Return fld_folder
+		    
+		  end if
+		  
+		  if not fld_folder.IsFolder then return nil
+		  
+		  // clean up
+		  
+		  fld_folder.RemoveFolderAndContents
+		  
+		  fld_folder.CreateFolder
+		  
+		  Return fld_folder
+		  
+		  
 		  
 		End Function
 	#tag EndMethod

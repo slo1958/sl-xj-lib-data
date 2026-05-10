@@ -175,6 +175,7 @@ Class=clDoubleDataRowFieldInfo;lib-data/data-rows/clDoubleDataRowFieldInfo.xojo_
 Class=clDecimal;lib-data/data-items/clDecimal.xojo_code;&h000000002821B7FF;&h0000000043C75FFF;false
 Module=CommonTransformerFunctions;lib-data/data-table-transformer/CommonTransformerFunctions.xojo_code;&h00000000494827FF;&h0000000072FDA7FF;false
 Class=clMetadataEntry;lib-data/data-common/clMetadataEntry.xojo_code;&h0000000074566FFF;&h000000006DAC7FFF;false
+Class=clObjectTest;lib-data-tests/clObjectTest.xojo_code;&h00000000738B5FFF;&h000000007AF38FFF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1

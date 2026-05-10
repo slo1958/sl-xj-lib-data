@@ -1,7 +1,8 @@
 #tag Class
 Protected Class clDataPoolTests
+Inherits clObjectTest
 	#tag Method, Flags = &h0
-		Sub test_calc_001(log as clLogManager)
+		Sub dpools_test_calc_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -77,7 +78,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_002(log as clLogManager)
+		Sub dpools_test_calc_002(log as clLogManager)
 		  //  
 		  //  Test simplified interface to tables in data pool
 		  //  
@@ -158,7 +159,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_003(log as clLogManager)
+		Sub dpools_test_calc_003(log as clLogManager)
 		  //  
 		  //  Test simplified interface to tables in data pool
 		  //  
@@ -238,7 +239,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_001(log as clLogManager)
+		Sub dpools_test_io_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -275,22 +276,22 @@ Protected Class clDataPoolTests
 		  
 		  my_data_pool.SetTable(pool_table2)
 		  
-		  var main_folder As  FolderItem = GetTestBaseFolder()
-		  var sub_folder as FolderItem  = ClearFolder(main_folder.Child(CurrentMethodName))
+		   
+		  var output_folder as FolderItem  = GettestOutputFolder(CurrentMethodName)
 		  
-		  my_data_pool.SaveEachTable(new clTextWriter(sub_folder, True))
+		  my_data_pool.SaveEachTable(new clTextWriter(output_folder, True))
 		  
 		  
-		  var loaded_table1 As New clDataTable(new clTextReader(sub_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
-		  var loaded_table2 As New clDataTable(new clTextReader(sub_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
+		  var loaded_table1 As New clDataTable(new clTextReader(output_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
+		  var loaded_table2 As New clDataTable(new clTextReader(output_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
 		  
 		  call check_table(log,"table 1", pool_table1, loaded_table1)
 		  call check_table(log,"table 2", pool_table2, loaded_table2)
 		  
 		  
 		  var test_data_pool as new clDataPool
-		  test_data_pool.LoadOneTable(new clTextReader(sub_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
-		  test_data_pool.LoadOneTable(new clTextReader(sub_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
+		  test_data_pool.LoadOneTable(new clTextReader(output_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
+		  test_data_pool.LoadOneTable(new clTextReader(output_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
 		  
 		  
 		  call check_table(log,"pool table 1",my_data_pool.GetTable("PoolTable1"), test_data_pool.GetTable("from PoolTable1.csv"))
@@ -303,7 +304,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_002(log as clLogManager)
+		Sub dpools_test_io_002(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -375,7 +376,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_003(log as clLogManager)
+		Sub dpools_test_io_003(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -413,21 +414,21 @@ Protected Class clDataPoolTests
 		  my_data_pool.SetTable(pool_table2)
 		  
 		  
-		  var main_folder As  FolderItem = GetTestBaseFolder()
-		  var sub_folder as FolderItem  = ClearFolder(main_folder.Child(CurrentMethodName))
+		  //var input_folder As  FolderItem = GetTestInputBaseFolder()
+		  var output_folder as FolderItem  = GettestOutputFolder(CurrentMethodName)
 		  
-		  my_data_pool.SaveEachTable(new clTextWriter(sub_folder, True))
+		  my_data_pool.SaveEachTable(new clTextWriter(output_folder, True))
 		  
 		  
-		  var loaded_table1 As New clDataTable(new clTextReader(sub_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
-		  var loaded_table2 As New clDataTable(new clTextReader(sub_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
+		  var loaded_table1 As New clDataTable(new clTextReader(output_folder.child("PoolTable1.csv"), True, new clTextFileConfig(chr(9))))
+		  var loaded_table2 As New clDataTable(new clTextReader(output_folder.child("PoolTable2.csv"), True, new clTextFileConfig(chr(9))))
 		  
 		  call check_table(log,"table 1", pool_table1, loaded_table1)
 		  call check_table(log,"table 2", pool_table2, loaded_table2)
 		  
 		  
 		  var test_data_pool as new clDataPool
-		  test_data_pool.LoadEachTable(new clTextReader(sub_folder, True, new clTextFileConfig(chr(9))))
+		  test_data_pool.LoadEachTable(new clTextReader(output_folder, True, new clTextFileConfig(chr(9))))
 		  //test_data_pool.LoadOneTable(new clTextReader(fld_folder.child("PoolTable1.csv"),True, new clTextFileConfig(chr(9))))
 		  //test_data_pool.LoadOneTable(new clTextReader(fld_folder.child("PoolTable2.csv"),True, new clTextFileConfig(chr(9))))
 		  
@@ -442,7 +443,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_004(log as clLogManager)
+		Sub dpools_test_io_004(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -478,12 +479,10 @@ Protected Class clDataPoolTests
 		  next
 		  
 		  my_data_pool.SetTable(pool_table2)
+		   
+		  var output_folder as FolderItem  = GettestOutputFolder(CurrentMethodName)
 		  
-		  
-		  var main_folder As  FolderItem = GetTestBaseFolder()
-		  var sub_folder as FolderItem  = ClearFolder(main_folder.Child(CurrentMethodName))
-		  
-		  var fld_file as FolderItem  = sub_folder.child("myfile.json")
+		  var fld_file as FolderItem  = output_folder.child("myfile.json")
 		  
 		  my_data_pool.SaveEachTable(new clJSONWriter(fld_file, nil))
 		  
@@ -502,7 +501,7 @@ Protected Class clDataPoolTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_005(log as clLogManager)
+		Sub dpools_test_io_005(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -570,6 +569,13 @@ Protected Class clDataPoolTests
 		  
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetTestPrefix() As string
+		  return "dpools_"
+		  
+		End Function
 	#tag EndMethod
 
 

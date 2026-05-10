@@ -1,7 +1,15 @@
 #tag Class
 Protected Class clDataTableTests
+Inherits clObjectTest
 	#tag Method, Flags = &h0
-		Sub test_calc_001(log as clLogManager)
+		Function GetTestPrefix() As string
+		  return "tables_"
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub tables_test_calc_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -39,7 +47,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_002(log as clLogManager)
+		Sub tables_test_calc_002(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -99,7 +107,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_003(log as clLogManager)
+		Sub tables_test_calc_003(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -144,7 +152,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_004(log as clLogManager)
+		Sub tables_test_calc_004(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -184,7 +192,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_005(log as clLogManager)
+		Sub tables_test_calc_005(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -232,7 +240,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_006(log as clLogManager)
+		Sub tables_test_calc_006(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -290,7 +298,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_007(log as clLogManager)
+		Sub tables_test_calc_007(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -321,7 +329,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_008(log as clLogManager)
+		Sub tables_test_calc_008(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -367,7 +375,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_009(log as clLogManager)
+		Sub tables_test_calc_009(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -444,7 +452,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_010(log as clLogManager)
+		Sub tables_test_calc_010(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -487,7 +495,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_011(log as clLogManager)
+		Sub tables_test_calc_011(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -519,7 +527,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_012(log as clLogManager)
+		Sub tables_test_calc_012(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -561,7 +569,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_013(log as clLogManager)
+		Sub tables_test_calc_013(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -608,7 +616,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_014(log as clLogManager)
+		Sub tables_test_calc_014(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -663,7 +671,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_015(log as clLogManager)
+		Sub tables_test_calc_015(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -720,7 +728,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_016(log as clLogManager)
+		Sub tables_test_calc_016(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -758,7 +766,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_017(log as clLogManager)
+		Sub tables_test_calc_017(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -798,7 +806,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_018(log as clLogManager)
+		Sub tables_test_calc_018(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -840,7 +848,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_019(log as clLogManager)
+		Sub tables_test_calc_019(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -886,7 +894,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_020(log as clLogManager)
+		Sub tables_test_calc_020(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -960,7 +968,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_021(log as clLogManager)
+		Sub tables_test_calc_021(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1023,7 +1031,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_022(log as clLogManager)
+		Sub tables_test_calc_022(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1072,7 +1080,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_023(log as clLogManager)
+		Sub tables_test_calc_023(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1122,7 +1130,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_024(log as clLogManager)
+		Sub tables_test_calc_024(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1159,7 +1167,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_025(log as clLogManager)
+		Sub tables_test_calc_025(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1217,7 +1225,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_026(log as clLogManager)
+		Sub tables_test_calc_026(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1275,7 +1283,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_027(log as clLogManager)
+		Sub tables_test_calc_027(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1302,7 +1310,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_028(log as clLogManager)
+		Sub tables_test_calc_028(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1335,7 +1343,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_029(log as clLogManager)
+		Sub tables_test_calc_029(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1368,7 +1376,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_030(log as clLogManager)
+		Sub tables_test_calc_030(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1416,7 +1424,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_031(log as clLogManager)
+		Sub tables_test_calc_031(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1449,7 +1457,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_032(log as clLogManager)
+		Sub tables_test_calc_032(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1496,7 +1504,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_033(log as clLogManager)
+		Sub tables_test_calc_033(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1527,7 +1535,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_034(log as clLogManager)
+		Sub tables_test_calc_034(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1583,7 +1591,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_035(log as clLogManager)
+		Sub tables_test_calc_035(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1628,7 +1636,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_036(log as clLogManager)
+		Sub tables_test_calc_036(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1702,7 +1710,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_037(log as clLogManager)
+		Sub tables_test_calc_037(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1770,7 +1778,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_038(log as clLogManager)
+		Sub tables_test_calc_038(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1812,7 +1820,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_039(log as clLogManager)
+		Sub tables_test_calc_039(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -1883,7 +1891,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_040(log as clLogManager)
+		Sub tables_test_calc_040(log as clLogManager)
 		  //
 		  // Test full joins
 		  
@@ -2090,7 +2098,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_041(log as clLogManager)
+		Sub tables_test_calc_041(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -2173,7 +2181,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_042(log as clLogManager)
+		Sub tables_test_calc_042(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -2210,7 +2218,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_043(log as clLogManager)
+		Sub tables_test_calc_043(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -2249,7 +2257,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_044(log as clLogManager)
+		Sub tables_test_calc_044(log as clLogManager)
 		  //
 		  // Test clGroupAndPivot, direct calls
 		  //
@@ -2311,7 +2319,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_045(log as clLogManager)
+		Sub tables_test_calc_045(log as clLogManager)
 		  //
 		  // Test the pivot transformer
 		  //
@@ -2364,7 +2372,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_046(log as clLogManager)
+		Sub tables_test_calc_046(log as clLogManager)
 		  //
 		  // Test select columns (creating a view)  and extract columns (cloning the columns)
 		  // Updating the data in the orignal table once selectColumns() and ExtractColumns are called will also update the values
@@ -2435,7 +2443,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_047(log as clLogManager)
+		Sub tables_test_calc_047(log as clLogManager)
 		  //
 		  // Test full joins with join success column
 		  
@@ -2674,7 +2682,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_048(log as clLogManager)
+		Sub tables_test_calc_048(log as clLogManager)
 		  //
 		  // Test generation of unique names
 		  
@@ -2721,7 +2729,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_049(log as clLogManager)
+		Sub tables_test_calc_049(log as clLogManager)
 		  //
 		  // Test full joins
 		  
@@ -2926,7 +2934,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_050(log as clLogManager)
+		Sub tables_test_calc_050(log as clLogManager)
 		  //
 		  // Test full joins with join success column
 		  
@@ -3141,7 +3149,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_051(log as clLogManager)
+		Sub tables_test_calc_051(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3191,7 +3199,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_052(log as clLogManager)
+		Sub tables_test_calc_052(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3253,7 +3261,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_053(log as clLogManager)
+		Sub tables_test_calc_053(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3303,7 +3311,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_054(log as clLogManager)
+		Sub tables_test_calc_054(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3347,7 +3355,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_055(log as clLogManager)
+		Sub tables_test_calc_055(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3392,7 +3400,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_056(log as clLogManager)
+		Sub tables_test_calc_056(log as clLogManager)
 		  //
 		  // Test the pivot transformer
 		  //
@@ -3446,7 +3454,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_057(log as clLogManager)
+		Sub tables_test_calc_057(log as clLogManager)
 		  //
 		  // Test the method backportNewColumns()
 		  //
@@ -3504,7 +3512,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_058(log as clLogManager)
+		Sub tables_test_calc_058(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3565,7 +3573,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_059(log as clLogManager)
+		Sub tables_test_calc_059(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3628,7 +3636,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_calc_060(log as clLogManager)
+		Sub tables_test_calc_060(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3716,7 +3724,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_001(log as clLogManager)
+		Sub tables_test_io_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3726,15 +3734,15 @@ Protected Class clDataTableTests
 		  var fld_file3Text As FolderItem
 		  var fld_file3JSON As FolderItem
 		  
-		  var fld_folder As  FolderItem = GetTestBaseFolder()
-		  var sub_folder as FolderItem  = ClearFolder( fld_folder.Child(CurrentMethodName))
+		  var input_folder As  FolderItem = GetTestInputBaseFolder()
+		  var output_folder as FolderItem  =GetTestOutputFolder(CurrentMethodName)
 		  
-		  fld_file1 = fld_folder.Child("myfile3_10K_tab.txt")
-		  fld_file2  = fld_folder.Child("myfile3_10K_comma.txt")
+		  fld_file1 = input_folder.Child("myfile3_10K_tab.txt")
+		  fld_file2  = input_folder.Child("myfile3_10K_comma.txt")
 		  
 		  
-		  fld_file3Text  = sub_folder.Child("myfile3_10K_output.txt")
-		  fld_file3JSON  = sub_folder.Child("myfile3_10K_output.json")
+		  fld_file3Text  = output_folder.Child("myfile3_10K_output.txt")
+		  fld_file3JSON  = output_folder.Child("myfile3_10K_output.json")
 		  
 		  var table3 As New clDataTable(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
 		  
@@ -3764,7 +3772,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_002(log as clLogManager)
+		Sub tables_test_io_002(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3884,7 +3892,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_003(log as clLogManager)
+		Sub tables_test_io_003(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -3994,7 +4002,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_004(log as clLogManager)
+		Sub tables_test_io_004(log as clLogManager)
 		  
 		  
 		  log.StartTask(CurrentMethodName)
@@ -4005,14 +4013,13 @@ Protected Class clDataTableTests
 		  var fld_file3 As FolderItem
 		  var fld_fileX as FolderItem
 		  
-		  var main_folder As  FolderItem = GetTestBaseFolder()
-		  var sub_folder as FolderItem  = ClearFolder(main_folder.Child(CurrentMethodName))
+		  var input_folder As  FolderItem = GetTestInputBaseFolder()
 		  
 		  
-		  fld_file1 = main_folder.Child("myfile4_A_tab.txt")
-		  fld_file2  = main_folder.Child("myfile4_B_tab.txt") 
-		  fld_file3  = main_folder.Child("myfile4_C_tab.txt") 
-		  fld_fileX  = main_folder.Child("myfile4_X_tab.txt") 
+		  fld_file1 = input_folder.Child("myfile4_A_tab.txt")
+		  fld_file2  = input_folder.Child("myfile4_B_tab.txt") 
+		  fld_file3  = input_folder.Child("myfile4_C_tab.txt") 
+		  fld_fileX  = input_folder.Child("myfile4_X_tab.txt") 
 		  
 		  
 		  var table as new clDataTable("calc")
@@ -4057,7 +4064,7 @@ Protected Class clDataTableTests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub test_io_005(log as clLogManager)
+		Sub tables_test_io_005(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)
 		  
@@ -4078,6 +4085,32 @@ Protected Class clDataTableTests
 		  call check_value(log, "name v2", "table", v2_name)
 		  call check_value(log, "name v3", "table", v3_name)
 		  call check_value(log, "name v3", "table", v4_name)
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub tables_test_io_006(log as clLogManager)
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  var main_folder As  FolderItem = GetTestInputBaseFolder()
+		  var fld_file1 as FolderItem
+		  var fld_file2 as FolderItem
+		  
+		  
+		  fld_file1 = main_folder.Child("myfile3_10K_tab.txt")
+		  fld_file2  = main_folder.Child("myfile3_10K_tab_meta.txt") 
+		  
+		  
+		  
+		  var table1 As New clDataTable(new clTextReader(fld_file1, True, new clTextFileConfig(chr(9))))
+		  
+		  
 		  
 		  log.EndTask(CurrentMethodName)
 		  

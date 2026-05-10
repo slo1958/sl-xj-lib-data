@@ -592,12 +592,14 @@ For example, the function BasicFieldFilter() used before has the following imple
 ```xojo
 
 		Function BasicFieldFilter(the_row_index as integer, the_row_count as integer, the_column_names() as string, the_cell_values() as variant, paramarray function_param as variant) As Boolean
+		
 		  var field_name as string = function_param(0)
 		  var field_value as variant = function_param(1)
 		  
 		  var idx as integer = the_column_names.IndexOf(field_name)
 		  
 		  return the_cell_values(idx) = field_value
+		  
 		End Function
 
 ```
@@ -624,6 +626,7 @@ MyTable.AddRow(Array("Belgique","Bruxelles",1500,"BB"))
 MyTable.AddRow(Array("USA","Chicago",1600,"AA"))
 
 var filter_country as new clBooleanDataSerie("mask_country")
+
 for each cell as string in MyTable.GetColumn("Country")
   filter_country.AddElement(cell = "Belgique")
   
@@ -632,6 +635,7 @@ next
 call MyTable.AddColumn(filter_country)
 
 var filter_product as new clBooleanDataSerie("mask_product")
+
 for each cell as string in MyTable.GetColumn("product")
   filter_product.AddElement(cell = "BB")
   

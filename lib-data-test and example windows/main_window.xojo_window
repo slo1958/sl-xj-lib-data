@@ -392,7 +392,7 @@ End
 	#tag Event
 		Sub Pressed()
 		  
-		  var fld_folder As  FolderItem = GetTestBaseFolder()
+		  var fld_folder As  FolderItem = GetTestInputBaseFolder()
 		  
 		  fld_folder.Open
 		  
@@ -414,7 +414,7 @@ End
 		  var logwriter as  clLogManager = SetUpLogWriter(CheckBox1.value)
 		  
 		  logwriter.StartTask("Test examples")
-		   
+		  
 		  clDataTable_tests.tests_examples(logwriter)
 		  
 		  logwriter.EndTask("Test examples")

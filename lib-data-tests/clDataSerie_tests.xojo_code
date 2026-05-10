@@ -59,7 +59,7 @@ Protected Module clDataSerie_tests
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
-		  RunTests(new clDataSerieTests, "test_ca", logwriter)
+		  RunTests(new clDataSerieTests, "series_test_calc", logwriter)
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  
@@ -76,7 +76,7 @@ Protected Module clDataSerie_tests
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
-		  RunTests(new clDataSerieTests, "test_io", logwriter)
+		  RunTests(new clDataSerieTests, "seriess_test_io", logwriter)
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  

@@ -759,9 +759,10 @@ End
 		  var source() as Dictionary
 		  var dest() as DesktopListBox
 		  var header() as string
+		   
 		  
-		  for each test_object as Object in test_objects
-		    source.add( support_tests.GetTestMethods(test_object, "test"))
+		  for each test_object as clObjectTest in test_objects
+		    source.add( support_tests.GetTestMethods(test_object, test_object.GetTestPrefix + "test"))
 		    
 		  next
 		  
@@ -849,7 +850,7 @@ End
 
 
 	#tag Property, Flags = &h0
-		test_objects() As Object
+		test_objects() As clObjectTest
 	#tag EndProperty
 
 
@@ -878,7 +879,7 @@ End
 		  
 		  
 		  var logmanager as clLogManager = SetUpLogWriter()
-		   
+		  
 		  
 		  if m.Count  > 0 then
 		    logmanager.StartTask("Selected tests")
