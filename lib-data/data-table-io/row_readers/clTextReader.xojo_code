@@ -3,6 +3,15 @@ Class clTextReader
 Implements TableRowReaderInterface
 	#tag Method, Flags = &h0
 		Sub Close()
+		  //  
+		  // Close the data source
+		  //
+		  //  Parameters
+		  //  - 
+		  //  
+		  //  Returns:
+		  //  (none)
+		  //
 		  if self.TextFile = nil then 
 		    Return
 		    
@@ -18,7 +27,17 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h0
 		Function ColumnCount() As integer
+		  //
 		  // Part of the TableRowReaderInterface interface.
+		  //  
+		  // Return the number of columns in the source dataset
+		  //
+		  //  Parameters
+		  //  - 
+		  //  
+		  //  Returns:
+		  //  Number of columns in the data source
+		  //
 		  return mheader.Count
 		  
 		  
@@ -27,7 +46,16 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h0
 		Sub Constructor(SourceFileOrFolder as FolderItem, SourceHasHeader as Boolean, config as clTextFileConfig)
-		  
+		  //
+		  //  
+		  //  Parameters
+		  // - SourceFileOrFolder: Folderitem pointing to a file or to a folder
+		  // - SourceHasHeader: the first usable row in the file contains field names, used as names for the data series
+		  // - Config: Configuration parameters for the reader (separator, encoding, ...) 
+		  //  
+		  //  Returns:
+		  //  (none)
+		  //
 		  var TempConfig as clTextFileConfig = config
 		  
 		  if TempConfig = nil then TempConfig = new clTextFileConfig
@@ -53,21 +81,49 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h0
 		Function CurrentRowIndex() As integer
+		  //
 		  // Part of the TableRowReaderInterface interface.
-		  
+		  //
+		  // Return the index of the current source line
+		  //  
+		  //  Parameters
+		  // - 
+		  //  
+		  //  Returns:
+		  //  Index of the current source line
+		  //
 		  Return LineCount
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function Datafile() As FolderItem
+		  //
+		  // Return the path to the current file
+		  //  
+		  //  Parameters
+		  // - 
+		  //  
+		  //  Returns:
+		  //  Folderitem pointing to the current file
+		  //
+		  
 		  return self.CurrentFIle
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function EndOfTable() As boolean
+		  //
 		  // Part of the TableRowReaderInterface interface.
+		  //
+		  //  
+		  //  Parameters
+		  // - 
+		  //  
+		  //  Returns:
+		  //  End of dataset has been reached
+		  //
 		  
 		  if TextFile = nil then
 		    return True
@@ -88,21 +144,17 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumnName(field_index as integer) As String
-		  if field_index > mheader.LastIndex then
-		    return ""
-		    
-		  else
-		    return mheader(field_index)
-		    
-		  end if
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetColumnNames() As string()
+		  //
 		  // Part of the TableRowReaderInterface interface.
+		  //
+		  //  
+		  //  Parameters
+		  // - 
+		  //  
+		  //  Returns:
+		  //  Return the name of the columns
+		  //
 		  
 		  var tmp() as string
 		  for each s as string in mheader
@@ -172,6 +224,13 @@ Implements TableRowReaderInterface
 		  
 		  return ret
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetMetadata() As Dictionary
+		  return nil
 		  
 		End Function
 	#tag EndMethod
@@ -321,7 +380,16 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h21
 		Private Sub OpenTextStream(SourceFile as FolderItem)
-		  
+		  //
+		  // Open the source file and load the column names, if the source file contains column headers
+		  //
+		  //  
+		  //  Parameters
+		  // - Source file
+		  //  
+		  //  Returns:
+		  // (none)
+		  //
 		  self.CurrentFIle = SourceFile
 		  
 		  if not self.CurrentFIle.IsFolder and self.CurrentFIle.Exists then
@@ -353,7 +421,17 @@ Implements TableRowReaderInterface
 
 	#tag Method, Flags = &h0
 		Sub UpdateExternalName(new_name as string)
-		  
+		  //
+		  // This method is used when the path passed to the constructor is the path of a folder
+		  // This method is then used to define the filename
+		  //
+		  //  
+		  //  Parameters
+		  //  - new_name: name of the file
+		  //  
+		  //  Returns:
+		  //  (none)
+		  //
 		  var tmp_fld as new FolderItem  
 		  
 		  if self.SourcePath = nil then

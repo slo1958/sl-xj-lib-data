@@ -451,12 +451,12 @@ End
 		  lb_meta0.addrow("name",col.name)
 		  lb_meta0.addrow("title", col.DisplayTitle)
 		  
-		  var m as clMetadata = col.GetMetadata
+		  var meta as clMetadata = col.GetMetadata
 		  
-		  for i as integer = 0 to m.LastIndex
-		    var r() as string = m.MetadataAt(i)
+		  for i as integer = 0 to meta.LastIndex
+		    var m as clMetadataEntry = meta.MetadataAt(i)
 		    
-		    lb_meta0.addrow(r(0), r(1))
+		    lb_meta0.addrow(m.TypeValue, m.DataValue)
 		    
 		  next
 		  
@@ -478,12 +478,12 @@ End
 		  lb_meta1.addrow("name",tbl.name)
 		  //lb_meta.addrow("title", tbl.)
 		  
-		  var m as clMetadata = tbl.GetMetadata
+		  var meta as clMetadata = tbl.GetMetadata
 		  
-		  for i as integer = 0 to m.LastIndex
-		    var r() as string = m.MetadataAt(i)
+		  for i as integer = 0 to meta.LastIndex
+		    var m as clMetadataEntry = meta.MetadataAt(i)
 		    
-		    lb_meta1.addrow(r(0), r(1))
+		    lb_meta1.addrow(m.TypeValue, m.DataValue)
 		    
 		  next
 		  

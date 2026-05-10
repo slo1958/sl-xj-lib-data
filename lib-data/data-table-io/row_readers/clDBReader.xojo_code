@@ -136,6 +136,13 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetMetadata() As Dictionary
+		  return nil
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetSourceInfo(RecordSource as string) As string()
 		  
 		  var select_index as integer = RecordSource.IndexOf("select ") 

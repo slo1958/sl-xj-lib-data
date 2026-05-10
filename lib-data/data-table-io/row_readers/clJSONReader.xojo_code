@@ -115,6 +115,13 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetMetadata() As Dictionary
+		  return nil
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Name() As string
 		  // Part of the TableRowReaderInterface interface.
 		  

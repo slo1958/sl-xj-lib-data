@@ -1761,6 +1761,24 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  self.AdjustLength()
 		  
+		  //
+		  // Handle the metadata discoverd in data source
+		  //
+		  var metadict as Dictionary = NewTableSource.GetMetadata
+		  
+		  if metadict <> nil then
+		    for each key as string in metadict.Keys
+		      var vs as string = metadict.value(key).StringValue
+		      
+		      self.AddMetaData(DefaultLoadedMetadataPrefix+key, vs)
+		      
+		    next
+		    
+		  end if
+		  
+		  
+		  
+		  
 		End Sub
 	#tag EndMethod
 
@@ -3789,7 +3807,7 @@ Implements TableColumnReaderInterface,Iterable
 
 	#tag Method, Flags = &h0
 		Sub SaveSelectedRowsWithIndex(write_to as TableRowWriterInterface, selectedRowIndex() as integer)
-		   
+		  
 		  
 		  if selectedRowIndex.Count = 0 then return  
 		  
@@ -3805,7 +3823,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		  if selectedRowIndex.Count = 0 then return  
-		   
+		  
 		  self.save(write_to, false, selectedRowIndex)
 		  
 		  return 
@@ -4315,6 +4333,9 @@ Implements TableColumnReaderInterface,Iterable
 
 
 	#tag Constant, Name = DefaultColumnNamePattern, Type = String, Dynamic = False, Default = \"Untitled %0", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = DefaultLoadedMetadataPrefix, Type = String, Dynamic = False, Default = \"Loaded:", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = DefaultRowIDColumnName, Type = String, Dynamic = False, Default = \"row_id", Scope = Public

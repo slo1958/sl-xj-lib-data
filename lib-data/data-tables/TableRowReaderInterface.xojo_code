@@ -37,6 +37,12 @@ Protected Interface TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetMetadata() As Dictionary
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Name() As string
 		  
 		End Function

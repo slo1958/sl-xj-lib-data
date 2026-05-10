@@ -1,21 +1,32 @@
 #tag Class
 Protected Class clMetadata
 	#tag Method, Flags = &h0
+		Sub Add(item as clMetadataEntry)
+		  
+		  self.DataList.Add(item)
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Add(MetadataType as string, Message as string)
 		  //
 		  // Add an entry to the metadata
 		  //
 		  // Parameters:
-		  // - Metadata type (string) : type of information added
+		  // - MetadataType (string) : type of information added
 		  // - message (string) : details
 		  //
+		  // Return
+		  // (none)
+		  //
 		  
-		  var dtp as string = MetadataType.ReplaceAll(":","-")
-		  var msg as string = Message.Trim
+		  DataList.Add(new clMetadataEntry(MetadataType, Message))
 		  
-		  var p as pair = (dtp:msg)
+		  return
 		  
-		  DataList.Add(p)
 		  
 		  
 		End Sub
@@ -52,14 +63,28 @@ Protected Class clMetadata
 		  
 		  var ret() as string
 		  
-		  for each p as pair in self.DataList
-		    if filterOn.trim.Length = 0 or filterOn.trim = p.left then ret.Add(p.left + sep + p.right)
+		  for each m as clMetadataEntry in self.DataList
+		    if filterOn.trim.Length = 0 or filterOn.trim = m.TypeValue then ret.Add(m.TypeValue + sep + m.DataValue)
 		    
 		  next
 		  
 		  return ret
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub AppendFrom(source as clMetadata)
+		  
+		  for i as integer = 0 to source.LastIndex
+		    self.Add(MetadataAt(i).Clone)
+		    
+		  next
+		  
+		  Return
+		  
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -75,10 +100,11 @@ Protected Class clMetadata
 		    
 		  end if
 		  
-		  var new_list() as pair
+		  var new_list() as clMetadataEntry
 		  
-		  for each p as pair in self.DataList
-		    if p.Left <> DataType.trim then new_list.Add(p)
+		  
+		  for each m as clMetadataEntry in self.DataList
+		    if m.TypeValue<> DataType.trim then new_list.Add(m)
 		    
 		  next
 		  
@@ -96,8 +122,8 @@ Protected Class clMetadata
 		  
 		  var ret as new clMetadata
 		  
-		  for each p as pair in self.DataList
-		    ret.Add(p.left, p.Right)
+		  for each m as clMetadataEntry in self.DataList
+		    ret.add(m.Clone)
 		    
 		  next
 		  
@@ -127,9 +153,9 @@ Protected Class clMetadata
 		  //
 		  
 		  var ret as integer
-		  for each p as pair in self.DataList
+		  for each m as clMetadataEntry in self.DataList
 		    
-		    if p.left = MetadataType then ret = ret + 1
+		    if m.TypeValue = MetadataType then ret = ret + 1
 		    
 		  next
 		  
@@ -147,9 +173,8 @@ Protected Class clMetadata
 		  // - Metadata type (string) : type of information searched
 		  //
 		  
-		  for each p as pair in self.DataList
-		    
-		    if p.left = MetadataType then return true
+		  for each m as clMetadataEntry in self.DataList
+		    if m.TypeValue = MetadataType then return true
 		    
 		  next
 		  
@@ -171,7 +196,7 @@ Protected Class clMetadata
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function MetadataAt(rowindex as Integer) As string()
+		Function MetadataAt(rowindex as Integer) As clMetadataEntry
 		  //
 		  // Returns the metadata entry at rowindex
 		  //
@@ -179,31 +204,28 @@ Protected Class clMetadata
 		  //  - rowindex (integer) index of the entry to be returned
 		  // 
 		  // Returns
-		  //  - string array with two elements (Datatype and message)
+		  //  - clMetadataEntry
 		  //
 		  
-		  var ret() as string
-		  ret.Add("")
-		  ret.Add("")
+		  var m as clMetadataEntry 
+		  
 		  
 		  try
-		    var p as pair = DataList(rowindex)
-		    ret(0) = p.Left
-		    ret(1) = p.Right
-		    
+		    m = self.DataList(rowindex).Clone
 		    
 		  catch 
+		    m = nil
 		    
 		  end Try
 		  
-		  return ret 
+		  return m 
 		  
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h21
-		Private DataList() As pair
+		Private DataList() As clMetadataEntry
 	#tag EndProperty
 
 
