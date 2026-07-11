@@ -48,6 +48,27 @@ Protected Class clMetadataEntry
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ToSrtring() As string
+		  var tmp() as string
+		  
+		  if MetadataCategory.Length > 0 then
+		    tmp.Add(MetadataCategory)
+		    
+		  end if
+		  
+		  tmp.Add(MetadataType)
+		  
+		  tmp.Add(MetadataValue)
+		  
+		  return String.FromArray(tmp, " ")
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function TypeValue() As string
 		  
 		  return MetadataType
@@ -107,14 +128,6 @@ Protected Class clMetadataEntry
 			Visible=true
 			Group="Position"
 			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="MetadataType"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

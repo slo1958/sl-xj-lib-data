@@ -2367,6 +2367,30 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetColumnIndex(pColumnName as string) As integer
+		  //  
+		  //  returns the index of a column
+		  //  
+		  //  Parameters:
+		  //  - pColumnName: the name of the column
+		  // 
+		  //  
+		  //  Returns:
+		  //  - the index of the column matching the name or -1
+		  //  
+		  
+		  for i as integer = 0 to columns.LastIndex
+		    if columns(i).name = pColumnName then return i
+		    
+		  next
+		  
+		  return -1
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetColumnNames() As string()
 		  //  
 		  //  Return the name of all columns
@@ -3732,6 +3756,64 @@ Implements TableColumnReaderInterface,Iterable
 		    End If
 		    
 		  Next
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ReplaceColumn(columnToReplace as string, newColumn as clAbstractDataSerie)
+		  // 
+		  // Replace a column by a new column, preserving the order of the coiumns
+		  //
+		  // Parameters
+		  // - ColumnToReplace: name of the column to be replaced
+		  // - newColumn: replacing columns
+		  //
+		  // Returns:
+		  // (nothing)
+		  
+		  
+		  var idx as integer = self.GetColumnIndex(columnToReplace)
+		  
+		  if idx < 0 then 
+		    AddErrorMessage(CurrentMethodName, ErrMsgCannotFIndColumn, self.Name, columnToReplace)
+		    Return
+		    
+		  end if
+		  
+		  var tmp_column_name as string = newColumn.name
+		  
+		  If Self.GetColumn(tmp_column_name, True) <> Nil and columnToReplace <> newColumn.name then
+		    self.AddWarningMessage(CurrentMethodName, ErrMsgColumnAlreadyDefined, self.TableName, tmp_column_name)
+		    Return
+		    
+		  end if
+		  
+		  
+		  if self.IsPersistant then 
+		    
+		    if  newColumn.IsLinkedToTable then Return
+		    
+		    newColumn.SetLinkToTable(self)
+		    
+		    self.columns(idx) = newColumn
+		    
+		    self.AddMetaData("change column","replace column " + columnToReplace+" by " + tmp_column_name)
+		    
+		  else
+		    if not newColumn.IsLinkedToTable and not self.allow_local_columns then 
+		      AddWarningMessage("AddColumn",ErrMsgCannotAddColumnToVirtualTable, self.Name, tmp_column_name)
+		      return
+		    end if
+		    
+		    newColumn.SetLinkToTable(self)
+		    
+		    self.columns(idx) = newColumn
+		    
+		    self.AddMetaData("change column","replace column " + columnToReplace+" by " + tmp_column_name)
+		    
+		  end if
+		  
+		  return 
 		End Sub
 	#tag EndMethod
 
