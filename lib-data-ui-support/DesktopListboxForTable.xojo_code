@@ -2,13 +2,38 @@
 Protected Class DesktopListboxForTable
 Inherits DesktopListBox
 	#tag Method, Flags = &h0
+		Sub DefineColumnOrder(pTable as TableColumnReaderInterface)
+		  var tmp_tbl as TableColumnReaderInterface = pTable
+		  var nbr_columns as integer = tmp_tbl.ColumnCount
+		  
+		  Redim ColumnsOrder(nbr_columns-1)
+		  
+		  for column_index as integer = 0 to  nbr_columns-1
+		    ColumnsOrder(column_index) = column_index
+		    
+		  next
+		  
+		  Return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function FormatRowID(rowID as Integer, maxRowID as integer) As string
+		  Return str(rowID)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub ShowTable(pTable as TableColumnReaderInterface)
+		  
 		  
 		  var tmp_listbox as DesktopListBox = self
 		  var tmp_tbl as TableColumnReaderInterface = pTable
 		  
-		  
 		  var nbr_columns as integer = tmp_tbl.ColumnCount
+		  
+		  if ColumnsOrder.Count <> nbr_columns then DefineColumnOrder(pTable)
 		  
 		  tmp_listbox.RemoveAllRows
 		  
@@ -21,9 +46,10 @@ Inherits DesktopListBox
 		  
 		  tmp_listbox.HeaderAt(0)="#"
 		  
-		  for column_index as integer = 0 to  nbr_columns-1
-		    tmp_listbox.HeaderAt(column_index+1) = tmp_tbl.GetColumnAt(column_index).DisplayTitle
-		    tmp_listbox.ColumnTagAt(column_index+1) = tmp_tbl.GetColumnAt(column_index)
+		  for column_base_index as integer = 0 to  nbr_columns-1
+		    var column_index as integer = self.ColumnsOrder(column_base_index)
+		    tmp_listbox.HeaderAt(column_base_index+1) = tmp_tbl.GetColumnAt(column_index).DisplayTitle
+		    tmp_listbox.ColumnTagAt(column_base_index+1) = tmp_tbl.GetColumnAt(column_index)
 		  next
 		  
 		  //  
@@ -32,17 +58,18 @@ Inherits DesktopListBox
 		  var tmp_last_row as integer = tmp_tbl.RowCount
 		  
 		  for row_index as integer = 0 to tmp_last_row - 1
-		    tmp_listbox.AddRow(str(row_index))
+		    tmp_listbox.AddRow(FormatRowID(row_index, tmp_last_row))
 		    
 		  next
 		  
 		  
-		  for column_index as integer = 0 to  nbr_columns-1
+		  for column_base_index as integer = 0 to  nbr_columns-1
+		    var column_index as integer = self.ColumnsOrder(column_base_index)
 		    var tmp_col as clAbstractDataSerie = tmp_tbl.GetColumnAt(column_index)
 		    
 		    for  row_index as integer = 0 to tmp_last_row - 1
 		      
-		      tmp_listbox.CellTextAt(row_index, column_index+1) =  tmp_col.GetElementAsString(row_index)
+		      tmp_listbox.CellTextAt(row_index, column_base_index+1) =  tmp_col.GetElementAsString(row_index)
 		      
 		    next
 		    
@@ -53,6 +80,11 @@ Inherits DesktopListBox
 		  
 		End Sub
 	#tag EndMethod
+
+
+	#tag Property, Flags = &h21
+		Private ColumnsOrder() As Integer
+	#tag EndProperty
 
 
 	#tag ViewBehavior
