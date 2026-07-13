@@ -3788,6 +3788,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  end if
 		  
+		  var oldColumn as clAbstractDataSerie = self.columns(idx)
 		  
 		  if self.IsPersistant then 
 		    
@@ -3796,6 +3797,8 @@ Implements TableColumnReaderInterface,Iterable
 		    newColumn.SetLinkToTable(self)
 		    
 		    self.columns(idx) = newColumn
+		    
+		    oldColumn.ResetLinkToTableIfMatching(self)
 		    
 		    self.AddMetaData("change column","replace column " + columnToReplace+" by " + tmp_column_name)
 		    
@@ -3808,6 +3811,8 @@ Implements TableColumnReaderInterface,Iterable
 		    newColumn.SetLinkToTable(self)
 		    
 		    self.columns(idx) = newColumn
+		    
+		    oldColumn.ResetLinkToTableIfMatching(self)
 		    
 		    self.AddMetaData("change column","replace column " + columnToReplace+" by " + tmp_column_name)
 		    

@@ -3724,6 +3724,123 @@ Inherits clObjectTest
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub tables_test_calc_061(log as clLogManager)
+		  //
+		  // test that a replaced column looses its links to the table
+		  //
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  var table1 As New clDataTable("mytable")
+		  
+		  var col1 as clAbstractDataSerie = table1.AddColumn(new clStringDataSerie("City"))
+		  var col2 as clAbstractDataSerie =  table1.AddColumn(new clStringDataSerie("Inventory"))
+		  var col3 as clAbstractDataSerie =  table1.AddColumn(new clStringDataSerie("Month"))
+		  
+		  table1.AddRow(Array("Brussels","100.0","2020-01"))
+		  table1.AddRow(Array("Brussels","97.0","2020-02"))
+		  table1.AddRow(Array("Brussels","93.0","2020-03"))
+		  
+		  var newcol2 as new clNumberDataSerie("Inventory")
+		  newcol2.AddElements(table1.GetColumn("inventory").GetElements)
+		  
+		  table1.ReplaceColumn("inventory", newcol2)
+		  
+		  var table1exp As New clDataTable("mytable")
+		  
+		  call table1exp.AddColumn(new clStringDataSerie("City"))
+		  call table1exp.AddColumn(new clNumberDataSerie("Inventory"))
+		  call table1exp.AddColumn(new clStringDataSerie("Month"))
+		  
+		  table1exp.AddRow(Array("Brussels",100.0,"2020-01"))
+		  table1exp.AddRow(Array("Brussels",97.0,"2020-02"))
+		  table1exp.AddRow(Array("Brussels",93.0,"2020-03"))
+		  
+		  
+		  call check_table(log, "table1 integrity", nil, table1) 
+		  
+		  call check_table(log, "results", table1exp, table1) 
+		  
+		  call check_value(log, "table pointer", nil, col2.GetLinkedTable())
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub tables_test_calc_062(log as clLogManager)
+		  //
+		  // test that a replaced column in a virtual table retains its links to the table
+		  //
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  var table1 As New clDataTable("mytable")
+		  
+		  var t1col1 as clAbstractDataSerie = table1.AddColumn(new clStringDataSerie("City"))
+		  var t1col2 as clAbstractDataSerie =  table1.AddColumn(new clStringDataSerie("Inventory"))
+		  var t1col3 as clAbstractDataSerie =  table1.AddColumn(new clStringDataSerie("Month"))
+		  
+		  table1.AddRow(Array("Brussels","100.0","2020-01"))
+		  table1.AddRow(Array("Brussels","97.0","2020-02"))
+		  table1.AddRow(Array("Brussels","93.0","2020-03"))
+		  
+		  var table2 as clDataTable = table1.SelectAllColumns(true)
+		  
+		  var newcol2 as new clNumberDataSerie("Inventory")
+		  newcol2.AddElements(table1.GetColumn("Inventory").GetElements)
+		  
+		  table2.ReplaceColumn("Inventory", newcol2)
+		  
+		  var t2col1 as clAbstractDataSerie = table2.GetColumn("City")
+		  var t2col2 as clAbstractDataSerie = table2.GetColumn("Inventory")
+		  var t2col3 as clAbstractDataSerie = table2.GetColumn("Month")
+		  
+		  
+		  
+		  var table1exp As New clDataTable("mytable")
+		  call table1exp.AddColumn(new clStringDataSerie("City"))
+		  call table1exp.AddColumn(new clStringDataSerie("Inventory"))
+		  call table1exp.AddColumn(new clStringDataSerie("Month"))
+		  
+		  table1exp.AddRow(Array("Brussels","100.0","2020-01"))
+		  table1exp.AddRow(Array("Brussels","97.0","2020-02"))
+		  table1exp.AddRow(Array("Brussels","93.0","2020-03"))
+		  
+		  
+		  var table2exp As New clDataTable("mytable")
+		  
+		  call table2exp.AddColumn(new clStringDataSerie("City"))
+		  call table2exp.AddColumn(new clNumberDataSerie("Inventory"))
+		  call table2exp.AddColumn(new clStringDataSerie("Month"))
+		  
+		  table2exp.AddRow(Array("Brussels",100.0,"2020-01"))
+		  table2exp.AddRow(Array("Brussels",97.0,"2020-02"))
+		  table2exp.AddRow(Array("Brussels",93.0,"2020-03"))
+		  
+		  
+		  call check_table(log, "table1 integrity", nil, table1) 
+		  call check_table(log, "table2 integrity", nil, table2) 
+		  
+		  call check_table(log, "results table1", table1exp, table1) 
+		  call check_table(log, "results table2", table2exp, table2) 
+		  
+		  
+		  call check_value(log, "table pointer t1col1", table1, t1col1.GetLinkedTable())
+		  call check_value(log, "table pointer t1col2", table1, t1col2.GetLinkedTable())
+		  call check_value(log, "table pointer t1col3", table1, t1col3.GetLinkedTable())
+		  
+		  call check_value(log, "table pointer t2col1", table1, t2col1.GetLinkedTable())
+		  call check_value(log, "table pointer t2col2", table2, t2col2.GetLinkedTable())
+		  call check_value(log, "table pointer t2col3", table1, t2col3.GetLinkedTable())
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub tables_test_io_001(log as clLogManager)
 		  
 		  log.StartTask(CurrentMethodName)

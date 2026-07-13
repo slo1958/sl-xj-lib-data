@@ -1006,6 +1006,15 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetLinkedTable() As clDataTable
+		  
+		  if self.physical_table_link = nil then return nil
+		  
+		  return clDataTable(self.physical_table_link.Value)
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetLinkedTableName() As string
 		  //
 		  // Returns the name of table owning the column
@@ -1230,6 +1239,26 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub ResetLinkToTableIfMatching(the_table as clDataTable)
+		  
+		  if the_table = nil then
+		    physical_table_link = nil
+		    
+		  elseIf self.GetLinkedTable() = the_table Then
+		    physical_table_link = nil
+		    
+		  Else
+		    // no action
+		    
+		  End If
+		  
+		  return 
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub ResetMetadata()
 		  //  
 		  //  Resets the meta data
@@ -1376,7 +1405,7 @@ Implements Iterable
 		    physical_table_link = new Weakref(the_table)
 		    
 		  Else
-		    Raise New clDataException("Cannot redefine link to table for a serie")
+		    Raise New clDataException("Cannot redefine link to table for serie " + self.SerieName)
 		    
 		  End If
 		  
