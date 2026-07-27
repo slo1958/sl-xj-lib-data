@@ -55,6 +55,12 @@ Protected Interface TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function NextRowAsString() As string()
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function NextRowAsVariant() As variant()
 		  
 		End Function

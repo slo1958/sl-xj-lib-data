@@ -91,6 +91,8 @@ Inherits DesktopListBox
 		    
 		  next
 		  
+		  Return
+		  
 		  
 		  
 		  
@@ -102,9 +104,9 @@ Inherits DesktopListBox
 		  
 		  
 		  var tmp_listbox as DesktopListBox = self
-		  var tmp_tbl as TableRowReaderInterface = Source
+		  var tmp_rowsource as TableRowReaderInterface = Source
 		  
-		  var nbr_columns as integer = tmp_tbl.ColumnCount
+		  var nbr_columns as integer = tmp_rowsource.ColumnCount
 		  
 		  if ColumnsOrder.Count <> nbr_columns then DefineColumnOrder(Source)
 		  
@@ -119,11 +121,11 @@ Inherits DesktopListBox
 		  
 		  tmp_listbox.HeaderAt(0)="#"
 		  
-		  var tmp_col_names() as string = tmp_tbl.GetColumnNames()
+		  var tmp_col_names() as string = tmp_rowsource.GetColumnNames()
 		  
 		  for column_base_index as integer = 0 to  nbr_columns-1
 		    var column_index as integer = self.ColumnsOrder(column_base_index)
-		    tmp_listbox.HeaderAt(column_base_index+1) = tmp_col_names((column_index)
+		    tmp_listbox.HeaderAt(column_base_index+1) = tmp_col_names(column_index)
 		    tmp_listbox.ColumnTagAt(column_base_index+1) = nil
 		  next
 		  
@@ -131,33 +133,28 @@ Inherits DesktopListBox
 		  //  show data
 		  //
 		  
-		  for each row as clDataRow in tmp_tbl
-		    
-		  next
+		  var tmp_rowindex as integer = 0
 		  
+		  while not tmp_rowsource.EndOfTable
+		    var tmp_row() as String
+		    tmp_row  = tmp_rowsource.NextRowAsString
 		    
-		  var tmp_last_row as integer = tmp_tbl.RowCount
-		  
-		  for row_index as integer = 0 to tmp_last_row - 1
-		    tmp_listbox.AddRow(FormatRowID(row_index, tmp_last_row))
+		    tmp_listbox.AddRow(FormatRowID(tmp_rowindex, -1))
 		    
-		  next
-		  
-		  
-		  for column_base_index as integer = 0 to  nbr_columns-1
-		    var column_index as integer = self.ColumnsOrder(column_base_index)
-		    var tmp_col as clAbstractDataSerie = tmp_tbl.GetColumnAt(column_index)
-		    
-		    for  row_index as integer = 0 to tmp_last_row - 1
+		    for column_base_index as integer = 0 to  nbr_columns-1
+		      var column_index as integer = self.ColumnsOrder(column_base_index)
 		      
-		      tmp_listbox.CellTextAt(row_index, column_base_index+1) =  tmp_col.GetElementAsString(row_index)
+		      
+		      tmp_listbox.CellTextAt(tmp_rowindex, column_base_index+1) =  tmp_row(column_index)
 		      
 		    next
 		    
-		  next
+		    
+		    tmp_rowindex = tmp_rowindex + 1
+		    
+		  wend
 		  
-		  
-		  
+		  return
 		  
 		End Sub
 	#tag EndMethod

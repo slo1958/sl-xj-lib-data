@@ -140,6 +140,28 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function NextRowAsString() As string()
+		  // Part of the TableRowReaderInterface interface.
+		  
+		  var cellArray() as string
+		  
+		  last_row_index = last_row_index + 1
+		  
+		  if self.last_row_index > self.source_dict.LastIndex then return cellArray
+		  
+		  var d as Dictionary  = source_dict(last_row_index)
+		  
+		  for each field as string in column_names
+		    cellArray.Add(d.Lookup(field, ""))
+		    
+		  next
+		  
+		  return cellArray
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function NextRowAsVariant() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  

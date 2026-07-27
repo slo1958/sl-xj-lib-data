@@ -84,6 +84,21 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function NextRowAsString() As string()
+		  // Part of the TableRowReaderInterface interface.
+		  var row_value() as string
+		  
+		  for column_index as integer = 0 to table.ColumnCount-1
+		    row_value.add(table.GetColumnAt(column_index).GetElementAsString(current_row))
+		    
+		  next
+		  
+		  current_row = current_row + 1
+		  return row_value
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function NextRowAsVariant() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  var row_value() as variant

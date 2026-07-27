@@ -189,6 +189,26 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function NextRowAsString() As string()
+		  // Part of the TableRowReaderInterface interface.
+		  
+		  var tmp() as String
+		  
+		  if rs = nil then return tmp
+		  
+		  for i as integer = 0 to  rs.LastColumnIndex
+		    tmp.add(rs.ColumnAt(i).StringValue)
+		    
+		  next
+		  
+		  rs.MoveToNextRow
+		  
+		  return tmp
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function NextRowAsVariant() As variant()
 		  // Part of the TableRowReaderInterface interface.
 		  
