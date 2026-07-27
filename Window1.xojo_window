@@ -25,12 +25,73 @@ Begin DesktopWindow Window1
    Type            =   0
    Visible         =   True
    Width           =   600
+   Begin DesktopButton Button1
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Button"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   0
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   360
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   80
+   End
 End
 #tag EndDesktopWindow
 
 #tag WindowCode
 #tag EndWindowCode
 
+#tag Events Button1
+	#tag Event
+		Sub Pressed()
+		  
+		  // Create a table
+		  
+		  
+		  var table0 As New clDataTable("mytable")
+		  
+		  call table0.AddColumns(Array("country","city","sales"))
+		  
+		  table0.AddRow(Array("France","Paris",1100))
+		  table0.AddRow(Array("","Marseille",1200))
+		  table0.AddRow(Array("Belgique","",1300))
+		  table0.AddRow(Array("USA","NewYork",1400))
+		  table0.AddRow(Array("Belgique","Bruxelles",1500))
+		  table0.AddRow(Array("USA","Chicago",1600))
+		  
+		  
+		  var shadow0 as clAbstractShadowTable = new clShadowTable(table0)
+		  
+		  var shadow1 as clAbstractShadowTable = new clLinearShadowTable(shadow0)
+		  
+		  var shadowread as new clShadowTableRowReader(shadow1)
+		  
+		  // add list box and link row reader
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
 #tag ViewBehavior
 	#tag ViewProperty
 		Name="Name"

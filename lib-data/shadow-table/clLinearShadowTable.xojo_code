@@ -2,11 +2,11 @@
 Protected Class clLinearShadowTable
 Inherits clAbstractShadowTable
 	#tag Method, Flags = &h0
-		Sub Constructor(pSourceShadowTable as clShadowTable)
+		Sub Constructor(pSourceShadowTable as clAbstractShadowTable)
 		  
 		  super.Constructor
 		  
-		  self.SourceTable = pSourceShadowTable
+		  self.Source = pSourceShadowTable
 		  
 		  return
 		  
@@ -33,7 +33,7 @@ Inherits clAbstractShadowTable
 
 
 	#tag Property, Flags = &h0
-		SourceTable As clShadowTable
+		Source As clAbstractShadowTable
 	#tag EndProperty
 
 
