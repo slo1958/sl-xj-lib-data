@@ -2,8 +2,24 @@
 Protected Class DesktopListboxForTable
 Inherits DesktopListBox
 	#tag Method, Flags = &h0
-		Sub DefineColumnOrder(pTable as TableColumnReaderInterface)
-		  var tmp_tbl as TableColumnReaderInterface = pTable
+		Sub DefineColumnOrder(Source as TableColumnReaderInterface)
+		  var tmp_tbl as TableColumnReaderInterface = Source
+		  var nbr_columns as integer = tmp_tbl.ColumnCount
+		  
+		  Redim ColumnsOrder(nbr_columns-1)
+		  
+		  for column_index as integer = 0 to  nbr_columns-1
+		    ColumnsOrder(column_index) = column_index
+		    
+		  next
+		  
+		  Return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub DefineColumnOrder(Source as TableRowReaderInterface)
+		  var tmp_tbl as TableRowReaderInterface = Source
 		  var nbr_columns as integer = tmp_tbl.ColumnCount
 		  
 		  Redim ColumnsOrder(nbr_columns-1)
@@ -25,15 +41,15 @@ Inherits DesktopListBox
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ShowTable(pTable as TableColumnReaderInterface)
+		Sub ShowTable(Source as TableColumnReaderInterface)
 		  
 		  
 		  var tmp_listbox as DesktopListBox = self
-		  var tmp_tbl as TableColumnReaderInterface = pTable
+		  var tmp_tbl as TableColumnReaderInterface = Source
 		  
 		  var nbr_columns as integer = tmp_tbl.ColumnCount
 		  
-		  if ColumnsOrder.Count <> nbr_columns then DefineColumnOrder(pTable)
+		  if ColumnsOrder.Count <> nbr_columns then DefineColumnOrder(Source)
 		  
 		  tmp_listbox.RemoveAllRows
 		  
@@ -55,6 +71,71 @@ Inherits DesktopListBox
 		  //  
 		  //  show data
 		  //  
+		  var tmp_last_row as integer = tmp_tbl.RowCount
+		  
+		  for row_index as integer = 0 to tmp_last_row - 1
+		    tmp_listbox.AddRow(FormatRowID(row_index, tmp_last_row))
+		    
+		  next
+		  
+		  
+		  for column_base_index as integer = 0 to  nbr_columns-1
+		    var column_index as integer = self.ColumnsOrder(column_base_index)
+		    var tmp_col as clAbstractDataSerie = tmp_tbl.GetColumnAt(column_index)
+		    
+		    for  row_index as integer = 0 to tmp_last_row - 1
+		      
+		      tmp_listbox.CellTextAt(row_index, column_base_index+1) =  tmp_col.GetElementAsString(row_index)
+		      
+		    next
+		    
+		  next
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ShowTable(Source as TableRowReaderInterface)
+		  
+		  
+		  var tmp_listbox as DesktopListBox = self
+		  var tmp_tbl as TableRowReaderInterface = Source
+		  
+		  var nbr_columns as integer = tmp_tbl.ColumnCount
+		  
+		  if ColumnsOrder.Count <> nbr_columns then DefineColumnOrder(Source)
+		  
+		  tmp_listbox.RemoveAllRows
+		  
+		  //  
+		  //  update table header
+		  //  
+		  tmp_listbox.HasHeader = True
+		  
+		  tmp_listbox.ColumnCount = nbr_columns + 1
+		  
+		  tmp_listbox.HeaderAt(0)="#"
+		  
+		  var tmp_col_names() as string = tmp_tbl.GetColumnNames()
+		  
+		  for column_base_index as integer = 0 to  nbr_columns-1
+		    var column_index as integer = self.ColumnsOrder(column_base_index)
+		    tmp_listbox.HeaderAt(column_base_index+1) = tmp_col_names((column_index)
+		    tmp_listbox.ColumnTagAt(column_base_index+1) = nil
+		  next
+		  
+		  //  
+		  //  show data
+		  //
+		  
+		  for each row as clDataRow in tmp_tbl
+		    
+		  next
+		  
+		    
 		  var tmp_last_row as integer = tmp_tbl.RowCount
 		  
 		  for row_index as integer = 0 to tmp_last_row - 1
