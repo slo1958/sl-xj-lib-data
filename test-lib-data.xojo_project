@@ -182,6 +182,7 @@ Class=clDataRowBuffer;lib-data/shadow-table/clDataRowBuffer.xojo_code;&h00000000
 Class=clShadowTable;lib-data/shadow-table/clShadowTable.xojo_code;&h00000000022A27FF;&h000000002B2797FF;false
 Class=clAbstractShadowTable;lib-data/shadow-table/clAbstractShadowTable.xojo_code;&h0000000024FBA7FF;&h000000002B2797FF;false
 Class=clLinearShadowTable;lib-data/shadow-table/clLinearShadowTable.xojo_code;&h000000001B51AFFF;&h000000002B2797FF;false
+Class=clShadowTableRowReader;lib-data/shadow-table/clShadowTableRowReader.xojo_code;&h00000000425DA7FF;&h000000002B2797FF;false
 DefaultWindow=Window1
 AppMenuBar=MainMenuBar
 MajorVersion=1

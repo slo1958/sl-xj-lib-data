@@ -1,12 +1,44 @@
 #tag Class
 Protected Class clAbstractShadowTable
 	#tag Method, Flags = &h0
+		Function ColumnCount() As integer
+		  return -1
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor()
 		  
 		  return
 		  
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function EndOfTable() As boolean
+		  
+		  return true
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumnNames() As string()
+		  var ret() as String
+		  
+		  return ret
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumnTypes() As dictionary
+		  
+		  return nil
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -21,6 +53,14 @@ Protected Class clAbstractShadowTable
 		Sub MoveFirst()
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Name() As string
+		  
+		  return "noname"
+		  
+		End Function
 	#tag EndMethod
 
 
