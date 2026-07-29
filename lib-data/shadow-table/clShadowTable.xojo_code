@@ -7,6 +7,8 @@ Inherits clAbstractShadowTable
 		  
 		  self.SourceTable = pSourceTable
 		  
+		  self.LastReturnedRowIndex = -1
+		  
 		  return
 		  
 		  
@@ -14,15 +16,26 @@ Inherits clAbstractShadowTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetRowBuffer(bufferSize as integer) As clDataRowBuffer
+		Function EndOfTable() As boolean
+		  
+		  return SourceTable = nil or LastReturnedRowIndex >= SourceTable.LastRowIndex
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetNextRowBuffer(bufferSize as integer) As clDataRowBuffer
+		  // Calling the overridden superclass method.
+		  Var returnValue as clDataRowBuffer = Super.GetNextRowBuffer(bufferSize)
 		  
 		  
 		  if self.SourceTable = nil then return nil
 		  
 		  var tempMax as integer = self.SourceTable.LastRowIndex
 		  
-		  var tempStart as integer = self.CurrentRowIndex + 1
-		  var tempEnd as integer = min( tempMax, self.CurrentRowIndex + bufferSize)
+		  var tempStart as integer = self.LastReturnedRowIndex + 1
+		  var tempEnd as integer = min( tempMax, self.LastReturnedRowIndex + bufferSize)
 		  
 		  if tempStart > tempMax then return nil
 		  
@@ -33,7 +46,9 @@ Inherits clAbstractShadowTable
 		    
 		  next
 		  
-		  self.CurrentRowIndex = tempEnd
+		  buf.IsLastBuffer = tempEnd >= tempMax
+		  
+		  self.LastReturnedRowIndex = tempEnd
 		  
 		  return buf
 		  
@@ -45,7 +60,7 @@ Inherits clAbstractShadowTable
 	#tag Method, Flags = &h0
 		Sub MoveFirst()
 		  
-		  self.CurrentRowIndex = -1
+		  self.LastReturnedRowIndex = -1
 		End Sub
 	#tag EndMethod
 
@@ -59,7 +74,7 @@ Inherits clAbstractShadowTable
 
 
 	#tag Property, Flags = &h0
-		CurrentRowIndex As Integer
+		LastReturnedRowIndex As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -105,6 +120,14 @@ Inherits clAbstractShadowTable
 			Visible=true
 			Group="Position"
 			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="LastReturnedRowIndex"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

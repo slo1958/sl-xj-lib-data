@@ -407,6 +407,20 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function getCellNames() As string()
+		  var ret() as String
+		  
+		  for each k as string in my_storage.Keys
+		    ret.Add(k)
+		    
+		  next
+		  
+		  return ret
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetCells() As Dictionary
 		  //  
 		  //  Get the value of all fields / cells as a dictionary

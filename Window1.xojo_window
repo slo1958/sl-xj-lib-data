@@ -56,6 +56,53 @@ Begin DesktopWindow Window1
       Visible         =   True
       Width           =   80
    End
+   Begin DesktopListboxForTable DesktopListboxForTable1
+      AllowAutoDeactivate=   True
+      AllowAutoHideScrollbars=   True
+      AllowExpandableRows=   False
+      AllowFocusRing  =   True
+      AllowResizableColumns=   False
+      AllowRowDragging=   False
+      AllowRowReordering=   False
+      Bold            =   False
+      ColumnCount     =   1
+      ColumnWidths    =   ""
+      DefaultRowHeight=   -1
+      DropIndicatorVisible=   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      GridLineStyle   =   0
+      HasBorder       =   True
+      HasHeader       =   True
+      HasHorizontalScrollbar=   False
+      HasVerticalScrollbar=   True
+      HeadingIndex    =   -1
+      Height          =   314
+      Index           =   -2147483648
+      InitialValue    =   ""
+      Italic          =   False
+      Left            =   190
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   True
+      LockTop         =   True
+      RequiresSelection=   False
+      RowSelectionType=   0
+      Scope           =   0
+      TabIndex        =   1
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   20
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   390
+      _ScrollWidth    =   -1
+   End
 End
 #tag EndDesktopWindow
 
@@ -88,6 +135,9 @@ End
 		  var shadowread as new clShadowTableRowReader(shadow1)
 		  
 		  // add list box and link row reader
+		  DesktopListboxForTable1.ShowTable shadowread
+		  
+		  return
 		  
 		End Sub
 	#tag EndEvent

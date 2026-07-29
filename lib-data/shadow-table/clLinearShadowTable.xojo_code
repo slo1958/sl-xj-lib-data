@@ -15,10 +15,32 @@ Inherits clAbstractShadowTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetRowBuffer(bufferSize as integer) As clDataRowBuffer
+		Function EndOfTable() As boolean
 		  
-		  return nil
+		  return source.EndOfTable
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetNextRowBuffer(bufferSize as integer) As clDataRowBuffer
+		  // Calling the overridden superclass method.
+		  
+		  var input_wb as clDataRowBuffer = source.GetNextRowBuffer(bufferSize)
+		  
+		  var output_wb as clDataRowBuffer = self.TransformBuffer(input_wb)
+		  
+		  return output_wb
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function TransformBuffer(input as clDataRowBuffer) As clDataRowBuffer
+		  
+		  return input
 		  
 		End Function
 	#tag EndMethod

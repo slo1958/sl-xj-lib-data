@@ -12,6 +12,13 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ColumnInfoAvailable() As boolean
+		  return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(dbAccess as clAbstractDatabaseAccess, RecordSource as string)
 		  self.dbAccess = dbAccess
 		  if dbAccess <> nil then self.db = dbAccess.GetDatabase
@@ -225,6 +232,12 @@ Implements TableRowReaderInterface
 		  
 		  return tmp
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NextRowAvailable() As boolean
+		  return True
 		End Function
 	#tag EndMethod
 

@@ -25,23 +25,6 @@ Protected Class clAbstractShadowTable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetColumnNames() As string()
-		  var ret() as String
-		  
-		  return ret
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetColumnTypes() As dictionary
-		  
-		  return nil
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function GetNextRowBuffer(bufferSize as integer) As clDataRowBuffer
 		  
 		  return nil

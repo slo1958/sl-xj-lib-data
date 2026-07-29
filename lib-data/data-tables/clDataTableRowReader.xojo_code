@@ -10,6 +10,13 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ColumnInfoAvailable() As boolean
+		  return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(source_table as clDataTable)
 		  table = source_table
 		  current_row = 0
@@ -110,6 +117,12 @@ Implements TableRowReaderInterface
 		  
 		  current_row = current_row + 1
 		  return row_value
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NextRowAvailable() As boolean
+		  return True
 		End Function
 	#tag EndMethod
 

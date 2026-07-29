@@ -26,8 +26,9 @@ Protected Class clDataRowBuffer
 	#tag Method, Flags = &h0
 		Sub Constructor()
 		  
-		  self.CurrentRowIndex = -1
+		  self.LastReturnedRowIndex = -1
 		  self.rowCountFrozen = false
+		  self.IsLastBuffer = False
 		  
 		  
 		End Sub
@@ -35,21 +36,36 @@ Protected Class clDataRowBuffer
 
 	#tag Method, Flags = &h0
 		Function EndOfBuffer() As Boolean
-		  Return self.CurrentRowIndex > rows.LastIndex
+		  Return self.LastReturnedRowIndex >= rows.LastIndex
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetColumnNames() As string()
+		  var ret() as String
+		  
+		  if rows.LastIndex < 0 then return ret
+		  
+		  if rows(0) = nil then return ret
+		  
+		  return rows(0).getCellNames
+		  
+		  
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetNextRow() As clDataRow
 		  
-		  self.CurrentRowIndex = self.CurrentRowIndex + 1
-		  
-		  if self.CurrentRowIndex > rows.LastIndex then
+		  if self.LastReturnedRowIndex >= rows.LastIndex then
 		    return nil
 		    
 		  end if
 		  
-		  return rows(self.CurrentRowIndex)
+		  self.LastReturnedRowIndex = self.LastReturnedRowIndex + 1
+		  
+		  return rows(self.LastReturnedRowIndex)
 		  
 		  
 		End Function
@@ -57,7 +73,7 @@ Protected Class clDataRowBuffer
 
 	#tag Method, Flags = &h0
 		Sub ResetIndex()
-		  self.CurrentRowIndex = -1
+		  self.LastReturnedRowIndex = -1
 		  
 		  return
 		  
@@ -66,7 +82,11 @@ Protected Class clDataRowBuffer
 
 
 	#tag Property, Flags = &h0
-		CurrentRowIndex As Integer
+		IsLastBuffer As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		LastReturnedRowIndex As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -120,11 +140,19 @@ Protected Class clDataRowBuffer
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="rows()"
+			Name="LastReturnedRowIndex"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="rowCountFrozen"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

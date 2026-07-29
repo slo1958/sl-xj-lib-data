@@ -6,8 +6,15 @@ Implements TableRowReaderInterface
 		Function ColumnCount() As integer
 		  // Part of the TableRowReaderInterface interface.
 		  
+		  return FieldNameCache.Count
 		  
-		  return source.ColumnCount
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ColumnInfoAvailable() As boolean
+		  return FieldNameCache.Count >= 1
 		  
 		End Function
 	#tag EndMethod
@@ -35,21 +42,29 @@ Implements TableRowReaderInterface
 		Function EndOfTable() As boolean
 		  // Part of the TableRowReaderInterface interface.
 		  
-		  return EndOfSource
+		  if workbuffer <> nil then
+		    return (workbuffer.EndOfBuffer and workbuffer.IsLastBuffer)
+		    
+		  end if
+		  
+		  return EndOfSource 
+		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetColumnNames() As string()
 		  // Part of the TableRowReaderInterface interface.
-		  return source.GetColumnNames
+		  return self.FieldNameCache
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function GetColumnTypes() As dictionary
+		   
+		  return nil
 		  
-		  return source.GetColumnTypes
+		  // return source.GetColumnTypes
 		  
 		  
 		End Function
@@ -82,21 +97,23 @@ Implements TableRowReaderInterface
 		  
 		  if source  = nil then return nil
 		  
-		  if FieldNameCache.Count < 1 then
-		    FieldNameCache = GetColumnNames
-		    
-		  end if
-		  
 		  if workbuffer = nil or workbuffer.EndOfBuffer then
 		    workbuffer = source.GetNextRowBuffer(5)
 		    
 		  end if
+		  
 		  
 		  if workbuffer = nil or workbuffer.EndOfBuffer then
 		    EndOfSource = True
 		    return nil
 		    
 		  end if
+		  
+		  if FieldNameCache.Count < 1 then
+		    FieldNameCache = workbuffer.GetColumnNames
+		    
+		  end if
+		  
 		  
 		  current_row = current_row + 1
 		  
@@ -140,6 +157,12 @@ Implements TableRowReaderInterface
 		  next
 		  
 		  return row_value
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NextRowAvailable() As boolean
+		  return True
 		End Function
 	#tag EndMethod
 
@@ -218,6 +241,14 @@ Implements TableRowReaderInterface
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="EndOfSource"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

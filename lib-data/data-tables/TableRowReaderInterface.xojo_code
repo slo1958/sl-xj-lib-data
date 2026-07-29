@@ -7,6 +7,12 @@ Protected Interface TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ColumnInfoAvailable() As boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function CurrentRowIndex() As integer
 		  
 		End Function
@@ -67,6 +73,12 @@ Protected Interface TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function NextRowAvailable() As boolean
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub UpdateExternalName(new_name as string)
 		  
 		End Sub
@@ -89,6 +101,17 @@ Protected Interface TableRowReaderInterface
 		 
 		
 		Add method 'get_list_as_table', whoch provides a clDataSourceTable (subclass of clDataTable) to generate a datatable from resulting list
+		
+		
+		
+		ColumnInfoAvailable: false until the row reader can provide column information (name, type)
+		In most cases, the information is available as soon as the Constructor is called. 
+		In some cases, the information is only available once one or more rows are read
+		
+		
+		NextRowAvailable: false until the row reader can provide the next row 
+		In most cases, all rows are available at once
+		In some cases, the source used by the row reader is waiting for a row
 		
 		
 	#tag EndNote

@@ -10,6 +10,13 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ColumnInfoAvailable() As boolean
+		  return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(source() as Dictionary, name as string, sampleSize as integer = 10)
 		  //
 		  // builds a row reader from a list of dictionaries, returned for instance from parsing a json file
@@ -180,6 +187,12 @@ Implements TableRowReaderInterface
 		  
 		  return cellArray
 		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NextRowAvailable() As boolean
+		  return True
 		End Function
 	#tag EndMethod
 

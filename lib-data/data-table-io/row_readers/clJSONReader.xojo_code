@@ -10,6 +10,13 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ColumnInfoAvailable() As boolean
+		  return True
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(SourceFile as FolderItem, config as clJSONFileConfig)
 		  
 		  if config = nil then 
@@ -179,6 +186,12 @@ Implements TableRowReaderInterface
 		  self.TempRowIndex = self.TempRowIndex +1
 		  
 		  return cellArray
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NextRowAvailable() As boolean
+		  return True
 		End Function
 	#tag EndMethod
 

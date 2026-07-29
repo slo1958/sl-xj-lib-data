@@ -21,6 +21,7 @@ Inherits DesktopListBox
 		Sub DefineColumnOrder(Source as TableRowReaderInterface)
 		  var tmp_tbl as TableRowReaderInterface = Source
 		  var nbr_columns as integer = tmp_tbl.ColumnCount
+		  //var nbr_columns as integer = 10
 		  
 		  Redim ColumnsOrder(nbr_columns-1)
 		  
@@ -36,6 +37,40 @@ Inherits DesktopListBox
 	#tag Method, Flags = &h0
 		Function FormatRowID(rowID as Integer, maxRowID as integer) As string
 		  Return str(rowID)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SetupListbox(Source as TableRowReaderInterface) As integer
+		  var tmp_listbox as DesktopListBox = self
+		  
+		  var tmp_rowsource as TableRowReaderInterface = Source
+		  
+		  
+		  var nbr_columns as integer = tmp_rowsource.ColumnCount
+		  
+		  if ColumnsOrder.Count <> nbr_columns then DefineColumnOrder(Source)
+		  
+		  //  
+		  //  update table header
+		  //  
+		  tmp_listbox.HasHeader = True
+		  
+		  tmp_listbox.ColumnCount = nbr_columns + 1
+		  
+		  tmp_listbox.HeaderAt(0)="#"
+		  
+		  var tmp_col_names() as string = tmp_rowsource.GetColumnNames()
+		  
+		  for column_base_index as integer = 0 to  nbr_columns-1
+		    var column_index as integer = self.ColumnsOrder(column_base_index)
+		    tmp_listbox.HeaderAt(column_base_index+1) = tmp_col_names(column_index)
+		    tmp_listbox.ColumnTagAt(column_base_index+1) = nil
+		    
+		  next
+		  
+		  return nbr_columns
 		  
 		End Function
 	#tag EndMethod
@@ -105,29 +140,9 @@ Inherits DesktopListBox
 		  
 		  var tmp_listbox as DesktopListBox = self
 		  var tmp_rowsource as TableRowReaderInterface = Source
-		  
-		  var nbr_columns as integer = tmp_rowsource.ColumnCount
-		  
-		  if ColumnsOrder.Count <> nbr_columns then DefineColumnOrder(Source)
+		  var nbr_columns as integer = -1
 		  
 		  tmp_listbox.RemoveAllRows
-		  
-		  //  
-		  //  update table header
-		  //  
-		  tmp_listbox.HasHeader = True
-		  
-		  tmp_listbox.ColumnCount = nbr_columns + 1
-		  
-		  tmp_listbox.HeaderAt(0)="#"
-		  
-		  var tmp_col_names() as string = tmp_rowsource.GetColumnNames()
-		  
-		  for column_base_index as integer = 0 to  nbr_columns-1
-		    var column_index as integer = self.ColumnsOrder(column_base_index)
-		    tmp_listbox.HeaderAt(column_base_index+1) = tmp_col_names(column_index)
-		    tmp_listbox.ColumnTagAt(column_base_index+1) = nil
-		  next
 		  
 		  //  
 		  //  show data
@@ -135,9 +150,13 @@ Inherits DesktopListBox
 		  
 		  var tmp_rowindex as integer = 0
 		  
+		  
 		  while not tmp_rowsource.EndOfTable
 		    var tmp_row() as String
 		    tmp_row  = tmp_rowsource.NextRowAsString
+		    
+		    if ColumnsOrder.Count <1 then nbr_columns = SetupListbox(source)
+		    
 		    
 		    tmp_listbox.AddRow(FormatRowID(tmp_rowindex, -1))
 		    
