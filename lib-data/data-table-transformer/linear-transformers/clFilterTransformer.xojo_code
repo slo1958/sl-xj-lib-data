@@ -71,9 +71,10 @@ Inherits clLinearTransformer
 		  for each row as clDataRow in retval
 		    output.AddRow(row)
 		    
-		    Self.SetOutputTable(cOutputConnectorName, output)
 		    
 		  next
+		  
+		  Self.SetOutputTable(cOutputConnectorName, output)
 		  
 		  return true
 		  

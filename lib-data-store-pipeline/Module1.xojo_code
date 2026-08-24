@@ -1,12 +1,10 @@
 #tag Module
 Protected Module Module1
 	#tag Method, Flags = &h0
-		Sub TestStorePipeline()
+		Function TestStorePipeline() As clDataTable
 		  //
 		  // Initial test 
 		  //
-		  
-		  var pipeline1 as new clDataStorePipeline
 		  
 		  var salestable As New clDataTable("sales", SerieArray( _
 		  New clDataSerie("City",  "Paris","Lyon","Namur","Paris","Namur","Milan") _
@@ -21,23 +19,38 @@ Protected Module Module1
 		  , New clDataSerie("Country", "FR","FR","BE", "IT") _
 		  ))
 		  
-		   
-		  var s1 as clAbstractTransformer = pipeline1.AddStep( "Group by city", _
-		  new clGroupByTransformer(new clGroupByParameters(array("City"), array("Quantity","Sales"), "NbrRows")) _
+		  
+		  // Define pipeline
+		  
+		  var pipeline1 as new clDataStorePipeline
+		  
+		  var s3 as clAbstractTransformer = pipeline1.AddStep("Select columns", _
+		  new clColumnSelectorTransformer(array("Country":"Country","Sum of Quantity":"Quantity", "Sum of Sales":"Sales", "NbrRows":"NbrRows"), true) _
 		  )
-		  
-		  pipeline1.SetStepInput(s1,  clGroupByTransformer.cInputConnectorName, salestable)
-		  
-		  var output1 as clTransformerConnector = s1.GetOutputConnector()
 		  
 		  var s2 as clAbstractTransformer = pipeline1.AddStep( "Add country", _
 		  new clJoinTransformer(JoinMode.LeftJoin, array("City"),"") _
 		  )
 		  
+		  var s1 as clAbstractTransformer = pipeline1.AddStep( "Group by city", _
+		  new clGroupByTransformer(new clGroupByParameters(array("City"), array("Quantity","Sales"), "NbrRows")) _
+		  )
+		  
+		  
+		  // Define steps input and output
+		  
+		  pipeline1.SetStepInput(s1,  clGroupByTransformer.cInputConnectorName, salestable)
+		  
+		  var output1 as clTransformerConnector = s1.GetOutputConnector()
+		  
+		  
+		  pipeline1.SetStepInput(s3, clColumnSelectorTransformer.cInputConnectorName, s2.GetOutputConnector)
+		  
 		  pipeline1.SetStepInput(s2, clJoinTransformer.cInputConnectorLeft, output1)
 		  pipeline1.SetStepInput(s2, clJoinTransformer.cInputConnectorRight, countrytable)
 		  
-		  var output2 as clTransformerConnector = s2.GetOutputConnector()
+		  
+		  var output2 as clTransformerConnector = s3.GetOutputConnector()
 		  
 		  pipeline1.SetOutput("", output2)
 		  
@@ -45,11 +58,11 @@ Protected Module Module1
 		  
 		  var t1 as clDataTable = output2.GetTable
 		  
-		  return 
+		  return t1
 		  
 		  
 		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 
