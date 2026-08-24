@@ -4,28 +4,87 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Sub Constructor(LeftTable as clDataTable, RightTable as clDataTable, mode as JoinMode, KeyFields() as string, JoinStatusField as string = "")
 		  // Calling the overridden superclass constructor.
+		  
+		  // Parameters:
+		  // LeftTable: left source table
+		  // RightTable: right source table
+		  // mode: join mode (JoinMode)
+		  // KeyFields: array of fields used to join the tables
+		  // JoinStatusField: optional name of column to store the results in output table 
+		  //
+		  
 		  Super.Constructor
 		  
 		  
-		  self.AddInput(new clTransformerConnector(cInputConnectorLeft, LeftTable))
-		  self.AddInput(new clTransformerConnector(cInputConnectorRight, RightTable))
+		  self.AddInput(cInputConnectorLeft, new clTransformerConnector(LeftTable))
+		  self.AddInput(cInputConnectorRight, new clTransformerConnector(RightTable))
 		  
 		  
 		  select case mode
 		    
 		  case JoinMode.OuterJoin 
-		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, cDefaultMainOutputTableName))
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector(cDefaultMainOutputTableName))
 		    
 		    self.JoinStatusBoth = "JOIN"
 		    
 		  case JoinMode.LeftJoin
-		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, cDefaultMainOutputTableName))
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector(cDefaultMainOutputTableName))
 		    
 		    self.JoinStatusBoth = "JOIN"
 		    self.JoinStatusLeftOnly = "LEFT"
 		    
 		  case JoinMode.InnerJoin
-		    self.AddOutput(new clTransformerConnector(cOutputConnectorJoined, cDefaultMainOutputTableName)) // $$ "JoinedResults"))
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector(cDefaultMainOutputTableName)) // $$ "JoinedResults"))
+		    
+		    // by default, we only generated the main output (joined results)
+		    
+		    self.JoinStatusBoth = "JOIN"
+		    self.JoinStatusLeftOnly = "LEFT"
+		    self.JoinStatusRightOnly = "RIGHT"
+		    
+		  case else
+		    
+		    
+		  end Select
+		  
+		  self.mode = mode
+		  self.joinKeyFields = KeyFields
+		  self.JoinStatusFieldName = JoinStatusField
+		  
+		  return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(mode as JoinMode, KeyFields() as string, JoinStatusField as string = "")
+		  // Calling the overridden superclass constructor.
+		   // The input connectosr should be setup using a distinct cals
+		  //l
+		  // Parameters:
+		  // mode: join mode (JoinMode)
+		  // KeyFields: array of fields used to join the tables
+		  // JoinStatusField: optional name of column to store the results in output table 
+		  //
+		  
+		  Super.Constructor
+		  
+		  select case mode
+		    
+		  case JoinMode.OuterJoin 
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector(cDefaultMainOutputTableName))
+		    
+		    self.JoinStatusBoth = "JOIN"
+		    
+		  case JoinMode.LeftJoin
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector(cDefaultMainOutputTableName))
+		    
+		    self.JoinStatusBoth = "JOIN"
+		    self.JoinStatusLeftOnly = "LEFT"
+		    
+		  case JoinMode.InnerJoin
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector( cDefaultMainOutputTableName)) // $$ "JoinedResults"))
 		    
 		    // by default, we only generated the main output (joined results)
 		    
@@ -215,7 +274,7 @@ Inherits clAbstractTransformer
 		  
 		  
 		  If GenerateNonMatchingLeft then 
-		    self.AddOutput(new clTransformerConnector(cOutputConnectorLeft, "LeftResults"))
+		    self.AddOutput(cOutputConnectorLeft, new clTransformerConnector("LeftResults"))
 		    
 		  elseif self.OutputConnectors.HasKey(cOutputConnectorLeft) then 
 		    self.OutputConnectors.Remove(cOutputConnectorLeft)
@@ -225,7 +284,7 @@ Inherits clAbstractTransformer
 		  
 		  
 		  If GenerateNonMatchingRight then 
-		    self.AddOutput(new clTransformerConnector(cOutputConnectorRight, "RightResults"))
+		    self.AddOutput(cOutputConnectorRight, new clTransformerConnector("RightResults"))
 		    
 		  elseif self.OutputConnectors.HasKey(cOutputConnectorRight) then 
 		    self.OutputConnectors.Remove(cOutputConnectorRight)
@@ -385,6 +444,14 @@ Inherits clAbstractTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="EnableTraceMode"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true

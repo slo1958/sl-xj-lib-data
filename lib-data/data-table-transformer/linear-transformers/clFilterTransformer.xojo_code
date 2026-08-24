@@ -2,20 +2,43 @@
 Protected Class clFilterTransformer
 Inherits clLinearTransformer
 	#tag Method, Flags = &h0
-		Sub Constructor(MainTable as clDataTable, ColumnName as string, prmFilterMode as FilterMode = FilterMode.IncludeSelected)
+		Sub Constructor(MainTable as clDataTable, BooleanColumnName as string, prmFilterMode as FilterMode = FilterMode.IncludeSelected)
 		  //
 		  // Filter the rows of the source table
 		  // 
 		  // Parameters:
 		  // - Input table
-		  // - name of filter column
+		  // - BooleanColumnName: name of filter column
 		  // - filter mode
 		  //
 		  
 		  super.Constructor(MainTable)
 		  
 		  self.FilterColumnNames.RemoveAll
-		  self.FilterColumnNames.Add(ColumnName)
+		  self.FilterColumnNames.Add(BooleanColumnName)
+		  self.Mode = prmFilterMode
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(BooleanColumnName as string, prmFilterMode as FilterMode = FilterMode.IncludeSelected)
+		  //
+		  // Filter the rows of the source table
+		   // The input connector should be setup using a distinct call
+		  //
+		  // Parameters:
+		  // - BooleanColumnName: name of filter column
+		  // - filter mode
+		  //
+		  
+		  super.Constructor()
+		  
+		  self.FilterColumnNames.RemoveAll
+		  self.FilterColumnNames.Add(BooleanColumnName)
 		  self.Mode = prmFilterMode
 		  
 		  
@@ -70,6 +93,14 @@ Inherits clLinearTransformer
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="EnableTraceMode"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
@@ -115,7 +146,11 @@ Inherits clLinearTransformer
 			Group="Behavior"
 			InitialValue=""
 			Type="FilterMode"
-			EditorType=""
+			EditorType="Enum"
+			#tag EnumValues
+				"0 - IncludeSelected"
+				"1 - ExcludeSelected"
+			#tag EndEnumValues
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

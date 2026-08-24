@@ -6,8 +6,8 @@ Inherits clAbstractTransformer
 		  // Calling the overridden superclass constructor.
 		  Super.Constructor
 		  
-		  self.AddInput(new clTransformerConnector(cInputConnectorMain, MainTable))
-		  self.AddInput(new clTransformerConnector(cInputConnectorLookUp, LookupTable))
+		  self.AddInput(cInputConnectorMain, new clTransformerConnector(MainTable))
+		  self.AddInput(cInputConnectorLookUp, new clTransformerConnector(LookupTable))
 		  
 		  self.JoinStatusFieldName = JoinStatusField
 		  
@@ -41,8 +41,8 @@ Inherits clAbstractTransformer
 		  // Calling the overridden superclass constructor.
 		  Super.Constructor
 		  
-		  self.AddInput(new clTransformerConnector(cInputConnectorMain, MainTable))
-		  self.AddInput(new clTransformerConnector(cInputConnectorLookUp, LookupTable))
+		  self.AddInput(cInputConnectorMain, new clTransformerConnector(MainTable))
+		  self.AddInput(cInputConnectorLookUp, new clTransformerConnector(LookupTable))
 		  
 		  self.JoinStatusFieldName = JoinStatusField
 		  
@@ -249,6 +249,14 @@ Inherits clAbstractTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="EnableTraceMode"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true

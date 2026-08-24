@@ -6,9 +6,9 @@ Inherits clAbstractTransformer
 		  // Calling the overridden superclass constructor.
 		  Super.Constructor
 		  
-		  self.AddInput(new clTransformerConnector(cInputConnectorName, MainTable))
+		  self.AddInput(cInputConnectorName, new clTransformerConnector(MainTable))
 		  
-		  self.AddOutput(new clTransformerConnector(cOutputConnectorName, cDefaultMainOutputTableName))
+		  self.AddOutput(cOutputConnectorName, new clTransformerConnector(cDefaultMainOutputTableName))
 		  
 		  return
 		  

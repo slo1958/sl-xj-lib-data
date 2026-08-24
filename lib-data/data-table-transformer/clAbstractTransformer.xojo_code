@@ -1,9 +1,9 @@
 #tag Class
 Protected Class clAbstractTransformer
 	#tag Method, Flags = &h1
-		Protected Sub AddInput(connector as clTransformerConnector)
+		Protected Sub AddInput(InputName as string, connector as clTransformerConnector)
 		  
-		  self.InputConnectors.Value(connector.GetName) = connector
+		  self.InputConnectors.Value(InputName) = connector
 		  
 		  return
 		  
@@ -11,9 +11,9 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub AddOutput(connector as clTransformerConnector)
+		Protected Sub AddOutput(OutputName as string, connector as clTransformerConnector)
 		  
-		  self.OutputConnectors.value(connector.GetName) = connector
+		  self.OutputConnectors.value(OutputName) = connector
 		  
 		  if self.firstOutputConnector = nil then self.firstOutputConnector = connector
 		  
@@ -128,6 +128,49 @@ Protected Class clAbstractTransformer
 	#tag DelegateDeclaration, Flags = &h0
 		Delegate Function RowTransformerFunction(CurrentRow as clDataRow, previousRows() as clDataRow, columns() as string, parameters() as variant) As clDataRow
 	#tag EndDelegateDeclaration
+
+	#tag Method, Flags = &h0
+		Sub SetInput(inputName as string, inputTable as clDataTable)
+		  //
+		  // Define an input connector
+		  //
+		  // Parameters:
+		  // - inputName: connector name
+		  // - InputTable: table 
+		  //
+		  // Returns:
+		  // selected input table
+		  //
+		  
+		  self.AddInput(inputName, new clTransformerConnector(inputTable))
+		  
+		  return
+		   
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetInput(inputName as string, connector as clTransformerConnector)
+		  //
+		  // Define an input connector
+		  //
+		  // Parameters:
+		  // - inputName: connector name
+		  // - InputTable: table 
+		  //
+		  // Returns:
+		  // selected input table
+		  //
+		  
+		  System.DebugLog("Method " + CurrentMethodName+": not implemented")
+		  
+		  //
+		  //self.AddInput(new clTransformerConnector(inputName, inputTable))
+		  
+		  return
+		   
+		End Sub
+	#tag EndMethod
 
 	#tag Method, Flags = &h1
 		Protected Sub SetOutputName(ConnectionName as string, OutputName as string)
@@ -282,6 +325,14 @@ Protected Class clAbstractTransformer
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="EnableTraceMode"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

@@ -1,23 +1,9 @@
 #tag Class
 Protected Class clTransformerConnector
 	#tag Method, Flags = &h0
-		Sub Constructor(NewConnectorName as string)
+		Sub Constructor(linkedTable as clDataTable)
 		  
-		  self.ConnectorName = NewConnectorName
-		  self.TableName = ""
-		  self.Table = nil
-		  
-		  self.EnableFlag = True
-		  
-		  return
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(NewConnectorName as string, linkedTable as clDataTable)
-		  
-		  self.ConnectorName = NewConnectorName
+		  self.ConnectorName = GeneratedUniqueName
 		  self.TableName = ""
 		  self.Table = linkedTable
 		  
@@ -29,9 +15,9 @@ Protected Class clTransformerConnector
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(NewConnectorName as string, defaultTableName as string)
+		Sub Constructor(defaultTableName as string)
 		  
-		  self.ConnectorName = NewConnectorName
+		  self.ConnectorName =  GeneratedUniqueName
 		  self.TableName = defaultTableName.trim
 		  self.Table = nil
 		  
@@ -40,6 +26,16 @@ Protected Class clTransformerConnector
 		  return
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function GeneratedUniqueName() As string
+		  
+		  AnonymConnectorCounter = AnonymConnectorCounter + 1
+		  
+		  Return "connector" + Str(AnonymConnectorCounter)
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -64,6 +60,19 @@ Protected Class clTransformerConnector
 		Function GetName() As string
 		  
 		  return self.ConnectorName
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Shared Function GetName(userName as string) As string
+		  if userName.Trim.Length > 0 then
+		    Return userName.Trim
+		    
+		  else
+		    return GeneratedUniqueName
+		    
+		  end if
+		  
 		End Function
 	#tag EndMethod
 
@@ -129,14 +138,15 @@ Protected Class clTransformerConnector
 	#tag EndMethod
 
 
+	#tag Property, Flags = &h0
+		Shared AnonymConnectorCounter As Integer
+	#tag EndProperty
+
 	#tag Property, Flags = &h21
 		#tag Note
 			The label associated with the datatable used or produced by the connector.
 			
 			The label is expected to be unique across a set of transformers in a transformation pipeline.
-			
-			
-			
 		#tag EndNote
 		Private ConnectorLabel As string
 	#tag EndProperty
@@ -146,9 +156,6 @@ Protected Class clTransformerConnector
 			The name of the connector, like 'INPUT', 'OUTPUT', 'LEFTOUTPUT', ...
 			
 			A given transformer always exposed the same list of input and output connector (connectorname)
-			
-			
-			
 		#tag EndNote
 		Private ConnectorName As string
 	#tag EndProperty
