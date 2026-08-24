@@ -33,6 +33,10 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Function SourceTable() As clDataTable
 		  
+		  var temp as clDataTable =  self.GetInputTable(self.cInputConnectorName)
+		  
+		  if temp = nil then WriteLog("Missing table for input %0 when runining %1", self.cInputConnectorName, "??")
+		  
 		  return   self.GetInputTable(self.cInputConnectorName)
 		  
 		  
@@ -55,6 +59,14 @@ Inherits clAbstractTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="EnableTraceMode"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true

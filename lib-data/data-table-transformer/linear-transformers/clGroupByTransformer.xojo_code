@@ -2,6 +2,34 @@
 Protected Class clGroupByTransformer
 Inherits clLinearTransformer
 	#tag Method, Flags = &h0
+		Sub Constructor(MainTable as clDataTable, groupingParameters as clGroupByParameters)
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // Aggregate the number fields as defined the each pair, columnname:agg mode
+		  //
+		  // Parameters:
+		  // - Input table
+		  // - groupingParameters groupby parameters
+		  //
+		  
+		  super.Constructor(MainTable)
+		  
+		  if groupingParameters = nil then
+		    WriteLog("Missing parameters for clGroupByTransformer ")
+		    
+		  else
+		    self.GroupingCountColumn = groupingParameters.GroupingCountColumn
+		    self.GroupingDimensions= groupingParameters.GroupingDimensions
+		    self.GroupingMeasures = groupingParameters.GroupingMeasures
+		    
+		  end if
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, grouping_dimensions() as string, measures() as pair, rowCountColumnName as string)
 		  //
 		  // Group records per distinct values in the grouping_dimensions
@@ -68,6 +96,34 @@ Inherits clLinearTransformer
 		  self.GroupingCountColumn = rowCountColumnName
 		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures.RemoveAll
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(groupingParameters as clGroupByParameters)
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // The input connector should be setup using a distinct call
+		  // Aggregate the number fields as defined the each pair, columnname:agg mode
+		  //
+		  // Parameters:
+		  // - groupingParameters groupby parameters
+		  //
+		  
+		  super.Constructor()
+		  
+		  if groupingParameters = nil then
+		    WriteLog("Missing parameters for clGroupByTransformer ")
+		    
+		  else
+		    self.GroupingCountColumn = groupingParameters.GroupingCountColumn
+		    self.GroupingDimensions= groupingParameters.GroupingDimensions
+		    self.GroupingMeasures = groupingParameters.GroupingMeasures
+		    
+		  end if
 		  
 		  return
 		  
@@ -191,6 +247,14 @@ Inherits clLinearTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="EnableTraceMode"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Name"
 			Visible=true
