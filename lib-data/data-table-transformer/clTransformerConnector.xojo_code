@@ -3,7 +3,7 @@ Protected Class clTransformerConnector
 	#tag Method, Flags = &h0
 		Sub Constructor(linkedTable as clDataTable)
 		  
-		  self.ConnectorName = GeneratedUniqueName
+		  self.ConnectorLabel = GeneratedUniqueName
 		  self.TableName = ""
 		  self.Table = linkedTable
 		  
@@ -17,7 +17,7 @@ Protected Class clTransformerConnector
 	#tag Method, Flags = &h0
 		Sub Constructor(defaultTableName as string)
 		  
-		  self.ConnectorName =  GeneratedUniqueName
+		  self.ConnectorLabel =  GeneratedUniqueName
 		  self.TableName = defaultTableName.trim
 		  self.Table = nil
 		  
@@ -57,9 +57,10 @@ Protected Class clTransformerConnector
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetName() As string
+		Function GetLabel() As string
 		  
-		  return self.ConnectorName
+		  return self.ConnectorLabel
+		  
 		End Function
 	#tag EndMethod
 
@@ -151,17 +152,12 @@ Protected Class clTransformerConnector
 		Private ConnectorLabel As string
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
-		#tag Note
-			The name of the connector, like 'INPUT', 'OUTPUT', 'LEFTOUTPUT', ...
-			
-			A given transformer always exposed the same list of input and output connector (connectorname)
-		#tag EndNote
-		Private ConnectorName As string
+	#tag Property, Flags = &h0
+		EnableFlag As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		EnableFlag As Boolean
+		SourceTransformer As clAbstractTransformer
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

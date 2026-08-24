@@ -55,7 +55,6 @@ Inherits clAbstractTransformer
 		    
 		  next
 		  
-		  
 		  self.MainTargetDataFields.RemoveAll
 		  self.LookupSourceDataFields.RemoveAll
 		  

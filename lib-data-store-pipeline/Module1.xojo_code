@@ -6,6 +6,8 @@ Protected Module Module1
 		  // Initial test 
 		  //
 		  
+		  var pipeline1 as new clDataStorePipeline
+		  
 		  var salestable As New clDataTable("sales", SerieArray( _
 		  New clDataSerie("City",  "Paris","Lyon","Namur","Paris","Namur","Milan") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -19,23 +21,31 @@ Protected Module Module1
 		  , New clDataSerie("Country", "FR","FR","BE", "IT") _
 		  ))
 		  
-		  var pipeline1 as clDataStorePipeline
-		  
-		  var s1 as clAbstractTransformer = pipeline1.AddStep( _
+		   
+		  var s1 as clAbstractTransformer = pipeline1.AddStep( "Group by city", _
 		  new clGroupByTransformer(new clGroupByParameters(array("City"), array("Quantity","Sales"), "NbrRows")) _
 		  )
 		  
-		  s1.SetInput(clGroupByTransformer.cInputConnectorName, salestable)
+		  pipeline1.SetStepInput(s1,  clGroupByTransformer.cInputConnectorName, salestable)
 		  
 		  var output1 as clTransformerConnector = s1.GetOutputConnector()
 		  
-		  
-		  var s2 as clAbstractTransformer = pipeline1.AddStep( _
+		  var s2 as clAbstractTransformer = pipeline1.AddStep( "Add country", _
 		  new clJoinTransformer(JoinMode.LeftJoin, array("City"),"") _
 		  )
 		  
-		  s2.SetInput(clJoinTransformer.cInputConnectorLeft, output1)
-		  s2.SetInput(clJoinTransformer.cInputConnectorRight, countrytable)
+		  pipeline1.SetStepInput(s2, clJoinTransformer.cInputConnectorLeft, output1)
+		  pipeline1.SetStepInput(s2, clJoinTransformer.cInputConnectorRight, countrytable)
+		  
+		  var output2 as clTransformerConnector = s2.GetOutputConnector()
+		  
+		  pipeline1.SetOutput("", output2)
+		  
+		  pipeline1.run()
+		  
+		  var t1 as clDataTable = output2.GetTable
+		  
+		  return 
 		  
 		  
 		  
@@ -43,5 +53,47 @@ Protected Module Module1
 	#tag EndMethod
 
 
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+	#tag EndViewBehavior
 End Module
 #tag EndModule

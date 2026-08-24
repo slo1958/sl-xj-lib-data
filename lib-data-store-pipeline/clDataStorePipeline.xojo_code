@@ -1,9 +1,10 @@
 #tag Class
 Protected Class clDataStorePipeline
 	#tag Method, Flags = &h0
-		Function AddStep(aStep as clAbstractTransformer) As clAbstractTransformer
+		Function AddStep(aStepLabel as string, aStep as clAbstractTransformer) As clAbstractTransformer
 		  
-		  
+		  self.Steps.Add(aStep)
+		  aStep.StepLabel = aStepLabel
 		  Return aStep
 		  
 		  
@@ -13,12 +14,87 @@ Protected Class clDataStorePipeline
 	#tag Method, Flags = &h0
 		Sub Run()
 		  
+		  var traceExecution as Boolean = True
+		  
+		  var executionQueue() as clAbstractTransformer
+		  
+		  var bDone as Boolean = false
+		  
+		  var maxRun as integer = Steps.Count * 2
+		  
+		  while not (bDone or maxRun < 1)
+		    bDone = True
+		    maxRun = maxRun - 1
+		    
+		    for each execstep as clAbstractTransformer in steps
+		      if execstep.OutputAreReady then
+		        
+		      elseif execstep.InputAreReady  then
+		         
+		        WriteLog("Executing step [%0] labeled [%1].", Introspection.GetType(execstep).Name, execstep.StepLabel)
+		        
+		        var res as boolean = execstep.Transform
+		        
+		        if not res then WriteLog("Execution failed.")
+		        
+		        bDone = False
+		        
+		      end if
+		      
+		    next
+		  wend
+		  
+		  Return
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub SetOutput(ConnectorLabel as string, aConnector as clTransformerConnector)
 		  
+		  self.OutputConnector.Add(aConnector)
+		  
+		  Return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetStepInput(aStep as clAbstractTransformer, inputName as string, inputTable as clDataTable)
+		  
+		  aStep.SetInput(inputName, inputTable)
+		  
+		  self.InternalConnectors.Add(aStep.GetInputConnector(inputName))
+		  
+		  Return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetStepInput(aStep as clAbstractTransformer, inputName as string, connector as clTransformerConnector)
+		  
+		  aStep.SetInput(inputName, connector)
+		  
+		  self.InternalConnectors.Add(connector)
+		  
+		  Return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub WriteLog(message as string, paramarray txt as string)
+		   
+		  var tmp as string = message
+		  
+		  for i as integer = 0 to txt.LastIndex
+		    tmp = tmp.ReplaceAll("%"+str(i), txt(i))
+		  next
+		  
+		  System.DebugLog(tmp)
+		   
 		End Sub
 	#tag EndMethod
 
@@ -65,5 +141,67 @@ Protected Class clDataStorePipeline
 	#tag EndNote
 
 
+	#tag Property, Flags = &h0
+		InternalConnectors() As clTransformerConnector
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		#tag Note
+			//
+			// List of connectors producing the output dataset from the pipeline
+			//
+			
+			
+		#tag EndNote
+		OutputConnector() As clTransformerConnector
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Steps() As clAbstractTransformer
+	#tag EndProperty
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+	#tag EndViewBehavior
 End Class
 #tag EndClass

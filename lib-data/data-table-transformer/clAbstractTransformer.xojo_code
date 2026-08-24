@@ -17,6 +17,14 @@ Protected Class clAbstractTransformer
 		  
 		  if self.firstOutputConnector = nil then self.firstOutputConnector = connector
 		  
+		  if connector.SourceTransformer <> nil then
+		    WriteLog("Connector [%0] already linked to a source transformer ", connector.GetLabel) 
+		    
+		  else
+		    connector.SourceTransformer = self
+		    
+		  end if
+		  
 		  return 
 		  
 		End Sub
@@ -125,6 +133,30 @@ Protected Class clAbstractTransformer
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function InputAreReady() As Boolean
+		  for each c as clTransformerConnector in self.InputConnectors.Values
+		    
+		    if c.GetTable = nil then return false
+		    
+		  next
+		  
+		  return true
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function OutputAreReady() As Boolean
+		  for each c as clTransformerConnector in self.OutputConnectors.Values
+		    
+		    if c.GetTable = nil then return false
+		    
+		  next
+		  
+		  return true
+		End Function
+	#tag EndMethod
+
 	#tag DelegateDeclaration, Flags = &h0
 		Delegate Function RowTransformerFunction(CurrentRow as clDataRow, previousRows() as clDataRow, columns() as string, parameters() as variant) As clDataRow
 	#tag EndDelegateDeclaration
@@ -156,16 +188,13 @@ Protected Class clAbstractTransformer
 		  //
 		  // Parameters:
 		  // - inputName: connector name
-		  // - InputTable: table 
+		  // - connecter: clTransformerConnector 
 		  //
 		  // Returns:
 		  // selected input table
 		  //
 		  
-		  System.DebugLog("Method " + CurrentMethodName+": not implemented")
-		  
-		  //
-		  //self.AddInput(new clTransformerConnector(inputName, inputTable))
+		  self.AddInput(inputName, connector)
 		  
 		  return
 		   
@@ -246,7 +275,7 @@ Protected Class clAbstractTransformer
 		    tmp = tmp.ReplaceAll("%"+str(i), txt(i))
 		  next
 		  
-		  System.DebugLog(message)
+		  System.DebugLog(tmp)
 		  
 		  //end if
 		End Sub
@@ -279,6 +308,10 @@ Protected Class clAbstractTransformer
 
 	#tag Property, Flags = &h1
 		Protected OutputConnectors As Dictionary
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		StepLabel As String
 	#tag EndProperty
 
 
