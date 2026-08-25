@@ -6,8 +6,6 @@ Protected Module Module1
 		  // Initial test 
 		  //
 		  
-		   
-		  
 		  var salestable As New clDataTable("sales", SerieArray( _
 		  New clDataSerie("City",  "Paris","Lyon","Namur","Paris","Namur","Milan") _
 		  , New clDataSerie("Year", 2000,2000,2000,2000,2000,2000) _
@@ -23,36 +21,34 @@ Protected Module Module1
 		  
 		  
 		  // Define pipeline
-		  
+		  // The order in which steps are added does not define the execution order
+		  // So, we can randomly add the steps
+		  //
 		  var pipeline1 as new clDataStorePipeline
 		  
-		  var s3 as clAbstractTransformer = pipeline1.AddStep("Select columns", _
+		  var sFilterColumns as clAbstractTransformer = pipeline1.AddStep("Select columns", _
 		  new clColumnSelectorTransformer(array("Country":"Country","Sum of Quantity":"Quantity", "Sum of Sales":"Sales", "NbrRows":"NbrRows"), true) _
 		  )
 		  
-		  var s2 as clAbstractTransformer = pipeline1.AddStep( "Add country", _
+		  var sAddCountry as clAbstractTransformer = pipeline1.AddStep( "Add country", _
 		  new clJoinTransformer(JoinMode.LeftJoin, array("City"),"") _
 		  )
 		  
-		  var s1 as clAbstractTransformer = pipeline1.AddStep( "Group by city", _
+		  var sGroupByCity as clAbstractTransformer = pipeline1.AddStep( "Group by city", _
 		  new clGroupByTransformer(new clGroupByParameters(array("City"), array("Quantity","Sales"), "NbrRows")) _
 		  )
 		  
-		  
 		  // Define steps input and output
 		  
-		  pipeline1.SetStepInput(s1,  clGroupByTransformer.cInputConnectorName, salestable)
+		  pipeline1.SetStepInput(sGroupByCity,  clGroupByTransformer.cInputConnectorName, salestable)
 		  
-		  var output1 as clTransformerConnector = s1.GetOutputConnector()
+		  pipeline1.SetStepInput(sFilterColumns, clColumnSelectorTransformer.cInputConnectorName, sAddCountry.GetOutputConnector)
 		  
-		  
-		  pipeline1.SetStepInput(s3, clColumnSelectorTransformer.cInputConnectorName, s2.GetOutputConnector)
-		  
-		  pipeline1.SetStepInput(s2, clJoinTransformer.cInputConnectorLeft, output1)
-		  pipeline1.SetStepInput(s2, clJoinTransformer.cInputConnectorRight, countrytable)
+		  pipeline1.SetStepInput(sAddCountry, clJoinTransformer.cInputConnectorLeft, sGroupByCity.GetOutputConnector())
+		  pipeline1.SetStepInput(sAddCountry, clJoinTransformer.cInputConnectorRight, countrytable)
 		  
 		  
-		  var output2 as clTransformerConnector = s3.GetOutputConnector()
+		  var output2 as clTransformerConnector = sFilterColumns.GetOutputConnector()
 		  
 		  pipeline1.SetOutput("", output2)
 		  
