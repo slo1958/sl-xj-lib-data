@@ -183,6 +183,7 @@ Folder=lib-data-flow-pipeline;lib-data-flow-pipeline;&h000000007DF267FF;&h000000
 Class=clDataStorePipeline;lib-data-store-pipeline/clDataStorePipeline.xojo_code;&h00000000194D47FF;&h0000000071B20FFF;false
 Module=Module1;lib-data-store-pipeline/Module1.xojo_code;&h00000000599887FF;&h0000000071B20FFF;false
 DesktopWindow=Window1;Window1.xojo_window;&h000000000C9297FF;&h0000000000000000;false
+Class=clDataFlowPipeline;lib-data-flow-pipeline/clDataFlowPipeline.xojo_code;&h00000000046EBFFF;&h000000007DF267FF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1
