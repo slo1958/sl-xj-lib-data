@@ -143,6 +143,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  Else
 		    tmp_column = nil
+		    AddWarningMessage("AddColumn",ErrMsgCannotAddColumnToVirtualTable, self.Name, tmp_column_name)
 		    //  could be nil if the column exists in the parent datatable
 		    // tmp_column = link_to_parent.AddColumn( tmp_column_name)
 		    // Stop adding column to parent table 20260327

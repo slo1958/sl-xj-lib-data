@@ -1,6 +1,18 @@
 #tag Class
 Protected Class clFilterTransformer
 Inherits clLinearTransformer
+	#tag Method, Flags = &h21
+		Private Sub ConfigureFilters(BooleanColumnName as string, prmFilterMode as FilterMode)
+		  
+		  self.FilterColumnNames.RemoveAll
+		  self.FilterColumnNames.Add(BooleanColumnName)
+		  self.Mode = prmFilterMode
+		  
+		  Return
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, BooleanColumnName as string, prmFilterMode as FilterMode = FilterMode.IncludeSelected)
 		  //
@@ -14,12 +26,13 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor(MainTable)
 		  
-		  self.FilterColumnNames.RemoveAll
-		  self.FilterColumnNames.Add(BooleanColumnName)
-		  self.Mode = prmFilterMode
+		  self.ConfigureFilters(BooleanColumnName, prmFilterMode)
 		  
+		  // self.FilterColumnNames.RemoveAll
+		  // self.FilterColumnNames.Add(BooleanColumnName)
+		  // self.Mode = prmFilterMode
 		  
-		  
+		  Return
 		  
 		End Sub
 	#tag EndMethod
@@ -37,10 +50,9 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor()
 		  
-		  self.FilterColumnNames.RemoveAll
-		  self.FilterColumnNames.Add(BooleanColumnName)
-		  self.Mode = prmFilterMode
+		  self.ConfigureFilters(BooleanColumnName, prmFilterMode)
 		  
+		  return
 		  
 		  
 		  
@@ -93,6 +105,14 @@ Inherits clLinearTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="StepLabel"
 			Visible=false

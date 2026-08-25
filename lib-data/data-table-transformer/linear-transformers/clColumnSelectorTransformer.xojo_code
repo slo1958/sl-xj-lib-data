@@ -1,6 +1,59 @@
 #tag Class
 Protected Class clColumnSelectorTransformer
 Inherits clLinearTransformer
+	#tag Method, Flags = &h21
+		Private Sub ConfigureSelector(ColumnsToRetain() as pair, CreateMissingColumns as boolean)
+		  
+		  for each p as pair in ColumnsToRetain
+		    self.OutputColumns.add(p)
+		    
+		  next
+		  
+		  self.CreateMissing = CreateMissingColumns
+		  
+		  Return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ConfigureSelector(ColumnsToRetain() as string, CreateMissingColumns as boolean)
+		  
+		  for each s as string in ColumnsToRetain
+		    self.OutputColumns.add(s:s)
+		    
+		  next
+		  
+		  self.CreateMissing = CreateMissingColumns
+		  
+		  Return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(MainTable as clDataTable, ColumnsToRetain() as pair, CreateMissingColumns as boolean)
+		  //
+		  // Filter the rows of the source table
+		  // 
+		  // Parameters:
+		  // - Input table
+		  // - ColumnsToRetain: name of filter column
+		  // - CreateMissingColumns: Add empty columns if it does not exists in input
+		  //
+		  
+		  super.Constructor(MainTable)
+		  
+		  self.ConfigureSelector(ColumnsToRetain, CreateMissingColumns)
+		  
+		  Return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, ColumnsToRetain() as string, CreateMissingColumns as boolean)
 		  //
@@ -14,12 +67,9 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor(MainTable)
 		  
-		  for each s as string in ColumnsToRetain
-		    self.OutputColumns.add(s:s)
-		    
-		  next
+		  self.ConfigureSelector(ColumnsToRetain, CreateMissingColumns)
 		  
-		  self.CreateMissing = CreateMissingColumns
+		  Return
 		  
 		  
 		End Sub
@@ -38,17 +88,20 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor()
 		  
-		  for each p as pair in ColumnsToRetain
-		    self.OutputColumns.add(p)
-		    
-		  next
+		  self.ConfigureSelector(ColumnsToRetain, CreateMissingColumns)
 		  
-		  self.CreateMissing = CreateMissingColumns
+		  // 
+		  // for each p as pair in ColumnsToRetain
+		  // self.OutputColumns.add(p)
+		  // 
+		  // next
+		  // 
+		  // self.CreateMissing = CreateMissingColumns
+		  // 
+		  // 
+		  // 
 		  
-		  
-		  
-		  
-		  
+		  Return
 		End Sub
 	#tag EndMethod
 
@@ -65,13 +118,15 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor()
 		  
-		  for each s as string in ColumnsToRetain
-		    self.OutputColumns.add(s:s)
-		    
-		  next
+		  self.ConfigureSelector(ColumnsToRetain, CreateMissingColumns)
 		  
-		  self.CreateMissing = CreateMissingColumns
-		  
+		  // for each s as string in ColumnsToRetain
+		  // self.OutputColumns.add(s:s)
+		  // 
+		  // next
+		  // 
+		  // self.CreateMissing = CreateMissingColumns
+		  // 
 		  
 		  
 		  
@@ -127,6 +182,14 @@ Inherits clLinearTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="StepLabel"
 			Visible=false

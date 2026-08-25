@@ -1,14 +1,18 @@
 #tag Class
 Protected Class clLookupTransformer
 Inherits clAbstractTransformer
-	#tag Method, Flags = &h0
-		Sub Constructor(MainTable as clDataTable, LookupTable as clDataTable, KeyFieldMapping() as Pair, LookupFieldMapping() as pair, JoinStatusField as string = "")
-		  // Calling the overridden superclass constructor.
-		  Super.Constructor
+	#tag Method, Flags = &h21
+		Private Sub ConfigureInputConnectors(MainTable as clDataTable, LookupTable as clDataTable)
 		  
 		  self.AddInput(cInputConnectorMain, new clTransformerConnector(MainTable))
 		  self.AddInput(cInputConnectorLookUp, new clTransformerConnector(LookupTable))
 		  
+		  Return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ConfigureLookupFields(KeyFieldMapping() as Pair, LookupFieldMapping() as pair, JoinStatusField as string = "")
 		  self.JoinStatusFieldName = JoinStatusField
 		  
 		  self.LookupKeyFields.RemoveAll
@@ -32,18 +36,11 @@ Inherits clAbstractTransformer
 		  
 		  return
 		  
-		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub Constructor(MainTable as clDataTable, LookupTable as clDataTable, KeyFields() as string, LookupFields() as string, JoinStatusField as string = "")
-		  // Calling the overridden superclass constructor.
-		  Super.Constructor
-		  
-		  self.AddInput(cInputConnectorMain, new clTransformerConnector(MainTable))
-		  self.AddInput(cInputConnectorLookUp, new clTransformerConnector(LookupTable))
-		  
+	#tag Method, Flags = &h21
+		Private Sub ConfigureLookupFields(KeyFields() as string, LookupFields() as string, JoinStatusField as string = "")
 		  self.JoinStatusFieldName = JoinStatusField
 		  
 		  self.LookupKeyFields.RemoveAll
@@ -63,6 +60,101 @@ Inherits clAbstractTransformer
 		    self.LookupSourceDataFields.Add(v)
 		    
 		  next
+		  
+		  Return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(MainTable as clDataTable, LookupTable as clDataTable, KeyFieldMapping() as Pair, LookupFieldMapping() as pair, JoinStatusField as string = "")
+		  // Calling the overridden superclass constructor.
+		  Super.Constructor
+		  
+		  self.ConfigureInputConnectors(MainTable,LookupTable)
+		  
+		  self.ConfigureLookupFields(KeyFieldMapping, LookupFieldMapping, JoinStatusField)
+		  
+		  // self.JoinStatusFieldName = JoinStatusField
+		  // 
+		  // self.LookupKeyFields.RemoveAll
+		  // self.MainKeyFields.RemoveAll
+		  // 
+		  // for each p as pair in KeyFieldMapping
+		  // self.MainKeyFields.Add(p.Left)
+		  // self.LookupKeyFields.Add(p.Right)
+		  // 
+		  // next
+		  // 
+		  // 
+		  // self.MainTargetDataFields.RemoveAll
+		  // self.LookupSourceDataFields.RemoveAll
+		  // 
+		  // for each p as pair in LookupFieldMapping
+		  // self.MainTargetDataFields.add(p.left)
+		  // self.LookupSourceDataFields.Add(p.right)
+		  // 
+		  // next
+		  
+		  return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(MainTable as clDataTable, LookupTable as clDataTable, KeyFields() as string, LookupFields() as string, JoinStatusField as string = "")
+		  // Calling the overridden superclass constructor.
+		  Super.Constructor
+		  
+		  self.ConfigureInputConnectors(MainTable,LookupTable)
+		  
+		  self.ConfigureLookupFields(KeyFields, LookupFields, JoinStatusField)
+		  
+		  // self.JoinStatusFieldName = JoinStatusField
+		  // 
+		  // self.LookupKeyFields.RemoveAll
+		  // self.MainKeyFields.RemoveAll
+		  // 
+		  // for each v as String in KeyFields
+		  // self.MainKeyFields.Add(v)
+		  // self.LookupKeyFields.Add(v)
+		  // 
+		  // next
+		  // 
+		  // self.MainTargetDataFields.RemoveAll
+		  // self.LookupSourceDataFields.RemoveAll
+		  // 
+		  // for each v as String in LookupFields
+		  // self.MainTargetDataFields.add(v)
+		  // self.LookupSourceDataFields.Add(v)
+		  // 
+		  // next
+		  
+		  return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(KeyFieldMapping() as Pair, LookupFieldMapping() as pair, JoinStatusField as string = "")
+		  // Calling the overridden superclass constructor.
+		  Super.Constructor
+		  
+		  self.ConfigureLookupFields(KeyFieldMapping, LookupFieldMapping, JoinStatusField)
+		  
+		  return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(KeyFields() as string, LookupFields() as string, JoinStatusField as string = "")
+		  // Calling the overridden superclass constructor.
+		  Super.Constructor
+		  
+		  self.ConfigureLookupFields(KeyFields, LookupFields, JoinStatusField)
 		  
 		  return
 		  
@@ -248,6 +340,14 @@ Inherits clAbstractTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="StepLabel"
 			Visible=false

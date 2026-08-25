@@ -131,7 +131,7 @@ Inherits clObjectTest
 		  table1.AddRow(rtst) 
 		  
 		  var my_col As clAbstractDataSerie
-		  var table3 As clDataTable = table1.SelectColumns(Array("aaa","zccc")) // zccc does not exist, not included in table3
+		  var table3 As clDataTable = table1.SelectColumns(Array("aaa","zccc"), true) // zccc does not exist, not included in table3 + allow local columns in virtual table
 		  
 		  
 		  my_col = table3.AddColumn("xyz") 
