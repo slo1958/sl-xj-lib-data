@@ -2,10 +2,53 @@
 Protected Class clDataStorePipeline
 	#tag Method, Flags = &h0
 		Function AddStep(aStepLabel as string, aStep as clAbstractTransformer) As clAbstractTransformer
+		  //
+		  // Add a transformation step to the pipeline.
+		  // The order of insertion is not the order of execution
+		  // Execution order is decided later, based on the availability of the data in the input connectors
+		  //
+		  // Parameters
+		  // - aStepLabel: label for the transformation step, must be unique
+		  // - aStep: transformation step
+		  //
+		  // Returns
+		  // - transformation step if insertion is successful, nil otherwise
+		  //
+		  
+		  
+		  var tmpLabel as string = aStepLabel.Trim
+		  
+		  if tmpLabel.Length = 0 then
+		    WriteLog("Missing step label for %0", Introspection.GetType(aStep).Name)
+		    return nil
+		    
+		  end if
+		  
+		  for each s as clAbstractTransformer in self.Steps
+		    if s.StepLabel = tmpLabel then
+		      WriteLog("Step label %1 already in use for %2 when adding %0", Introspection.GetType(aStep).Name, tmpLabel, Introspection.GetType(s).Name)
+		      Return nil
+		      
+		    end if
+		    
+		  next
 		  
 		  self.Steps.Add(aStep)
-		  aStep.StepLabel = aStepLabel
+		  aStep.StepLabel = tmpLabel
+		  
+		  
 		  Return aStep
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetOutput(ConnectorLabel as string) As clDataTable
+		  
+		  return self.OutputConnector(0).GetTable
+		  
+		   
 		  
 		  
 		End Function
@@ -30,10 +73,10 @@ Protected Class clDataStorePipeline
 		      if execstep.OutputAreReady then
 		        
 		      elseif execstep.InputAreReady  then
-		         
+		        
 		        WriteLog("Executing step [%0] labeled [%1].", Introspection.GetType(execstep).Name, execstep.StepLabel)
 		        
-		        var res as boolean = execstep.Transform
+		        var res as boolean = execstep.Execute
 		        
 		        if not res then WriteLog("Execution failed.")
 		        
@@ -86,7 +129,7 @@ Protected Class clDataStorePipeline
 
 	#tag Method, Flags = &h0
 		Sub WriteLog(message as string, paramarray txt as string)
-		   
+		  
 		  var tmp as string = message
 		  
 		  for i as integer = 0 to txt.LastIndex
@@ -94,7 +137,7 @@ Protected Class clDataStorePipeline
 		  next
 		  
 		  System.DebugLog(tmp)
-		   
+		  
 		End Sub
 	#tag EndMethod
 
@@ -150,8 +193,6 @@ Protected Class clDataStorePipeline
 			//
 			// List of connectors producing the output dataset from the pipeline
 			//
-			
-			
 		#tag EndNote
 		OutputConnector() As clTransformerConnector
 	#tag EndProperty

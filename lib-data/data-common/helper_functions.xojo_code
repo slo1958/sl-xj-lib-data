@@ -82,6 +82,30 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetAllocatedDataSeries() As clAbstractDataSerie()
+		  
+		  var AllocatedDataSeries()  as clAbstractDataSerie
+		  
+		  Var o As Runtime.ObjectIterator = Runtime.IterateObjects
+		  o.Reset
+		  
+		  While o.MoveNext
+		    var obj as object = o.Current
+		    
+		    if obj isa clAbstractDataSerie then
+		      AllocatedDataSeries.Add(clAbstractDataSerie(obj))
+		      
+		    end if
+		    
+		  wend
+		  
+		  return AllocatedDataSeries
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function getLogManager() As clLogManager
 		  return clLogManager.GetDefaultLogingSupport
 		  

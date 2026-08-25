@@ -16,14 +16,14 @@ Protected Class clAbstractTransformer
 		  self.OutputConnectors.value(OutputName) = connector
 		  
 		  if self.firstOutputConnector = nil then self.firstOutputConnector = connector
-		  
-		  if connector.SourceTransformer <> nil then
-		    WriteLog("Connector [%0] already linked to a source transformer ", connector.GetLabel) 
-		    
-		  else
-		    connector.SourceTransformer = self
-		    
-		  end if
+		  // 
+		  // if connector.SourceTransformer <> nil then
+		  // WriteLog("Connector [%0] already linked to a source transformer ", connector.GetLabel) 
+		  // 
+		  // else
+		  // connector.SourceTransformer = self
+		  // 
+		  // end if
 		  
 		  return 
 		  
@@ -38,8 +38,31 @@ Protected Class clAbstractTransformer
 		  
 		  self.firstOutputConnector = nil
 		  
+		  self.ExecutionCompletedFlag = false
 		  return
 		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Execute() As Boolean
+		  
+		  var tmpBool as Boolean = Transform
+		  ExecutionCompletedFlag = true
+		  
+		  Return tmpBool
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub ExecutionCompleted()
+		  self.ExecutionCompletedFlag = true
+		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
@@ -177,7 +200,7 @@ Protected Class clAbstractTransformer
 		  self.AddInput(inputName, new clTransformerConnector(inputTable))
 		  
 		  return
-		   
+		  
 		End Sub
 	#tag EndMethod
 
@@ -197,7 +220,7 @@ Protected Class clAbstractTransformer
 		  self.AddInput(inputName, connector)
 		  
 		  return
-		   
+		  
 		End Sub
 	#tag EndMethod
 
@@ -259,8 +282,8 @@ Protected Class clAbstractTransformer
 		Delegate Function TableTransformerFunction(table as clDatatable, columns() as string, parameters() as variant) As Boolean
 	#tag EndDelegateDeclaration
 
-	#tag Method, Flags = &h0
-		Function Transform() As Boolean
+	#tag Method, Flags = &h1
+		Protected Function Transform() As Boolean
 		  return False
 		  
 		End Function
@@ -296,6 +319,10 @@ Protected Class clAbstractTransformer
 
 	#tag Property, Flags = &h0
 		EnableTraceMode As Boolean
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ExecutionCompletedFlag As Boolean
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -367,6 +394,14 @@ Protected Class clAbstractTransformer
 			InitialValue=""
 			Type="Boolean"
 			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="StepLabel"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

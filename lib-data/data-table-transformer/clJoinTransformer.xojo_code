@@ -60,7 +60,7 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h0
 		Sub Constructor(mode as JoinMode, KeyFields() as string, JoinStatusField as string = "")
 		  // Calling the overridden superclass constructor.
-		   // The input connectosr should be setup using a distinct cals
+		  // The input connectosr should be setup using a distinct cals
 		  //l
 		  // Parameters:
 		  // mode: join mode (JoinMode)
@@ -327,8 +327,8 @@ Inherits clAbstractTransformer
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function Transform() As Boolean
+	#tag Method, Flags = &h1
+		Protected Function Transform() As Boolean
 		  
 		  var tblleft as clDataTable = self.GetInputTable(cInputConnectorLeft)
 		  var tblright as clDataTable = self.GetInputTable(cInputConnectorRight)
@@ -444,6 +444,14 @@ Inherits clAbstractTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="StepLabel"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="EnableTraceMode"
 			Visible=false

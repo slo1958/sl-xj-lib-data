@@ -130,8 +130,8 @@ Inherits clLinearTransformer
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function Transform() As Boolean
+	#tag Method, Flags = &h1
+		Protected Function Transform() As Boolean
 		  
 		  
 		  var source as clDataTable = self.SourceTable
@@ -247,6 +247,14 @@ Inherits clLinearTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="StepLabel"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="EnableTraceMode"
 			Visible=false

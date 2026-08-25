@@ -101,6 +101,7 @@ Begin DesktopWindow Window1
       Underline       =   False
       Visible         =   True
       Width           =   560
+      _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
 End
@@ -116,9 +117,14 @@ End
 		  
 		  DesktopListboxForTable1.ShowTable(t1)
 		  
+		  var ms0 as clMemoryStats = GetMemoryStats()
 		  
 		  
+		  WriteLog(CurrentMethodName+":Tables in memory was:  %0,  dataseries in memory was: %1, transformers %2" , str(ms0.NumberOfTables), str(ms0.NumberOfDataSeries), str(ms0.NumberOfTransformers))
+		  var AllocatedDataSeries()  as clAbstractDataSerie = GetAllocatedDataSeries()
 		  
+		  
+		  Return
 		End Sub
 	#tag EndEvent
 #tag EndEvents

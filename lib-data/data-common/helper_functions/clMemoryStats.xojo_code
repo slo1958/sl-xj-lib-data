@@ -16,6 +16,17 @@ Class clMemoryStats
 		    ,clAbstractDataSerie(obj).FullName(true)) _
 		    )
 		    
+		  elseif obj isa clDataPool then
+		    Pools.add(new clMemoryStatEntry( _
+		    Introspection.GetType(obj).name _
+		    ,"" _
+		    ))
+		    
+		  elseif obj isa clAbstractTransformer then
+		    Transformers.add(new clMemoryStatEntry( _
+		    Introspection.GetType(obj).name _
+		    ,clAbstractTransformer(obj).StepLabel _
+		    ))
 		    
 		  else
 		    
@@ -23,6 +34,13 @@ Class clMemoryStats
 		  
 		  return
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function NumberOfDataPools() As integer
+		  Return Pools.count
+		  
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -39,6 +57,17 @@ Class clMemoryStats
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function NumberOfTransformers() As integer
+		  Return Transformers.count
+		  
+		End Function
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h0
+		Pools() As clMemoryStatEntry
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		Series() As clMemoryStatEntry
@@ -46,6 +75,10 @@ Class clMemoryStats
 
 	#tag Property, Flags = &h0
 		Tables() As clMemoryStatEntry
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Transformers() As clMemoryStatEntry
 	#tag EndProperty
 
 

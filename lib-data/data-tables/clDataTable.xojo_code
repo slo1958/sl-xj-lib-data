@@ -2261,7 +2261,7 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
-		  if trsf.Transform() then
+		  if trsf.Execute() then
 		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
 		    OutputTable = connection.GetTable()
@@ -3025,7 +3025,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, "")
 		  
-		  if gTransform.Transform() then
+		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
 		    
 		  else
@@ -3051,7 +3051,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, "")
 		  
-		  if gTransform.Transform() then
+		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
 		    
 		  else
@@ -3076,7 +3076,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, "")
 		  
-		  if gTransform.Transform() then
+		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
 		    
 		  else
@@ -3099,7 +3099,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, rowCountColumnName)
 		  
-		  if gTransform.Transform() then
+		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
 		    
 		  else
@@ -3125,7 +3125,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, rowCountColumnName)
 		  
-		  if gTransform.Transform() then
+		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
 		    
 		  else
@@ -3150,7 +3150,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, rowCountColumnName)
 		  
-		  if gTransform.Transform() then
+		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
 		    
 		  else
@@ -3239,7 +3239,7 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
-		  if trsf.Transform() then
+		  if trsf.Execute() then
 		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
 		    OutputTable = connection.GetTable
@@ -3532,7 +3532,7 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
-		  if trsf.Transform() then
+		  if trsf.Execute() then
 		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
 		    OutputTable =  connection.GetTable
@@ -3562,7 +3562,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var trsf as new clLookupTransformer(self, LookupSourceTable, KeyFieldMapping, LookupFieldMapping, JoinSuccessField)
 		  
-		  return trsf.Transform()
+		  return trsf.Execute()
 		  
 		End Function
 	#tag EndMethod
@@ -3597,7 +3597,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var trsf as new clLookupTransformer(self, LookupSourceTable, KeyFields, LookupFields, JoinSuccessField)
 		  
-		  return trsf.Transform()
+		  return trsf.Execute()
 		  
 		End Function
 	#tag EndMethod
@@ -3679,7 +3679,7 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusRight(JoinSuccessJoinedOnly)
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
-		  if trsf.Transform() then
+		  if trsf.Execute() then
 		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
 		    OutputTable = connection.GetTable
@@ -4233,7 +4233,7 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var sortTransformer as new clSortTransformer(self, ColumnNames,  order)
 		  
-		  if sortTransformer.Transform() then
+		  if sortTransformer.Execute() then
 		    return sortTransformer.GetOutputTable()
 		    
 		  else

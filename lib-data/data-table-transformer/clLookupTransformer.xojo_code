@@ -206,8 +206,8 @@ Inherits clAbstractTransformer
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function Transform() As Boolean
+	#tag Method, Flags = &h1
+		Protected Function Transform() As Boolean
 		  
 		  // Add an output connector 
 		  return RunLookup()
@@ -248,6 +248,14 @@ Inherits clAbstractTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="StepLabel"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="EnableTraceMode"
 			Visible=false

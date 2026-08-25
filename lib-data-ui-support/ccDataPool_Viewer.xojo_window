@@ -644,7 +644,8 @@ End
 		    
 		  end if
 		  
-		  var col as clAbstractDataSerie = clAbstractDataSerie(me.ColumnTagAt(col_no))
+		  var col as clAbstractDataSerie = me.GetColumn(col_no)
+		  // clAbstractDataSerie(me.ColumnTagAt(col_no))
 		  
 		  if col = nil then
 		    RefreshDescription ""

@@ -1385,12 +1385,18 @@ Protected Class clLibDataExample
 		  call table0.AddColumns(Array("country","city"))
 		  var col_cloned_sales as clNumberDataSerie =  clNumberDataSerie(table0.AddColumn(new clNumberDataSerie("sales")))
 		  
-		  table0.AddRow(Array("France","Paris",600))
-		  table0.AddRow(Array("France","Marseille",1200))
-		  table0.AddRow(Array("Belgique","Bruxelles",1300))
-		  table0.AddRow(Array("USA","NewYork",2400))
-		  table0.AddRow(Array("Belgique","Bruxelles",1500))
-		  table0.AddRow(Array("USA","Chicago",1600))
+		  table0.AddRow(Array("France","Paris",601))
+		  table0.AddRow(Array("France","Marseille",1202))
+		  table0.AddRow(Array("Belgique","Namur",1303))
+		  table0.AddRow(Array("USA","NewYork",2404))
+		  table0.AddRow(Array("Belgique","Bruxelles",1305))
+		  table0.AddRow(Array("USA","NewYork",2406))
+		  table0.AddRow(Array("Belgique","Bruxelles",1507))
+		  table0.AddRow(Array("Belgique","Liège",1508))
+		  table0.AddRow(Array("USA","Chicago",1609))
+		  table0.AddRow(Array("France","Paris",610))
+		  table0.AddRow(Array("France","Marseille",1211))
+		  table0.AddRow(Array("Belgique","Bruxelles",1312))
 		  
 		  col_cloned_sales = col_cloned_sales.Clone()
 		  col_cloned_sales.name = "Formatted sales"
@@ -1898,14 +1904,14 @@ Protected Class clLibDataExample
 		  
 		  var gTransfomer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"), "")
 		  
-		  call gTransfomer1.Transform
+		  call gTransfomer1.Execute()
 		  
 		  var tDistinct as clDataTable = gTransfomer1.GetOutputTable()
 		  
 		  
 		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country"),  StringArray("Sales","Quantity"), "")
 		  
-		  call gTransformer2.Transform
+		  call gTransformer2.Execute()
 		  
 		  var tSumSales1 as clDataTable = gTransformer2.GetOutputTable()
 		  
@@ -2409,13 +2415,13 @@ Protected Class clLibDataExample
 		  // call the function TransformerRowAverage() to calculate the rolling average per city  of Taxes and sales on up to four months
 		  var t1 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowAverage, 4, "", Array("City"), array("Taxes","Sales"), VariantArray())
 		  
-		  if t1.Transform() then tableOutput1 = t1.GetOutputTable
+		  if t1.Execute() then tableOutput1 = t1.GetOutputTable
 		  tableOutput1.Rename("Output without row count")
 		  
 		  // call the function TransformerRowAverage() to calculate the rolling average per city  of Taxes and sales on up to four months
 		  var t2 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowAverage, 4, "AvgRowCount", Array("City"), array("Taxes","Sales"), VariantArray())
 		  
-		  if t2.Transform() then tableOutput2 = t2.GetOutputTable
+		  if t2.Execute() then tableOutput2 = t2.GetOutputTable
 		  tableOutput2.Rename("Output with row count")
 		  
 		  log.EndTask(CurrentMethodName)
@@ -2474,13 +2480,13 @@ Protected Class clLibDataExample
 		  // call the function TransformerRowDelta() to calculate the difference of inventory with a break when city changes, the values in the first output row for each city is set to the source value
 		  var t1 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowDelta, Array("City"), array("Inventory"), VariantArray(1))
 		  
-		  if t1.Transform() then tableOutput1 = t1.GetOutputTable
+		  if t1.Execute() then tableOutput1 = t1.GetOutputTable
 		  
 		  tableOutput1.Rename("Output first row with source value")
 		  // call the function TransformerRowDelta() to calculate the difference of inventory with a break when city changes, the values in the first output row for each city is set to zero
 		  var t2 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowDelta, Array("City"), array("Inventory"), VariantArray())
 		  
-		  if t2.Transform() then tableOutput2 = t2.GetOutputTable
+		  if t2.Execute() then tableOutput2 = t2.GetOutputTable
 		  
 		  tableOutput2.Rename("Output first row set to zero")
 		  

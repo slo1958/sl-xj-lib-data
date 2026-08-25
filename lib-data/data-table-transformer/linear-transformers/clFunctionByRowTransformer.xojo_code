@@ -76,8 +76,8 @@ Inherits clLinearTransformer
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function Transform() As Boolean
+	#tag Method, Flags = &h1
+		Protected Function Transform() As Boolean
 		  // Calling the overridden superclass method.
 		  
 		  var previousRows() as clDataRow
@@ -200,6 +200,22 @@ Inherits clLinearTransformer
 
 	#tag ViewBehavior
 		#tag ViewProperty
+			Name="StepLabel"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="EnableTraceMode"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Name"
 			Visible=true
 			Group="ID"
@@ -237,6 +253,30 @@ Inherits clLinearTransformer
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="IncludeRowCount"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="NumberOfRows"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="RowCountColumn"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="string"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

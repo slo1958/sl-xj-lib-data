@@ -1,7 +1,7 @@
 #tag Module
 Protected Module datatable_to_list
 	#tag Method, Flags = &h0
-		Sub ShowTableInListbox(thetable as TableColumnReaderInterface, thelist as DesktopListBox)
+		Sub ShowTableInListboxZZ(thetable as TableColumnReaderInterface, thelist as DesktopListBox)
 		  
 		  var tmp_listbox as DesktopListBox = thelist
 		  var tmp_tbl as TableColumnReaderInterface = thetable
@@ -22,7 +22,8 @@ Protected Module datatable_to_list
 		  
 		  for column_index as integer = 0 to  nbr_columns-1
 		    tmp_listbox.HeaderAt(column_index+1) = tmp_tbl.GetColumnAt(column_index).DisplayTitle
-		    tmp_listbox.ColumnTagAt(column_index+1) = tmp_tbl.GetColumnAt(column_index)
+		    // Storing a pointer in to columntag creates memory leak, the destructor is not called even after 'nilling' the columntag
+		    // tmp_listbox.ColumnTagAt(column_index+1) = tmp_tbl.GetColumnAt(column_index)
 		  next
 		  
 		  //  

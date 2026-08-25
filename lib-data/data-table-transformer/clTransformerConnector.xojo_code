@@ -156,10 +156,6 @@ Protected Class clTransformerConnector
 		EnableFlag As Boolean
 	#tag EndProperty
 
-	#tag Property, Flags = &h0
-		SourceTransformer As clAbstractTransformer
-	#tag EndProperty
-
 	#tag Property, Flags = &h21
 		Private Table As clDataTable
 	#tag EndProperty

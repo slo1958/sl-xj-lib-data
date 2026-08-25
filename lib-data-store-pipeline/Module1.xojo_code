@@ -1,10 +1,12 @@
 #tag Module
 Protected Module Module1
 	#tag Method, Flags = &h0
-		Function TestStorePipeline() As clDataTable
+		Function CreatePipeline() As clDataStorePipeline
 		  //
 		  // Initial test 
 		  //
+		  
+		   
 		  
 		  var salestable As New clDataTable("sales", SerieArray( _
 		  New clDataSerie("City",  "Paris","Lyon","Namur","Paris","Namur","Milan") _
@@ -54,15 +56,58 @@ Protected Module Module1
 		  
 		  pipeline1.SetOutput("", output2)
 		  
+		  Return pipeline1
+		  
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function TestStorePipeline() As clDataTable
+		  //
+		  // Initial test 
+		  //
+		  
+		  var ms0 as clMemoryStats = GetMemoryStats()
+		  
+		  var pipeline1 as  clDataStorePipeline = CreatePipeline
+		  
 		  pipeline1.run()
 		  
-		  var t1 as clDataTable = output2.GetTable
+		  var t1 as clDataTable = pipeline1.GetOutput("")
+		  
+		  var ms1 as clMemoryStats = GetMemoryStats()
+		  
+		  pipeline1 = nil
+		  
+		  var ms2 as clMemoryStats = GetMemoryStats()
+		  
+		  WriteLog(CurrentMethodName+":Tables in memory was:  %0,  dataseries in memory was: %1, transformers %2" , str(ms0.NumberOfTables), str(ms0.NumberOfDataSeries), str(ms0.NumberOfTransformers))
+		  Writelog(CurrentMethodName+":Tables in memory is:  %0, dataseries in memory is: %1, transformers %2" , str(ms1.NumberOfTables), str(ms1.NumberOfDataSeries), str(ms1.NumberOfTransformers))
+		  Writelog(CurrentMethodName+":Tables in memory after destroy  is:  %0, dataseries in memory is: %1, transformers %2" , str(ms2.NumberOfTables), str(ms2.NumberOfDataSeries), str(ms2.NumberOfTransformers))
+		  
 		  
 		  return t1
 		  
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub WriteLog(message as string, paramarray txt as string)
+		  
+		  var tmp as string = message
+		  
+		  for i as integer = 0 to txt.LastIndex
+		    tmp = tmp.ReplaceAll("%"+str(i), txt(i))
+		  next
+		  
+		  System.DebugLog(tmp)
+		  
+		End Sub
 	#tag EndMethod
 
 

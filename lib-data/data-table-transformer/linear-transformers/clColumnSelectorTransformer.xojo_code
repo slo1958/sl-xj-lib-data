@@ -29,7 +29,7 @@ Inherits clLinearTransformer
 		Sub Constructor(ColumnsToRetain() as pair, CreateMissingColumns as boolean)
 		  //
 		  // Filter the rows of the source table
-		   // The input connector should be setup using a distinct call
+		  // The input connector should be setup using a distinct call
 		  //
 		  // Parameters:
 		  // - ColumnsToRetain: name of filter column
@@ -56,7 +56,7 @@ Inherits clLinearTransformer
 		Sub Constructor(ColumnsToRetain() as string, CreateMissingColumns as boolean)
 		  //
 		  // Filter the rows of the source table
-		   // The input connector should be setup using a distinct call
+		  // The input connector should be setup using a distinct call
 		  //
 		  // Parameters:
 		  // - ColumnsToRetain: name of filter column
@@ -79,8 +79,8 @@ Inherits clLinearTransformer
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Function Transform() As Boolean
+	#tag Method, Flags = &h1
+		Protected Function Transform() As Boolean
 		  // Calling the overridden superclass method.
 		  
 		  var source as clDataTable = self.SourceTable
@@ -181,6 +181,14 @@ Inherits clLinearTransformer
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CreateMissing"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

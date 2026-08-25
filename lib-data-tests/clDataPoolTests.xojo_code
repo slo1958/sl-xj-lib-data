@@ -195,7 +195,7 @@ Inherits clObjectTest
 		  
 		  // Group invoice lines by invoice ID and calculate totals
 		  var trsfGroupByInvoice as new clGroupByTransformer(tblInvoiceDetails, array("InvoiceID"), array("TotalPrice"),"NbrLines")
-		  call trsfGroupByInvoice.Transform()
+		  call trsfGroupByInvoice.Execute()
 		  var tblGroupedInvoice as clDataTable = trsfGroupByInvoice.GetOutputTable()
 		  tblGroupedInvoice.RenameColumn("Sum of TotalPrice","InvoiceTotal")
 		  
@@ -204,24 +204,22 @@ Inherits clObjectTest
 		  
 		  // Join with invoice headers to get customer ID
 		  var trsfJoinCustomerID as new clLookupTransformer(tblGroupedInvoice, tblInvoiceHeader, array("InvoiceID"), array("CustomerID"))
-		  call trsfJoinCustomerID.Transform()
+		  call trsfJoinCustomerID.Execute()
 		  var tblInvoicedCustomers as clDataTable = tblGroupedInvoice
 		  
 		  // Calculate the total per customer
 		  var trsfGroupByCustomer as new clGroupByTransformer(tblInvoicedCustomers, array("CustomerID"), array("InvoiceTotal","NbrLinesAsNumber"), "NbrInvoices")
-		  call trsfGroupByCustomer.Transform()
+		  call trsfGroupByCustomer.Execute()
 		  var tblCustomerTotals as clDataTable = trsfGroupByCustomer.GetOutputTable()
 		  
 		  // lookup transformer will add columns to the source, we clone to allow for checks 
 		  var tblCustTotalsCloned as clDataTable = tblCustomerTotals.Clone("CustomerTotals")
 		  var trsfJoinCustomerInfo as new clLookupTransformer(tblCustTotalsCloned, tblCustomers, array("CustomerID":"ID"), array("Name":"Name", "City":"City"))
-		  call trsfJoinCustomerInfo.Transform()
+		  call trsfJoinCustomerInfo.Execute()
 		  
 		  var tblExpectedTotals as new clDataTable("ExpectedtTotal")
 		  tblExpectedTotals.AddRow(new clDataRow("CustomerID":"A2", "Sum of InvoiceTotal":708.0,"Sum of NbrLinesAsNumber":5.0, "NbrInvoices":2))
 		  tblExpectedTotals.AddRow(new clDataRow("CustomerID":"A3", "Sum of InvoiceTotal":907.0,"Sum of NbrLinesAsNumber":3.0, "NbrInvoices":1))
-		  
-		  
 		  
 		  var tblExpectedJoinedTotals as new clDataTable("ExpectedJoinedTotal")
 		  tblExpectedJoinedTotals.AddRow(new clDataRow("CustomerID":"A2", "Sum of InvoiceTotal":708.0,"Sum of NbrLinesAsNumber":5.0, "NbrInvoices":2,"Name":"Paul","City":"Liege"))
@@ -276,7 +274,7 @@ Inherits clObjectTest
 		  
 		  my_data_pool.SetTable(pool_table2)
 		  
-		   
+		  
 		  var output_folder as FolderItem  = GettestOutputFolder(CurrentMethodName)
 		  
 		  my_data_pool.SaveEachTable(new clTextWriter(output_folder, True))
@@ -479,7 +477,7 @@ Inherits clObjectTest
 		  next
 		  
 		  my_data_pool.SetTable(pool_table2)
-		   
+		  
 		  var output_folder as FolderItem  = GettestOutputFolder(CurrentMethodName)
 		  
 		  var fld_file as FolderItem  = output_folder.child("myfile.json")

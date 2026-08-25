@@ -2141,7 +2141,7 @@ Inherits clObjectTest
 		  
 		  
 		  var gTransformer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"), "")
-		  call gTransformer1.Transform
+		  call gTransformer1.Execute()
 		  var tDistinct  as clDataTable = gTransformer1.GetOutputTable()
 		  
 		  var tDistinct_expected As New clDataTable("mytable", SerieArray( _
@@ -2158,7 +2158,7 @@ Inherits clObjectTest
 		  ,"" _
 		  )
 		  
-		  call gTransformer2.Transform
+		  call gTransformer2.Execute()
 		  var tSumSales as clDataTable = gTransformer2.GetOutputTable()
 		  
 		  var tSumSales_expected As New clDataTable("mytable", SerieArray( _
@@ -2196,7 +2196,7 @@ Inherits clObjectTest
 		  
 		  var uTransformer as new clUnpivotTransformer(mytable, array("name"), "Area","Sales")
 		  
-		  call uTransformer.Transform()
+		  call uTransformer.Execute()
 		  
 		  var results as clDataTable  = uTransformer.GetOutputTable()
 		  
@@ -2235,7 +2235,7 @@ Inherits clObjectTest
 		  
 		  var uTransformer as new clUnpivotTransformer(mytable, array("name"), "Area","Sales", array("col1"))
 		  
-		  call uTransformer.Transform()
+		  call uTransformer.Execute()
 		  
 		  var results as clDataTable  = uTransformer.GetOutputTable()
 		  
@@ -2345,7 +2345,7 @@ Inherits clObjectTest
 		  
 		  var pTransformer as new clPivotTransformer(table0, array("country"), "product", array("P1","P2",""), array("sales","quantity"))
 		  
-		  call pTransformer.Transform()
+		  call pTransformer.Execute()
 		  
 		  var table1 as clDataTable  = pTransformer.GetOutputTable()
 		  
@@ -3168,10 +3168,10 @@ Inherits clObjectTest
 		  var tableNotFrance as clDataTable
 		  
 		  var t1 as new clFilterTransformer(table0, "is_france")
-		  if t1.Transform() then tableFrance = t1.GetOutputTable
+		  if t1.Execute() then tableFrance = t1.GetOutputTable
 		  
 		  var t2 as new clFilterTransformer(table0, "is_france", FilterMode.ExcludeSelected)
-		  if t2.Transform() then tableNotFrance = t2.GetOutputTable
+		  if t2.Execute() then tableNotFrance = t2.GetOutputTable
 		  
 		  var expectedTableNotFrance as new clDataTable("ExpectedNotFrance")
 		  var expectedTableFrance as new clDataTable("ExpectedFrance")
@@ -3223,7 +3223,7 @@ Inherits clObjectTest
 		  // call the function apply fixed rate with two column names (output column, input column)  as parameter
 		  var t1 as new clFunctionTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate2, array("Taxes","Sales"), VariantArray(0.06))
 		  
-		  if t1.Transform() then tableOutput = t1.GetOutputTable
+		  if t1.Execute() then tableOutput = t1.GetOutputTable
 		  
 		  var expectedOutput as clDataTable = tableInput.clone("expected output")
 		  var tx as  clNumberDataSerie
@@ -3295,7 +3295,7 @@ Inherits clObjectTest
 		  // repeat call the function apply fixed rate with one column name as parameter
 		  var t1 as new clFunctionByColumnTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate1, array("Taxes1","Taxes2"), VariantArray(0.07))
 		  
-		  if t1.Transform() then tableOutput = t1.GetOutputTable
+		  if t1.Execute() then tableOutput = t1.GetOutputTable
 		  
 		  var expectedOutput as clDataTable = tableInput.clone("expected output")
 		  
@@ -3427,7 +3427,7 @@ Inherits clObjectTest
 		  
 		  var pTransformer as new clPivotTransformer(table0, array("country"), "product_idstr", array("101","202",""), array("sales","quantity"))
 		  
-		  call pTransformer.Transform()
+		  call pTransformer.Execute()
 		  
 		  var table1 as clDataTable  = pTransformer.GetOutputTable()
 		  
@@ -3548,7 +3548,7 @@ Inherits clObjectTest
 		  // call the function TransformerRowAverage() to calculate the rolling average per city  of Taxes and sales on up to four months
 		  var t1 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowAverage, 4, "", Array("City"), array("Taxes","Sales"), VariantArray())
 		  
-		  if t1.Transform() then tableOutput = t1.GetOutputTable
+		  if t1.Execute() then tableOutput = t1.GetOutputTable
 		  
 		  var tableExpectedOutput as  clDataTable = tableInput.cloneStructure("expected output")
 		  
@@ -3610,7 +3610,7 @@ Inherits clObjectTest
 		  //
 		  var t1 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowAverage, 4, "UsedRowCount", Array("City"), array("Taxes","Sales"), VariantArray())
 		  
-		  if t1.Transform() then tableOutput = t1.GetOutputTable
+		  if t1.Execute() then tableOutput = t1.GetOutputTable
 		  
 		  var tableExpectedOutput as  clDataTable = tableInput.cloneStructure("expected output")
 		  call tableExpectedOutput.AddColumn(new clIntegerDataSerie("UsedRowCount"))
@@ -3670,7 +3670,7 @@ Inherits clObjectTest
 		  // call the function TransformerRowDelta() to calculate the difference of inventory with a break when city changes, the values in the first output row for each city is set to the source value
 		  var t1 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowDelta, Array("City"), array("Inventory"), VariantArray(1))
 		  
-		  if t1.Transform() then tableOutput1 = t1.GetOutputTable
+		  if t1.Execute() then tableOutput1 = t1.GetOutputTable
 		  
 		  var tableExpectedOutput1 as  clDataTable = tableInput.cloneStructure("expected output 1")
 		  
@@ -3693,7 +3693,7 @@ Inherits clObjectTest
 		  // call the function TransformerRowDelta() to calculate the difference of inventory with a break when city changes, the values in the first output row for each city is set to zero
 		  var t2 as new clFunctionByRowTransformer(tableInput, AddressOf TransformerRowDelta, Array("City"), array("Inventory"), VariantArray())
 		  
-		  if t2.Transform() then tableOutput2 = t2.GetOutputTable
+		  if t2.Execute() then tableOutput2 = t2.GetOutputTable
 		  
 		  var tableExpectedOutput2 as  clDataTable = tableInput.cloneStructure("expected output 2")
 		  

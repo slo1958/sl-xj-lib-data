@@ -2,26 +2,9 @@
 Protected Class DesktopListboxForTable
 Inherits DesktopListBox
 	#tag Method, Flags = &h0
-		Sub DefineColumnOrder(Source as TableColumnReaderInterface)
-		  var tmp_tbl as TableColumnReaderInterface = Source
-		  var nbr_columns as integer = tmp_tbl.ColumnCount
+		Sub DefineColumnOrder(ColumnNames() as string)
 		  
-		  Redim ColumnsOrder(nbr_columns-1)
-		  
-		  for column_index as integer = 0 to  nbr_columns-1
-		    ColumnsOrder(column_index) = column_index
-		    
-		  next
-		  
-		  Return
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub DefineColumnOrder(Source as TableRowReaderInterface)
-		  var tmp_tbl as TableRowReaderInterface = Source
-		  var nbr_columns as integer = tmp_tbl.ColumnCount
-		  //var nbr_columns as integer = 10
+		  var nbr_columns as integer = ColumnNames.count
 		  
 		  Redim ColumnsOrder(nbr_columns-1)
 		  
@@ -36,21 +19,48 @@ Inherits DesktopListBox
 
 	#tag Method, Flags = &h0
 		Function FormatRowID(rowID as Integer, maxRowID as integer) As string
-		  Return str(rowID)
+		  //
+		  // When the row count is know, prefix the rowID with zeroes
+		  //
+		  // Parameters:
+		  // - rowID: number to convert
+		  // - maxRowID: maximum value or -1
+		  
+		  if maxRowID <= 0 then
+		    return str(rowid)
+		    
+		  else
+		    return format( rowId, left("0000000",maxRowID.ToString.Length))
+		    
+		  end if
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function SetupListbox(Source as TableRowReaderInterface) As integer
+		Function GetColumn(colNo as integer) As clAbstractDataSerie
+		  
+		  if colNo < 0 or colNo > columns.LastIndex then return nil
+		  
+		  return columns(colno)
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function SetupListbox(ColumnNames() as string) As integer
 		  var tmp_listbox as DesktopListBox = self
 		  
-		  var tmp_rowsource as TableRowReaderInterface = Source
+		  var nbr_columns as integer = ColumnNames.Count
 		  
+		  if ColumnsOrder.Count <> nbr_columns then DefineColumnOrder(ColumnNames())
 		  
-		  var nbr_columns as integer = tmp_rowsource.ColumnCount
-		  
-		  if ColumnsOrder.Count <> nbr_columns then DefineColumnOrder(Source)
+		  //
+		  // Clean up
+		  //
+		  tmp_listbox.RemoveAllRows
+		  self.Columns.RemoveAll
 		  
 		  //  
 		  //  update table header
@@ -61,7 +71,7 @@ Inherits DesktopListBox
 		  
 		  tmp_listbox.HeaderAt(0)="#"
 		  
-		  var tmp_col_names() as string = tmp_rowsource.GetColumnNames()
+		  var tmp_col_names() as string = ColumnNames()
 		  
 		  for column_base_index as integer = 0 to  nbr_columns-1
 		    var column_index as integer = self.ColumnsOrder(column_base_index)
@@ -81,26 +91,15 @@ Inherits DesktopListBox
 		  
 		  var tmp_listbox as DesktopListBox = self
 		  var tmp_tbl as TableColumnReaderInterface = Source
+		   
+		  var nbr_columns as integer =  SetupListbox(source.GetColumnNames())
 		  
-		  var nbr_columns as integer = tmp_tbl.ColumnCount
-		  
-		  if ColumnsOrder.Count <> nbr_columns then DefineColumnOrder(Source)
-		  
-		  tmp_listbox.RemoveAllRows
-		  
-		  //  
-		  //  update table header
-		  //  
-		  tmp_listbox.HasHeader = True
-		  
-		  tmp_listbox.ColumnCount = nbr_columns + 1
-		  
-		  tmp_listbox.HeaderAt(0)="#"
+		  columns.add(nil) // first column is the row number
 		  
 		  for column_base_index as integer = 0 to  nbr_columns-1
 		    var column_index as integer = self.ColumnsOrder(column_base_index)
-		    tmp_listbox.HeaderAt(column_base_index+1) = tmp_tbl.GetColumnAt(column_index).DisplayTitle
-		    tmp_listbox.ColumnTagAt(column_base_index+1) = tmp_tbl.GetColumnAt(column_index)
+		    columns.Add(tmp_tbl.GetColumnAt(column_index))
+		    
 		  next
 		  
 		  //  
@@ -140,29 +139,21 @@ Inherits DesktopListBox
 		  
 		  var tmp_listbox as DesktopListBox = self
 		  var tmp_rowsource as TableRowReaderInterface = Source
-		  var nbr_columns as integer = -1
-		  
-		  tmp_listbox.RemoveAllRows
+		  var nbr_columns as integer = SetupListbox(source.GetColumnNames)
 		  
 		  //  
 		  //  show data
 		  //
-		  
 		  var tmp_rowindex as integer = 0
-		  
 		  
 		  while not tmp_rowsource.EndOfTable
 		    var tmp_row() as String
 		    tmp_row  = tmp_rowsource.NextRowAsString
 		    
-		    if ColumnsOrder.Count <1 then nbr_columns = SetupListbox(source)
-		    
-		    
 		    tmp_listbox.AddRow(FormatRowID(tmp_rowindex, -1))
 		    
 		    for column_base_index as integer = 0 to  nbr_columns-1
 		      var column_index as integer = self.ColumnsOrder(column_base_index)
-		      
 		      
 		      tmp_listbox.CellTextAt(tmp_rowindex, column_base_index+1) =  tmp_row(column_index)
 		      
@@ -178,6 +169,15 @@ Inherits DesktopListBox
 		End Sub
 	#tag EndMethod
 
+
+	#tag Property, Flags = &h21
+		#tag Note
+			Cannot use ColumnTag to store a pointer to the column
+			Even when ColumnTag are set to nil, the desctructors are not called
+			
+		#tag EndNote
+		Private Columns() As clAbstractDataSerie
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private ColumnsOrder() As Integer
