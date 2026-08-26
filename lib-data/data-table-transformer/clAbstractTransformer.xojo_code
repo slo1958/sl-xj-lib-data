@@ -1,7 +1,7 @@
 #tag Class
 Protected Class clAbstractTransformer
 	#tag Method, Flags = &h1
-		Protected Sub AddInput(InputName as string, connector as clTransformerConnector)
+		Protected Sub AddInput(InputName as string, connector as clTransformerConnection)
 		  
 		  self.InputConnectors.Value(InputName) = connector
 		  
@@ -11,7 +11,7 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub AddOutput(OutputName as string, connector as clTransformerConnector)
+		Protected Sub AddOutput(OutputName as string, connector as clTransformerConnection)
 		  
 		  self.OutputConnectors.value(OutputName) = connector
 		  
@@ -68,7 +68,7 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetInputConnector(InputConnectorName as string) As clTransformerConnector
+		Function GetInputConnector(InputConnectorName as string) As clTransformerConnection
 		  //
 		  // Returns the input connector matching passed name
 		  //
@@ -79,7 +79,7 @@ Protected Class clAbstractTransformer
 		  // selected input connector
 		  //
 		  
-		  var c as clTransformerConnector
+		  var c as clTransformerConnection
 		  
 		  c = self.InputConnectors.Lookup(InputConnectorName, nil)
 		  
@@ -101,7 +101,7 @@ Protected Class clAbstractTransformer
 		  // selected input table
 		  //
 		  
-		  var connector as clTransformerConnector = self.GetInputConnector(InputConnectorName)
+		  var connector as clTransformerConnection = self.GetInputConnector(InputConnectorName)
 		  
 		  return if(connector = nil, nil, connector.GetTable())
 		  
@@ -111,7 +111,7 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetOutputConnector(OutputConnectorName as string = "") As clTransformerConnector
+		Function GetOutputConnector(OutputConnectorName as string = "") As clTransformerConnection
 		  //
 		  // Returns the output connector matching passed name or the first output connector if name is empty
 		  //
@@ -147,7 +147,7 @@ Protected Class clAbstractTransformer
 		  // selected output table
 		  //
 		  
-		  var connector as clTransformerConnector = self.GetOutputConnector(OutputConnectorName)
+		  var connector as clTransformerConnection = self.GetOutputConnector(OutputConnectorName)
 		  
 		  return if(connector = nil, nil, connector.GetTable())
 		  
@@ -158,7 +158,7 @@ Protected Class clAbstractTransformer
 
 	#tag Method, Flags = &h0
 		Function InputAreReady() As Boolean
-		  for each c as clTransformerConnector in self.InputConnectors.Values
+		  for each c as clTransformerConnection in self.InputConnectors.Values
 		    
 		    if c.GetTable = nil then return false
 		    
@@ -170,7 +170,7 @@ Protected Class clAbstractTransformer
 
 	#tag Method, Flags = &h0
 		Function OutputAreReady() As Boolean
-		  for each c as clTransformerConnector in self.OutputConnectors.Values
+		  for each c as clTransformerConnection in self.OutputConnectors.Values
 		    
 		    if c.GetTable = nil then return false
 		    
@@ -197,7 +197,7 @@ Protected Class clAbstractTransformer
 		  // selected input table
 		  //
 		  
-		  self.AddInput(inputName, new clTransformerConnector(inputTable))
+		  self.AddInput(inputName, new clTransformerConnection(inputTable))
 		  
 		  return
 		  
@@ -205,13 +205,13 @@ Protected Class clAbstractTransformer
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetInput(inputName as string, connector as clTransformerConnector)
+		Sub SetInput(inputName as string, connector as clTransformerConnection)
 		  //
 		  // Define an input connector
 		  //
 		  // Parameters:
 		  // - inputName: connector name
-		  // - connecter: clTransformerConnector 
+		  // - connecter: clTransformerConnection 
 		  //
 		  // Returns:
 		  // selected input table
@@ -237,7 +237,7 @@ Protected Class clAbstractTransformer
 		  // - new name
 		  //
 		  
-		  var c as clTransformerConnector
+		  var c as clTransformerConnection
 		  
 		  c = self.OutputConnectors.Lookup(connectionName, nil)
 		  
@@ -263,7 +263,7 @@ Protected Class clAbstractTransformer
 		  // selected output table
 		  //
 		  
-		  var c as clTransformerConnector
+		  var c as clTransformerConnection
 		  
 		  c = self.OutputConnectors.Lookup(connectionName, nil)
 		  
@@ -326,7 +326,7 @@ Protected Class clAbstractTransformer
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected firstOutputConnector As clTransformerConnector
+		Protected firstOutputConnector As clTransformerConnection
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -402,6 +402,14 @@ Protected Class clAbstractTransformer
 			InitialValue=""
 			Type="String"
 			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

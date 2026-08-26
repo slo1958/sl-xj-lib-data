@@ -208,7 +208,7 @@ Inherits clLinearTransformer
 		    
 		  next
 		  
-		  var connector as clTransformerConnector
+		  var connector as clTransformerConnection
 		  var grp as new clSeriesGroupAndAggregate(GroupingDataSeries,MeasureColumns)
 		  
 		  var res() as clAbstractDataSerie = grp.Flattened(self.GroupingCountColumn)
@@ -247,6 +247,14 @@ Inherits clLinearTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="StepLabel"
 			Visible=false

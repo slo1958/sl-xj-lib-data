@@ -93,7 +93,7 @@ Inherits clLinearTransformer
 		    
 		  next
 		  
-		  var connector as clTransformerConnector
+		  var connector as clTransformerConnection
 		  
 		  var cg1 as new clSeriesGroupAndPivot(dimensionColumns, measurePairs, pivotColumn, measureMapping)
 		  
@@ -133,6 +133,14 @@ Inherits clLinearTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="StepLabel"
 			Visible=false

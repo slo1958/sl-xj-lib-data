@@ -48,7 +48,7 @@ Protected Class clDataStorePipeline
 		  
 		  return self.OutputConnector(0).GetTable
 		  
-		   
+		  
 		  
 		  
 		End Function
@@ -93,7 +93,7 @@ Protected Class clDataStorePipeline
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetOutput(ConnectorLabel as string, aConnector as clTransformerConnector)
+		Sub SetOutput(ConnectorLabel as string, aConnector as clTransformerConnection)
 		  
 		  self.OutputConnector.Add(aConnector)
 		  
@@ -117,7 +117,7 @@ Protected Class clDataStorePipeline
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetStepInput(aStep as clAbstractTransformer, inputName as string, connector as clTransformerConnector)
+		Sub SetStepInput(aStep as clAbstractTransformer, inputName as string, connector as clTransformerConnection)
 		  
 		  aStep.SetInput(inputName, connector)
 		  
@@ -161,7 +161,7 @@ Protected Class clDataStorePipeline
 	#tag Note, Name = Option 1
 		
 		
-		Use define connection using clTransformerConnector and assign them from an output to an input:
+		Use define connection using clTransformerConnection and assign them from an output to an input:
 		
 		Example: join a table and a lookup table, then apply a filter:
 		
@@ -169,8 +169,8 @@ Protected Class clDataStorePipeline
 		s1.setInput(main-input-name, sourcetable)
 		s1.setInput(lookup-input-name, lookUptable)
 		
-		var output1 as clTransformerConnector = s1.GetOutputConnector(outputname)
-		var resultlog1 as clTransformerConnector = s1.GetOutputConnector(logname)
+		var output1 as clTransformerConnection = s1.GetOutputConnector(outputname)
+		var resultlog1 as clTransformerConnection = s1.GetOutputConnector(logname)
 		
 		var s2 as clAbstractTransformer = pipeline1.AddStep(new  filter-transformer-step(..))
 		s2.setInput(input-name, output1)
@@ -185,7 +185,7 @@ Protected Class clDataStorePipeline
 
 
 	#tag Property, Flags = &h0
-		InternalConnectors() As clTransformerConnector
+		InternalConnectors() As clTransformerConnection
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -194,7 +194,7 @@ Protected Class clDataStorePipeline
 			// List of connectors producing the output dataset from the pipeline
 			//
 		#tag EndNote
-		OutputConnector() As clTransformerConnector
+		OutputConnector() As clTransformerConnection
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

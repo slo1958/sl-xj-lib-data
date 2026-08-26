@@ -4,8 +4,8 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h21
 		Private Sub ConfigureInputConnectors(MainTable as clDataTable, LookupTable as clDataTable)
 		  
-		  self.AddInput(cInputConnectorMain, new clTransformerConnector(MainTable))
-		  self.AddInput(cInputConnectorLookUp, new clTransformerConnector(LookupTable))
+		  self.AddInput(cInputConnectorMain, new clTransformerConnection(MainTable))
+		  self.AddInput(cInputConnectorLookUp, new clTransformerConnection(LookupTable))
 		  
 		  Return
 		End Sub

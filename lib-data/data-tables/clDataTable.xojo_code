@@ -2263,7 +2263,7 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
 		  if trsf.Execute() then
-		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
+		    var connection as clTransformerConnection = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
 		    OutputTable = connection.GetTable()
 		    //OutputTable =  trsf.GetOutputTable(trsf.cOutputConnectorJoined)
@@ -3241,7 +3241,7 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
 		  if trsf.Execute() then
-		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
+		    var connection as clTransformerConnection = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
 		    OutputTable = connection.GetTable
 		    
@@ -3534,7 +3534,7 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
 		  if trsf.Execute() then
-		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
+		    var connection as clTransformerConnection = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
 		    OutputTable =  connection.GetTable
 		    
@@ -3681,7 +3681,7 @@ Implements TableColumnReaderInterface,Iterable
 		  trsf.SetJoinStatusBoth(JoinSuccessBoth)
 		  
 		  if trsf.Execute() then
-		    var connection as clTransformerConnector = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
+		    var connection as clTransformerConnection = trsf.GetOutputConnector(trsf.cOutputConnectorJoined)
 		    
 		    OutputTable = connection.GetTable
 		    

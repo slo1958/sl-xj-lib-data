@@ -16,25 +16,25 @@ Inherits clAbstractTransformer
 		  Super.Constructor
 		  
 		  
-		  self.AddInput(cInputConnectorLeft, new clTransformerConnector(LeftTable))
-		  self.AddInput(cInputConnectorRight, new clTransformerConnector(RightTable))
+		  self.AddInput(cInputConnectorLeft, new clTransformerConnection(LeftTable))
+		  self.AddInput(cInputConnectorRight, new clTransformerConnection(RightTable))
 		  
 		  
 		  select case mode
 		    
 		  case JoinMode.OuterJoin 
-		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector(cDefaultMainOutputTableName))
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnection(cDefaultMainOutputTableName))
 		    
 		    self.JoinStatusBoth = "JOIN"
 		    
 		  case JoinMode.LeftJoin
-		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector(cDefaultMainOutputTableName))
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnection(cDefaultMainOutputTableName))
 		    
 		    self.JoinStatusBoth = "JOIN"
 		    self.JoinStatusLeftOnly = "LEFT"
 		    
 		  case JoinMode.InnerJoin
-		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector(cDefaultMainOutputTableName)) // $$ "JoinedResults"))
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnection(cDefaultMainOutputTableName)) // $$ "JoinedResults"))
 		    
 		    // by default, we only generated the main output (joined results)
 		    
@@ -73,18 +73,18 @@ Inherits clAbstractTransformer
 		  select case mode
 		    
 		  case JoinMode.OuterJoin 
-		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector(cDefaultMainOutputTableName))
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnection(cDefaultMainOutputTableName))
 		    
 		    self.JoinStatusBoth = "JOIN"
 		    
 		  case JoinMode.LeftJoin
-		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector(cDefaultMainOutputTableName))
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnection(cDefaultMainOutputTableName))
 		    
 		    self.JoinStatusBoth = "JOIN"
 		    self.JoinStatusLeftOnly = "LEFT"
 		    
 		  case JoinMode.InnerJoin
-		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnector( cDefaultMainOutputTableName)) // $$ "JoinedResults"))
+		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnection( cDefaultMainOutputTableName)) // $$ "JoinedResults"))
 		    
 		    // by default, we only generated the main output (joined results)
 		    
@@ -113,7 +113,7 @@ Inherits clAbstractTransformer
 		  // Executes a full join between the Master table and the secondary table
 		  //
 		  
-		  var connector as clTransformerConnector
+		  var connector as clTransformerConnection
 		  var OutputTable as clDataTable 
 		  var masterOnlyOutputTable as clDataTable = nil
 		  var secondaryOnlyOutputTable as clDataTable = nil
@@ -274,7 +274,7 @@ Inherits clAbstractTransformer
 		  
 		  
 		  If GenerateNonMatchingLeft then 
-		    self.AddOutput(cOutputConnectorLeft, new clTransformerConnector("LeftResults"))
+		    self.AddOutput(cOutputConnectorLeft, new clTransformerConnection("LeftResults"))
 		    
 		  elseif self.OutputConnectors.HasKey(cOutputConnectorLeft) then 
 		    self.OutputConnectors.Remove(cOutputConnectorLeft)
@@ -284,7 +284,7 @@ Inherits clAbstractTransformer
 		  
 		  
 		  If GenerateNonMatchingRight then 
-		    self.AddOutput(cOutputConnectorRight, new clTransformerConnector("RightResults"))
+		    self.AddOutput(cOutputConnectorRight, new clTransformerConnection("RightResults"))
 		    
 		  elseif self.OutputConnectors.HasKey(cOutputConnectorRight) then 
 		    self.OutputConnectors.Remove(cOutputConnectorRight)
@@ -341,7 +341,7 @@ Inherits clAbstractTransformer
 		  var cntleft as integer = tblleft.RowCount
 		  var cntright as integer = tblright.RowCount
 		  
-		  var connector as clTransformerConnector
+		  var connector as clTransformerConnection
 		  
 		  var outputLeftConnection as string = ""
 		  var outputRightConnection as string = ""
@@ -444,6 +444,14 @@ Inherits clAbstractTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="StepLabel"
 			Visible=false

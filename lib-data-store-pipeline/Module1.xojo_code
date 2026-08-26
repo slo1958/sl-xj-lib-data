@@ -48,7 +48,7 @@ Protected Module Module1
 		  pipeline1.SetStepInput(sAddCountry, clJoinTransformer.cInputConnectorRight, countrytable)
 		  
 		  
-		  var output2 as clTransformerConnector = sFilterColumns.GetOutputConnector()
+		  var output2 as clTransformerConnection = sFilterColumns.GetOutputConnector()
 		  
 		  pipeline1.SetOutput("", output2)
 		  

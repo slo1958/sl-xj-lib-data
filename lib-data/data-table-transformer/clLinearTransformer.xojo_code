@@ -6,7 +6,7 @@ Inherits clAbstractTransformer
 		  // Calling the overridden superclass constructor.
 		  Super.Constructor
 		  
-		  self.AddOutput(cOutputConnectorName, new clTransformerConnector(cDefaultMainOutputTableName))
+		  self.AddOutput(cOutputConnectorName, new clTransformerConnection(cDefaultMainOutputTableName))
 		  
 		  return
 		  
@@ -19,9 +19,9 @@ Inherits clAbstractTransformer
 		  // Calling the overridden superclass constructor.
 		  Super.Constructor
 		  
-		  self.AddInput(cInputConnectorName, new clTransformerConnector(MainTable))
+		  self.AddInput(cInputConnectorName, new clTransformerConnection(MainTable))
 		  
-		  self.AddOutput(cOutputConnectorName, new clTransformerConnector(cDefaultMainOutputTableName))
+		  self.AddOutput(cOutputConnectorName, new clTransformerConnection(cDefaultMainOutputTableName))
 		  
 		  return
 		  
@@ -33,7 +33,7 @@ Inherits clAbstractTransformer
 	#tag Method, Flags = &h1
 		Protected Function EmptyOutputTable() As clDataTable
 		  
-		  var c  as clTransformerConnector = OutputConnectors.lookup(cOutputConnectorName, nil)
+		  var c  as clTransformerConnection = OutputConnectors.lookup(cOutputConnectorName, nil)
 		  
 		  if c = nil then return nil
 		  
@@ -72,6 +72,22 @@ Inherits clAbstractTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="StepLabel"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="EnableTraceMode"
 			Visible=false

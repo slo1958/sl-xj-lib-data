@@ -38,7 +38,7 @@ Inherits clLinearTransformer
 		  
 		  var SortTempArray() as pair = SortArray
 		  
-		  var connector as clTransformerConnector = self.GetOutputConnector(cOutputConnectorName)
+		  var connector as clTransformerConnection = self.GetOutputConnector(cOutputConnectorName)
 		  
 		  var NewTable as clDataTable = source.CloneStructure(connector.GetTableName(false))
 		  
@@ -99,6 +99,14 @@ Inherits clLinearTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="StepLabel"
 			Visible=false
