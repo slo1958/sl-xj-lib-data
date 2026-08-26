@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clTransformerConnector
+Protected Class clTransformerConnection
 	#tag Method, Flags = &h0
 		Sub Constructor(linkedTable as clDataTable)
 		  
