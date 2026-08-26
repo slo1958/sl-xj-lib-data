@@ -19,14 +19,14 @@ Protected Class clDataStorePipeline
 		  var tmpLabel as string = aStepLabel.Trim
 		  
 		  if tmpLabel.Length = 0 then
-		    WriteLog("Missing step label for %0", Introspection.GetType(aStep).Name)
+		    getLogManager.WriteWarning(CurrentMethodName,"Missing step label for %0", Introspection.GetType(aStep).Name)
 		    return nil
 		    
 		  end if
 		  
 		  for each s as clAbstractTransformer in self.Steps
 		    if s.StepLabel = tmpLabel then
-		      WriteLog("Step label %1 already in use for %2 when adding %0", Introspection.GetType(aStep).Name, tmpLabel, Introspection.GetType(s).Name)
+		      getLogManager.WriteWarning(CurrentMethodName,"Step label %1 already in use for %2 when adding %0", Introspection.GetType(aStep).Name, tmpLabel, Introspection.GetType(s).Name)
 		      Return nil
 		      
 		    end if
@@ -39,6 +39,28 @@ Protected Class clDataStorePipeline
 		  
 		  Return aStep
 		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor()
+		  
+		  localLogger = nil
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function getLogManager() As clLogManager
+		  
+		  if self.localLogger = nil then
+		    return clLogManager.GetDefaultLogingSupport
+		    
+		  else
+		    return self.localLogger
+		    
+		  end if
 		  
 		End Function
 	#tag EndMethod
@@ -74,11 +96,11 @@ Protected Class clDataStorePipeline
 		        
 		      elseif execstep.InputAreReady  then
 		        
-		        WriteLog("Executing step [%0] labeled [%1].", Introspection.GetType(execstep).Name, execstep.StepLabel)
+		        getLogManager.WriteInfo(CurrentMethodName,"Executing step [%0] labeled [%1].", Introspection.GetType(execstep).Name, execstep.StepLabel)
 		        
 		        var res as boolean = execstep.Execute
 		        
-		        if not res then WriteLog("Execution failed.")
+		        if not res then getLogManager.WriteInfo(CurrentMethodName,"Execution failed.")
 		        
 		        bDone = False
 		        
@@ -89,6 +111,15 @@ Protected Class clDataStorePipeline
 		  
 		  Return
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetLogger(newLogger as clLogManager)
+		  
+		  self.localLogger = newLogger
+		  
+		  return
 		End Sub
 	#tag EndMethod
 
@@ -127,20 +158,6 @@ Protected Class clDataStorePipeline
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub WriteLog(message as string, paramarray txt as string)
-		  
-		  var tmp as string = message
-		  
-		  for i as integer = 0 to txt.LastIndex
-		    tmp = tmp.ReplaceAll("%"+str(i), txt(i))
-		  next
-		  
-		  System.DebugLog(tmp)
-		  
-		End Sub
-	#tag EndMethod
-
 
 	#tag Note, Name = Description
 		Pipeline working on tables, taking advantages of data transformers
@@ -156,6 +173,10 @@ Protected Class clDataStorePipeline
 
 	#tag Note, Name = From Clipboard
 		SetOutput
+	#tag EndNote
+
+	#tag Note, Name = From Clipboard
+		logwriter as clLogManager
 	#tag EndNote
 
 	#tag Note, Name = Option 1
@@ -186,6 +207,10 @@ Protected Class clDataStorePipeline
 
 	#tag Property, Flags = &h0
 		InternalConnectors() As clTransformerConnection
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		localLogger As clLogManager
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

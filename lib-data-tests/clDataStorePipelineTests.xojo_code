@@ -1,7 +1,8 @@
-#tag Module
-Protected Module Module1
+#tag Class
+Protected Class clDataStorePipelineTests
+Inherits clObjectTest
 	#tag Method, Flags = &h0
-		Function CreatePipeline() As clDataStorePipeline
+		Function CreatePipeline_001() As clDataStorePipeline
 		  //
 		  // Initial test 
 		  //
@@ -47,7 +48,6 @@ Protected Module Module1
 		  pipeline1.SetStepInput(sAddCountry, clJoinTransformer.cInputConnectorLeft, sGroupByCity.GetOutputConnector())
 		  pipeline1.SetStepInput(sAddCountry, clJoinTransformer.cInputConnectorRight, countrytable)
 		  
-		  
 		  var output2 as clTransformerConnection = sFilterColumns.GetOutputConnector()
 		  
 		  pipeline1.SetOutput("", output2)
@@ -61,14 +61,17 @@ Protected Module Module1
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function TestStorePipeline() As clDataTable
+		Sub DSPipeline_test_calc_001(log as clLogManager)
+		  
+		  log.StartTask(CurrentMethodName)
+		  
 		  //
 		  // Initial test 
 		  //
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats()
 		  
-		  var pipeline1 as  clDataStorePipeline = CreatePipeline
+		  var pipeline1 as  clDataStorePipeline = CreatePipeline_001
 		  
 		  pipeline1.run()
 		  
@@ -80,30 +83,33 @@ Protected Module Module1
 		  
 		  var ms2 as clMemoryStats = GetMemoryStats()
 		  
-		  WriteLog(CurrentMethodName+":Tables in memory was:  %0,  dataseries in memory was: %1, transformers %2" , str(ms0.NumberOfTables), str(ms0.NumberOfDataSeries), str(ms0.NumberOfTransformers))
-		  Writelog(CurrentMethodName+":Tables in memory is:  %0, dataseries in memory is: %1, transformers %2" , str(ms1.NumberOfTables), str(ms1.NumberOfDataSeries), str(ms1.NumberOfTransformers))
-		  Writelog(CurrentMethodName+":Tables in memory after destroy  is:  %0, dataseries in memory is: %1, transformers %2" , str(ms2.NumberOfTables), str(ms2.NumberOfDataSeries), str(ms2.NumberOfTransformers))
+		  
+		  log.WriteInfo(CurrentMethodName,"Tables in memory was:  %0,  dataseries in memory was: %1, transformers %2" , str(ms0.NumberOfTables), str(ms0.NumberOfDataSeries), str(ms0.NumberOfTransformers))
+		  log.WriteInfo(CurrentMethodName,"Tables in memory is:  %0, dataseries in memory is: %1, transformers %2" , str(ms1.NumberOfTables), str(ms1.NumberOfDataSeries), str(ms1.NumberOfTransformers))
+		  log.WriteInfo(CurrentMethodName,"Tables in memory after destroy  is:  %0, dataseries in memory is: %1, transformers %2" , str(ms2.NumberOfTables), str(ms2.NumberOfDataSeries), str(ms2.NumberOfTransformers))
 		  
 		  
-		  return t1
+		  var expected_table As New clDataTable("Expected", SerieArray( _
+		  New clDataSerie("Country",  "FR","FR","BE","IT") _
+		  ,New clNumberDataSerie("Quantity",105.0,52.0,108.0,56.0) _
+		  , New clNumberDataSerie("Sales",500.0, 200.0, 800.0, 600.0) _
+		  ,new clIntegerDataSerie("NbrRows", 2,1, 2, 1) _
+		  ))
 		  
+		  call check_table(log, "T1", expected_table, t1)
 		  
+		  log.EndTask(CurrentMethodName)
 		  
-		End Function
+		  return
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub WriteLog(message as string, paramarray txt as string)
+		Function GetTestPrefix() As string
+		  return "DSPipeline_"
 		  
-		  var tmp as string = message
-		  
-		  for i as integer = 0 to txt.LastIndex
-		    tmp = tmp.ReplaceAll("%"+str(i), txt(i))
-		  next
-		  
-		  System.DebugLog(tmp)
-		  
-		End Sub
+		End Function
 	#tag EndMethod
 
 
@@ -149,5 +155,5 @@ Protected Module Module1
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
-End Module
-#tag EndModule
+End Class
+#tag EndClass

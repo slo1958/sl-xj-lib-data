@@ -88,7 +88,7 @@ Begin DesktopWindow main_window
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   134
+      Left            =   129
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -120,7 +120,7 @@ Begin DesktopWindow main_window
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   272
+      Left            =   253
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -169,7 +169,7 @@ Begin DesktopWindow main_window
       VisualState     =   0
       Width           =   100
    End
-   Begin DesktopButton pb_run_perf1
+   Begin DesktopButton pb_open_tests_folder
       AllowAutoDeactivate=   True
       Bold            =   False
       Cancel          =   False
@@ -182,7 +182,7 @@ Begin DesktopWindow main_window
       Height          =   20
       Index           =   -2147483648
       Italic          =   False
-      Left            =   412
+      Left            =   501
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -325,6 +325,37 @@ Begin DesktopWindow main_window
       Visible         =   True
       Width           =   107
    End
+   Begin DesktopButton pb_view_pipelines
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "See pipelines"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "Verdana"
+      FontSize        =   11.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   377
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   10
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   412
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   107
+   End
 End
 #tag EndDesktopWindow
 
@@ -388,7 +419,7 @@ End
 		End Sub
 	#tag EndEvent
 #tag EndEvents
-#tag Events pb_run_perf1
+#tag Events pb_open_tests_folder
 	#tag Event
 		Sub Pressed()
 		  
@@ -457,6 +488,10 @@ End
 		  clDataPool_tests.tests(logwriter)
 		  clDataPool_tests.tests_io(logwriter)
 		  
+		  logwriter.WriteMessage("All tests",  "Run datastorepipelines tests")
+		  clDataStorePipeline_tests.tests(logwriter)
+		  clDataStorePipeline_tests.tests_io(logwriter)
+		  
 		  logwriter.WriteMessage("All tests", "test run example (no validaton)")
 		  clDataTable_tests.tests_examples(logwriter)
 		  
@@ -479,6 +514,15 @@ End
 		  Listbox1.RemoveAllRows
 		  
 		  return
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events pb_view_pipelines
+	#tag Event
+		Sub Pressed()
+		  wnd_pipelines.ShowModal
+		  
 		  
 		End Sub
 	#tag EndEvent

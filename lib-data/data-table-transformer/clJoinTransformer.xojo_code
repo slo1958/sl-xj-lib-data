@@ -1,74 +1,16 @@
 #tag Class
 Protected Class clJoinTransformer
 Inherits clAbstractTransformer
-	#tag Method, Flags = &h0
-		Sub Constructor(LeftTable as clDataTable, RightTable as clDataTable, mode as JoinMode, KeyFields() as string, JoinStatusField as string = "")
-		  // Calling the overridden superclass constructor.
-		  
-		  // Parameters:
-		  // LeftTable: left source table
-		  // RightTable: right source table
-		  // mode: join mode (JoinMode)
-		  // KeyFields: array of fields used to join the tables
-		  // JoinStatusField: optional name of column to store the results in output table 
+	#tag Method, Flags = &h21
+		Private Sub ConfigureJoin(mode as JoinMode, KeyFields() as string, JoinStatusField as string)
 		  //
-		  
-		  Super.Constructor
-		  
-		  
-		  self.AddInput(cInputConnectorLeft, new clTransformerConnection(LeftTable))
-		  self.AddInput(cInputConnectorRight, new clTransformerConnection(RightTable))
-		  
-		  
-		  select case mode
-		    
-		  case JoinMode.OuterJoin 
-		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnection(cDefaultMainOutputTableName))
-		    
-		    self.JoinStatusBoth = "JOIN"
-		    
-		  case JoinMode.LeftJoin
-		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnection(cDefaultMainOutputTableName))
-		    
-		    self.JoinStatusBoth = "JOIN"
-		    self.JoinStatusLeftOnly = "LEFT"
-		    
-		  case JoinMode.InnerJoin
-		    self.AddOutput(cOutputConnectorJoined, new clTransformerConnection(cDefaultMainOutputTableName)) // $$ "JoinedResults"))
-		    
-		    // by default, we only generated the main output (joined results)
-		    
-		    self.JoinStatusBoth = "JOIN"
-		    self.JoinStatusLeftOnly = "LEFT"
-		    self.JoinStatusRightOnly = "RIGHT"
-		    
-		  case else
-		    
-		    
-		  end Select
-		  
-		  self.mode = mode
-		  self.joinKeyFields = KeyFields
-		  self.JoinStatusFieldName = JoinStatusField
-		  
-		  return
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(mode as JoinMode, KeyFields() as string, JoinStatusField as string = "")
-		  // Calling the overridden superclass constructor.
-		  // The input connectosr should be setup using a distinct cals
-		  //l
+		  // Configure the join parameters
+		  //
 		  // Parameters:
 		  // mode: join mode (JoinMode)
 		  // KeyFields: array of fields used to join the tables
 		  // JoinStatusField: optional name of column to store the results in output table 
 		  //
-		  
-		  Super.Constructor
 		  
 		  select case mode
 		    
@@ -100,6 +42,49 @@ Inherits clAbstractTransformer
 		  self.mode = mode
 		  self.joinKeyFields = KeyFields
 		  self.JoinStatusFieldName = JoinStatusField
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(LeftTable as clDataTable, RightTable as clDataTable, mode as JoinMode, KeyFields() as string, JoinStatusField as string = "")
+		  // Calling the overridden superclass constructor.
+		  
+		  // Parameters:
+		  // LeftTable: left source table
+		  // RightTable: right source table
+		  // mode: join mode (JoinMode)
+		  // KeyFields: array of fields used to join the tables
+		  // JoinStatusField: optional name of column to store the results in output table 
+		  //
+		  
+		  Super.Constructor
+		  
+		  self.AddInput(cInputConnectorLeft, new clTransformerConnection(LeftTable))
+		  self.AddInput(cInputConnectorRight, new clTransformerConnection(RightTable))
+		  
+		  Self.ConfigureJoin(mode, KeyFields, JoinStatusField)
+		  
+		  return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(mode as JoinMode, KeyFields() as string, JoinStatusField as string = "")
+		  // Calling the overridden superclass constructor.
+		  // The input connectors should be setup using distinct calls
+		  //l
+		  // Parameters:
+		  // mode: join mode (JoinMode)
+		  // KeyFields: array of fields used to join the tables
+		  // JoinStatusField: optional name of column to store the results in output table 
+		  //
+		  
+		  Super.Constructor
+		  
+		  self.ConfigureJoin(mode, KeyFields, JoinStatusField)
 		  
 		  return
 		  

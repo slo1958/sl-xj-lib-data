@@ -1,6 +1,24 @@
 #tag Class
 Protected Class clSortTransformer
 Inherits clLinearTransformer
+	#tag Method, Flags = &h21
+		Private Sub ConfigureSort(ColumnNames() as string, prmOrder as SortOrder)
+		  //
+		  // Configure sort parameters
+		  // 
+		  // Parameters:
+		  // - name of columns used as sort key
+		  // - sort order
+		  //
+		  
+		  self.SortColumnsNames= ColumnNames
+		  self.Order = prmOrder
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, ColumnNames() as string, prmOrder as SortOrder = SortOrder.ascending)
 		  //
@@ -14,9 +32,30 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor(MainTable)
 		  
-		  self.SortColumnsNames= ColumnNames
-		  self.Order = prmOrder
+		  self.ConfigureSort(ColumnNames, prmOrder)
 		  
+		  Return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(ColumnNames() as string, prmOrder as SortOrder = SortOrder.ascending)
+		  //
+		  // Sort the rows of the datatable using one or more column as sort key. The order is defined for the combined sort keys.
+		  // The input connector should be setup using a distinct call
+		  // 
+		  // Parameters:
+		  // - name of columns used as sort key
+		  // - sort order
+		  //
+		  
+		  super.Constructor()
+		  
+		  self.ConfigureSort(ColumnNames, prmOrder)
+		  
+		  Return
 		  
 		  
 		End Sub

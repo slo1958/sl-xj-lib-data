@@ -1,17 +1,28 @@
 #tag Class
 Protected Class clUnpivotTransformer
 Inherits clLinearTransformer
+	#tag Method, Flags = &h21
+		Private Sub ConfigureUnpivot(prmColumnsToRetain() as string, prmColumnForFieldNames as string, prmColumnForFieldValue as string)
+		  self.ColumnsToRetain = prmColumnsToRetain
+		  self.FieldNameColumn = prmColumnForFieldNames
+		  self.FieldValueColumn = prmColumnForFieldValue
+		  self.ColumnsToIgnore.RemoveAll
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub ConfigureUnpivot(prmColumnsToRetain() as string, prmColumnForFieldNames as string, prmColumnForFieldValue as string, prmColumnsToIgnore() as string)
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, prmColumnsToRetain() as string, prmColumnForFieldNames as string, prmColumnForFieldValue as string)
 		  // Calling the overridden superclass constructor.
 		  
 		  super.Constructor(MainTable)
 		  
-		  
-		  self.ColumnsToRetain = prmColumnsToRetain
-		  self.FieldNameColumn = prmColumnForFieldNames
-		  self.FieldValueColumn = prmColumnForFieldValue
-		  self.ColumnsToIgnore.RemoveAll
+		  ConfigureUnpivot( prmColumnsToRetain,  prmColumnForFieldNames,  prmColumnForFieldValue)
 		  
 		  
 		  
@@ -24,13 +35,31 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor(MainTable)
 		  
-		  self.ColumnsToRetain = prmColumnsToRetain
-		  self.FieldNameColumn = prmColumnForFieldNames
-		  self.FieldValueColumn = prmColumnForFieldValue
-		  self.ColumnsToIgnore = prmColumnsToIgnore
+		  ConfigureUnpivot( prmColumnsToRetain,  prmColumnForFieldNames,  prmColumnForFieldValue, prmColumnsToIgnore)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(prmColumnsToRetain() as string, prmColumnForFieldNames as string, prmColumnForFieldValue as string)
+		  // Calling the overridden superclass constructor.
+		  
+		  super.Constructor( )
+		  
+		  ConfigureUnpivot( prmColumnsToRetain,  prmColumnForFieldNames,  prmColumnForFieldValue)
 		  
 		  
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(prmColumnsToRetain() as string, prmColumnForFieldNames as string, prmColumnForFieldValue as string, prmColumnsToIgnore() as string)
+		  // Calling the overridden superclass constructor.
+		  
+		  super.Constructor( )
+		  
+		  ConfigureUnpivot( prmColumnsToRetain,  prmColumnForFieldNames,  prmColumnForFieldValue, prmColumnsToIgnore)
 		  
 		End Sub
 	#tag EndMethod
@@ -111,6 +140,14 @@ Inherits clLinearTransformer
 
 
 	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
 		#tag ViewProperty
 			Name="StepLabel"
 			Visible=false

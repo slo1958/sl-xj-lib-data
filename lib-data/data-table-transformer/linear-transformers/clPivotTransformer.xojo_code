@@ -5,6 +5,25 @@ Inherits clLinearTransformer
 		Delegate Function ColumnNameGenerator(SourceColumnName as String, PivotValue as String) As String
 	#tag EndDelegateDeclaration
 
+	#tag Method, Flags = &h21
+		Private Sub ConfigurePivot(prmColumnsToRetain() as string, prmPivotColumn as string, prmPivotValues() as string, prmColumnsToPivot() as string)
+		  //
+		  // prmColumnsToRetains() :  value moved as is in output columns  
+		  // prmPivotColumn             :   column of which value are used to cross tab, value part of column name
+		  // prmPivotValues()            :   list of value to retain in the pivot column
+		  // prmColumnsToPivot()    :    values to pivot, value is moved to the column selected by the value in PivotColumn     
+		  //
+		  
+		  self.ColumnsToRetain = prmColumnsToRetain
+		  self.ColumnsToPivot = prmColumnsToPivot
+		  self.PivotColumnName = prmPivotColumn
+		  self.PivotValues = prmPivotValues
+		  
+		  Return
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub Constructor(MainTable as clDataTable, prmColumnsToRetain() as string, prmPivotColumn as string, prmPivotValues() as string, prmColumnsToPivot() as string)
 		  // Calling the overridden superclass constructor.
@@ -20,10 +39,12 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor(MainTable)
 		  
-		  self.ColumnsToRetain = prmColumnsToRetain
-		  self.ColumnsToPivot = prmColumnsToPivot
-		  self.PivotColumnName = prmPivotColumn
-		  self.PivotValues = prmPivotValues
+		  self.ConfigurePivot(prmColumnsToRetain, prmPivotColumn, prmPivotValues, prmColumnsToPivot)
+		  // 
+		  // self.ColumnsToRetain = prmColumnsToRetain
+		  // self.ColumnsToPivot = prmColumnsToPivot
+		  // self.PivotColumnName = prmPivotColumn
+		  // self.PivotValues = prmPivotValues
 		  
 		  self.ColumnNameFunction = AddressOf GenerateDefaultColumnName
 		End Sub
@@ -43,10 +64,68 @@ Inherits clLinearTransformer
 		  
 		  super.Constructor(MainTable)
 		  
-		  self.ColumnsToRetain = prmColumnsToRetain
-		  self.ColumnsToPivot = prmColumnsToPivot
-		  self.PivotColumnName = prmPivotColumn
-		  self.PivotValues = prmPivotValues
+		  
+		  self.ConfigurePivot(prmColumnsToRetain, prmPivotColumn, prmPivotValues, prmColumnsToPivot)
+		  
+		  // self.ColumnsToRetain = prmColumnsToRetain
+		  // self.ColumnsToPivot = prmColumnsToPivot
+		  // self.PivotColumnName = prmPivotColumn
+		  // self.PivotValues = prmPivotValues
+		  
+		  self.ColumnNameFunction = prmColumnNameFunction
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(prmColumnsToRetain() as string, prmPivotColumn as string, prmPivotValues() as string, prmColumnsToPivot() as string)
+		  // Calling the overridden superclass constructor.
+		  
+		  //
+		  // The input connector should be setup using a distinct call
+		  // prmColumnsToRetains() :  value moved as is in output columns  
+		  // prmPivotColumn             :   column of which value are used to cross tab, value part of column name
+		  // prmPivotValues()            :   list of value to retain in the pivot column
+		  // prmColumnsToPivot()    :    values to pivot, value is moved to the column selected by the value in PivotColumn     
+		  //
+		  // The name of the new column is build from  the name of the pivoted column, based on the value from  prmPivotColumn() and the name of the selected 'columnsToPivot'
+		  //
+		  
+		  super.Constructor()
+		  
+		  self.ConfigurePivot(prmColumnsToRetain, prmPivotColumn, prmPivotValues, prmColumnsToPivot)
+		  // 
+		  // self.ColumnsToRetain = prmColumnsToRetain
+		  // self.ColumnsToPivot = prmColumnsToPivot
+		  // self.PivotColumnName = prmPivotColumn
+		  // self.PivotValues = prmPivotValues
+		  
+		  self.ColumnNameFunction = AddressOf GenerateDefaultColumnName
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(prmColumnsToRetain() as string, prmPivotColumn as string, prmPivotValues() as string, prmColumnsToPivot() as string, prmColumnNameFunction as ColumnNameGenerator)
+		  // Calling the overridden superclass constructor.
+		  
+		  //
+		  // The input connector should be setup using a distinct call
+		  // prmColumnsToRetains() :  value moved as is in output columns  
+		  // prmPivotColumn             :   column of which value are used to cross tab, value part of column name
+		  // prmPivotValues()            :   list of value to retain in the pivot column
+		  // prmColumnsToPivot()    :    values to pivot, value is moved to the column selected by the value in PivotColumn     
+		  // prmColumnNameFunction:  function used to create the name of the pivoted column, based on the value from  prmPivotColumn() and the name of the selected 'columnsToPivot'
+		  //
+		  
+		  super.Constructor( )
+		  
+		  
+		  self.ConfigurePivot(prmColumnsToRetain, prmPivotColumn, prmPivotValues, prmColumnsToPivot)
+		  
+		  // self.ColumnsToRetain = prmColumnsToRetain
+		  // self.ColumnsToPivot = prmColumnsToPivot
+		  // self.PivotColumnName = prmPivotColumn
+		  // self.PivotValues = prmPivotValues
 		  
 		  self.ColumnNameFunction = prmColumnNameFunction
 		  
