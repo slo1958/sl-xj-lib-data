@@ -25,7 +25,7 @@ Begin DesktopWindow main_window
    Type            =   0
    Visible         =   True
    Width           =   628
-   Begin DesktopListBox Listbox1
+   Begin DesktopListboxLogWriter lbMainLog
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
@@ -362,8 +362,8 @@ End
 #tag WindowCode
 	#tag Event
 		Sub Opening()
-		  listbox1.RemoveAllRows
-		  Listbox1.HasHeader = False
+		  lbMainLog.RemoveAllRows
+		  lbMainLog.HasHeader = False
 		  
 		  
 		End Sub
@@ -386,14 +386,31 @@ End
 
 	#tag Method, Flags = &h0
 		Function SetUpLogWriter(EchoToListBox as Boolean) As clLogManager
-		  
+		  // 
+		  // 
+		  // var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
+		  // 
+		  // logmanager.ResetWriters()
+		  // 
+		  // if EchoToListBox then
+		  // logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox1))
+		  // 
+		  // 
+		  // 
+		  // Return logmanager
+		  // 
+		  // 
 		  
 		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
 		  
 		  logmanager.ResetWriters()
 		  
 		  if EchoToListBox then
-		    logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox1))
+		    
+		    logmanager.AddWriter("WND", lbMainLog)
+		    
+		    // lbMainLog.ClearLog
+		    lbMainLog.TagSeverity("TCE")
 		    
 		  end if
 		  
@@ -502,6 +519,7 @@ End
 		  var cnter as integer = logwriter.GetTestCheckErrorCounter
 		  
 		  logwriter = self.SetUpLogWriter(true)
+		   
 		  logwriter.WriteMessage("", "All test completed, %0 test check errors", str(cnter))
 		  
 		  logwriter.ResetWriters()
@@ -515,7 +533,7 @@ End
 	#tag Event
 		Sub Pressed()
 		  
-		  Listbox1.RemoveAllRows
+		  lbMainLog.RemoveAllRows
 		  
 		  return
 		  

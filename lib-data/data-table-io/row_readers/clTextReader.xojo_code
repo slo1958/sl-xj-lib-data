@@ -81,6 +81,8 @@ Implements TableRowReaderInterface
 		    
 		  end if
 		  
+		  if self.dRowSorter <> nil then call self.dRowSorter.Invoke("", RowSorterPhase.Opening)
+		  
 		  OpenTextStream(SourceFileOrFolder)
 		  
 		  return
@@ -123,7 +125,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Shared Function DefaultRowSorter(textLine as string) As TextLineType
+		Protected Shared Function DefaultRowSorter(textLine as string, phase as RowSorterPhase) As TextLineType
 		  
 		  Return TextLineType.Data
 		  
@@ -151,6 +153,7 @@ Implements TableRowReaderInterface
 		  if  TextFile.EndOfFile  then
 		    TextFile.close
 		    TextFile = nil
+		    if dRowSorter <> nil then call self.dRowSorter.Invoke("", RowSorterPhase.Closing)
 		    return True
 		    
 		  else
@@ -274,11 +277,10 @@ Implements TableRowReaderInterface
 		  var bOK as Boolean = false
 		  var tmp as string 
 		  
-		  
 		  while not bOK
 		    tmp = TextFile.ReadLine(Encodings.UTF8)
 		    
-		    select case self.dRowSorter.Invoke(tmp)
+		    select case self.dRowSorter.Invoke(tmp, RowSorterPhase.Running)
 		      
 		    case TextLineType.Ignore
 		      
@@ -292,7 +294,11 @@ Implements TableRowReaderInterface
 		      
 		    end Select
 		    
-		    if TextFile.EndOfFile  then bOk = true
+		    if TextFile.EndOfFile  then 
+		      bOk = true
+		      if self.dRowSorter <> nil then  call self.dRowSorter.Invoke("", RowSorterPhase.Closing)
+		      
+		    end if
 		    
 		  wend
 		  
@@ -485,99 +491,6 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function NextRowAsVariantOld() As variant()
-		  // Part of the TableRowReaderInterface interface.
-		  
-		  const kDoubleQuote = """"
-		  
-		  var cellArray() as variant
-		  
-		  var lineBuffer as string
-		  var charBuffer as string
-		  
-		  if TextFile = nil then
-		    return cellArray
-		    
-		  end if
-		  
-		  if  TextFile.EndOfFile then
-		    return cellArray
-		    
-		  end if
-		  
-		  //lineBuffer = TextFile.ReadLine()
-		  
-		  lineBuffer = getNextTextLine()
-		  
-		  // since a single CR in a quoted string is handled as a line break by TextInputStream, we may have to read more
-		  // lines from the file
-		  
-		  var cellBuffer as string
-		  var bDone as Boolean = False
-		  var gotQuote as Boolean = False
-		  
-		  while not bDone
-		    
-		    var lenBuffer as integer = lineBuffer.Length 
-		    
-		    for index as integer = 1 to lenBuffer
-		      
-		      charBuffer = lineBuffer.mid(index, 1)
-		      
-		      if gotQuote then
-		        
-		        if charBuffer = kDoubleQuote then 
-		          
-		          if index < lenBuffer and lineBuffer.mid(index+1,1) = kDoubleQuote then
-		            cellBuffer = cellBuffer+ kDoubleQuote
-		            index = index +1
-		            
-		          else
-		            gotquote = False
-		            // will be pushed either by FieldSeparator or end of line
-		            
-		          end if
-		        else
-		          cellBuffer = cellBuffer + charBuffer
-		          
-		        end if
-		      else
-		        if charBuffer = kDoubleQuote then
-		          gotQuote = True
-		          
-		        elseif charBuffer = FieldSeparator Then
-		          cellArray.add(cellBuffer)
-		          cellBuffer = ""
-		          
-		        else
-		          cellBuffer = cellBuffer + charBuffer
-		          
-		        end if
-		      end if
-		      
-		    next
-		    
-		    
-		    if gotQuote and not TextFile.EndOfFile then
-		      // lineBuffer = TextFile.ReadLine(Encodings.UTF8)
-		      lineBuffer = getNextTextLine()
-		      
-		    else
-		      cellArray.add(cellBuffer)
-		      bdone = true
-		      
-		    end if
-		    
-		  wend 
-		  
-		  self.LineCount = self.LineCount +1
-		  
-		  return cellArray
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function NextRowAvailable() As boolean
 		  return True
 		End Function
@@ -625,7 +538,7 @@ Implements TableRowReaderInterface
 	#tag EndMethod
 
 	#tag DelegateDeclaration, Flags = &h1
-		Protected Delegate Function RowSorter(textLine as string) As TextLineType
+		Protected Delegate Function RowSorter(textLine as string, phase as RowSorterPhase) As TextLineType
 	#tag EndDelegateDeclaration
 
 	#tag Method, Flags = &h0
@@ -719,6 +632,12 @@ Implements TableRowReaderInterface
 		Protected TextFile As TextInputStream
 	#tag EndProperty
 
+
+	#tag Enum, Name = RowSorterPhase, Type = Integer, Flags = &h0
+		Opening
+		  Running
+		Closing
+	#tag EndEnum
 
 	#tag Enum, Name = TextLineType, Type = Integer, Flags = &h0
 		Ignore

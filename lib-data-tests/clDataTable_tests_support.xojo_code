@@ -52,7 +52,7 @@ Protected Module clDataTable_tests_support
 		  var cnt2 as integer  
 		  
 		  if calculated = nil then
-		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": Missing or unknow calculated table.")
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": (%0) Missing or unknow calculated table.", label)
 		    return false
 		    
 		  end if
@@ -63,13 +63,13 @@ Protected Module clDataTable_tests_support
 		    if expected = nil then return True
 		    
 		  else
-		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": Integrity error calculated table [%0]", calcTableName)
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": (%0) Integrity error calculated table [%1]", label, calcTableName)
 		    if expected = nil then return False
 		    
 		  end if
 		  
 		  if expected = nil then
-		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": Missing or unknow expected table.")
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": (%0) Missing or unknow expected table.", label)
 		    return False
 		    
 		  end if
@@ -79,20 +79,21 @@ Protected Module clDataTable_tests_support
 		  
 		  if expected.CheckIntegrity() then
 		  else
-		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": Integrity error expected table [%0]", expectName)
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": (%0) Integrity error expected table [%1]", label, expectName)
 		    
 		  end if
+		  
 		  
 		  
 		  cnt1 = expected.ColumnCount
 		  cnt2 = calculated.ColumnCount
 		  
-		  if not check_value(log,"column count in tables [" + calcTableName+"] vs ["+expectName+"]", cnt1, cnt2) then return False
+		  if not check_value(log,"("+label+") column count in tables [" + calcTableName+"] vs ["+expectName+"]", cnt1, cnt2) then return False
 		  
 		  var col_ok as boolean = True
 		  for col as integer = 0 to expected.ColumnCount-1
 		    
-		    col_ok = col_ok and check_serie(log, label + " field [" + expected.ColumnNameAt(col)+"]", expected.GetColumnAt(col), calculated.GetColumnAt(col), accepted_error_on_double)
+		    col_ok = col_ok and check_serie(log, label + " ("+label+") field [" + expected.ColumnNameAt(col)+"]", expected.GetColumnAt(col), calculated.GetColumnAt(col), accepted_error_on_double)
 		    
 		  next
 		  
@@ -124,19 +125,30 @@ Protected Module clDataTable_tests_support
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Rowsorter_table_io_06(Sourceline as string) As clTextReader.TextLineType
-		  
-		  if rowsorter_table_io_06_flag = 2 then
-		    return clTextReader.TextLineType.Data
-		    
-		  elseif Sourceline.Trim = "=" then // this is the end of the file header, next row is column headers
-		    rowsorter_table_io_06_flag = 2
+		Function Rowsorter_table_io_06(Sourceline as string, phase as clTextReader.RowSorterPhase) As clTextReader.TextLineType
+		  select case phase 
+		  case clTextReader.RowSorterPhase.Opening 
+		    rowsorter_table_io_06_flag = 0
 		    return clTextReader.TextLineType.Ignore
 		    
-		  else
-		    return clTextReader.TextLineType.Metadata
+		  case clTextReader.RowSorterPhase.Running
 		    
-		  end if
+		    if rowsorter_table_io_06_flag = 2 then
+		      return clTextReader.TextLineType.Data
+		      
+		    elseif Sourceline.Trim = "=" then // this is the end of the file header, next row is column headers
+		      rowsorter_table_io_06_flag = 2
+		      return clTextReader.TextLineType.Ignore
+		      
+		    else
+		      return clTextReader.TextLineType.Metadata
+		      
+		    end if
+		    
+		  case else
+		    return clTextReader.TextLineType.Ignore
+		    
+		  end Select
 		  
 		  
 		End Function

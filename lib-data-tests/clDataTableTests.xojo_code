@@ -911,13 +911,13 @@ Inherits clObjectTest
 		  //
 		  // Check structure and content of table created from dictionaries
 		  //
-		  var col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
-		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  var col_country as new clStringDataSerie("Country", "France", "", "Belgique", "France", "USA")
+		  var col_city as new clStringDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  var col_sales as new clNumberDataSerie("Sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
 		  var expected_table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
 		  
-		  call check_table(log,"use dict for creation", expected_table0, table0)
+		  call check_table(log,"Check created table", expected_table0, table0)
 		  
 		  // Add display title
 		  table0.GetColumn("City").DisplayTitle = "Ville"

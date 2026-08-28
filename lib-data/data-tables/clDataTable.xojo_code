@@ -1674,23 +1674,26 @@ Implements TableColumnReaderInterface,Iterable
 		    var temp_name as string = name.Trim
 		    var v() as variant = ExtractVariantArray(ColumnsSource.value(temp_name))
 		    
-		    if allocator = nil and  autoDetect and v.Count>0 then
-		      tmp_columns.add(clDataType.CreateDataSerieFromVariantType(temp_name,  v(0)))
-		      
-		    elseif allocator = nil then
-		      tmp_columns.Add(new clDataSerie(temp_name, v))
-		      
-		      
-		    else
-		      var tmp_column as clAbstractDataSerie = allocator.Invoke(temp_name,"")
-		      
-		      if tmp_column = nil then tmp_column = new clDataSerie(temp_name)
-		      
-		      tmp_column.AddElements(v)
-		      
-		      tmp_columns.Add(tmp_column)
+		    var tmp_column as clAbstractDataSerie = nil
+		    
+		    if allocator <> nil  then 
+		      tmp_column =  allocator.Invoke(temp_name,"")
+		      if tmp_column <> nil then tmp_column.AddElements(v)
 		      
 		    end if
+		    
+		    if tmp_column = nil and autoDetect and v.Count>0  then
+		      tmp_column  = clDataType.CreateDataSerieFromVariantType(temp_name,  v(0))
+		      tmp_column.AddElements(v)
+		      
+		    elseif tmp_column = nil then
+		       tmp_column = new clDataSerie(temp_name, v)
+		      
+		    end if
+		    
+		    tmp_columns.Add(tmp_column)
+		    
+		    
 		  next
 		  
 		  internal_NewTable(NewTableName)
