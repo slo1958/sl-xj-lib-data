@@ -44,7 +44,9 @@ Protected Class clDataStorePipeline
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor()
+		Sub Constructor(myname as string)
+		  
+		  self.Name = myname.trim
 		  
 		  localLogger = nil
 		  
@@ -87,6 +89,8 @@ Protected Class clDataStorePipeline
 		  
 		  var maxRun as integer = Steps.Count * 2
 		  
+		  getLogManager.StartTask("Pipeline " + self.name)
+		  
 		  while not (bDone or maxRun < 1)
 		    bDone = True
 		    maxRun = maxRun - 1
@@ -98,9 +102,13 @@ Protected Class clDataStorePipeline
 		        
 		        getLogManager.WriteInfo(CurrentMethodName,"Executing step [%0] labeled [%1].", Introspection.GetType(execstep).Name, execstep.StepLabel)
 		        
+		        getLogManager.StartTask(execstep.StepLabel)
+		        
 		        var res as boolean = execstep.Execute
 		        
-		        if not res then getLogManager.WriteInfo(CurrentMethodName,"Execution failed.")
+		        getLogManager.EndTask(execstep.StepLabel)
+		        
+		        if not res then getLogManager.WriteWarning(CurrentMethodName,"Execution failed.")
 		        
 		        bDone = False
 		        
@@ -108,6 +116,7 @@ Protected Class clDataStorePipeline
 		      
 		    next
 		  wend
+		  getLogManager.EndTask("Pipeline " + self.name)
 		  
 		  Return
 		  
@@ -211,6 +220,10 @@ Protected Class clDataStorePipeline
 
 	#tag Property, Flags = &h0
 		localLogger As clLogManager
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		Name As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

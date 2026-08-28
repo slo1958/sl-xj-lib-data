@@ -25,7 +25,7 @@ Inherits clObjectTest
 		  // The order in which steps are added does not define the execution order
 		  // So, we can randomly add the steps
 		  //
-		  var pipeline1 as new clDataStorePipeline
+		  var pipeline1 as new clDataStorePipeline("test1")
 		  
 		  var sFilterColumns as clAbstractTransformer = pipeline1.AddStep("Select columns", _
 		  new clColumnSelectorTransformer(array("Country":"Country","Sum of Quantity":"Quantity", "Sum of Sales":"Sales", "NbrRows":"NbrRows"), true) _
