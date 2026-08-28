@@ -22,26 +22,12 @@ Protected Module clDataTable_tests_support
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function alloc_series_019(column_name as string, column_type_info as string) As clAbstractDataSerie
-		  if column_name = "Sales" then
-		    Return new clNumberDataSerie(column_name)
-		    
-		  else
-		    return new clDataSerie(column_name)
-		    
-		  end if
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function alloc_series_020(column_name as string, column_type_info as string) As clAbstractDataSerie
 		  if column_name = "Sales" then
 		    Return new clNumberDataSerie(column_name)
 		    
 		  else
-		    return new clDataSerie(column_name)
-		    
+		    return nil
 		  end if
 		  
 		End Function
@@ -66,7 +52,7 @@ Protected Module clDataTable_tests_support
 		  var cnt2 as integer  
 		  
 		  if calculated = nil then
-		    if log <> nil then log.WriteWarning(CurrentMethodName,": Missing or unknow calculated table.")
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": Missing or unknow calculated table.")
 		    return false
 		    
 		  end if
@@ -77,13 +63,13 @@ Protected Module clDataTable_tests_support
 		    if expected = nil then return True
 		    
 		  else
-		    if log <> nil then log.WriteWarning(CurrentMethodName,": Integrity error calculated table [%0]", calcTableName)
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": Integrity error calculated table [%0]", calcTableName)
 		    if expected = nil then return False
 		    
 		  end if
 		  
 		  if expected = nil then
-		    if log <> nil then log.WriteWarning(CurrentMethodName,": Missing or unknow expected table.")
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": Missing or unknow expected table.")
 		    return False
 		    
 		  end if
@@ -93,7 +79,7 @@ Protected Module clDataTable_tests_support
 		  
 		  if expected.CheckIntegrity() then
 		  else
-		    if log <> nil then log.WriteWarning(CurrentMethodName,": Integrity error expected table [%0]", expectName)
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": Integrity error expected table [%0]", expectName)
 		    
 		  end if
 		  

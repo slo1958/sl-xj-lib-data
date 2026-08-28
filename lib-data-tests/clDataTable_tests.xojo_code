@@ -16,8 +16,6 @@ Protected Module clDataTable_tests
 		  logwriter.WriteMessage(CurrentMethodName,"Tables in memory was:  %0,  dataseries in memory was: %1" , str(ms0.NumberOfTables), str(ms0.NumberOfDataSeries))
 		  logwriter.WriteMessage(CurrentMethodName,"Tables in memory is:  %0, dataseries in memory is: %1" , str(ms1.NumberOfTables), str(ms1.NumberOfDataSeries))
 		  
-		  //logwriter.WriteMessage(CurrentMethodName,"Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
-		  
 		  logwriter.EndTask(CurrentMethodName)
 		  
 		  return

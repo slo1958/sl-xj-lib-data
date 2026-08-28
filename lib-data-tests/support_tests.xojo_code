@@ -7,9 +7,8 @@ Protected Module support_tests
 		    var calculated_float as double = calculated.DoubleValue
 		    
 		    if abs(expected - calculated_float) < accepted_error_on_double then return true
-		    log.WriteWarning(CurrentMethodName,"Invalid numeric value for %0, expecting %1  got %2,  dif. %3 " , label, str(expected), str(calculated)  , str(abs(expected - calculated_float) ))
-		    // log.WriteWarning(CurrentMethodName,"Invalid numeric value for " + label + ", expecting " + str(expected) + " got " + str(calculated) + " dif. " + str(abs(expected - calculated_float) ))
-		    
+		    log.WriteTestCheckError(CurrentMethodName,"Invalid numeric value for %0, expecting %1  got %2,  dif. %3 " , label, str(expected), str(calculated)  , str(abs(expected - calculated_float) ))
+		     
 		    return false
 		  end if
 		  
@@ -36,8 +35,8 @@ Protected Module support_tests
 		  end if
 		  
 		  
-		  log.WriteWarning(CurrentMethodName,"Invalid value for %0, expecting <%1> got <%2>" , label , fmt_expected , fmt_calculated)
-		  // log.WriteWarning(CurrentMethodName,"Invalid value for " + label + ", expecting <" + fmt_expected + "> got <" + fmt_calculated+">")
+		  log.WriteTestCheckError(CurrentMethodName,"Invalid value for %0, expecting <%1> got <%2>" , label , fmt_expected , fmt_calculated)
+		   
 		  
 		  return False
 		  

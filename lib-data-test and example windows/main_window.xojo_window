@@ -214,11 +214,11 @@ Begin DesktopWindow main_window
       Index           =   -2147483648
       Italic          =   False
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       MacButtonStyle  =   0
       Scope           =   0
       TabIndex        =   7
@@ -471,6 +471,8 @@ End
 		  
 		  logwriter = self.SetUpLogWriter(CheckBox1.value)
 		  
+		  logwriter.ResetTestCheckErrorCounter
+		  
 		  logwriter.StartTask("All tests")
 		  
 		  logwriter.writemessage("All tests",  "Run dataserie tests")
@@ -497,8 +499,10 @@ End
 		  
 		  logwriter.EndTask("All tests")
 		  
+		  var cnter as integer = logwriter.GetTestCheckErrorCounter
+		  
 		  logwriter = self.SetUpLogWriter(true)
-		  logwriter.WriteMessage("", "All test completed.")
+		  logwriter.WriteMessage("", "All test completed, %0 test check errors", str(cnter))
 		  
 		  logwriter.ResetWriters()
 		  

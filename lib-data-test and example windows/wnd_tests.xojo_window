@@ -431,7 +431,7 @@ Begin DesktopWindow wnd_tests
       Visible         =   True
       Width           =   50
    End
-   Begin DesktopListBox Listbox1
+   Begin DesktopListboxLogWriter Listbox1
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
@@ -829,7 +829,10 @@ End
 		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
 		  
 		  logmanager.ResetWriters()
-		  logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox1))
+		  logmanager.AddWriter("WND", Listbox1)
+		  
+		  Listbox1.ClearLog
+		  Listbox1.TagSeverity("TCE")
 		  
 		  Return logmanager
 		  
@@ -899,9 +902,15 @@ End
 		  if m.Count  > 0 then
 		    logmanager.StartTask("Selected tests")
 		    
+		    logmanager.ResetTestCheckErrorCounter
+		    
 		    runSelectedTests(test_objects(index), m, logmanager)
 		    
 		    logmanager.EndTask("Selected tests")
+		    
+		    var cnter as integer = logmanager.GetTestCheckErrorCounter
+		    
+		    logmanager.WriteMessage("", "All test completed, %0 test check errors", str(cnter))
 		    
 		  else
 		    logmanager.WriteWarning("", "Nothing to run")
@@ -959,6 +968,7 @@ End
 		  
 		  var logwriter as  clLogManager = SetUpLogWriter
 		  
+		  logwriter.ResetTestCheckErrorCounter
 		  
 		  for index as integer = 0 to 2
 		    var m() as  Introspection.MethodInfo 
@@ -992,6 +1002,9 @@ End
 		  
 		  if msgflg then
 		    logwriter.EndTask( "Running tests")
+		    var cnter as integer = logwriter.GetTestCheckErrorCounter
+		    
+		    logwriter.WriteMessage("", "All test completed, %0 test check errors", str(cnter))
 		    
 		  else
 		    logwriter.WriteWarning("-", "Nothing to run")

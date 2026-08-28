@@ -116,6 +116,9 @@ Protected Module mdLogManagerConstants
 	#tag Constant, Name = cstSeverityStatistics, Type = String, Dynamic = False, Default = \"STS", Scope = Public
 	#tag EndConstant
 
+	#tag Constant, Name = cstSeverityTestChecksError, Type = String, Dynamic = False, Default = \"TCE", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = cstSeverityWarning, Type = String, Dynamic = False, Default = \"WNG", Scope = Public
 	#tag EndConstant
 

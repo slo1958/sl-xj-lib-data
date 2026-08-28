@@ -1609,14 +1609,56 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(NewTableName as string, ColumnsSource as Dictionary, allocator as ColumnAllocator, autoDetect as Boolean)
+		Sub Constructor(NewTableName as string, ColumnsSource as Dictionary)
 		  //
 		  // Creates a new data table from a set of columns. Columns are passed as a dictionary with column name as key and an array of values as value
+		  // All columns are allocated as clDataSerie
+		  //  
+		  // Parameters:
+		  // - the name of the data table
+		  // - the columns as a dictionary (column name as key, column values as an array of variant
+		  //
+		  //  Returns:
+		  //  -  
+		  //
+		  
+		  Constructor(NewTableName, ColumnsSource, false, nil)
+		  
+		  self.Metadata = new clMetadata
+		  
+		  if ColumnsSource = nil then return
+		  
+		  var tmp_columns() as clAbstractDataSerie
+		  
+		  for each name as string in ColumnsSource.Keys
+		    var temp_name as string = name.Trim
+		    var v() as variant = ExtractVariantArray(ColumnsSource.value(temp_name))
+		    
+		    tmp_columns.Add(new clDataSerie(temp_name, v))
+		  next
+		  
+		  internal_NewTable(NewTableName)
+		  
+		  For Each c As clAbstractDataSerie In tmp_columns
+		    //  add column takes care of adjusting the length
+		    call Self.AddColumn(c)
+		    
+		  Next
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(NewTableName as string, ColumnsSource as Dictionary, autoDetect as Boolean, allocator as ColumnAllocator = nil)
+		  //
+		  // Creates a new data table from a set of columns. Columns are passed as a dictionary with column name as key and an array of values as value
+		  // 
 		  //  
 		  //  Parameters:
-		  //  - the name of the data table
+		  // - the name of the data table
 		  // - the columns as a dictionary (column name as key, column values as an array of variant
-		  // - an option to clone a data serie (column) if it is already used in another table
+		  // - autoDetect (boolean): determine the type of the data column using the type of the values
+		  // - Allocator: a user defined function use to allocate the data column (optional) If the function returns nil, a clDataSerie() is created
 		  //
 		  //  Returns:
 		  //  -  
@@ -1628,20 +1670,21 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  var tmp_columns() as clAbstractDataSerie
 		  
-		  for each tmp_column_name as string in ColumnsSource.Keys
-		    var v() as variant = ExtractVariantArray(ColumnsSource.value(tmp_column_name))
+		  for each name as string in ColumnsSource.Keys
+		    var temp_name as string = name.Trim
+		    var v() as variant = ExtractVariantArray(ColumnsSource.value(temp_name))
 		    
 		    if allocator = nil and  autoDetect and v.Count>0 then
-		      tmp_columns.add(clDataType.CreateDataSerieFromVariantType(tmp_column_name,  v(0)))
+		      tmp_columns.add(clDataType.CreateDataSerieFromVariantType(temp_name,  v(0)))
 		      
 		    elseif allocator = nil then
-		      tmp_columns.Add(new clDataSerie(tmp_column_name, v))
+		      tmp_columns.Add(new clDataSerie(temp_name, v))
 		      
 		      
 		    else
-		      var tmp_column as clAbstractDataSerie = allocator.Invoke(tmp_column_name,"")
+		      var tmp_column as clAbstractDataSerie = allocator.Invoke(temp_name,"")
 		      
-		      if tmp_column = nil then tmp_column = new clDataSerie(tmp_column_name)
+		      if tmp_column = nil then tmp_column = new clDataSerie(temp_name)
 		      
 		      tmp_column.AddElements(v)
 		      
@@ -1662,13 +1705,14 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(NewTableName as string, ColumnNames() as string)
+		Sub Constructor(NewTableName as string, ColumnNames() as string, allocator as ColumnAllocator = nil)
 		  //  
-		  //  Creates a data table from a list of column names
+		  //  Creates a data table from a list of column names. All columns are allocate as clDataSerie()
 		  //  
 		  //  Parameters:
 		  //  - the name of the table
-		  //  -  a string array with the list of names for columns
+		  //  - a string array with the list of names for columns
+		  // - Allocator: a user defined function used to allocate the data column (optional) If the function returns nil, a clDataSerie() is created
 		  //  
 		  //  Returns:
 		  //  -  
@@ -1682,12 +1726,23 @@ Implements TableColumnReaderInterface,Iterable
 		  internal_NewTable(tmp_table_name)
 		  
 		  
-		  For Each name As string In ColumnNames
-		    var temp_name as string = name.Trim
-		    call Self.AddColumn(temp_name)
+		  if allocator = nil then
+		    For Each name As string In ColumnNames
+		      var temp_name as string = name.Trim
+		      call Self.AddColumn(temp_name)
+		      
+		    Next
 		    
-		  Next
-		  
+		  else
+		    For Each name As string In ColumnNames
+		      var temp_name as string = name.Trim
+		      var temp_column as clAbstractDataSerie = allocator.Invoke(temp_name,"")
+		      if temp_column = nil then temp_column = new clDataSerie(temp_name)
+		      
+		      call Self.AddColumn(temp_column)
+		    next
+		    
+		  end if
 		  
 		End Sub
 	#tag EndMethod
@@ -2984,8 +3039,8 @@ Implements TableColumnReaderInterface,Iterable
 		  next
 		  
 		  var serie_name as new clStringDataSerie(StructureNameColumn, col_name)
-		  var serie_type as new clStringDataSerie(StructureNameColumn, col_type)
-		  var serie_title as new clStringDataSerie(StructureNameColumn, col_title)
+		  var serie_type as new clStringDataSerie(StructureTypeColumn, col_type)
+		  var serie_title as new clStringDataSerie(StructureTitleColumn, col_title)
 		  
 		  
 		  var temp as string = NewTableName.trim
@@ -3561,6 +3616,9 @@ Implements TableColumnReaderInterface,Iterable
 		  allow_local_columns =  False
 		  index_explicit_when_iterate = False
 		  row_name_as_column = False
+		  
+		  return
+		  
 		End Sub
 	#tag EndMethod
 

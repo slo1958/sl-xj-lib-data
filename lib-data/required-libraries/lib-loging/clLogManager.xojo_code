@@ -94,6 +94,7 @@ Implements itfLogWriter
 		  self.AcceptedSeverity.Value(cstSeverityMessage) = True
 		  self.AcceptedSeverity.Value(cstSeverityInformation) = true
 		  self.AcceptedSeverity.Value(cstSeverityStatistics) = True
+		  self.AcceptedSeverity.Value(cstSeverityTestChecksError) = True
 		  
 		  Return
 		  
@@ -272,6 +273,12 @@ Implements itfLogWriter
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function GetTestCheckErrorCounter() As integer
+		  Return self.TestCheckErrorCounter
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h21
 		Private Function internal_ProcessParameters(MessageText as string, MessageParameters() as Variant) As string
 		  // TODO: apply formatting
@@ -393,6 +400,15 @@ Implements itfLogWriter
 		    
 		  End If
 		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ResetTestCheckErrorCounter()
+		  
+		  self.TestCheckErrorCounter = 0
+		  
+		  return 
 		End Sub
 	#tag EndMethod
 
@@ -790,6 +806,55 @@ Implements itfLogWriter
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub WriteTestCheckError(MessageSource as string, MessageText as string, MessageParameters() as variant)
+		  //
+		  // Write a test check error  message
+		  // The message may contain place holder %0, %1, ... replaced by corresponding parameters
+		  // Test Check error messages are always  fowarded to writers 
+		  // The internal counter reflects the actual number of calls to WriteTestCheckError()
+		  //
+		  // Parameters
+		  // - Message template
+		  // - List of parameters
+		  //
+		  // Returns:
+		  // (nothing)
+		  //
+		   
+		  
+		  self.TestCheckErrorCounter = self.TestCheckErrorCounter + 1
+		  internal_WriteMessage MessageSource, cstSeverityTestChecksError, internal_ProcessParameters(MessageText, MessageParameters)
+		   
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub WriteTestCheckError(MessageSource as string, MessageText as string, ParamArray MessageParameters as variant)
+		  //
+		  // Write a test check error  message
+		  // The message may contain place holder %0, %1, ... replaced by corresponding parameters
+		  // Test Check error messages are always  fowarded to writers 
+		  // The internal counter reflects the actual number of calls to WriteTestCheckError()
+		  //
+		  // Parameters
+		  // - Message template
+		  // - List of parameters
+		  //
+		  // Returns:
+		  // (nothing)
+		  //
+		  
+		  self.WriteTestCheckError(MessageSource, MessageText, MessageParameters)
+		  
+		  return 
+		   
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub WriteWarning(MessageSource as string, MessageText as string, MessageParameters() as variant)
 		  //
 		  // Write an warning message
@@ -971,6 +1036,10 @@ Implements itfLogWriter
 		#tag EndSetter
 		SendInfoMessageOnWarningReset As boolean
 	#tag EndComputedProperty
+
+	#tag Property, Flags = &h21
+		Private TestCheckErrorCounter As Integer
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private TrackedMethods As Dictionary

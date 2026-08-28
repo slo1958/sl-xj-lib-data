@@ -859,15 +859,16 @@ Inherits clObjectTest
 		  dct.Value("City") = array("Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table0 As New clDataTable("mytable", dct, nil, false)
+		  // create the table from the dictionary, with all columns defined as clDataSerie
+		  var table0 As New clDataTable("mytable", dct, false, nil)
 		  
 		  var col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
 		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
-		  var col_sales as new clNumberDataSerie("Sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  var col_sales as new clDataSerie("Sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table_expected As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
+		  var expected_table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
 		  
-		  call check_table(log,"use dict for creation", table_expected, table0)
+		  call check_table(log,"use dict for creation", expected_table0, table0)
 		  
 		  table0.GetColumn("City").DisplayTitle = "Ville"
 		  table0.GetColumn("Country").DisplayTitle = "Pays"
@@ -875,15 +876,14 @@ Inherits clObjectTest
 		  
 		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  
-		  dct = new Dictionary
-		  dct.value("name") = array("Country", "City", "Sales")
-		  dct.Value("type") = array("Generic","Generic","Generic")
-		  dct.Value("title") = array("Pays","Ville","Ventes")
+		  var col_name as new clStringDataSerie(clDataTable.StructureNameColumn, "Country","City", "Sales")
+		  var col_type as new clStringDataSerie(clDataTable.StructureTypeColumn,"Generic", "Generic", "Generic")
+		  var col_title as new clStringDataSerie(clDataTable.StructureTitleColumn,"Pays","Ville", "Ventes")
 		  
-		  var struc_expected as new clDataTable("expected_struct", dct, nil, false)
+		  var expected_struc0 as new clDataTable("expected_struct", SerieArray(col_name, col_type, col_title))
 		  
-		  call check_table(log,"structure", struc_expected, struc0)
-		  
+		  call check_table(log,"structure", expected_struc0, struc0)
+		   
 		  
 		  log.EndTask(CurrentMethodName)
 		  
@@ -905,7 +905,8 @@ Inherits clObjectTest
 		  dct.Value("City") = array("Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table0 As New clDataTable("mytable", dct ,AddressOf alloc_series_020, false)
+		  // create the table from the dictionary, with a column allocator.
+		  var table0 As New clDataTable("mytable", dct ,True, AddressOf alloc_series_020)
 		  
 		  //
 		  // Check structure and content of table created from dictionaries
@@ -914,15 +915,11 @@ Inherits clObjectTest
 		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  var col_sales as new clNumberDataSerie("Sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table_expected0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
+		  var expected_table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
 		  
-		  call check_table(log,"use dict for creation", table_expected0, table0)
+		  call check_table(log,"use dict for creation", expected_table0, table0)
 		  
-		  
-		  //
-		  // Extract structure as table and validate
-		  //
-		  
+		  // Add display title
 		  table0.GetColumn("City").DisplayTitle = "Ville"
 		  table0.GetColumn("Country").DisplayTitle = "Pays"
 		  table0.GetColumn("Sales").DisplayTitle="Ventes" 
@@ -930,18 +927,19 @@ Inherits clObjectTest
 		  call check_table(log, "table0  integrity", nil, table0) 
 		  
 		  
+		  // Extract structure as table and validate
 		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  
+		  var col_name as new clStringDataSerie(clDataTable.StructureNameColumn, "Country","City", "Sales")
+		  var col_type as new clStringDataSerie(clDataTable.StructureTypeColumn,"String", "String", "Number")
+		  var col_title as new clStringDataSerie(clDataTable.StructureTitleColumn,"Pays","Ville", "Ventes")
 		  
-		  dct = new Dictionary
-		  dct.value("name") = array("Country", "City", "Sales")
-		  dct.Value("type") = array("Generic","Generic","Number")
-		  dct.Value("title") = array("Pays","Ville","Ventes")
+		  var expected_struc0 as new clDataTable("expected_struct", SerieArray(col_name, col_type, col_title))
 		  
-		  var struc_expected as new clDataTable("expected_struct", dct, nil , false)
-		  call check_table(log,"structure", struc_expected, struc0)
+		   
+		  call check_table(log,"structure", expected_struc0, struc0)
 		  
-		  //
+		  // (no data)
 		  // Create table from structure description and check structure
 		  //
 		  
@@ -950,13 +948,9 @@ Inherits clObjectTest
 		  var col_country1 as new clDataSerie("Country")
 		  var col_city1 as new clDataSerie("City")
 		  var col_sales1 as new clNumberDataSerie("Sales")
+		  
 		  var table_expected1 As New clDataTable("mytable", SerieArray(col_country1, col_city1, col_sales1))
 		  call check_table(log,"create from structure table", table_expected1, table1)
-		  
-		  
-		  var struc1 as clDataTable = table0.GetStructureAsTable
-		  
-		  call check_table(log,"structure", struc_expected, struc1)
 		  
 		  
 		  log.EndTask(CurrentMethodName)
@@ -3787,7 +3781,7 @@ Inherits clObjectTest
 		  
 		  table1.AddRow(Array("Brussels","100.0","2020-01"))
 		  table1.AddRow(Array("Brussels","97.0","2020-02"))
-		  table1.AddRow(Array("Brussels","93.0","2020-03"))
+		  table1.AddRow(Array("Brussels","93.0","2020-03")) 
 		  
 		  var table2 as clDataTable = table1.SelectAllColumns(true)
 		  

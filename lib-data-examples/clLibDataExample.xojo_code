@@ -1161,7 +1161,8 @@ Protected Class clLibDataExample
 		  dct.Value("City") = array("Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table0 As New clDataTable("mytable", dct ,nil, true)
+		  // Create the table from thr dictionary with automatic type detection
+		  var table0 As New clDataTable("mytable", dct ,true, nil)
 		  
 		  table0.GetColumn("City").DisplayTitle = "Ville"
 		  table0.GetColumn("Country").DisplayTitle = "Pays"

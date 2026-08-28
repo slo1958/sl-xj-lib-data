@@ -46,6 +46,7 @@ Implements itfLogWriter
 		  self.AcceptedSeverity.Value(cstSeverityMessage) = true
 		  self.AcceptedSeverity.Value(cstSeverityInformation) = true
 		  self.AcceptedSeverity.Value(cstSeverityStatistics) = True
+		  self.AcceptedSeverity.Value(cstSeverityTestChecksError) = True
 		  
 		  
 		End Sub

@@ -188,6 +188,7 @@ Module=clDataStorePipeline_tests;lib-data-tests/clDataStorePipeline_tests.xojo_c
 Class=clGroupByParameters_old;lib-data/data-table-transformer/linear-transformers/clGroupByParameters_old.xojo_code;&h000000003FBF6FFF;&h000000002B255FFF;false
 Class=clFieldInfoEntry;lib-data/data-series/clFieldInfoEntry.xojo_code;&h0000000029E7B7FF;&h00000000054067FF;false
 Class=clTableStructure;lib-data/data-tables/clTableStructure.xojo_code;&h000000000C3EDFFF;&h0000000056943FFF;false
+Class=DesktopListboxLogWriter;lib-data-test and example windows/required-libraries/lib-loging-ui-support/DesktopListboxLogWriter.xojo_code;&h000000001DDAC7FF;&h000000007629FFFF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1
