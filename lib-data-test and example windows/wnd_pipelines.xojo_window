@@ -149,9 +149,10 @@ Begin DesktopWindow wnd_pipelines
       Underline       =   False
       Visible         =   True
       Width           =   183
+      _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
-   Begin DesktopListBox ListBox2
+   Begin DesktopListboxLogWriter lbPipelineLog
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
@@ -196,7 +197,39 @@ Begin DesktopWindow wnd_pipelines
       Underline       =   False
       Visible         =   True
       Width           =   358
+      _ScrollOffset   =   0
       _ScrollWidth    =   -1
+   End
+   Begin DesktopButton Button2
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Cancel          =   False
+      Caption         =   "Clear"
+      Default         =   False
+      Enabled         =   True
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      Italic          =   False
+      Left            =   130
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      MacButtonStyle  =   0
+      Scope           =   0
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   400
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   80
    End
 End
 #tag EndDesktopWindow
@@ -215,8 +248,11 @@ End
 		  
 		  DesktopListboxForTable1.HeaderAt(0) = "Results..."
 		  
-		  Listbox2.RemoveAllRows
-		  Listbox2.HeaderAt(0)= "Logs.."
+		  lbPipelineLog.ClearLog
+		  
+		  // Listbox2.RemoveAllRows
+		  
+		  lbPipelineLog.HeaderAt(0)= "Logs.."
 		  
 		  for each k as string in MethodInfoDict.keys
 		    Listbox1.AddRow(k)
@@ -274,17 +310,21 @@ End
 		  
 		  var ms2 as clMemoryStats = GetMemoryStats()
 		  
+		  var cnter as integer = logwriter.GetTestCheckErrorCounter
+		  
 		  DesktopListboxForTable1.ShowTable(t1)
 		  
 		  logwriter.WriteInfo(CurrentMethodName, "Tables in memory was:  %0,  dataseries in memory was: %1, transformers %2" , str(ms0.NumberOfTables), str(ms0.NumberOfDataSeries), str(ms0.NumberOfTransformers))
 		  logwriter.WriteInfo(CurrentMethodName, "Tables in memory is:  %0,  dataseries in memory was: %1, transformers %2" , str(ms1.NumberOfTables), str(ms1.NumberOfDataSeries), str(ms1.NumberOfTransformers))
 		  logwriter.WriteInfo(CurrentMethodName, "Tables in memory at end is:  %0,  dataseries in memory was: %1, transformers %2" , str(ms2.NumberOfTables), str(ms2.NumberOfDataSeries), str(ms2.NumberOfTransformers))
 		  
+		  logwriter.WriteMessage("", "All test completed, %0 test check errors", str(cnter))
+		  
 		  // var AllocatedDataSeries()  as clAbstractDataSerie = GetAllocatedDataSeries()
 		  
 		  return
 		  
-		  
+		   
 		End Sub
 	#tag EndMethod
 
@@ -296,12 +336,18 @@ End
 		  
 		  logmanager.ResetWriters()
 		  
+		  logmanager.ResetTestCheckErrorCounter
+		  
 		  if EchoToListBox then
-		    logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox2))
+		    logmanager.AddWriter("WND", lbPipelineLog)
+		    lbPipelineLog.TagSeverity("TCE")
+		    
+		    //logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox2))
 		    
 		  end if
 		  
 		  Return logmanager
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -323,6 +369,16 @@ End
 		Sub Pressed()
 		  
 		  RunSelectedPipeline
+		  
+		  Return
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Button2
+	#tag Event
+		Sub Pressed()
+		  
+		  lbPipelineLog.ClearLog
 		  
 		  Return
 		End Sub
