@@ -1662,10 +1662,15 @@ Protected Class clLibDataExample
 		  tsales.AddRow(new Dictionary("City":"London", "Quantity":14, "Unitprice": 30))
 		  tsales.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
 		  
+		  
+		  
+		  // Calculate sales as quantity x unit price
 		  tsales.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup)).Rename("Sales") 
 		  
+		  // LInk cityto country
 		  var join_results as Boolean = tsales.Lookup(tcountries, array("City"), array("Country"), "LookupStatus")
 		  
+		  // Get list of distinct country and city
 		  var tdistinct as clDataTable = tsales.GroupBy(StringArray("Country", "City"))
 		  
 		  var tDistinct_expected As New clDataTable("mytable", SerieArray( _
@@ -1673,10 +1678,10 @@ Protected Class clLibDataExample
 		  new clStringDataSerie("City", array("Brussels","Liege", "Paris","Rome")) _
 		  ))
 		  
-		  
+		  // Get totals per country
 		  var tSumSales1 as clDataTable = tsales.GroupBy(StringArray("Country"), StringArray("Sales","Quantity"))
 		  
-		  
+		  // Get totals per country and city and an non-existing column
 		  var tSumSales2 as clDataTable = tsales.GroupBy(StringArray("Country","Zorglub","City"), StringArray("Sales","Quantity")).Rename("Sum sales 2")
 		  
 		  
@@ -1855,9 +1860,8 @@ Protected Class clLibDataExample
 		    Description.Add("- create a datatable with order quantity of unit price per city")
 		    Description.Add(" - calculate sales as unit price x quantity in a new column")
 		    Description.Add("- lookup the country name")
-		    Description.Add("- get list of distinct country/city using a transformer")
-		    Description.Add("- get total sales and total quantity per country using a transformer")
-		    
+		    Description.Add("- get list of distinct country/city using a groupby transformer")
+		    Description.Add("- get total sales and total quantity per country")
 		    
 		    return nil
 		    
@@ -1898,30 +1902,29 @@ Protected Class clLibDataExample
 		  tsales.AddRow(new Dictionary("City":"London", "Quantity":14, "Unitprice": 30))
 		  tsales.AddRow(new Dictionary("City":"Rome", "Quantity":10, "Unitprice": 25))
 		  
+		  
+		  // Calculate sales as quantity x unit price
 		  tsales.AddColumn(clNumberDataSerie(cqtt) * clNumberDataSerie(cup)).Rename("Sales") 
 		  
+		  // Lookup the country linked to the city
 		  Call tsales.Lookup(tcountries, array("City"), array("Country"), "LookupStatus")
 		  
+		  // Get list of distinct country and city, using a transformer (check example_026 for call using the groupby method of cldatatable
 		  var gTransfomer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"), "")
-		  
 		  call gTransfomer1.Execute()
-		  
 		  var tDistinct as clDataTable = gTransfomer1.GetOutputTable()
 		  
 		  
-		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country"),  StringArray("Sales","Quantity"), "")
+		  // Get total sales and volume per country, with unit price range
+		  var tSumSales1 as clDataTable =  tsales.GroupBy(StringArray("Country") _
+		  , PairArray("Sales":AggMode.Sum,"Quantity": AggMode.Sum,"Unitprice":AggMode.Min,"Unitprice":AggMode.Max) _
+		  , "NbrTransactions")
 		  
-		  call gTransformer2.Execute()
 		  
-		  var tSumSales1 as clDataTable = gTransformer2.GetOutputTable()
-		  
-		  
-		  var tSumSales2 as clDataTable = tsales.GroupBy(StringArray("Country","Zorglub","City"), StringArray("Sales","Quantity"))
-		  tSumSales2.Rename("Sum sales 2")
 		  
 		  log.EndTask(CurrentMethodName)
 		  
-		  return array(tsales, tcountries, tDistinct, tSumSales1, tSumSales2)
+		  return array(tsales, tcountries, tDistinct, tSumSales1)
 		  
 		  
 		  
