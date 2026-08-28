@@ -1161,7 +1161,7 @@ Protected Class clLibDataExample
 		  dct.Value("City") = array("Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table0 As New clDataTable("mytable", dct ,AddressOf alloc_series_019)
+		  var table0 As New clDataTable("mytable", dct ,nil, true)
 		  
 		  table0.GetColumn("City").DisplayTitle = "Ville"
 		  table0.GetColumn("Country").DisplayTitle = "Pays"

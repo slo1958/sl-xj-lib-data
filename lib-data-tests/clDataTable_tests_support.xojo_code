@@ -35,6 +35,19 @@ Protected Module clDataTable_tests_support
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function alloc_series_020(column_name as string, column_type_info as string) As clAbstractDataSerie
+		  if column_name = "Sales" then
+		    Return new clNumberDataSerie(column_name)
+		    
+		  else
+		    return new clDataSerie(column_name)
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function alloc_series_io1(column_name as string, column_type_info as string) As clAbstractDataSerie
 		  if column_name = "Alpha" then
 		    Return new clCompressedDataSerie(column_name)

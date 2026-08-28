@@ -1000,6 +1000,18 @@ Implements Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetFieldInfo() As clFieldInfoEntry
+		  var v as new clFieldInfoEntry
+		  
+		  v.name = self.name
+		  v.Title = self.DisplayTitle
+		  v.Type = self.GetType()
+		  
+		  return v
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetLastErrorMessage() As string
 		  return self.LastErrorMessage
 		End Function

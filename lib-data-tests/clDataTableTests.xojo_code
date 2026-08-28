@@ -859,7 +859,7 @@ Inherits clObjectTest
 		  dct.Value("City") = array("Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table0 As New clDataTable("mytable", dct)  
+		  var table0 As New clDataTable("mytable", dct, nil, false)
 		  
 		  var col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
 		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
@@ -880,7 +880,7 @@ Inherits clObjectTest
 		  dct.Value("type") = array("Generic","Generic","Generic")
 		  dct.Value("title") = array("Pays","Ville","Ventes")
 		  
-		  var struc_expected as new clDataTable("expected_struct", dct)
+		  var struc_expected as new clDataTable("expected_struct", dct, nil, false)
 		  
 		  call check_table(log,"structure", struc_expected, struc0)
 		  
@@ -905,7 +905,7 @@ Inherits clObjectTest
 		  dct.Value("City") = array("Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
 		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
-		  var table0 As New clDataTable("mytable", dct ,AddressOf alloc_series_019)
+		  var table0 As New clDataTable("mytable", dct ,AddressOf alloc_series_020, false)
 		  
 		  //
 		  // Check structure and content of table created from dictionaries
@@ -938,7 +938,7 @@ Inherits clObjectTest
 		  dct.Value("type") = array("Generic","Generic","Number")
 		  dct.Value("title") = array("Pays","Ville","Ventes")
 		  
-		  var struc_expected as new clDataTable("expected_struct", dct)
+		  var struc_expected as new clDataTable("expected_struct", dct, nil , false)
 		  call check_table(log,"structure", struc_expected, struc0)
 		  
 		  //
@@ -3839,6 +3839,52 @@ Inherits clObjectTest
 		  call check_value(log, "table pointer t2col3", table1, t2col3.GetLinkedTable())
 		  
 		  log.EndTask(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub tables_test_calc_063(log as clLogManager)
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		   
+		  var col_country as new clDataSerie("Country", "France", "", "Belgique", "France", "USA")
+		  var col_city as new clDataSerie("City", "Paris", "Marseille", "Bruxelles", "Lille", "Chicago")
+		  var col_sales as new clNumberDataSerie("Sales", 900.0, 1200.0, 1400.0, 1600.0, 2900)
+		  
+		  var table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
+		   
+		  table0.GetColumn("City").DisplayTitle = "Ville"
+		  table0.GetColumn("Country").DisplayTitle = "Pays"
+		  table0.GetColumn("Sales").DisplayTitle="Ventes" 
+		  
+		  call check_table(log, "table0  integrity", nil, table0) 
+		  
+		  //
+		  // Extract structure as array of field info 
+		  //
+		  var struc as clTableStructure = table0.GetStructureAsTableInfo
+		  
+		  
+		  //
+		  // Create table from structure description and check structure
+		  //
+		  var table1 as clDataTable =  New clDataTable("mytable", struc)
+		  
+		  var col_country1 as new clDataSerie("Country")
+		  var col_city1 as new clDataSerie("City")
+		  var col_sales1 as new clNumberDataSerie("Sales")
+		  var expect_table1 As New clDataTable("mytable", SerieArray(col_country1, col_city1, col_sales1))
+		  
+		  call check_table(log,"create from structure array", expect_table1, table1)
+		  
+		  
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		  
+		  
 		  
 		End Sub
 	#tag EndMethod

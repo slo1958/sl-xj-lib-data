@@ -2,40 +2,88 @@
 Protected Class clDataType
 	#tag Method, Flags = &h0
 		Shared Function ConvertSerieTypeToCommonType(serie as clAbstractDataSerie) As string
+		  //
+		  // Return the type of the serie as a common type (string)
+		  //
+		  // Parameters
+		  // - serie : data serie for which the type is requested
+		  //
+		  // Returns
+		  // Datatype of the serie as a common type (string)
+		  //
 		  
-		  Var t As Introspection.TypeInfo
-		  t = Introspection.GetType(serie)
-		  
-		  select case t.Name
+		  if serie = nil then 
+		    Return UndefinedType
 		    
-		  case "clBooleanDataSerie"
+		  elseif serie isa clBooleanDataserie then
 		    return BooleanValue
 		    
-		  case  "clCompressedDataSerie"
+		  elseif serie isa clCompressedDataserie then
 		    return StringValue
 		    
-		  case "clCurrencyDataSerie"
+		  elseif serie isa clCurrencyDataserie then
 		    return CurrencyValue
 		    
-		  case "clDateDataSerie"
+		  elseif serie isa clDateDataserie then
 		    return DateValue
 		    
-		  case "clDateTimeDataSerie"
+		  elseif serie isa clDateTimeDataserie then
 		    return DateTimeValue
 		    
-		  case "clIntegerDataSerie"
+		  elseif serie isa clIntegerDataserie then
 		    return IntegerValue
 		    
-		  case "clNumberDataSerie"
+		  elseif serie isa clNumberDataserie then
 		    return NumberValue
 		    
-		  case "clStringDataSerie" 
+		  elseif serie isa clStringDataserie  then
 		    return StringValue
 		    
 		  else
 		    return VariantValue
 		    
-		  end select
+		  end if
+		  
+		  
+		  
+		  
+		  
+		  
+		  // 
+		  // Var t As Introspection.TypeInfo
+		  // t = Introspection.GetType(serie)
+		  //$1
+		  // 
+		  // select case t.Name
+		  // 
+		  // case "clBooleanDataSerie"
+		  // return BooleanValue
+		  // 
+		  // case  "clCompressedDataSerie"
+		  // return StringValue
+		  // 
+		  // case "clCurrencyDataSerie"
+		  // return CurrencyValue
+		  // 
+		  // case "clDateDataSerie"
+		  // return DateValue
+		  // 
+		  // case "clDateTimeDataSerie"
+		  // return DateTimeValue
+		  // 
+		  // case "clIntegerDataSerie"
+		  // return IntegerValue
+		  // 
+		  // case "clNumberDataSerie"
+		  // return NumberValue
+		  // 
+		  // case "clStringDataSerie" 
+		  // return StringValue
+		  // 
+		  // else
+		  // return VariantValue
+		  // 
+		  // end select
 		  
 		End Function
 	#tag EndMethod

@@ -1569,7 +1569,47 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(NewTableName as string, ColumnsSource as Dictionary, allocator as ColumnAllocator = nil)
+		Sub Constructor(NewTableName as string, TableStructure as clTableStructure)
+		  //  
+		  //  Creates a data table from an array of clFieldInfoEntry
+		  //  
+		  //  Parameters:
+		  //  - the name of the table
+		  //  - the requested structure as a clTableStructure
+		  //  
+		  //  Returns:
+		  //  -  
+		  //  
+		  
+		  self.Metadata = new clMetadata
+		  
+		  var tmp_table_name As String
+		  
+		  tmp_table_name = NewTableName
+		  
+		  internal_NewTable(tmp_table_name)
+		  
+		  for each field as clFieldInfoEntry in TableStructure.Fields
+		    var column as clAbstractDataSerie = AddColumn(clDataType.CreateDataSerieFromType(field.name, field.type))
+		    if column <> nil then
+		      column.DisplayTitle = field.Title
+		      
+		    end if
+		    
+		    
+		  next
+		  
+		  self.Metadata.AddSource("Created from structure of " + TableStructure.Name)
+		  
+		  Return
+		  
+		  
+		   
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(NewTableName as string, ColumnsSource as Dictionary, allocator as ColumnAllocator, autoDetect as Boolean)
 		  //
 		  // Creates a new data table from a set of columns. Columns are passed as a dictionary with column name as key and an array of values as value
 		  //  
@@ -1591,8 +1631,12 @@ Implements TableColumnReaderInterface,Iterable
 		  for each tmp_column_name as string in ColumnsSource.Keys
 		    var v() as variant = ExtractVariantArray(ColumnsSource.value(tmp_column_name))
 		    
-		    if allocator = nil then
+		    if allocator = nil and  autoDetect and v.Count>0 then
+		      tmp_columns.add(clDataType.CreateDataSerieFromVariantType(tmp_column_name,  v(0)))
+		      
+		    elseif allocator = nil then
 		      tmp_columns.Add(new clDataSerie(tmp_column_name, v))
+		      
 		      
 		    else
 		      var tmp_column as clAbstractDataSerie = allocator.Invoke(tmp_column_name,"")
@@ -2939,16 +2983,51 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  var dct as new Dictionary
-		  dct.Value(StructureNameColumn) = col_name
-		  dct.Value(StructureTypeColumn) = col_type
-		  dct.Value(StructureTitleColumn) = col_title
+		  var serie_name as new clStringDataSerie(StructureNameColumn, col_name)
+		  var serie_type as new clStringDataSerie(StructureNameColumn, col_type)
+		  var serie_title as new clStringDataSerie(StructureNameColumn, col_title)
+		  
 		  
 		  var temp as string = NewTableName.trim
 		  
 		  if temp.Length < 1 then temp = self.StructureTableNamePrefix.trim + " " + self.name
 		  
-		  return new clDataTable(temp, dct)
+		  return new clDataTable(temp, SerieArray(serie_name, serie_type, serie_title))
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetStructureAsTableInfo() As clTableStructure
+		  //
+		  // Return the structure of the table as an array of clFieldInfoEntry in a clTableStructure
+		  //
+		  // parameters
+		  // (none)
+		  //
+		  // Returns
+		  //   populatded clTableStructure
+		  //
+		  
+		  var res as new clTableStructure(self.Name)
+		  
+		  var col_name() as string
+		  var col_type() as string
+		  var col_title() as String
+		  
+		  for i as integer = 0 to columns.LastIndex
+		    var colinfo as new clFieldInfoEntry()
+		    colinfo.Name = columns(i).name
+		    colinfo.Type = columns(i).GetType()
+		    colinfo.Title = columns(i).DisplayTitle
+		    
+		    res.AddFieldInfo(colinfo)
+		    
+		  next
+		  
+		  return res
+		  
 		  
 		End Function
 	#tag EndMethod
