@@ -7,12 +7,19 @@ Inherits clLinearTransformer
 		  self.FieldNameColumn = prmColumnForFieldNames
 		  self.FieldValueColumn = prmColumnForFieldValue
 		  self.ColumnsToIgnore.RemoveAll
+		  
+		  Return
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
 		Private Sub ConfigureUnpivot(prmColumnsToRetain() as string, prmColumnForFieldNames as string, prmColumnForFieldValue as string, prmColumnsToIgnore() as string)
+		  self.ColumnsToRetain = prmColumnsToRetain
+		  self.FieldNameColumn = prmColumnForFieldNames
+		  self.FieldValueColumn = prmColumnForFieldValue
+		  self.ColumnsToIgnore = prmColumnsToIgnore
 		  
+		  Return
 		End Sub
 	#tag EndMethod
 
