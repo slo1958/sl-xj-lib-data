@@ -759,7 +759,7 @@ End
 		  var source() as Dictionary
 		  var dest() as DesktopListBox
 		  var header() as string
-		   
+		  
 		  
 		  for each test_object as clObjectTest in test_objects
 		    source.add( support_tests.GetTestMethods(test_object, test_object.GetTestPrefix + "test"))
@@ -838,10 +838,25 @@ End
 
 	#tag Method, Flags = &h0
 		Sub UpdateCheckboxes(index as integer, mask as string)
+		  
+		  var tmp_mask as string
+		  
+		  select case index 
+		  case 0
+		    tmp_mask = "series_" + mask
+		    
+		  case 1
+		    tmp_mask = "tables_" + mask
+		    
+		  case 2
+		    tmp_mask = "dpools_" + mask
+		    
+		  end Select
+		  
 		  for row as integer = 0 to lb_tests(index).LastRowIndex
 		    var s as string = lb_tests(index).CellTextAt(row, 1)
 		    
-		    lb_tests(index).CellCheckBoxValueAt(row, 0) = s.left(mask.length) = mask 
+		    lb_tests(index).CellCheckBoxValueAt(row, 0) =  s.left(tmp_mask.length) = tmp_mask 
 		    
 		  next
 		  
