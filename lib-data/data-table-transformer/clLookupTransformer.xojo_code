@@ -197,27 +197,27 @@ Inherits clAbstractTransformer
 		  // collect impacted data columns in the main table
 		  for i as integer = 0 to MainTargetDataFields.LastIndex
 		    
-		    var c as clAbstractDataSerie = tblleft.GetColumn(MainTargetDataFields(i), false)
+		    var dest_col as clAbstractDataSerie = tblleft.GetColumn(MainTargetDataFields(i), false)
 		    
 		    
-		    if c = nil then
+		    if dest_col = nil then
 		      // If the column does not exist in the main table ..
 		      // Locate the mapped column in lookup table
-		      var d as clAbstractDataSerie = tblright.GetColumn(LookupSourceDataFields(i), false)
+		      var src_col as clAbstractDataSerie = tblright.GetColumn(LookupSourceDataFields(i), false)
 		      
-		      if d = nil then
+		      if src_col = nil then
 		        // .... add the column to the main table, using default type
-		        c = tblleft.AddColumn(new clDataSerie(MainTargetDataFields(i)))
+		        dest_col = tblleft.AddColumn(new clDataSerie(MainTargetDataFields(i)))
 		        
 		      else
 		        // ... add the column to the main table, matching the type of the column in the lookup table
-		        c = tblleft.AddColumn(clDataType.CreateDataSerieFromType(MainTargetDataFields(i), d.GetType))
+		        dest_col = tblleft.AddColumn(clDataType.CreateDataSerieFromType(MainTargetDataFields(i), src_col.GetType))
 		        
 		      end if
 		      
 		    end if
 		    
-		    dataColumns.add (c)
+		    dataColumns.add (dest_col)
 		    
 		  next
 		  
