@@ -1910,7 +1910,11 @@ Protected Class clLibDataExample
 		  Call tsales.Lookup(tcountries, array("City"), array("Country"), "LookupStatus")
 		  
 		  // Get list of distinct country and city, using a transformer (check example_026 for call using the groupby method of cldatatable
-		  var gTransfomer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"), "")
+		  
+		  var prm as new clGroupByParameters()
+		  prm.SetGroupByDimensions("Country", "City")
+		  
+		  var gTransfomer1 as new clGroupByTransformer(tsales, prm)
 		  call gTransfomer1.Execute()
 		  var tDistinct as clDataTable = gTransfomer1.GetOutputTable()
 		  

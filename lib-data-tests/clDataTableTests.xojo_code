@@ -2140,7 +2140,10 @@ Inherits clObjectTest
 		  call check_table(log, "tsales table integrity 2", nil, tsales) 
 		  
 		  
-		  var gTransformer1 as new clGroupByTransformer(tsales, StringArray("Country", "City"), "")
+		  var prm as new clGroupByParameters()
+		  prm.SetGroupByDimensions(StringArray("Country", "City"))
+		  
+		  var gTransformer1 as new clGroupByTransformer(tsales, prm)
 		  call gTransformer1.Execute()
 		  var tDistinct  as clDataTable = gTransformer1.GetOutputTable()
 		  
@@ -2152,11 +2155,11 @@ Inherits clObjectTest
 		  call check_table(log,"get distinct values", tDistinct_expected, tDistinct )
 		  
 		  
+		  var prm2 as new clGroupByParameters()
+		  prm2.SetGroupByDimensions("Country")
+		  prm2.SetMeasures(PairArray("Sales":aggMode.Sum,"Quantity":aggMode.Sum, "UnitPrice":aggMode.Min, "UnitPrice":aggMode.Max))
 		  
-		  var gTransformer2 as new clGroupByTransformer(tsales, StringArray("Country") _
-		  , PairArray("Sales":aggMode.Sum,"Quantity":aggMode.Sum, "UnitPrice":aggMode.Min, "UnitPrice":aggMode.Max) _
-		  ,"" _
-		  )
+		  var gTransformer2 as new clGroupByTransformer(tsales, prm2)
 		  
 		  call gTransformer2.Execute()
 		  var tSumSales as clDataTable = gTransformer2.GetOutputTable()

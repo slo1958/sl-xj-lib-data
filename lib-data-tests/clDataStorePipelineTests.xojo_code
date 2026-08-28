@@ -35,9 +35,14 @@ Inherits clObjectTest
 		  new clJoinTransformer(JoinMode.LeftJoin, array("City"),"") _
 		  )
 		  
+		  var prm as new clGroupByParameters()
+		  prm.SetGroupByDimensions(array("City"))
+		  prm.SetMeasures("Quantity","Sales")
+		  prm.SetRowCountColumnName("NbrRows")
 		  var sGroupByCity as clAbstractTransformer = pipeline1.AddStep( "Group by city", _
-		  new clGroupByTransformer(new clGroupByParameters(array("City"), array("Quantity","Sales"), "NbrRows")) _
+		  new clGroupByTransformer(prm) _
 		  )
+		  
 		  
 		  // Define steps input and output
 		  

@@ -3024,7 +3024,10 @@ Implements TableColumnReaderInterface,Iterable
 		  // - grouping_dimenions() list of columns to be used as grouping dimensions
 		  //
 		  
-		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, "")
+		  var prm as new clGroupByParameters()
+		  prm.SetGroupByDimensions(grouping_dimensions)
+		  
+		  var gTransform as new clGroupByTransformer(self, prm)
 		  
 		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
@@ -3050,7 +3053,11 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  
 		  
-		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, "")
+		  var prm as new clGroupByParameters()
+		  prm.SetGroupByDimensions(grouping_dimensions)
+		  prm.SetMeasures(measures)
+		  
+		  var gTransform as new clGroupByTransformer(self, prm)
 		  
 		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
@@ -3076,8 +3083,12 @@ Implements TableColumnReaderInterface,Iterable
 		  //
 		  
 		  
+		  var prm as new clGroupByParameters()
+		  prm.SetGroupByDimensions(grouping_dimensions)
+		  prm.SetMeasures(Measures)
+		  prm.SetRowCountColumnName(rowCountColumnName)
 		  
-		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, rowCountColumnName)
+		  var gTransform as new clGroupByTransformer(self, prm)
 		  
 		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
@@ -3102,7 +3113,11 @@ Implements TableColumnReaderInterface,Iterable
 		  // - measures() list of columns to sum: agg mode
 		  //
 		  
-		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, "")
+		  var prm as new clGroupByParameters()
+		  prm.SetGroupByDimensions(grouping_dimensions)
+		  prm.SetMeasures(Measures)
+		  
+		  var gTransform as new clGroupByTransformer(self, prm)
 		  
 		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
@@ -3125,7 +3140,12 @@ Implements TableColumnReaderInterface,Iterable
 		  // - measures() list of columns to sum: agg mode
 		  //
 		  
-		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, Measures, rowCountColumnName)
+		  var prm as new clGroupByParameters()
+		  prm.SetGroupByDimensions(grouping_dimensions)
+		  prm.SetMeasures(Measures)
+		  prm.SetRowCountColumnName(rowCountColumnName)
+		  
+		  var gTransform as new clGroupByTransformer(self, prm)
 		  
 		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable
@@ -3148,7 +3168,11 @@ Implements TableColumnReaderInterface,Iterable
 		  // - grouping_dimenions() list of columns to be used as grouping dimensions
 		  //
 		  
-		  var gTransform as new clGroupByTransformer(self, grouping_dimensions, rowCountColumnName)
+		  var prm as new clGroupByParameters()
+		  prm.SetGroupByDimensions(grouping_dimensions)
+		  prm.SetRowCountColumnName(rowCountColumnName)
+		  
+		  var gTransform as new clGroupByTransformer(self, prm)
 		  
 		  if gTransform.Execute() then
 		    return gTransform.GetOutputTable

@@ -1,7 +1,55 @@
 #tag Class
-Protected Class clGroupByParameters
+Protected Class clGroupByParameters_old
 	#tag Method, Flags = &h0
-		Sub Constructor()
+		Sub Constructor(grouping_dimensions() as string, measures() as pair, rowCountColumnName as string)
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // Aggregate the number fields as defined the each pair, columnname:agg mode
+		  //
+		  // Parameters:
+		  // - grouping_dimenions() list of columns to be used as grouping dimensions
+		  // - measures() pair of (columnname : agg mode)
+		  // - rowCountColumnName: name of column in output table to store row count
+		  //
+		  
+		  
+		  self.GroupingCountColumn = rowCountColumnName
+		  self.GroupingDimensions= grouping_dimensions
+		  self.GroupingMeasures = measures
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(grouping_dimensions() as string, measures() as String, rowCountColumnName as string)
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // Aggregate the number fields as defined in the second array, aggregation mode is sum
+		  //
+		  // Parameters:
+		  // - grouping_dimenions() list of columns to be used as grouping dimensions
+		  // - measures() list of columns to sum
+		  // - rowCountColumnName: name of column in output table to store row count
+		  //
+		  
+		  self.GroupingCountColumn = rowCountColumnName
+		  self.GroupingDimensions= grouping_dimensions
+		  self.GroupingMeasures.RemoveAll
+		  
+		  for each measure as string in measures
+		    self.GroupingMeasures.Add(measure: aggMode.Sum)
+		    
+		  next
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(grouping_dimensions() as string, rowCountColumnName as string)
 		  //
 		  // Group records per distinct values in the grouping_dimensions
 		  // This is typically used to get a list of distinct combinations
@@ -11,80 +59,12 @@ Protected Class clGroupByParameters
 		  // - rowCountColumnName: name of column in output table to store row count
 		  //
 		  
-		  self.GroupingCountColumn = ""
-		  self.GroupingDimensions.RemoveAll
+		  self.GroupingCountColumn = rowCountColumnName
+		  self.GroupingDimensions= grouping_dimensions
 		  self.GroupingMeasures.RemoveAll
 		  
 		  return
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetGroupByDimensions(grouping_dimensions() as string)
-		  
-		  
-		  self.GroupingDimensions= grouping_dimensions
-		  
-		  Return
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetGroupByDimensions(paramarray grouping_dimensions as string)
-		  
-		  
-		  self.GroupingDimensions= grouping_dimensions
-		  
-		  Return
-		  
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetMeasures(measures() as pair)
-		  self.GroupingMeasures = measures
-		  
-		  Return
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetMeasures(measures() as String)
-		  self.GroupingMeasures.RemoveAll
-		  
-		  for each measure as string in measures
-		    self.GroupingMeasures.Add(measure: aggMode.Sum)
-		    
-		  next
-		  
-		  Return
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetMeasures(paramarray measures as String)
-		  self.GroupingMeasures.RemoveAll
-		  
-		  for each measure as string in measures
-		    self.GroupingMeasures.Add(measure: aggMode.Sum)
-		    
-		  next
-		  
-		  Return
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetRowCountColumnName(rowCountColumnName as string)
-		  self.GroupingCountColumn = rowCountColumnName
-		  
-		  Return
 		End Sub
 	#tag EndMethod
 
@@ -149,7 +129,7 @@ Protected Class clGroupByParameters
 			Group="Behavior"
 			InitialValue=""
 			Type="string"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

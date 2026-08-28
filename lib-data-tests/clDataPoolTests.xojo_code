@@ -194,7 +194,13 @@ Inherits clObjectTest
 		  
 		  
 		  // Group invoice lines by invoice ID and calculate totals
-		  var trsfGroupByInvoice as new clGroupByTransformer(tblInvoiceDetails, array("InvoiceID"), array("TotalPrice"),"NbrLines")
+		  var prmByInvoice as new clGroupByParameters()
+		  prmByInvoice.SetGroupByDimensions("InvoiceID")
+		  prmByInvoice.SetMeasures("TotalPrice")
+		  prmByInvoice.SetRowCountColumnName("NbrLines")
+		  
+		  var trsfGroupByInvoice as new clGroupByTransformer(tblInvoiceDetails,prmByInvoice)
+		  
 		  call trsfGroupByInvoice.Execute()
 		  var tblGroupedInvoice as clDataTable = trsfGroupByInvoice.GetOutputTable()
 		  tblGroupedInvoice.RenameColumn("Sum of TotalPrice","InvoiceTotal")
@@ -208,7 +214,12 @@ Inherits clObjectTest
 		  var tblInvoicedCustomers as clDataTable = tblGroupedInvoice
 		  
 		  // Calculate the total per customer
-		  var trsfGroupByCustomer as new clGroupByTransformer(tblInvoicedCustomers, array("CustomerID"), array("InvoiceTotal","NbrLinesAsNumber"), "NbrInvoices")
+		  var prmByCustomer as new clGroupByParameters()
+		  prmByCustomer.SetGroupByDimensions("CustomerID")
+		  prmByCustomer.SetMeasures("InvoiceTotal","NbrLinesAsNumber")
+		  prmByCustomer.SetRowCountColumnName("NbrInvoices")
+		  
+		  var trsfGroupByCustomer as new clGroupByTransformer(tblInvoicedCustomers, prmByCustomer) 
 		  call trsfGroupByCustomer.Execute()
 		  var tblCustomerTotals as clDataTable = trsfGroupByCustomer.GetOutputTable()
 		  
