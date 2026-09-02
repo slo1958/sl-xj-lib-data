@@ -298,6 +298,8 @@ End
 		  
 		  var pipeline as clDataStorePipeline = clDataStorePipeline(res)
 		  
+		  pipeline.SetLogger(logwriter)
+		  
 		  res = nil // Prevent memory leaks before last memory statistics
 		  
 		  pipeline.run()
@@ -324,7 +326,7 @@ End
 		  
 		  return
 		  
-		   
+		  
 		End Sub
 	#tag EndMethod
 

@@ -56,6 +56,15 @@ Inherits clAbstractTransformer
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ValidateInputConnector(InputName as string) As boolean
+		  
+		  return InputName = cInputConnectorName
+		  
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = Description
 		

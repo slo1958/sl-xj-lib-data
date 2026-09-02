@@ -1,7 +1,17 @@
 #tag Class
 Protected Class clDataStorePipeline
 	#tag Method, Flags = &h0
-		Function AddStep(aStepLabel as string, aStep as clAbstractTransformer) As clAbstractTransformer
+		Sub AddError()
+		  
+		  ErrorCounter = ErrorCounter + 1
+		  
+		  Return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function AddStep(aStepLabel as string, aStep as clAbstractTransformer) As boolean
 		  //
 		  // Add a transformation step to the pipeline.
 		  // The order of insertion is not the order of execution
@@ -12,7 +22,7 @@ Protected Class clDataStorePipeline
 		  // - aStep: transformation step
 		  //
 		  // Returns
-		  // - transformation step if insertion is successful, nil otherwise
+		  // - true if insertion is successful, false otherwise
 		  //
 		  
 		  
@@ -20,27 +30,64 @@ Protected Class clDataStorePipeline
 		  
 		  if tmpLabel.Length = 0 then
 		    getLogManager.WriteWarning(CurrentMethodName,"Missing step label for %0", Introspection.GetType(aStep).Name)
-		    return nil
+		    self.AddError
+		    return  false
 		    
 		  end if
 		  
-		  for each s as clAbstractTransformer in self.Steps
-		    if s.StepLabel = tmpLabel then
-		      getLogManager.WriteWarning(CurrentMethodName,"Step label %1 already in use for %2 when adding %0", Introspection.GetType(aStep).Name, tmpLabel, Introspection.GetType(s).Name)
-		      Return nil
-		      
-		    end if
+		  if self.FindStep(tmpLabel) <> nil then
+		    getLogManager.WriteWarning(CurrentMethodName,"Step label %1 already in use when adding %0", Introspection.GetType(aStep).Name, tmpLabel)
+		    self.AddError
+		    return  false
 		    
-		  next
+		  end if
 		  
 		  self.Steps.Add(aStep)
 		  aStep.StepLabel = tmpLabel
-		  
-		  
-		  Return aStep
+		   
+		  Return  true
 		  
 		  
 		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub ConnectSteps(ProviderSetpName as string, outputName as string, ConsumerStepName as string, inputName as string)
+		  
+		  var provider as clAbstractTransformer = self.FindStep(ProviderSetpName)
+		  
+		  if provider = nil then
+		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find provider step %0", ProviderSetpName)
+		    self.AddError
+		    return  
+		    
+		  end if
+		  
+		  
+		  var consumer as clAbstractTransformer = self.FindStep(ConsumerStepName)
+		  if consumer = nil then
+		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find consumer step %0", ConsumerStepName)
+		    self.AddError
+		    return  
+		    
+		  end if
+		  
+		  var providerOutput as clTransformerConnection = provider.GetOutputConnector(outputName)
+		  
+		  if providerOutput = nil then
+		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find  output for provider %0", ConsumerStepName)
+		    self.AddError
+		    return  
+		    
+		  end if
+		  
+		  
+		  // aStep.GetInputConnector(inputName)) 
+		  consumer.SetInput(inputName, providerOutput)
+		  
+		  return
+		  
+		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -51,6 +98,24 @@ Protected Class clDataStorePipeline
 		  localLogger = nil
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function FindStep(aStepLabel as string) As clAbstractTransformer
+		  
+		  var tmpLabel as string = aStepLabel.Trim
+		  
+		  for each s as clAbstractTransformer in self.Steps
+		    if s.StepLabel = tmpLabel then
+		      
+		      Return s
+		      
+		    end if
+		    
+		  next
+		  
+		  return nil
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
@@ -79,7 +144,25 @@ Protected Class clDataStorePipeline
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub ResetErrors()
+		  
+		  ErrorCounter = 0
+		  
+		  Return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Run()
+		  
+		  
+		  if self.ErrorCounter > 0 then
+		    getLogManager.WriteWarning(CurrentMethodName, "Errors in pipeline %0 prevent execution", Name)
+		    return  
+		    
+		  end if
+		  
 		  
 		  var traceExecution as Boolean = True
 		  
@@ -167,6 +250,35 @@ Protected Class clDataStorePipeline
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub SetStepInput(StepName as string, inputName as string, inputTable as clDataTable)
+		  
+		  
+		  var consumer as clAbstractTransformer = self.FindStep(StepName)
+		  if consumer = nil then
+		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find  step %0", StepName)
+		    AddError
+		    return
+		    
+		  end if
+		  
+		  if consumer.ValidateInputConnector(InputName) then
+		    consumer.SetInput(inputName, inputTable)
+		    
+		    self.InternalConnectors.Add(consumer.GetInputConnector(inputName))
+		    
+		  else
+		    getLogManager.WriteWarning(CurrentMethodName, "Cannot find input %0 in step %1",inputName, StepName)
+		    AddError
+		    
+		  end if
+		  
+		  Return
+		  
+		  
+		End Sub
+	#tag EndMethod
+
 
 	#tag Note, Name = Description
 		Pipeline working on tables, taking advantages of data transformers
@@ -214,8 +326,12 @@ Protected Class clDataStorePipeline
 	#tag EndNote
 
 
-	#tag Property, Flags = &h0
-		InternalConnectors() As clTransformerConnection
+	#tag Property, Flags = &h21
+		Private ErrorCounter As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private InternalConnectors() As clTransformerConnection
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

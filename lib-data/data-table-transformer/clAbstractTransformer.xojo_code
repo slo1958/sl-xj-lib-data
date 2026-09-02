@@ -3,7 +3,13 @@ Protected Class clAbstractTransformer
 	#tag Method, Flags = &h1
 		Protected Sub AddInput(InputName as string, connector as clTransformerConnection)
 		  
-		  self.InputConnectors.Value(InputName) = connector
+		  if self.ValidateInputConnector(InputName) then
+		    self.InputConnectors.Value(InputName) = connector
+		    
+		  else
+		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find input name  %0 for step %1", InputName, stepLabel)
+		    
+		  end if
 		  
 		  return
 		  
@@ -285,6 +291,14 @@ Protected Class clAbstractTransformer
 	#tag Method, Flags = &h1
 		Protected Function Transform() As Boolean
 		  return False
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function ValidateInputConnector(InputName as string) As boolean
+		  
+		  return false
 		  
 		End Function
 	#tag EndMethod

@@ -379,6 +379,16 @@ Inherits clAbstractTransformer
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ValidateInputConnector(InputName as string) As boolean
+		  
+		  return InputName = cInputConnectorLeft _
+		  or InputName = cInputConnectorRight
+		  
+		  
+		End Function
+	#tag EndMethod
+
 
 	#tag Note, Name = TODO
 		Add support for only left and only right output

@@ -307,6 +307,16 @@ Inherits clAbstractTransformer
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ValidateInputConnector(InputName as string) As boolean
+		  
+		  return InputName = cInputConnectorMain _
+		  or InputName = cInputConnectorLookUp
+		  
+		   
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		JoinStatusFieldName As String

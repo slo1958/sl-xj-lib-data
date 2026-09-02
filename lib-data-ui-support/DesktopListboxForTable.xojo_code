@@ -88,10 +88,19 @@ Inherits DesktopListBox
 	#tag Method, Flags = &h0
 		Sub ShowTable(Source as TableColumnReaderInterface)
 		  
-		  
 		  var tmp_listbox as DesktopListBox = self
+		  
+		  
+		  if source  = nil then
+		    tmp_listbox.RemoveAllRows
+		    tmp_listbox.AddRow("Missing data source")
+		    return 
+		    
+		  end if
+		  
+		  
 		  var tmp_tbl as TableColumnReaderInterface = Source
-		   
+		  
 		  var nbr_columns as integer =  SetupListbox(source.GetColumnNames())
 		  
 		  columns.add(nil) // first column is the row number
@@ -174,7 +183,6 @@ Inherits DesktopListBox
 		#tag Note
 			Cannot use ColumnTag to store a pointer to the column
 			Even when ColumnTag are set to nil, the desctructors are not called
-			
 		#tag EndNote
 		Private Columns() As clAbstractDataSerie
 	#tag EndProperty
