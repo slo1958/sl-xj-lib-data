@@ -29,14 +29,14 @@ Protected Class clDataStorePipeline
 		  var tmpLabel as string = aStepLabel.Trim
 		  
 		  if tmpLabel.Length = 0 then
-		    getLogManager.WriteWarning(CurrentMethodName,"Missing step label for %0", Introspection.GetType(aStep).Name)
+		    getLogManager.WriteWarning(CurrentMethodName,"Missing step label for [%0]", Introspection.GetType(aStep).Name)
 		    self.AddError
 		    return  false
 		    
 		  end if
 		  
 		  if self.FindStep(tmpLabel) <> nil then
-		    getLogManager.WriteWarning(CurrentMethodName,"Step label %1 already in use when adding %0", Introspection.GetType(aStep).Name, tmpLabel)
+		    getLogManager.WriteWarning(CurrentMethodName,"Step label %1 already in use when adding [%0]", Introspection.GetType(aStep).Name, tmpLabel)
 		    self.AddError
 		    return  false
 		    
@@ -57,7 +57,7 @@ Protected Class clDataStorePipeline
 		  var provider as clAbstractTransformer = self.FindStep(ProviderSetpName)
 		  
 		  if provider = nil then
-		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find provider step %0", ProviderSetpName)
+		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find provider step [%0]", ProviderSetpName)
 		    self.AddError
 		    return  
 		    
@@ -66,7 +66,7 @@ Protected Class clDataStorePipeline
 		  
 		  var consumer as clAbstractTransformer = self.FindStep(ConsumerStepName)
 		  if consumer = nil then
-		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find consumer step %0", ConsumerStepName)
+		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find consumer step [%0]", ConsumerStepName)
 		    self.AddError
 		    return  
 		    
@@ -75,7 +75,7 @@ Protected Class clDataStorePipeline
 		  var providerOutput as clTransformerConnection = provider.GetOutputConnector(outputName)
 		  
 		  if providerOutput = nil then
-		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find  output for provider %0", ConsumerStepName)
+		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find  output for provider [%0]", ConsumerStepName)
 		    self.AddError
 		    return  
 		    
@@ -94,6 +94,7 @@ Protected Class clDataStorePipeline
 		Sub Constructor(myname as string)
 		  
 		  self.Name = myname.trim
+		  self.OutputConnectors = new Dictionary
 		  
 		  localLogger = nil
 		  
@@ -134,8 +135,24 @@ Protected Class clDataStorePipeline
 
 	#tag Method, Flags = &h0
 		Function GetOutput(ConnectorLabel as string) As clDataTable
+		   
+		  var tmpConnectorLabel as string = ConnectorLabel.Trim
 		  
-		  return self.OutputConnector(0).GetTable
+		  if tmpConnectorLabel.Length = 0 then
+		    tmpConnectorLabel = cDefaultOutput
+		    
+		  end if
+		  
+		  if self.OutputConnectors.HasKey(tmpConnectorLabel) then
+		    return clTransformerConnection( self.OutputConnectors.Value(tmpConnectorLabel)).GetTable()
+		    
+		  else
+		    getLogManager.WriteWarning(CurrentMethodName, "Cannot find output [%0] in pipeline", tmpConnectorLabel)
+		    
+		    return nil
+		    
+		  end if
+		  
 		  
 		  
 		  
@@ -158,7 +175,7 @@ Protected Class clDataStorePipeline
 		  
 		  
 		  if self.ErrorCounter > 0 then
-		    getLogManager.WriteWarning(CurrentMethodName, "Errors in pipeline %0 prevent execution", Name)
+		    getLogManager.WriteWarning(CurrentMethodName, "Errors in pipeline [%0] prevent execution", Name)
 		    return  
 		    
 		  end if
@@ -218,7 +235,22 @@ Protected Class clDataStorePipeline
 	#tag Method, Flags = &h0
 		Sub SetOutput(ConnectorLabel as string, aConnector as clTransformerConnection)
 		  
-		  self.OutputConnector.Add(aConnector)
+		  var tmpConnectorLabel as string = ConnectorLabel.Trim
+		  
+		  if tmpConnectorLabel.Length = 0 then
+		    tmpConnectorLabel = cDefaultOutput
+		    
+		    
+		  end if
+		  
+		  if self.OutputConnectors.HasKey(tmpConnectorLabel) then
+		    getLogManager.WriteWarning(CurrentMethodName,"Pipeline output [%0] already defined", tmpConnectorLabel)
+		    
+		  else
+		    self.OutputConnectors.Value(tmpConnectorLabel) = aConnector
+		    
+		  end if
+		   
 		  
 		  Return
 		  
@@ -256,7 +288,7 @@ Protected Class clDataStorePipeline
 		  
 		  var consumer as clAbstractTransformer = self.FindStep(StepName)
 		  if consumer = nil then
-		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find  step %0", StepName)
+		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find  step [%0]", StepName)
 		    AddError
 		    return
 		    
@@ -268,7 +300,7 @@ Protected Class clDataStorePipeline
 		    self.InternalConnectors.Add(consumer.GetInputConnector(inputName))
 		    
 		  else
-		    getLogManager.WriteWarning(CurrentMethodName, "Cannot find input %0 in step %1",inputName, StepName)
+		    getLogManager.WriteWarning(CurrentMethodName, "Cannot find input [%0] in step [%1]",inputName, StepName)
 		    AddError
 		    
 		  end if
@@ -348,12 +380,16 @@ Protected Class clDataStorePipeline
 			// List of connectors producing the output dataset from the pipeline
 			//
 		#tag EndNote
-		OutputConnector() As clTransformerConnection
+		OutputConnectors As Dictionary
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		Steps() As clAbstractTransformer
 	#tag EndProperty
+
+
+	#tag Constant, Name = cDefaultOutput, Type = String, Dynamic = False, Default = \"PipelineOutput", Scope = Public
+	#tag EndConstant
 
 
 	#tag ViewBehavior
