@@ -313,6 +313,7 @@ Inherits clObjectTest
 		  log.WriteInfo(CurrentMethodName,"Tables in memory is:  %0, dataseries in memory is: %1, transformers %2" , str(ms1.NumberOfTables), str(ms1.NumberOfDataSeries), str(ms1.NumberOfTransformers))
 		  log.WriteInfo(CurrentMethodName,"Tables in memory after destroy  is:  %0, dataseries in memory is: %1, transformers %2" , str(ms2.NumberOfTables), str(ms2.NumberOfDataSeries), str(ms2.NumberOfTransformers))
 		  
+		  // The pipleline does not run, so no output generated !!
 		  
 		  var expected_table As New clDataTable("Expected", SerieArray( _
 		  New clDataSerie("Country",  "FR","FR","BE","IT") _
@@ -336,6 +337,21 @@ Inherits clObjectTest
 		  
 		End Function
 	#tag EndMethod
+
+
+	#tag Note, Name = DATA POOLS
+		
+		1/ dup CreatePipeline_002 to CreatePipeline_004
+		
+		2/ move input tables to a datapool
+		
+		3/ use datapool and table name  as input instead of tabke objects:
+		
+		CreateConnection (datapool, table name, consumername, input name)
+		
+		
+		
+	#tag EndNote
 
 
 	#tag ViewBehavior
