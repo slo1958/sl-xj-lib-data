@@ -1,0 +1,251 @@
+#tag Class
+Protected Class clGroupByTransformer
+Inherits clLinearTransformer
+	#tag Method, Flags = &h0
+		Sub Constructor(MainTable as clDataTable, groupingParameters as clGroupByParameters)
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // Aggregate the number fields as defined the each pair, columnname:agg mode
+		  //
+		  // Parameters:
+		  // - Input table
+		  // - groupingParameters groupby parameters
+		  //
+		  
+		  super.Constructor(MainTable)
+		  
+		  if groupingParameters = nil then
+		    getLogManager.WriteWarning(CurrentMethodName,"Missing parameters for clGroupByTransformer ")
+		    
+		  else
+		    self.GroupingCountColumn = groupingParameters.GroupingCountColumn
+		    self.GroupingDimensions= groupingParameters.GroupingDimensions
+		    self.GroupingMeasures = groupingParameters.GroupingMeasures
+		    
+		  end if
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(groupingParameters as clGroupByParameters)
+		  //
+		  // Group records per distinct values in the grouping_dimensions
+		  // The input connector should be setup using a distinct call
+		  // Aggregate the number fields as defined the each pair, columnname:agg mode
+		  //
+		  // Parameters:
+		  // - groupingParameters groupby parameters
+		  //
+		  
+		  super.Constructor()
+		  
+		  if groupingParameters = nil then
+		    getLogManager.WriteWarning(CurrentMethodName,"Missing parameters for clGroupByTransformer ")
+		    
+		  else
+		    self.GroupingCountColumn = groupingParameters.GroupingCountColumn
+		    self.GroupingDimensions= groupingParameters.GroupingDimensions
+		    self.GroupingMeasures = groupingParameters.GroupingMeasures
+		    
+		  end if
+		  
+		  return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Function Transform() As Boolean
+		  
+		  
+		  var source as clDataTable = self.SourceTable
+		  
+		  var t as clDataTable
+		  
+		  self.GroupingDataSeries = source.GetColumns(GroupingDimensions, False)
+		  
+		  if self.GroupingDataSeries.Count = 0 and self.GroupingMeasures.Count = 0 then
+		    t = nil
+		    
+		  elseif self.GroupingDataSeries.Count = 0 then 
+		    t =  self.TransformToOneLiner(source)
+		    
+		  else
+		    t =  self.TransformWithGrouper(source)
+		    
+		  end if
+		  
+		  Self.SetOutputTable(cOutputConnectorName, t)
+		  
+		  return t <> nil
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function TransformToOneLiner(source as clDataTable) As clDataTable
+		  //
+		  // There are no grouping dimensions, so we aggregate all measures using the supported method from data series
+		  //
+		  //
+		  // Parameters:
+		  // (nothing)
+		  //
+		  // Returns
+		  // Success status
+		  //
+		  
+		  if self.GroupingDataSeries.Count > 0 then return nil
+		  
+		  var r as new clDataRow
+		  
+		  for each p as pair in GroupingMeasures
+		    var col as clNumberDataSerie = clNumberDataSerie(source.GetColumn(p.Left))
+		    var mode as AggMode = p.Right
+		    
+		    if col <> nil then
+		      r.SetCell(clBasicMath.AggLabel(mode) + " of " + p.Left, col.Aggregate(mode))
+		      
+		    end if
+		    
+		  next
+		  
+		  var t as  clDataTable = self.EmptyOutputTable()
+		  t.AddRow(r)
+		  
+		  return t
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function TransformWithGrouper(source as clDataTable) As clDataTable
+		  
+		  var MeasureColumns() as pair
+		  
+		  
+		  for each p as pair in self.GroupingMeasures
+		    var np as pair = source.GetColumn(p.Left) : p.Right
+		    MeasureColumns.Add(np)
+		    
+		  next
+		  
+		  var connector as clTransformerConnection
+		  var grp as new clSeriesGroupAndAggregate(GroupingDataSeries,MeasureColumns)
+		  
+		  var res() as clAbstractDataSerie = grp.Flattened(self.GroupingCountColumn)
+		  
+		  connector = self.GetOutputConnector(cOutputConnectorName)
+		  
+		  if connector = nil then
+		    Return nil
+		    
+		  else
+		    return new clDataTable(connector.GetTableName(false), res)
+		    
+		  end if
+		  
+		  
+		  
+		End Function
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h0
+		GroupingCountColumn As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private GroupingDataSeries() As clAbstractDataSerie
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		GroupingDimensions() As string
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		GroupingMeasures() As pair
+	#tag EndProperty
+
+
+	#tag ViewBehavior
+		#tag ViewProperty
+			Name="ExecutionCompletedFlag"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="StepLabel"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="String"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="EnableTraceMode"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Name"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Index"
+			Visible=true
+			Group="ID"
+			InitialValue="-2147483648"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Super"
+			Visible=true
+			Group="ID"
+			InitialValue=""
+			Type="String"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Top"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="GroupingCountColumn"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="string"
+			EditorType="MultiLineEditor"
+		#tag EndViewProperty
+	#tag EndViewBehavior
+End Class
+#tag EndClass
