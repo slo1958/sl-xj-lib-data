@@ -36,13 +36,63 @@ Note that the library handle data by columns, any use of clDataRow means the cal
 
 ## About transformers
 
-Transformations applied to clDataTable are moved out the clDataTable class and used to create a library of clDataTable transformers. Methods in clDataTable that are producing a transformed clDataTable are converted to use a transformer. This is done for the following reasons:
+Some transformations applied to clDataTable are performed by a clDataTransfomer. Those transformers are grouped in a distinct folder in the source tree to form a library of clDataTable transformers. In some cases, a transformer has more options than those available via the corresponding method in clDataTable. It is possible to create an instance of a transformer, link one or more clDataTable to its input, execute the transformer and collect the resulting table(s).
 
-- reduce the size of clDataTable
-- give access to more transformation parameters, without increasing the complexity of clDataTable
-- (future) create chains of transformers to automate the management of temporary tables
+Transformers can also be used to create a pipeline of transformations. 
+
+## About pipelines
+
+The library supports two types of pipelines:
+- datastore pipelines, that are based on transformers
+- dataflow pipelines (to be implemented)
+
+### Datastore pipelines
+The tranformation steps in a datastore pipeline take one or more clDataTable as input and produces one or more clDataTable as output. All those tables are preserved until the execution of the pipeline completeds and only those tables related to output of the pipeline are preserved. 
+
+This allows for a simple implementation, easy debugging but will lead to problems when one wants to run a complex pipeline on one or more very large table. 
+
+It is possible to tell the pipeline to drop the tables used as input by a step once the step is completed (TO BE IMPLEMENTED) When processing very large tables, one should consider dataflow pipelines.
 
 
+### Dataflow pipelines (TO BE IMPLEMENTED)
+
+Dataflow pipelines work with a limited number of datarows at a time. Datarow that are no longer needed are immediately discarded. Note that transformations considered as blocking (sorting, aggregation, ..) will start to produce output datarows only once they reach the EOF of their input(s). 
+
+### Linking steps in pipelines
+
+The order in which steps are added to a pipeline is not relevant. The order in which their respective execute() methods are called is decided by the run() method of the pipeline. 
+Once steps are added, the user must connect the output of a step to the input of the next logical step. 
+
+This is done either by preserving the transformation step objects created when the pipeline is populated: 
+
+```xojo
+
+var stepGroupByCity as clAbstractTransformer = pipeline.AddStep( "Group by city",new clGroupByTransformer(...))
+
+var stepAddCountry as clAbstractTransformer = pipeline.AddStep( "Add country", new clJoinTransformer(JoinMode.LeftJoin, ...))
+
+// feed the 
+pipeline.SetStepInput(stepAddCountry, clJoinTransformer.cInputConnectorLeft,stepGroupByCity.GetOutputConnector())
+
+```
+
+
+ or by using the label assigned to each step:
+ 
+```xojo
+// Link the total sales per city produced in step 'calc sales' 
+// to a step assigning the country related to each city
+
+call pipeline.AddStep("Group by city",new clGroupByTransformer(...))
+
+call pipeline.AddStep("Add country", new clJoinTransformer(JoinMode.LeftJoin, ...))
+
+pipeline.ConnectStep("Group by city", "Output", "Add country", "MainInput")
+
+```
+
+
+ 
 ## About clDataSerie
 A serie is mainly a named one-dimension array. Elements of the array are 'variant' in the untype version of the data serie (clDataSerie), see below for more information about type data series. The main purpose of this class is to store column data for clDataTable. 
 
