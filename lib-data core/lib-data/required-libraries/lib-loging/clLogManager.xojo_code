@@ -281,7 +281,7 @@ Implements itfLogWriter
 
 	#tag Method, Flags = &h21
 		Private Function internal_ProcessParameters(MessageText as string, MessageParameters() as Variant) As string
-		  // TODO: apply formatting
+		  // TODO: description
 		  
 		  var tmp_return As String = MessageText
 		  
