@@ -1,5 +1,5 @@
 #tag DesktopWindow
-Begin DesktopContainer ccDataPool_Viewer
+Begin DesktopContainer DesktopContainer_PoolViewer
    AllowAutoDeactivate=   True
    AllowFocus      =   False
    AllowFocusRing  =   False
@@ -73,7 +73,7 @@ Begin DesktopContainer ccDataPool_Viewer
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
-   Begin DesktopListboxForTable lb_data
+   Begin DesktopListbox_TableViewer lb_data
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False

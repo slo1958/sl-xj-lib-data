@@ -431,7 +431,7 @@ Begin DesktopWindow wnd_tests
       Visible         =   True
       Width           =   50
    End
-   Begin DesktopListboxLogWriter Listbox1
+   Begin DesktopListbox_LogWriter Listbox1
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False

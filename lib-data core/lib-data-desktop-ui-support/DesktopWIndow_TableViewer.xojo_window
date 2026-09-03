@@ -1,5 +1,5 @@
 #tag DesktopWindow
-Begin DesktopWindow wnd_table_viewer
+Begin DesktopWindow DesktopWIndow_TableViewer
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF00
    Composite       =   False
@@ -25,7 +25,7 @@ Begin DesktopWindow wnd_table_viewer
    Type            =   0
    Visible         =   True
    Width           =   800
-   Begin ccDataPool_Viewer ccDataPool_Viewer1
+   Begin DesktopContainer_PoolViewer DesktopContainer_PoolViewer1
       AllowAutoDeactivate=   True
       AllowFocus      =   False
       AllowFocusRing  =   False
@@ -102,7 +102,7 @@ End
 	#tag Method, Flags = &h0
 		Sub AddTable(mytable as TableColumnReaderInterface)
 		  
-		  ccDataPool_Viewer1.add_table(mytable)
+		  DesktopContainer_PoolViewer1.add_table(mytable)
 		  
 		End Sub
 	#tag EndMethod
@@ -110,7 +110,7 @@ End
 	#tag Method, Flags = &h0
 		Sub AddTablesFromPool(data_pool as clDataPool)
 		  
-		  ccDataPool_Viewer1.add_tables_from_pool(data_pool)
+		  DesktopContainer_PoolViewer1.add_tables_from_pool(data_pool)
 		  
 		  
 		End Sub
@@ -118,22 +118,22 @@ End
 
 	#tag Method, Flags = &h0
 		Sub ResetViewer()
-		  ccDataPool_Viewer1.ResetViewer
+		  DesktopContainer_PoolViewer1.ResetViewer
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ShowComments(comments() as string)
 		  
-		  ccDataPool_Viewer1.RefreshComments(comments)
+		  DesktopContainer_PoolViewer1.RefreshComments(comments)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub ShowTableFromPool(data_pool as clDataPool)
 		  
-		  ccDataPool_Viewer1.ResetViewer
-		  ccDataPool_Viewer1.add_tables_from_pool(data_pool)
+		  DesktopContainer_PoolViewer1.ResetViewer
+		  DesktopContainer_PoolViewer1.add_tables_from_pool(data_pool)
 		  
 		  
 		End Sub
@@ -142,10 +142,10 @@ End
 	#tag Method, Flags = &h0
 		Sub ShowTables(tables() as TableColumnReaderInterface)
 		  
-		  ccDataPool_Viewer1.ResetViewer
+		  DesktopContainer_PoolViewer1.ResetViewer
 		  
 		  for each table as TableColumnReaderInterface in tables
-		    ccDataPool_Viewer1.add_table(table)
+		    DesktopContainer_PoolViewer1.add_table(table)
 		    
 		  next
 		  
@@ -159,10 +159,10 @@ End
 	#tag Event
 		Sub ValueChanged()
 		  if me.VisualState = DesktopCheckBox.VisualStates.Checked then
-		    ccDataPool_Viewer1.ShowMetadata
+		    DesktopContainer_PoolViewer1.ShowMetadata
 		    
 		  else
-		    ccDataPool_Viewer1.HideMetaData
+		    DesktopContainer_PoolViewer1.HideMetaData
 		    
 		  end if
 		  

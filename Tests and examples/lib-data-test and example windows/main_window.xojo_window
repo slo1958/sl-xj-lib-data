@@ -25,7 +25,7 @@ Begin DesktopWindow main_window
    Type            =   0
    Visible         =   True
    Width           =   628
-   Begin DesktopListboxLogWriter lbMainLog
+   Begin DesktopListbox_LogWriter lbMainLog
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False

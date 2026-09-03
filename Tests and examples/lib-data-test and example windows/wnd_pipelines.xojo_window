@@ -56,7 +56,7 @@ Begin DesktopWindow wnd_pipelines
       Visible         =   True
       Width           =   80
    End
-   Begin DesktopListboxForTable DesktopListboxForTable1
+   Begin DesktopListbox_TableViewer DesktopListbox_TableViewer1
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
@@ -152,7 +152,7 @@ Begin DesktopWindow wnd_pipelines
       _ScrollOffset   =   0
       _ScrollWidth    =   -1
    End
-   Begin DesktopListboxLogWriter lbPipelineLog
+   Begin DesktopListbox_LogWriter lbPipelineLog
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
@@ -246,7 +246,7 @@ End
 		  Listbox1.RemoveAllRows
 		  Listbox1.HeaderAt(0)= "Available pipelines"
 		  
-		  DesktopListboxForTable1.HeaderAt(0) = "Results..."
+		  DesktopListbox_TableViewer1.HeaderAt(0) = "Results..."
 		  
 		  lbPipelineLog.ClearLog
 		  
@@ -314,7 +314,7 @@ End
 		  
 		  // var cnter as integer = logwriter.GetTestCheckErrorCounter
 		  
-		  DesktopListboxForTable1.ShowTable(t1)
+		  DesktopListbox_TableViewer1.ShowTable(t1)
 		  
 		  logwriter.WriteInfo(CurrentMethodName, "Tables in memory was:  %0,  dataseries in memory was: %1, transformers %2" , str(ms0.NumberOfTables), str(ms0.NumberOfDataSeries), str(ms0.NumberOfTransformers))
 		  logwriter.WriteInfo(CurrentMethodName, "Tables in memory is:  %0,  dataseries in memory was: %1, transformers %2" , str(ms1.NumberOfTables), str(ms1.NumberOfDataSeries), str(ms1.NumberOfTransformers))

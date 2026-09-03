@@ -181,7 +181,7 @@ End
 		  
 		  var tables() as TableColumnReaderInterface = clLibDataExample.RunExample(logWriter, item)
 		  
-		  var wnd as new wnd_table_viewer
+		  var wnd as new DesktopWIndow_TableViewer
 		  
 		  wnd.ResetViewer
 		  

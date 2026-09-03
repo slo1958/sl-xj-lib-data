@@ -205,7 +205,7 @@ Begin DesktopWindow wnd_perf
       Visible         =   True
       Width           =   80
    End
-   Begin DesktopListBox Listbox1
+   Begin DesktopListbox_LogWriter Listbox1
       AllowAutoDeactivate=   True
       AllowAutoHideScrollbars=   True
       AllowExpandableRows=   False
@@ -258,16 +258,43 @@ End
 #tag EndDesktopWindow
 
 #tag WindowCode
+	#tag Event
+		Sub Opening()
+		  
+		  Listbox1.HeaderAt(0)= "Logs.."
+		End Sub
+	#tag EndEvent
+
+
 	#tag Method, Flags = &h0
 		Function SetUpLogWriter() As clLogManager
 		  
+		  // 
+		  // var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
+		  // 
+		  // logmanager.ResetWriters()
+		  // logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox1))
+		  // 
+		  // Return logmanager
+		  // 
+		  // 
 		  
 		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
 		  
 		  logmanager.ResetWriters()
-		  logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox1))
+		  
+		  logmanager.ResetTestCheckErrorCounter
+		  
+		  //if EchoToListBox then
+		  logmanager.AddWriter("WND", Listbox1)
+		  //lbPipelineLog.TagSeverity("TCE")
+		  
+		  //logmanager.AddWriter("WND", new clListBoxLogWriter(Listbox2))
+		  
+		  //end if
 		  
 		  Return logmanager
+		  
 		  
 		End Function
 	#tag EndMethod

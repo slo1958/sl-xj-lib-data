@@ -1,5 +1,5 @@
 #tag Class
-Protected Class DesktopListboxForTable
+Protected Class DesktopListbox_TableViewer
 Inherits DesktopListBox
 	#tag Method, Flags = &h0
 		Sub DefineColumnOrder(ColumnNames() as string)
