@@ -239,7 +239,7 @@ End
 		Sub Opening()
 		  const cstPipelineMask as string = "CreatePipeline_"
 		  
-		  self.PipelineTests = new clDataStorePipelineTests
+		  self.PipelineTests = new clDataStorePipeline_TestCases
 		  
 		  MethodInfoDict  = GetTestMethods(self.PipelineTests, cstPipelineMask)
 		  
@@ -360,7 +360,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		PipelineTests As clDataStorePipelineTests
+		PipelineTests As clDataStorePipeline_TestCases
 	#tag EndProperty
 
 

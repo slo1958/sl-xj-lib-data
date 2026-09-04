@@ -1,6 +1,6 @@
 #tag Class
-Protected Class clDataTableTests
-Inherits clObjectTest
+Protected Class clDataTable_TestCases
+Inherits clParentClassForTestCases
 	#tag Method, Flags = &h0
 		Function GetTestPrefix() As string
 		  return "tables_"

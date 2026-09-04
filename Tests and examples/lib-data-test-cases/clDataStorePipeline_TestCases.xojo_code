@@ -1,6 +1,6 @@
 #tag Class
-Protected Class clDataStorePipelineTests
-Inherits clObjectTest
+Protected Class clDataStorePipeline_TestCases
+Inherits clParentClassForTestCases
 	#tag Method, Flags = &h0
 		Function CreatePipeline_001(log as clLogManager) As clDataStorePipeline
 		  //

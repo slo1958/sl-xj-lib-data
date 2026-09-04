@@ -1,6 +1,6 @@
 #tag Class
-Protected Class clDataPoolTests
-Inherits clObjectTest
+Protected Class clDataPool_TestCases
+Inherits clParentClassForTestCases
 	#tag Method, Flags = &h0
 		Sub dpools_test_calc_001(log as clLogManager)
 		  

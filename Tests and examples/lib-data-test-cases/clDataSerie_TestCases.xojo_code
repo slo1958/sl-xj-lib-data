@@ -1,6 +1,6 @@
 #tag Class
-Protected Class clDataSerieTests
-Inherits clObjectTest
+Protected Class clDataSerie_TestCases
+Inherits clParentClassForTestCases
 	#tag Method, Flags = &h0
 		Function GetTestPrefix() As string
 		  return "series_"

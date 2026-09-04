@@ -7,7 +7,7 @@ Protected Module clDataStorePipeline_tests
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
-		  RunTests(new clDataStorePipelineTests, "DSPipeline_test_calc", logwriter)
+		  RunTests(new clDataStorePipeline_TestCases, "DSPipeline_test_calc", logwriter)
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  

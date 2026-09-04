@@ -1,5 +1,5 @@
 #tag Module
-Protected Module support_tests
+Protected Module tests_support
 	#tag Method, Flags = &h0
 		Function check_serie(log as clLogManager, label as string, expected as clAbstractDataSerie, calculated as clAbstractDataSerie, accepted_error_on_double as double = 0.00001) As Boolean
 		  

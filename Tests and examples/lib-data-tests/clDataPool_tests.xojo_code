@@ -7,7 +7,7 @@ Protected Module clDataPool_tests
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
-		  RunTests(new clDataPoolTests, "dpools_test_calc", logwriter)
+		  RunTests(new clDataPool_TestCases, "dpools_test_calc", logwriter)
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  
@@ -22,7 +22,7 @@ Protected Module clDataPool_tests
 		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
-		  RunTests(new clDataPoolTests, "dpools_test_io", logwriter)
+		  RunTests(new clDataPool_TestCases, "dpools_test_io", logwriter)
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  

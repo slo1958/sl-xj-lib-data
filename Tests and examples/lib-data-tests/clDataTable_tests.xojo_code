@@ -9,7 +9,7 @@ Protected Module clDataTable_tests
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats
 		  
-		  RunTests(new clDataTableTests, "tables_test_calc", logwriter)
+		  RunTests(new clDataTable_TestCases, "tables_test_calc", logwriter)
 		  
 		  var ms1 as clMemoryStats = GetMemoryStats
 		  
@@ -61,7 +61,7 @@ Protected Module clDataTable_tests
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats
 		  
-		  RunTests(new clDataTableTests, "tables_test_io", logwriter)
+		  RunTests(new clDataTable_TestCases, "tables_test_io", logwriter)
 		  
 		  var ms1 as clMemoryStats = GetMemoryStats
 		  

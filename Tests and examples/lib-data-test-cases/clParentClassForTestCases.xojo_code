@@ -1,5 +1,5 @@
 #tag Class
-Protected Class clObjectTest
+Protected Class clParentClassForTestCases
 	#tag Method, Flags = &h0
 		Function GetTestPrefix() As string
 		  return "?"

@@ -752,17 +752,17 @@ End
 		Sub Opening()
 		  
 		  test_objects.RemoveAll
-		  test_objects.add(new clDataSerieTests)
-		  test_objects.add(new clDataTableTests)
-		  test_objects.add(new clDataPoolTests)
+		  test_objects.add(new clDataSerie_TestCases)
+		  test_objects.add(new clDataTable_TestCases)
+		  test_objects.add(new clDataPool_TestCases)
 		  
 		  var source() as Dictionary
 		  var dest() as DesktopListBox
 		  var header() as string
 		  
 		  
-		  for each test_object as clObjectTest in test_objects
-		    source.add( support_tests.GetTestMethods(test_object, test_object.GetTestPrefix + "test"))
+		  for each test_object as clParentClassForTestCases in test_objects
+		    source.add( tests_support.GetTestMethods(test_object, test_object.GetTestPrefix + "test"))
 		    
 		  next
 		  
@@ -868,7 +868,7 @@ End
 
 
 	#tag Property, Flags = &h0
-		test_objects() As clObjectTest
+		test_objects() As clParentClassForTestCases
 	#tag EndProperty
 
 
