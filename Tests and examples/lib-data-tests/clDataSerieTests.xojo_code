@@ -88,7 +88,7 @@ Inherits clObjectTest
 		  // all boolean arrays have the same size
 		  //
 		  
-		  f1 = src.ApplyFilterFunction(AddressOf filter01)
+		  f1 = src.ApplyFilterFunction(AddressOf filter_for_test_calc_006)
 		  
 		  f2 = src.ApplyFilterFunction(AddressOf RetainSerieHead, 7)
 		  
@@ -236,9 +236,11 @@ Inherits clObjectTest
 		  var f1() As variant
 		  var f2() As variant 
 		  
-		  f1 = c1.ApplyFilterFunction(AddressOf filter_value_is_not_aaa)
+		  // Check if value is "aaa" using a filter function
+		  f1 = c1.ApplyFilterFunction(AddressOf filter_for_test_calc_010)
 		  
-		  f2 = c2.ApplyFilterFunction(AddressOf filter_value_is_not_aaa)
+		  // Check if value is "aaa" using a filter function
+		  f2 = c2.ApplyFilterFunction(AddressOf filter_for_test_calc_010)
 		  
 		  var r1 As New clDataSerie("test001", f1)
 		  var r2 As New clDataSerie("test002", f2)
@@ -460,9 +462,11 @@ Inherits clObjectTest
 		  var f1() As variant
 		  var f2() As variant 
 		  
-		  f1 = c1.ApplyFilterFunction(AddressOf filter_value_is_parameter,"aaa")
+		  // Use a filter function to check if the value matches the parameter
+		  f1 = c1.ApplyFilterFunction(AddressOf filter_for_test_calc_017,"aaa")
 		  
-		  f2 = c2.ApplyFilterFunction(AddressOf filter_value_is_parameter,"aaa")
+		  // Use a filter function to check if the value matches the parameter
+		  f2 = c2.ApplyFilterFunction(AddressOf filter_for_test_calc_017,"aaa")
 		  
 		  
 		  var r1 As New clDataSerie("test001", f1)

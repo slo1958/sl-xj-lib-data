@@ -1,6 +1,88 @@
 #tag Module
 Protected Module support_tests
 	#tag Method, Flags = &h0
+		Function check_serie(log as clLogManager, label as string, expected as clAbstractDataSerie, calculated as clAbstractDataSerie, accepted_error_on_double as double = 0.00001) As Boolean
+		  
+		  if not  check_value(log,label + " name", expected.name, calculated.name) then
+		    return False
+		    
+		  end if
+		  
+		  if not check_value(log, label + " row count", expected.RowCount, calculated.RowCount) then
+		    Return False
+		    
+		  end if
+		  
+		  
+		  var cell_ok as Boolean = True
+		  
+		  for row as integer = 0 to expected.RowCount-1
+		    cell_ok = cell_ok and check_value(log,  label + " row " + str(row), expected.GetElement(row), calculated.GetElement(row), accepted_error_on_double)
+		    
+		  next
+		  
+		  return cell_ok
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function check_table(log as clLogManager, label as string, expected as clDataTable, calculated as clDataTable, accepted_error_on_double as double = 0.00001) As Boolean
+		  var cnt1 as integer  
+		  var cnt2 as integer  
+		  
+		  if calculated = nil then
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": (%0) Missing or unknow calculated table.", label)
+		    return false
+		    
+		  end if
+		  
+		  var calcTableName as string = calculated.Name
+		  
+		  if calculated.CheckIntegrity() then
+		    if expected = nil then return True
+		    
+		  else
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": (%0) Integrity error calculated table [%1]", label, calcTableName)
+		    if expected = nil then return False
+		    
+		  end if
+		  
+		  if expected = nil then
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": (%0) Missing or unknow expected table.", label)
+		    return False
+		    
+		  end if
+		  
+		  var expectName as string = expected.Name
+		  
+		  
+		  if expected.CheckIntegrity() then
+		  else
+		    if log <> nil then log.WriteTestCheckError(CurrentMethodName,": (%0) Integrity error expected table [%1]", label, expectName)
+		    
+		  end if
+		  
+		  
+		  
+		  cnt1 = expected.ColumnCount
+		  cnt2 = calculated.ColumnCount
+		  
+		  if not check_value(log,"("+label+") column count in tables [" + calcTableName+"] vs ["+expectName+"]", cnt1, cnt2) then return False
+		  
+		  var col_ok as boolean = True
+		  for col as integer = 0 to expected.ColumnCount-1
+		    
+		    col_ok = col_ok and check_serie(log, label + " ("+label+") field [" + expected.ColumnNameAt(col)+"]", expected.GetColumnAt(col), calculated.GetColumnAt(col), accepted_error_on_double)
+		    
+		  next
+		  
+		  Return col_ok
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function check_value(log as clLogManager, label as string, expected as variant, calculated as variant, accepted_error_on_double as double = 0.00001) As boolean
 		  if (expected.Type = variant.TypeDouble or expected.Type = Variant.TypeSingle) then //and (calculated.Type = variant.TypeDouble or calculated.Type = variant.TypeSingle) then
 		    
@@ -113,13 +195,32 @@ Protected Module support_tests
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub MetaDataToLog(log as clLogManager, metadata as clMetadata)
+		  
+		  for i as integer = 0 to metadata.LastIndex
+		    var m as clMetadataEntry = metadata.MetadataAt(i)
+		    
+		    log.WriteInfo(CurrentMethodName, "%0: Category %1 ,  %2 = %3",i, m.CategoryValue, m.TypeValue, m.DataValue)
+		    
+		  next
+		  
+		  Return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub RunTests(c as object, mask as string, logwriter as clLogManager)
+		  
 		  
 		  Var t As Introspection.TypeInfo
 		  
-		  
-		  
+		  //
+		  // Extract all methods of which name is matching the mask
+		  // With mask set to "test_calc_", it returns all methods of which name starts with "test_calc_"
+		  // The dictionary contains the name of the method as key and the pointer to the method as value
+		  //
 		  var MethodInfoDict as   Dictionary = GetTestMethods(c, mask)
+		  
 		  
 		  var s() as string
 		  

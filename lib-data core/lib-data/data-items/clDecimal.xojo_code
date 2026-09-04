@@ -3,7 +3,7 @@ Protected Class clDecimal
 	#tag Method, Flags = &h0
 		Sub Constructor(theValue as clDecimal)
 		  
-		  mValue = theValue.mValue
+		  mBaseValue = theValue.mBaseValue
 		  mDecPos = theValue.mDecPos
 		  mDecScale = theValue.mDecScale
 		  
@@ -14,7 +14,7 @@ Protected Class clDecimal
 	#tag Method, Flags = &h0
 		Sub Constructor(theDecimalPosition as Integer)
 		  
-		  mValue = 0
+		  mBaseValue = 0
 		  
 		  if theDecimalPosition <=0 then
 		    mDecPos = 0
@@ -32,7 +32,7 @@ Protected Class clDecimal
 	#tag Method, Flags = &h0
 		Sub Constructor(theDecimalPosition as Integer, theValue as clDecimal)
 		  
-		  mValue = 0
+		  mBaseValue = 0
 		  
 		  if theDecimalPosition <=0 then
 		    mDecPos = 0
@@ -53,7 +53,7 @@ Protected Class clDecimal
 	#tag Method, Flags = &h0
 		Sub Constructor(theDecimalPosition as Integer, theValue as double)
 		  
-		  mValue = 0
+		  mBaseValue = 0
 		  
 		  if theDecimalPosition <=0 then
 		    mDecPos = 0
@@ -73,7 +73,7 @@ Protected Class clDecimal
 	#tag Method, Flags = &h0
 		Sub Constructor(theDecimalPosition as Integer, theValue as integer)
 		  
-		  mValue = 0
+		  mBaseValue = 0
 		  
 		  if theDecimalPosition <=0 then
 		    mDecPos = 0
@@ -90,15 +90,39 @@ Protected Class clDecimal
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function getAdjustedBaseValue(SecondValue as clDecimal) As int64
+		  
+		  // Get the scaled value and the scale
+		  var workValue as int64 = SecondValue .mBaseValue
+		  dim workDecPos as integer = SecondValue .mDecPos
+		  
+		  // Adjust the scale down
+		  while workDecPos > mDecPos
+		    workDecPos = workDecPos - 1
+		    workValue = workValue / 10
+		    
+		  wend
+		  
+		  // adjust the scale up, adjusting the value
+		  while workDecPos < mDecPos
+		    workDecPos = workDecPos + 1
+		    workValue = workValue * 10
+		    
+		  wend
+		  
+		  return workValue
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function Operator_Add(rhs as clDecimal) As clDecimal
-		  dim workValue as int64 
 		  
 		  dim ret as new clDecimal(self)
 		  
-		  ScaleSecondValue(rhs, workValue)
+		  var workvalue as int64 = getAdjustedBaseValue(rhs)
 		  
-		  ret.mValue = mValue + workValue
+		  ret.mBaseValue = mBaseValue + workValue
 		  
 		  return ret
 		  
@@ -107,17 +131,13 @@ Protected Class clDecimal
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Add(d as double) As clDecimal
-		  dim workValue as int64 
+		Function Operator_Add(rhs as double) As clDecimal
 		  
 		  dim ret as new clDecimal(self)
-		  dim tmp as new clDecimal(mDecPos)
 		  
-		  tmp.Value = d
+		  dim tmp as new clDecimal(mDecPos, rhs)
 		  
-		  ScaleSecondValue(tmp, workValue)
-		  
-		  ret.mValue = mValue + workValue
+		  ret.mBaseValue = mBaseValue + tmp.mBaseValue
 		  
 		  return ret
 		  
@@ -126,17 +146,13 @@ Protected Class clDecimal
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Add(n as integer) As clDecimal
-		  dim workValue as int64 
+		Function Operator_Add(rhs as integer) As clDecimal
 		  
 		  dim ret as new clDecimal(self)
-		  dim tmp as new clDecimal(mDecPos)
 		  
-		  tmp.Value = n
+		  dim tmp as new clDecimal(mDecPos, rhs)
 		  
-		  ScaleSecondValue(tmp, workValue)
-		  
-		  ret.mValue = mValue + workValue
+		  ret.mBaseValue = mBaseValue + tmp.mBaseValue
 		  
 		  return ret
 		  
@@ -145,14 +161,18 @@ Protected Class clDecimal
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Operator_Divide(n as clDecimal) As clDecimal
+		Function Operator_Divide(rhs as clDecimal) As clDecimal
 		  dim ret as new clDecimal(self)
 		  
 		  try
-		    ret.mValue = mValue / n.mValue * n.mDecScale
+		    var dtmp as double = rhs.ToDouble
+		     
+		    ret.mBaseValue = mBaseValue / dtmp
+		    
+		    //ret.mBaseValue = mBaseValue / n.mBaseValue * n.mDecScale
 		    
 		  catch
-		    ret.mValue = 0
+		    ret.mBaseValue = 0
 		    
 		  end try
 		  
@@ -167,10 +187,10 @@ Protected Class clDecimal
 		  
 		  
 		  try 
-		    ret.mValue = mValue / d
+		    ret.mBaseValue = mBaseValue / d
 		    
 		  catch 
-		    ret.mValue = 0
+		    ret.mBaseValue = 0
 		    
 		  end try
 		  
@@ -186,10 +206,10 @@ Protected Class clDecimal
 		  dim ret as new clDecimal(self)
 		  
 		  try
-		    ret.mValue = mValue / n
+		    ret.mBaseValue = mBaseValue / n
 		    
 		  catch
-		    ret.mValue = 0
+		    ret.mBaseValue = 0
 		    
 		  end try
 		  
@@ -203,10 +223,12 @@ Protected Class clDecimal
 		  dim ret as new clDecimal(self)
 		  
 		  try
-		    ret.mValue = mValue * n.mValue / n.mDecScale
+		    var tmp_double as double = n.ToDouble
+		    
+		    ret.mBaseValue = mBaseValue * tmp_double
 		    
 		  catch
-		    ret.mValue = 0
+		    ret.mBaseValue = 0
 		    
 		  end try
 		  
@@ -220,10 +242,10 @@ Protected Class clDecimal
 		  dim ret as new clDecimal(self)
 		  
 		  try
-		    ret.mValue = mValue * d
+		    ret.mBaseValue = mBaseValue * d
 		    
 		  catch
-		    ret.mValue = 0
+		    ret.mBaseValue = 0
 		    
 		  end try
 		  
@@ -237,10 +259,10 @@ Protected Class clDecimal
 		  dim ret as new clDecimal(self)
 		  
 		  try
-		    ret.mValue = mValue * n
+		    ret.mBaseValue = mBaseValue * n
 		    
 		  catch
-		    ret.mValue = 0
+		    ret.mBaseValue = 0
 		    
 		  end try
 		  
@@ -251,14 +273,12 @@ Protected Class clDecimal
 
 	#tag Method, Flags = &h0
 		Function Operator_Subtract(rhs as clDecimal) As clDecimal
-		  dim workValue as int64
-		  
 		  
 		  dim ret as new clDecimal(self)
 		  
-		  ScaleSecondValue(rhs, workValue )
+		  var workValue as int64 = getAdjustedBaseValue(rhs)
 		  
-		  ret.mValue = mValue -  workValue
+		  ret.mBaseValue = mBaseValue -  workValue
 		  
 		  return ret
 		  
@@ -268,16 +288,15 @@ Protected Class clDecimal
 
 	#tag Method, Flags = &h0
 		Function Operator_Subtract(d as double) As clDecimal
-		  dim workValue as int64
 		  
 		  dim ret as new clDecimal(self)
 		  dim tmp as new clDecimal(mDecPos)
 		  
 		  tmp.Value = d
 		  
-		  ScaleSecondValue(tmp, workValue)
+		  var workValue as int64 = getAdjustedBaseValue(tmp)
 		  
-		  ret.mValue = mValue - workValue
+		  ret.mBaseValue = mBaseValue - workValue
 		  
 		  return ret
 		  
@@ -287,16 +306,15 @@ Protected Class clDecimal
 
 	#tag Method, Flags = &h0
 		Function Operator_Subtract(n as integer) As clDecimal
-		  dim workValue as int64
 		  
 		  dim ret as new clDecimal(self)
 		  dim tmp as new clDecimal(mDecPos)
 		  
 		  tmp.Value = n
 		  
-		  ScaleSecondValue(tmp, workValue)
+		  var workValue as int64 = getAdjustedBaseValue(tmp)
 		  
-		  ret.mValue = mValue - workValue
+		  ret.mBaseValue = mBaseValue - workValue
 		  
 		  return ret
 		  
@@ -315,7 +333,7 @@ Protected Class clDecimal
 		  // Returns:
 		  // Scaled value
 		  
-		  return self.mValue 
+		  return self.mBaseValue 
 		  
 		  
 		End Function
@@ -331,27 +349,7 @@ Protected Class clDecimal
 		  // - v: scaled value
 		  //
 		  
-		  self.mValue = v
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h21
-		Private Sub ScaleSecondValue(SecondValue as clDecimal, byref workValue as int64)
-		  workValue  = SecondValue .mValue
-		  dim workScale as integer = SecondValue .mDecPos
-		  
-		  while workScale > mDecPos
-		    workScale = workScale - 1
-		    workValue = workValue / 10
-		    
-		  wend
-		  
-		  while workScale < mDecPos
-		    workScale = workScale + 1
-		    workValue = workValue * 10
-		    
-		  wend
+		  self.mBaseValue = v
 		  
 		End Sub
 	#tag EndMethod
@@ -366,14 +364,14 @@ Protected Class clDecimal
 
 	#tag Method, Flags = &h0
 		Function ToDouble() As Double
-		  return mValue / mDecScale
+		  return mBaseValue / mDecScale
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Function ToInteger() As Integer
-		  return mValue / mDecScale
+		  return mBaseValue / mDecScale
 		  
 		End Function
 	#tag EndMethod
@@ -390,7 +388,7 @@ Protected Class clDecimal
 		    
 		  end if
 		  
-		  tmpstr = format(mValue , fmtStr)
+		  tmpstr = format(mBaseValue , fmtStr)
 		  
 		  
 		  if mDecPos > 0 then // insert '.' in string
@@ -406,29 +404,42 @@ Protected Class clDecimal
 
 	#tag Method, Flags = &h0
 		Sub Value(assigns n as clDecimal)
-		  dim workValue as int64
 		  
 		  
-		  ScaleSecondValue(n, workValue)
+		  mBaseValue = getAdjustedBaseValue(n)
 		  
-		  mValue = workValue
-		  
-		  
+		  Return
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Value(assigns d as double)
-		  mValue = d * mDecScale
+		  mBaseValue = d * mDecScale
+		  
+		  return
+		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Value(assigns n as integer)
-		  mValue = n * mDecScale
+		  mBaseValue = n * mDecScale
 		End Sub
 	#tag EndMethod
 
+
+	#tag Note, Name = Important note
+		
+		clDecimal is under dev
+		There are no test cases yet for clDecimal
+		
+		
+	#tag EndNote
+
+
+	#tag Property, Flags = &h21
+		Private mBaseValue As int64
+	#tag EndProperty
 
 	#tag Property, Flags = &h21
 		Private mDecPos As Integer
@@ -436,10 +447,6 @@ Protected Class clDecimal
 
 	#tag Property, Flags = &h21
 		Private mDecScale As Integer
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private mValue As int64
 	#tag EndProperty
 
 

@@ -345,13 +345,13 @@ Inherits clObjectTest
 		  
 		  //  The function is filtering on column cc2. The parameter is the value to look for
 		  
-		  var tmp1() as variant = table.ApplyFilterFunction(AddressOf filter_008,"bbb0")
+		  var tmp1() as variant = table.ApplyFilterFunction(AddressOf filter_for_test_calc_008,"bbb0")
 		  
 		  call table.AddColumn(new clBooleanDataSerie("is_bbb0", tmp1))
 		  
 		  call table.AddColumn(new clBooleanDataSerie("is_bbb1", clDataSerie(table.GetColumn("cc2")).FilterValueInList(array("bbb1"))))
 		  
-		  call table.AddColumn(new clBooleanDataSerie("is_bbb3",  table.ApplyFilterFunction(AddressOf filter_008, "bbb3")))
+		  call table.AddColumn(new clBooleanDataSerie("is_bbb3",  table.ApplyFilterFunction(AddressOf filter_for_test_calc_008, "bbb3")))
 		  
 		  
 		  var col1 as new clDataSerie("cc1", "aaa0","aaa1","aaa2","aaa3")
@@ -906,7 +906,7 @@ Inherits clObjectTest
 		  dct.Value("Sales") = array(900.0, 1200.0, 1400.0, 1600.0, 2900)
 		  
 		  // create the table from the dictionary, with a column allocator.
-		  var table0 As New clDataTable("mytable", dct ,True, AddressOf alloc_series_020)
+		  var table0 As New clDataTable("mytable", dct ,True, AddressOf alloc_series_for_test_calc_020)
 		  
 		  //
 		  // Check structure and content of table created from dictionaries
@@ -1253,9 +1253,9 @@ Inherits clObjectTest
 		  
 		  
 		  for each r as clDataRow in table_0
-		    res_1.Add(test_class_02(r.AsObject("row_type", AddressOf alloc_obj)))
+		    res_1.Add(test_class_02(r.AsObject("row_type", AddressOf alloc_obj_for_test_calc_026)))
 		    
-		    res_2.Add(test_class_02(r.AsObject(AddressOf alloc_obj)))
+		    res_2.Add(test_class_02(r.AsObject(AddressOf alloc_obj_for_test_calc_026)))
 		    
 		  next
 		  
@@ -3224,7 +3224,7 @@ Inherits clObjectTest
 		  
 		  
 		  // call the function apply fixed rate with two column names (output column, input column)  as parameter
-		  var t1 as new clFunctionTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate2, array("Taxes","Sales"), VariantArray(0.06))
+		  var t1 as new clFunctionTransformer(tableInput, AddressOf TrsfFctApplyFixedRate_for_test_calc_052, array("Taxes","Sales"), VariantArray(0.06))
 		  
 		  if t1.Execute() then tableOutput = t1.GetOutputTable
 		  
@@ -3296,7 +3296,8 @@ Inherits clObjectTest
 		  call tableInput.AddColumn(new clNumberDataSerie("taxes2",tableInput.GetColumn("sales2")))
 		  
 		  // repeat call the function apply fixed rate with one column name as parameter
-		  var t1 as new clFunctionByColumnTransformer(tableInput, AddressOf TransfomerFctApplyFixedRate1, array("Taxes1","Taxes2"), VariantArray(0.07))
+		   
+		  var t1 as new clFunctionByColumnTransformer(tableInput, AddressOf TrsfFctApplyFixedRate_for_test_calc_053, array("Taxes1","Taxes2"), VariantArray(0.07))
 		  
 		  if t1.Execute() then tableOutput = t1.GetOutputTable
 		  
@@ -3926,7 +3927,7 @@ Inherits clObjectTest
 		  call check_table(log,"table4/table5Text", table4, table5Text) 
 		  call check_table(log,"table4/table5JSON", table4, table5JSON) 
 		  
-		  var table6Compressed  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series_io1)
+		  var table6Compressed  as new clDataTable(new clTextReader(fld_file1, True, New clTextFileConfig(Chr(9))), AddressOf alloc_series_for_test_io_001)
 		  
 		  call check_table(log,"table3/table6Compressed", table3, table6Compressed) 
 		  
@@ -4281,7 +4282,7 @@ Inherits clObjectTest
 		  //
 		  // the second file contains a few comments before the header line, we want to extract those comments to metadata
 		  //
-		  var table2 As New clDataTable(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9)), addressof Rowsorter_table_io_06))
+		  var table2 As New clDataTable(new clTextReader(fld_file2, True, new clTextFileConfig(chr(9)), addressof Rowsorter_table_for_test_io_06))
 		  
 		  call check_table(log,"Table1 and table2", table1, table2, 0.0001) 
 		  

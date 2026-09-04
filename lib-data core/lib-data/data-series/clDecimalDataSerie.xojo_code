@@ -495,7 +495,7 @@ Inherits clAbstractDataSerie
 		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0+%1",self.name,right_serie.name))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "add values from  " + right_serie.name)
+		  res.AddMetadata("transformation", ReplacePlaceHolders("add values from %0 " , right_serie.name))
 		  
 		  for i as integer = 0 to mx0
 		    var n as double
@@ -560,8 +560,9 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  var res as new clCurrencyDataSerie(self.name+"/"+right_serie.name)
-		  res.AddMetadata("transformation", "divide by values from  " + right_serie.name)
+		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0/%1", self.name, right_serie.name))
+		  
+		  res.AddMetadata("transformation", ReplacePlaceHolders("divide by values from  %0" , right_serie.name))
 		  
 		  for i as integer = 0 to mx0
 		    var n1 as double = 1
@@ -596,10 +597,10 @@ Inherits clAbstractDataSerie
 		  // !! TODO: test cases
 		  
 		  
-		  var res as new clCurrencyDataSerie(self.name+"/"+str(right_value))
+		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0/%1", self.name, str(right_value)))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "divide by constant " + str(right_value))
+		  res.AddMetadata("transformation", ReplacePlaceHolders("divide by constant %0",  str(right_value)))
 		  
 		  if self.IsZero(right_value) then
 		    for i as integer = 0 to self.LastIndex
