@@ -1003,6 +1003,16 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 
+	#tag Note, Name = IMPORTANT NOTE
+		
+		clDecimal is under dev
+		There are no test cases yet for clDecimal and clDecimalDataSerie
+		
+		
+		
+	#tag EndNote
+
+
 	#tag Property, Flags = &h1
 		Protected CurrencyParser As CurrencyParserInterface
 	#tag EndProperty

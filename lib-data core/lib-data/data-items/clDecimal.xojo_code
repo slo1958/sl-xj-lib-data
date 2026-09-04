@@ -428,7 +428,7 @@ Protected Class clDecimal
 	#tag EndMethod
 
 
-	#tag Note, Name = Important note
+	#tag Note, Name = IMPORTANT NOTE
 		
 		clDecimal is under dev
 		There are no test cases yet for clDecimal
