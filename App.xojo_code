@@ -4,9 +4,48 @@ Inherits DesktopApplication
 	#tag Event
 		Sub Opening()
 		  
+		  self.testOnOpen
+		  
 		  Return
+		   
+		  
 		End Sub
 	#tag EndEvent
+
+
+	#tag Method, Flags = &h0
+		Sub testOnOpen()
+		  
+		  
+		  return
+		  
+		  var testno as integer = 999
+		  
+		  select case testno
+		    
+		  case 1
+		    var ct1 as new clDataTable("alpha", array("alpha","beta"))
+		    
+		    var ts as new clTableStructure(ct1, clTableStructure.Mode.ExtractStructure)
+		    
+		    var ct2 as clDataTable = ts
+		    
+		    var ct3 as new clDataTable("mytable", ts)
+		    
+		    
+		    return
+		    
+		    
+		  case else
+		    // do not stop if nothing to see
+		    return
+		    
+		  end select
+		  
+		  Return
+		  
+		End Sub
+	#tag EndMethod
 
 
 	#tag Note, Name = Integration with your project

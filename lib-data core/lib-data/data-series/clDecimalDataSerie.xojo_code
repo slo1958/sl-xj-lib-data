@@ -492,7 +492,7 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  var res as new clCurrencyDataSerie(self.name+"+"+right_serie.name)
+		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0+%1",self.name,right_serie.name))
 		  
 		  res. AddSourceToMetadata( self.name)
 		  res.AddMetadata("transformation", "add values from  " + right_serie.name)
@@ -526,10 +526,10 @@ Inherits clAbstractDataSerie
 		  // !! TODO: description
 		  // !! TODO: test cases
 		  
-		  var res as new clCurrencyDataSerie(self.name+"+"+str(right_value))
+		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0+%1", self.name, str(right_value)))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "add constant " + str(right_value))
+		  res.AddMetadata("transformation", ReplacePlaceHolders("add constant %0" , str(right_value)))
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElement(i) + right_value)
