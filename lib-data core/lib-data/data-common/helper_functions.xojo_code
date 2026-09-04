@@ -146,6 +146,20 @@ Protected Module helper_functions
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ReplacePlaceHolders(BaseString as string, paramarray values as string) As string
+		  var ret as string = BaseString
+		  
+		  for i as integer = 0 to values.LastIndex
+		    ret = ret.replaceall("%"+str(i), values(i))
+		    
+		  next
+		  
+		  return ret
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function SerieArray(paramarray series as clAbstractDataSerie) As clAbstractDataSerie()
 		  var tmp() As clAbstractDataSerie
 		  

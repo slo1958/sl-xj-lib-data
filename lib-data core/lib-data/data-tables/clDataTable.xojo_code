@@ -1591,11 +1591,18 @@ Implements TableColumnReaderInterface,Iterable
 		  
 		  for each field as clFieldInfoEntry in TableStructure.Fields
 		    var column as clAbstractDataSerie = AddColumn(clDataType.CreateDataSerieFromType(field.name, field.type))
+		    
 		    if column <> nil then
-		      column.DisplayTitle = field.Title
+		      
+		      if field.Title.trim.Length > 0 then
+		        column.DisplayTitle = field.Title
+		        
+		      else
+		        column.DisplayTitle = field.name
+		        
+		      end if
 		      
 		    end if
-		    
 		    
 		  next
 		  
@@ -1903,7 +1910,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CreateTableFromStructure(new_table_name as String) As clDataTable
+		Function CreateTableFromStructure(newTableName as String) As clDataTable
 		  //
 		  // Create a new table assuming the current table contains a structure description
 		  // 
@@ -1914,29 +1921,19 @@ Implements TableColumnReaderInterface,Iterable
 		  // - the new table
 		  //
 		  
-		  var tbl as new clDataTable(new_table_name)
+		  // Copy the content of the current table to a clTableStructure
+		  var struct as new clTableStructure(self, clTableStructure.Mode.Copy)
 		  
-		  for each row as clDataRow in self
-		    var col_name as string = row.GetCell(StructureNameColumn)
-		    var col_type as string = row.GetCell(StructureTypeColumn)
-		    var col_title as string  = row.GetCell(StructureTitleColumn)
-		    
-		    var column as clAbstractDataSerie = tbl.AddColumn(clDataType.CreateDataSerieFromType(col_name, col_type))
-		    
-		    if col_title.Length > 0 then
-		      column.DisplayTitle = col_title
-		      
-		    end if
-		    
-		  next
+		  // Create a new table using the extracted structure
 		  
-		  return tbl
+		  Return struct.CreateTable(newTableName)
 		  
+		   
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub debug_dump()
+		Sub debug_dump(showData as Boolean)
 		  
 		  var tmp_item() As String
 		  
@@ -3030,28 +3027,33 @@ Implements TableColumnReaderInterface,Iterable
 	#tag Method, Flags = &h0
 		Function GetStructureAsTable(NewTableName as string = "") As clDataTable
 		  
-		  var col_name() as string
-		  var col_type() as string
-		  var col_title() as String
+		  // var col_name() as string
+		  // var col_type() as string
+		  // var col_title() as String
+		  // 
+		  // for i as integer = 0 to columns.LastIndex
+		  // col_name.Add(columns(i).name)
+		  // col_type.add(columns(i).GetType)
+		  // col_title.add(columns(i).DisplayTitle)
+		  // 
+		  // next
+		  // 
+		  // var serie_name as new clStringDataSerie(StructureNameColumn, col_name)
+		  // var serie_type as new clStringDataSerie(StructureTypeColumn, col_type)
+		  // var serie_title as new clStringDataSerie(StructureTitleColumn, col_title)
+		  // 
+		  // 
+		  // var temp as string = NewTableName.trim
+		  // 
+		  // if temp.Length < 1 then temp = self.StructureTableNamePrefix.trim + " " + self.name
+		  // 
+		  // return new clDataTable(temp, SerieArray(serie_name, serie_type, serie_title))
 		  
-		  for i as integer = 0 to columns.LastIndex
-		    col_name.Add(columns(i).name)
-		    col_type.add(columns(i).GetType)
-		    col_title.add(columns(i).DisplayTitle)
-		    
-		  next
+		  var struct as new clTableStructure(self, clTableStructure.Mode.ExtractStructure)
 		  
-		  var serie_name as new clStringDataSerie(StructureNameColumn, col_name)
-		  var serie_type as new clStringDataSerie(StructureTypeColumn, col_type)
-		  var serie_title as new clStringDataSerie(StructureTitleColumn, col_title)
+		  // convert the clTableStructure to a table with same content
 		  
-		  
-		  var temp as string = NewTableName.trim
-		  
-		  if temp.Length < 1 then temp = self.StructureTableNamePrefix.trim + " " + self.name
-		  
-		  return new clDataTable(temp, SerieArray(serie_name, serie_type, serie_title))
-		  
+		  return struct
 		  
 		End Function
 	#tag EndMethod
@@ -3988,32 +3990,6 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function ReplacePlaceHolders(BaseString as string, values() as string) As string
-		  var ret as string = BaseString
-		  
-		  for i as integer = 0 to values.LastIndex
-		    ret = ret.replaceall("%"+str(i), values(i))
-		    
-		  next
-		  
-		  return ret
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function ReplacePlaceHolders(BaseString as string, paramarray values as string) As string
-		  var ret as string = BaseString
-		  
-		  for i as integer = 0 to values.LastIndex
-		    ret = ret.replaceall("%"+str(i), values(i))
-		    
-		  next
-		  
-		  return ret
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function RowCount() As integer
 		  If Self.RowIndexColumn = Nil Then
 		    Return -1
@@ -4707,18 +4683,6 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndConstant
 
 	#tag Constant, Name = StatisticsUboundColumn, Type = String, Dynamic = False, Default = \"ubound", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = StructureNameColumn, Type = String, Dynamic = False, Default = \"name", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = StructureTableNamePrefix, Type = String, Dynamic = False, Default = \"structure of ", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = StructureTitleColumn, Type = String, Dynamic = False, Default = \"title", Scope = Public
-	#tag EndConstant
-
-	#tag Constant, Name = StructureTypeColumn, Type = String, Dynamic = False, Default = \"type", Scope = Public
 	#tag EndConstant
 
 

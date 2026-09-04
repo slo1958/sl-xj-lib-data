@@ -876,9 +876,9 @@ Inherits clObjectTest
 		  
 		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  
-		  var col_name as new clStringDataSerie(clDataTable.StructureNameColumn, "Country","City", "Sales")
-		  var col_type as new clStringDataSerie(clDataTable.StructureTypeColumn,"Generic", "Generic", "Generic")
-		  var col_title as new clStringDataSerie(clDataTable.StructureTitleColumn,"Pays","Ville", "Ventes")
+		  var col_name as new clStringDataSerie(clTableStructure.StructureNameColumn, "Country","City", "Sales")
+		  var col_type as new clStringDataSerie(clTableStructure.StructureTypeColumn,"Generic", "Generic", "Generic")
+		  var col_title as new clStringDataSerie(clTableStructure.StructureTitleColumn,"Pays","Ville", "Ventes")
 		  
 		  var expected_struc0 as new clDataTable("expected_struct", SerieArray(col_name, col_type, col_title))
 		  
@@ -917,6 +917,8 @@ Inherits clObjectTest
 		  
 		  var expected_table0 As New clDataTable("mytable", SerieArray(col_country, col_city, col_sales))
 		  
+		  expected_table0.debug_dump(false)
+		  
 		  call check_table(log,"Check created table", expected_table0, table0)
 		  
 		  // Add display title
@@ -930,11 +932,15 @@ Inherits clObjectTest
 		  // Extract structure as table and validate
 		  var struc0 as clDataTable = table0.GetStructureAsTable
 		  
-		  var col_name as new clStringDataSerie(clDataTable.StructureNameColumn, "Country","City", "Sales")
-		  var col_type as new clStringDataSerie(clDataTable.StructureTypeColumn,"String", "String", "Number")
-		  var col_title as new clStringDataSerie(clDataTable.StructureTitleColumn,"Pays","Ville", "Ventes")
+		  struc0.debug_dump(false)
+		  
+		  var col_name as new clStringDataSerie(clTableStructure.StructureNameColumn, "Country","City", "Sales")
+		  var col_type as new clStringDataSerie(clTableStructure.StructureTypeColumn,"String", "String", "Number")
+		  var col_title as new clStringDataSerie(clTableStructure.StructureTitleColumn,"Pays","Ville", "Ventes")
 		  
 		  var expected_struc0 as new clDataTable("expected_struct", SerieArray(col_name, col_type, col_title))
+		  
+		  expected_struc0.debug_dump(false)
 		  
 		  
 		  call check_table(log,"structure", expected_struc0, struc0)
@@ -943,13 +949,13 @@ Inherits clObjectTest
 		  // Create table from structure description and check structure
 		  //
 		  
-		  var table1 as clDataTable = struc0.CreateTableFromStructure("mytable")
+		  var table1 as clDataTable = struc0.CreateTableFromStructure("mytable1")
 		  
 		  var col_country1 as new clDataSerie("Country")
 		  var col_city1 as new clDataSerie("City")
 		  var col_sales1 as new clNumberDataSerie("Sales")
 		  
-		  var table_expected1 As New clDataTable("mytable", SerieArray(col_country1, col_city1, col_sales1))
+		  var table_expected1 As New clDataTable("mytable1", SerieArray(col_country1, col_city1, col_sales1))
 		  call check_table(log,"create from structure table", table_expected1, table1)
 		  
 		  
