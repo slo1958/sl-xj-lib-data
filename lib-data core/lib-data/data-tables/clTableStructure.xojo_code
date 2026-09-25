@@ -11,6 +11,21 @@ Protected Class clTableStructure
 
 	#tag Method, Flags = &h0
 		Sub Constructor(sourceTable as clDataTable, processing as Mode)
+		  //
+		  // The sourceTable is either a table with data or a table with the description of a table structure
+		  //
+		  // If sourceTable is a 'normal' data table:
+		  // - use the processing mode ExtractStructure
+		  //  The constructor will build the list of fields from the structure of the data table
+		  //
+		  // if sourceTable describes the structure of a table
+		  // - use the processing mode Copy
+		  // The constructor will build the list of fields from the rows in the source table
+		  // The table is supposed to contain the following fields:
+		  // - "name" : field name, defined as clDatatable.StructureNameColumn
+		  // - "type" : field type, defined as clDatatable.StructureTypeColumn
+		  // - 'title": field title, defined as clDatatable.StructureTitleColumn
+		  //
 		  
 		  
 		  select case processing
@@ -19,7 +34,7 @@ Protected Class clTableStructure
 		    self.loadStructureFromTable(sourceTable)
 		    
 		  case mode.ExtractStructure
-		    self.extractStructureFromTable(sourceTable)
+		    self.extractStructureFromDataTable(sourceTable)
 		    
 		  case else
 		    
@@ -39,7 +54,7 @@ Protected Class clTableStructure
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CreateTable(newTableName as String) As clDataTable
+		Function CreateDataTable(newTableName as String) As clDataTable
 		  
 		  var res as  new clDataTable(newTableName, self)
 		  
@@ -52,24 +67,24 @@ Protected Class clTableStructure
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub extractStructureFromTable(structureSource as clDataTable)
+		Sub extractStructureFromDataTable(dataTable as clDataTable)
 		  //
 		  // Reset then populate the list of fields from the structure of the table passed as paramter
 		  //
 		  // 
 		  // Parameters
-		  // - structureSource:  name of the table of which the structure should be extracted
+		  // - dataTable:  name of the table of which the structure should be extracted
 		  //
 		  // Returns
 		  // (nothing)
 		  //
 		  
-		  self.Name = structureSource.Name
+		  self.Name = dataTable.Name
 		  
 		  self.fields.RemoveAll
 		  
-		  for i as integer = 0 to structureSource.ColumnCount-1
-		    var colref as clAbstractDataSerie = structureSource.GetColumnAt(i)
+		  for i as integer = 0 to dataTable.ColumnCount-1
+		    var colref as clAbstractDataSerie = dataTable.GetColumnAt(i)
 		    
 		    var colinfo as new clFieldInfoEntry()
 		    colinfo.Name = colref.name
@@ -119,7 +134,8 @@ Protected Class clTableStructure
 	#tag Method, Flags = &h0
 		Function Operator_Convert() As clDataTable
 		  //
-		  // Create a structure table based on the list of fields
+		  // Create a data table based on the list of fields defined in clTableStructure
+		  //
 		  // Note: to create a table matching the described structure, use    new clDatatable(<clTableStructure object>)
 		  //
 		  // The table produced by the conversion has the following structure:
@@ -158,7 +174,7 @@ Protected Class clTableStructure
 	#tag Method, Flags = &h0
 		Sub Operator_Convert(source as clDataTable)
 		  //
-		  // Reset then populate the list of fields from the table passed as paramter
+		  // Reset then populate the list of fields from the clDataTable passed as paramter
 		  //
 		  // The table is supposed to contain the following fields:
 		  // - "name" : field name, defined as clDatatable.StructureNameColumn

@@ -7,7 +7,7 @@ Inherits DesktopApplication
 		  self.testOnOpen
 		  
 		  Return
-		   
+		  
 		  
 		End Sub
 	#tag EndEvent
@@ -17,7 +17,7 @@ Inherits DesktopApplication
 		Sub testOnOpen()
 		  
 		  
-		  return
+		  
 		  
 		  var testno as integer = 999
 		  

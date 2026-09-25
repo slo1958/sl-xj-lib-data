@@ -1168,7 +1168,7 @@ Protected Class clLibDataExample
 		  table0.GetColumn("Country").DisplayTitle = "Pays"
 		  table0.GetColumn("Sales").DisplayTitle="Ventes" 
 		  
-		  var struc0 as clDataTable = table0.GetStructureAsTable
+		  var struc0 as clDataTable = table0.GetStructureAsDataTable
 		  var prop0 as clDataTable = table0.GetPropertiesAsTable
 		  
 		  log.EndTask(CurrentMethodName)
@@ -1341,8 +1341,8 @@ Protected Class clLibDataExample
 		  var ret_tables() as clDataTable 
 		  
 		  var data_table as new clDataTable("data", series)
-		  var stat_table as clDataTable = data_table.GetStatisticsAsTable
-		  var struc_table as clDataTable = data_table.GetStructureAsTable
+		  var stat_table as clDataTable = data_table.GetStatisticsAsDataTable
+		  var struc_table as clDataTable = data_table.GetStructureAsDataTable
 		  
 		  call stat_table.GetColumn(clDataTable.StatisticsAverageColumn).RoundValues(2)
 		  

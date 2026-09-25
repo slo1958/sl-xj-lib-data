@@ -1925,10 +1925,9 @@ Implements TableColumnReaderInterface,Iterable
 		  var struct as new clTableStructure(self, clTableStructure.Mode.Copy)
 		  
 		  // Create a new table using the extracted structure
+		  Return struct.CreateDataTable(newTableName)
 		  
-		  Return struct.CreateTable(newTableName)
 		  
-		   
 		End Function
 	#tag EndMethod
 
@@ -2902,7 +2901,7 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetSelectedRowsAsTable(SelectedRowIndex() as integer, NameOfNewTable as string = "") As clDataTable
+		Function GetSelectedRowsAsDataTable(SelectedRowIndex() as integer, NameOfNewTable as string = "") As clDataTable
 		  //
 		  // Create a new table containing the rows of the current of which index is in the array passed as parameter
 		  //
@@ -2930,10 +2929,11 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetStatisticsAsTable(NewTableName as string = "") As clDataTable
+		Function GetStatisticsAsDataTable(NewTableName as string = "") As clDataTable
+		  //
+		  // Get statistics about each fields in the table returned as a dataTable
+		  //
 		  
-		  //
-		  //
 		  
 		  var tbl_name() as string
 		  var col_name() as string
@@ -3025,43 +3025,32 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetStructureAsTable(NewTableName as string = "") As clDataTable
-		  
-		  // var col_name() as string
-		  // var col_type() as string
-		  // var col_title() as String
-		  // 
-		  // for i as integer = 0 to columns.LastIndex
-		  // col_name.Add(columns(i).name)
-		  // col_type.add(columns(i).GetType)
-		  // col_title.add(columns(i).DisplayTitle)
-		  // 
-		  // next
-		  // 
-		  // var serie_name as new clStringDataSerie(StructureNameColumn, col_name)
-		  // var serie_type as new clStringDataSerie(StructureTypeColumn, col_type)
-		  // var serie_title as new clStringDataSerie(StructureTitleColumn, col_title)
-		  // 
-		  // 
-		  // var temp as string = NewTableName.trim
-		  // 
-		  // if temp.Length < 1 then temp = self.StructureTableNamePrefix.trim + " " + self.name
-		  // 
-		  // return new clDataTable(temp, SerieArray(serie_name, serie_type, serie_title))
+		Function GetStructureAsDataTable(NewTableName as string = "") As clDataTable
+		  //
+		  // Return a dataTable describing the structure of the table
+		  // One row in the produced table corresponds to one column in the current table
+		  //
+		  // The structure of the table is consisttent with the structure expected for conversion with clTableStructure
+		  //
+		  // Parameters
+		  // - NewTableName (string, optional) : name of the produced table
+		  //
+		  // returns
+		  // - the generated data table (clDataTable)
+		  //
 		  
 		  var struct as new clTableStructure(self, clTableStructure.Mode.ExtractStructure)
 		  
 		  // convert the clTableStructure to a table with same content
-		  
 		  return struct
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetStructureAsTableInfo() As clTableStructure
+		Function GetStructureAsTableStructure() As clTableStructure
 		  //
-		  // Return the structure of the table as an array of clFieldInfoEntry in a clTableStructure
+		  // Return the structure of the table as  a clTableStructure
 		  //
 		  // parameters
 		  // (none)
@@ -3070,24 +3059,12 @@ Implements TableColumnReaderInterface,Iterable
 		  //   populatded clTableStructure
 		  //
 		  
-		  var res as new clTableStructure(self.Name)
-		  
-		  var col_name() as string
-		  var col_type() as string
-		  var col_title() as String
-		  
-		  for i as integer = 0 to columns.LastIndex
-		    var colinfo as new clFieldInfoEntry()
-		    colinfo.Name = columns(i).name
-		    colinfo.Type = columns(i).GetType()
-		    colinfo.Title = columns(i).DisplayTitle
-		    
-		    res.AddFieldInfo(colinfo)
-		    
-		  next
+		  var res as new clTableStructure(self, clTableStructure.Mode.ExtractStructure)
 		  
 		  return res
 		  
+		  
+		   
 		  
 		End Function
 	#tag EndMethod

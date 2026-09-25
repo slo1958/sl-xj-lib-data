@@ -874,7 +874,7 @@ Inherits clParentClassForTestCases
 		  table0.GetColumn("Country").DisplayTitle = "Pays"
 		  table0.GetColumn("Sales").DisplayTitle="Ventes" 
 		  
-		  var struc0 as clDataTable = table0.GetStructureAsTable
+		  var struc0 as clDataTable = table0.GetStructureAsDataTable
 		  
 		  var col_name as new clStringDataSerie(clTableStructure.StructureNameColumn, "Country","City", "Sales")
 		  var col_type as new clStringDataSerie(clTableStructure.StructureTypeColumn,"Generic", "Generic", "Generic")
@@ -930,7 +930,7 @@ Inherits clParentClassForTestCases
 		  
 		  
 		  // Extract structure as table and validate
-		  var struc0 as clDataTable = table0.GetStructureAsTable
+		  var struc0 as clDataTable = table0.GetStructureAsDataTable
 		  
 		  struc0.debug_dump(false)
 		  
@@ -992,7 +992,7 @@ Inherits clParentClassForTestCases
 		  
 		  
 		  var data_table as new clDataTable("data", series)
-		  var stat_table as clDataTable = data_table.GetStatisticsAsTable
+		  var stat_table as clDataTable = data_table.GetStatisticsAsDataTable
 		  
 		  call stat_table.GetColumn(clDataTable.StatisticsAverageColumn).RoundValues(2)
 		  call stat_table.GetColumn(clDataTable.StatisticsStdDevColumn).RoundValues(5)
@@ -3296,7 +3296,7 @@ Inherits clParentClassForTestCases
 		  call tableInput.AddColumn(new clNumberDataSerie("taxes2",tableInput.GetColumn("sales2")))
 		  
 		  // repeat call the function apply fixed rate with one column name as parameter
-		   
+		  
 		  var t1 as new clFunctionByColumnTransformer(tableInput, AddressOf TrsfFctApplyFixedRate_for_test_calc_053, array("Taxes1","Taxes2"), VariantArray(0.07))
 		  
 		  if t1.Execute() then tableOutput = t1.GetOutputTable
@@ -3865,7 +3865,7 @@ Inherits clParentClassForTestCases
 		  //
 		  // Extract structure as array of field info 
 		  //
-		  var struc as clTableStructure = table0.GetStructureAsTableInfo
+		  var struc as clTableStructure = table0.GetStructureAsTableStructure
 		  
 		  
 		  //
