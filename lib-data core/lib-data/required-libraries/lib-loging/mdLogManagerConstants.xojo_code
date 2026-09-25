@@ -1,5 +1,62 @@
 #tag Module
 Protected Module mdLogManagerConstants
+	#tag Method, Flags = &h0
+		Function ExplainLogMessageType(MessageTypeCode as string) As string
+		  
+		  select case MessageTypeCode
+		    
+		  case cstSeverityError 
+		    return cstSeverityError_Explain 
+		    
+		  case cstSeverityFatalError 
+		    return cstSeverityFatalError_Explain 
+		    
+		  case cstSeverityInformation 
+		    return cstSeverityInformation_Explain 
+		    
+		  case cstSeverityMessage 
+		    return cstSeverityMessage_Explain 
+		    
+		  case cstSeverityStatistics 
+		    return cstSeverityStatistics_Explain 
+		    
+		  case cstSeverityTestChecksError 
+		    return cstSeverityTestChecksError_Explain 
+		    
+		  case cstSeverityWarning 
+		    return cstSeverityWarning_Explain 
+		    
+		  case else
+		    return "?"
+		    
+		  end select
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetAllLogMessageTypes() As string()
+		  var res() as string
+		  
+		  res.Add(cstSeverityError )
+		  
+		  res.Add(cstSeverityFatalError )
+		  
+		  res.Add(cstSeverityInformation )
+		  
+		  res.Add(cstSeverityMessage )
+		  
+		  res.Add(cstSeverityStatistics )
+		  
+		  res.Add(cstSeverityTestChecksError )
+		  
+		  res.Add(cstSeverityWarning )
+		  
+		  return res
+		End Function
+	#tag EndMethod
+
+
 	#tag Note, Name = Description
 		
 		Support for message logging.
@@ -104,22 +161,43 @@ Protected Module mdLogManagerConstants
 	#tag Constant, Name = cstSeverityError, Type = String, Dynamic = False, Default = \"ERR", Scope = Public
 	#tag EndConstant
 
+	#tag Constant, Name = cstSeverityError_Explain, Type = String, Dynamic = False, Default = \"Error", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = cstSeverityFatalError, Type = String, Dynamic = False, Default = \"FE", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = cstSeverityFatalError_Explain, Type = String, Dynamic = False, Default = \"Fatal error", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = cstSeverityInformation, Type = String, Dynamic = False, Default = \"INF", Scope = Public
 	#tag EndConstant
 
+	#tag Constant, Name = cstSeverityInformation_Explain, Type = String, Dynamic = False, Default = \"Information", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = cstSeverityMessage, Type = String, Dynamic = False, Default = \"MSG", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = cstSeverityMessage_Explain, Type = String, Dynamic = False, Default = \"Message", Scope = Public
 	#tag EndConstant
 
 	#tag Constant, Name = cstSeverityStatistics, Type = String, Dynamic = False, Default = \"STS", Scope = Public
 	#tag EndConstant
 
+	#tag Constant, Name = cstSeverityStatistics_Explain, Type = String, Dynamic = False, Default = \"Statistics", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = cstSeverityTestChecksError, Type = String, Dynamic = False, Default = \"TCE", Scope = Public
 	#tag EndConstant
 
+	#tag Constant, Name = cstSeverityTestChecksError_Explain, Type = String, Dynamic = False, Default = \"Test check error", Scope = Public
+	#tag EndConstant
+
 	#tag Constant, Name = cstSeverityWarning, Type = String, Dynamic = False, Default = \"WNG", Scope = Public
+	#tag EndConstant
+
+	#tag Constant, Name = cstSeverityWarning_Explain, Type = String, Dynamic = False, Default = \"Warning", Scope = Public
 	#tag EndConstant
 
 
