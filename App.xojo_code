@@ -14,12 +14,119 @@ Inherits DesktopApplication
 
 
 	#tag Method, Flags = &h0
+		Function PairToString(p as pair) As string
+		  return p.Left.StringValue + ":" + p.Right.StringValue
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub TestDataChunk()
+		  
+		  const kSize as integer = 10000
+		  const kLimit as integer = 10000000
+		  
+		  // basic case, data chunk without pre-allocation and can grow
+		  var lg as new clLogManager
+		  
+		  var v1 as new clBaseDataChunkManager(addressof clIntegerDataChunk.Allocator, new clDataChunkManagerPolicy(kSize, clDataChunkManagerPolicy.mode.StaticAllocation))
+		  var v2 as new clBaseDataChunkManager(addressof clIntegerDataChunk.Allocator, new clDataChunkManagerPolicy(kSize, clDataChunkManagerPolicy.mode.DynamicAllocation))
+		  var v3() as integer
+		  var c as clIntegerDataChunk
+		  
+		  
+		  lg.StartTask("v3-array")
+		  
+		  for i as integer = 0 to kLimit
+		    v3.Add(2*i)
+		    
+		  next
+		  
+		  lg.EndTaskAll()
+		  
+		  lg.StartTask("v1-static")
+		  
+		  for i as integer = 0 to kLimit
+		    c = clIntegerDataChunk(v1.GetChunkWithFreeSpace)
+		    
+		    if c.canAddElement then call c.AddElement(2*i)
+		    
+		  next
+		  
+		  lg.EndTaskAll()
+		  // 
+		  // lg.StartTask("v2-dynamic")
+		  // 
+		  // for i as integer = 0 to kLimit
+		  // c = clIntegerDataChunk(v2.GetChunkWithFreeSpace)
+		  // 
+		  // if c.canAddElement then call c.AddElement(2*i)
+		  // 
+		  // next
+		  // 
+		  // lg.EndTaskAll()
+		  // 
+		  
+		  
+		  v1.SummaryToLog(lg)
+		  
+		  system.DebugLog(v1.RowCount.ToString)
+		  
+		  system.DebugLog(v2.RowCount.ToString)
+		  
+		  
+		   
+		  
+		  Return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub TestDataChunkk()
+		  
+		  // basic case, data chunk without pre-allocation and can grow
+		  var v1 as new clBaseDataChunkManager(addressof clIntegerDataChunk.Allocator, new clDataChunkManagerPolicy(5, clDataChunkManagerPolicy.mode.StaticAllocation))
+		  var v2 as new clBaseDataChunkManager(addressof clIntegerDataChunk.Allocator, new clDataChunkManagerPolicy(6, clDataChunkManagerPolicy.mode.DynamicAllocation))
+		  
+		  var cnt1a as integer = v1.RowCount
+		  var cnt2a as integer = v2.RowCount
+		  
+		  var c as clIntegerDataChunk
+		  
+		  for i as integer = 0 to 11
+		    c = clIntegerDataChunk(v1.GetChunkWithFreeSpace)
+		    
+		    if c.canAddElement then call c.AddElement(12300+i)
+		    
+		    c = clIntegerDataChunk(v2.GetChunkWithFreeSpace)
+		    
+		    if c.canAddElement then call c.AddElement(12300+i)
+		    
+		  next
+		  
+		  var cnt1b as integer = v1.RowCount
+		  var cnt2b as integer = v2.RowCount
+		  
+		  for i as integer = 0 to 12
+		    var p1 as pair = v1.GetElementLocation(i)
+		    
+		    var p2 as pair = v2.GetElementLocation(i)
+		    
+		    System.DebugLog(str(i)+ "  " + PairToString(p1) + "   " + PairToString(p2))
+		  next
+		  
+		  
+		  Return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub testOnOpen()
 		  
 		  
 		  
 		  
-		  var testno as integer = 999
+		  var testno as integer = 2
 		  
 		  select case testno
 		    
@@ -35,6 +142,8 @@ Inherits DesktopApplication
 		    
 		    return
 		    
+		  case 2
+		    TestDataChunk
 		    
 		  case else
 		    // do not stop if nothing to see
