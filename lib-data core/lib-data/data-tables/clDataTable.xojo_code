@@ -1056,7 +1056,7 @@ Implements TableColumnReaderInterface,Iterable
 		  var count_changes as integer = 0
 		  
 		  
-		  self.AddMetadata("transformation", "Apply range clipping using " + LowValueColumn.name + " and " + HighValueColumn.name)
+		  self.AddMetaData(clMetadata.KeyForTransformation, "Apply range clipping using " + LowValueColumn.name + " and " + HighValueColumn.name)
 		  
 		  for index as integer = 0 to last_index
 		    var tmp as variant = column.GetElement(index)
@@ -1170,7 +1170,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  self.AddMetadata("transformation", "Clip high values using " + HighValueColumn.name)
+		  self.AddMetaData(clMetadata.KeyForTransformation, "Clip high values using " + HighValueColumn.name)
 		  
 		  
 		  
@@ -1259,7 +1259,7 @@ Implements TableColumnReaderInterface,Iterable
 		    
 		  next
 		  
-		  self.AddMetadata("transformation", "Clip low values using " + LowValueColumn.name)
+		  self.AddMetaData(clMetadata.KeyForTransformation, "Clip low values using " + LowValueColumn.name)
 		  
 		  Return count_changes
 		End Function
@@ -2490,6 +2490,31 @@ Implements TableColumnReaderInterface,Iterable
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetColumnNameAt(pColumnIndex as integer) As string
+		  //  
+		  //  Return the name of the selected column
+		  //  
+		  //  Parameters:
+		  //  - pColumnIndex: the index of the column
+		  //  
+		  //  Returns:
+		  //  - the name of the column at specified index
+		  //  
+		  
+		  
+		  try
+		    return self.columns(pColumnIndex).name
+		    
+		  catch
+		    return ""
+		    
+		  end try
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetColumnNames() As string()
 		  //  
 		  //  Return the name of all columns
@@ -3064,7 +3089,7 @@ Implements TableColumnReaderInterface,Iterable
 		  return res
 		  
 		  
-		   
+		  
 		  
 		End Function
 	#tag EndMethod
@@ -4413,6 +4438,58 @@ Implements TableColumnReaderInterface,Iterable
 		    return value.Trim
 		    
 		  end if
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Transpose(keyFields() as string) As clDataTable
+		  //
+		  // Produces a new table with content of current table transposed. 
+		  // - to restrict the columns taken form a source table, use a 
+		  //
+		  // Parameters:
+		  // - keyFields (array of string)  : name of columns used to build the output column name
+		  //
+		  // Returns:
+		  //  transposed table
+		  //
+		  
+		  var transposeTransformer as new clTransposeTransformer(self, keyFields)
+		  
+		  if transposeTransformer.Execute() then
+		    return transposeTransformer.GetOutputTable()
+		    
+		  else
+		    return nil
+		    
+		  end if
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Transpose(paramarray keyFields as string) As clDataTable
+		  //
+		  // Produces a new table with content of current table transposed. 
+		  // - to restrict the columns taken form a source table, use a 
+		  //
+		  // Parameters:
+		  // - keyFields (array of string)  : name of columns used to build the output column name
+		  //
+		  // Returns:
+		  //  transposed table
+		  //
+		  
+		  var transposeTransformer as new clTransposeTransformer(self, keyFields)
+		  
+		  if transposeTransformer.Execute() then
+		    return transposeTransformer.GetOutputTable()
+		    
+		  else
+		    return nil
+		    
+		  end if
+		  
 		End Function
 	#tag EndMethod
 

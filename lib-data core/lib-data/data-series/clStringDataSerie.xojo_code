@@ -332,7 +332,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(self.name+"+"+right_serie.name)
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "add string values from  " + right_serie.name)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "add string values from  " + right_serie.name)
 		  
 		  
 		  for i as integer = 0 to mx0
@@ -362,7 +362,7 @@ Inherits clAbstractDataSerie
 		  var res as new clStringDataSerie(self.name+"+"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "Append string " + right_value)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "Append string " + right_value)
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElementAsString(i) + right_value)

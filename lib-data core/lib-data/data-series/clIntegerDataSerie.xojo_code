@@ -253,7 +253,7 @@ Inherits clAbstractDataSerie
 		  
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "add values from  " + right_serie.name)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "add values from  " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
 		    var n as integer
@@ -282,7 +282,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+"+"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "add constant " + str(right_value))
+		  res.AddMetaData(clMetadata.KeyForTransformation, "add constant " + str(right_value))
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElement(i) + right_value)
@@ -309,7 +309,7 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clIntegerDataSerie(self.name+"*"+right_serie.name)
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "Multiply by values from  " + right_serie.name)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "Multiply by values from  " + right_serie.name)
 		  
 		  
 		  for i as integer = 0 to mx0
@@ -339,7 +339,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+"*"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "Multiply by   " + str(right_value))
+		  res.AddMetaData(clMetadata.KeyForTransformation, "Multiply by   " + str(right_value))
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElement(i) * right_value)
@@ -366,7 +366,7 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clIntegerDataSerie(self.name+"-"+right_serie.name)
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "Subtract values from  " + right_serie.name)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "Subtract values from  " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
 		    var n as integer
@@ -395,7 +395,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+"-"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "Subtract " + str(right_value))
+		  res.AddMetaData(clMetadata.KeyForTransformation, "Subtract " + str(right_value))
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElement(i) - right_value)

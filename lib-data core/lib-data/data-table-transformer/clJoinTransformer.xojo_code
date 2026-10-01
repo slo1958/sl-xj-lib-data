@@ -357,20 +357,20 @@ Inherits clAbstractTransformer
 		  select case mode
 		    
 		  case JoinMode.InnerJoin
-		    OutputJoin.AddMetaData("Transformation", "Inner join between " + tblleft.name + " and " + tblright.name+"." )
+		    OutputJoin.AddMetaData(clMetadata.KeyForTransformation, "Inner join between " + tblleft.name + " and " + tblright.name+"." )
 		    
-		    if outputLeft <> nil then outputLeft.AddMetaData("Transformation", "Non matching records from "+ tblleft.name  + " when joining with " + tblright.name+"." )
+		    if outputLeft <> nil then outputLeft.AddMetaData(clMetadata.KeyForTransformation, "Non matching records from "+ tblleft.name  + " when joining with " + tblright.name+"." )
 		    
-		    if outputRight <> nil then outputRight.AddMetaData("Transformation", "Non matching records from "+ tblright.name  + " when joining with " + tblleft.name+"." )
+		    if outputRight <> nil then outputRight.AddMetaData(clMetadata.KeyForTransformation, "Non matching records from "+ tblright.name  + " when joining with " + tblleft.name+"." )
 		    
 		  case JoinMode.OuterJoin
-		    OutputJoin.AddMetaData("Transformation", "Outer join between " + tblleft.name + " and " + tblright.name+"." )
+		    OutputJoin.AddMetaData(clMetadata.KeyForTransformation, "Outer join between " + tblleft.name + " and " + tblright.name+"." )
 		    
 		  case JoinMode.LeftJoin
-		    OutputJoin.AddMetaData("Transformation", "Left join between " + tblleft.name + " and " + tblright.name+"." )
+		    OutputJoin.AddMetaData(clMetadata.KeyForTransformation, "Left join between " + tblleft.name + " and " + tblright.name+"." )
 		    
 		  case else
-		    OutputJoin.AddMetaData("Transformation", "Join between " + tblleft.name + " and " + tblright.name+"." )
+		    OutputJoin.AddMetaData(clMetadata.KeyForTransformation, "Join between " + tblleft.name + " and " + tblright.name+"." )
 		    
 		  end select
 		  

@@ -495,7 +495,7 @@ Inherits clAbstractDataSerie
 		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0+%1",self.name,right_serie.name))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", ReplacePlaceHolders("add values from %0 " , right_serie.name))
+		  res.AddMetaData(clMetadata.KeyForTransformation, ReplacePlaceHolders("add values from %0 " , right_serie.name))
 		  
 		  for i as integer = 0 to mx0
 		    var n as double
@@ -529,7 +529,7 @@ Inherits clAbstractDataSerie
 		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0+%1", self.name, str(right_value)))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", ReplacePlaceHolders("add constant %0" , str(right_value)))
+		  res.AddMetaData(clMetadata.KeyForTransformation, ReplacePlaceHolders("add constant %0" , str(right_value)))
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElement(i) + right_value)
@@ -562,7 +562,7 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0/%1", self.name, right_serie.name))
 		  
-		  res.AddMetadata("transformation", ReplacePlaceHolders("divide by values from  %0" , right_serie.name))
+		  res.AddMetaData(clMetadata.KeyForTransformation, ReplacePlaceHolders("divide by values from  %0" , right_serie.name))
 		  
 		  for i as integer = 0 to mx0
 		    var n1 as double = 1
@@ -600,7 +600,7 @@ Inherits clAbstractDataSerie
 		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0/%1", self.name, str(right_value)))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", ReplacePlaceHolders("divide by constant %0",  str(right_value)))
+		  res.AddMetaData(clMetadata.KeyForTransformation, ReplacePlaceHolders("divide by constant %0",  str(right_value)))
 		  
 		  if self.IsZero(right_value) then
 		    for i as integer = 0 to self.LastIndex
@@ -639,7 +639,7 @@ Inherits clAbstractDataSerie
 		  end if
 		  
 		  var res as new clCurrencyDataSerie(self.name+"*"+right_serie.name)
-		  res.AddMetadata("transformation", "multiply by values from  " + right_serie.name)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "multiply by values from  " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
 		    var n as double
@@ -673,7 +673,7 @@ Inherits clAbstractDataSerie
 		  var res as new clCurrencyDataSerie(self.name+"*"+str(right_value))
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "multiply by constant " + str(right_value))
+		  res.AddMetaData(clMetadata.KeyForTransformation, "multiply by constant " + str(right_value))
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElement(i) * right_value)
@@ -705,7 +705,7 @@ Inherits clAbstractDataSerie
 		  end if
 		  
 		  var res as new clCurrencyDataSerie(self.name+"-"+right_serie.name)
-		  res.AddMetadata("transformation", "substract values from  " + right_serie.name)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "substract values from  " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
 		    var n as double
@@ -738,7 +738,7 @@ Inherits clAbstractDataSerie
 		  
 		  var res as new clCurrencyDataSerie(self.name+"-"+str(right_value))
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "subtract constant " + str(right_value))
+		  res.AddMetaData(clMetadata.KeyForTransformation, "subtract constant " + str(right_value))
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElement(i) - right_value)

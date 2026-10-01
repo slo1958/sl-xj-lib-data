@@ -128,7 +128,7 @@ Implements Iterable
 		    
 		  Next
 		  
-		  self.AddMetadata("transformation",  "add data from " + the_serie.name)
+		  self.AddMetaData(clMetadata.KeyForTransformation,  "add data from " + the_serie.name)
 		  
 		  
 		End Sub
@@ -167,7 +167,7 @@ Implements Iterable
 		    
 		  next
 		  
-		  target_data_serie.AddMetadata("transformation", "Add from " + self.name)
+		  target_data_serie.AddMetaData(clMetadata.KeyForTransformation, "Add from " + self.name)
 		  
 		End Sub
 	#tag EndMethod
@@ -322,7 +322,7 @@ Implements Iterable
 		    
 		  next
 		  
-		  self.AddMetadata("transformation", "Apply range clipping")
+		  self.AddMetaData(clMetadata.KeyForTransformation, "Apply range clipping")
 		  
 		  Return count_changes
 		End Function
@@ -356,7 +356,7 @@ Implements Iterable
 		    
 		  next
 		  
-		  self.AddMetadata("transformation", "Clip  values above " + str(high_value))
+		  self.AddMetaData(clMetadata.KeyForTransformation, "Clip  values above " + str(high_value))
 		  
 		  Return count_changes
 		End Function
@@ -390,7 +390,7 @@ Implements Iterable
 		    
 		  next
 		  
-		  self.AddMetadata("transformation", "Clip  values below " + str(low_value))
+		  self.AddMetaData(clMetadata.KeyForTransformation, "Clip  values below " + str(low_value))
 		  
 		  Return count_changes
 		End Function
@@ -1191,7 +1191,7 @@ Implements Iterable
 		  //  
 		  //  use setter of computed property
 		  //  
-		  self.AddMetadata("transformation", "rename from " + self.name + " to " + NewColumnName)
+		  self.AddMetaData(clMetadata.KeyForTransformation, "rename from " + self.name + " to " + NewColumnName)
 		  
 		  Self.name = NewColumnName
 		  
@@ -1207,7 +1207,7 @@ Implements Iterable
 		  //  use setter of computed property
 		  //  
 		  
-		  self.AddMetadata("transformation", "rename from " + self.name + " to " + NewColumnName)
+		  self.AddMetaData(clMetadata.KeyForTransformation, "rename from " + self.name + " to " + NewColumnName)
 		  
 		  Self.name = NewColumnName
 		  
@@ -1316,7 +1316,7 @@ Implements Iterable
 		    
 		  next
 		  
-		  self.AddMetadata("transformation", "round values to "+str(nb_decimal) + " digit(s).")
+		  self.AddMetaData(clMetadata.KeyForTransformation, "round values to "+str(nb_decimal) + " digit(s).")
 		  
 		  Return count_changes
 		End Function
@@ -1354,7 +1354,7 @@ Implements Iterable
 		    
 		  next
 		  
-		  self.AddMetadata("transformation", "Set all elements to values from data serie " + the_values.name)
+		  self.AddMetaData(clMetadata.KeyForTransformation, "Set all elements to values from data serie " + the_values.name)
 		  
 		  return
 		  
@@ -1369,7 +1369,7 @@ Implements Iterable
 		    
 		  next
 		  
-		  self.AddMetadata("transformation", "Set  elements to list of variants")
+		  self.AddMetaData(clMetadata.KeyForTransformation, "Set  elements to list of variants")
 		  
 		  return
 		  
@@ -1384,7 +1384,7 @@ Implements Iterable
 		    
 		  next
 		  
-		  self.AddMetadata("transformation", "Set all elements to " +str(the_value))
+		  self.AddMetaData(clMetadata.KeyForTransformation, "Set all elements to " +str(the_value))
 		  
 		  return
 		  

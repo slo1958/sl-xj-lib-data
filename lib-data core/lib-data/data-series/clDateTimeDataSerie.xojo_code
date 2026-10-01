@@ -303,7 +303,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+"-"+right_serie.name)
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "Subtract datetime from " + right_serie.name)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "Subtract datetime from " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
 		    
@@ -329,7 +329,7 @@ Inherits clAbstractDataSerie
 		  var res as new clDateTimeDataSerie(self.name+" - interval ")
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "Subtract interval")
+		  res.AddMetaData(clMetadata.KeyForTransformation, "Subtract interval")
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(self.GetElementAsDateTime(i).SubtractInterval(right_interval.Years, right_interval.Months, right_interval.Days))
@@ -347,7 +347,7 @@ Inherits clAbstractDataSerie
 		  var res as new clIntegerDataSerie(self.name+" - "+ right_value.SQLDateTime)
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "Subtract datetime from " + right_value.SQLDateTime)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "Subtract datetime from " + right_value.SQLDateTime)
 		  
 		  for i as integer = 0 to self.LastIndex
 		    res.AddElement(diff_to_integer(self.GetElementAsDateTime(i) , right_value))

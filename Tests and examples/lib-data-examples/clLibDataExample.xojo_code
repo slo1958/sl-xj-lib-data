@@ -2507,6 +2507,127 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Example_040_Transpose(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
+		  
+		  if Describe then
+		    Description.RemoveAll
+		    
+		    Description.Add(CurrentMethodName)
+		    
+		    Description.Add("- create a datatable with two columns")
+		    Description.add("- transpose the table, without parameters")
+		    Description.Add("- the resulting table contains one row")
+		    
+		    return nil
+		    
+		  end if
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  
+		  
+		  var table0 As New clDataTable("mytable")
+		  
+		  call table0.AddColumns(new clStringDataSerie("year"), new clNumberDataSerie("Sales"))
+		  
+		  table0.AddRow(array("Y2021", 1234.56))
+		  table0.AddRow(array("Y2022", 2345.67))
+		  table0.AddRow(array("Y2023", 3456.78))
+		  table0.AddRow(array("Y2024", 45678.90))
+		  table0.AddRow(array("Y2025", 56789.01))
+		  
+		  var table1 as clDataTable = table0.Transpose()
+		  
+		  return array(table0, table1)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Example_041_TransposeUseOneColumns(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
+		  
+		  if Describe then
+		    Description.RemoveAll
+		    
+		    Description.Add(CurrentMethodName)
+		    
+		    Description.Add("- create a datatable with three columns( rating, year, sales)")
+		    Description.add("- transpose the table, selecting 'year' to build output column names")
+		    Description.Add("- two rows contain the same value in the field used for output column names")
+		    Description.Add("- the resulting table contains two rows, built from rating and sales")
+		    
+		    return nil
+		    
+		  end if
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  
+		  
+		  var table0 As New clDataTable("mytable")
+		  
+		  call table0.AddColumns(new clStringDataSerie("Rating"), new clStringDataSerie("year"), new clNumberDataSerie("Sales"))
+		  
+		  table0.AddRow(array("Good","Y2021", 1234.56))
+		  table0.AddRow(array("Good","Y2022", 2345.67))
+		  table0.AddRow(array("Good","Y2023", 3456.78))
+		  table0.AddRow(array("To be confirmed","Y2024", 45678.90))
+		  table0.AddRow(array("", "Y2025", 56789.01))
+		  table0.AddRow(array("Strange", "Y2025", 56789.01))
+		  
+		  
+		  var table1 as clDataTable = table0.Transpose(array("year"))
+		  
+		  return array(table0, table1)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function Example_041_TransposeUseTwoColumns(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
+		  
+		  if Describe then
+		    Description.RemoveAll
+		    
+		    Description.Add(CurrentMethodName)
+		    
+		    Description.Add("- create a datatable with two columns")
+		    Description.add("- transpose the table, without parameters")
+		    Description.Add("- the resulting table contains one row")
+		    
+		    return nil
+		    
+		  end if
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  
+		  
+		  var table0 As New clDataTable("mytable")
+		  
+		  call table0.AddColumns(new clStringDataSerie("Rating"), new clStringDataSerie("year"), new clNumberDataSerie("Sales"), new clStringDataSerie("Region"))
+		  
+		  table0.AddRow(array("Good","Y2021", 1234.56, "Europe"))
+		  table0.AddRow(array("Good","Y2022", 2345.67, "Europe"))
+		  table0.AddRow(array("Good","Y2023", 3456.78, "Europe"))
+		  table0.AddRow(array("To be confirmed","Y2024", 45678.90, "Europe"))
+		  table0.AddRow(array("", "Y2025", 56789.01, "Europe"))
+		  
+		  table0.AddRow(array("Good","Y2021", 2234.56, "Asia"))
+		  table0.AddRow(array("Good","Y2022", 3345.67, "Asia"))
+		  table0.AddRow(array("Good","Y2023", 4456.78, "Asia"))
+		  table0.AddRow(array("To be confirmed","Y2024", 55678.90, "Asia"))
+		  table0.AddRow(array("", "Y2025", 66789.01, "Asia"))
+		  
+		  
+		  var table1 as clDataTable = table0.Transpose("Region", "Year")
+		  
+		  return array(table0, table1)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function GetAllExamples() As Dictionary
 		  // 
 		  //. Get the list of 'example_xxx' methods

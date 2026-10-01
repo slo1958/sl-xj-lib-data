@@ -193,6 +193,7 @@ Class=clDataPool_TestCases;Tests and examples/lib-data-test-cases/clDataPool_Tes
 Folder=lib-data-examples;Tests and examples/lib-data-examples;&h0000000073919FFF;&h000000007038AFFF;false
 Folder=lib-log-writers;lib-data core/lib-data-desktop-ui-support/lib-log-writers;&h0000000042E3F7FF;&h000000006C2547FF;false
 Class=DesktopListbox_LogWriter;lib-data core/lib-data-desktop-ui-support/lib-log-writers/DesktopListbox_LogWriter.xojo_code;&h000000001DDAC7FF;&h0000000042E3F7FF;false
+Class=clTransposeTransformer;lib-data core/lib-data/data-table-transformer/linear-transformers/clTransposeTransformer.xojo_code;&h000000004D5FA7FF;&h000000002B255FFF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1

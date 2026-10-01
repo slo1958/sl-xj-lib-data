@@ -290,6 +290,9 @@ Protected Class clMetadata
 	#tag Constant, Name = KeyForSource, Type = String, Dynamic = False, Default = \"source", Scope = Public
 	#tag EndConstant
 
+	#tag Constant, Name = KeyForTransformation, Type = String, Dynamic = False, Default = \"Transformation", Scope = Public
+	#tag EndConstant
+
 
 	#tag ViewBehavior
 		#tag ViewProperty

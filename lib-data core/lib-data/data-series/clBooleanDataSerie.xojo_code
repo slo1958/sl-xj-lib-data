@@ -146,7 +146,7 @@ Inherits clAbstractDataSerie
 		  var res as new clBooleanDataSerie(self.name+" and "+right_serie.name)
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "And values from  " + right_serie.name)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "And values from  " + right_serie.name)
 		  
 		  
 		  for i as integer = 0 to mx0
@@ -178,7 +178,7 @@ Inherits clAbstractDataSerie
 		  var res as new clBooleanDataSerie("not " + self.name)
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "complement")
+		  res.AddMetaData(clMetadata.KeyForTransformation, "complement")
 		  
 		  for i as integer = 0 to mx0
 		    res.AddElement(not self.GetElementAsBoolean(i))
@@ -206,7 +206,7 @@ Inherits clAbstractDataSerie
 		  var res as new clBooleanDataSerie(self.name+" or "+right_serie.name)
 		  
 		  res. AddSourceToMetadata( self.name)
-		  res.AddMetadata("transformation", "Or values from  " + right_serie.name)
+		  res.AddMetaData(clMetadata.KeyForTransformation, "Or values from  " + right_serie.name)
 		  
 		  
 		  for i as integer = 0 to mx0

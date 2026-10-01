@@ -70,11 +70,11 @@ Begin DesktopWindow DesktopWIndow_TableViewer
       Index           =   -2147483648
       Italic          =   False
       Left            =   20
-      LockBottom      =   False
+      LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
       LockRight       =   False
-      LockTop         =   True
+      LockTop         =   False
       Scope           =   0
       TabIndex        =   1
       TabPanelIndex   =   0

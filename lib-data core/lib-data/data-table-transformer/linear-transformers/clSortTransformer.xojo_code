@@ -81,7 +81,7 @@ Inherits clLinearTransformer
 		  
 		  var NewTable as clDataTable = source.CloneStructure(connector.GetTableName(false))
 		  
-		  NewTable.AddMetaData("Transformation","Sorting " + source.Name + " on " + String.FromArray(ColumnNames,","))
+		  NewTable.AddMetaData(clMetadata.KeyForTransformation,"Sorting " + source.Name + " on " + String.FromArray(ColumnNames,","))
 		  
 		  if order = SortOrder.Ascending then
 		    
@@ -145,14 +145,6 @@ Inherits clLinearTransformer
 			InitialValue=""
 			Type="Boolean"
 			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="StepLabel"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="EnableTraceMode"

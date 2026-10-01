@@ -180,7 +180,7 @@ Inherits clLinearTransformer
 		  
 		  var t as new clDataTable(connector.GetTableName(false), cg1.Flattened)
 		  
-		  t.AddMetaData("Transformation","Pivotting  " + source.Name + " on " + String.FromArray(ColumnsToRetain,","))
+		  t.AddMetaData(clMetadata.KeyForTransformation,"Pivotting  " + source.Name + " on " + String.FromArray(ColumnsToRetain,","))
 		  
 		  Self.SetOutputTable(cOutputConnectorName, t)
 		  
@@ -219,14 +219,6 @@ Inherits clLinearTransformer
 			InitialValue=""
 			Type="Boolean"
 			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="StepLabel"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="EnableTraceMode"
