@@ -53,11 +53,11 @@ Protected Class clDataStorePipeline
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub ConnectSteps(ProviderSetpName as string, outputName as string, ConsumerStepName as string, inputName as string)
+		Sub ConnectSteps(ProviderStepName as string, outputName as string, ConsumerStepName as string, inputName as string)
 		  
-		  var provider as clAbstractTransformer = self.FindStep(ProviderSetpName)
+		  var provider as clAbstractTransformer = self.FindStep(ProviderStepName)
 		  if provider = nil then
-		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find provider step [%0]", ProviderSetpName)
+		    getLogManager.WriteWarning(CurrentMethodName,"Cannot find provider step [%0]", ProviderStepName)
 		    self.AddError
 		    return  
 		    
@@ -193,7 +193,7 @@ Protected Class clDataStorePipeline
 		    next
 		    
 		  end if
-		   
+		  
 		  
 		  var traceExecution as Boolean = True
 		  
@@ -390,7 +390,7 @@ Protected Class clDataStorePipeline
 		- B/ by describing the connection (provider step name, provider output name, consumer step name, consumer input)
 		
 		
-		Example for A (full sourcr code in CreatePipeline_001)
+		Example for A (full sourcr code in CreateTestPipeline_001)
 		
 		// Create each step, for example:
 		var stepAddCountry as clAbstractTransformer =new clJoinTransformer(JoinMode.LeftJoin, array("City"),"") 
@@ -407,7 +407,7 @@ Protected Class clDataStorePipeline
 		
 		
 		
-		Example for B (full sourcr code in CreatePipeline_002)
+		Example for B (full sourcr code in CreateTestPipeline_002)
 		
 		// Create and add the steps to the pipeline:
 		call pipeline1.AddStep("Select columns", new clColumnSelectorTransformer(array("Country":"Country","Sum of Quantity":"Quantity", "Sum of Sales":"Sales", "NbrRows":"NbrRows"), true))

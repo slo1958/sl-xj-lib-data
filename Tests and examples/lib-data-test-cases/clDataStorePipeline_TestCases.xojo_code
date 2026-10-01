@@ -2,7 +2,7 @@
 Protected Class clDataStorePipeline_TestCases
 Inherits clParentClassForTestCases
 	#tag Method, Flags = &h0
-		Function CreatePipeline_001(log as clLogManager) As clDataStorePipeline
+		Function CreateTestPipeline_001(log as clLogManager) As clDataStorePipeline
 		  //
 		  // Initial test 
 		  //
@@ -66,7 +66,7 @@ Inherits clParentClassForTestCases
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CreatePipeline_002(log as clLogManager) As clDataStorePipeline
+		Function CreateTestPipeline_002(log as clLogManager) As clDataStorePipeline
 		  //
 		  // Initial test 
 		  //
@@ -131,7 +131,7 @@ Inherits clParentClassForTestCases
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function CreatePipeline_003(log as clLogManager) As clDataStorePipeline
+		Function CreateTestPipeline_003(log as clLogManager) As clDataStorePipeline
 		  //
 		  // Initial test 
 		  //
@@ -170,7 +170,7 @@ Inherits clParentClassForTestCases
 		  call pipeline1.AddStep( "Group by city", new clGroupByTransformer(prm))
 		  
 		  
-		  // Define steps input and output
+		  // Define steps input and output, using a wrong name for one connector ("BAD xxxx")
 		  
 		  pipeline1.SetStepInput("Group by city",  "BAD "+ clGroupByTransformer.cInputConnectorName, salestable)
 		  
@@ -179,9 +179,6 @@ Inherits clParentClassForTestCases
 		  
 		  pipeline1.SetStepInput("Add country" , clJoinTransformer.cInputConnectorRight, countrytable)
 		  pipeline1.ConnectSteps("Add Country", clJoinTransformer.cOutputConnectorJoined, "Select columns", clColumnSelectorTransformer.cInputConnectorName)
-		  
-		  
-		  //put(stepAddCountry, clJoinTransformer.cInputConnectorLeft, stepGroupByCity.GetOutputConnector())
 		  
 		  var output2 as clTransformerConnection = pipeline1.FindStep("Select columns").GetOutputConnector()
 		  
@@ -206,7 +203,7 @@ Inherits clParentClassForTestCases
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats()
 		  
-		  var pipeline1 as  clDataStorePipeline = CreatePipeline_001(log)
+		  var pipeline1 as  clDataStorePipeline = CreateTestPipeline_001(log)
 		  
 		  pipeline1.run()
 		  
@@ -251,7 +248,7 @@ Inherits clParentClassForTestCases
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats()
 		  
-		  var pipeline1 as  clDataStorePipeline = CreatePipeline_002(log)
+		  var pipeline1 as  clDataStorePipeline = CreateTestPipeline_002(log)
 		  
 		  pipeline1.run()
 		  
@@ -296,7 +293,7 @@ Inherits clParentClassForTestCases
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats()
 		  
-		  var pipeline1 as  clDataStorePipeline = CreatePipeline_003(log)
+		  var pipeline1 as  clDataStorePipeline = CreateTestPipeline_003(log)
 		  
 		  pipeline1.run()
 		  
@@ -341,7 +338,7 @@ Inherits clParentClassForTestCases
 
 	#tag Note, Name = DATA POOLS
 		
-		1/ dup CreatePipeline_002 to CreatePipeline_004
+		1/ dup CreateTestPipeline_002 to CreateTestPipeline_004
 		
 		2/ move input tables to a datapool
 		
