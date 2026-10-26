@@ -4,9 +4,15 @@ Inherits clAbstractDataSerie
 	#tag CompatibilityFlags = ( TargetConsole and ( Target32Bit or Target64Bit ) ) or ( TargetWeb and ( Target32Bit or Target64Bit ) ) or ( TargetDesktop and ( Target32Bit or Target64Bit ) ) or ( TargetIOS and ( Target64Bit ) ) or ( TargetAndroid and ( Target64Bit ) )
 	#tag Method, Flags = &h0
 		Sub AddElement(the_item as Variant)
-		  
+		  // 
+		  // if the_item isa clDecimal then
+		  // var d as clDecimal = clDecimal(the_item)
+		  // 
+		  // items.a
+		  // 
+		  // else
 		  items.Add(Internal_ConversionToDecimal(the_item))
-		  
+		   
 		End Sub
 	#tag EndMethod
 
@@ -233,6 +239,16 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(NbrDigitsAfterDecimalPoint as Integer, NewColumnName as string)
+		  
+		  super.Constructor(NewColumnName)
+		  self.SetPrecision(NbrDigitsAfterDecimalPoint)
+		  
+		  return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Count() As Integer
 		  //
 		  // Count items in the dataserie
@@ -373,6 +389,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetPrecision() As integer
+		  
+		  Return self.mDecPos
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetProperties() As clDataSerieProperties
 		  // Calling the overridden superclass method.
 		  Var p as clDataSerieProperties = Super.GetProperties()
@@ -411,9 +435,18 @@ Inherits clAbstractDataSerie
 		  // !! TODO: description
 		  // !! TODO: test cases
 		  
-		  if v.Type  = variant.TypeDouble then
-		    return mDecScale * v.DoubleValue
+		  if v isa clDecimal then
+		    Return self.Rescale(clDecimal(v))
 		    
+		  elseif v.Type  = variant.TypeDouble then
+		    // Fix the xx.xx999999999 issue
+		    var w0 as Double = 1.0 / ( self.mDecScale * 1000.0) 
+		    var w1 as double = v.DoubleValue
+		    var w2 as int64 = mDecScale * (w0 + w1)
+		    return  w2
+		    
+		  elseif v.Type = Variant.TypeSingle then
+		    return  mDecScale * v.DoubleValue
 		    
 		  elseif v.type <> variant.TypeString then
 		    return  mDecScale * v.DoubleValue
@@ -476,7 +509,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_add(right_serie as clCurrencyDataSerie) As clCurrencyDataSerie
+		Function operator_add(right_serie as clDecimalDataSerie) As clDecimalDataSerie
 		  
 		  // !! TODO: review code
 		  // !! TODO: description
@@ -492,20 +525,21 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0+%1",self.name,right_serie.name))
+		  var res as new clDecimalDataSerie(ReplacePlaceHolders("%0+%1",self.name,right_serie.name))
+		  res.SetPrecision(max(self.GetPrecision, right_serie.GetPrecision))
 		  
 		  res. AddSourceToMetadata( self.name)
 		  res.AddMetaData(clMetadata.KeyForTransformation, ReplacePlaceHolders("add values from %0 " , right_serie.name))
 		  
 		  for i as integer = 0 to mx0
-		    var n as double
+		    var n as clDecimal
 		    
 		    if i <= mx1 then
-		      n = self.GetElement(i)
+		      n = self.GetElementAsDecimal(i)
 		    end if
 		    
 		    if i<= mx2 then
-		      n = n + right_serie.GetElement(i)
+		      n = n + right_serie.GetElementAsDecimal(i)
 		      
 		    end if
 		    
@@ -520,13 +554,14 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_add(right_value as double) As clCurrencyDataSerie
+		Function operator_add(right_value as double) As clDecimalDataSerie
 		  
 		  // !! TODO: review code
 		  // !! TODO: description
 		  // !! TODO: test cases
 		  
-		  var res as new clCurrencyDataSerie(ReplacePlaceHolders("%0+%1", self.name, str(right_value)))
+		  var res as new clDecimalDataSerie(ReplacePlaceHolders("%0+%1", self.name, str(right_value)))
+		  res.SetPrecision(self.GetPrecision())
 		  
 		  res. AddSourceToMetadata( self.name)
 		  res.AddMetaData(clMetadata.KeyForTransformation, ReplacePlaceHolders("add constant %0" , str(right_value)))
@@ -687,7 +722,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_subtract(right_serie as clCurrencyDataSerie) As clCurrencyDataSerie
+		Function operator_subtract(right_serie as clDecimalDataSerie) As clDecimalDataSerie
 		  
 		  // !! TODO: review code
 		  // !! TODO: description
@@ -704,18 +739,22 @@ Inherits clAbstractDataSerie
 		    mx0=mx2
 		  end if
 		  
-		  var res as new clCurrencyDataSerie(self.name+"-"+right_serie.name)
+		  var res as new clDecimalDataSerie(self.name+"-"+right_serie.name)
+		  
+		  res.SetPrecision(max(self.GetPrecision, right_serie.GetPrecision))
+		  
+		  res. AddSourceToMetadata( self.name)
 		  res.AddMetaData(clMetadata.KeyForTransformation, "substract values from  " + right_serie.name)
 		  
 		  for i as integer = 0 to mx0
-		    var n as double
+		    var n as clDecimal
 		    
 		    if i <= mx1 then
-		      n = self.GetElement(i)
+		      n = self.GetElementAsDecimal(i)
 		    end if
 		    
 		    if i<= mx2 then
-		      n = n - right_serie.GetElement(i)
+		      n = n - right_serie.GetElementAsDecimal(i)
 		      
 		    end if
 		    
@@ -730,13 +769,15 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function operator_subtract(right_value as double) As clCurrencyDataSerie
+		Function operator_subtract(right_value as double) As clDecimalDataSerie
 		  
 		  // !! TODO: review code
 		  // !! TODO: description
 		  // !! TODO: test cases
 		  
-		  var res as new clCurrencyDataSerie(self.name+"-"+str(right_value))
+		  var res as new clDecimalDataSerie(self.name+"-"+str(right_value))
+		  res.SetPrecision(self.GetPrecision())
+		  
 		  res. AddSourceToMetadata( self.name)
 		  res.AddMetaData(clMetadata.KeyForTransformation, "subtract constant " + str(right_value))
 		  
@@ -746,6 +787,23 @@ Inherits clAbstractDataSerie
 		  next
 		  
 		  return res
+		  
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function Rescale(oldValue as clDecimal) As int64
+		  // !! TODO: description
+		  // !! TODO: test cases
+		  
+		  
+		  var temp as int64 = oldValue.ScaledValue * self.mDecScale
+		  
+		  temp = temp / oldValue.ScaleFactor
+		  
+		  Return temp
+		  
 		  
 		  
 		End Function
@@ -861,7 +919,7 @@ Inherits clAbstractDataSerie
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetPrecision(DecimalPosition as integer)
+		Sub SetPrecision(NbrDigitsAfterDecimalPoint as integer)
 		  //
 		  // Set the precision of the number stored in the data serie. Existing numbers are rescaled.
 		  //
@@ -875,13 +933,13 @@ Inherits clAbstractDataSerie
 		  
 		  var oldDecScale as integer = mDecScale
 		  
-		  if DecimalPosition <=0 then
+		  if NbrDigitsAfterDecimalPoint <=0 then
 		    self.mDecPos = 0
 		    self.mDecScale = 1
 		    
 		  else
-		    self.mDecPos = DecimalPosition
-		    self.mDecScale = 10 ^ DecimalPosition
+		    self.mDecPos = NbrDigitsAfterDecimalPoint
+		    self.mDecScale = 10 ^ NbrDigitsAfterDecimalPoint
 		    
 		  end if
 		  

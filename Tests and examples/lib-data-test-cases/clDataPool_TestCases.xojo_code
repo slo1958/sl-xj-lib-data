@@ -1,6 +1,7 @@
 #tag Class
 Protected Class clDataPool_TestCases
 Inherits clParentClassForTestCases
+Implements itfTestPrefixInteface
 	#tag Method, Flags = &h0
 		Sub dpools_test_calc_001(log as clLogManager)
 		  
@@ -578,6 +579,18 @@ Inherits clParentClassForTestCases
 		  
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetCalcTestPrefix() As string
+		  return "dpools_test_calc"
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetIOTestPrefix() As string
+		  return "dpools_test_io"
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

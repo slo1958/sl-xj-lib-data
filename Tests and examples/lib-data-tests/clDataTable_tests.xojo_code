@@ -9,7 +9,7 @@ Protected Module clDataTable_tests
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats
 		  
-		  RunTests(new clDataTable_TestCases, "tables_test_calc", logwriter)
+		  RunCalcTests(new clDataTable_TestCases, logwriter)
 		  
 		  var ms1 as clMemoryStats = GetMemoryStats
 		  
@@ -61,13 +61,12 @@ Protected Module clDataTable_tests
 		  
 		  var ms0 as clMemoryStats = GetMemoryStats
 		  
-		  RunTests(new clDataTable_TestCases, "tables_test_io", logwriter)
+		  RunIOTests(new clDataTable_TestCases, logwriter)
 		  
 		  var ms1 as clMemoryStats = GetMemoryStats
 		  
 		  logwriter.WriteMessage(CurrentMethodName,"Tables in memory was: " + str(ms0.NumberOfTables)+", dataseries in memory was: " + str(ms0.NumberOfDataSeries))
 		  logwriter.WriteMessage(CurrentMethodName,"Tables in memory is: " + str(ms1.NumberOfTables)+", dataseries in memory is: " + str(ms1.NumberOfDataSeries))
-		  
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  

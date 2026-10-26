@@ -14,33 +14,50 @@ Inherits DesktopApplication
 
 
 	#tag Method, Flags = &h0
+		Sub run_AutoTests()
+		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
+		  
+		  logmanager.ResetWriters()
+		  
+		  logmanager.StartTask(CurrentMethodName)
+		  
+		  var requiredAttribute as string = "AUTOTEST"
+		  
+		  for each c as itfTestPrefixInteface in array(new clDataSerie_TestCases, new clDataTable_TestCases)
+		    var MethodInfoDict as dictionary = GetTestMethods(c, c.GetCalcTestPrefix, requiredAttribute)
+		    
+		    var MethodList() as string
+		    
+		    for each k as string in MethodInfoDict.keys
+		      MethodList.Add(k)
+		      
+		    next
+		    
+		    MethodList.Sort 
+		    
+		    for each methodName as string in MethodList
+		      var met as Introspection.MethodInfo  = Introspection.MethodInfo (MethodInfoDict.value(methodName))
+		      var v() as Variant
+		      v.Add(logmanager)
+		      met.Invoke(c, v)
+		      
+		    next
+		    
+		    
+		  next
+		  
+		  logmanager.EndTask(CurrentMethodName)
+		  
+		  return 
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub testOnOpen()
-		  
-		  
-		  
-		  
-		  var testno as integer = 999
-		  
-		  select case testno
-		    
-		  case 1
-		    var ct1 as new clDataTable("alpha", array("alpha","beta"))
-		    
-		    var ts as new clTableStructure(ct1, clTableStructure.Mode.ExtractStructure)
-		    
-		    var ct2 as clDataTable = ts
-		    
-		    var ct3 as new clDataTable("mytable", ts)
-		    
-		    
-		    return
-		    
-		    
-		  case else
-		    // do not stop if nothing to see
-		    return
-		    
-		  end select
+		  run_AutoTests()
 		  
 		  Return
 		  

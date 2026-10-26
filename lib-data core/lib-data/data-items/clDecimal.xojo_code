@@ -12,17 +12,17 @@ Protected Class clDecimal
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(theDecimalPosition as Integer)
+		Sub Constructor(NbrDigitsAfterDecimalPoint as Integer)
 		  
 		  mBaseValue = 0
 		  
-		  if theDecimalPosition <=0 then
+		  if NbrDigitsAfterDecimalPoint <=0 then
 		    mDecPos = 0
 		    mDecScale = 1
 		    
 		  else
-		    mDecPos = theDecimalPosition
-		    mDecScale = 10 ^ theDecimalPosition
+		    mDecPos = NbrDigitsAfterDecimalPoint
+		    mDecScale = 10 ^ NbrDigitsAfterDecimalPoint
 		    
 		  end if
 		  
@@ -30,17 +30,17 @@ Protected Class clDecimal
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(theDecimalPosition as Integer, theValue as clDecimal)
+		Sub Constructor(NbrDigitsAfterDecimalPoint as Integer, theValue as clDecimal)
 		  
 		  mBaseValue = 0
 		  
-		  if theDecimalPosition <=0 then
+		  if NbrDigitsAfterDecimalPoint <=0 then
 		    mDecPos = 0
 		    mDecScale = 1
 		    
 		  else
-		    mDecPos = theDecimalPosition
-		    mDecScale = 10 ^ theDecimalPosition
+		    mDecPos = NbrDigitsAfterDecimalPoint
+		    mDecScale = 10 ^ NbrDigitsAfterDecimalPoint
 		    
 		  end if
 		  
@@ -51,41 +51,42 @@ Protected Class clDecimal
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(theDecimalPosition as Integer, theValue as double)
+		Sub Constructor(NbrDigitsAfterDecimalPoint as Integer, theValue as double)
 		  
 		  mBaseValue = 0
 		  
-		  if theDecimalPosition <=0 then
+		  if NbrDigitsAfterDecimalPoint <=0 then
 		    mDecPos = 0
 		    mDecScale = 1
 		    
 		  else
-		    mDecPos = theDecimalPosition
-		    mDecScale = 10 ^ theDecimalPosition
+		    mDecPos = NbrDigitsAfterDecimalPoint
+		    mDecScale = 10 ^ NbrDigitsAfterDecimalPoint
 		    
 		  end if
 		  
 		  Value = theValue
 		  
+		  Return
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(theDecimalPosition as Integer, theValue as integer)
+		Sub Constructor(NbrDigitsAfterDecimalPoint as Integer, theValue as integer)
 		  
 		  mBaseValue = 0
 		  
-		  if theDecimalPosition <=0 then
+		  if NbrDigitsAfterDecimalPoint <=0 then
 		    mDecPos = 0
 		    mDecScale = 1
 		    
 		  else
-		    mDecPos = theDecimalPosition
-		    mDecScale = 10 ^ theDecimalPosition
+		    mDecPos = NbrDigitsAfterDecimalPoint
+		    mDecScale = 10 ^ NbrDigitsAfterDecimalPoint
 		    
 		  end if
 		  
-		  Value = theValue
+		  self.Value = theValue
 		  
 		End Sub
 	#tag EndMethod
@@ -95,7 +96,7 @@ Protected Class clDecimal
 		  
 		  // Get the scaled value and the scale
 		  var workValue as int64 = SecondValue .mBaseValue
-		  dim workDecPos as integer = SecondValue .mDecPos
+		  dim workDecPos as integer = SecondValue.mDecPos
 		  
 		  // Adjust the scale down
 		  while workDecPos > mDecPos
@@ -166,7 +167,7 @@ Protected Class clDecimal
 		  
 		  try
 		    var dtmp as double = rhs.ToDouble
-		     
+		    
 		    ret.mBaseValue = mBaseValue / dtmp
 		    
 		    //ret.mBaseValue = mBaseValue / n.mBaseValue * n.mDecScale
@@ -355,6 +356,13 @@ Protected Class clDecimal
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function ScaleFactor() As int64
+		  Return self.mDecScale
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function ToclDecimal() As clDecimal
 		  return new clDecimal(self)
 		  
@@ -414,7 +422,13 @@ Protected Class clDecimal
 
 	#tag Method, Flags = &h0
 		Sub Value(assigns d as double)
-		  mBaseValue = d * mDecScale
+		  
+		  // Fix the xx.xx999999999 issue
+		  var w0 as Double = 1.0 / ( self.mDecScale * 1000.0) 
+		  var w1 as Double = d
+		  
+		  
+		  mBaseValue = mDecScale * (w0 + w1)
 		  
 		  return
 		  

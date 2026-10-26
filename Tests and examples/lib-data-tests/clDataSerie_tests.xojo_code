@@ -6,8 +6,8 @@ Protected Module clDataSerie_tests
 		  var logwriter as  clLogManager = log  
 		  
 		  logwriter.StartTask(CurrentMethodName)
-		  
-		  RunTests(new clDataSerie_TestCases, "series_test_calc", logwriter)
+		   
+		  RunCalcTests(new clDataSerie_TestCases, logwriter)
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  
@@ -21,10 +21,9 @@ Protected Module clDataSerie_tests
 		  
 		  var logwriter as  clLogManager = log 
 		  
-		  
 		  logwriter.StartTask(CurrentMethodName)
 		  
-		  RunTests(new clDataSerie_TestCases, "seriess_test_io", logwriter)
+		  RunIOTests(new clDataSerie_TestCases, logwriter)
 		  
 		  logwriter.EndTask(CurrentMethodName)
 		  

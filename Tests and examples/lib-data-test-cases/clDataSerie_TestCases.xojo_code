@@ -1,6 +1,19 @@
 #tag Class
 Protected Class clDataSerie_TestCases
 Inherits clParentClassForTestCases
+Implements itfTestPrefixInteface
+	#tag Method, Flags = &h0
+		Function GetCalcTestPrefix() As string
+		  return "series_test_calc"
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetIOTestPrefix() As string
+		  return "series_test_io"
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function GetTestPrefix() As string
 		  return "series_"
@@ -947,6 +960,50 @@ Inherits clParentClassForTestCases
 		  var expected_c3 as new clCurrencyDataSerie("Alpha as currency", array(123.0, -123.0, 123.0, -123.0, 123.0, 123.0, -123.0, 123.0, -123.0, 123.0, 123.0, -123.0, 123.0, -123.0, 123.0, 0.0, 0.0, 0.0, 0.0, 0.0, 123.4, -123.4, 123.4, -123.4, 123.4, 0.0, 0.0, 0.0, 0.0, 0.0))
 		  
 		  call check_serie(log, "c3", expected_c3, c3)
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Attributes( AUTOTEST = "aaa" )  Sub series_test_calc_029(log as clLogManager)
+		  
+		  // Testing clDecimal
+		  log.StartTask(CurrentMethodName)
+		  
+		  var c1 as new clDecimalDataSerie("Alpha")
+		  var c2 as new clDecimalDataSerie("Beta")
+		  
+		  // precision is 4 digits after dp
+		  c1.SetPrecision(4)
+		  c2.SetPrecision(3)
+		  
+		  var baselist() as double = array(123.456, 12.3456, 1.23456)
+		  
+		  for each base as double in baselist
+		    c1.AddElement(base) 
+		    c2.AddElement(base)
+		    
+		  next
+		  
+		  var c1plusc2 as clDecimalDataSerie = c1 + c2
+		  var c1minc2 as clDecimalDataSerie = c1 - c2
+		  
+		  
+		  for i as integer = 0 to 2
+		    var s() as string
+		    
+		    s.Add( c1.GetElementAsString(i))
+		    s.Add( c2.GetElementAsString(i))
+		    s.Add( c1plusc2.GetElementAsString(i))
+		    s.Add( c1minc2.GetElementAsString(i))
+		    
+		    System.DebugLog(string.FromArray(s, "   "))
+		    
+		  next
+		  
+		  //call check_serie(log, "c3", expected_c3, c3)
 		  
 		  log.EndTask(CurrentMethodName)
 		  

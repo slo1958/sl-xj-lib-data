@@ -135,7 +135,7 @@ Protected Module tests_support
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetTestMethods(c as object, mask as string) As Dictionary
+		Function GetTestMethods(c as object, mask as string, requiredAttribute as string = "") As Dictionary
 		  
 		  Var t As Introspection.TypeInfo
 		  
@@ -144,7 +144,30 @@ Protected Module tests_support
 		  t = Introspection.GetType(c)
 		  
 		  for each met as Introspection.MethodInfo in t.GetMethods
-		    if met.name.left(mask.Length) = mask then
+		    var cond1 as Boolean
+		    var cond2 as Boolean
+		    
+		    if requiredAttribute.Length > 0 then
+		      var attrs() as Introspection.AttributeInfo = met.GetAttributes
+		      cond1 = False
+		      
+		      for each attr as Introspection.AttributeInfo in attrs
+		        if attr.Name = requiredAttribute then
+		          cond1 = True
+		          
+		        end if
+		        
+		      next
+		      
+		    else
+		      cond1 = True
+		      
+		    end if
+		    
+		    cond2 = met.name.left(mask.Length) = mask
+		    
+		    if cond1 and cond2  then
+		      
 		      d.value(met.name) = met
 		      
 		    end if
@@ -209,6 +232,27 @@ Protected Module tests_support
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub RunCalcTests(c as itfTestPrefixInteface, logwriter as clLogManager)
+		  
+		  RunTests(c, c.GetCalcTestPrefix, logwriter)
+		  
+		  Return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub RunIOTests(c as itfTestPrefixInteface, logwriter as clLogManager)
+		  
+		  
+		  RunTests(c, c.GetIOTestPrefix, logwriter)
+		  
+		  Return
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub RunTests(c as object, mask as string, logwriter as clLogManager)
 		  
 		  
@@ -240,6 +284,9 @@ Protected Module tests_support
 		    met.Invoke(c, v)
 		    
 		  next
+		  
+		  Return
+		  
 		End Sub
 	#tag EndMethod
 

@@ -1,6 +1,19 @@
 #tag Class
 Protected Class clDataTable_TestCases
 Inherits clParentClassForTestCases
+Implements itfTestPrefixInteface
+	#tag Method, Flags = &h0
+		Function GetCalcTestPrefix() As string
+		  return "tables_test_calc"
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function GetIOTestPrefix() As string
+		  return "tables_test_io"
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Function GetTestPrefix() As string
 		  return "tables_"
@@ -3881,6 +3894,71 @@ Inherits clParentClassForTestCases
 		  call check_table(log,"create from structure array", expect_table1, table1)
 		  
 		  
+		  
+		  log.EndTask(CurrentMethodName)
+		  
+		  
+		  
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub tables_test_calc_064(log as clLogManager)
+		  
+		  // Testing clDecimal
+		  log.StartTask(CurrentMethodName)
+		  
+		  var c1 as new clDecimalDataSerie("Alpha")
+		  var c2 as new clDecimalDataSerie("Beta")
+		  
+		  // precision is 4 digits after dp
+		  c1.SetPrecision(4)
+		  c2.SetPrecision(3)
+		  
+		  var baselist() as double = array(123.456, 12.3456, 1.23456)
+		  
+		  for each base as double in baselist
+		    c1.AddElement(base) 
+		    c2.AddElement(base)
+		    
+		  next
+		  
+		  var c1plusc2 as clDecimalDataSerie = c1 + c2
+		  var c1minc2 as clDecimalDataSerie = c1 - c2
+		  
+		  var dtcalc as new clDataTable("Calc")
+		  call dtcalc.AddColumns(c1, c2, c1plusc2, c1minc2)
+		  
+		  
+		  var dtexpec as new clDataTable("Expected")
+		  
+		  var e1 as new clDecimalDataSerie(4, "Alpha")
+		  
+		  e1.AddElement(new clDecimal(4, 123.456))
+		  e1.AddElement(new clDecimal(4, 12.3456))
+		  e1.AddElement(new clDecimal(4, 1.23456))
+		  
+		  var e2 as new clDecimalDataSerie(3, "Beta")
+		  e2.AddElement(new clDecimal(3, 123.456))
+		  e2.AddElement(new clDecimal(3, 12.3456))
+		  e2.AddElement(new clDecimal(3, 1.23456))
+		  
+		  
+		  var e3 as new clDecimalDataSerie(4, "Alpha+Beta")
+		  e3.AddElement(new clDecimal(4, 246.912))
+		  e3.AddElement(new clDecimal(4, 24.6906))
+		  e3.AddElement(new clDecimal(4, 2.4685))
+		  
+		  var e4 as new clDecimalDataSerie(4, "Alpha-Beta")
+		  e4.AddElement(new clDecimal(4, 0.0))
+		  e4.AddElement(new clDecimal(4, 0.0006))
+		  e4.AddElement(new clDecimal(4, 0.0005))
+		  
+		  
+		  call dtexpec.AddColumns(e1, e2, e3,  e4)
+		  
+		  call check_table(log,"create from structure array", dtexpec, dtcalc)
 		  
 		  log.EndTask(CurrentMethodName)
 		  

@@ -194,6 +194,7 @@ Folder=lib-data-examples;Tests and examples/lib-data-examples;&h0000000073919FFF
 Folder=lib-log-writers;lib-data core/lib-data-desktop-ui-support/lib-log-writers;&h0000000042E3F7FF;&h000000006C2547FF;false
 Class=DesktopListbox_LogWriter;lib-data core/lib-data-desktop-ui-support/lib-log-writers/DesktopListbox_LogWriter.xojo_code;&h000000001DDAC7FF;&h0000000042E3F7FF;false
 Class=clTransposeTransformer;lib-data core/lib-data/data-table-transformer/linear-transformers/clTransposeTransformer.xojo_code;&h000000004D5FA7FF;&h000000002B255FFF;false
+Interface=itfTestPrefixInteface;Tests and examples/lib-data-test-cases/itfTestPrefixInteface.xojo_code;&h0000000003AD87FF;&h0000000046D7C7FF;false
 DefaultWindow=main_window
 AppMenuBar=MainMenuBar
 MajorVersion=1
