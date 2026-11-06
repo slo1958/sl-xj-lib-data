@@ -8,12 +8,14 @@ Implements TableRowWriterInterface
 		  var dbrow as new DatabaseRow
 		  
 		  for i as integer = 0 to self.columns.LastIndex
-		    
-		    dbrow.Column(self.columns(i)) = row_data(i)
+		    var s as string = self.dbAccess.EscapeObjectName(self.columns(i))
+		    dbrow.Column(s) = row_data(i)
 		    
 		  next
 		  
-		  db.AddRow(self.table_name , dbrow)
+		  db.AddRow(self.dbAccess.EscapeObjectName(self.table_name) , dbrow)
+		  
+		  return
 		  
 		End Sub
 	#tag EndMethod

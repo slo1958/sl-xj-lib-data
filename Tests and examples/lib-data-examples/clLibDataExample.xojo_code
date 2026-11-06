@@ -2628,6 +2628,51 @@ Protected Class clLibDataExample
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function Example_042_CSV2SqLite(log as clLogManager, Describe as boolean, Description() as string) As clDataTable()
+		  
+		  if Describe then
+		    Description.RemoveAll
+		    
+		    Description.Add(CurrentMethodName)
+		    
+		    Description.Add("- Read a text file in a data table")
+		    Description.add("- save to a sqlite db")
+		    
+		    return nil
+		    
+		  end if
+		  
+		  log.StartTask(CurrentMethodName)
+		  
+		  // Locate the folder where the file is hidding
+		  var main_folder As  FolderItem = GetTestInputBaseFolder()
+		  
+		  // Locate the file
+		  var my_file as FolderItem = main_folder.Child("myfile3_10K.csv")
+		  
+		  // Load into a datatable, using the first line as column names and use all lines (no row sorter)
+		  var table As New clDataTable(new clTextReader(my_file, True, new clTextFileConfig(",")))
+		  
+		  // Create a sqlite database (should link to a file to persist)
+		  var db as new SQLiteDatabase
+		  
+		  Try
+		    db.Connect
+		    
+		  Catch error As DatabaseException
+		    System.DebugLog("DB Connection Error: " + error.Message)
+		    
+		  End Try
+		  
+		  // Save to Sqlite db
+		  table.SaveWithoutIndex(new clDBWriter(new clSqliteDBAccess(db)))
+		  
+		  return array(table)
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Shared Function GetAllExamples() As Dictionary
 		  // 
 		  //. Get the list of 'example_xxx' methods

@@ -8,7 +8,7 @@ Inherits clAbstractDatabaseAccess
 		  var tmp_sql as string
 		  
 		  for i as integer = 0 to field_names.LastIndex
-		    tmp_sql = "ALTER TABLE " + table_name + " add " + field_names(i) + " " + self.GetSQLType(field_types(i))
+		    tmp_sql = "ALTER TABLE " + EscapeObjectName(table_name) + " add " + EscapeObjectName(field_names(i)) + " " + self.GetSQLType(field_types(i))
 		    
 		    self.ExecuteSQL(tmp_sql)
 		    
@@ -32,13 +32,16 @@ Inherits clAbstractDatabaseAccess
 		  var tmp_sql as string
 		  
 		  for i as integer = 0 to field_names.LastIndex
-		    tmp_fields.Add field_names(i) + " " + self.GetSQLType(field_types(i))
+		    //tmp_fields.Add field_names(i) + " " + self.GetSQLType(field_types(i))
+		    tmp_fields.Add EscapeObjectName(field_names(i)) + " " + self.GetSQLType(field_types(i))
 		    
 		  next
 		  
-		  tmp_sql = "CREATE TABLE " + table_name +"(" + String.FromArray(tmp_fields, ",") + ")"
+		  tmp_sql = "CREATE TABLE " + EscapeObjectName(table_name) +"("  + String.FromArray(tmp_fields, ",") + ")"
 		  
 		  self.ExecuteSQL(tmp_sql)
+		  
+		  return
 		  
 		End Sub
 	#tag EndMethod
@@ -47,7 +50,7 @@ Inherits clAbstractDatabaseAccess
 		Sub DropTable(table_name as string)
 		  var tmp_sql as string
 		  
-		  tmp_sql =  "DROP TABLE IF EXISTS " + table_name 
+		  tmp_sql =  "DROP TABLE IF EXISTS " + self.EscapeObjectName(table_name)
 		  
 		  self.ExecuteSQL(tmp_sql)
 		  

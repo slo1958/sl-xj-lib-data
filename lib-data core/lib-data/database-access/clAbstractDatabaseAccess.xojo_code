@@ -244,6 +244,13 @@ Protected Class clAbstractDatabaseAccess
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function EscapeObjectName(objName as string) As string
+		  
+		  return """" + objname + """"
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function GetDatabase() As Database
 		  //
 		  //  Get the db object
