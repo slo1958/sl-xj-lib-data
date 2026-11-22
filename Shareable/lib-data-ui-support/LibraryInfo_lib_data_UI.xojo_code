@@ -1,26 +1,16 @@
-#tag Class
-Protected Class clDataPoolItem
-	#tag Method, Flags = &h0
-		Sub Constructor()
-		  
-		  self.source = clDataPool.DatapoolSource.None
-		  
-		  
-		End Sub
-	#tag EndMethod
+#tag Module
+Module LibraryInfo_lib_data_UI
+	#tag Constant, Name = LibraryAuthor, Type = String, Dynamic = False, Default = \"S.Louvet", Scope = Protected
+	#tag EndConstant
 
+	#tag Constant, Name = LibraryName, Type = String, Dynamic = False, Default = \"lib-data-ui-support", Scope = Protected
+	#tag EndConstant
 
-	#tag Property, Flags = &h0
-		entry_label As string
-	#tag EndProperty
+	#tag Constant, Name = LibraryRequirements, Type = String, Dynamic = False, Default = \"lib-data", Scope = Protected
+	#tag EndConstant
 
-	#tag Property, Flags = &h0
-		source As clDataPool.DatapoolSource
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		table As clDataTable
-	#tag EndProperty
+	#tag Constant, Name = LibraryVersion, Type = String, Dynamic = False, Default = \"V1", Scope = Protected
+	#tag EndConstant
 
 
 	#tag ViewBehavior
@@ -64,22 +54,6 @@ Protected Class clDataPoolItem
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
-		#tag ViewProperty
-			Name="entry_label"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="string"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="source"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="clDataPool.DatapoolSource"
-			EditorType=""
-		#tag EndViewProperty
 	#tag EndViewBehavior
-End Class
-#tag EndClass
+End Module
+#tag EndModule

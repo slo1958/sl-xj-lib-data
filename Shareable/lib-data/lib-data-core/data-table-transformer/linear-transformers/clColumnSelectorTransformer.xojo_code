@@ -191,14 +191,6 @@ Inherits clLinearTransformer
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="StepLabel"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="EnableTraceMode"
 			Visible=false
 			Group="Behavior"

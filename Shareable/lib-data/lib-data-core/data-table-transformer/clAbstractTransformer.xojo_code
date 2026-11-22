@@ -515,14 +515,6 @@ Protected Class clAbstractTransformer
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="StepLabel"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="String"
-			EditorType="MultiLineEditor"
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="ExecutionCompletedFlag"
 			Visible=false
 			Group="Behavior"

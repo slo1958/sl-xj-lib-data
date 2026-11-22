@@ -178,7 +178,7 @@ Protected Class clJSONFileConfig
 			Group="Behavior"
 			InitialValue=""
 			Type="string"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="KeyForTables"
@@ -186,7 +186,7 @@ Protected Class clJSONFileConfig
 			Group="Behavior"
 			InitialValue=""
 			Type="string"
-			EditorType=""
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class

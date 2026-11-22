@@ -12,7 +12,7 @@ Inherits clAbstractDataSerie
 		  // 
 		  // else
 		  items.Add(Internal_ConversionToDecimal(the_item))
-		   
+		  
 		End Sub
 	#tag EndMethod
 

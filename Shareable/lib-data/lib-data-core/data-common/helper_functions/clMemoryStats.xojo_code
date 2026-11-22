@@ -7,7 +7,7 @@ Class clMemoryStats
 		  if obj isa clDataTable then
 		    tables.add(new clMemoryStatEntry( _
 		    Introspection.GetType(obj).name _
-		      ,clDataTable(obj).Name _
+		    ,clDataTable(obj).Name _
 		    ))
 		    
 		  elseif obj isa clAbstractDataSerie then
@@ -25,7 +25,7 @@ Class clMemoryStats
 		  elseif obj isa clAbstractTransformer then
 		    Transformers.add(new clMemoryStatEntry( _
 		    Introspection.GetType(obj).name _
-		      ,clAbstractTransformer(obj).GetLabel _
+		    ,clAbstractTransformer(obj).GetLabel _
 		    ))
 		    
 		  else
