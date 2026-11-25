@@ -6,7 +6,7 @@ Module LibraryInfo_lib_data_UI
 	#tag Constant, Name = LibraryName, Type = String, Dynamic = False, Default = \"lib-data-ui-support", Scope = Protected
 	#tag EndConstant
 
-	#tag Constant, Name = LibraryRequirements, Type = String, Dynamic = False, Default = \"lib-data", Scope = Protected
+	#tag Constant, Name = LibraryRequirements, Type = String, Dynamic = False, Default = \"lib-data\x2C lib-logging", Scope = Protected
 	#tag EndConstant
 
 	#tag Constant, Name = LibraryVersion, Type = String, Dynamic = False, Default = \"V1", Scope = Protected

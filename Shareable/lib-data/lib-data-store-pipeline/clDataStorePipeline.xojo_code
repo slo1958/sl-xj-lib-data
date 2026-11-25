@@ -129,7 +129,7 @@ Protected Class clDataStorePipeline
 		Protected Function getLogManager() As clLogManager
 		  
 		  if self.localLogger = nil then
-		    return clLogManager.GetDefaultLogingSupport
+		    return clLogManager.GetDefaultloggingSupport
 		    
 		  else
 		    return self.localLogger

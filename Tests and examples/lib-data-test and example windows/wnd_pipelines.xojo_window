@@ -334,7 +334,7 @@ End
 		Function SetUpLogWriter(EchoToListBox as Boolean) As clLogManager
 		  
 		  
-		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
+		  var logmanager as clLogManager = clLogManager.GetDefaultloggingSupport
 		  
 		  logmanager.ResetWriters()
 		  

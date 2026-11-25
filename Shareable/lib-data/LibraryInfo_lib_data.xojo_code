@@ -6,7 +6,7 @@ Module LibraryInfo_lib_data
 	#tag Constant, Name = LibraryName, Type = String, Dynamic = False, Default = \"lib-data", Scope = Protected
 	#tag EndConstant
 
-	#tag Constant, Name = LibraryRequirements, Type = String, Dynamic = False, Default = \"", Scope = Protected
+	#tag Constant, Name = LibraryRequirements, Type = String, Dynamic = False, Default = \"lib-logging", Scope = Protected
 	#tag EndConstant
 
 	#tag Constant, Name = LibraryVersion, Type = String, Dynamic = False, Default = \"V1", Scope = Protected

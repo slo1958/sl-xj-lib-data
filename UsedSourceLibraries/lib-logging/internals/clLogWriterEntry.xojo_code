@@ -12,7 +12,7 @@ Protected Class clLogWriterEntry
 
 
 	#tag Note, Name = read me
-		Internal class used by clLoging to store log writer information
+		Internal class used by cllogging to store log writer information
 		
 		
 	#tag EndNote

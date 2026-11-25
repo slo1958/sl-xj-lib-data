@@ -15,7 +15,7 @@ Inherits DesktopApplication
 
 	#tag Method, Flags = &h0
 		Sub run_AutoTests()
-		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
+		  var logmanager as clLogManager = clLogManager.GetDefaultloggingSupport
 		  
 		  logmanager.ResetWriters()
 		  

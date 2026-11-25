@@ -63,14 +63,14 @@ Protected Module mdLogManagerConstants
 		
 		Supports:
 		- four levels of severity (Information, Warning, Error, Fatal error)
-		- supports multiple log writer, a logwriter is expected to support the itfLogingWriter interface
+		- supports multiple log writer, a logwriter is expected to support the itfloggingWriter interface
 		- add filter to enable/disable each level
 		- add a limit counter for errors and warning
 		- add support to measure execution time of different tasks
 		- add support to track execution of methods
 		
 		
-		The class provides a default clLoging instance and a default logWriter, sending the output to debuglog.
+		The class provides a default cllogging instance and a default logWriter, sending the output to debuglog.
 		
 		The default logWriter can be enabled and disabled by calling EnableWriter() and DisableWriter() without parameters
 		

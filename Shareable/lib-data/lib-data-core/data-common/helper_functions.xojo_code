@@ -107,7 +107,7 @@ Protected Module helper_functions
 
 	#tag Method, Flags = &h0
 		Function getDefaultLogManager() As clLogManager
-		  return clLogManager.GetDefaultLogingSupport
+		  return clLogManager.GetDefaultloggingSupport
 		  
 		End Function
 	#tag EndMethod

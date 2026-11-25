@@ -1,33 +1,16 @@
-#tag Class
-Protected Class clDebugLogWriter
-Inherits clGenericLogWriter
-Implements itfLogWriter
-	#tag Method, Flags = &h0
-		Sub AddLogEntry(MessageSeverity as string, MessageTime as string, MessageSource as string, MessageText as string)
-		  // Part of the itfLogingWriter interface.
-		  
-		  if not self.AcceptSeverity(MessageSeverity) then return
-		  
-		  if MessageSource.Length > 0 then
-		    
-		    System.DebugLog MessageTime+". " +MessageSeverity + " " +  MessageText + " from " + MessageSource
-		    
-		  else
-		    System.DebugLog MessageTime+". " +MessageSeverity + " " +  MessageText
-		    
-		  end if
-		  
-		  
-		End Sub
-	#tag EndMethod
+#tag Module
+Module LibraryInfo_lib_logging
+	#tag Constant, Name = LibraryAuthor, Type = String, Dynamic = False, Default = \"S.Louvet", Scope = Protected
+	#tag EndConstant
 
-	#tag Method, Flags = &h0
-		Sub Constructor()
-		  
-		  Super.Constructor
-		  
-		End Sub
-	#tag EndMethod
+	#tag Constant, Name = LibraryName, Type = String, Dynamic = False, Default = \"lib-logging", Scope = Protected
+	#tag EndConstant
+
+	#tag Constant, Name = LibraryRequirements, Type = String, Dynamic = False, Default = \"", Scope = Protected
+	#tag EndConstant
+
+	#tag Constant, Name = LibraryVersion, Type = String, Dynamic = False, Default = \"V1", Scope = Protected
+	#tag EndConstant
 
 
 	#tag ViewBehavior
@@ -72,5 +55,5 @@ Implements itfLogWriter
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior
-End Class
-#tag EndClass
+End Module
+#tag EndModule

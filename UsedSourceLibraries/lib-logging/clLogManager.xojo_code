@@ -163,7 +163,7 @@ Implements itfLogWriter
 		  // Returns:
 		  // (nothing)
 		  //
-		  var tmp As internals.clLogingTaskTimer =  internals.clLogingTaskTimer(RunningTasks.Lookup(pTaskId, nil))
+		  var tmp As internals.clloggingTaskTimer =  internals.clloggingTaskTimer(RunningTasks.Lookup(pTaskId, nil))
 		  
 		  if tmp = nil then
 		    WriteError cstInternalSource, cstMsgTaskNotFound, pTaskId, CurrentMethodName
@@ -220,10 +220,10 @@ Implements itfLogWriter
 		  // Returns:
 		  // (nothing)
 		  //
-		  var methodInfo as internals.clLogingMethodTimer = self.TrackedMethods.Lookup(MethodName, nil)
+		  var methodInfo as internals.clloggingMethodTimer = self.TrackedMethods.Lookup(MethodName, nil)
 		  
 		  if methodInfo = nil then 
-		    methodInfo = new  internals.clLogingMethodTimer(MethodName)
+		    methodInfo = new  internals.clloggingMethodTimer(MethodName)
 		    self.TrackedMethods.Value(MethodName) = methodInfo
 		    
 		  end if
@@ -244,7 +244,7 @@ Implements itfLogWriter
 		  // Returns:
 		  // (nothing)
 		  //
-		  var methodInfo as internals.clLogingMethodTimer = self.TrackedMethods.Lookup(MethodName, nil)
+		  var methodInfo as internals.clloggingMethodTimer = self.TrackedMethods.Lookup(MethodName, nil)
 		  
 		  if methodInfo <> nil then methodInfo.ExitMethod
 		  
@@ -254,7 +254,7 @@ Implements itfLogWriter
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Shared Function GetDefaultLogingSupport() As clLogManager
+		Shared Function GetDefaultloggingSupport() As clLogManager
 		  If DefaultLogManager = Nil Then
 		    DefaultLogManager = New clLogManager
 		    
@@ -343,7 +343,7 @@ Implements itfLogWriter
 		  // Returns:
 		  // (nothing)
 		  //
-		  var methodInfo as internals.clLogingMethodTimer = self.TrackedMethods.Lookup(MethodName, nil)
+		  var methodInfo as internals.clloggingMethodTimer = self.TrackedMethods.Lookup(MethodName, nil)
 		  
 		  if methodInfo <> nil then  
 		    var p as pair = methodInfo.MethodStats
@@ -526,7 +526,7 @@ Implements itfLogWriter
 		  // Returns:
 		  // (nothing)
 		  //
-		  var tmp As New  internals.clLogingTaskTimer(pTaskId)
+		  var tmp As New  internals.clloggingTaskTimer(pTaskId)
 		  RunningTasks.value(pTaskId) = tmp
 		  
 		  WriteInfo cstInternalSource, cstMsgStartTask, pTaskId

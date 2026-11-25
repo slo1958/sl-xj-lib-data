@@ -826,7 +826,7 @@ End
 		Function SetUpLogWriter() As clLogManager
 		  
 		  
-		  var logmanager as clLogManager = clLogManager.GetDefaultLogingSupport
+		  var logmanager as clLogManager = clLogManager.GetDefaultloggingSupport
 		  
 		  logmanager.ResetWriters()
 		  logmanager.AddWriter("WND", Listbox1)

@@ -19,7 +19,7 @@ Implements itfLogWriter
 
 	#tag Method, Flags = &h0
 		Sub AddLogEntry(MessageSeverity as string, MessageTime as string, MessageSource as string, MessageText as string)
-		  // Part of the itfLogingWriter interface.
+		  // Part of the itfloggingWriter interface.
 		  
 		  // Should be implemented in child classes
 		  

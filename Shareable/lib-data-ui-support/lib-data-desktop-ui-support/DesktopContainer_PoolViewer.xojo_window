@@ -335,7 +335,7 @@ End
 		  
 		  
 		  if self.localLogger = nil then 
-		    clLogManager.GetDefaultLogingSupport.WriteError(Source, ErrorMessage, item)
+		    clLogManager.GetDefaultloggingSupport.WriteError(Source, ErrorMessage, item)
 		    
 		  else
 		    self.localLogger.WriteError(Source, ErrorMessage, item)

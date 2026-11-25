@@ -1,65 +1,72 @@
 #tag Class
-Protected Class clLogingTaskTimer
+Protected Class clloggingMethodTimer
 	#tag Method, Flags = &h0
-		Function Completed() As Boolean
-		  return end_time > 0
+		Sub Constructor(prmName as string)
 		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Constructor(pTaskId as string)
-		  identifier = pTaskId
-		  start_time = System.Microseconds
-		  end_time = -1
-		  
+		  self.MethodName = prmName
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Done()
-		  end_time = System.Microseconds
+		Sub EnterMethod()
 		  
+		  timers.Add(new clloggingTaskTimer(self.MethodName))
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetExecutionTime() As double
-		  if end_time > 0 then
-		    return (end_time - start_time) / 1000000
+		Sub ExitMethod()
+		  
+		  if timers.Count = 0 then return
+		  
+		  timers(timers.LastIndex).Done
+		  
+		  return
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Function MethodStats() As pair
+		  
+		  var count as integer
+		  var totexecution as Double
+		  
+		  for each entry as clloggingTaskTimer in self.Timers
+		    if entry.Completed then 
+		      
+		    else
+		      count = count + 1
+		      totexecution = totexecution + entry.GetExecutionTime
+		    end if
 		    
-		  else
-		    return 0
-		    
-		  end if
+		  next
+		  
+		  return count:totexecution
+		  
 		  
 		End Function
 	#tag EndMethod
 
 
 	#tag Property, Flags = &h0
-		end_time As Double
+		MethodName As string
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		identifier As String
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		start_time As Double
+		Timers() As clloggingTaskTimer
 	#tag EndProperty
 
 
 	#tag ViewBehavior
 		#tag ViewProperty
-			Name="identifier"
-			Visible=false
-			Group="Behavior"
+			Name="Name"
+			Visible=true
+			Group="ID"
 			InitialValue=""
 			Type="String"
-			EditorType="MultiLineEditor"
+			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Index"
@@ -67,22 +74,6 @@ Protected Class clLogingTaskTimer
 			Group="ID"
 			InitialValue="-2147483648"
 			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Left"
-			Visible=true
-			Group="Position"
-			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="Name"
-			Visible=true
-			Group="ID"
-			InitialValue=""
-			Type="String"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
@@ -94,6 +85,14 @@ Protected Class clLogingTaskTimer
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
+			Name="Left"
+			Visible=true
+			Group="Position"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
 			Name="Top"
 			Visible=true
 			Group="Position"
@@ -102,20 +101,12 @@ Protected Class clLogingTaskTimer
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="end_time"
+			Name="MethodName"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Double"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="start_time"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Double"
-			EditorType=""
+			Type="string"
+			EditorType="MultiLineEditor"
 		#tag EndViewProperty
 	#tag EndViewBehavior
 End Class
